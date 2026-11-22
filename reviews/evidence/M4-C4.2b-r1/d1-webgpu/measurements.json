@@ -1,0 +1,102 @@
+{
+  "kind": "toontown.c42.canvas-measure",
+  "platform": "win32",
+  "machine": "Windows 11 workstation",
+  "processor": "workstation with discrete GPU",
+  "boundsKind": "workstation",
+  "bounds": {
+    "frameMs": 17.5,
+    "gestureFrameMs": 17.5,
+    "inkMs": 16.7,
+    "commitSmallMs": 50.0,
+    "commitLargeMs": 150.0
+  },
+  "requestedBackend": "webgpu",
+  "experiments": false,
+  "ruleSet": true,
+  "backend": "webgpu",
+  "fallback": null,
+  "small": {
+    "idle": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 17.2
+    },
+    "gesture": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.9,
+      "max": 17
+    },
+    "ink": {
+      "n": 300,
+      "p50": 0.3,
+      "p95": 0.5,
+      "max": 0.8
+    },
+    "commit": {
+      "n": 5,
+      "p50": 29.7,
+      "p95": 31.4,
+      "max": 31.4,
+      "samples": [
+        30.7,
+        31.4,
+        21.6,
+        29.7,
+        28
+      ]
+    }
+  },
+  "longStroke": {
+    "samples": 10000,
+    "status": "ok",
+    "commitMs": [
+      131.9
+    ],
+    "parts": [
+      {
+        "answerMs": 131.9,
+        "drawMs": 0
+      }
+    ]
+  },
+  "largeBuildS": 39.1,
+  "large": {
+    "idle": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.9,
+      "max": 17
+    },
+    "load": {
+      "key": "dr_01K7JJN800FKSDY36B4V101ZWT",
+      "bytes": 861736,
+      "ms": 39.2
+    },
+    "residentBytes": 24107404,
+    "gesture": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 17
+    },
+    "commit": {
+      "n": 5,
+      "p50": 133.2,
+      "p95": 140.3,
+      "max": 140.3,
+      "samples": [
+        140.3,
+        128.3,
+        121.8,
+        134.5,
+        133.2
+      ]
+    }
+  },
+  "failures": [
+    "the product measured the back ends on the rule set's scenes: true"
+  ]
+}

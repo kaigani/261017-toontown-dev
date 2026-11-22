@@ -2,6 +2,11 @@
 """MCP protocol conformance of `toontown-headless --mcp-stdio` against the official Python SDK client (11 §14.7).
 
 Usage: python scripts/mcp-conformance.py <path to toontown-headless> [report.json]
+       python scripts/mcp-conformance.py --http <path to the desktop app toontown> [report.json]
+
+With `--http` (M4 C4.1, ADR-0022) the same checks run over Streamable HTTP against the running desktop application in
+attached mode: the app is launched with a fresh user folder, `--mcp-http 127.0.0.1:0` and a discovery file, and the
+client presents the discovery file's bearer token.
 
 The SDK client launches the binary over stdio and exercises: initialize, ping, tools/list (and the SDK's own check of
 structuredContent against each tool's outputSchema), tools/call, resources/list, resources/templates/list,
@@ -19,8 +24,24 @@ import tempfile
 import time
 from pathlib import Path
 
+import contextlib
+import subprocess
+
 from mcp import ClientSession, StdioServerParameters, types
 from mcp.client.stdio import stdio_client
+
+HTTP = {"endpoint": None, "token": None}
+
+
+@contextlib.asynccontextmanager
+async def http_transport():
+    import httpx2
+    from mcp.client.streamable_http import streamable_http_client
+
+    client = httpx2.AsyncClient(headers={"Authorization": f"Bearer {HTTP['token']}"}, timeout=httpx2.Timeout(60.0, read=300.0))
+    async with client:
+        async with streamable_http_client(HTTP["endpoint"], http_client=client) as streams:
+            yield streams[0], streams[1]
 
 CHECKS = []
 
@@ -66,7 +87,8 @@ async def run(binary, workdir):
         command=binary,
         args=["--headless", "--mcp-stdio", "--user-dir", str(Path(workdir) / "user")],
     )
-    async with stdio_client(params) as (read, write):
+    transport = http_transport() if HTTP["endpoint"] else stdio_client(params)
+    async with transport as (read, write):
         async with ClientSession(
             read,
             write,
@@ -144,30 +166,83 @@ async def run(binary, workdir):
             check("job_wait ok", sc(r).get("status") == "ok", sc(r))
             check("notifications/progress", bool(progress), progress)
 
-            r = await s.call_tool("pointer", {"view": "camera", "events": [{"type": "down", "x": 1, "y": 1}]})
-            check("pointer answers notImplemented with its milestone", sc(r).get("error", {}).get("details", {}).get("milestone") == "M2 C2.3", sc(r))
+            r = await s.call_tool("pointer", {"view": "top", "events": [{"type": "down", "x": 1, "y": 1}]})
+            # The Drawing view (M4 C4.2) and the Camera view (M4 C4.3a) take gestures; the Top and Side views wait for M6 C6.1.
+            check("pointer in the top view answers notImplemented with its milestone", sc(r).get("error", {}).get("details", {}).get("milestone") == "M6 C6.1", sc(r))
+            r = await s.call_tool("pointer", {"view": "drawing", "events": [{"type": "hover", "x": 5, "y": 5}]})
+            check("pointer in the drawing view answers commands and hover", sc(r).get("status") == "ok" and sc(r).get("result", {}).get("hover", {}).get("view") == {"x": 5.0, "y": 5.0}, sc(r))
+
+
+def launch_desktop(app, workdir):
+    """Starts the desktop application in attached mode and fills HTTP from its discovery file."""
+    discovery = Path(workdir) / "discovery.json"
+    # Ruling D-58: attached with `askInApp` on, a confirmation is asked in the app only and the call waits for the person;
+    # this run checks the protocol's elicitation path, so the agent defaults have `askInApp` off (the in-app path is the
+    # D-44 confirmation rows and `crates/mcp/tests/c44a_in_app_confirmation.rs`).
+    settings = Path(workdir) / "user" / "Settings"
+    settings.mkdir(parents=True, exist_ok=True)
+    seed = {"agent.policy.defaults": {"policy": "assist", "maxJobs": 2, "maxBatchSteps": 1000, "maxInlineImagePx": 2048,
+                                      "maxInlineBytes": 52428800, "askInApp": False, "letAgentMoveView": True,
+                                      "highlightAgentChanges": True}}
+    (settings / "preferences.json").write_text(json.dumps({"format": "toontown-settings", "kind": "preferences",
+                                                           "formatVersion": "1.0", "data": seed}), encoding="utf-8")
+    log = open(Path(workdir) / "app.log", "ab")
+    proc = subprocess.Popen(
+        [app, "--user-dir", str(Path(workdir) / "user"), "--mcp-http", "127.0.0.1:0", "--mcp-discovery", str(discovery)],
+        stdout=log,
+        stderr=subprocess.STDOUT,
+    )
+    start = time.monotonic()
+    while time.monotonic() - start < 120:
+        if proc.poll() is not None:
+            raise RuntimeError(f"the application exited with {proc.returncode}")
+        if discovery.exists():
+            try:
+                d = json.loads(discovery.read_text(encoding="utf-8"))
+                if d.get("endpoint") and d.get("token"):
+                    HTTP.update(endpoint=d["endpoint"], token=d["token"])
+                    return proc
+            except (OSError, ValueError):
+                pass
+        time.sleep(0.25)
+    proc.kill()
+    raise RuntimeError("no discovery file within 120 s")
 
 
 def main():
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    http = bool(args) and args[0] == "--http"
+    if http:
+        args = args[1:]
+    if not args:
         print(__doc__)
         return 2
-    binary = sys.argv[1]
-    report_path = sys.argv[2] if len(sys.argv) > 2 else None
+    binary = args[0]
+    report_path = args[1] if len(args) > 1 else None
     workdir = tempfile.mkdtemp(prefix="tt-c14-sdk-")
     started = time.time()
     error = None
+    proc = None
     try:
+        if http:
+            proc = launch_desktop(binary, workdir)
         asyncio.run(asyncio.wait_for(run(binary, workdir), timeout=180))
     except Exception as e:  # noqa: BLE001 - reported as a failed check
         error = f"{type(e).__name__}: {e}"
         check("session completed", False, error)
     finally:
+        if proc is not None:
+            proc.terminate()
+            try:
+                proc.wait(timeout=20)
+            except subprocess.TimeoutExpired:
+                proc.kill()
         shutil.rmtree(workdir, ignore_errors=True)
     import importlib.metadata as md
 
     report = {
         "client": f"mcp (Python SDK) {md.version('mcp')}",
+        "transport": "streamable-http" if http else "stdio",
         "server": binary,
         "platform": sys.platform,
         "seconds": round(time.time() - started, 2),

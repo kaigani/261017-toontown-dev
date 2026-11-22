@@ -1,0 +1,10 @@
+Part C HTTP socket probes at ac2e9ff (Windows, 2026-11-13)
+command: cargo test -p tt-mcp --test c41_r1_review part_c_http --locked
+exit 101; 1 pass, 2 fail; elapsed test time 0.02 s
+PASS authority_matrix: POST/GET/DELETE; foreign DNS suffixes, userinfo-like string,
+empty host/origin, null origin and missing host rejected; loopback IPv4/IPv6 accepted.
+FAIL dns_host_case_is_insensitive: POST Host LOCALHOST => 403, expected session lookup 404.
+FAIL host_cannot_contain_url_path: POST Host localhost/foreign => 404, expected 400/403.
+fmt -p tt-mcp --check: exit 0.
+clippy -p tt-mcp --all-targets --locked --features tt-persist/test-hooks --
+-D warnings -A clippy::empty_line_after_doc_comments: exit 0, 0.56 s.

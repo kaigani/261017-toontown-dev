@@ -1,0 +1,3834 @@
+[
+  {
+    "case": 1,
+    "verdict": "Pass",
+    "observed": {
+      "response": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 4,
+        "error": {
+          "code": "arg.invalid",
+          "message": "the central view cannot be hidden or floated; move another view to the centre first",
+          "details": {
+            "pointer": "/panelId"
+          }
+        }
+      },
+      "comparison": {
+        "fraction": 2.753185521685638e-05,
+        "verdict": "Pass"
+      },
+      "windows": null
+    }
+  },
+  {
+    "case": 2,
+    "verdict": "Fail",
+    "observed": {
+      "before": {
+        "history": {
+          "status": "ok",
+          "result": {
+            "entries": [
+              {
+                "index": 1,
+                "stepId": "u-1",
+                "label": "New Elements",
+                "source": "agent",
+                "agentSessionId": "s1-550beb",
+                "agentName": "mcp",
+                "time": "2026-11-15T04:30:22.948Z",
+                "objectCount": 4
+              },
+              {
+                "index": 2,
+                "stepId": "u-2",
+                "label": "Create Drawing",
+                "source": "agent",
+                "agentSessionId": "s1-550beb",
+                "agentName": "mcp",
+                "time": "2026-11-15T04:30:22.951Z",
+                "objectCount": 3
+              },
+              {
+                "index": 3,
+                "stepId": "u-3",
+                "label": "Pencil Tool",
+                "source": "agent",
+                "agentSessionId": "s1-550beb",
+                "agentName": "mcp",
+                "time": "2026-11-15T04:30:22.961Z",
+                "objectCount": 3
+              }
+            ],
+            "position": 3,
+            "cleanPosition": 0,
+            "total": 3
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "drawing": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+            "elementId": "el_01K7JJN800HS0J7HB5TJAXMP67",
+            "name": "1",
+            "rev": 4,
+            "locked": false,
+            "space": {
+              "units": "du",
+              "duPerField": 100,
+              "yAxis": "up",
+              "origin": "drawingCentre"
+            },
+            "pivot": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "bounds": {
+              "x": -124.0,
+              "y": -84.0,
+              "width": 248.0,
+              "height": 168.0
+            },
+            "nodes": [
+              {
+                "type": "layer",
+                "id": "nd_01K7JJN801GZYZG414C2QW8SJH",
+                "layerKind": "pencil",
+                "strokes": [
+                  {
+                    "type": "stroke",
+                    "id": "st_01K7JJN800W6M0CKT4EHPNTJRH",
+                    "kind": "pencil",
+                    "closed": true,
+                    "bezier": [
+                      {
+                        "x": -120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": -80.0
+                      }
+                    ],
+                    "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX",
+                    "lineStyle": {
+                      "thickness": 8.0,
+                      "lineType": "solid"
+                    },
+                    "pressure": null,
+                    "bounds": {
+                      "x": -124.0,
+                      "y": -84.0,
+                      "width": 248.0,
+                      "height": 168.0
+                    },
+                    "leftZoneId": "zn_31V981XKRXCY5TYWVC83HHK8ZQ",
+                    "rightZoneId": null
+                  }
+                ],
+                "zones": [
+                  {
+                    "type": "zone",
+                    "id": "zn_31V981XKRXCY5TYWVC83HHK8ZQ",
+                    "colourId": null,
+                    "textureMatrix": null,
+                    "boundaryStrokeIds": [
+                      "st_01K7JJN800W6M0CKT4EHPNTJRH"
+                    ],
+                    "holes": [],
+                    "parentZoneId": null,
+                    "area": 38400,
+                    "bounds": {
+                      "x": -120,
+                      "y": -80,
+                      "width": 240,
+                      "height": 160
+                    },
+                    "interiorPoint": {
+                      "x": 0,
+                      "y": -68.5703125
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "selection": {
+          "status": "ok",
+          "result": {
+            "selectedIds": [],
+            "bounds": null,
+            "selectedPoints": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "activity": {
+          "status": "ok",
+          "result": [
+            {
+              "seq": 1,
+              "time": "2026-11-15T04:30:22.886Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "project.create",
+              "params": {
+                "name": "Review",
+                "onUnsaved": "fail"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 1,
+              "durationMs": 47
+            },
+            {
+              "seq": 2,
+              "time": "2026-11-15T04:30:22.945Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "workspace.select",
+              "params": {
+                "name": "Drawing"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 1,
+              "durationMs": 2
+            },
+            {
+              "seq": 3,
+              "time": "2026-11-15T04:30:22.948Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "element.create",
+              "params": {
+                "type": "drawing",
+                "name": "Ink"
+              },
+              "status": "ok",
+              "undoStepId": "u-1",
+              "changedCount": 4,
+              "documentRev": 2,
+              "durationMs": 1
+            },
+            {
+              "seq": 4,
+              "time": "2026-11-15T04:30:22.951Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "element.drawing.create",
+              "params": {
+                "elementId": "el_01K7JJN800HS0J7HB5TJAXMP67",
+                "name": "1",
+                "exposeFrom": 1,
+                "exposeTo": 1
+              },
+              "status": "ok",
+              "undoStepId": "u-2",
+              "changedCount": 3,
+              "documentRev": 3,
+              "durationMs": 1
+            },
+            {
+              "seq": 5,
+              "time": "2026-11-15T04:30:22.954Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "app.context.set",
+              "params": {
+                "elementId": "el_01K7JJN800HS0J7HB5TJAXMP67",
+                "frame": 1
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 0
+            },
+            {
+              "seq": 6,
+              "time": "2026-11-15T04:30:22.956Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "doc.object.find",
+              "params": {
+                "type": "swatch",
+                "name": "Colour 2"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 0
+            },
+            {
+              "seq": 7,
+              "time": "2026-11-15T04:30:22.958Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "colour.current.set",
+              "params": {
+                "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 3,
+              "durationMs": 0
+            },
+            {
+              "seq": 8,
+              "time": "2026-11-15T04:30:22.961Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.rectangle.add",
+              "params": {
+                "from": {
+                  "x": -120,
+                  "y": -80
+                },
+                "to": {
+                  "x": 120,
+                  "y": 80
+                }
+              },
+              "status": "ok",
+              "undoStepId": "u-3",
+              "changedCount": 3,
+              "documentRev": 4,
+              "durationMs": 1
+            },
+            {
+              "seq": 9,
+              "time": "2026-11-15T04:30:23.087Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 122
+            },
+            {
+              "seq": 10,
+              "time": "2026-11-15T04:30:23.133Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 11,
+              "time": "2026-11-15T04:30:23.177Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 12,
+              "time": "2026-11-15T04:30:23.222Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 13,
+              "time": "2026-11-15T04:30:23.266Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 14,
+              "time": "2026-11-15T04:30:23.310Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 15,
+              "time": "2026-11-15T04:30:23.354Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 16,
+              "time": "2026-11-15T04:30:23.397Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 17,
+              "time": "2026-11-15T04:30:23.441Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 18,
+              "time": "2026-11-15T04:30:23.485Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 19,
+              "time": "2026-11-15T04:30:23.528Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 20,
+              "time": "2026-11-15T04:30:23.572Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 21,
+              "time": "2026-11-15T04:30:23.616Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 22,
+              "time": "2026-11-15T04:30:23.660Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 23,
+              "time": "2026-11-15T04:30:23.704Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 24,
+              "time": "2026-11-15T04:30:23.748Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 25,
+              "time": "2026-11-15T04:30:23.792Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 26,
+              "time": "2026-11-15T04:30:23.836Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 27,
+              "time": "2026-11-15T04:30:23.880Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 28,
+              "time": "2026-11-15T04:30:23.924Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 29,
+              "time": "2026-11-15T04:30:23.967Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 30,
+              "time": "2026-11-15T04:30:23.970Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.viewMapping.get",
+              "params": {
+                "view": "drawingView"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 31,
+              "time": "2026-11-15T04:30:23.973Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "window.panel.set",
+              "params": {
+                "panelId": "drawingView",
+                "floating": true,
+                "geometry": {
+                  "x": 100,
+                  "y": 100,
+                  "width": 900,
+                  "height": 700
+                }
+              },
+              "status": "error",
+              "errorCode": "arg.invalid",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 32,
+              "time": "2026-11-15T04:30:24.016Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 33,
+              "time": "2026-11-15T04:30:24.059Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 34,
+              "time": "2026-11-15T04:30:24.104Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 35,
+              "time": "2026-11-15T04:30:24.148Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 36,
+              "time": "2026-11-15T04:30:24.192Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 37,
+              "time": "2026-11-15T04:30:24.236Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 38,
+              "time": "2026-11-15T04:30:24.280Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 39,
+              "time": "2026-11-15T04:30:24.323Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 40,
+              "time": "2026-11-15T04:30:24.367Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 41,
+              "time": "2026-11-15T04:30:24.411Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 42,
+              "time": "2026-11-15T04:30:24.455Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 43,
+              "time": "2026-11-15T04:30:24.499Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 44,
+              "time": "2026-11-15T04:30:24.542Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 45,
+              "time": "2026-11-15T04:30:24.586Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 46,
+              "time": "2026-11-15T04:30:24.630Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 47,
+              "time": "2026-11-15T04:30:24.674Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 48,
+              "time": "2026-11-15T04:30:24.718Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 49,
+              "time": "2026-11-15T04:30:24.761Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 50,
+              "time": "2026-11-15T04:30:24.805Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 51,
+              "time": "2026-11-15T04:30:24.848Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 52,
+              "time": "2026-11-15T04:30:24.892Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 53,
+              "time": "2026-11-15T04:30:24.935Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 54,
+              "time": "2026-11-15T04:30:24.979Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 55,
+              "time": "2026-11-15T04:30:25.023Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 56,
+              "time": "2026-11-15T04:30:25.067Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 57,
+              "time": "2026-11-15T04:30:25.111Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 58,
+              "time": "2026-11-15T04:30:25.155Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 59,
+              "time": "2026-11-15T04:30:25.199Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 60,
+              "time": "2026-11-15T04:30:25.243Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 61,
+              "time": "2026-11-15T04:30:25.287Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 62,
+              "time": "2026-11-15T04:30:25.331Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 63,
+              "time": "2026-11-15T04:30:25.375Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 64,
+              "time": "2026-11-15T04:30:25.418Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 65,
+              "time": "2026-11-15T04:30:25.462Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 66,
+              "time": "2026-11-15T04:30:25.506Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 67,
+              "time": "2026-11-15T04:30:25.550Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 68,
+              "time": "2026-11-15T04:30:25.593Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 69,
+              "time": "2026-11-15T04:30:25.637Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 70,
+              "time": "2026-11-15T04:30:25.682Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 71,
+              "time": "2026-11-15T04:30:25.727Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 72,
+              "time": "2026-11-15T04:30:25.773Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 73,
+              "time": "2026-11-15T04:30:25.797Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 21
+            },
+            {
+              "seq": 74,
+              "time": "2026-11-15T04:30:25.842Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 75,
+              "time": "2026-11-15T04:30:25.889Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 76,
+              "time": "2026-11-15T04:30:25.936Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 77,
+              "time": "2026-11-15T04:30:25.984Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 78,
+              "time": "2026-11-15T04:30:26.101Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "screenshot",
+              "commandId": "inspect.screenshot",
+              "params": {
+                "target": "drawingView"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 112
+            },
+            {
+              "seq": 79,
+              "time": "2026-11-15T04:30:26.119Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "render.frame.run",
+              "params": {
+                "composition": "activeView",
+                "background": "#F0F0F0"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 8
+            },
+            {
+              "seq": 80,
+              "time": "2026-11-15T04:30:26.866Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "edit.history.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 81,
+              "time": "2026-11-15T04:30:26.868Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 82,
+              "time": "2026-11-15T04:30:26.871Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.selection.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        }
+      },
+      "after": {
+        "history": {
+          "status": "ok",
+          "result": {
+            "entries": [
+              {
+                "index": 1,
+                "stepId": "u-1",
+                "label": "New Elements",
+                "source": "agent",
+                "agentSessionId": "s1-550beb",
+                "agentName": "mcp",
+                "time": "2026-11-15T04:30:22.948Z",
+                "objectCount": 4
+              },
+              {
+                "index": 2,
+                "stepId": "u-2",
+                "label": "Create Drawing",
+                "source": "agent",
+                "agentSessionId": "s1-550beb",
+                "agentName": "mcp",
+                "time": "2026-11-15T04:30:22.951Z",
+                "objectCount": 3
+              },
+              {
+                "index": 3,
+                "stepId": "u-3",
+                "label": "Pencil Tool",
+                "source": "agent",
+                "agentSessionId": "s1-550beb",
+                "agentName": "mcp",
+                "time": "2026-11-15T04:30:22.961Z",
+                "objectCount": 3
+              }
+            ],
+            "position": 3,
+            "cleanPosition": 0,
+            "total": 3
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "drawing": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+            "elementId": "el_01K7JJN800HS0J7HB5TJAXMP67",
+            "name": "1",
+            "rev": 4,
+            "locked": false,
+            "space": {
+              "units": "du",
+              "duPerField": 100,
+              "yAxis": "up",
+              "origin": "drawingCentre"
+            },
+            "pivot": {
+              "x": 0.0,
+              "y": 0.0
+            },
+            "bounds": {
+              "x": -124.0,
+              "y": -84.0,
+              "width": 248.0,
+              "height": 168.0
+            },
+            "nodes": [
+              {
+                "type": "layer",
+                "id": "nd_01K7JJN801GZYZG414C2QW8SJH",
+                "layerKind": "pencil",
+                "strokes": [
+                  {
+                    "type": "stroke",
+                    "id": "st_01K7JJN800W6M0CKT4EHPNTJRH",
+                    "kind": "pencil",
+                    "closed": true,
+                    "bezier": [
+                      {
+                        "x": -120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": -80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": 120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": 80.0
+                      },
+                      {
+                        "x": -120.0,
+                        "y": -80.0
+                      }
+                    ],
+                    "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX",
+                    "lineStyle": {
+                      "thickness": 8.0,
+                      "lineType": "solid"
+                    },
+                    "pressure": null,
+                    "bounds": {
+                      "x": -124.0,
+                      "y": -84.0,
+                      "width": 248.0,
+                      "height": 168.0
+                    },
+                    "leftZoneId": "zn_31V981XKRXCY5TYWVC83HHK8ZQ",
+                    "rightZoneId": null
+                  }
+                ],
+                "zones": [
+                  {
+                    "type": "zone",
+                    "id": "zn_31V981XKRXCY5TYWVC83HHK8ZQ",
+                    "colourId": null,
+                    "textureMatrix": null,
+                    "boundaryStrokeIds": [
+                      "st_01K7JJN800W6M0CKT4EHPNTJRH"
+                    ],
+                    "holes": [],
+                    "parentZoneId": null,
+                    "area": 38400,
+                    "bounds": {
+                      "x": -120,
+                      "y": -80,
+                      "width": 240,
+                      "height": 160
+                    },
+                    "interiorPoint": {
+                      "x": 0,
+                      "y": -68.5703125
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "selection": {
+          "status": "ok",
+          "result": {
+            "selectedIds": [],
+            "bounds": null,
+            "selectedPoints": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        },
+        "activity": {
+          "status": "ok",
+          "result": [
+            {
+              "seq": 10,
+              "time": "2026-11-15T04:30:23.133Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 11,
+              "time": "2026-11-15T04:30:23.177Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 12,
+              "time": "2026-11-15T04:30:23.222Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 13,
+              "time": "2026-11-15T04:30:23.266Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 14,
+              "time": "2026-11-15T04:30:23.310Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 15,
+              "time": "2026-11-15T04:30:23.354Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 16,
+              "time": "2026-11-15T04:30:23.397Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 17,
+              "time": "2026-11-15T04:30:23.441Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 18,
+              "time": "2026-11-15T04:30:23.485Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 19,
+              "time": "2026-11-15T04:30:23.528Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 20,
+              "time": "2026-11-15T04:30:23.572Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 21,
+              "time": "2026-11-15T04:30:23.616Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 22,
+              "time": "2026-11-15T04:30:23.660Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 23,
+              "time": "2026-11-15T04:30:23.704Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 24,
+              "time": "2026-11-15T04:30:23.748Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 25,
+              "time": "2026-11-15T04:30:23.792Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 26,
+              "time": "2026-11-15T04:30:23.836Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 27,
+              "time": "2026-11-15T04:30:23.880Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 28,
+              "time": "2026-11-15T04:30:23.924Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 29,
+              "time": "2026-11-15T04:30:23.967Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 30,
+              "time": "2026-11-15T04:30:23.970Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.viewMapping.get",
+              "params": {
+                "view": "drawingView"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 31,
+              "time": "2026-11-15T04:30:23.973Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "window.panel.set",
+              "params": {
+                "panelId": "drawingView",
+                "floating": true,
+                "geometry": {
+                  "x": 100,
+                  "y": 100,
+                  "width": 900,
+                  "height": 700
+                }
+              },
+              "status": "error",
+              "errorCode": "arg.invalid",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 32,
+              "time": "2026-11-15T04:30:24.016Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 33,
+              "time": "2026-11-15T04:30:24.059Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 34,
+              "time": "2026-11-15T04:30:24.104Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 35,
+              "time": "2026-11-15T04:30:24.148Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 36,
+              "time": "2026-11-15T04:30:24.192Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 37,
+              "time": "2026-11-15T04:30:24.236Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 38,
+              "time": "2026-11-15T04:30:24.280Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 39,
+              "time": "2026-11-15T04:30:24.323Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 40,
+              "time": "2026-11-15T04:30:24.367Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 41,
+              "time": "2026-11-15T04:30:24.411Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 42,
+              "time": "2026-11-15T04:30:24.455Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 43,
+              "time": "2026-11-15T04:30:24.499Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 44,
+              "time": "2026-11-15T04:30:24.542Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 45,
+              "time": "2026-11-15T04:30:24.586Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 46,
+              "time": "2026-11-15T04:30:24.630Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 47,
+              "time": "2026-11-15T04:30:24.674Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 48,
+              "time": "2026-11-15T04:30:24.718Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 49,
+              "time": "2026-11-15T04:30:24.761Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 50,
+              "time": "2026-11-15T04:30:24.805Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 51,
+              "time": "2026-11-15T04:30:24.848Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 52,
+              "time": "2026-11-15T04:30:24.892Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 53,
+              "time": "2026-11-15T04:30:24.935Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 54,
+              "time": "2026-11-15T04:30:24.979Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 55,
+              "time": "2026-11-15T04:30:25.023Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 56,
+              "time": "2026-11-15T04:30:25.067Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 57,
+              "time": "2026-11-15T04:30:25.111Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 58,
+              "time": "2026-11-15T04:30:25.155Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 59,
+              "time": "2026-11-15T04:30:25.199Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 60,
+              "time": "2026-11-15T04:30:25.243Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 61,
+              "time": "2026-11-15T04:30:25.287Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 62,
+              "time": "2026-11-15T04:30:25.331Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 63,
+              "time": "2026-11-15T04:30:25.375Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 64,
+              "time": "2026-11-15T04:30:25.418Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 65,
+              "time": "2026-11-15T04:30:25.462Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 66,
+              "time": "2026-11-15T04:30:25.506Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 67,
+              "time": "2026-11-15T04:30:25.550Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 68,
+              "time": "2026-11-15T04:30:25.593Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 69,
+              "time": "2026-11-15T04:30:25.637Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 70,
+              "time": "2026-11-15T04:30:25.682Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 71,
+              "time": "2026-11-15T04:30:25.727Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 72,
+              "time": "2026-11-15T04:30:25.773Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 73,
+              "time": "2026-11-15T04:30:25.797Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 21
+            },
+            {
+              "seq": 74,
+              "time": "2026-11-15T04:30:25.842Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 75,
+              "time": "2026-11-15T04:30:25.889Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 76,
+              "time": "2026-11-15T04:30:25.936Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 77,
+              "time": "2026-11-15T04:30:25.984Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 78,
+              "time": "2026-11-15T04:30:26.101Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "screenshot",
+              "commandId": "inspect.screenshot",
+              "params": {
+                "target": "drawingView"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": null,
+              "durationMs": 112
+            },
+            {
+              "seq": 79,
+              "time": "2026-11-15T04:30:26.119Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "render.frame.run",
+              "params": {
+                "composition": "activeView",
+                "background": "#F0F0F0"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 8
+            },
+            {
+              "seq": 80,
+              "time": "2026-11-15T04:30:26.866Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "edit.history.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 81,
+              "time": "2026-11-15T04:30:26.868Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 82,
+              "time": "2026-11-15T04:30:26.871Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.selection.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 83,
+              "time": "2026-11-15T04:30:26.874Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "agent.activity.list",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 84,
+              "time": "2026-11-15T04:30:26.881Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "tool.active.set",
+              "params": {
+                "toolId": "brush"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 4
+            },
+            {
+              "seq": 85,
+              "time": "2026-11-15T04:30:26.946Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 62
+            },
+            {
+              "seq": 86,
+              "time": "2026-11-15T04:30:26.993Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 87,
+              "time": "2026-11-15T04:30:27.040Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 88,
+              "time": "2026-11-15T04:30:27.087Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 89,
+              "time": "2026-11-15T04:30:27.131Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 90,
+              "time": "2026-11-15T04:30:27.176Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 91,
+              "time": "2026-11-15T04:30:27.224Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 92,
+              "time": "2026-11-15T04:30:27.272Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 93,
+              "time": "2026-11-15T04:30:27.317Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 94,
+              "time": "2026-11-15T04:30:27.362Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 95,
+              "time": "2026-11-15T04:30:27.407Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 96,
+              "time": "2026-11-15T04:30:27.453Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 97,
+              "time": "2026-11-15T04:30:27.500Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 98,
+              "time": "2026-11-15T04:30:27.546Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 42
+            },
+            {
+              "seq": 99,
+              "time": "2026-11-15T04:30:27.593Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 100,
+              "time": "2026-11-15T04:30:27.640Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 101,
+              "time": "2026-11-15T04:30:27.686Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 102,
+              "time": "2026-11-15T04:30:27.730Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 103,
+              "time": "2026-11-15T04:30:27.773Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 40
+            },
+            {
+              "seq": 104,
+              "time": "2026-11-15T04:30:27.817Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 105,
+              "time": "2026-11-15T04:30:27.861Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 106,
+              "time": "2026-11-15T04:30:27.906Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "inspect_ui",
+              "commandId": "inspect.ui.tree",
+              "params": {
+                "target": "window"
+              },
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 41
+            },
+            {
+              "seq": 107,
+              "time": "2026-11-15T04:30:27.909Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "edit.history.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 108,
+              "time": "2026-11-15T04:30:27.912Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.drawing.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            },
+            {
+              "seq": 109,
+              "time": "2026-11-15T04:30:27.914Z",
+              "sessionId": "s1-550beb",
+              "client": "mcp",
+              "tool": "run_command",
+              "commandId": "draw.selection.get",
+              "params": {},
+              "status": "ok",
+              "undoStepId": null,
+              "changedCount": 0,
+              "documentRev": 4,
+              "durationMs": 0
+            }
+          ],
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        }
+      }
+    }
+  },
+  {
+    "case": 3,
+    "verdict": "Pass",
+    "observed": {
+      "response": {
+        "status": "ok",
+        "result": {
+          "commands": [
+            {
+              "commandId": "tool.active.set",
+              "params": {
+                "toolId": "brush"
+              },
+              "envelope": {
+                "status": "ok",
+                "result": {
+                  "toolId": "brush"
+                },
+                "changes": [],
+                "warnings": [],
+                "documentRev": 4
+              }
+            },
+            {
+              "commandId": "draw.stroke.add",
+              "params": {
+                "kind": "brush",
+                "points": [
+                  {
+                    "x": -180.0,
+                    "y": -140.0,
+                    "pressure": 1.0
+                  },
+                  {
+                    "x": -100.0,
+                    "y": -135.0,
+                    "pressure": 1.0
+                  },
+                  {
+                    "x": -20.0,
+                    "y": -140.0,
+                    "pressure": 1.0
+                  },
+                  {
+                    "x": 60.0,
+                    "y": -135.0,
+                    "pressure": 1.0
+                  }
+                ],
+                "fit": true,
+                "penId": "pen_01M7EQGYKWDG5MK636YR9QESQP",
+                "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX",
+                "layer": "auto",
+                "symmetry": true
+              },
+              "envelope": {
+                "status": "ok",
+                "result": {
+                  "drawingId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                  "createdDrawing": false,
+                  "strokeIds": [
+                    "st_01K7JJN8003228DPFAR65JSMEJ"
+                  ],
+                  "zoneIds": [],
+                  "layerId": "nd_01K7JJN801K8E6MN7KZ1PNG0SK",
+                  "createdIds": [
+                    "st_01K7JJN8003228DPFAR65JSMEJ",
+                    "nd_01K7JJN801K8E6MN7KZ1PNG0SK"
+                  ],
+                  "modifiedIds": [],
+                  "removedIds": [],
+                  "rev": 5,
+                  "hints": []
+                },
+                "changes": [
+                  {
+                    "id": "dr_01K7JJN800KBP2FCMHXZG809TR/st_01K7JJN8003228DPFAR65JSMEJ",
+                    "type": "stroke",
+                    "op": "created",
+                    "rev": 5,
+                    "parentId": "dr_01K7JJN800KBP2FCMHXZG809TR/nd_01K7JJN801K8E6MN7KZ1PNG0SK",
+                    "index": 0
+                  },
+                  {
+                    "id": "dr_01K7JJN800KBP2FCMHXZG809TR/nd_01K7JJN801K8E6MN7KZ1PNG0SK",
+                    "type": "drawingNode",
+                    "op": "created",
+                    "rev": 5,
+                    "parentId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                    "index": 1
+                  },
+                  {
+                    "id": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                    "type": "drawing",
+                    "op": "modified",
+                    "rev": 5,
+                    "patch": [
+                      {
+                        "op": "add",
+                        "path": "/nodes/1",
+                        "value": {
+                          "id": "nd_01K7JJN801K8E6MN7KZ1PNG0SK",
+                          "type": "drawingNode"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "undo": {
+                  "stepId": "u-4",
+                  "label": "Brush Tool"
+                },
+                "warnings": [],
+                "documentRev": 5
+              }
+            }
+          ],
+          "hover": {
+            "viewId": "drawingView",
+            "view": {
+              "x": 510.5,
+              "y": 457.5
+            },
+            "drawing": {
+              "x": 60.0,
+              "y": -135.0
+            },
+            "objects": [
+              {
+                "elementId": "el_01K7JJN800HS0J7HB5TJAXMP67",
+                "drawingId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                "layerId": "nd_01K7JJN801K8E6MN7KZ1PNG0SK",
+                "objectId": "st_01K7JJN8003228DPFAR65JSMEJ",
+                "kind": "brush",
+                "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX"
+              }
+            ]
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      },
+      "canvas": {
+        "backend": "webgpu",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800KBP2FCMHXZG809TR",
+            "rev": 4,
+            "bucket": 0
+          }
+        ],
+        "failures": [],
+        "gesture": null,
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 23255176,
+        "lastError": null,
+        "metrics": {
+          "frameMs": {
+            "n": 285,
+            "p50": 16.7,
+            "p95": 16.8,
+            "max": 16.9
+          },
+          "gestureFrameMs": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "workMs": {
+            "n": 286,
+            "p50": 0.1,
+            "p95": 0.4,
+            "max": 1.3
+          },
+          "inkMs": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "commitMs": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "sceneMs": {
+            "n": 178,
+            "p50": 1.5,
+            "p95": 4,
+            "max": 9.3
+          },
+          "commits": [],
+          "commitParts": [],
+          "loads": [
+            {
+              "key": "dr_01K7JJN800KBP2FCMHXZG809TR",
+              "bytes": 9508,
+              "ms": 15
+            }
+          ]
+        }
+      }
+    }
+  },
+  {
+    "case": 4,
+    "verdict": "Inconclusive: probe error",
+    "observed": {
+      "error": "IndexError('list index out of range')"
+    }
+  },
+  {
+    "case": 5,
+    "verdict": "Pass",
+    "observed": {
+      "response": {
+        "status": "ok",
+        "result": {
+          "panelId": "drawingView",
+          "title": "Drawing view",
+          "visible": true,
+          "floating": false,
+          "area": "central",
+          "current": true,
+          "focused": true
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5
+      },
+      "gesture": {
+        "status": "ok",
+        "result": {
+          "commands": [
+            {
+              "commandId": "tool.active.set",
+              "params": {
+                "toolId": "brush"
+              },
+              "envelope": {
+                "status": "ok",
+                "result": {
+                  "toolId": "brush"
+                },
+                "changes": [],
+                "warnings": [],
+                "documentRev": 5
+              }
+            },
+            {
+              "commandId": "draw.stroke.add",
+              "params": {
+                "kind": "brush",
+                "points": [
+                  {
+                    "x": -180.0,
+                    "y": -140.0,
+                    "pressure": 1.0
+                  },
+                  {
+                    "x": -100.0,
+                    "y": -135.0,
+                    "pressure": 1.0
+                  },
+                  {
+                    "x": -20.0,
+                    "y": -140.0,
+                    "pressure": 1.0
+                  },
+                  {
+                    "x": 60.0,
+                    "y": -135.0,
+                    "pressure": 1.0
+                  }
+                ],
+                "fit": true,
+                "penId": "pen_01M7EQGYKWDG5MK636YR9QESQP",
+                "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX",
+                "layer": "auto",
+                "symmetry": true
+              },
+              "envelope": {
+                "status": "ok",
+                "result": {
+                  "drawingId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                  "createdDrawing": false,
+                  "strokeIds": [
+                    "st_01K7JJN800Y8CHTRSS1N7WFE7F"
+                  ],
+                  "zoneIds": [],
+                  "layerId": "nd_01K7JJN8019A33GBXNWB9NS0GD",
+                  "createdIds": [
+                    "st_01K7JJN800Y8CHTRSS1N7WFE7F",
+                    "nd_01K7JJN8019A33GBXNWB9NS0GD"
+                  ],
+                  "modifiedIds": [],
+                  "removedIds": [],
+                  "rev": 6,
+                  "hints": []
+                },
+                "changes": [
+                  {
+                    "id": "dr_01K7JJN800KBP2FCMHXZG809TR/st_01K7JJN800Y8CHTRSS1N7WFE7F",
+                    "type": "stroke",
+                    "op": "created",
+                    "rev": 6,
+                    "parentId": "dr_01K7JJN800KBP2FCMHXZG809TR/nd_01K7JJN8019A33GBXNWB9NS0GD",
+                    "index": 0
+                  },
+                  {
+                    "id": "dr_01K7JJN800KBP2FCMHXZG809TR/nd_01K7JJN8019A33GBXNWB9NS0GD",
+                    "type": "drawingNode",
+                    "op": "created",
+                    "rev": 6,
+                    "parentId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                    "index": 2
+                  },
+                  {
+                    "id": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                    "type": "drawing",
+                    "op": "modified",
+                    "rev": 6,
+                    "patch": [
+                      {
+                        "op": "add",
+                        "path": "/nodes/2",
+                        "value": {
+                          "id": "nd_01K7JJN8019A33GBXNWB9NS0GD",
+                          "type": "drawingNode"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "undo": {
+                  "stepId": "u-5",
+                  "label": "Brush Tool"
+                },
+                "warnings": [],
+                "documentRev": 6
+              }
+            }
+          ],
+          "hover": {
+            "viewId": "drawingView",
+            "view": {
+              "x": 510.5,
+              "y": 457.5
+            },
+            "drawing": {
+              "x": 60.0,
+              "y": -135.0
+            },
+            "objects": [
+              {
+                "elementId": "el_01K7JJN800HS0J7HB5TJAXMP67",
+                "drawingId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                "layerId": "nd_01K7JJN8019A33GBXNWB9NS0GD",
+                "objectId": "st_01K7JJN800Y8CHTRSS1N7WFE7F",
+                "kind": "brush",
+                "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX"
+              },
+              {
+                "elementId": "el_01K7JJN800HS0J7HB5TJAXMP67",
+                "drawingId": "dr_01K7JJN800KBP2FCMHXZG809TR",
+                "layerId": "nd_01K7JJN801K8E6MN7KZ1PNG0SK",
+                "objectId": "st_01K7JJN8003228DPFAR65JSMEJ",
+                "kind": "brush",
+                "colourId": "col_01M7EQGYKWDG5MK636YR9QESKX"
+              }
+            ]
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      },
+      "comparison": {
+        "fraction": 0.0005781689595539839,
+        "verdict": "Pass"
+      }
+    }
+  },
+  {
+    "case": 6,
+    "verdict": "Pass",
+    "observed": {
+      "canvas": {
+        "backend": "webgpu",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800KBP2FCMHXZG809TR",
+            "rev": 6,
+            "bucket": 0
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 23257240,
+        "lastError": null,
+        "metrics": {
+          "frameMs": {
+            "n": 300,
+            "p50": 16.7,
+            "p95": 16.9,
+            "max": 17
+          },
+          "gestureFrameMs": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "workMs": {
+            "n": 300,
+            "p50": 0.1,
+            "p95": 0.4,
+            "max": 1.2
+          },
+          "inkMs": {
+            "n": 0,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "commitMs": {
+            "n": 2,
+            "p50": 32.7,
+            "p95": 33,
+            "max": 33
+          },
+          "sceneMs": {
+            "n": 280,
+            "p50": 1.6,
+            "p95": 4.1,
+            "max": 9.3
+          },
+          "commits": [
+            32.7,
+            33
+          ],
+          "commitParts": [
+            {
+              "answerMs": 4.4,
+              "drawMs": 28.3
+            },
+            {
+              "answerMs": 4.4,
+              "drawMs": 28.6
+            }
+          ],
+          "loads": [
+            {
+              "key": "dr_01K7JJN800KBP2FCMHXZG809TR",
+              "bytes": 9508,
+              "ms": 15
+            },
+            {
+              "key": "dr_01K7JJN800KBP2FCMHXZG809TR",
+              "bytes": 10540,
+              "ms": 14.3
+            },
+            {
+              "key": "dr_01K7JJN800KBP2FCMHXZG809TR",
+              "bytes": 11572,
+              "ms": 12.9
+            }
+          ]
+        }
+      },
+      "comparison": {
+        "fraction": 0.0005781689595539839,
+        "verdict": "Pass"
+      }
+    }
+  }
+]

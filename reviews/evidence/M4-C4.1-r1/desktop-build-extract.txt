@@ -1,0 +1,12 @@
+cargo :    Compiling tauri v2.12.4
+At line:4 char:1
++ cargo build -p tt-desktop --features tauri/custom-protocol *> reviews ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tauri v2.12.4:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+   Compiling tauri-macros v2.7.3
+   Compiling tauri-plugin-fs v2.7.1
+   Compiling tauri-plugin-dialog v2.8.4
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r1\desktop\src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 18.84s

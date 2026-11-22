@@ -1,0 +1,514 @@
+{
+  "status": "ok",
+  "result": [
+    {
+      "seq": 1,
+      "time": "2026-11-16T04:08:40.009Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "inspect_ui",
+      "commandId": "inspect.ui.tree",
+      "params": {
+        "target": "window"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": null,
+      "durationMs": 41
+    },
+    {
+      "seq": 2,
+      "time": "2026-11-16T04:08:40.104Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "project.create",
+      "params": {
+        "name": "Coexistence",
+        "onUnsaved": "fail"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 1,
+      "durationMs": 44
+    },
+    {
+      "seq": 3,
+      "time": "2026-11-16T04:08:40.110Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "element.create",
+      "params": {
+        "type": "drawing",
+        "name": "Bob"
+      },
+      "status": "ok",
+      "undoStepId": "u-1",
+      "changedCount": 4,
+      "documentRev": 2,
+      "durationMs": 1
+    },
+    {
+      "seq": 4,
+      "time": "2026-11-16T04:08:40.113Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "element.drawing.create",
+      "params": {
+        "elementId": "el_01K7JJN800PBWJNHCTC458QB3P",
+        "name": "1",
+        "exposeFrom": 1,
+        "exposeTo": 24
+      },
+      "status": "ok",
+      "undoStepId": "u-2",
+      "changedCount": 3,
+      "documentRev": 3,
+      "durationMs": 1
+    },
+    {
+      "seq": 5,
+      "time": "2026-11-16T04:08:40.116Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "app.context.set",
+      "params": {
+        "elementId": "el_01K7JJN800PBWJNHCTC458QB3P",
+        "frame": 1
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 3,
+      "durationMs": 0
+    },
+    {
+      "seq": 6,
+      "time": "2026-11-16T04:08:40.120Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "draw.rectangle.add",
+      "params": {
+        "from": {
+          "x": -120,
+          "y": -90
+        },
+        "to": {
+          "x": 120,
+          "y": 90
+        }
+      },
+      "status": "ok",
+      "undoStepId": "u-3",
+      "changedCount": 3,
+      "documentRev": 4,
+      "durationMs": 1
+    },
+    {
+      "seq": 7,
+      "time": "2026-11-16T04:08:40.123Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "colour.paint.apply",
+      "params": {
+        "points": [
+          {
+            "x": 0,
+            "y": 0
+          }
+        ]
+      },
+      "status": "ok",
+      "undoStepId": "u-4",
+      "changedCount": 2,
+      "documentRev": 5,
+      "durationMs": 1
+    },
+    {
+      "seq": 8,
+      "time": "2026-11-16T04:08:40.126Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "window.panel.set",
+      "params": {
+        "panelId": "cameraView",
+        "visible": true
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 9,
+      "time": "2026-11-16T04:08:40.130Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "view.active.set",
+      "params": {
+        "viewId": "cameraView"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 10,
+      "time": "2026-11-16T04:08:40.132Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "edit.selection.set",
+      "params": {
+        "context": "staging",
+        "ids": [
+          "el_01K7JJN800PBWJNHCTC458QB3P"
+        ]
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 11,
+      "time": "2026-11-16T04:08:40.134Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "anim.tool.set",
+      "params": {
+        "tool": "transform"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 12,
+      "time": "2026-11-16T04:08:40.280Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "inspect_ui",
+      "commandId": "inspect.ui.tree",
+      "params": {
+        "target": "window"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 144
+    },
+    {
+      "seq": 13,
+      "time": "2026-11-16T04:08:40.284Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "draw.viewMapping.get",
+      "params": {
+        "view": "cameraView"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 14,
+      "time": "2026-11-16T04:08:40.382Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "inspect.screenshot",
+      "params": {
+        "target": "window"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": null,
+      "durationMs": 96
+    },
+    {
+      "seq": 15,
+      "time": "2026-11-16T04:08:40.993Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "inspect.screenshot",
+      "params": {
+        "target": "cameraView"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": null,
+      "durationMs": 84
+    },
+    {
+      "seq": 16,
+      "time": "2026-11-16T04:08:41.215Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "view.list",
+      "params": {},
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 17,
+      "time": "2026-11-16T04:08:41.218Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "agent.activity.list",
+      "params": {
+        "limit": 5
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 18,
+      "time": "2026-11-16T04:08:41.221Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "edit.history.get",
+      "params": {
+        "limit": 1000
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 19,
+      "time": "2026-11-16T04:08:41.224Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "app.state.get",
+      "params": {},
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 20,
+      "time": "2026-11-16T04:08:41.227Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "draw.viewMapping.get",
+      "params": {
+        "view": "cameraView"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 21,
+      "time": "2026-11-16T04:08:42.113Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "inspect.screenshot",
+      "params": {
+        "target": "window"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": null,
+      "durationMs": 194
+    },
+    {
+      "seq": 22,
+      "time": "2026-11-16T04:08:42.117Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "app.state.get",
+      "params": {},
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 5,
+      "durationMs": 0
+    },
+    {
+      "seq": 23,
+      "time": "2026-11-16T04:08:43.113Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "anim.transform.set",
+      "params": {
+        "nodeIds": [
+          "el_01K7JJN800PBWJNHCTC458QB3P"
+        ],
+        "target": "static",
+        "position": {
+          "x": 0.5,
+          "y": 0
+        }
+      },
+      "status": "ok",
+      "undoStepId": "u-6",
+      "changedCount": 1,
+      "documentRev": 7,
+      "durationMs": 993
+    },
+    {
+      "seq": 24,
+      "time": "2026-11-16T04:08:44.128Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "edit.history.get",
+      "params": {
+        "limit": 1000
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 7,
+      "durationMs": 1
+    },
+    {
+      "seq": 25,
+      "time": "2026-11-16T04:08:44.133Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "draw.viewMapping.get",
+      "params": {
+        "view": "cameraView"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 7,
+      "durationMs": 0
+    },
+    {
+      "seq": 26,
+      "time": "2026-11-16T04:08:46.530Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "edit.history.get",
+      "params": {
+        "limit": 1000
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 8,
+      "durationMs": 2
+    },
+    {
+      "seq": 27,
+      "time": "2026-11-16T04:08:46.536Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "doc.export.json",
+      "params": {
+        "scope": "project",
+        "binaries": "omit"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 8,
+      "durationMs": 1
+    },
+    {
+      "seq": 28,
+      "time": "2026-11-16T04:08:46.541Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "edit.undo",
+      "params": {
+        "ifTop": "u-6"
+      },
+      "status": "error",
+      "errorCode": "undo.notTop",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 8,
+      "durationMs": 0
+    },
+    {
+      "seq": 29,
+      "time": "2026-11-16T04:08:46.544Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "doc.export.json",
+      "params": {
+        "scope": "project",
+        "binaries": "omit"
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 8,
+      "durationMs": 1
+    },
+    {
+      "seq": 30,
+      "time": "2026-11-16T04:08:46.550Z",
+      "sessionId": "s1-c484ae",
+      "client": "mcp",
+      "tool": "run_command",
+      "commandId": "edit.history.get",
+      "params": {
+        "limit": 1000
+      },
+      "status": "ok",
+      "undoStepId": null,
+      "changedCount": 0,
+      "documentRev": 8,
+      "durationMs": 0
+    }
+  ],
+  "changes": [],
+  "warnings": [],
+  "documentRev": 8
+}

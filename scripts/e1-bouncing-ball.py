@@ -323,6 +323,12 @@ def normalized_manifest(manifest):
         m.pop(key, None)
     for f in m.get("files", []):
         f["path"] = Path(f["path"]).name
+    # The answer's `outputs` summary (SI-181): its location and the first and last paths are this machine's.
+    outputs = m.get("outputs") or {}
+    outputs.pop("location", None)
+    for k in ("first", "last"):
+        if isinstance(outputs.get(k), dict) and "path" in outputs[k]:
+            outputs[k]["path"] = Path(outputs[k]["path"]).name
     return json.dumps(m, sort_keys=True, indent=1) + "\n"
 
 

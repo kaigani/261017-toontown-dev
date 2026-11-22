@@ -1,0 +1,23 @@
+[
+  {
+    "step": 5,
+    "exit": 0,
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r3-earlier-uo9tfsck",
+    "checks": 70,
+    "failures": []
+  },
+  {
+    "step": 6,
+    "exit": 0,
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r3-earlier-b81sj2i1",
+    "checks": 7,
+    "failures": []
+  },
+  {
+    "step": 7,
+    "exit": 0,
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r3-earlier-dv7oq8dk",
+    "checks": 72,
+    "failures": []
+  }
+]

@@ -1,0 +1,859 @@
+[
+  {
+    "command": "agent.session.grant",
+    "file": "crates\\executor\\src\\commands\\agent.rs",
+    "refusal_lines": [
+      "return Err(invalid(&format!(\"/scopes/{i}\"), \"the scope `app` is never granted to an agent\"));",
+      "None => return Err(invalid(&format!(\"/scopes/{i}\"), format!(\"`{name}` is not a scope\"))),",
+      "let a = s.agents.sessions.get_mut(&p.session_id).ok_or_else(|| session_not_found(&p.session_id))?;",
+      "let a = s.agents.sessions.get(&p.session_id).cloned().ok_or_else(|| session_not_found(&p.session_id))?;"
+    ]
+  },
+  {
+    "command": "agent.session.disconnect",
+    "file": "crates\\executor\\src\\commands\\agent.rs",
+    "refusal_lines": [
+      "return Err(session_not_found(&p.session_id));"
+    ]
+  },
+  {
+    "command": "agent.session.pause",
+    "file": "crates\\executor\\src\\commands\\agent.rs",
+    "refusal_lines": [
+      "return Err(session_not_found(id));"
+    ]
+  },
+  {
+    "command": "agent.confirmation.respond",
+    "file": "crates\\executor\\src\\commands\\agent.rs",
+    "refusal_lines": [
+      "let pending = hub.pending.get_mut(&p.confirmation_id).ok_or_else(|| {"
+    ]
+  },
+  {
+    "command": "agent.activity.export",
+    "file": "crates\\executor\\src\\commands\\agent.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "anim.camera.create",
+    "file": "crates\\executor\\src\\commands\\anim_camera.rs",
+    "refusal_lines": [
+      "let created = made.element_ids.first().cloned().ok_or_else(|| super::timing::internal(\"no camera created\"))?;",
+      "let scene = doc.scene_of(&id).cloned().ok_or_else(|| super::timing::internal(\"scene\"))?;"
+    ]
+  },
+  {
+    "command": "anim.camera.current.set",
+    "file": "crates\\executor\\src\\commands\\anim_camera.rs",
+    "refusal_lines": [
+      "let scene = doc.scene_of(&id).cloned().ok_or_else(|| super::timing::internal(\"scene\"))?;"
+    ]
+  },
+  {
+    "command": "anim.path.sample",
+    "file": "crates\\executor\\src\\commands\\anim_eval.rs",
+    "refusal_lines": [
+      "return Err(frame_invalid(frame, \"outside 1\u2026100000\"));"
+    ]
+  },
+  {
+    "command": "anim.function.key.add",
+    "file": "crates\\executor\\src\\commands\\anim_function.rs",
+    "refusal_lines": [
+      "return Err(key_exists(p.frame));",
+      "return Err(key_exists(p.frame));",
+      "return Err(unsupported(&p.channel, e, \"motion paths have TCB parameters, not handles\"));",
+      "return Err(frame_invalid(p.frame, \"this node has no motion path\"));",
+      "let Some((pid, pos)) = found else { return Err(frame_invalid(p.frame, \"no motion point at this frame\")) };"
+    ]
+  },
+  {
+    "command": "anim.function.key.set",
+    "file": "crates\\executor\\src\\commands\\anim_function.rs",
+    "refusal_lines": [
+      "return Err(unsupported(&p.channel, e, \"lock in time applies to motion points\"));",
+      "return Err(unsupported(\"velocity\", e, \"the velocity channel can never be constant (05 \u00a710.2)\"));",
+      "return Err(unsupported(\"velocity\", e, \"a pin moves with its keyframe; it cannot be changed directly\"));",
+      "return Err(frame_invalid(p.frame, \"no key at this frame\"));",
+      "return Err(key_exists(nf));",
+      "return Err(frame_invalid(nf, \"a key cannot pass its neighbours\"));",
+      "return Err(frame_invalid(nf, \"an intermediate velocity key stays inside its keyframe segment\"));"
+    ]
+  },
+  {
+    "command": "anim.function.key.remove",
+    "file": "crates\\executor\\src\\commands\\anim_function.rs",
+    "refusal_lines": [
+      "return Err(unsupported(\"velocity\", e, \"pins are implicit: they go with their keyframe (05 \u00a710.5)\"));",
+      "return Err(frame_invalid(*frame, \"no key at this frame\"));"
+    ]
+  },
+  {
+    "command": "anim.function.key.duplicate",
+    "file": "crates\\executor\\src\\commands\\anim_function.rs",
+    "refusal_lines": [
+      "return Err(unsupported(\"velocity\", e, \"velocity keys are normalised to their segment: use key.add\"));",
+      "return Err(frame_invalid(p.frame as f64, \"no key at this frame\"));",
+      "return Err(key_exists(p.to_frame as f64));"
+    ]
+  },
+  {
+    "command": "anim.function.preset.apply",
+    "file": "crates\\executor\\src\\commands\\anim_function.rs",
+    "refusal_lines": [
+      "return Err(curve_unsupported(\"velocity\", \"constant\"));",
+      "return Err(curve_unsupported(&p.channel, \"an easing preset on a velocityBased curve\"));",
+      "return Err(frame_invalid(p.frame.map_or(0.0, |f| f as f64), \"this channel has no segment\"));",
+      "None => return Err(frame_invalid(scene, \"no segment starts at or before this frame\")),"
+    ]
+  },
+  {
+    "command": "anim.key.add",
+    "file": "crates\\executor\\src\\commands\\anim_key.rs",
+    "refusal_lines": [
+      "Err(e) if *explicit => return Err(e),",
+      "Err(_) => continue,"
+    ]
+  },
+  {
+    "command": "anim.key.move",
+    "file": "crates\\executor\\src\\commands\\anim_key.rs",
+    "refusal_lines": [
+      "return Err(frame_invalid(p.from_frame as f64, \"no key at this frame\"));",
+      "return Err(frame_invalid(p.from_frame as f64, \"no motion keyframe at this frame\"));",
+      "return Err(key_exists(p.to_frame as f64));",
+      "return Err(frame_invalid(p.to_frame as f64, \"the move would cross a neighbouring key\"));",
+      "return Err(unsupported(\"velocity\", e, \"a pin moves with its keyframe (05 \u00a710.5)\"));",
+      "return Err(frame_invalid(p.from_frame as f64, \"no key at this frame\"));",
+      "return Err(key_exists(p.to_frame as f64));",
+      "return Err(frame_invalid(p.to_frame as f64, \"the move would cross a neighbouring key\"));"
+    ]
+  },
+  {
+    "command": "anim.segment.set",
+    "file": "crates\\executor\\src\\commands\\anim_key.rs",
+    "refusal_lines": [
+      "return Err(unsupported(\"velocity\", e, \"the velocity channel can never be constant (05 \u00a710.2)\"));",
+      "None if explicit => return Err(frame_invalid(p.frame as f64, \"no motion keyframe at this frame\")),",
+      "None if explicit => return Err(frame_invalid(p.frame as f64, \"no key at this frame\")),"
+    ]
+  },
+  {
+    "command": "anim.segment.uniform.apply",
+    "file": "crates\\executor\\src\\commands\\anim_key.rs",
+    "refusal_lines": [
+      "return Err(frame_invalid(p.frame as f64, \"no motion keyframe at this frame\"));",
+      "None => return Err(frame_invalid(p.frame as f64, \"no segment on this side\")),",
+      "return Err(frame_invalid(p.frame as f64, \"no segment on this side\"));",
+      "return Err(unsupported(c, e, \"a motion path's timing is its velocity channel\"));",
+      "return Err(frame_invalid(p.frame as f64, \"no key at this frame\"));",
+      "_ => return Err(frame_invalid(p.frame as f64, \"no segment on this side\")),"
+    ]
+  },
+  {
+    "command": "anim.path.point.add",
+    "file": "crates\\executor\\src\\commands\\anim_path.rs",
+    "refusal_lines": [
+      "return Err(super::anim_common::unsupported(\"position\", e, \"not a channel of this node kind\"));",
+      "return Err(frame_invalid(0.0, \"a keyframe is added by frame, not by curve location\"));",
+      "return Err(key_exists(scene));",
+      "return Err(frame_invalid(p.frame.unwrap_or(0.0), \"control points lie between keyframes\"));",
+      "return Err(frame_invalid(f64::from(at.segment), \"no such curve location\"));",
+      "return Err(frame_invalid(scene, \"control points lie between keyframes\"));",
+      "return Err(key_exists(scene));"
+    ]
+  },
+  {
+    "command": "anim.path.lockDepth.set",
+    "file": "crates\\executor\\src\\commands\\anim_path.rs",
+    "refusal_lines": [
+      "return Err(frame_invalid(p.frame as f64, \"no motion keyframe at this frame\"));"
+    ]
+  },
+  {
+    "command": "anim.transform.set",
+    "file": "crates\\executor\\src\\commands\\anim_transform.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "return Err(err(",
+      "return Err(unsupported(c, e, \"a camera is rigid (05 \u00a72.6)\"));",
+      "return Err(unsupported(\"pivot\", e, \"a camera has no pivots (05 \u00a72.3)\"));",
+      "return Err(unsupported(\"rotationPivot\", e, \"these pivots are static; key `pivot` (05 \u00a71.5)\"));",
+      "return Err(unsupported(\"rotationPivot\", e, \"this node kind has one `pivot` (05 \u00a72.3)\"));",
+      "return Err(unsupported(\"pivot\", e, \"elements have rotationPivot and scalePivot (05 \u00a72.3)\"));",
+      "let inverse = ev.parent_world(id, frame).map_err(eval_error)?.inverse().ok_or_else(|| {"
+    ]
+  },
+  {
+    "command": "anim.loop.set",
+    "file": "crates\\executor\\src\\commands\\anim_transform.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "return Err(out_of_range(\"loops\", f64::from(p.loops), 1.0, 10_000.0));",
+      "return Err(frame_invalid(0.0, \"this node has no bar\"));",
+      "return Err(out_of_range(\"loops\", f64::from(p.loops), 1.0, max as f64));"
+    ]
+  },
+  {
+    "command": "app.frame.set",
+    "file": "crates\\executor\\src\\commands\\app.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "app.mode.set",
+    "file": "crates\\executor\\src\\commands\\app.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "app.quit",
+    "file": "crates\\executor\\src\\commands\\app.rs",
+    "refusal_lines": [
+      "return Err(unsaved(cx));"
+    ]
+  },
+  {
+    "command": "cell.fill.apply",
+    "file": "crates\\executor\\src\\commands\\cell.rs",
+    "refusal_lines": [
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "cell.range.move",
+    "file": "crates\\executor\\src\\commands\\cell.rs",
+    "refusal_lines": [
+      "return Err(err(codes::ARG_INVALID, \"`to` is before `from`\", json!({ \"pointer\": \"/to\" })));",
+      "let scene = doc.scene_of(&t).and_then(|s| doc.scene(s)).ok_or_else(no_target)?;",
+      "let start = order.iter().position(|c| *c == t).ok_or_else(|| {",
+      "return Err(err(",
+      "return Err(type_mismatch(s, t, st, tt));",
+      "return Err(err(",
+      "let (_, sf, notes) = cols.get_mut(s).ok_or_else(|| super::timing::internal(\"column\"))?;",
+      "let (tcol, tframes, notes) = cols.get_mut(t).ok_or_else(|| super::timing::internal(\"column\"))?;"
+    ]
+  },
+  {
+    "command": "cell.cycle.create",
+    "file": "crates\\executor\\src\\commands\\cell.rs",
+    "refusal_lines": [
+      "let e = t.elements.first().cloned().ok_or_else(no_target)?;"
+    ]
+  },
+  {
+    "command": "cell.columnate.apply",
+    "file": "crates\\executor\\src\\commands\\cell.rs",
+    "refusal_lines": [
+      "order.iter().position(|(_, n)| n == name).ok_or_else(|| drawing_not_found(name, e, pointer))",
+      "return Err(err(",
+      "result.ok_or_else(no_target)"
+    ]
+  },
+  {
+    "command": "cell.select",
+    "file": "crates\\executor\\src\\commands\\cell.rs",
+    "refusal_lines": [
+      "return Err(err(codes::ARG_INVALID, \"`to` is before `from`\", json!({ \"pointer\": \"/to\" })));",
+      "return Err(err(",
+      "return Err(err(",
+      "return Err(err(",
+      "let (sel, a, b) = selected_cells(cx).ok_or_else(no_target)?;"
+    ]
+  },
+  {
+    "command": "colour.gap.close",
+    "file": "crates\\executor\\src\\commands\\colour.rs",
+    "refusal_lines": [
+      "return Err(err(\"colour.noGapFound\", \"no stroke ends near both ends of the drag\", json!({ \"tolerance\": tol }))"
+    ]
+  },
+  {
+    "command": "colour.fillMapping.get",
+    "file": "crates\\executor\\src\\commands\\colour_edit.rs",
+    "refusal_lines": [
+      "return Err(\"invalid\");",
+      "_ => Err(\"kindMismatch\"),"
+    ]
+  },
+  {
+    "command": "colour.fillMapping.set",
+    "file": "crates\\executor\\src\\commands\\colour_edit.rs",
+    "refusal_lines": [
+      "return Err(nothing_to_do(\"map\"));",
+      "cx.app().tool_memory.get(CLIPBOARD).and_then(|s| serde_json::from_str(s).ok()).ok_or_else(|| {",
+      "&& let Err(\"invalid\") =",
+      "explicit_matrix(m, SwatchKind::Texture).or_else(|e| if e == \"kindMismatch\" { Ok([0.0; 6]) } else { Err(e) })",
+      "return Err(err(",
+      "Err(reason) => {",
+      "Err(\"kindMismatch\")",
+      "_ => Err(\"kindMismatch\"),"
+    ]
+  },
+  {
+    "command": "doc.loadReport.get",
+    "file": "crates\\executor\\src\\commands\\doc_io.rs",
+    "refusal_lines": [
+      "let a = cx.document()?.project().assets().iter().find(|a| a.id().as_str() == asset_key).ok_or_else(|| {",
+      "None => Err(CommandError::with_details(",
+      "let size = blobs.size(e).ok_or_else(|| {",
+      "return Err(too_large(size));",
+      "return Err(too_large(size));"
+    ]
+  },
+  {
+    "command": "doc.asset.export",
+    "file": "crates\\executor\\src\\commands\\doc_io.rs",
+    "refusal_lines": [
+      "return Err(exists_error(&target));",
+      "return Err(CommandError::with_details(",
+      "return Err(CommandError::with_details(\"ref.notFound\", format!(\"no asset `{id}`\"), json!({ \"ref\": id })));"
+    ]
+  },
+  {
+    "command": "draw.arrange.apply",
+    "file": "crates\\executor\\src\\commands\\draw_layers.rs",
+    "refusal_lines": [
+      "vd::locate(&d, &layer).ok_or_else(|| not_found(&d, id, i))?",
+      "vd::locate(&d, local).ok_or_else(|| not_found(&d, id, i))?",
+      "return Err(nothing_to_do(\"arrange\"));",
+      "return Err(nothing_to_do(\"arrange\"));"
+    ]
+  },
+  {
+    "command": "draw.drawing.render",
+    "file": "crates\\executor\\src\\commands\\draw_render.rs",
+    "refusal_lines": [
+      "return Err(invalid(\"/width\", \"the width must be 1-8192\"));",
+      "return Err(invalid(\"/height\", \"the height must be 1-8192\"));",
+      "return Err(invalid(\"/padding\", \"the padding must be a non-negative number\"));",
+      ".ok_or_else(|| invalid(\"/styleId\", format!(\"no palette style `{r}`\")))?;",
+      "Err(\"the call overran its watchdog budget and was cancelled\".to_owned())",
+      "Err(format!(\"the render took longer than {} s\", RENDER_TIME_LIMIT.as_secs()))",
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "draw.drawing.rename",
+    "file": "crates\\executor\\src\\commands\\draw_select.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "draw.rectangle.add",
+    "file": "crates\\executor\\src\\commands\\draw_shapes.rs",
+    "refusal_lines": [
+      "return Err(e);"
+    ]
+  },
+  {
+    "command": "draw.ellipse.add",
+    "file": "crates\\executor\\src\\commands\\draw_shapes.rs",
+    "refusal_lines": [
+      "return Err(e);"
+    ]
+  },
+  {
+    "command": "draw.line.add",
+    "file": "crates\\executor\\src\\commands\\draw_shapes.rs",
+    "refusal_lines": [
+      "previous_line_end(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame)?.ok_or_else(|| {",
+      "return Err(err(",
+      "return Err(err(\"drawing.invalidGeometry\", \"the line has no length\", json!({ \"pointer\": \"/to\" })));"
+    ]
+  },
+  {
+    "command": "draw.stroke.set",
+    "file": "crates\\executor\\src\\commands\\draw_stroke.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "return Err(err(",
+      "let s = vd::stroke_at(d, &l.pointer).ok_or_else(|| CommandError::internal(\"stroke vanished\"))?;"
+    ]
+  },
+  {
+    "command": "draw.content.add",
+    "file": "crates\\executor\\src\\commands\\draw_stroke.rs",
+    "refusal_lines": [
+      "tt_vector::stroke::spine_pen(new).ok_or_else(|| CommandError::internal(\"spine without pen\"))?;",
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "draw.text.add",
+    "file": "crates\\executor\\src\\commands\\draw_text.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      ".ok_or_else(|| CommandError::internal(\"text node vanished\"))?;"
+    ]
+  },
+  {
+    "command": "draw.text.set",
+    "file": "crates\\executor\\src\\commands\\draw_text.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "return Err(err(",
+      "let mut c = vd::text_content(&n).ok_or_else(|| CommandError::internal(\"text node without content\"))?;",
+      "return Err(err(",
+      "return Err(err(",
+      "return Err(err(codes::ARG_INVALID, \"auto width has no width\", json!({ \"pointer\": \"/width\" })));"
+    ]
+  },
+  {
+    "command": "draw.textFormat.set",
+    "file": "crates\\executor\\src\\commands\\draw_text.rs",
+    "refusal_lines": [
+      "return Err(err(codes::ARG_MISSING, \"give at least one format field\", json!({ \"pointer\": \"/font\" })));",
+      "let mut c = vd::text_content(&n).ok_or_else(|| CommandError::internal(\"text node without content\"))?;",
+      "return Err(err(codes::ARG_INVALID, format!(\"the text has {len} characters\"), json!({ \"pointer\": \"/start\" })));",
+      "return Err(err(codes::ARG_INVALID, format!(\"the text has {len} characters\"), json!({ \"pointer\": \"/length\" })));"
+    ]
+  },
+  {
+    "command": "draw.rotate.apply",
+    "file": "crates\\executor\\src\\commands\\draw_transform.rs",
+    "refusal_lines": [
+      "let e = Envelope::new(min, max, quad, proj).ok_or_else(|| {"
+    ]
+  },
+  {
+    "command": "draw.envelope.apply",
+    "file": "crates\\executor\\src\\commands\\draw_transform.rs",
+    "refusal_lines": [
+      "return Err(err(\"arg.invalid\", \"four corners are required\", json!({ \"pointer\": \"/corners\" })));",
+      "let b = bounds_of(&d, &objs).ok_or_else(|| nothing_to_do(\"distort\"))?;"
+    ]
+  },
+  {
+    "command": "draw.point.add",
+    "file": "crates\\executor\\src\\commands\\draw_transform.rs",
+    "refusal_lines": [
+      "(Some(q), _, _) => nearest_location(&path, P::new(q.x, q.y)).ok_or_else(|| {",
+      "return Err(err(\"arg.invalid\", \"give `at`, or `segment` and `t`\", json!({ \"pointer\": \"/at\" })));",
+      "return Err(err(",
+      "return Err(err(\"arg.invalid\", \"the location is an existing anchor\", json!({ \"pointer\": \"/t\" })));"
+    ]
+  },
+  {
+    "command": "draw.point.move",
+    "file": "crates\\executor\\src\\commands\\draw_transform.rs",
+    "refusal_lines": [
+      "return Err(nothing_to_do(\"move\"));",
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "draw.point.set",
+    "file": "crates\\executor\\src\\commands\\draw_transform.rs",
+    "refusal_lines": [
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "draw.segment.move",
+    "file": "crates\\executor\\src\\commands\\draw_transform.rs",
+    "refusal_lines": [
+      "return Err(err(\"arg.invalid\", \"`t` must be strictly between 0 and 1\", json!({ \"pointer\": \"/t\" })));",
+      "return Err(err(",
+      "cx.app().element.clone().ok_or_else(|| {",
+      "return Err(err(\"drawing.notVectorElement\", \"the element has no drawings\", json!({ \"pointer\": \"/elementId\" })));"
+    ]
+  },
+  {
+    "command": "edit.undo",
+    "file": "crates\\executor\\src\\commands\\edit.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "edit.history.move",
+    "file": "crates\\executor\\src\\commands\\edit.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "edit.selection.set",
+    "file": "crates\\executor\\src\\commands\\edit.rs",
+    "refusal_lines": [
+      "return Err(wrong(ty.as_str(), &key));",
+      "Target::Object { ty, key } => return Err(wrong(ty.as_str(), &key)),",
+      "Target::Cell { element, .. } => return Err(wrong(\"cell\", element.as_str())),",
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "element.create",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "(None, Some(e), _) | (None, None, Some(e)) => doc.scene_of(e).cloned().ok_or_else(|| internal(\"scene\"))?,",
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;",
+      "return Err(err(codes::ARG_INVALID, \"the element is in another scene\", json!({ \"pointer\": ptr })));",
+      "return Err(not_parentable(&doc, pid));",
+      "return Err(duplicate_name(&base, \"/name\"));",
+      "return Err(err(",
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "element.parentPeg.create",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;",
+      "return Err(duplicate_name(&n, \"/name\"));",
+      "let first = sorted.first().ok_or_else(|| internal(\"placed\"))?;",
+      "return Err(internal(\"level\"));"
+    ]
+  },
+  {
+    "command": "element.rename",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "let sc = doc.scene_of(&id).and_then(|s| doc.scene(s)).ok_or_else(|| internal(\"scene\"))?;",
+      "return Err(duplicate_name(&name, \"/name\"));",
+      "let sc = doc.scene(scene).ok_or_else(|| internal(\"scene\"))?;"
+    ]
+  },
+  {
+    "command": "element.clone",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "let scene = doc.scene_of(&id).cloned().ok_or_else(|| internal(\"scene\"))?;",
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;",
+      "return Err(duplicate_name(&n, \"/name\"));"
+    ]
+  },
+  {
+    "command": "element.duplicate",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "let scene = doc.scene_of(root).cloned().ok_or_else(|| internal(\"scene\"))?;",
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;",
+      "let original = h::find(sc.tree(), root).cloned().ok_or_else(|| internal(\"tree\"))?;",
+      "let sc = doc.scene(scene).ok_or_else(|| internal(\"scene\"))?;"
+    ]
+  },
+  {
+    "command": "element.order.move",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;",
+      "return Err(err(",
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "element.order.set",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "(None, Some(e), _) | (None, None, Some(e)) => doc.scene_of(e).cloned().ok_or_else(|| internal(\"scene\"))?,",
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;",
+      "return Err(not_perm(\"Exposure Sheet column of the scene\"));",
+      "return Err(not_perm(\"element of the Timeline level\"));"
+    ]
+  },
+  {
+    "command": "element.parent.remove",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;",
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "element.childExposure.apply",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "return Err(err(\"cell.notApplicable\", format!(\"`{}` is not a peg\", e.name()), json!({ \"pointer\": \"/pegId\" })));"
+    ]
+  },
+  {
+    "command": "element.mediaLength.set",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "return Err(err(",
+      "return Err(err(",
+      "return Err(err(",
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?;"
+    ]
+  },
+  {
+    "command": "element.visibility.set",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "element.annotation.set",
+    "file": "crates\\executor\\src\\commands\\element.rs",
+    "refusal_lines": [
+      "return Err(err("
+    ]
+  },
+  {
+    "command": "element.drawing.create",
+    "file": "crates\\executor\\src\\commands\\element_bank.rs",
+    "refusal_lines": [
+      "return Err(err(",
+      "return Err(err(codes::ARG_INVALID, \"`exposeTo` needs `exposeFrom`\", json!({ \"pointer\": \"/exposeTo\" })));"
+    ]
+  },
+  {
+    "command": "element.drawing.rename",
+    "file": "crates\\executor\\src\\commands\\element_bank.rs",
+    "refusal_lines": [
+      "let bank = doc.bank_of(&d).cloned().ok_or_else(|| internal(\"drawing without bank\"))?;"
+    ]
+  },
+  {
+    "command": "element.drawing.duplicate",
+    "file": "crates\\executor\\src\\commands\\element_bank.rs",
+    "refusal_lines": [
+      "let bank = doc.bank_of(&d).cloned().ok_or_else(|| internal(\"drawing without bank\"))?;"
+    ]
+  },
+  {
+    "command": "element.drawing.delete",
+    "file": "crates\\executor\\src\\commands\\element_bank.rs",
+    "refusal_lines": [
+      ".entry(doc.bank_of(d).cloned().ok_or_else(|| internal(\"drawing without bank\"))?)",
+      "return Err(err(",
+      "None => Err(err("
+    ]
+  },
+  {
+    "command": "element.drawingLock.set",
+    "file": "crates\\executor\\src\\commands\\element_bank.rs",
+    "refusal_lines": [
+      "let dr = doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;",
+      ".entry(doc.bank_of(d).cloned().ok_or_else(|| internal(\"bank\"))?)"
+    ]
+  },
+  {
+    "command": "element.hierarchy.select",
+    "file": "crates\\executor\\src\\commands\\element_read.rs",
+    "refusal_lines": [
+      "None => cx.app().element.clone().ok_or_else(|| {",
+      "let q = placed.iter().find(|q| q.id == id).ok_or_else(|| internal(\"element not in the tree\"))?;",
+      "Relation::Parent => vec![q.parent.clone().ok_or_else(none)?],",
+      "return Err(none());",
+      "Relation::FirstChild => vec![h::level_ids(sc.tree(), Some(&id)).first().cloned().ok_or_else(none)?],",
+      "Relation::PreviousSibling => vec![q.index.checked_sub(1).and_then(|i| level.get(i)).cloned().ok_or_else(none)?],",
+      "Relation::NextSibling => vec![level.get(q.index + 1).cloned().ok_or_else(none)?],",
+      "vec![root.ok_or_else(none)?]"
+    ]
+  },
+  {
+    "command": "job.list",
+    "file": "crates\\executor\\src\\commands\\job.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "keymap.set",
+    "file": "crates\\executor\\src\\commands\\keymap.rs",
+    "refusal_lines": [
+      "return Err(conflict_error(&candidate, &clashes.iter().collect::<Vec<_>>()));"
+    ]
+  },
+  {
+    "command": "keymap.export",
+    "file": "crates\\executor\\src\\commands\\keymap.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details(",
+      "return Err(bad(\"format is not toontown-keymap\".into()));",
+      "let list = v.get(\"bindings\").and_then(Value::as_array).ok_or_else(|| bad(\"no bindings\".into()))?;",
+      "return Err(at("
+    ]
+  },
+  {
+    "command": "keymap.import",
+    "file": "crates\\executor\\src\\commands\\keymap.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "prefs.list",
+    "file": "crates\\executor\\src\\commands\\prefs.rs",
+    "refusal_lines": [
+      "return Err(CommandError::internal(format!(\"the preference catalogue did not load: {e}\")));"
+    ]
+  },
+  {
+    "command": "prefs.get",
+    "file": "crates\\executor\\src\\commands\\prefs.rs",
+    "refusal_lines": [
+      "let v = cx.pref(k).ok_or_else(|| prefs::unknown(k))?;",
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "prefs.set",
+    "file": "crates\\executor\\src\\commands\\prefs.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "project.create",
+    "file": "crates\\executor\\src\\commands\\project.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details(",
+      "Some(id) => Some(presets(cx).into_iter().find(|x| &x.id == id).ok_or_else(|| {"
+    ]
+  },
+  {
+    "command": "project.open",
+    "file": "crates\\executor\\src\\commands\\project.rs",
+    "refusal_lines": [
+      "return Err(tt_persist::fsx::open_error(&std::io::Error::from(std::io::ErrorKind::NotFound), &path).into());",
+      "return Err(job_failed(e));"
+    ]
+  },
+  {
+    "command": "project.close",
+    "file": "crates\\executor\\src\\commands\\project.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details(",
+      "return Err(CommandError::with_details(",
+      "return Err(CommandError::with_details(",
+      "Err(_) => {",
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "project.saveAs",
+    "file": "crates\\executor\\src\\commands\\project.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details(",
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "project.recovery.open",
+    "file": "crates\\executor\\src\\commands\\project.rs",
+    "refusal_lines": [
+      "let info = recovery::info(&root, &p.recovery_id).ok_or_else(|| recovery_not_found(&p.recovery_id))?;",
+      "return Err(CommandError::with_details(",
+      "return Err(CommandError::with_details(",
+      "recovery::Claim::NotFound => return Err(recovery_not_found(&p.recovery_id)),",
+      "return Err(job_failed(e));"
+    ]
+  },
+  {
+    "command": "project.backup.open",
+    "file": "crates\\executor\\src\\commands\\project.rs",
+    "refusal_lines": [
+      "let (file, _) = backup::find(&root, &p.backup_id).ok_or_else(|| {"
+    ]
+  },
+  {
+    "command": "render.frame.run",
+    "file": "crates\\executor\\src\\commands\\render.rs",
+    "refusal_lines": [
+      "return Err(unavailable(p.composition));",
+      "return Err(invalid(\"/path\", \"file output needs an absolute path\"));",
+      "return Err(CommandError::new(",
+      "return Err(err(",
+      "(true, OnConflict::Fail) => return Err(file_exists(&[target])),",
+      "return Err(invalid(\"/path\", \"the parent directory does not exist\"));",
+      "(Output::File, None) => return Err(invalid(\"/path\", \"file output needs an absolute path\")),",
+      "let d = doc.drawing(&id).ok_or_else(|| invalid(\"/drawingId\", format!(\"no drawing `{r}`\")))?;"
+    ]
+  },
+  {
+    "command": "render.range.run",
+    "file": "crates\\executor\\src\\commands\\render.rs",
+    "refusal_lines": [
+      "return Err(unavailable(p.composition));",
+      "return Err(invalid(\"/to\", \"`to` is before `from`\"));",
+      "return Err(err(\"limit.exceeded\", \"too many frames in one range\", json!({ \"limit\": MAX_RANGE_FRAMES })));",
+      "return Err(invalid(\"/directory\", \"the directory does not exist (createDirs: true creates it)\"));",
+      "return Err(invalid(\"/namePattern\", \"the pattern gives two frames the same file name; use {frame}\"));",
+      "OnConflict::Fail => return Err(file_exists(&existing)),",
+      "Err(e) => {",
+      "Err(e)"
+    ]
+  },
+  {
+    "command": "tool.symmetry.set",
+    "file": "crates\\executor\\src\\commands\\tool_symmetry.rs",
+    "refusal_lines": [
+      "return Err(err(\"tool.valueOutOfRange\", \"the symmetry angle is 0-360 degrees\", json!({ \"pointer\": \"/angle\" })));",
+      "return Err(err(\"tool.valueOutOfRange\", \"a kaleidoscope has 2-16 mirrors\", json!({ \"pointer\": \"/mirrors\" })));"
+    ]
+  },
+  {
+    "command": "ui.tips.set",
+    "file": "crates\\executor\\src\\commands\\ui_shell.rs",
+    "refusal_lines": [
+      "return Err(unknown_message(&p.message_id));"
+    ]
+  },
+  {
+    "command": "ui.preferences.open",
+    "file": "crates\\executor\\src\\commands\\ui_shell.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "window.toolbar.set",
+    "file": "crates\\executor\\src\\commands\\window.rs",
+    "refusal_lines": [
+      "toolbars(cx).into_iter().find(|t| t.toolbar_id == id).ok_or_else(|| CommandError::internal(\"toolbar\"))"
+    ]
+  },
+  {
+    "command": "window.toolbar.items.set",
+    "file": "crates\\executor\\src\\commands\\window.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "workspace.export",
+    "file": "crates\\executor\\src\\commands\\workspace.rs",
+    "refusal_lines": [
+      "return Err(CommandError::with_details("
+    ]
+  },
+  {
+    "command": "workspace.import",
+    "file": "crates\\executor\\src\\commands\\workspace.rs",
+    "refusal_lines": [
+      "return Err(bad(format!(\"format is not {FORMAT}\")));",
+      "let name = v.get(\"name\").and_then(serde_json::Value::as_str).ok_or_else(|| bad(\"no name\".into()))?.to_owned();",
+      ".ok_or_else(|| bad(\"no layout\".into()))"
+    ]
+  },
+  {
+    "command": "xsheet.exposures.set",
+    "file": "crates\\executor\\src\\commands\\xsheet.rs",
+    "refusal_lines": [
+      "(None, Some(e)) => doc.scene_of(e).cloned().ok_or_else(|| internal(\"scene\"))?,",
+      "let sc = doc.scene(&scene).ok_or_else(|| internal(\"scene\"))?.clone();",
+      "return Err(err(",
+      "return Err(run_error(codes::ARG_INVALID, \"the column is not in the scene\".to_owned(), ci, None));",
+      "return Err(run_error(\"xsheet.columnReadOnly\", message, ci, None));",
+      "let bank = el.drawing_bank_id().clone().ok_or_else(|| internal(\"bank\"))?;",
+      "let (col, frames) = cols.get_mut(id).ok_or_else(|| internal(\"column\"))?;",
+      "return Err(run_error(code, format!(\"run {}-{} is invalid\", r.from, r.to), ci, Some(ri)));"
+    ]
+  }
+]

@@ -1,0 +1,1233 @@
+{
+ "kind": "toontown.c44b.d39.summary",
+ "note": "the whole D-39 table in the MCP form on the final C4.4b build (D-42 summary: each row's name and verdict; raw rows hashed)",
+ "regenerate": "python scripts/c43-d39-bindings.py target/release/toontown.exe <out> --mode mcp",
+ "manifest": {
+  "kind": "toontown.c43b.d39-bindings",
+  "mode": "mcp",
+  "seconds": 359.6,
+  "rows": 303,
+  "failed": []
+ },
+ "failures": [],
+ "rows": [
+  {
+   "name": "Drawing › Flatten",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Flatten",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Optimize",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Optimize",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Smooth",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Smooth",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Convert Lines to Brush",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Convert Lines to Brush",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Break Text Apart",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Break Text Apart",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Extract Centre Line",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Extract Centre Line",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Bring to Front",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Bring to Front",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Bring Forward",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Bring Forward",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Send Backward",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Send Backward",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Send to Back",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Send to Back",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Flip Horizontal",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Flip Horizontal",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Flip Vertical",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Flip Vertical",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Rotate 90° CW",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Rotate 90° CW",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Rotate 90° CCW",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Rotate 90° CCW",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Rotate 180°",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Rotate 180°",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Group",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Group",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Ungroup",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Ungroup",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Delete Objects",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Lock Drawing",
+   "ok": true
+  },
+  {
+   "name": "Drawing › Unlock Drawing",
+   "ok": true
+  },
+  {
+   "name": "Edit › Cut Special",
+   "ok": true
+  },
+  {
+   "name": "File › Project Info",
+   "ok": true
+  },
+  {
+   "name": "File › Check Project",
+   "ok": true
+  },
+  {
+   "name": "Help › About Toontown",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › drawAid.grid.set",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › gridOverlay",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › drawAid.onionSkin.set",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › drawAid.autoLightTable.set",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Grid type › field12",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Grid type › field16",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Grid type › normal",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Previous drawings › 2",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Previous drawings › 3",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Previous drawings › 0",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Previous drawings › 1",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Next drawings › 1",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Next drawings › 2",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Next drawings › 3",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › Next drawings › 0",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › grid",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › onionSkin",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › onionOutline",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › autoLightTable",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › strokes",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › currentOnTop",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › boxHighlighting",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › outlineOnSelection",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › keepSelectionVisible",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › sceneBackground",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › lightTableShade",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › onionPrevious",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › onionNext",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › staticLightTablePanel",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › staticLightTableAdd",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › staticLightTableShowAll",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › staticLightTableClear",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome › symmetry",
+   "ok": true
+  },
+  {
+   "name": "drawingView toolbar › type camera",
+   "ok": true
+  },
+  {
+   "name": "drawingView toolbar › type drawing",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › grid",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › onionSkin",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › onionOutline",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › autoLightTable",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › strokes",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › currentOnTop",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › boxHighlighting",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › outlineOnSelection",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › keepSelectionVisible",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › sceneBackground",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › lightTableShade",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › onionPrevious",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › onionNext",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › staticLightTablePanel",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › staticLightTableAdd",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › staticLightTableShowAll",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › staticLightTableClear",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome › symmetry",
+   "ok": true
+  },
+  {
+   "name": "cameraView toolbar › type drawing",
+   "ok": true
+  },
+  {
+   "name": "cameraView toolbar › type camera",
+   "ok": true
+  },
+  {
+   "name": "tools palette › select",
+   "ok": true
+  },
+  {
+   "name": "tools palette › contourEditor",
+   "ok": true
+  },
+  {
+   "name": "tools palette › perspective",
+   "ok": true
+  },
+  {
+   "name": "tools palette › repositionAll",
+   "ok": true
+  },
+  {
+   "name": "tools palette › brush",
+   "ok": true
+  },
+  {
+   "name": "tools palette › pencil",
+   "ok": true
+  },
+  {
+   "name": "tools palette › rectangle",
+   "ok": true
+  },
+  {
+   "name": "tools palette › ellipse",
+   "ok": true
+  },
+  {
+   "name": "tools palette › polyline",
+   "ok": true
+  },
+  {
+   "name": "tools palette › line",
+   "ok": true
+  },
+  {
+   "name": "tools palette › paint",
+   "ok": true
+  },
+  {
+   "name": "tools palette › unpaint",
+   "ok": true
+  },
+  {
+   "name": "tools palette › paintUnpainted",
+   "ok": true
+  },
+  {
+   "name": "tools palette › dropper",
+   "ok": true
+  },
+  {
+   "name": "tools palette › closeGap",
+   "ok": true
+  },
+  {
+   "name": "tools palette › stroke",
+   "ok": true
+  },
+  {
+   "name": "tools palette › editTexture",
+   "ok": true
+  },
+  {
+   "name": "tools palette › eraser",
+   "ok": true
+  },
+  {
+   "name": "tools palette › cutter",
+   "ok": true
+  },
+  {
+   "name": "tools palette › scissor",
+   "ok": true
+  },
+  {
+   "name": "tools palette › zoom",
+   "ok": true
+  },
+  {
+   "name": "tools palette › grabber",
+   "ok": true
+  },
+  {
+   "name": "tools palette › text",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Export",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Import",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Tablet › tablet.ignore",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Tablet › tablet.portraitCorrection",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Tablet › tablet.compatibilityMode",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Tablet › tablet.alternativeInput",
+   "ok": true
+  },
+  {
+   "name": "File › Open Backup › Open",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › select a pen",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › New",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › tip shape",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Draw Behind",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Maximum size (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Minimum size (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Smoothness (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Tip angle (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Minimum size (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Maximum size (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Smoothness (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Tip angle (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Minimum size (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Minimum size (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Maximum size (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Maximum size (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Smoothness (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Smoothness (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Tip angle (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Tip angle (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › rename",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Maximum size (text-editing keys)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › rename (text-editing keys)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › search (text-editing keys)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel › Delete",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Select: rectangle rule",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Brush: pen",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Eraser: pen",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Pencil: line thickness source",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Polyline: snapping",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Paint: automatic gap closing",
+   "ok": true
+  },
+  {
+   "name": "Tool options › drawTopLayer",
+   "ok": true
+  },
+  {
+   "name": "Tool options › placeBehind",
+   "ok": true
+  },
+  {
+   "name": "Tool options › snapToContour",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Pencil: fixed thickness",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Pencil: fixed thickness (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Pencil: fixed thickness (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Polyline: snap radius (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Polyline: snap radius (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Polyline: snap radius",
+   "ok": true
+  },
+  {
+   "name": "Colour › Auto Close Gap › Small",
+   "ok": true
+  },
+  {
+   "name": "Colour › Auto Close Gap › Large",
+   "ok": true
+  },
+  {
+   "name": "Colour › Auto Close Gap › Off",
+   "ok": true
+  },
+  {
+   "name": "Text panel › bold",
+   "ok": true
+  },
+  {
+   "name": "Text panel › italic",
+   "ok": true
+  },
+  {
+   "name": "Text panel › autoKern",
+   "ok": true
+  },
+  {
+   "name": "Text panel › align",
+   "ok": true
+  },
+  {
+   "name": "Text panel › baseline",
+   "ok": true
+  },
+  {
+   "name": "Text panel › Remove outline",
+   "ok": true
+  },
+  {
+   "name": "Text panel › size (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › font (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › kerning (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › leftMargin (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › rightMargin (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › indent (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › lineSpacing (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › size (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › size (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › kerning (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › kerning (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › leftMargin (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › leftMargin (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › rightMargin (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › rightMargin (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › indent (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › indent (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › lineSpacing (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel › lineSpacing (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Contour Editor › Snap to Contour on, then a drag",
+   "ok": true
+  },
+  {
+   "name": "Contour Editor › Delete",
+   "ok": true
+  },
+  {
+   "name": "Contour Editor › Delete with no anchor selected",
+   "ok": true
+  },
+  {
+   "name": "Perspective › corner drag",
+   "ok": true
+  },
+  {
+   "name": "Perspective › alternate side drag",
+   "ok": true
+  },
+  {
+   "name": "Perspective › a missed press, then a marquee and a corner drag",
+   "ok": true
+  },
+  {
+   "name": "Perspective › locked drawing",
+   "ok": true
+  },
+  {
+   "name": "Reposition All Drawings › offset drag",
+   "ok": true
+  },
+  {
+   "name": "Reposition All Drawings › rotation drag",
+   "ok": true
+  },
+  {
+   "name": "Reposition All Drawings › every drawing locked",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Contour Editor: line invisible",
+   "ok": true
+  },
+  {
+   "name": "Tool options › Contour Editor: line thickness",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › bold",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › italic",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › autoKern",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › align",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › baseline",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › size (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › font (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › kerning (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › leftMargin (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › rightMargin (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › indent (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › lineSpacing (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel (caret) › bold",
+   "ok": true
+  },
+  {
+   "name": "Text tool › click, then typing in the editor",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › a range over two runs shows Mixed",
+   "ok": true
+  },
+  {
+   "name": "Text panel (selected text) › an agent's change is shown",
+   "ok": true
+  },
+  {
+   "name": "Drawing inspector › Show preview",
+   "ok": true
+  },
+  {
+   "name": "Drawing inspector › rename",
+   "ok": true
+  },
+  {
+   "name": "main toolbar › camera list",
+   "ok": true
+  },
+  {
+   "name": "Window › Customize Toolbar",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Cut",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Copy",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Paste",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Select All",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu › Deselect All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) › Cut",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) › Copy",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) › Paste",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) › Select All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) › Deselect All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) › Copy",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) › Select All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) › Deselect All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) › Paste",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) › Cut",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › activity",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › capture",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › cells",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › colour",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › drawingView",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › effectPreview",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › functionEditor",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › history",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › library",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › lipSync",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › motionRecording",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › pen",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › properties",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › sceneManager",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › sideView",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › soundEditor",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › storyline",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › text",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › timeline",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › topView",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu › xsheet",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › port",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › policy",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxJobs",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxBatchSteps",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxInlineImagePx",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxInlineBytes",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › askInApp",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › letAgentMoveView",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › highlightAgentChanges",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › typedTools",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › persist",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › port (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › port (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxJobs (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxJobs (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxBatchSteps (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxBatchSteps (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxInlineImagePx (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxInlineImagePx (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxInlineBytes (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › maxInlineBytes (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › token Copy",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › token Show",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Agent access › namespace",
+   "ok": true
+  },
+  {
+   "name": "Activity › session policy",
+   "ok": true
+  },
+  {
+   "name": "Activity › session scopes",
+   "ok": true
+  },
+  {
+   "name": "Activity › session pause",
+   "ok": true
+  },
+  {
+   "name": "Activity › session resume",
+   "ok": true
+  },
+  {
+   "name": "Activity › Undo back to before an entry",
+   "ok": true
+  },
+  {
+   "name": "Activity › Export",
+   "ok": true
+  },
+  {
+   "name": "agent indicator › Activity…",
+   "ok": true
+  },
+  {
+   "name": "Window › Activity",
+   "ok": true
+  },
+  {
+   "name": "Activity › session disconnect",
+   "ok": true
+  },
+  {
+   "name": "agent indicator › Pause",
+   "ok": true
+  },
+  {
+   "name": "agent indicator › Resume",
+   "ok": true
+  },
+  {
+   "name": "agent indicator › Stop",
+   "ok": true
+  },
+  {
+   "name": "context menus › inside the client area at 1280 by 800 and at the minimum window size",
+   "ok": true
+  },
+  {
+   "name": "browser chrome › no native menu, no reload",
+   "ok": true
+  },
+  {
+   "name": "status bar › jobs",
+   "ok": true
+  },
+  {
+   "name": "File › Open Recent › an entry's full path",
+   "ok": true
+  },
+  {
+   "name": "load report window",
+   "ok": true
+  }
+ ],
+ "raw": {
+  "rows.json": {
+   "size": 1550863,
+   "sha256": "22112bf8b2442ef492149fea43c39938e6059b078423776aed3ad373aed194be"
+  }
+ }
+}

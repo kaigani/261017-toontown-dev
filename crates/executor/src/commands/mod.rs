@@ -11,7 +11,9 @@ pub(crate) mod anim_eval;
 pub(crate) mod anim_function;
 pub(crate) mod anim_key;
 pub(crate) mod anim_path;
+pub(crate) mod anim_tool;
 pub(crate) mod anim_transform;
+pub(crate) mod anim_view;
 pub(crate) mod app;
 pub(crate) mod bundle;
 pub(crate) mod cell;
@@ -25,6 +27,7 @@ pub(crate) mod doc;
 pub(crate) mod doc_io;
 pub(crate) mod doc_lint;
 pub(crate) mod draw;
+pub(crate) mod draw_aid;
 pub(crate) mod draw_cut;
 pub(crate) mod draw_layers;
 pub(crate) mod draw_render;
@@ -42,12 +45,17 @@ pub(crate) mod element_bank;
 pub(crate) mod element_read;
 pub(crate) mod inspect;
 pub(crate) mod job;
+pub(crate) mod keymap;
+pub(crate) mod prefs;
 pub(crate) mod project;
 pub(crate) mod render;
 pub(crate) mod render_list;
 pub(crate) mod timing;
+pub(crate) mod tool;
 pub(crate) mod tool_symmetry;
 pub(crate) mod transfer;
+pub(crate) mod ui_shell;
+pub(crate) mod view;
 pub(crate) mod window;
 pub(crate) mod workspace;
 pub(crate) mod xsheet;
@@ -56,6 +64,42 @@ use tt_registry::Command;
 
 /// Every typed declaration.
 pub(crate) static ALL: &[&Command] = &[
+    // views (M4 C4.2)
+    &view::VIEW_LIST,
+    &view::VIEW_ACTIVE_SET,
+    &view::VIEW_TYPE_SET,
+    &view::VIEW_TRANSFORM_GET,
+    &view::VIEW_ZOOM_SET,
+    &view::VIEW_ROTATION_SET,
+    &view::VIEW_PAN_SET,
+    &view::VIEW_TRANSFORM_RESET,
+    &view::VIEW_COORDINATES_CONVERT,
+    // prefs, keymap, ui (M4 C4.1)
+    &prefs::PREFS_LIST,
+    &prefs::PREFS_GET,
+    &prefs::PREFS_SET,
+    &prefs::PREFS_RESET,
+    &prefs::PREFS_CHANGED,
+    &keymap::KEYMAP_LIST,
+    &keymap::KEYMAP_GET,
+    &keymap::KEYMAP_SET,
+    &keymap::KEYMAP_REMOVE,
+    &keymap::KEYMAP_RESET,
+    &keymap::KEYMAP_EXPORT,
+    &keymap::KEYMAP_IMPORT,
+    &keymap::KEYMAP_CHANGED,
+    &ui_shell::UI_TIPS_LIST,
+    &ui_shell::UI_TIPS_SET,
+    &ui_shell::UI_TIPS_RESET,
+    &ui_shell::UI_STATUS_BAR_SET,
+    &ui_shell::UI_STATUS_BAR_GET,
+    &ui_shell::UI_THEME_LIST,
+    &ui_shell::UI_START_SCREEN_SET,
+    &ui_shell::UI_CONTEXT_HELP_MODE_SET,
+    &ui_shell::UI_HELP_GET,
+    &ui_shell::UI_HELP_OPEN,
+    &ui_shell::UI_PREFERENCES_OPEN,
+    &ui_shell::UI_MESSAGE_SHOWN,
     // app
     &app::APP_STATE_GET,
     &app::APP_CONTEXT_SET,
@@ -137,6 +181,54 @@ pub(crate) static ALL: &[&Command] = &[
     &doc::DOC_CHANGED,
     &doc_io::DOC_ASSET_STATUS_CHANGED,
     &doc_io::DOC_PACKAGE_CHANGED_ON_DISK,
+    // the current colour (M4 C4.2, ruling D-11)
+    &colour::COLOUR_CURRENT_SET,
+    &colour::COLOUR_CURRENT_CHANGED,
+    // tools and pens (M4 C4.2)
+    &tool::TOOL_LIST,
+    &tool::TOOL_ACTIVE_SET,
+    &tool::TOOL_ACTIVE_GET,
+    &tool::TOOL_GROUP_SELECT,
+    &tool::TOOL_OPTIONS_GET,
+    &tool::TOOL_OPTIONS_SET,
+    &tool::TOOL_SELECT_OPTIONS_SET,
+    &tool::TOOL_BRUSH_OPTIONS_SET,
+    &tool::TOOL_PENCIL_OPTIONS_SET,
+    &tool::TOOL_POLYLINE_OPTIONS_SET,
+    &tool::TOOL_ERASER_OPTIONS_SET,
+    &tool::TOOL_TEXT_OPTIONS_SET,
+    &tool::TOOL_PEN_LIST,
+    &tool::TOOL_PEN_CREATE,
+    &tool::TOOL_PEN_DELETE,
+    &tool::TOOL_PEN_RENAME,
+    &tool::TOOL_PEN_SET,
+    &tool::TOOL_PEN_SELECT,
+    &tool::TOOL_PLACE_BEHIND_SET,
+    &tool::TOOL_DRAW_TOP_LAYER_SET,
+    &tool::TOOL_SNAP_TO_CONTOUR_SET,
+    &tool::TOOL_TABLET_SET,
+    &tool::TOOL_SETTINGS_GET,
+    &tool::TOOL_ACTIVE_CHANGED,
+    &tool::TOOL_OPTIONS_CHANGED,
+    &tool::TOOL_PEN_CHANGED,
+    // drawing aids (M4 C4.2)
+    &draw_aid::DRAW_AID_STATE_GET,
+    &draw_aid::DRAW_AID_GRID_SET,
+    &draw_aid::DRAW_AID_ONION_SKIN_SET,
+    &draw_aid::DRAW_AID_ONION_SKIN_STYLE_SET,
+    &draw_aid::DRAW_AID_ONION_SKIN_CYCLE_RUN,
+    &draw_aid::DRAW_AID_AUTO_LIGHT_TABLE_SET,
+    &draw_aid::DRAW_AID_LIGHT_TABLE_SHADE_SET,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_ADD,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_REMOVE,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_SET,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_LIST,
+    &draw_aid::DRAW_AID_STATIC_LIGHT_TABLE_PANEL_SET,
+    &draw_aid::DRAW_AID_STROKES_SET,
+    &draw_aid::DRAW_AID_CURRENT_ON_TOP_SET,
+    &draw_aid::DRAW_AID_SELECTION_DISPLAY_SET,
+    &draw_aid::DRAW_AID_BACKGROUND_SET,
+    &draw_aid::DRAW_AID_CHANGED,
     // draw (M2 C2.1)
     &draw::DRAW_DRAWING_GET,
     &draw::DRAW_CURRENT_GET,
@@ -368,6 +460,11 @@ pub(crate) static ALL: &[&Command] = &[
     &anim_camera::ANIM_CAMERA_CURRENT_CHANGED,
     &anim_eval::ANIM_EVALUATE,
     &anim_eval::ANIM_PROJECTION_GET,
+    // the Camera view's scene tools and coordinates (M4 C4.3, C4.3 plan answer 2)
+    &anim_tool::ANIM_TOOL_SET,
+    &anim_tool::ANIM_TOOL_GET,
+    &anim_tool::ANIM_TOOL_CHANGED,
+    &anim_view::ANIM_VIEW_COORDS_GET,
     &anim_eval::ANIM_PATH_SAMPLE,
     &anim_eval::ANIM_FUNCTION_SAMPLE,
     &xsheet::XSHEET_EXPOSURES_GET,

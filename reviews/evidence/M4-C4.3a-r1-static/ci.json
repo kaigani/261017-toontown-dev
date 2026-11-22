@@ -1,0 +1,191 @@
+{
+  "run": {
+    "conclusion": "success",
+    "databaseId": 43718960532,
+    "headSha": "50d6d17fc97f7f87a97cf1d7d4b542c220d2a512",
+    "status": "completed"
+  },
+  "jobCount": 36,
+  "jobs": [
+    {
+      "name": "measurements release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "raster determinism (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "history oracles release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "review properties release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "history oracles release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "lint (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "headless release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "check properties (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "m3 properties release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "headless without a display (ubuntu)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "e4 release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "e2 release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "desktop diagnostics (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "check (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "review properties release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "measurements release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "raster determinism (ubuntu-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "check properties (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "check (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "raster determinism (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "c33 render release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "headless release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "lint (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "desktop diagnostics (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "m3 properties release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "c33 render release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "e2 release (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "bundle (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "e4 release (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "bundle (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "e4 cross-OS",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "c33 cross-OS",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "drawing byte gate (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "drawing byte gate (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "desktop gui (macos-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    },
+    {
+      "name": "desktop gui (windows-latest)",
+      "conclusion": "success",
+      "failedSteps": []
+    }
+  ]
+}

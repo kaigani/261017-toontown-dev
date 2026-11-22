@@ -418,14 +418,26 @@ fn files_write(cx: &Cx, command: &str) -> Result<(), CommandError> {
 }
 
 fn unavailable(c: Composition) -> CommandError {
+    // `activeView` renders the Drawing view (M4 C4.2) and the Camera view (M4 C4.3a) (SI-107); Top and Side views are
+    // M6 C6.1's (C4.3 plan answer 1).
     let (name, owner) = match c {
         Composition::Xsheet => ("xsheet", "M5 C5.1"),
-        _ => ("activeView", "M4 C4.2"),
+        _ => ("activeView", "M6 C6.1"),
     };
     err(
         "render.compositionUnavailable",
         format!("the `{name}` composition arrives with {owner}"),
         json!({ "composition": name, "owner": owner }),
+    )
+}
+
+/// `render.range.run` renders the camera, exposure-sheet or element composition (09 line 1013); the active view is a
+/// frame's composition, not a range's (SI-107).
+fn not_a_range() -> CommandError {
+    err(
+        "render.compositionUnavailable",
+        "a range renders the camera, xsheet or element composition; the active view is rendered frame by frame",
+        json!({ "composition": "activeView", "reason": "range" }),
     )
 }
 
@@ -486,6 +498,7 @@ pub(crate) fn inline_side(cx: &Cx, width: u32, height: u32) -> Result<(), Comman
 
 #[command(
     id = "render.frame.run",
+    precheck = crate::prechecks::render_frame_run,
     kind = query,
     label = "Render frame",
     scopes = [read],
@@ -496,12 +509,20 @@ pub(crate) fn inline_side(cx: &Cx, width: u32, height: u32) -> Result<(), Comman
 )]
 pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResult, CommandError> {
     let started = std::time::Instant::now();
-    if matches!(p.composition, Composition::Xsheet | Composition::ActiveView) {
+    let active = cx.ui().active_view_type();
+    if p.composition == Composition::Xsheet
+        || (p.composition == Composition::ActiveView
+            && !matches!(active, crate::shell::ViewType::Drawing | crate::shell::ViewType::Camera))
+    {
         return Err(unavailable(p.composition));
     }
     let scene = scene_param(cx, p.scene_id.as_deref())?;
     let frame = frame_param(cx, p.frame)?;
     let doc = cx.document()?.clone();
+    // The Drawing view renders its current drawing (SI-107); the Camera view is the camera composition (C4.3a).
+    if p.composition == Composition::ActiveView && active == crate::shell::ViewType::Drawing {
+        return active_view(cx, &p, &doc, frame);
+    }
     if p.output == Output::File && p.path.is_none() {
         return Err(invalid("/path", "file output needs an absolute path"));
     }
@@ -537,7 +558,7 @@ pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResu
         warnings.push(json!({ "code": "render.cameraFrameNotApplicable", "message": "the composition is the camera frame itself" }));
     }
     if p.quality == Quality::Draft {
-        warnings.push(json!({ "code": "render.draftAsFinal", "message": "draft renders as final until the interactive renderer (M4 C4.2)" }));
+        warnings.push(json!({ "code": "render.draftAsFinal", "message": "headless renders use the final software rasteriser; draft quality is the interactive canvas's" }));
     }
     let (bytes, mime) = encode(p.format, &rendered.pixels, width, height, p.jpeg_quality)?;
     let image = Image {
@@ -648,6 +669,104 @@ fn deliver(cx: &mut Cx, p: &FrameParams, image: Image) -> Result<RenderResult, C
         image_to_camera,
         warnings,
     })
+}
+
+/// `composition: "activeView"` with the Drawing view active (SI-107; M4 C4.2): the current drawing through the view
+/// window's mapping (design note 6), at the view's size times `scale` (or `width` / `height`), colours through the
+/// scene's active palette styles; display aids are drawn by the interactive renderer only (06 §6.10).
+fn active_view(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Result<RenderResult, CommandError> {
+    if !(p.scale.is_finite() && (0.05..=8.0).contains(&p.scale)) {
+        return Err(invalid("/scale", "the scale must be 0.05-8"));
+    }
+    let view = super::view::drawing_view(cx, None)?.clone();
+    let (vw, vh) = (view.size.width.max(1.0), view.size.height.max(1.0));
+    let w = p.width.map_or_else(|| (vw * p.scale).round(), f64::from);
+    let h = p.height.map_or_else(|| (vh * w / vw).round(), f64::from);
+    if !(1.0..=f64::from(MAX_SIDE)).contains(&w) || !(1.0..=f64::from(MAX_SIDE)).contains(&h) {
+        return Err(err(
+            "limit.exceeded",
+            format!("a render of {w} x {h} pixels is outside 1-{MAX_SIDE} on a side"),
+            json!({ "width": w, "height": h, "maxWidth": MAX_SIDE, "maxHeight": MAX_SIDE }),
+        ));
+    }
+    let (wu, hu) = (w as u32, h as u32);
+    if p.output == Output::Inline {
+        inline_side(cx, wu, hu)?;
+    }
+    let id = cx.app().current_drawing(doc).ok_or_else(|| {
+        err("drawing.noTarget", "the Drawing view has no current drawing", json!({}))
+            .hint("make a drawing current (app.context.set)")
+    })?;
+    let d = doc.drawing(&id).ok_or_else(|| err("drawing.noTarget", "the current drawing is gone", json!({})))?;
+    // Visibility overrides (M3 merge note §8 item 3): `exclude` naming the current element or an ancestor leaves the
+    // drawing out (exclusion wins, SI-107); the Drawing view shows its current drawing whether or not the element or an
+    // ancestor is hidden, so `include` changes nothing here.
+    let ov = overrides(cx, p.include.as_deref(), p.exclude.as_deref())?;
+    let scene = scene_param(cx, p.scene_id.as_deref())?;
+    let excluded = match (cx.app().element.as_ref(), doc.scene(&scene)) {
+        (Some(e), Some(sc)) => excluded_in(sc.tree(), e, &ov.exclude),
+        _ => false,
+    };
+    let m = super::view::drawing_to_view(&view);
+    let (sx, sy) = (w / vw, h / vh);
+    let d2p = [m[0] * sx, m[1] * sy, m[2] * sx, m[3] * sy, m[4] * sx, m[5] * sy];
+    let bg = background(doc, &scene, &p.background)?;
+    // One rasteriser and one mapping with the headless screenshot and `draw.drawing.render` (design note 5, S4).
+    let mut warnings = Vec::new();
+    let pixels = if excluded {
+        bg.repeat(wu as usize * hu as usize)
+    } else {
+        let raster = super::draw_render::Raster {
+            d2p: tt_vector::geom::Affine(d2p),
+            scale: (d2p[0] * d2p[3] - d2p[1] * d2p[2]).abs().sqrt(),
+            width: wu,
+            height: hu,
+            background: bg,
+            show_strokes: false,
+            show_selection: false,
+        };
+        let (px, w) = super::draw_render::rasterise(cx, doc, d, None, raster, std::time::Instant::now())?;
+        warnings = w;
+        px
+    };
+    if p.quality == Quality::Draft {
+        warnings.push(json!({ "code": "render.draftAsFinal", "message": "headless renders use the final software rasteriser; draft quality is the interactive canvas's" }));
+    }
+    let (bytes, mime) = encode(p.format, &pixels, wu, hu, p.jpeg_quality)?;
+    let image = Image {
+        bytes,
+        mime,
+        width: wu,
+        height: hu,
+        rev: doc.document_rev(),
+        frame,
+        image_to_camera: invert(d2p),
+        warnings,
+        started: std::time::Instant::now(),
+    };
+    deliver(cx, p, image)
+}
+
+/// Whether `id` or one of its ancestors in the scene tree is excluded.
+fn excluded_in(nodes: &[tt_model::entities::scene::TreeNode], id: &Id, exclude: &BTreeSet<Id>) -> bool {
+    fn walk(
+        nodes: &[tt_model::entities::scene::TreeNode],
+        id: &Id,
+        exclude: &BTreeSet<Id>,
+        inherited: bool,
+    ) -> Option<bool> {
+        for n in nodes {
+            let x = inherited || exclude.contains(&n.id);
+            if &n.id == id {
+                return Some(x);
+            }
+            if let Some(r) = walk(&n.children, id, exclude, x) {
+                return Some(r);
+            }
+        }
+        None
+    }
+    walk(nodes, id, exclude, false).unwrap_or(false)
 }
 
 /// `composition: "element"` with `drawingId`: the drawing in drawing space (09 §11.1 item 11: origin at the top-left of
@@ -878,12 +997,62 @@ pub(crate) struct Manifest {
     range: Value,
     /// The document revision rendered.
     document_revision: u64,
-    /// One entry per frame file.
-    files: Vec<ManifestFile>,
+    /// One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to
+    /// [`OUTPUTS_INLINE`] frames (ruling D-51 as corrected by D-56, SI-181: a range's answer stays small), `outputs` summarising them always.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    files: Option<Vec<ManifestFile>>,
     /// The companion manifest file written with the frames (this manifest without itself).
     manifest_path: String,
     /// Objects not drawn and why.
     warnings: Vec<Value>,
+    /// The frames written, summarised (D-51): in the job's answer, never in the companion file.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    outputs: Option<Outputs>,
+}
+
+/// At most this many frame entries are listed in a range job's answer (D-51); the companion manifest lists them all.
+pub(crate) const OUTPUTS_INLINE: usize = 100;
+
+/// A job's outputs, summarised (ruling D-51, SI-163): the count, where they are and how they are named, the first and
+/// the last in full, and whether the list itself was left out.
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct Outputs {
+    /// How many outputs.
+    count: u32,
+    /// Where they are: the output directory.
+    location: String,
+    /// How they are named (the name pattern with the scene's name, `{frame}` or `{frame:N}` for the frame).
+    pattern: String,
+    /// The first output.
+    first: Option<ManifestFile>,
+    /// The last output.
+    last: Option<ManifestFile>,
+    /// The list itself is not in this answer (the companion manifest file at `manifestPath` has every entry).
+    truncated: bool,
+}
+
+impl Manifest {
+    /// The job's answer (D-51): the manifest with `outputs`, its file list left out above [`OUTPUTS_INLINE`] entries.
+    fn bounded(mut self, pattern: &str) -> Self {
+        let files = self.files.take().unwrap_or_default();
+        let truncated = files.len() > OUTPUTS_INLINE;
+        self.outputs = Some(Outputs {
+            count: u32::try_from(files.len()).unwrap_or(u32::MAX),
+            location: self.output_path.clone(),
+            pattern: pattern.to_owned(),
+            first: files.first().cloned(),
+            last: files.last().cloned(),
+            truncated,
+        });
+        self.files = (!truncated).then_some(files);
+        self
+    }
+}
+
+/// The name pattern as the frames' names follow it: the scene's name in place, the frame tokens kept (D-51 `pattern`).
+fn display_pattern(pattern: &str, name: &str, ext: &str) -> String {
+    format!("{}.{ext}", pattern.replace("{name}", name).replace("{scene}", name))
 }
 
 /// The file name of a frame.
@@ -957,6 +1126,8 @@ struct RangeJob {
     range: Value,
     /// The staging token of this job: its staged files are `.<target>.tt-partial-<token>` (ADR-0020 decision 11).
     token: String,
+    /// How the frames are named, for the answer's `outputs` (D-51).
+    pattern: String,
 }
 
 impl RangeJob {
@@ -1039,9 +1210,10 @@ impl RangeJob {
             height: self.height,
             range: self.range.clone(),
             document_revision: self.doc.document_rev(),
-            files,
+            files: Some(files),
             manifest_path: self.manifest_target.to_string_lossy().into_owned(),
             warnings,
+            outputs: None,
         };
         let text =
             serde_json::to_string_pretty(&manifest).map_err(|e| err("render.failed", e.to_string(), json!({})))?;
@@ -1445,6 +1617,7 @@ fn encode_sequence(format: SequenceFormat, pixels: &[u8], w: u32, h: u32) -> Res
 
 #[command(
     id = "render.range.run",
+    precheck = crate::prechecks::render_range_run,
     kind = job,
     label = "Render range",
     scopes = [read, files_write],
@@ -1455,7 +1628,10 @@ fn encode_sequence(format: SequenceFormat, pixels: &[u8], w: u32, h: u32) -> Res
 )]
 pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manifest>, CommandError> {
     let _ = p.wait;
-    if p.composition == Composition::ActiveView || p.composition == Composition::Xsheet {
+    if p.composition == Composition::ActiveView {
+        return Err(not_a_range());
+    }
+    if p.composition == Composition::Xsheet {
         return Err(unavailable(p.composition));
     }
     let scene = scene_param(cx, p.scene_id.as_deref())?;
@@ -1543,6 +1719,7 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
         format_name,
         quality: p.quality,
         range: json!({ "from": from, "to": to, "step": step }),
+        pattern: display_pattern(&p.name_pattern, &name, ext),
     };
     let origin = cx.origin().clone();
     let id = cx.session().jobs.submit("render.range.run", &origin.session_key(), move |progress| {
@@ -1551,7 +1728,8 @@ pub(crate) fn render_range_run(cx: &mut Cx, p: RangeParams) -> Result<Job<Manife
         let mut sidecar = job.sidecar(progress.job_id());
         let mut staged: Vec<Staged> = Vec::new();
         match job.run(progress, &mut sidecar, &mut staged) {
-            Ok(m) => Ok(serde_json::to_value(m).unwrap_or(Value::Null)),
+            // D-51: the answer summarises the frames; the companion manifest written with them lists every one.
+            Ok(m) => Ok(serde_json::to_value(m.bounded(&job.pattern)).unwrap_or(Value::Null)),
             Err(e) => {
                 // A failed or cancelled job recovers its own staging and only its own (C33-R2-01); the receipt stays in
                 // the job record with the state and, when failed, the error (C33-R2-02).

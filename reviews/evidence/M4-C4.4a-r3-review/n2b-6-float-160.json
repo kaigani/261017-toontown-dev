@@ -1,0 +1,280 @@
+{
+  "top": {
+    "menu": {
+      "x": 4,
+      "y": 4,
+      "width": 152,
+      "height": 112,
+      "top": 4,
+      "right": 156,
+      "bottom": 116,
+      "left": 4
+    },
+    "list": {
+      "x": 9,
+      "y": 21.90625,
+      "width": 142,
+      "height": 76.1875,
+      "top": 21.90625,
+      "right": 151,
+      "bottom": 98.09375,
+      "left": 9
+    },
+    "arrows": [
+      {
+        "box": {
+          "x": 9,
+          "y": 9,
+          "width": 142,
+          "height": 12.90625,
+          "top": 9,
+          "right": 151,
+          "bottom": 21.90625,
+          "left": 9
+        }
+      },
+      {
+        "box": {
+          "x": 9,
+          "y": 98.09375,
+          "width": 142,
+          "height": 12.90625,
+          "top": 98.09375,
+          "right": 151,
+          "bottom": 111,
+          "left": 9
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "cameraView.sceneMenu.cut",
+        "box": {
+          "x": 9,
+          "y": 21.90625,
+          "width": 127,
+          "height": 68,
+          "top": 21.90625,
+          "right": 136,
+          "bottom": 89.90625,
+          "left": 9
+        },
+        "command": "edit.cut",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.copy",
+        "box": {
+          "x": 9,
+          "y": 89.90625,
+          "width": 127,
+          "height": 68,
+          "top": 89.90625,
+          "right": 136,
+          "bottom": 157.90625,
+          "left": 9
+        },
+        "command": "edit.copy",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.paste",
+        "box": {
+          "x": 9,
+          "y": 157.90625,
+          "width": 127.0625,
+          "height": 53,
+          "top": 157.90625,
+          "right": 136.0625,
+          "bottom": 210.90625,
+          "left": 9
+        },
+        "command": "edit.paste",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.selectAll",
+        "box": {
+          "x": 9,
+          "y": 210.90625,
+          "width": 85.3125,
+          "height": 23,
+          "top": 210.90625,
+          "right": 94.3125,
+          "bottom": 233.90625,
+          "left": 9
+        },
+        "command": "edit.selectAll",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.deselectAll",
+        "box": {
+          "x": 9,
+          "y": 233.90625,
+          "width": 99.828125,
+          "height": 23,
+          "top": 233.90625,
+          "right": 108.828125,
+          "bottom": 256.90625,
+          "left": 9
+        },
+        "command": "edit.deselectAll",
+        "params": {
+          "context": "staging"
+        }
+      }
+    ],
+    "area": {
+      "w": 160,
+      "h": 120
+    }
+  },
+  "bottom": {
+    "menu": {
+      "x": 4,
+      "y": 4,
+      "width": 152,
+      "height": 112,
+      "top": 4,
+      "right": 156,
+      "bottom": 116,
+      "left": 4
+    },
+    "list": {
+      "x": 9,
+      "y": 21.90625,
+      "width": 142,
+      "height": 76.1875,
+      "top": 21.90625,
+      "right": 151,
+      "bottom": 98.09375,
+      "left": 9
+    },
+    "arrows": [
+      {
+        "box": {
+          "x": 9,
+          "y": 9,
+          "width": 142,
+          "height": 12.90625,
+          "top": 9,
+          "right": 151,
+          "bottom": 21.90625,
+          "left": 9
+        }
+      },
+      {
+        "box": {
+          "x": 9,
+          "y": 98.09375,
+          "width": 142,
+          "height": 12.90625,
+          "top": 98.09375,
+          "right": 151,
+          "bottom": 111,
+          "left": 9
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "cameraView.sceneMenu.cut",
+        "box": {
+          "x": 9,
+          "y": -137.09375,
+          "width": 127,
+          "height": 68,
+          "top": -137.09375,
+          "right": 136,
+          "bottom": -69.09375,
+          "left": 9
+        },
+        "command": "edit.cut",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.copy",
+        "box": {
+          "x": 9,
+          "y": -69.09375,
+          "width": 127,
+          "height": 68,
+          "top": -69.09375,
+          "right": 136,
+          "bottom": -1.09375,
+          "left": 9
+        },
+        "command": "edit.copy",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.paste",
+        "box": {
+          "x": 9,
+          "y": -1.09375,
+          "width": 127.0625,
+          "height": 53,
+          "top": -1.09375,
+          "right": 136.0625,
+          "bottom": 51.90625,
+          "left": 9
+        },
+        "command": "edit.paste",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.selectAll",
+        "box": {
+          "x": 9,
+          "y": 51.90625,
+          "width": 85.3125,
+          "height": 23,
+          "top": 51.90625,
+          "right": 94.3125,
+          "bottom": 74.90625,
+          "left": 9
+        },
+        "command": "edit.selectAll",
+        "params": {
+          "context": "staging"
+        }
+      },
+      {
+        "id": "cameraView.sceneMenu.deselectAll",
+        "box": {
+          "x": 9,
+          "y": 74.90625,
+          "width": 99.828125,
+          "height": 23,
+          "top": 74.90625,
+          "right": 108.828125,
+          "bottom": 97.90625,
+          "left": 9
+        },
+        "command": "edit.deselectAll",
+        "params": {
+          "context": "staging"
+        }
+      }
+    ],
+    "area": {
+      "w": 160,
+      "h": 120
+    }
+  }
+}

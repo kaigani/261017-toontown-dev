@@ -1,0 +1,12 @@
+[
+  {
+    "id": "inspector.name",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "inspector.preview",
+    "type": "checkbox",
+    "disabled": false
+  }
+]

@@ -1,0 +1,92 @@
+{
+  "probe": "tests/adversarial/c44a-r3-live.py, each step once (unchanged), build ca978fe3",
+  "runs": [
+    {
+      "run": "n1a-2-01",
+      "checks": 7,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n1a-3-01",
+      "checks": 8,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n1b-4-01",
+      "checks": 121,
+      "failed": [],
+      "tokenChecks": 1
+    },
+    {
+      "run": "n1b-5-01",
+      "checks": 181,
+      "failed": [],
+      "tokenChecks": 1
+    },
+    {
+      "run": "n1b-6-01",
+      "checks": 25,
+      "failed": [],
+      "tokenChecks": 1
+    },
+    {
+      "run": "n1b-7-01",
+      "checks": 36,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n2a-1-01",
+      "checks": 0,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n2a-2-01",
+      "checks": 40,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n2a-3-01",
+      "checks": 20,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n2a-4-01",
+      "checks": 15,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n2b-5-01",
+      "checks": 34,
+      "failed": [],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n2b-6-01",
+      "checks": 13,
+      "failed": [
+        {
+          "check": "D-66 other menu bounds text.font",
+          "detail": "{\"surface\": \"text.font\", \"customMenu\": null, \"popups\": [{\"x\": 602, \"y\": 433, \"right\": 869, \"bottom\": 713, \"classicMenuClass\": false}], \"client\": {\"x\": 38, \"y\": 81, \"right\": 838, \"bottom\": 581}}"
+        }
+      ],
+      "tokenChecks": 0
+    },
+    {
+      "run": "n2b-7-01",
+      "checks": 161,
+      "failed": [],
+      "tokenChecks": 1
+    }
+  ],
+  "tokenChecks": {
+    "total": 4,
+    "passed": 4
+  }
+}

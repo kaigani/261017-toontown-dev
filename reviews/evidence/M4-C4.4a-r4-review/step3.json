@@ -1,0 +1,10 @@
+{
+  "checks": 140,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-8kgapjxm",
+  "captures": {
+    "overpainted": 40,
+    "outside": 20,
+    "floatOutside": 20
+  }
+}

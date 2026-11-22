@@ -1,0 +1,1703 @@
+{
+  "checks": 134,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView perspective options drawTopLayer command no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective options placeBehind command no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective options snapToContour command no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective no undeclared mapping control D-75 item 5",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective context Select All selects with no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective held tool is refused busy",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-tool undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective held tool stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective held frame is refused busy",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-frame undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective held frame stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective held agent is refused busy",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-lifecycle-agent undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective held agent stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-perspective-keyboard-switch undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView perspective empty drawings unchanged",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll options drawTopLayer command no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll options placeBehind command no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll options snapToContour command no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll no undeclared mapping control D-75 item 5",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll context Select All selects with no undo",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll held tool is refused busy",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-tool undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll held tool stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll held frame is refused busy",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-frame undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll held frame stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll held agent is refused busy",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-lifecycle-agent undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll held agent stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-repositionAll-keyboard-switch undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView repositionAll empty drawings unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective options drawTopLayer command no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective options placeBehind command no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective options snapToContour command no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective no undeclared mapping control D-75 item 5",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective context Select All selects with no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective held tool is refused busy",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-tool undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective held tool stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective held frame is refused busy",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-frame undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective held frame stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective held agent is refused busy",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-lifecycle-agent undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective held agent stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-perspective-keyboard-switch undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView perspective empty drawings unchanged",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll options drawTopLayer command no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll options placeBehind command no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll options snapToContour command no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll no undeclared mapping control D-75 item 5",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll context Select All selects with no undo",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll held tool is refused busy",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-tool undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll held tool stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll held frame is refused busy",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-frame undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll held frame stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll held agent is refused busy",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-lifecycle-agent undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll held agent stays on original frame",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-repositionAll-keyboard-switch undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView repositionAll empty drawings unchanged",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-perspective-keyboard-switch",
+      "commands": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80062PWTR35GNEEHCTE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YP1MMSEV59MVDKAH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800W69HGV083RJ01VT6",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80062PWTR35GNEEHCTE",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YP1MMSEV59MVDKAH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800W69HGV083RJ01VT6",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "c0546b993668793c078c1c5de0e6171d314ad5beed17809475e444a9128eb70a",
+      "afterSha256": "85d047c14a483a7aeb993c0342c75ff1ca428889090cdaae36e187a5a9603b82"
+    },
+    {
+      "name": "cameraView-perspective-lifecycle-agent",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8000EM8W0VXKM9CE10A",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006PDTA4YG83RAYXGR",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800FEY10FKKP26K3A5Z",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8000EM8W0VXKM9CE10A",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006PDTA4YG83RAYXGR",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800FEY10FKKP26K3A5Z",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "73a304abfe58c7b61e2e815762eacf176977aff741417b782464b4004c9a38a9",
+      "afterSha256": "a0d19a5aeb31228c17e2375d9fdb78410a5a75c85d33353a36909c526012d5f0"
+    },
+    {
+      "name": "cameraView-perspective-lifecycle-frame",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8002JN54K6WCBMSNMR4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SZMMXHT4H8580F48",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZA25JHK8VPKKEMCS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8002JN54K6WCBMSNMR4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SZMMXHT4H8580F48",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZA25JHK8VPKKEMCS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "9d3310a81fe6a529a5ca5b5fee9f21ac74f3370cd032a6a7ef7fb7e927a0ea77",
+      "afterSha256": "a98d85e24c75ae1032742625c143490ffe529fc0454e066e4a0c7bfaeff06e67"
+    },
+    {
+      "name": "cameraView-perspective-lifecycle-tool",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800KCNQCJETBZA4ARQ8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001E0Z846FG198898V",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800E8N3NR7ES4GDQ11K",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800KCNQCJETBZA4ARQ8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001E0Z846FG198898V",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800E8N3NR7ES4GDQ11K",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "b9b1cf633eccd6d65ed86dbd51f46c045466a06348105ef07c05650e766b49e8",
+      "afterSha256": "93c033a7b5121fe056da83d631d0f3becc67bc88b9c465fd83b161ed676fa2ef"
+    },
+    {
+      "name": "cameraView-repositionAll-keyboard-switch",
+      "commands": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800697DS6EKJT9V8QRA",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800C5XZTBX3PS8MT0WZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006SZCTF57STNW8QSH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800697DS6EKJT9V8QRA",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800C5XZTBX3PS8MT0WZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006SZCTF57STNW8QSH",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "76eaf9ff0a8c307646ed3ada482092175d6806fdf9ca90c9177efa8e1f3cdb95",
+      "afterSha256": "25abbd3c62fdedc868741ceb17f7126b4860c97434839578f69a8fd2ef5b91fb"
+    },
+    {
+      "name": "cameraView-repositionAll-lifecycle-agent",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800XHF3TEGZEJE0MZA0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MRDY6KPY1W4J2Z4D",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800Y3AFCQJ0CWDAJ2H0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800XHF3TEGZEJE0MZA0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800MRDY6KPY1W4J2Z4D",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800Y3AFCQJ0CWDAJ2H0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "43d8568866c02eb455ddf3075e59d74546ce97702b77fc3df3e59f8eed558d2d",
+      "afterSha256": "f29b9db90ca82b9fcfa1054617f4d668f39b515f08c7f0883e6c2f7a57f33060"
+    },
+    {
+      "name": "cameraView-repositionAll-lifecycle-frame",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800DYF9SCVAYMVD99AZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8008GK2MS42RGGERKH2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000PH0S720FRQT5SW2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800DYF9SCVAYMVD99AZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8008GK2MS42RGGERKH2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000PH0S720FRQT5SW2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "a3c9de55d2f45be3a927c5f619d7aafe5c6f6f5b8b8f46352c77162d02cb1ead",
+      "afterSha256": "20010ddd82b1b42ecfe7f3989e2aebdadba94a8fa2c48c0fb9da188461b0c0f5"
+    },
+    {
+      "name": "cameraView-repositionAll-lifecycle-tool",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800GZDK7FXA79BDSSH9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80018K8B5GM53D6DRZ3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800N443CQ356XT3KBPF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800GZDK7FXA79BDSSH9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN80018K8B5GM53D6DRZ3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800N443CQ356XT3KBPF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "d1741c5f836b29469bde327939551da2f3e679594da15c32a65293a33ec50602",
+      "afterSha256": "3ee6cff248d1b22f697197bd6afd693599769c0a99cf2188e396777646406ef1"
+    },
+    {
+      "name": "drawingView-perspective-keyboard-switch",
+      "commands": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800BN7SD15M6EPBHD41",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SFJNNGHM3797C58R",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800C1RJV2JEX66ZT5N5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800BN7SD15M6EPBHD41",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SFJNNGHM3797C58R",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800C1RJV2JEX66ZT5N5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "1ccb1a6a0f70989e15d32202cb2879536aabe53af13215ec8bf3ac28565b97ff",
+      "afterSha256": "3b484fc8a199b3e72eee0b2e01eb5a059b5fd86401f5be5bc34b68fc86d73b70"
+    },
+    {
+      "name": "drawingView-perspective-lifecycle-agent",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80047HBWVYQV4Q7A4VT",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800X7BA359J7XMEHRMS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZW4WVAB9XZ7K3GAJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80047HBWVYQV4Q7A4VT",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800X7BA359J7XMEHRMS",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZW4WVAB9XZ7K3GAJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "ebd9f0f9c48b1f01d2f35a289bdf1a524579245bd82e251ba958893defc65c6b",
+      "afterSha256": "5abdc3a6d2764903a16833cbeb9c341c9f8d39774acebeecc4a62bddebefdea0"
+    },
+    {
+      "name": "drawingView-perspective-lifecycle-frame",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800PDKYWH5H4WGHDYS9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800VWA0X25Y035ZE144",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800DK5KDHSPHKVH37H1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800PDKYWH5H4WGHDYS9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800VWA0X25Y035ZE144",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800DK5KDHSPHKVH37H1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "fd0f8035c9857fb68f0d04e3a46e34d76db7aaaad7ac5f8321c3f78f2f13d18d",
+      "afterSha256": "e52a5579db25f31e3b0fd87b9613caa68be7608092266ff84d957bd855931c12"
+    },
+    {
+      "name": "drawingView-perspective-lifecycle-tool",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8009SGZRYBY673Q2WVW",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800VZFZ3SRX9K62S42F",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800K3S5ZXJQ3FARQ0GP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8009SGZRYBY673Q2WVW",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800VZFZ3SRX9K62S42F",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800K3S5ZXJQ3FARQ0GP",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "f89f04ce09a051d0a507a838b22abefb3de9afd99a7c470ddc24b8a99f4eabff",
+      "afterSha256": "f0d0ae7071f82bb8cb60895ca07b77a77b96623b07b79f601ab6b487373f4a1c"
+    },
+    {
+      "name": "drawingView-repositionAll-keyboard-switch",
+      "commands": [
+        {
+          "commandId": "draw.transform.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Scale Object",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800RNBWFGZ3SXDE98C2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800KHKR077JCR7DF0GV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000EDQP984TNEQE2AQ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800RNBWFGZ3SXDE98C2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800KHKR077JCR7DF0GV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8000EDQP984TNEQE2AQ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "3cd3ae84cd40f59f3feb23a524d25d6eec3d69419d212427339925f9bb4ef9da",
+      "afterSha256": "56b5c1d0ffe566856b11cb6b9cad241f0a6d87ace23289f786ccb43e389f6cec"
+    },
+    {
+      "name": "drawingView-repositionAll-lifecycle-agent",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800ZSQ5XGKDYXF9YRYD",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800DFF8QMRJA6FQBR0Y",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZJJ3NW5C0H6952ND",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800ZSQ5XGKDYXF9YRYD",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800DFF8QMRJA6FQBR0Y",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZJJ3NW5C0H6952ND",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "cc4c7a116029e3fafb0b6ed082dd5dbd73d409d9b50c070c14fd8de446fea609",
+      "afterSha256": "95e3cd39e7422b3b75dc66ddf91c56f203cc9509655187fbac997c421ef9e635"
+    },
+    {
+      "name": "drawingView-repositionAll-lifecycle-frame",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800GRRGY7MXX35K6T39",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006B9B1M1ZJKY00Q5Y",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004YATENJ82061ENW4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800GRRGY7MXX35K6T39",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006B9B1M1ZJKY00Q5Y",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004YATENJ82061ENW4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "f07d82d726f5787e6fd87c7d731ccc9fee09dfabd9c80ada1579b9b7ed26bbe9",
+      "afterSha256": "03da62b542b325dcb65795639f88daa2ddc7aae3d4323bc0095d98657833353c"
+    },
+    {
+      "name": "drawingView-repositionAll-lifecycle-tool",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800BGBV3GKS0S8KKPXN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800PDM36W7FGF3NWM6R",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8002DMZNAVE5N9ZV05B",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800BGBV3GKS0S8KKPXN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800PDM36W7FGF3NWM6R",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8002DMZNAVE5N9ZV05B",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "85ccf1981bf0fe3bbfef9318157f6a5bce27ee353d90575e0366e0ac83e66c53",
+      "afterSha256": "c998aea8bd2171ed6f4ee4c9c92d39d90538d07fdfe0137dcc58709896f01f52"
+    }
+  ],
+  "measurements": [],
+  "canvases": [],
+  "captures": [],
+  "transcriptSha256": "b61de7a43aa64eb71ecece3b7ba158575c288b3d041157c4cdccf180f3de1a89",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-851ymfe4"
+}

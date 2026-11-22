@@ -1,0 +1,344 @@
+{
+ "kind": "toontown.c43b.d44-flows, summary",
+ "regenerate": "python scripts/c43-d44-flows.py target/release/toontown.exe <out> (Windows workstation; the app built by pnpm --dir desktop tauri build --no-bundle on fdd12421)",
+ "verdict": "pass",
+ "manifest": {
+  "kind": "toontown.c43b.d44-flows",
+  "seconds": 890.9,
+  "rows": 73,
+  "named": [
+   "recovery open › Save",
+   "recovery open › Don't Save",
+   "recovery open › Cancel",
+   "engine restart › Restart",
+   "engine restart › Cancel"
+  ],
+  "failed": [],
+  "failures": []
+ },
+ "counts": {
+  "rows": 73,
+  "ok": 68,
+  "named (not run here, with reason)": 5,
+  "failed": 0,
+  "checks": 74,
+  "checks failed": 0
+ },
+ "rows": [
+  {
+   "name": "New › Save",
+   "ok": true
+  },
+  {
+   "name": "New › Don't Save",
+   "ok": true
+  },
+  {
+   "name": "New › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Open › Save",
+   "ok": true
+  },
+  {
+   "name": "Open › Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Open › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Open Recent › Save",
+   "ok": true
+  },
+  {
+   "name": "Open Recent › Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Open Recent › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Open Backup › Save",
+   "ok": true
+  },
+  {
+   "name": "Open Backup › Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Open Backup › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Close › Save",
+   "ok": true
+  },
+  {
+   "name": "Close › Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Close › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Quit › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Save As (existing file) › native Yes",
+   "ok": true
+  },
+  {
+   "name": "Save As (existing file) › native No",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Import › Merge",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Import › Replace",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Import › Cancel",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Reset all › Reset All",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Reset all › Cancel",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › conflict › Override",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › conflict › Cancel",
+   "ok": true
+  },
+  {
+   "name": "New Workspace › Create",
+   "ok": true
+  },
+  {
+   "name": "New Workspace › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Rename Workspace › Rename",
+   "ok": true
+  },
+  {
+   "name": "Rename Workspace › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Customize Toolbar › Apply",
+   "ok": true
+  },
+  {
+   "name": "Customize Toolbar › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Customize Toolbar › Restore Default",
+   "ok": true
+  },
+  {
+   "name": "Activity › Undo back › Undo",
+   "ok": true
+  },
+  {
+   "name": "Activity › Undo back › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Activity › Undo back › Enter (default Cancel)",
+   "ok": true
+  },
+  {
+   "name": "Preferences › OK",
+   "ok": true
+  },
+  {
+   "name": "Preferences › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Project Properties › OK (set as default)",
+   "ok": true
+  },
+  {
+   "name": "Project Properties › Cancel",
+   "ok": true
+  },
+  {
+   "name": "New Project › Create",
+   "ok": true
+  },
+  {
+   "name": "New Project › Cancel",
+   "ok": true
+  },
+  {
+   "name": "backup chooser › Open",
+   "ok": true
+  },
+  {
+   "name": "backup chooser › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Check Project › Repair",
+   "ok": true
+  },
+  {
+   "name": "Check Project › Close",
+   "ok": true
+  },
+  {
+   "name": "About › Close",
+   "ok": true
+  },
+  {
+   "name": "Project Info › Close",
+   "ok": true
+  },
+  {
+   "name": "Help › Close",
+   "ok": true
+  },
+  {
+   "name": "error box › OK",
+   "ok": true
+  },
+  {
+   "name": "native picker › Cancel",
+   "ok": true
+  },
+  {
+   "name": "unsaved changes › Enter (default Save)",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Reset all › Enter (default Cancel)",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor › Import › Enter (default Merge)",
+   "ok": true
+  },
+  {
+   "name": "modal (message box) › Tab past the last control, Escape",
+   "ok": true
+  },
+  {
+   "name": "modal (form) › Tab past the last control, Escape",
+   "ok": true
+  },
+  {
+   "name": "progress window › Cancel",
+   "ok": true
+  },
+  {
+   "name": "recovery open › Save",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "recovery open › Don't Save",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "recovery open › Cancel",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "engine restart › Restart",
+   "ok": true,
+   "notRun": "it needs an engine that stops answering; App.test.tsx covers the question and its choices"
+  },
+  {
+   "name": "engine restart › Cancel",
+   "ok": true,
+   "notRun": "it needs an engine that stops answering; App.test.tsx covers the question and its choices"
+  },
+  {
+   "name": "Quit › Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Quit › Save",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet › Accept",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet › Decline",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet › Return (default Decline)",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet › document changed",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet › decided in another window",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet › three queued",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet › expiry",
+   "ok": true
+  },
+  {
+   "name": "Agent access › Regenerate token › Cancel",
+   "ok": true
+  },
+  {
+   "name": "Agent access › Regenerate token › Enter (default Cancel)",
+   "ok": true
+  },
+  {
+   "name": "Agent access › Regenerate token › Regenerate",
+   "ok": true
+  }
+ ],
+ "failedChecks": [],
+ "raw": [
+  {
+   "path": "manifest.json",
+   "bytes": 317,
+   "sha256": "8104e38ac1a70d432975c7f9826b897c4bd1be5fd36b1d09985afede040d48aa"
+  },
+  {
+   "path": "rows.json",
+   "bytes": 80997,
+   "sha256": "dc930113d0f935761262d449f9d0fb1375060b20d2d83a88c1056d8d2ea1c390"
+  },
+  {
+   "path": "transcript.json",
+   "bytes": 39931,
+   "sha256": "ccca4642c6aa2eb372f10f51d01ffa49724de1324ad50e80a384e257cc566bf0"
+  }
+ ]
+}

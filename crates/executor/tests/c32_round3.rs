@@ -116,6 +116,7 @@ fn running_undo_and_redo_of_a_large_animation_step_are_cancelled_atomically() {
         };
         let answered = t.elapsed();
         assert_eq!(code(&env), Some("command.timeout"), "{label}: {env:?}");
+        crate::common::timing::record("c32_round3.rs:119", answered, budget * 3);
         assert!(answered < budget * 3, "{label}: answered in {answered:?}");
         // Nothing commits late.
         std::thread::sleep(Duration::from_millis(500));
@@ -163,6 +164,7 @@ fn a_queued_undo_behind_a_running_evaluation_keeps_its_own_deadline_and_is_atomi
     let running = running.join().unwrap();
     drop(spin);
     assert_eq!(code(&running), Some("command.timeout"), "the evaluation overran: {running:?}");
+    crate::common::timing::record("c32_round3.rs:166", waited, budget * 2);
     assert!(waited < budget * 2, "the queued undo answered within its own budget: {waited:?}");
     let events = anim_events(&rx);
     let changed: Vec<&Value> = events.iter().filter(|(n, _)| n == "anim.changed").map(|(_, p)| p).collect();

@@ -1,0 +1,15 @@
+ok   the application saves the fixture project
+ok   the canvas is located in the window (OS input)
+ok   named tool stays active after routed gesture
+ok   three-way rectangle (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo rectangle
+{
+ "kind": "toontown.c42.gesture-equivalence",
+ "platform": "win32",
+ "seconds": 2.8,
+ "rows": 1,
+ "input": [
+  "agent"
+ ],
+ "failures": []
+}

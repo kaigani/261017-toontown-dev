@@ -1,0 +1,826 @@
+{
+  "top": {
+    "menu": {
+      "x": 318,
+      "y": 4,
+      "width": 309.140625,
+      "height": 492,
+      "top": 4,
+      "right": 627.140625,
+      "bottom": 496,
+      "left": 318
+    },
+    "list": {
+      "x": 323,
+      "y": 21.90625,
+      "width": 299.140625,
+      "height": 456.1875,
+      "top": 21.90625,
+      "right": 622.140625,
+      "bottom": 478.09375,
+      "left": 323
+    },
+    "arrows": [
+      {
+        "box": {
+          "x": 323,
+          "y": 9,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 9,
+          "right": 622.140625,
+          "bottom": 21.90625,
+          "left": 323
+        }
+      },
+      {
+        "box": {
+          "x": 323,
+          "y": 478.09375,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 478.09375,
+          "right": 622.140625,
+          "bottom": 491,
+          "left": 323
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "drawingView.drawingMenu.cut",
+        "box": {
+          "x": 323,
+          "y": 21.90625,
+          "width": 52.8125,
+          "height": 23,
+          "top": 21.90625,
+          "right": 375.8125,
+          "bottom": 44.90625,
+          "left": 323
+        },
+        "command": "edit.cut",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.copy",
+        "box": {
+          "x": 323,
+          "y": 44.90625,
+          "width": 62.609375,
+          "height": 23,
+          "top": 44.90625,
+          "right": 385.609375,
+          "bottom": 67.90625,
+          "left": 323
+        },
+        "command": "edit.copy",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.paste",
+        "box": {
+          "x": 323,
+          "y": 67.90625,
+          "width": 190.171875,
+          "height": 23,
+          "top": 67.90625,
+          "right": 513.171875,
+          "bottom": 90.90625,
+          "left": 323
+        },
+        "command": "edit.paste",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.selectAll",
+        "box": {
+          "x": 323,
+          "y": 90.90625,
+          "width": 85.3125,
+          "height": 23,
+          "top": 90.90625,
+          "right": 408.3125,
+          "bottom": 113.90625,
+          "left": 323
+        },
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.deselectAll",
+        "box": {
+          "x": 323,
+          "y": 113.90625,
+          "width": 99.828125,
+          "height": 23,
+          "top": 113.90625,
+          "right": 422.828125,
+          "bottom": 136.90625,
+          "left": 323
+        },
+        "command": "edit.deselectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.front",
+        "box": {
+          "x": 323,
+          "y": 165.90625,
+          "width": 112.53125,
+          "height": 23,
+          "top": 165.90625,
+          "right": 435.53125,
+          "bottom": 188.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "front"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.forward",
+        "box": {
+          "x": 323,
+          "y": 188.90625,
+          "width": 113.375,
+          "height": 23,
+          "top": 188.90625,
+          "right": 436.375,
+          "bottom": 211.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "forward"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.backward",
+        "box": {
+          "x": 323,
+          "y": 211.90625,
+          "width": 120,
+          "height": 23,
+          "top": 211.90625,
+          "right": 443,
+          "bottom": 234.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "backward"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.back",
+        "box": {
+          "x": 323,
+          "y": 234.90625,
+          "width": 107.40625,
+          "height": 23,
+          "top": 234.90625,
+          "right": 430.40625,
+          "bottom": 257.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "back"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.horizontal",
+        "box": {
+          "x": 323,
+          "y": 286.90625,
+          "width": 116.390625,
+          "height": 23,
+          "top": 286.90625,
+          "right": 439.390625,
+          "bottom": 309.90625,
+          "left": 323
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "horizontal"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.vertical",
+        "box": {
+          "x": 323,
+          "y": 309.90625,
+          "width": 98.75,
+          "height": 23,
+          "top": 309.90625,
+          "right": 421.75,
+          "bottom": 332.90625,
+          "left": 323
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "vertical"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90cw",
+        "box": {
+          "x": 323,
+          "y": 332.90625,
+          "width": 116.46875,
+          "height": 23,
+          "top": 332.90625,
+          "right": 439.46875,
+          "bottom": 355.90625,
+          "left": 323
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90cw"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90ccw",
+        "box": {
+          "x": 323,
+          "y": 355.90625,
+          "width": 124.171875,
+          "height": 23,
+          "top": 355.90625,
+          "right": 447.171875,
+          "bottom": 378.90625,
+          "left": 323
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90ccw"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.180",
+        "box": {
+          "x": 323,
+          "y": 378.90625,
+          "width": 99.734375,
+          "height": 23,
+          "top": 378.90625,
+          "right": 422.734375,
+          "bottom": 401.90625,
+          "left": 323
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "180"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.group",
+        "box": {
+          "x": 323,
+          "y": 410.90625,
+          "width": 69.0625,
+          "height": 23,
+          "top": 410.90625,
+          "right": 392.0625,
+          "bottom": 433.90625,
+          "left": 323
+        },
+        "command": "draw.group.create",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.ungroup",
+        "box": {
+          "x": 323,
+          "y": 433.90625,
+          "width": 84.09375,
+          "height": 23,
+          "top": 433.90625,
+          "right": 407.09375,
+          "bottom": 456.90625,
+          "left": 323
+        },
+        "command": "draw.group.delete",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.flatten",
+        "box": {
+          "x": 323,
+          "y": 465.90625,
+          "width": 72.078125,
+          "height": 23,
+          "top": 465.90625,
+          "right": 395.078125,
+          "bottom": 488.90625,
+          "left": 323
+        },
+        "command": "draw.flatten.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.optimize",
+        "box": {
+          "x": 323,
+          "y": 488.90625,
+          "width": 85.03125,
+          "height": 23,
+          "top": 488.90625,
+          "right": 408.03125,
+          "bottom": 511.90625,
+          "left": 323
+        },
+        "command": "draw.optimize.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.smooth",
+        "box": {
+          "x": 323,
+          "y": 511.90625,
+          "width": 78.109375,
+          "height": 23,
+          "top": 511.90625,
+          "right": 401.109375,
+          "bottom": 534.90625,
+          "left": 323
+        },
+        "command": "draw.smooth.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.centreLine",
+        "box": {
+          "x": 323,
+          "y": 534.90625,
+          "width": 284.140625,
+          "height": 23,
+          "top": 534.90625,
+          "right": 607.140625,
+          "bottom": 557.90625,
+          "left": 323
+        },
+        "command": "draw.centreLine.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.linesToBrush",
+        "box": {
+          "x": 323,
+          "y": 557.90625,
+          "width": 161.828125,
+          "height": 23,
+          "top": 557.90625,
+          "right": 484.828125,
+          "bottom": 580.90625,
+          "left": 323
+        },
+        "command": "draw.linesToBrush.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.breakApart",
+        "box": {
+          "x": 323,
+          "y": 589.90625,
+          "width": 126.25,
+          "height": 23,
+          "top": 589.90625,
+          "right": 449.25,
+          "bottom": 612.90625,
+          "left": 323
+        },
+        "command": "draw.breakApart.apply",
+        "params": {}
+      }
+    ],
+    "area": {
+      "w": 785,
+      "h": 500
+    }
+  },
+  "bottom": {
+    "menu": {
+      "x": 318,
+      "y": 4,
+      "width": 309.140625,
+      "height": 492,
+      "top": 4,
+      "right": 627.140625,
+      "bottom": 496,
+      "left": 318
+    },
+    "list": {
+      "x": 323,
+      "y": 21.90625,
+      "width": 299.140625,
+      "height": 456.1875,
+      "top": 21.90625,
+      "right": 622.140625,
+      "bottom": 478.09375,
+      "left": 323
+    },
+    "arrows": [
+      {
+        "box": {
+          "x": 323,
+          "y": 9,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 9,
+          "right": 622.140625,
+          "bottom": 21.90625,
+          "left": 323
+        }
+      },
+      {
+        "box": {
+          "x": 323,
+          "y": 478.09375,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 478.09375,
+          "right": 622.140625,
+          "bottom": 491,
+          "left": 323
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "drawingView.drawingMenu.cut",
+        "box": {
+          "x": 323,
+          "y": -113.09375,
+          "width": 52.8125,
+          "height": 23,
+          "top": -113.09375,
+          "right": 375.8125,
+          "bottom": -90.09375,
+          "left": 323
+        },
+        "command": "edit.cut",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.copy",
+        "box": {
+          "x": 323,
+          "y": -90.09375,
+          "width": 62.609375,
+          "height": 23,
+          "top": -90.09375,
+          "right": 385.609375,
+          "bottom": -67.09375,
+          "left": 323
+        },
+        "command": "edit.copy",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.paste",
+        "box": {
+          "x": 323,
+          "y": -67.09375,
+          "width": 190.171875,
+          "height": 23,
+          "top": -67.09375,
+          "right": 513.171875,
+          "bottom": -44.09375,
+          "left": 323
+        },
+        "command": "edit.paste",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.selectAll",
+        "box": {
+          "x": 323,
+          "y": -44.09375,
+          "width": 85.3125,
+          "height": 23,
+          "top": -44.09375,
+          "right": 408.3125,
+          "bottom": -21.09375,
+          "left": 323
+        },
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.deselectAll",
+        "box": {
+          "x": 323,
+          "y": -21.09375,
+          "width": 99.828125,
+          "height": 23,
+          "top": -21.09375,
+          "right": 422.828125,
+          "bottom": 1.90625,
+          "left": 323
+        },
+        "command": "edit.deselectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.front",
+        "box": {
+          "x": 323,
+          "y": 30.90625,
+          "width": 112.53125,
+          "height": 23,
+          "top": 30.90625,
+          "right": 435.53125,
+          "bottom": 53.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "front"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.forward",
+        "box": {
+          "x": 323,
+          "y": 53.90625,
+          "width": 113.375,
+          "height": 23,
+          "top": 53.90625,
+          "right": 436.375,
+          "bottom": 76.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "forward"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.backward",
+        "box": {
+          "x": 323,
+          "y": 76.90625,
+          "width": 120,
+          "height": 23,
+          "top": 76.90625,
+          "right": 443,
+          "bottom": 99.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "backward"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.back",
+        "box": {
+          "x": 323,
+          "y": 99.90625,
+          "width": 107.40625,
+          "height": 23,
+          "top": 99.90625,
+          "right": 430.40625,
+          "bottom": 122.90625,
+          "left": 323
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "back"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.horizontal",
+        "box": {
+          "x": 323,
+          "y": 151.90625,
+          "width": 116.390625,
+          "height": 23,
+          "top": 151.90625,
+          "right": 439.390625,
+          "bottom": 174.90625,
+          "left": 323
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "horizontal"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.vertical",
+        "box": {
+          "x": 323,
+          "y": 174.90625,
+          "width": 98.75,
+          "height": 23,
+          "top": 174.90625,
+          "right": 421.75,
+          "bottom": 197.90625,
+          "left": 323
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "vertical"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90cw",
+        "box": {
+          "x": 323,
+          "y": 197.90625,
+          "width": 116.46875,
+          "height": 23,
+          "top": 197.90625,
+          "right": 439.46875,
+          "bottom": 220.90625,
+          "left": 323
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90cw"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90ccw",
+        "box": {
+          "x": 323,
+          "y": 220.90625,
+          "width": 124.171875,
+          "height": 23,
+          "top": 220.90625,
+          "right": 447.171875,
+          "bottom": 243.90625,
+          "left": 323
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90ccw"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.180",
+        "box": {
+          "x": 323,
+          "y": 243.90625,
+          "width": 99.734375,
+          "height": 23,
+          "top": 243.90625,
+          "right": 422.734375,
+          "bottom": 266.90625,
+          "left": 323
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "180"
+        }
+      },
+      {
+        "id": "drawingView.drawingMenu.group",
+        "box": {
+          "x": 323,
+          "y": 275.90625,
+          "width": 69.0625,
+          "height": 23,
+          "top": 275.90625,
+          "right": 392.0625,
+          "bottom": 298.90625,
+          "left": 323
+        },
+        "command": "draw.group.create",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.ungroup",
+        "box": {
+          "x": 323,
+          "y": 298.90625,
+          "width": 84.09375,
+          "height": 23,
+          "top": 298.90625,
+          "right": 407.09375,
+          "bottom": 321.90625,
+          "left": 323
+        },
+        "command": "draw.group.delete",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.flatten",
+        "box": {
+          "x": 323,
+          "y": 330.90625,
+          "width": 72.078125,
+          "height": 23,
+          "top": 330.90625,
+          "right": 395.078125,
+          "bottom": 353.90625,
+          "left": 323
+        },
+        "command": "draw.flatten.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.optimize",
+        "box": {
+          "x": 323,
+          "y": 353.90625,
+          "width": 85.03125,
+          "height": 23,
+          "top": 353.90625,
+          "right": 408.03125,
+          "bottom": 376.90625,
+          "left": 323
+        },
+        "command": "draw.optimize.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.smooth",
+        "box": {
+          "x": 323,
+          "y": 376.90625,
+          "width": 78.109375,
+          "height": 23,
+          "top": 376.90625,
+          "right": 401.109375,
+          "bottom": 399.90625,
+          "left": 323
+        },
+        "command": "draw.smooth.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.centreLine",
+        "box": {
+          "x": 323,
+          "y": 399.90625,
+          "width": 284.140625,
+          "height": 23,
+          "top": 399.90625,
+          "right": 607.140625,
+          "bottom": 422.90625,
+          "left": 323
+        },
+        "command": "draw.centreLine.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.linesToBrush",
+        "box": {
+          "x": 323,
+          "y": 422.90625,
+          "width": 161.828125,
+          "height": 23,
+          "top": 422.90625,
+          "right": 484.828125,
+          "bottom": 445.90625,
+          "left": 323
+        },
+        "command": "draw.linesToBrush.apply",
+        "params": {}
+      },
+      {
+        "id": "drawingView.drawingMenu.breakApart",
+        "box": {
+          "x": 323,
+          "y": 454.90625,
+          "width": 126.25,
+          "height": 23,
+          "top": 454.90625,
+          "right": 449.25,
+          "bottom": 477.90625,
+          "left": 323
+        },
+        "command": "draw.breakApart.apply",
+        "params": {}
+      }
+    ],
+    "area": {
+      "w": 785,
+      "h": 500
+    }
+  }
+}

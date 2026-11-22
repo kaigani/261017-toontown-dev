@@ -1,0 +1,829 @@
+[
+  {
+    "check": "project.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the Camera view's mapping of Bob's drawing",
+    "ok": true,
+    "detail": [
+      1.5999999999999999,
+      0.0,
+      0.0,
+      -1.5999999999999999,
+      457.0,
+      232.5
+    ]
+  },
+  {
+    "check": "the Camera view's canvas is found in the window capture",
+    "ok": true,
+    "detail": [
+      49,
+      136,
+      914,
+      465
+    ]
+  },
+  {
+    "check": "the agent session's id is known",
+    "ok": true,
+    "detail": {
+      "mode": "os",
+      "agent": "s1-ff36df"
+    }
+  },
+  {
+    "check": "the OS drag lands in the application window",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "while the user's drag is pressed the window reports the gesture as the modal state",
+    "ok": true,
+    "detail": {
+      "kind": "gesture",
+      "title": "transform"
+    }
+  },
+  {
+    "check": "the modal state names the acting tool, the Transform scene tool",
+    "ok": true,
+    "detail": {
+      "kind": "gesture",
+      "title": "transform"
+    }
+  },
+  {
+    "check": "E1: the agent's change during the user's drag succeeds",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "E1: the agent's change was sent while pressed and answered after the release",
+    "ok": true,
+    "detail": {
+      "press": 418302.1540847,
+      "send": 418302.5971623,
+      "release": 418303.6545584,
+      "answer": 418303.6723937
+    }
+  },
+  {
+    "check": "the agent's change advanced the document",
+    "ok": true,
+    "detail": {
+      "before": 5,
+      "after": 7
+    }
+  },
+  {
+    "check": "the user's drag is one undo step and the agent's step follows it",
+    "ok": true,
+    "detail": [
+      [
+        "u-5",
+        "Move Element",
+        "user",
+        null
+      ],
+      [
+        "u-6",
+        "Move Element",
+        "agent",
+        "s1-ff36df"
+      ]
+    ]
+  },
+  {
+    "check": "the OS drag lands in the application window",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the user's later drag is a step after the agent's",
+    "ok": true,
+    "detail": [
+      [
+        "u-5",
+        "Move Element",
+        "user",
+        null
+      ],
+      [
+        "u-6",
+        "Move Element",
+        "agent",
+        "s1-ff36df"
+      ],
+      [
+        "u-7",
+        "Move Element",
+        "user",
+        null
+      ]
+    ]
+  },
+  {
+    "check": "E2: undo ifTop answers undo.notTop naming the user's later step",
+    "ok": true,
+    "detail": {
+      "code": "undo.notTop",
+      "message": "step `u-6` is not the most recent step",
+      "details": {
+        "ifTop": "u-6",
+        "top": {
+          "stepId": "u-7",
+          "label": "Move Element",
+          "origin": "user"
+        }
+      }
+    }
+  },
+  {
+    "check": "the user's later step survives: the three steps in order, none undone",
+    "ok": true,
+    "detail": [
+      [
+        "u-5",
+        "Move Element",
+        "user",
+        null
+      ],
+      [
+        "u-6",
+        "Move Element",
+        "agent",
+        "s1-ff36df"
+      ],
+      [
+        "u-7",
+        "Move Element",
+        "user",
+        null
+      ]
+    ]
+  },
+  {
+    "check": "the activity log records the agent's change (ok) and the refused undo (error)",
+    "ok": true,
+    "detail": {
+      "change": [
+        {
+          "seq": 23,
+          "time": "2026-11-16T03:46:03.597Z",
+          "sessionId": "s1-ff36df",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "anim.transform.set",
+          "params": {
+            "nodeIds": [
+              "el_01K7JJN8005B47HZS86WSCCX2S"
+            ],
+            "target": "static",
+            "position": {
+              "x": 0.5,
+              "y": 0
+            }
+          },
+          "status": "ok",
+          "undoStepId": "u-6",
+          "changedCount": 1,
+          "documentRev": 7,
+          "durationMs": 1072
+        }
+      ],
+      "undo": [
+        {
+          "seq": 27,
+          "time": "2026-11-16T03:46:07.028Z",
+          "sessionId": "s1-ff36df",
+          "client": "mcp",
+          "tool": "run_command",
+          "commandId": "edit.undo",
+          "params": {
+            "ifTop": "u-6"
+          },
+          "status": "error",
+          "errorCode": "undo.notTop",
+          "undoStepId": null,
+          "changedCount": 0,
+          "documentRev": 8,
+          "durationMs": 0
+        }
+      ]
+    }
+  },
+  {
+    "check": "the OS drag lands in the application window",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "E1: held past waitForUserMs, the agent's change fails ui.busy",
+    "ok": true,
+    "detail": {
+      "code": "ui.busy",
+      "message": "the user is busy (gesture \u201ctransform\u201d); the agent's change waited and gave up",
+      "details": {
+        "blockedBy": {
+          "kind": "gesture",
+          "title": "transform"
+        },
+        "waitedMs": 10000
+      },
+      "hint": "retry when the user is done; app.state.get reports `modal`"
+    }
+  },
+  {
+    "check": "E1: the ui.busy answer comes while the user still holds the press",
+    "ok": true,
+    "detail": {
+      "press": 418307.4675509,
+      "send": 418307.9284645,
+      "answer": 418317.9316424,
+      "release": 418320.96784
+    }
+  },
+  {
+    "check": "the user's long drag commits its one step",
+    "ok": true,
+    "detail": [
+      [
+        "u-8",
+        "Move Element",
+        "user",
+        null
+      ]
+    ]
+  },
+  {
+    "check": "busy note section 2 queries never blocked cameraView",
+    "ok": true,
+    "detail": {
+      "press": 418323.9709983,
+      "release": 418326.7713168
+    }
+  },
+  {
+    "check": "11:586 waiting calls succeed cameraView read",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "11:586 busy mutation waits cameraView queue",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "11:586 waiting calls succeed cameraView queue",
+    "ok": true,
+    "detail": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN8005B47HZS86WSCCX2S"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+            "type": "element",
+            "op": "modified",
+            "rev": 12,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.7,
+                "oldValue": 1.0
+              },
+              {
+                "op": "replace",
+                "path": "/transform/offset/y",
+                "value": 0.0,
+                "oldValue": 0.2916666666666667
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-11",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 12
+      },
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN8005B47HZS86WSCCX2S"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+            "type": "element",
+            "op": "modified",
+            "rev": 13,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.9,
+                "oldValue": 0.7
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-12",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 13
+      }
+    ]
+  },
+  {
+    "check": "busy note section 5 no reorder queued positions .7 then .9 cameraView",
+    "ok": true,
+    "detail": {
+      "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+      "type": "element",
+      "rev": 13,
+      "name": "Bob",
+      "path": "scene:\"Scene-1\"/element:\"Bob\"",
+      "elementType": "drawing",
+      "loops": 1,
+      "loopType": "count",
+      "positionLoop": "cycle",
+      "role": "normal",
+      "deformable": false,
+      "visibleInScene": true,
+      "visibleInXsheet": true,
+      "locked": false,
+      "collapsed": false,
+      "markerColour": null,
+      "backgroundColour": null,
+      "columnWidth": 80,
+      "drawingBankId": "db_01K7JJN8014N93GJ8PMP2KDQ37",
+      "exposure": [
+        [
+          "dr_01K7JJN800F7S2J20QAYWDHYRE",
+          24
+        ]
+      ],
+      "transform": {
+        "offset": {
+          "x": 0.9,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation": 0.0,
+        "skew": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "keepProportions": false,
+        "rotationPivot": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "scalePivot": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotateAboutPivot": false,
+        "lockDepth": false,
+        "orientToPath": false
+      },
+      "channels": {
+        "position": {
+          "id": "ch_01K7JJN8018EAEX4F47FFBRQ1V",
+          "type": "channel",
+          "name": "position"
+        }
+      },
+      "createdAt": "2026-11-16T03:46:00.544Z"
+    }
+  },
+  {
+    "check": "11:586 busy mutation waits cameraView escape",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "11:586 waiting calls succeed cameraView escape",
+    "ok": true,
+    "detail": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN8005B47HZS86WSCCX2S"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+            "type": "element",
+            "op": "modified",
+            "rev": 14,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.8,
+                "oldValue": 0.9
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-13",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 14
+      }
+    ]
+  },
+  {
+    "check": "11:586 waiting calls succeed cameraView pointer",
+    "ok": true,
+    "detail": [
+      {
+        "status": "ok",
+        "result": {
+          "commands": [
+            {
+              "commandId": "edit.selection.set",
+              "params": {
+                "context": "staging",
+                "ids": [],
+                "mode": "replace"
+              },
+              "envelope": {
+                "status": "ok",
+                "result": {
+                  "context": "staging",
+                  "ids": []
+                },
+                "changes": [],
+                "warnings": [],
+                "documentRev": 15
+              }
+            }
+          ],
+          "hover": {
+            "viewId": "cameraView",
+            "view": {
+              "x": 120.0,
+              "y": 110.0
+            },
+            "drawing": {
+              "x": -476.04166666666765,
+              "y": 123.02083333333331
+            },
+            "objects": []
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 15
+      }
+    ]
+  },
+  {
+    "check": "busy note section 2 queries never blocked drawingView",
+    "ok": true,
+    "detail": {
+      "press": 418345.6712042,
+      "release": 418348.4715193
+    }
+  },
+  {
+    "check": "11:586 waiting calls succeed drawingView read",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "11:586 busy mutation waits drawingView queue",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "11:586 waiting calls succeed drawingView queue",
+    "ok": true,
+    "detail": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN8005B47HZS86WSCCX2S"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+            "type": "element",
+            "op": "modified",
+            "rev": 18,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.7,
+                "oldValue": 1.05
+              },
+              {
+                "op": "replace",
+                "path": "/transform/offset/y",
+                "value": 0.0,
+                "oldValue": 0.14583333333333334
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-17",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 18
+      },
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN8005B47HZS86WSCCX2S"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+            "type": "element",
+            "op": "modified",
+            "rev": 19,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.9,
+                "oldValue": 0.7
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-18",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 19
+      }
+    ]
+  },
+  {
+    "check": "busy note section 5 no reorder queued positions .7 then .9 drawingView",
+    "ok": true,
+    "detail": {
+      "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+      "type": "element",
+      "rev": 19,
+      "name": "Bob",
+      "path": "scene:\"Scene-1\"/element:\"Bob\"",
+      "elementType": "drawing",
+      "loops": 1,
+      "loopType": "count",
+      "positionLoop": "cycle",
+      "role": "normal",
+      "deformable": false,
+      "visibleInScene": true,
+      "visibleInXsheet": true,
+      "locked": false,
+      "collapsed": false,
+      "markerColour": null,
+      "backgroundColour": null,
+      "columnWidth": 80,
+      "drawingBankId": "db_01K7JJN8014N93GJ8PMP2KDQ37",
+      "exposure": [
+        [
+          "dr_01K7JJN800F7S2J20QAYWDHYRE",
+          24
+        ]
+      ],
+      "transform": {
+        "offset": {
+          "x": 0.9,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation": 0.0,
+        "skew": 0.0,
+        "scale": {
+          "x": 1.0,
+          "y": 1.0
+        },
+        "keepProportions": false,
+        "rotationPivot": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "scalePivot": {
+          "x": 0.0,
+          "y": 0.0
+        },
+        "rotateAboutPivot": false,
+        "lockDepth": false,
+        "orientToPath": false
+      },
+      "channels": {
+        "position": {
+          "id": "ch_01K7JJN8018EAEX4F47FFBRQ1V",
+          "type": "channel",
+          "name": "position"
+        }
+      },
+      "createdAt": "2026-11-16T03:46:00.544Z"
+    }
+  },
+  {
+    "check": "11:586 busy mutation waits drawingView escape",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "11:586 waiting calls succeed drawingView escape",
+    "ok": true,
+    "detail": [
+      {
+        "status": "ok",
+        "result": {
+          "nodeIds": [
+            "el_01K7JJN8005B47HZS86WSCCX2S"
+          ],
+          "keyedChannels": [],
+          "warnings": []
+        },
+        "changes": [
+          {
+            "id": "el_01K7JJN8005B47HZS86WSCCX2S",
+            "type": "element",
+            "op": "modified",
+            "rev": 20,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/transform/offset/x",
+                "value": 0.8,
+                "oldValue": 0.9
+              }
+            ]
+          }
+        ],
+        "undo": {
+          "stepId": "u-19",
+          "label": "Move Element"
+        },
+        "warnings": [],
+        "documentRev": 20
+      }
+    ]
+  },
+  {
+    "check": "11:586 waiting calls succeed drawingView pointer",
+    "ok": true,
+    "detail": [
+      {
+        "status": "ok",
+        "result": {
+          "commands": [
+            {
+              "commandId": "draw.stroke.add",
+              "params": {
+                "kind": "brush",
+                "points": [
+                  {
+                    "x": -584.1666666666667,
+                    "y": 362.50000000000006,
+                    "pressure": 1.0
+                  },
+                  {
+                    "x": -550.8333333333334,
+                    "y": 345.83333333333337,
+                    "pressure": 1.0
+                  }
+                ],
+                "fit": true,
+                "penId": "pen_01M7H7CDNMT1W068J2SGEZFQ21",
+                "colourId": "col_01M7H7CDNKH82R9EYTWTQ8ZXVY",
+                "layer": "auto",
+                "symmetry": true
+              },
+              "envelope": {
+                "status": "ok",
+                "result": {
+                  "drawingId": "dr_01K7JJN800F7S2J20QAYWDHYRE",
+                  "createdDrawing": false,
+                  "strokeIds": [
+                    "st_01K7JJN800ZG7WW7TNYR99DWWH"
+                  ],
+                  "zoneIds": [],
+                  "layerId": "nd_01K7JJN801KVM9SNE941Q3PGPB",
+                  "createdIds": [
+                    "st_01K7JJN800ZG7WW7TNYR99DWWH",
+                    "nd_01K7JJN801KVM9SNE941Q3PGPB"
+                  ],
+                  "modifiedIds": [],
+                  "removedIds": [],
+                  "rev": 22,
+                  "hints": []
+                },
+                "changes": [
+                  {
+                    "id": "dr_01K7JJN800F7S2J20QAYWDHYRE/st_01K7JJN800ZG7WW7TNYR99DWWH",
+                    "type": "stroke",
+                    "op": "created",
+                    "rev": 22,
+                    "parentId": "dr_01K7JJN800F7S2J20QAYWDHYRE/nd_01K7JJN801KVM9SNE941Q3PGPB",
+                    "index": 0
+                  },
+                  {
+                    "id": "dr_01K7JJN800F7S2J20QAYWDHYRE/nd_01K7JJN801KVM9SNE941Q3PGPB",
+                    "type": "drawingNode",
+                    "op": "created",
+                    "rev": 22,
+                    "parentId": "dr_01K7JJN800F7S2J20QAYWDHYRE",
+                    "index": 4
+                  },
+                  {
+                    "id": "dr_01K7JJN800F7S2J20QAYWDHYRE",
+                    "type": "drawing",
+                    "op": "modified",
+                    "rev": 22,
+                    "patch": [
+                      {
+                        "op": "add",
+                        "path": "/nodes/4",
+                        "value": {
+                          "id": "nd_01K7JJN801KVM9SNE941Q3PGPB",
+                          "type": "drawingNode"
+                        }
+                      }
+                    ]
+                  }
+                ],
+                "undo": {
+                  "stepId": "u-21",
+                  "label": "Brush Tool"
+                },
+                "warnings": [],
+                "documentRev": 22
+              }
+            }
+          ],
+          "hover": {
+            "viewId": "drawingView",
+            "view": {
+              "x": 120.0,
+              "y": 110.0
+            },
+            "drawing": {
+              "x": -550.8333333333334,
+              "y": 345.83333333333337
+            },
+            "objects": [
+              {
+                "elementId": "el_01K7JJN8005B47HZS86WSCCX2S",
+                "drawingId": "dr_01K7JJN800F7S2J20QAYWDHYRE",
+                "layerId": "nd_01K7JJN801KVM9SNE941Q3PGPB",
+                "objectId": "st_01K7JJN800ZG7WW7TNYR99DWWH",
+                "kind": "brush",
+                "colourId": "col_01M7H7CDNKH82R9EYTWTQ8ZXVY"
+              }
+            ]
+          }
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 22
+      }
+    ]
+  }
+]

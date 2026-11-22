@@ -4,6 +4,27 @@ import { createMockTransport } from './mockTransport';
 import { createTauriTransport, isTauriRuntime } from './tauriTransport';
 
 export { createHostApi, HostError, MENU_COMMAND_EVENT, toHostError, type HostApi } from './hostApi';
+export {
+  createEngineApi,
+  ENGINE_EVENT,
+  GENERATION_EVENT,
+  isCancelled,
+  isRestarted,
+  localFailure,
+  paramProblems,
+  type AgentInput,
+  type CommandFailure,
+  type EngineApi,
+  type EngineEvent,
+  type Envelope,
+  type KeyOutcome,
+  type PickRequest,
+  type RunOptions,
+  type Running,
+  type ShellReport,
+  type TokenDelivery,
+  type TokenRect,
+} from './engine';
 export { createMockTransport, MOCK_ENGINE_INFO, type MockTransport } from './mockTransport';
 export type { SpikeApi } from './spikeApi';
 export type { HostTransport, Unlisten } from './transport';

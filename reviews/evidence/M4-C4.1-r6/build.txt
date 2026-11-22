@@ -1,0 +1,2 @@
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\desktop\src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 7.21s

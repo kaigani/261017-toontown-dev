@@ -1,0 +1,762 @@
+{
+  "before": [
+    {
+      "drawingId": "dr_01K7JJN800C6XQVR7CF2HXWHS4",
+      "elementId": "el_01K7JJN800X28VAYKG4JB48KDJ",
+      "name": "1",
+      "rev": 15,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -124.0,
+        "y": -94.0,
+        "width": 248.0,
+        "height": 188.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801ZXJ7J9YWGTB9K0J8",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800C6YNAG5P0VY2NDY2",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                }
+              ],
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -94.0,
+                "width": 248.0,
+                "height": 188.0
+              },
+              "leftZoneId": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800C6YNAG5P0VY2NDY2"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 43200,
+              "bounds": {
+                "x": -120,
+                "y": -90,
+                "width": 240,
+                "height": 180
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -77.1484375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "drawingId": "dr_01K7JJN800C6XQVR7CF2HXWHS4",
+      "elementId": "el_01K7JJN800X28VAYKG4JB48KDJ",
+      "name": "1",
+      "rev": 15,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -124.0,
+        "y": -94.0,
+        "width": 248.0,
+        "height": 188.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801ZXJ7J9YWGTB9K0J8",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800C6YNAG5P0VY2NDY2",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                }
+              ],
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -94.0,
+                "width": 248.0,
+                "height": 188.0
+              },
+              "leftZoneId": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800C6YNAG5P0VY2NDY2"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 43200,
+              "bounds": {
+                "x": -120,
+                "y": -90,
+                "width": 240,
+                "height": 180
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -77.1484375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "drawingId": "dr_01K7JJN800C6XQVR7CF2HXWHS4",
+      "elementId": "el_01K7JJN800X28VAYKG4JB48KDJ",
+      "name": "1",
+      "rev": 15,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -124.0,
+        "y": -94.0,
+        "width": 248.0,
+        "height": 188.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801ZXJ7J9YWGTB9K0J8",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800C6YNAG5P0VY2NDY2",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                }
+              ],
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -94.0,
+                "width": 248.0,
+                "height": 188.0
+              },
+              "leftZoneId": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800C6YNAG5P0VY2NDY2"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 43200,
+              "bounds": {
+                "x": -120,
+                "y": -90,
+                "width": 240,
+                "height": 180
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -77.1484375
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "after": [
+    {
+      "drawingId": "dr_01K7JJN800C6XQVR7CF2HXWHS4",
+      "elementId": "el_01K7JJN800X28VAYKG4JB48KDJ",
+      "name": "1",
+      "rev": 41,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -124.0,
+        "y": -94.0,
+        "width": 248.0,
+        "height": 188.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801ZXJ7J9YWGTB9K0J8",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800C6YNAG5P0VY2NDY2",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                }
+              ],
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -94.0,
+                "width": 248.0,
+                "height": 188.0
+              },
+              "leftZoneId": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800C6YNAG5P0VY2NDY2"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 43200,
+              "bounds": {
+                "x": -120,
+                "y": -90,
+                "width": 240,
+                "height": 180
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -77.1484375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "drawingId": "dr_01K7JJN800C6XQVR7CF2HXWHS4",
+      "elementId": "el_01K7JJN800X28VAYKG4JB48KDJ",
+      "name": "1",
+      "rev": 41,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -124.0,
+        "y": -94.0,
+        "width": 248.0,
+        "height": 188.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801ZXJ7J9YWGTB9K0J8",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800C6YNAG5P0VY2NDY2",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                }
+              ],
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -94.0,
+                "width": 248.0,
+                "height": 188.0
+              },
+              "leftZoneId": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800C6YNAG5P0VY2NDY2"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 43200,
+              "bounds": {
+                "x": -120,
+                "y": -90,
+                "width": 240,
+                "height": 180
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -77.1484375
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "drawingId": "dr_01K7JJN800C6XQVR7CF2HXWHS4",
+      "elementId": "el_01K7JJN800X28VAYKG4JB48KDJ",
+      "name": "1",
+      "rev": 41,
+      "locked": false,
+      "space": {
+        "units": "du",
+        "duPerField": 100,
+        "yAxis": "up",
+        "origin": "drawingCentre"
+      },
+      "pivot": {
+        "x": 0.0,
+        "y": 0.0
+      },
+      "bounds": {
+        "x": -124.0,
+        "y": -94.0,
+        "width": 248.0,
+        "height": 188.0
+      },
+      "nodes": [
+        {
+          "type": "layer",
+          "id": "nd_01K7JJN801ZXJ7J9YWGTB9K0J8",
+          "layerKind": "pencil",
+          "strokes": [
+            {
+              "type": "stroke",
+              "id": "st_01K7JJN800C6YNAG5P0VY2NDY2",
+              "kind": "pencil",
+              "closed": true,
+              "bezier": [
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": -90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": 120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": 90.0
+                },
+                {
+                  "x": -120.0,
+                  "y": -90.0
+                }
+              ],
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "lineStyle": {
+                "thickness": 8.0,
+                "lineType": "solid"
+              },
+              "pressure": null,
+              "bounds": {
+                "x": -124.0,
+                "y": -94.0,
+                "width": 248.0,
+                "height": 188.0
+              },
+              "leftZoneId": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "rightZoneId": null
+            }
+          ],
+          "zones": [
+            {
+              "type": "zone",
+              "id": "zn_4ZRJD0X1ZMF7KHETYXP2EW3M2V",
+              "colourId": "col_01M7H6Y1KCVCMDFP01J70NWT24",
+              "textureMatrix": null,
+              "boundaryStrokeIds": [
+                "st_01K7JJN800C6YNAG5P0VY2NDY2"
+              ],
+              "holes": [],
+              "parentZoneId": null,
+              "area": 43200,
+              "bounds": {
+                "x": -120,
+                "y": -90,
+                "width": 240,
+                "height": 180
+              },
+              "interiorPoint": {
+                "x": 0,
+                "y": -77.1484375
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,143 @@
+//! M4 C4.4a kernel rules behind the panels (`reviews/M4-design-panels.md`).
+mod common;
+
+use common::*;
+use serde_json::{Value, json};
+
+fn current_brush(h: &tt_executor::ExecutorHandle) -> String {
+    let list = ok(h, "tool.pen.list", json!({ "type": "brush" }));
+    list["currentBrushPenId"].as_str().unwrap_or_default().to_owned()
+}
+
+fn pen_id(h: &tt_executor::ExecutorHandle, name: &str) -> String {
+    let list = ok(h, "tool.pen.list", json!({ "type": "brush" }));
+    let pens = list["pens"].as_array().cloned().unwrap_or_default();
+    let id = pens.iter().find(|p| p["name"] == name).and_then(|p| p["penId"].as_str()).unwrap_or_default().to_owned();
+    assert!(!id.is_empty(), "no pen {name}: {list}");
+    id
+}
+
+fn selected_events(rx: &std::sync::mpsc::Receiver<tt_executor::Event>) -> Vec<Value> {
+    rx.try_iter()
+        .filter(|e| e.name == "tool.pen.changed" && e.payload["change"] == "selected")
+        .map(|e| e.payload)
+        .collect()
+}
+
+/// SI-167 (design note 1 §3): deleting the current pen makes the next pen of its type current, else the previous, and
+/// announces it, so the Pen panel and the cursor follow; deleting another pen leaves the current one.
+#[test]
+fn deleting_the_current_pen_makes_the_next_one_current_and_says_so() {
+    let h = fixture();
+    let a =
+        ok(&h, "tool.pen.create", json!({ "type": "brush", "name": "Panel A" }))["penId"].as_str().unwrap().to_owned();
+    let b =
+        ok(&h, "tool.pen.create", json!({ "type": "brush", "name": "Panel B" }))["penId"].as_str().unwrap().to_owned();
+    ok(&h, "tool.pen.select", json!({ "penId": a }));
+    assert_eq!(current_brush(&h), a);
+    let rx = h.subscribe();
+    // A pen that is not current: the current one stays, nothing is selected.
+    let other = pen_id(&h, "Panel B");
+    assert_eq!(other, b);
+    ok(&h, "tool.pen.select", json!({ "penId": a }));
+    let _ = selected_events(&rx);
+    // The current pen deleted: the next of its type is current and announced.
+    let deleted = ok(&h, "tool.pen.delete", json!({ "penId": a }));
+    assert_eq!(deleted["currentPenId"], b, "{deleted}");
+    assert_eq!(current_brush(&h), b);
+    let ev = selected_events(&rx);
+    assert_eq!(ev.len(), 1, "{ev:?}");
+    assert_eq!(ev[0]["penId"], b);
+    // The last of the list deleted while current: the previous one is current.
+    let before_b = {
+        let list = ok(&h, "tool.pen.list", json!({ "type": "brush" }));
+        let ids: Vec<String> = list["pens"]
+            .as_array()
+            .unwrap()
+            .iter()
+            .filter_map(|p| p["penId"].as_str().or_else(|| p["id"].as_str()).map(str::to_owned))
+            .collect();
+        let at = ids.iter().position(|x| *x == b).unwrap();
+        assert_eq!(at + 1, ids.len(), "Panel B is the last brush pen");
+        ids[at - 1].clone()
+    };
+    ok(&h, "tool.pen.delete", json!({ "penId": b }));
+    assert_eq!(current_brush(&h), before_b);
+    assert_eq!(selected_events(&rx).iter().map(|e| e["penId"].clone()).collect::<Vec<_>>(), vec![json!(before_b)]);
+}
+
+/// Design note 1 §3: the Pen panel's Delete is disabled, with the reason, for the last pen of a type (`pen.lastPen` is
+/// the precheck's as well as the handler's), and enabled while another pen of the type exists.
+#[test]
+fn delete_is_unavailable_for_the_last_pen_of_a_type() {
+    let h = fixture();
+    ok(&h, "tool.pen.create", json!({ "type": "eraser", "name": "Second eraser" }));
+    let erasers: Vec<String> = ok(&h, "tool.pen.list", json!({ "type": "eraser" }))["pens"]
+        .as_array()
+        .unwrap()
+        .iter()
+        .map(|p| p["penId"].as_str().unwrap().to_owned())
+        .collect();
+    assert!(erasers.len() >= 2, "{erasers:?}");
+    let delete = |id: &str| {
+        let mut p = serde_json::Map::new();
+        p.insert("penId".into(), json!(id));
+        h.availability(vec![("tool.pen.delete".into(), p)]).unwrap().remove(0)
+    };
+    for id in &erasers[1..] {
+        assert!(delete(id).enabled, "another eraser exists");
+        ok(&h, "tool.pen.delete", json!({ "penId": id }));
+    }
+    let last = delete(&erasers[0]);
+    assert!(!last.enabled, "the last eraser pen cannot be deleted");
+    assert!(last.reason.as_deref().unwrap_or_default().contains("last eraser pen"), "{:?}", last.reason);
+    assert_eq!(err(&h, "tool.pen.delete", json!({ "penId": erasers[0] })).code, "pen.lastPen");
+}
+
+/// Design note 1 §2 (SI-166): a command that writes a preference stages it as `prefs.set` does and emits
+/// `prefs.changed` with its key, so a panel showing it follows an agent's change; the same value again emits nothing.
+#[test]
+fn preference_commands_announce_their_change() {
+    let h = fixture();
+    for (command, params, key) in [
+        ("colour.gapClosing.set", json!({ "mode": "medium" }), "paint.gapClosing"),
+        ("draw.inspectorPreview.set", json!({ "visible": false }), "drawing.inspectorPreview"),
+    ] {
+        let rx = h.subscribe();
+        ok(&h, command, params.clone());
+        let changed: Vec<Value> = rx.try_iter().filter(|e| e.name == "prefs.changed").map(|e| e.payload).collect();
+        assert_eq!(changed.len(), 1, "{command}: {changed:?}");
+        assert_eq!(changed[0]["keys"], json!([key]), "{command}");
+        ok(&h, command, params);
+        assert!(!rx.try_iter().any(|e| e.name == "prefs.changed"), "{command}: an unchanged value emits nothing");
+    }
+    assert_eq!(ok(&h, "colour.gapClosing.get", json!({}))["mode"], "medium");
+}
+
+/// SI-165 (D-40 answer 1): `tool.tablet.set` and the Tablet category's `prefs.set` write one state and raise the same
+/// event, so the Preferences dialog and an agent see the same tablet settings.
+#[test]
+fn the_tablet_command_and_the_tablet_preferences_are_one_state() {
+    let h = fixture();
+    let rx = h.subscribe();
+    let r = ok(&h, "tool.tablet.set", json!({ "ignoreTablet": true, "inputInterface": "alternative" }));
+    assert_eq!(r["restartRequired"], true, "{r}");
+    let ev: Vec<Value> = rx.try_iter().filter(|e| e.name == "prefs.changed").map(|e| e.payload).collect();
+    assert_eq!(ev.len(), 1, "{ev:?}");
+    let mut keys: Vec<String> =
+        ev[0]["keys"].as_array().unwrap().iter().map(|k| k.as_str().unwrap().to_owned()).collect();
+    keys.sort();
+    assert_eq!(keys, ["tablet.alternativeInput", "tablet.ignore"]);
+    let prefs = |k: &str| ok(&h, "prefs.get", json!({ "keys": [k] }))["values"][k].clone();
+    assert_eq!(prefs("tablet.ignore"), true);
+    assert_eq!(prefs("tablet.alternativeInput"), true);
+    assert_eq!(r["settings"]["inputInterface"], "alternative", "{r}");
+    // 01 §7.3 holds two interfaces: any other name is refused.
+    assert_eq!(err(&h, "tool.tablet.set", json!({ "inputInterface": "wintab" })).code, "arg.invalid");
+    // The other way: the preference written by `prefs.set` is the command's state.
+    ok(&h, "prefs.set", json!({ "values": { "tablet.portraitCorrection": true, "tablet.alternativeInput": false } }));
+    let tablet = ok(&h, "tool.settings.get", json!({}))["tablet"].clone();
+    assert_eq!(tablet["ignoreTablet"], true);
+    assert_eq!(tablet["portraitCorrection"], true);
+    assert_eq!(tablet["inputInterface"], Value::Null, "empty is the platform default: {tablet}");
+}

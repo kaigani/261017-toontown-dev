@@ -1,0 +1,36 @@
+{
+  "field": "pen.maxSize.field",
+  "opened": "a real click on the field",
+  "initial": "20",
+  "afterSelectAll": {
+    "value": "20",
+    "start": 0,
+    "end": 2,
+    "focused": true
+  },
+  "afterTyping": {
+    "value": "x",
+    "start": 1,
+    "end": 1,
+    "focused": true
+  },
+  "afterToolLetter": {
+    "value": "xb",
+    "start": 2,
+    "end": 2,
+    "focused": true
+  },
+  "afterUndo": {
+    "value": "x",
+    "start": 1,
+    "end": 1,
+    "focused": true
+  },
+  "selectAllSelects": true,
+  "typingReplaces": true,
+  "toolLetterTypes": true,
+  "undoLeavesDocument": true,
+  "historyBefore": 22,
+  "historyAfter": 22,
+  "ok": true
+}

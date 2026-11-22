@@ -1,0 +1,300 @@
+{
+  "checks": 18,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-keystone command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-keystone undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-keystone D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-keystone finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-keystone undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView independent preview Hausdorff within 1 view pixel",
+      "ok": true
+    },
+    {
+      "check": "drawingView missed press empties selection",
+      "ok": true
+    },
+    {
+      "check": "drawingView following marquee selects",
+      "ok": true
+    },
+    {
+      "check": "drawingView following corner works",
+      "ok": true
+    },
+    {
+      "check": "cameraView-keystone command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-keystone undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-keystone D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-keystone finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-keystone undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView independent preview Hausdorff within 1 view pixel",
+      "ok": true
+    },
+    {
+      "check": "cameraView missed press empties selection",
+      "ok": true
+    },
+    {
+      "check": "cameraView following marquee selects",
+      "ok": true
+    },
+    {
+      "check": "cameraView following corner works",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-keystone",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -45.5,
+                "y": -30.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800W2FT4C0ZKNNHMZC0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZE20FKFD3HW9YF11",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005AF8P4B9AXZH0FV6",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SQ781748WNR0ZQ15",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800W2FT4C0ZKNNHMZC0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZE20FKFD3HW9YF11",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005AF8P4B9AXZH0FV6",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800SQ781748WNR0ZQ15",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "000a0d7c1884b5e3b35b084ad7de1ec2217628b7a5974c3bb32d8483b93cc40c",
+      "afterSha256": "74b15af5d32db643f68ad1ec4639a468c2a3af848931b2b1498034f2c138d1de"
+    },
+    {
+      "name": "drawingView-keystone",
+      "commands": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -45.5,
+                "y": -30.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800ZBNSRZBMWVHWCFKJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006F8F9ESBY3TXZXQ2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800BAA9HEN03SZFE6ZB",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800RBFV9BJE8B89Y40E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800ZBNSRZBMWVHWCFKJ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8006F8F9ESBY3TXZXQ2",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800BAA9HEN03SZFE6ZB",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800RBFV9BJE8B89Y40E",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "143338d532b95acfb1cad63db140277873ce6d4cf52ffaf276f5ddd2670c4e98",
+      "afterSha256": "20e276724053d5a3faaace6504a80b1f20acdbf15ce6ce7fa617424106fc8b89"
+    }
+  ],
+  "measurements": [],
+  "canvases": [],
+  "captures": [
+    {
+      "name": "cameraView-committed.png",
+      "sha256": "d5166bb45c1ff53b9941672a864fea5e523a50041b76420c308aeffddda42185"
+    },
+    {
+      "name": "cameraView-held.png",
+      "sha256": "14f34501f144ad431a9581ea1ad404bbcef3ebf4ed96756fb85db3ab905382c3"
+    },
+    {
+      "name": "cameraView-keystone-committed.png",
+      "sha256": "d5166bb45c1ff53b9941672a864fea5e523a50041b76420c308aeffddda42185"
+    },
+    {
+      "name": "cameraView-keystone-held.png",
+      "sha256": "14f34501f144ad431a9581ea1ad404bbcef3ebf4ed96756fb85db3ab905382c3"
+    },
+    {
+      "name": "drawingView-committed.png",
+      "sha256": "78d5be679b331c1f21dfae44018e0ce65467871815194787b79f2e8bd3bd3ad0"
+    },
+    {
+      "name": "drawingView-held.png",
+      "sha256": "087a649786fc35a65133bcb4e7e24d9a053f2a2c69ccbee5424daf0461d8ea45"
+    },
+    {
+      "name": "drawingView-keystone-committed.png",
+      "sha256": "78d5be679b331c1f21dfae44018e0ce65467871815194787b79f2e8bd3bd3ad0"
+    },
+    {
+      "name": "drawingView-keystone-held.png",
+      "sha256": "9fc16c9b970c058de2a1ac7c4688ab474900c4aad4f7cb3b41154db29c9e807f"
+    }
+  ],
+  "transcriptSha256": "725566df9a8b59862119b671a28b46e18ccd00d366709e718d1fd5cf46663dd6",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-uwtttpat"
+}

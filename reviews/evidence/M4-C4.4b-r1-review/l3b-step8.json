@@ -1,0 +1,1 @@
+{"raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-vxjt12wv", "results": [{"check": "agent own validates", "ok": true}, {"check": "agent change validates", "ok": true}, {"check": "agent delete validates", "ok": true}, {"check": "agent undo validates", "ok": true}]}

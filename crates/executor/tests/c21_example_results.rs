@@ -105,6 +105,30 @@ fn every_implemented_example_has_a_retained_executed_result() {
     if recorded::recording() {
         let (second, failures) = execute_all();
         assert!(failures.is_empty(), "{}", failures.join("\n"));
+        // A regeneration changes only what the code changed (M4 C4.2a rounds 3 and 4): where two executions of the
+        // same code differ (generated ids, tokens, session ids) and at a timestamp key, the previously retained value is
+        // kept when the example is retained already. Every other varying pointer (platform, locale, path-dependent byte
+        // counts, font-dependent text bounds) is written fresh, so no semantic value hides behind a retained one.
+        let old = std::fs::read_to_string(results_file())
+            .ok()
+            .and_then(|t| serde_json::from_str::<Value>(&t).ok())
+            .unwrap_or(Value::Null);
+        let keep_retained = |id: &str, title: &str, fresh: &Value, second: &Value| -> Value {
+            let mut varies = Vec::new();
+            recorded::differences(fresh, second, "", &mut varies);
+            recorded::time_pointers(fresh, "", &mut varies);
+            let Some(prev) = old.get(id).and_then(Value::as_array).and_then(|l| l.iter().find(|r| r["title"] == title))
+            else {
+                return fresh.clone();
+            };
+            let mut merged = fresh.clone();
+            for at in &varies {
+                if let (Some(before), Some(slot)) = (prev["result"].pointer(at), merged.pointer_mut(at)) {
+                    *slot = before.clone();
+                }
+            }
+            merged
+        };
         let mut file = serde_json::Map::new();
         for (id, list) in &first {
             let items: Vec<Value> = list
@@ -117,7 +141,8 @@ fn every_implemented_example_has_a_retained_executed_result() {
                         assert_eq!(digest(a), digest(b), "{id} `{title}`: a digest needs a reproducible result");
                         json!({ "title": title, "resultDigest": digest(a), "varies": varies })
                     } else {
-                        json!({ "title": title, "result": a, "varies": varies })
+                        let result = keep_retained(id, title, a, b);
+                        json!({ "title": title, "result": result, "varies": varies })
                     }
                 })
                 .collect();

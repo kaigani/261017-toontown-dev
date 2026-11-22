@@ -143,6 +143,7 @@ fn exposure_step(cx: &mut Cx, p: &ExposureStepParams, add: bool) -> Result<Chang
 
 #[command(
     id = "cell.exposure.add",
+    precheck = precheck_exposure_add,
     kind = action,
     label = "Add exposure",
     scopes = [edit],
@@ -158,6 +159,7 @@ pub(crate) fn cell_exposure_add(cx: &mut Cx, p: ExposureStepParams) -> Result<Ch
 
 #[command(
     id = "cell.exposure.remove",
+    precheck = precheck_exposure_remove,
     kind = action,
     label = "Remove exposure",
     scopes = [edit],
@@ -190,6 +192,7 @@ pub(crate) struct ExposureSetParams {
 
 #[command(
     id = "cell.exposure.set",
+    precheck = precheck_exposure_set,
     kind = action,
     label = "Set exposure",
     scopes = [edit],
@@ -231,6 +234,7 @@ pub(crate) struct FillParams {
 
 #[command(
     id = "cell.fill.apply",
+    precheck = precheck_fill,
     kind = action,
     label = "Extend exposure",
     scopes = [edit],
@@ -292,6 +296,7 @@ const BLANKS: &[ElementType] =
 
 #[command(
     id = "cell.blank.add",
+    precheck = precheck_blank_add,
     kind = action,
     label = "Insert blank cell",
     scopes = [edit],
@@ -313,6 +318,7 @@ pub(crate) fn cell_blank_add(cx: &mut Cx, p: BlankParams) -> Result<ChangedResul
 
 #[command(
     id = "cell.blank.remove",
+    precheck = precheck_blank_remove,
     kind = action,
     label = "Delete blank cell",
     scopes = [edit],
@@ -393,6 +399,7 @@ pub(crate) struct RangeAddResult {
 
 #[command(
     id = "cell.range.add",
+    precheck = precheck_range_add,
     kind = action,
     label = "Insert cells",
     scopes = [edit],
@@ -543,6 +550,7 @@ pub(crate) struct RangeDeleteParams {
 
 #[command(
     id = "cell.range.delete",
+    precheck = precheck_range_delete,
     kind = action,
     label = "Delete cells",
     scopes = [edit],
@@ -936,6 +944,7 @@ pub(crate) struct LabelResult {
 
 #[command(
     id = "cell.label.set",
+    precheck = precheck_label,
     kind = action,
     label = "Change label",
     scopes = [edit],
@@ -1069,6 +1078,7 @@ pub(crate) struct DrawingResult {
 
 #[command(
     id = "cell.drawing.duplicate",
+    precheck = precheck_drawing_duplicate,
     kind = action,
     label = "Duplicate drawing",
     scopes = [edit],
@@ -1179,6 +1189,7 @@ pub(crate) struct WindowResult {
 
 #[command(
     id = "cell.cycle.create",
+    precheck = precheck_cycle_create,
     kind = action,
     label = "Create cycle",
     scopes = [edit],
@@ -1303,6 +1314,7 @@ pub(crate) struct ColumnateResult {
 
 #[command(
     id = "cell.columnate.apply",
+    precheck = precheck_columnate,
     kind = action,
     label = "Columnate",
     scopes = [edit],
@@ -1511,6 +1523,7 @@ pub(crate) struct ClipboardSetResult {
 
 #[command(
     id = "cell.clipboard.set",
+    precheck = precheck_clipboard_set,
     kind = action,
     label = "Copy cells",
     scopes = [edit],
@@ -1621,6 +1634,7 @@ pub(crate) struct ClipboardApplyResult {
 
 #[command(
     id = "cell.clipboard.apply",
+    precheck = precheck_clipboard_apply,
     kind = action,
     label = "Paste cells",
     scopes = [edit],
@@ -2006,4 +2020,240 @@ pub(crate) struct SelectionChanged {
 )]
 pub(crate) fn cell_selection_changed(_cx: &mut Cx, _p: NoParams) -> Result<SelectionChanged, CommandError> {
     Err(super::common::event_not_invocable("cell.selection.changed"))
+}
+
+// ----- prechecks (rulings O-23, O-24; reviews/M4-design-availability.md) -------------------------------------------
+
+/// A cell command's precheck, computed once per state (`memo`, ruling O-24): its result depends on the parameters, the
+/// current element and frame, the cell selection and the document, so it is kept for the cell selection list (when
+/// the targets come from it) or for the document revision, and a pass reads neither the selection nor a column again
+/// until one of them changes.
+fn on_cells(
+    cx: &Cx,
+    v: &Value,
+    command: &str,
+    check: impl FnOnce() -> Result<(), CommandError>,
+) -> Result<(), CommandError> {
+    let (project, rev) = crate::memo::document_version(cx);
+    let app = cx.app();
+    let tag = format!("cells:{command}:{v}:{project}:{}:{}", app.element.as_ref().map_or("", Id::as_str), app.frame);
+    let explicit = ["elementIds", "elementId"].iter().any(|k| v.get(*k).is_some_and(|x| !x.is_null()));
+    match app.selection_shared("xsheet").filter(|l| !l.is_empty()) {
+        Some(list) if !explicit => crate::memo::memo(&tag, list, rev, check),
+        _ => crate::memo::memo_rev(&tag, rev, check),
+    }
+}
+
+/// The target of a cell command's reference, resolved as its handler resolves it (`cell_target`).
+fn precheck_target(cx: &Cx, v: &Value, one: bool, from: &str, to: &str) -> Result<CellTarget, CommandError> {
+    let list: Option<Vec<String>> = if one {
+        v.get("elementId").and_then(Value::as_str).map(|s| vec![s.to_owned()])
+    } else {
+        v.get("elementIds")
+            .and_then(Value::as_array)
+            .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect())
+    };
+    cell_target(cx, list.as_deref(), v.get(from).and_then(Value::as_i64), v.get(to).and_then(Value::as_i64))
+}
+
+/// Every target element is of a kind the command edits (`applicable`); pegs skipped where the command edits their bar.
+fn precheck_kinds(
+    cx: &Cx,
+    t: &CellTarget,
+    command: &str,
+    allowed: &[ElementType],
+    skip_pegs: bool,
+) -> Result<(), CommandError> {
+    let doc = cx.document()?;
+    for e in &t.elements {
+        if skip_pegs && doc.element(e).is_some_and(|x| *x.element_type() == ElementType::Peg) {
+            continue;
+        }
+        applicable(doc, e, command, allowed)?;
+    }
+    Ok(())
+}
+
+/// A cell command whose handler resolves its target and checks the kind of every target element.
+fn target_and_kinds(
+    cx: &Cx,
+    v: &Value,
+    command: &str,
+    (one, from, to): (bool, &str, &str),
+    allowed: &[ElementType],
+) -> Result<(), CommandError> {
+    on_cells(cx, v, command, || {
+        let t = precheck_target(cx, v, one, from, to)?;
+        precheck_kinds(cx, &t, command, allowed, false)
+    })
+}
+
+/// `cell.blank.add`.
+pub(crate) fn precheck_blank_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    target_and_kinds(cx, v, "cell.blank.add", (false, "frame", "frame"), BLANKS)
+}
+
+/// `cell.blank.remove`: also, the cells to remove are blank (one column read per target element).
+pub(crate) fn precheck_blank_remove(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_cells(cx, v, "cell.blank.remove", || {
+        let t = precheck_target(cx, v, false, "frame", "frame")?;
+        precheck_kinds(cx, &t, "cell.blank.remove", BLANKS, false)?;
+        let n = v.get("count").and_then(Value::as_u64).and_then(|c| usize::try_from(c).ok()).unwrap_or(1);
+        let doc = cx.document()?;
+        let mut budget = Budget::new("checking blank cells");
+        for e in &t.elements {
+            let col = Column::read(doc, e, &mut budget)?;
+            if x::remove_blank(&col.frames, t.from, n).is_none() {
+                return Err(err(
+                    "cell.notBlank",
+                    format!("a cell of frames {}-{} of element `{e}` is not blank", t.from, t.from + n - 1),
+                    json!({ "elementId": e.as_str(), "frame": t.from, "count": n }),
+                ));
+            }
+        }
+        Ok(())
+    })
+}
+
+/// `cell.clipboard.set`: whole elements (cut: the refusals of deleting them), or cells of labelled elements.
+pub(crate) fn precheck_clipboard_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_cells(cx, v, "cell.clipboard.set", || {
+        let t = precheck_target(cx, v, false, "from", "to")?;
+        if v.get("wholeElements").and_then(Value::as_bool) == Some(true) {
+            if v.get("cut").and_then(Value::as_bool) == Some(true) {
+                let ids: Vec<String> = t.elements.iter().map(|e| e.as_str().to_owned()).collect();
+                return super::edit_ops::element_cut_refusal(cx.document()?, &ids);
+            }
+            return Ok(());
+        }
+        precheck_kinds(cx, &t, "cell.clipboard.set", LABELLED, false)
+    })
+}
+
+/// `cell.drawing.duplicate`: also, the cell holds a drawing.
+pub(crate) fn precheck_drawing_duplicate(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_cells(cx, v, "cell.drawing.duplicate", || {
+        let t = precheck_target(cx, v, true, "from", "to")?;
+        precheck_kinds(cx, &t, "cell.drawing.duplicate", VECTOR, false)?;
+        let doc = cx.document()?;
+        let mut budget = Budget::new("checking a cell");
+        for e in &t.elements {
+            let col = Column::read(doc, e, &mut budget)?;
+            if x::at(&col.frames, t.from).is_none() {
+                return Err(err(
+                    "cell.notApplicable",
+                    format!("the cell at frame {} is blank: there is no drawing to duplicate", t.from),
+                    json!({ "elementId": e.as_str(), "frame": t.from, "reason": "blank" }),
+                ));
+            }
+        }
+        Ok(())
+    })
+}
+
+/// `cell.exposure.add` (pegs change their bar).
+pub(crate) fn precheck_exposure_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_cells(cx, v, "cell.exposure.add", || {
+        let t = precheck_target(cx, v, false, "from", "to")?;
+        precheck_kinds(cx, &t, "cell.exposure.add", EXPOSED, true)
+    })
+}
+
+/// `cell.exposure.remove` (pegs change their bar).
+pub(crate) fn precheck_exposure_remove(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_cells(cx, v, "cell.exposure.remove", || {
+        let t = precheck_target(cx, v, false, "from", "to")?;
+        precheck_kinds(cx, &t, "cell.exposure.remove", EXPOSED, true)
+    })
+}
+
+/// `cell.exposure.set`.
+pub(crate) fn precheck_exposure_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    target_and_kinds(cx, v, "cell.exposure.set", (false, "from", "to"), EXPOSED)
+}
+
+/// `cell.cycle.create`.
+pub(crate) fn precheck_cycle_create(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    target_and_kinds(cx, v, "cell.cycle.create", (true, "from", "to"), EXPOSED)
+}
+
+/// `cell.columnate.apply`.
+pub(crate) fn precheck_columnate(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    target_and_kinds(cx, v, "cell.columnate.apply", (true, "frame", "frame"), EXPOSED)
+}
+
+/// `cell.fill.apply`: the target frame is not before the first target cell, and every target is exposed.
+pub(crate) fn precheck_fill(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    on_cells(cx, v, "cell.fill.apply", || {
+        let t = precheck_target(cx, v, false, "frame", "frame")?;
+        let to = v.get("toFrame").and_then(Value::as_u64).and_then(|f| usize::try_from(f).ok()).unwrap_or(0);
+        if to >= 1 && to < t.from {
+            return Err(err(
+                "cell.frameBeforeSelection",
+                format!("the target frame {to} is before the selection; the minimum is {}", t.from),
+                json!({ "pointer": "/toFrame", "toFrame": to, "minimum": t.from }),
+            ));
+        }
+        precheck_kinds(cx, &t, "cell.fill.apply", EXPOSED, false)
+    })
+}
+
+/// `cell.label.set`: its parameter rule, then the target and the kind of every target.
+pub(crate) fn precheck_label(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    crate::prechecks::cell_label_set(cx, v)?;
+    target_and_kinds(cx, v, "cell.label.set", (false, "from", "to"), LABELLED)
+}
+
+/// `cell.clipboard.apply`: the clipboard holds cells or elements, then (for cells) the target and its kind.
+pub(crate) fn precheck_clipboard_apply(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    super::edit_ops::precheck_cell_clipboard_apply(cx, v)?;
+    let elements =
+        cx.session().clipboard.as_ref().and_then(|c| c.get("kind")).and_then(Value::as_str) == Some("elements");
+    if elements {
+        // Whole elements: new elements in the target's scene, else the current scene.
+        if v.get("elementId").is_none_or(Value::is_null) {
+            super::timing::scene_id(cx, None)?;
+        }
+        return super::edit_ops::precheck_paste_elements(cx);
+    }
+    on_cells(cx, v, "cell.clipboard.apply", || {
+        let t = precheck_target(cx, v, true, "frame", "frame")?;
+        let doc = cx.document()?;
+        if let Some(target) = t.elements.first() {
+            let in_columns =
+                doc.scene_of(target).and_then(|s| doc.scene(s)).is_some_and(|sc| sc.column_order().contains(target));
+            if !in_columns {
+                return Err(err(
+                    "element.notCellBased",
+                    "the target is not an Exposure Sheet column",
+                    json!({ "pointer": "/elementId" }),
+                ));
+            }
+            applicable(doc, target, "cell.clipboard.apply", LABELLED)?;
+        }
+        Ok(())
+    })
+}
+
+/// `cell.range.add`: with `allElements` every cell column of the scene qualifies (no precheck beyond the parameters);
+/// otherwise every target is a kind the insertion edits (named cells need vector elements).
+pub(crate) fn precheck_range_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let all = v.get("allElements").and_then(Value::as_bool) == Some(true);
+    let named = v.get("named").and_then(Value::as_bool) == Some(true);
+    if all && named {
+        return Err(err(
+            codes::ARG_INVALID,
+            "named cells are unavailable when inserting in all elements (04 §13.6)",
+            json!({ "pointer": "/named" }),
+        ));
+    }
+    if all {
+        return Ok(());
+    }
+    target_and_kinds(cx, v, "cell.range.add", (false, "frame", "frame"), if named { VECTOR } else { BLANKS })
+}
+
+/// `cell.range.delete`.
+pub(crate) fn precheck_range_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    target_and_kinds(cx, v, "cell.range.delete", (false, "from", "to"), BLANKS)
 }

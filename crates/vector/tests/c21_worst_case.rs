@@ -114,7 +114,7 @@ fn adversarial_inputs_fit_within_the_work_budget() {
     std::fs::write(&file, serde_json::to_string_pretty(&doc).unwrap()).unwrap();
     eprintln!("worst {worst:?}; observations in {}", file.display());
     // Every run finishes far inside the 30 s document watchdog.
-    assert!(worst.2 < 10_000.0, "{worst:?}");
+    assert!(worst.2 < wall_bound_ms(), "{worst:?} (bound {} ms; ruling D-45)", wall_bound_ms());
 }
 
 #[test]
@@ -233,5 +233,12 @@ fn adversarial_brush_outlines_finish_or_are_refused_within_the_work_budget() {
     std::fs::write(&file, serde_json::to_string_pretty(&doc).unwrap()).unwrap();
     eprintln!("worst {worst:?}; observations in {}", file.display());
     // Accepted or refused, every outline returns far inside the 30 s document watchdog.
-    assert!(worst.2 < 10_000.0, "{worst:?}");
+    assert!(worst.2 < wall_bound_ms(), "{worst:?} (bound {} ms; ruling D-45)", wall_bound_ms());
+}
+
+/// Ruling D-45: the wall-clock bound this run asserts. The product's guarantee is the work budget in units, asserted
+/// exactly on every machine; the 10 s wall-clock budget is the workstation receipt's (`TT_BUDGET_RECEIPT=1`); in CI
+/// the wall clock only catches a gross regression (four times the budget: a runner took 6.6 s, run 43857451683).
+fn wall_bound_ms() -> f64 {
+    if std::env::var("TT_BUDGET_RECEIPT").is_ok_and(|v| v == "1") { 10_000.0 } else { 40_000.0 }
 }

@@ -1,0 +1,31 @@
+PASS key resolves Primary+Z
+PASS key resolves Primary+Shift+Z
+PASS key resolves Primary+S
+PASS key resolves Primary+N
+PASS key resolves Primary+Shift+C
+PASS key resolves Primary+-
+PASS key resolves Primary+0
+PASS key resolves F1
+PASS key resolves F11
+PASS key resolves ,
+PASS rapid freshness 0
+PASS rapid freshness 1
+PASS rapid freshness 2
+PASS rapid freshness 3
+PASS rapid freshness 4
+PASS rapid freshness 5
+PASS rapid freshness 6
+PASS rapid freshness 7
+PASS rapid freshness 8
+PASS rapid freshness 9
+PASS rebind override
+PASS old sequence no longer invokes rebound command
+PASS native menu follows F2
+PASS new sequence resolves
+PASS export import identity
+PASS stored map only deltas
+PASS old session answers 404 after restart
+PASS discovery names new process
+PASS binding survives restart
+PASS restart fresh GUI
+PASS reset restores defaults

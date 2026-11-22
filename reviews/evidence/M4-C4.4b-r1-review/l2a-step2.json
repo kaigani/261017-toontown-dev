@@ -1,0 +1,535 @@
+{
+  "checks": 44,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-e4s_08nz",
+  "results": [
+    {
+      "check": "drawingView-crossed command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 99.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-crossed undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-crossed D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-crossed finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-crossed undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-concave command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 19.5,
+                "y": 19.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-concave undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-concave D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-concave finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-concave undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-coincident command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-coincident undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-coincident target truly coincident",
+      "ok": true,
+      "detail": [
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": 60.5
+        },
+        {
+          "x": -80.5,
+          "y": 60.5
+        }
+      ]
+    },
+    {
+      "check": "drawingView-coincident D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-coincident finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-coincident undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-all-collinear command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": -80.5,
+                "y": -60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-all-collinear undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-all-collinear target truly collinear",
+      "ok": true,
+      "detail": [
+        {
+          "x": -80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": -80.5,
+          "y": -60.5
+        }
+      ]
+    },
+    {
+      "check": "drawingView-all-collinear D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-all-collinear finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-all-collinear undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-crossed command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 99.5,
+                "y": -59.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-crossed undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-crossed D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-crossed finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-crossed undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-concave command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 19.5,
+                "y": 19.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-concave undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-concave D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-concave finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-concave undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-coincident command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-coincident undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-coincident target truly coincident",
+      "ok": true,
+      "detail": [
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": 60.5
+        },
+        {
+          "x": -80.5,
+          "y": 60.5
+        }
+      ]
+    },
+    {
+      "check": "cameraView-coincident D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-coincident finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-coincident undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-all-collinear command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": -80.5,
+                "y": -60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-all-collinear undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-all-collinear target truly collinear",
+      "ok": true,
+      "detail": [
+        {
+          "x": -80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": 80.5,
+          "y": -60.5
+        },
+        {
+          "x": -80.5,
+          "y": -60.5
+        }
+      ]
+    },
+    {
+      "check": "cameraView-all-collinear D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-all-collinear finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-all-collinear undo exact all drawings",
+      "ok": true,
+      "detail": null
+    }
+  ]
+}

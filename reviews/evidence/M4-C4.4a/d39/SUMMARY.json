@@ -1,0 +1,204 @@
+{
+ "kind": "toontown.c44a.d39.summary",
+ "note": "summaries of the workstation runs (D-42); each row's name and result; a later run of the same row supersedes an earlier failure",
+ "runs": [
+  {
+   "run": "os: view context menus",
+   "rows": 29,
+   "failed": [],
+   "named": [],
+   "sha256": "b02a03c8af8f527f36d85d87c068f2726c726c9142e024236d7924b42e3f73a7"
+  },
+  {
+   "run": "os: dock tab checklist",
+   "rows": 23,
+   "failed": [
+    "dock tab menu › cameraView"
+   ],
+   "named": [],
+   "sha256": "609627d5d8c2e69f5b4ef63c3e66ed63ae29bf19686320918cfad08b8a0204f6"
+  },
+  {
+   "run": "os: Preferences › Tablet",
+   "rows": 6,
+   "failed": [],
+   "named": [],
+   "sha256": "0a91f020091bbe2456fb2f632ea99c99796b76d9c3e98ebb5cfb61967913dae5"
+  },
+  {
+   "run": "os: load report",
+   "rows": 3,
+   "failed": [],
+   "named": [],
+   "sha256": "851b1b760a33a17256e66af3969f25eb543d7673b217a9f7e656c04ae0175c8f"
+  },
+  {
+   "run": "mcp: load report",
+   "rows": 3,
+   "failed": [],
+   "named": [],
+   "sha256": "cf883cddc685322d458b53abf89d98f432cda1adf43288acf988361819c6e2d6"
+  },
+  {
+   "run": "mcp: menus (view and dock)",
+   "rows": 49,
+   "failed": [],
+   "named": [
+    "dock tab menu › capture",
+    "dock tab menu › cells",
+    "dock tab menu › colour",
+    "dock tab menu › drawingView",
+    "dock tab menu › effectPreview",
+    "dock tab menu › functionEditor",
+    "dock tab menu › history",
+    "dock tab menu › library",
+    "dock tab menu › lipSync",
+    "dock tab menu › motionRecording",
+    "dock tab menu › pen",
+    "dock tab menu › properties",
+    "dock tab menu › sceneManager",
+    "dock tab menu › sideView",
+    "dock tab menu › soundEditor",
+    "dock tab menu › storyline",
+    "dock tab menu › text",
+    "dock tab menu › timeline",
+    "dock tab menu › topView",
+    "dock tab menu › xsheet"
+   ],
+   "sha256": "905033240d67b2a56377d93607791b6e278db8b303b65161c1b028cb0b705dc9"
+  },
+  {
+   "run": "os: Agent access, Activity (first pass)",
+   "rows": 23,
+   "failed": [
+    "Preferences › Agent access › port",
+    "Preferences › Agent access › policy",
+    "Preferences › Agent access › maxJobs",
+    "Preferences › Agent access › maxBatchSteps",
+    "Preferences › Agent access › maxInlineImagePx",
+    "Preferences › Agent access › maxInlineBytes",
+    "Preferences › Agent access › askInApp",
+    "Preferences › Agent access › letAgentMoveView",
+    "Preferences › Agent access › highlightAgentChanges",
+    "Preferences › Agent access › typedTools",
+    "Preferences › Agent access › persist",
+    "Preferences › Agent access › namespace",
+    "Activity › Undo back to before an entry",
+    "Window › Activity"
+   ],
+   "named": [],
+   "sha256": "9b3f8325c1b09cca499dafa4bf237206fdeab7c9c252262dfd5dd6f601c2052b"
+  },
+  {
+   "run": "os: Agent access (setup as the person), Window › Activity",
+   "rows": 16,
+   "failed": [
+    "Preferences › Agent access › port",
+    "Activity › Undo back to before an entry"
+   ],
+   "named": [],
+   "sha256": "c84e0641e68ffb25244f3beefb013d81153ce5778a02ec0012c4f4ae43b3c9cc"
+  },
+  {
+   "run": "os: Agent access › port, typedTools",
+   "rows": 5,
+   "failed": [
+    "Activity › Undo back to before an entry"
+   ],
+   "named": [],
+   "sha256": "175db7ef40fbccf251087dc4a82e171a59b293e0cd6762ecbba3b3b20163f92a"
+  },
+  {
+   "run": "os: Activity › Undo back",
+   "rows": 3,
+   "failed": [],
+   "named": [],
+   "sha256": "4e9bc027dc7e62306129039dda4174e9f5da3fdd40c1c38cda0387db0221a783"
+  },
+  {
+   "run": "mcp: the whole table",
+   "rows": 213,
+   "failed": [],
+   "named": [
+    "shortcut editor › Export",
+    "shortcut editor › Import",
+    "Preferences › Tablet › tablet.ignore",
+    "Preferences › Tablet › tablet.portraitCorrection",
+    "Preferences › Tablet › tablet.compatibilityMode",
+    "Preferences › Tablet › tablet.alternativeInput",
+    "File › Open Backup › Open",
+    "Pen panel › Maximum size (slider)",
+    "Pen panel › rename",
+    "Tool options › Pencil: fixed thickness",
+    "Text panel › size (typed)",
+    "Text panel › font (typed)",
+    "Drawing inspector › Show preview",
+    "Drawing inspector › rename",
+    "Window › Customize Toolbar",
+    "dock tab menu › activity",
+    "dock tab menu › capture",
+    "dock tab menu › cells",
+    "dock tab menu › colour",
+    "dock tab menu › drawingView",
+    "dock tab menu › effectPreview",
+    "dock tab menu › functionEditor",
+    "dock tab menu › history",
+    "dock tab menu › library",
+    "dock tab menu › lipSync",
+    "dock tab menu › motionRecording",
+    "dock tab menu › pen",
+    "dock tab menu › properties",
+    "dock tab menu › sceneManager",
+    "dock tab menu › sideView",
+    "dock tab menu › soundEditor",
+    "dock tab menu › storyline",
+    "dock tab menu › text",
+    "dock tab menu › timeline",
+    "dock tab menu › topView",
+    "dock tab menu › xsheet",
+    "Preferences › Agent access › port",
+    "Preferences › Agent access › policy",
+    "Preferences › Agent access › maxJobs",
+    "Preferences › Agent access › maxBatchSteps",
+    "Preferences › Agent access › maxInlineImagePx",
+    "Preferences › Agent access › maxInlineBytes",
+    "Preferences › Agent access › askInApp",
+    "Preferences › Agent access › letAgentMoveView",
+    "Preferences › Agent access › highlightAgentChanges",
+    "Preferences › Agent access › typedTools",
+    "Preferences › Agent access › persist",
+    "Preferences › Agent access › namespace",
+    "Activity › session policy",
+    "Activity › session scopes",
+    "Activity › session pause",
+    "Activity › session resume",
+    "Activity › Undo back to before an entry",
+    "Activity › Export",
+    "agent indicator › Activity…",
+    "Activity › session disconnect"
+   ],
+   "sha256": "9c6b965774436a4f9412e38f94d1e4d93dd6ecc851a3b9b0f0a00a820f82fd63"
+  },
+  {
+   "run": "os: the whole table",
+   "note": "the Activity block rebound `exported`, the shortcut editor's export path; the rows after the stuck save dialog failed with it (fixed: the variable renamed)",
+   "rows": 213,
+   "failed": [
+    "shortcut editor › Export",
+    "Activity › Export",
+    "agent indicator › Activity…",
+    "Window › Activity",
+    "Activity › session disconnect",
+    "File › Open Recent › an entry's full path"
+   ],
+   "sha256": "75bffab5772641ee29f70f360a4687b5279fdef5f4e0777a213700abae68dbdf"
+  },
+  {
+   "run": "os: the rows that failed in the whole-table run, after the fix",
+   "covers": "shortcut editor, Agent access, Activity, agent indicator, Window › Activity",
+   "rows": 25,
+   "failed": [],
+   "sha256": "279c44a20779ab77afeed16709bc8fa68ea043065728d8afe4e90bb1cb05cd57"
+  }
+ ]
+}

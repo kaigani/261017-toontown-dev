@@ -1,0 +1,28 @@
+{
+    "smallEditSceneLoadMs":  48.2755,
+    "userSamples":  200,
+    "gesture10000CommitMs":  212.3972,
+    "fixturePoints":  50000,
+    "userMedianMs":  0.3669,
+    "loadsMs":  [
+                    49.5961,
+                    48.8747,
+                    48.9374
+                ],
+    "gesture10000ThroughLoadMs":  261.4026,
+    "payloadBytes":  1649528,
+    "sceneWorstMs":  0.0852,
+    "smallEditCommitMs":  1175.9817,
+    "sceneBestMs":  0.0051,
+    "coverageSamples":  25600,
+    "userWorstMs":  0.8205,
+    "gesture10000Bytes":  1658072,
+    "platform":  "Windows",
+    "sceneSamples":  200,
+    "smallEditBytes":  1651088,
+    "coverageDifferingSamples":  1288,
+    "profile":  "debug",
+    "sceneMedianMs":  0.013,
+    "productHead":  "a1500000a70ba7db106bf5464e9a10c98adbd4d2",
+    "fixtureSeconds":  53.2061049
+}

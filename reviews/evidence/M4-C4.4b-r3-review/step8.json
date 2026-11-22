@@ -1,0 +1,162 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-b_dp41q1",
+  "checks": [
+    {
+      "check": "camera-anchor command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.point.move",
+          "params": {
+            "drawingId": "dr_01K7JJN800H23RFDB8ADF5X00R",
+            "points": [
+              {
+                "strokeId": "st_01K7JJN8003MXHPZ1F8PTN2RPZ",
+                "anchor": 0
+              }
+            ],
+            "delta": {
+              "x": 15,
+              "y": 15
+            },
+            "snap": false,
+            "view": "cameraView"
+          }
+        }
+      ]
+    },
+    {
+      "check": "camera-anchor undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "camera-anchor D-32 exact direct content",
+      "ok": true,
+      "detail": {
+        "equal": true
+      }
+    },
+    {
+      "check": "camera-anchor direct undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Contour Editing",
+          "agent"
+        ]
+      ]
+    },
+    {
+      "check": "camera-anchor undo exact content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "camera-corner command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "camera-corner undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "camera-corner D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "camera-corner finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "camera-corner undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "camera-offset command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 20,
+              "y": 15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "camera-offset undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "camera-offset D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "camera-offset D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 0.0
+    },
+    {
+      "check": "camera-offset finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "camera-offset undo exact all drawings",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": []
+}

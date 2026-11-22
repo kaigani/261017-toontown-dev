@@ -63,8 +63,10 @@ pub fn differences(a: &Value, b: &Value, at: &str, out: &mut Vec<String>) {
 
 /// Keys whose values are times or durations (and, below, machine facts): always recorded as varying, even when two recording runs happened to
 /// agree (a duration of 0 ms twice).
-const TIME_KEYS: [&str; 13] = [
+const TIME_KEYS: [&str; 14] = [
     "durationMs",
+    // A pending confirmation's remaining time (C4.4a, D-58): a countdown the run's clock decides.
+    "expiresInMs",
     "renderMs",
     "time",
     "startedAt",
@@ -88,6 +90,24 @@ pub fn varying(a: &Value, b: &Value) -> Vec<String> {
     out.sort();
     out.dedup();
     out
+}
+
+/// The pointers of `v` at a timestamp or duration key (the TIME_KEYS): values a run's clock decides.
+pub fn time_pointers(v: &Value, at: &str, out: &mut Vec<String>) {
+    match v {
+        Value::Object(m) => {
+            for (k, x) in m {
+                let p = format!("{at}/{}", escape(k));
+                if TIME_KEYS.contains(&k.as_str()) && !x.is_object() && !x.is_array() {
+                    out.push(p);
+                } else {
+                    time_pointers(x, &p, out);
+                }
+            }
+        }
+        Value::Array(a) => a.iter().enumerate().for_each(|(i, x)| time_pointers(x, &format!("{at}/{i}"), out)),
+        _ => {}
+    }
 }
 
 /// Keys whose values are facts about the machine (operating system, locale), not the document.

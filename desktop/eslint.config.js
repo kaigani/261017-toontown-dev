@@ -49,6 +49,12 @@ export default tseslint.config(
     rules: { '@typescript-eslint/prefer-promise-reject-errors': 'off' },
   },
   {
+    // Reviewer-owned suites of C4.1 round 1 (static audit), merged unchanged: builders may not edit them. Two type
+    // assertions there trip this stylistic rule; declared in reviews/M4-C4.1-r1-response.md.
+    files: ['src/test/c41-r1s-references.test.ts', 'src/test/c41-r1s-toolbar.test.tsx'],
+    rules: { '@typescript-eslint/no-unnecessary-type-assertion': 'off' },
+  },
+  {
     // guard<T>() returns a type predicate for T, certifyWireText<T>() the certified value; T appearing once is the
     // point of these APIs.
     files: ['src/ipc/schema.ts', 'src/ipc/wireJson.ts'],

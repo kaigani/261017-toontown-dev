@@ -1,0 +1,484 @@
+{
+  "case": "m2a",
+  "step": 3,
+  "exit": 0,
+  "failLines": [],
+  "results": [
+    {
+      "check": "token masked on opening",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "Copy matches discovery",
+      "ok": true,
+      "detail": {
+        "length": 48,
+        "sha256": "5d52f6523d0bc69cfd37a7405fe063fed7d2f5ecabd4b921f65736c3ea867336"
+      }
+    },
+    {
+      "check": "revealed reference matches discovery hash",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-62 shown token protected window",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ]
+      }
+    },
+    {
+      "check": "D-62 shown token protected drawingView",
+      "ok": true,
+      "detail": {
+        "size": [
+          901,
+          633
+        ]
+      }
+    },
+    {
+      "check": "late reveal capture 0",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 1",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 2",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 3",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 4",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 5",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 6",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 7",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 8",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 9",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 10",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 11",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 12",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 13",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 14",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 15",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 16",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 17",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 18",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 19",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 20",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 21",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 22",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 23",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 24",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 25",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 26",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 27",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 28",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "late reveal capture 29",
+      "ok": true,
+      "detail": {
+        "size": [
+          157,
+          15
+        ],
+        "maskedPixelMatch": true,
+        "revealedPixelMatch": false,
+        "maskDifferentPixels": 0,
+        "revealDifferentPixels": 859
+      }
+    },
+    {
+      "check": "float panel capture masks main token",
+      "ok": true,
+      "detail": {
+        "size": [
+          480,
+          360
+        ]
+      }
+    },
+    {
+      "check": "token absent activity export logs",
+      "ok": true,
+      "detail": {
+        "leaks": []
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r3-batch-_y52ub53\\2-m2a3"
+}

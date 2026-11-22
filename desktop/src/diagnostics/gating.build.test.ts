@@ -56,7 +56,34 @@ async function emitted(mode: 'production' | 'diagnostics'): Promise<Map<string, 
 
 describe('M0 diagnostics gating (C0.4)', () => {
   it('reads both registries from lib.rs', () => {
-    expect(PRODUCT).toEqual(['ping', 'app_info']);
+    // M4 C4.1 adds the shell's product commands (ADR-0021); the diagnostic ones are unchanged.
+    expect(PRODUCT).toEqual([
+      'ping',
+      'app_info',
+      'run_command',
+      'cancel_request',
+      'report_shell',
+      'dispatch_key',
+      'availability',
+      'pick_path',
+      'startup',
+      'restart_engine',
+      'canvas_scene',
+      'canvas_load',
+      'gesture_commit',
+      'gesture_abort',
+      'canvas_presence',
+      // D-62 item 2: Preferences › Agent access shows the agent token to the person (never a registry command).
+      'agent_token',
+      'token_hidden',
+      'page_ready',
+      'token_field',
+      'token_rect',
+      // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
+      'text_input',
+      // D-86 item 2: the agents' running requests, for a window that mounts while one acts.
+      'agent_acting',
+    ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');
     expect(DIAGNOSTIC.length).toBe(12);

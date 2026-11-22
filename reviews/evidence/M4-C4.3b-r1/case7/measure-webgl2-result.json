@@ -1,0 +1,20 @@
+{
+  "name": "measure-webgl2",
+  "exit": 0,
+  "independentChecks": [
+    {
+      "assertion": "D-33 requested backend ran",
+      "pass": true,
+      "requested": "webgl2",
+      "actual": "webgl2"
+    },
+    {
+      "assertion": "D-33 30 actual commits sample",
+      "pass": true
+    },
+    {
+      "assertion": "D-33 30 actual commits groups1k",
+      "pass": true
+    }
+  ]
+}

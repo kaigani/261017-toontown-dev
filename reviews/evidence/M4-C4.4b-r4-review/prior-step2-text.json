@@ -1,0 +1,104 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-gpf1smnf",
+  "checks": [
+    {
+      "check": "D-83 element text unchanged",
+      "ok": true,
+      "detail": "Edit text: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "D-83 element text reason",
+      "ok": true,
+      "detail": "Edit text: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "D-83 drawing text unchanged",
+      "ok": true,
+      "detail": "Edit text: the drawing is locked: the text being edited cannot change (02 line 414); unlock it first"
+    },
+    {
+      "check": "D-83 drawing text reason",
+      "ok": true,
+      "detail": "Edit text: the drawing is locked: the text being edited cannot change (02 line 414); unlock it first"
+    },
+    {
+      "check": "D-83 hidden text unchanged",
+      "ok": true,
+      "detail": "Edit text: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "D-83 hidden text reason",
+      "ok": true,
+      "detail": "Edit text: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "D-80 element locked Drawing text edits",
+      "ok": true,
+      "detail": {
+        "text": "wordX",
+        "history": {
+          "entries": [
+            {
+              "index": 1,
+              "stepId": "u-1",
+              "label": "New Elements",
+              "source": "agent",
+              "agentSessionId": "s1-0bdf82",
+              "agentName": "mcp",
+              "time": "2026-11-22T12:40:53.893Z",
+              "objectCount": 4
+            },
+            {
+              "index": 2,
+              "stepId": "u-2",
+              "label": "Create Drawing",
+              "source": "agent",
+              "agentSessionId": "s1-0bdf82",
+              "agentName": "mcp",
+              "time": "2026-11-22T12:40:53.897Z",
+              "objectCount": 3
+            },
+            {
+              "index": 3,
+              "stepId": "u-3",
+              "label": "New Text Object",
+              "source": "user",
+              "time": "2026-11-22T12:40:54.956Z",
+              "objectCount": 2
+            },
+            {
+              "index": 4,
+              "stepId": "u-4",
+              "label": "Typing",
+              "source": "user",
+              "time": "2026-11-22T12:40:55.577Z",
+              "objectCount": 2
+            },
+            {
+              "index": 5,
+              "stepId": "u-5",
+              "label": "Lock Elements",
+              "source": "agent",
+              "agentSessionId": "s1-0bdf82",
+              "agentName": "mcp",
+              "time": "2026-11-22T12:40:56.424Z",
+              "objectCount": 1
+            },
+            {
+              "index": 6,
+              "stepId": "u-6",
+              "label": "Typing",
+              "source": "user",
+              "time": "2026-11-22T12:40:56.737Z",
+              "objectCount": 2
+            }
+          ],
+          "position": 6,
+          "cleanPosition": 0,
+          "total": 6
+        }
+      }
+    }
+  ],
+  "failures": []
+}

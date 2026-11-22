@@ -1,0 +1,197 @@
+{
+  "checks": 15,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-iz91gimf",
+  "results": [
+    {
+      "check": "D-70 secondary mainToolbar.drawAid.grid.set",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary mainToolbar.gridType",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary pen.minSize",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary pen.placeBehind",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary pen.row.pen_01M7XHTTKKNTXS9WWHF4P7PEPE",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary toolPalettes",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary statusBar",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary pen",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary tab.drawingView",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary drawingView.canvas",
+      "ok": true,
+      "detail": {
+        "items": [],
+        "nativePopups": [],
+        "addedWindows": 0
+      }
+    },
+    {
+      "check": "D-70 secondary pen.maxSize.field",
+      "ok": true,
+      "detail": {
+        "items": [
+          "Emoji",
+          "Undo",
+          "Cut",
+          "Copy",
+          "Paste",
+          "Paste as plain text",
+          "Select all"
+        ],
+        "nativePopups": [
+          "Chrome_WidgetWin_1"
+        ],
+        "addedWindows": 1
+      }
+    },
+    {
+      "check": "D-70 secondary text.font",
+      "ok": true,
+      "detail": {
+        "items": [
+          "Emoji",
+          "Undo",
+          "Cut",
+          "Copy",
+          "Paste",
+          "Paste as plain text",
+          "Select all"
+        ],
+        "nativePopups": [
+          "Chrome_WidgetWin_1"
+        ],
+        "addedWindows": 1
+      }
+    },
+    {
+      "check": "D-70 secondary pen.rename",
+      "ok": true,
+      "detail": {
+        "items": [
+          "Emoji",
+          "Cut",
+          "Copy",
+          "Paste",
+          "Paste as plain text",
+          "Select all"
+        ],
+        "nativePopups": [
+          "Chrome_WidgetWin_1"
+        ],
+        "addedWindows": 1
+      }
+    },
+    {
+      "check": "D-70 secondary preferences.search",
+      "ok": true,
+      "detail": {
+        "items": [
+          "Emoji",
+          "Undo",
+          "Cut",
+          "Copy",
+          "Paste",
+          "Paste as plain text",
+          "Select all"
+        ],
+        "nativePopups": [
+          "Chrome_WidgetWin_1"
+        ],
+        "addedWindows": 1
+      }
+    },
+    {
+      "check": "D-70 secondary newProject.name",
+      "ok": true,
+      "detail": {
+        "items": [
+          "Emoji",
+          "Undo",
+          "Cut",
+          "Copy",
+          "Paste",
+          "Paste as plain text",
+          "Select all"
+        ],
+        "nativePopups": [
+          "Chrome_WidgetWin_1"
+        ],
+        "addedWindows": 1
+      }
+    }
+  ],
+  "captures": {
+    "overpainted": 0,
+    "outside": 0,
+    "refused": 0,
+    "revealed": 0
+  }
+}

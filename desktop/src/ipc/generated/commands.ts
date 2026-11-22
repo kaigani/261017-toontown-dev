@@ -8,6 +8,8 @@ export const COMMANDS_REGISTRY_VERSION = "0.1.0";
 export const COMMAND_INDEX = {
   "agent.activity.export": {
     kind: "action",
+    label: "Export agent activity",
+    summary: "Write the activity log to a file",
     params: "agent.activity.export.params",
     result: "agent.activity.export.result",
     examples: [
@@ -19,6 +21,8 @@ export const COMMAND_INDEX = {
   },
   "agent.activity.list": {
     kind: "query",
+    label: "Agent activity",
+    summary: "Activity log entries",
     params: "agent.activity.list.params",
     result: "agent.activity.list.result",
     examples: [
@@ -29,6 +33,8 @@ export const COMMAND_INDEX = {
   },
   "agent.activity.persist.set": {
     kind: "toggle",
+    label: "Keep agent activity log",
+    summary: "Persist the activity log beside the project",
     params: "agent.activity.persist.set.params",
     result: "agent.activity.persist.set.result",
     examples: [
@@ -39,6 +45,8 @@ export const COMMAND_INDEX = {
   },
   "agent.confirmation.requested": {
     kind: "event",
+    label: "Agent confirmation requested",
+    summary: "A confirmation is waiting for the user (attached mode)",
     params: "agent.confirmation.requested.params",
     result: "agent.confirmation.requested.result",
     examples: [
@@ -48,6 +56,8 @@ export const COMMAND_INDEX = {
   },
   "agent.confirmation.respond": {
     kind: "ui",
+    label: "Answer agent request",
+    summary: "The user's answer to a pending agent confirmation shown in the app",
     params: "agent.confirmation.respond.params",
     result: "agent.confirmation.respond.result",
     examples: [
@@ -59,6 +69,8 @@ export const COMMAND_INDEX = {
   },
   "agent.policy.defaults.set": {
     kind: "ui",
+    label: "Agent policy defaults",
+    summary: "Default policy and limits for new sessions (scope `app`)",
     params: "agent.policy.defaults.set.params",
     result: "agent.policy.defaults.set.result",
     examples: [
@@ -70,6 +82,8 @@ export const COMMAND_INDEX = {
   },
   "agent.server.set": {
     kind: "ui",
+    label: "Agent server",
+    summary: "Enable/disable the MCP server and set transport options (scope `app`)",
     params: "agent.server.set.params",
     result: "agent.server.set.result",
     examples: [
@@ -80,6 +94,8 @@ export const COMMAND_INDEX = {
   },
   "agent.server.status": {
     kind: "query",
+    label: "Agent server status",
+    summary: "Server status, endpoint, connected sessions",
     params: "agent.server.status.params",
     result: "agent.server.status.result",
     examples: [
@@ -88,6 +104,8 @@ export const COMMAND_INDEX = {
   },
   "agent.session.connected": {
     kind: "event",
+    label: "Agent connected",
+    summary: "A session connected",
     params: "agent.session.connected.params",
     result: "agent.session.connected.result",
     examples: [
@@ -97,6 +115,8 @@ export const COMMAND_INDEX = {
   },
   "agent.session.disconnect": {
     kind: "ui",
+    label: "Disconnect agent",
+    summary: "Disconnect a session",
     params: "agent.session.disconnect.params",
     result: "agent.session.disconnect.result",
     examples: [
@@ -107,6 +127,8 @@ export const COMMAND_INDEX = {
   },
   "agent.session.disconnected": {
     kind: "event",
+    label: "Agent disconnected",
+    summary: "A session disconnected",
     params: "agent.session.disconnected.params",
     result: "agent.session.disconnected.result",
     examples: [
@@ -116,6 +138,8 @@ export const COMMAND_INDEX = {
   },
   "agent.session.grant": {
     kind: "ui",
+    label: "Grant agent access",
+    summary: "Change a session's policy preset or scopes (scope `app`)",
     params: "agent.session.grant.params",
     result: "agent.session.grant.result",
     examples: [
@@ -131,6 +155,8 @@ export const COMMAND_INDEX = {
   },
   "agent.session.pause": {
     kind: "ui",
+    label: "Pause agents",
+    summary: "Pause an agent session (its calls wait, then fail with `agent.paused`)",
     params: "agent.session.pause.params",
     result: "agent.session.pause.result",
     examples: [
@@ -139,6 +165,8 @@ export const COMMAND_INDEX = {
   },
   "agent.session.resume": {
     kind: "ui",
+    label: "Resume agents",
+    summary: "Resume a paused session",
     params: "agent.session.resume.params",
     result: "agent.session.resume.result",
     examples: [
@@ -147,6 +175,8 @@ export const COMMAND_INDEX = {
   },
   "agent.token.regenerate": {
     kind: "ui",
+    label: "Regenerate agent token",
+    summary: "Regenerate the HTTP bearer token, disconnecting HTTP sessions (scope `app`)",
     params: "agent.token.regenerate.params",
     result: "agent.token.regenerate.result",
     examples: [
@@ -155,6 +185,8 @@ export const COMMAND_INDEX = {
   },
   "agent.typedTools.set": {
     kind: "ui",
+    label: "Typed agent tools",
+    summary: "Expose commands as individual MCP tools (scope `app`)",
     params: "agent.typedTools.set.params",
     result: "agent.typedTools.set.result",
     examples: [
@@ -169,6 +201,8 @@ export const COMMAND_INDEX = {
   },
   "anim.bone.create": {
     kind: "action",
+    label: "Create a bone",
+    summary: "Create a bone (chained to a parent bone, or freestanding)",
     params: "anim.bone.create.params",
     result: "anim.bone.create.result",
     examples: [
@@ -184,6 +218,8 @@ export const COMMAND_INDEX = {
   },
   "anim.bone.delete": {
     kind: "action",
+    label: "Delete bones",
+    summary: "Delete bones",
     params: "anim.bone.delete.params",
     result: "anim.bone.delete.result",
     examples: [
@@ -195,6 +231,8 @@ export const COMMAND_INDEX = {
   },
   "anim.bone.influence.set": {
     kind: "action",
+    label: "Influence type and zone",
+    summary: "Influence type and zone",
     params: "anim.bone.influence.set.params",
     result: "anim.bone.influence.set.result",
     examples: [
@@ -206,6 +244,8 @@ export const COMMAND_INDEX = {
   },
   "anim.bone.parent.set": {
     kind: "action",
+    label: "Reparent a bone",
+    summary: "Reparent a bone (null = make it a root bone)",
     params: "anim.bone.parent.set.params",
     result: "anim.bone.parent.set.result",
     examples: [
@@ -218,6 +258,8 @@ export const COMMAND_INDEX = {
   },
   "anim.bone.pose.set": {
     kind: "action",
+    label: "Pose bones by angles/lengths at a frame",
+    summary: "Pose bones by angles/lengths at a frame (keys)",
     params: "anim.bone.pose.set.params",
     result: "anim.bone.pose.set.result",
     examples: [
@@ -229,6 +271,8 @@ export const COMMAND_INDEX = {
   },
   "anim.bone.reach.apply": {
     kind: "action",
+    label: "Natural movement: IK reach to a target, or FK rotation with follow-through",
+    summary: "Natural movement: IK reach to a target, or FK rotation with follow-through",
     params: "anim.bone.reach.apply.params",
     result: "anim.bone.reach.apply.result",
     examples: [
@@ -241,6 +285,8 @@ export const COMMAND_INDEX = {
   },
   "anim.bone.rest.set": {
     kind: "action",
+    label: "Set rest",
+    summary: "Set rest (setup) values",
     params: "anim.bone.rest.set.params",
     result: "anim.bone.rest.set.result",
     examples: [
@@ -252,6 +298,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.create": {
     kind: "action",
+    label: "Add camera",
+    summary: "Add a camera",
     params: "anim.camera.create.params",
     result: "anim.camera.create.result",
     examples: [
@@ -269,6 +317,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.current.get": {
     kind: "query",
+    label: "Current camera",
+    summary: "Current camera of a scene",
     params: "anim.camera.current.get.params",
     result: "anim.camera.current.get.result",
     examples: [
@@ -277,6 +327,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.current.set": {
     kind: "action",
+    label: "Set current camera",
+    summary: "Make a camera the scene's current camera",
     params: "anim.camera.current.set.params",
     result: "anim.camera.current.set.result",
     examples: [
@@ -287,6 +339,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.currentChanged": {
     kind: "event",
+    label: "Current camera changed",
+    summary: "The current camera of a scene changed",
     params: "anim.camera.currentChanged.params",
     result: "anim.camera.currentChanged.result",
     examples: [
@@ -296,6 +350,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.delete": {
     kind: "action",
+    label: "Delete camera",
+    summary: "Delete a camera (not the last one)",
     params: "anim.camera.delete.params",
     result: "anim.camera.delete.result",
     examples: [
@@ -306,6 +362,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.get": {
     kind: "query",
+    label: "Get camera",
+    summary: "Camera properties and evaluated view at a frame",
     params: "anim.camera.get.params",
     result: "anim.camera.get.result",
     examples: [
@@ -316,6 +374,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.list": {
     kind: "query",
+    label: "List cameras",
+    summary: "Cameras of a scene",
     params: "anim.camera.list.params",
     result: "anim.camera.list.result",
     examples: [
@@ -324,6 +384,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.select": {
     kind: "ui",
+    label: "Select the current camera",
+    summary: "Select the current camera",
     params: "anim.camera.select.params",
     result: "anim.camera.select.result",
     examples: [
@@ -333,6 +395,8 @@ export const COMMAND_INDEX = {
   },
   "anim.camera.set": {
     kind: "action",
+    label: "Set camera",
+    summary: "Set camera position, roll, FOV mode and FOV (keyed at `frame` when dynamic)",
     params: "anim.camera.set.params",
     result: "anim.camera.set.result",
     examples: [
@@ -345,6 +409,8 @@ export const COMMAND_INDEX = {
   },
   "anim.changed": {
     kind: "event",
+    label: "Animation changed",
+    summary: "Node animation data changed",
     params: "anim.changed.params",
     result: "anim.changed.result",
     examples: [
@@ -354,6 +420,8 @@ export const COMMAND_INDEX = {
   },
   "anim.channel.copy": {
     kind: "ui",
+    label: "Copy chosen channels' keys of a node",
+    summary: "Copy chosen channels' keys of a node",
     params: "anim.channel.copy.params",
     result: "anim.channel.copy.result",
     examples: [
@@ -366,6 +434,8 @@ export const COMMAND_INDEX = {
   },
   "anim.channel.cut": {
     kind: "action",
+    label: "Cut special: copy then remove chosen channels' keys",
+    summary: "Cut special: copy then remove chosen channels' keys",
     params: "anim.channel.cut.params",
     result: "anim.channel.cut.result",
     examples: [
@@ -377,6 +447,8 @@ export const COMMAND_INDEX = {
   },
   "anim.channel.paste": {
     kind: "action",
+    label: "Paste copied channel keys at a frame",
+    summary: "Paste copied channel keys at a frame",
     params: "anim.channel.paste.params",
     result: "anim.channel.paste.result",
     examples: [
@@ -389,6 +461,8 @@ export const COMMAND_INDEX = {
   },
   "anim.depth.move": {
     kind: "action",
+    label: "Depth nudge forward/backward",
+    summary: "Depth nudge forward/backward",
     params: "anim.depth.move.params",
     result: "anim.depth.move.result",
     examples: [
@@ -400,6 +474,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.allPegs.set": {
     kind: "toggle",
+    label: "Show all pegs' paths",
+    summary: "Show all pegs' paths",
     params: "anim.display.allPegs.set.params",
     result: "anim.display.allPegs.set.result",
     examples: [
@@ -411,6 +487,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.antialiasToolOverlays.set": {
     kind: "toggle",
+    label: "Anti-alias tool furniture",
+    summary: "Anti-alias tool furniture",
     params: "anim.display.antialiasToolOverlays.set.params",
     result: "anim.display.antialiasToolOverlays.set.result",
     examples: [
@@ -422,6 +500,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.arms.set": {
     kind: "toggle",
+    label: "Show element arms while rotating pegs",
+    summary: "Show element arms while rotating pegs",
     params: "anim.display.arms.set.params",
     result: "anim.display.arms.set.result",
     examples: [
@@ -433,6 +513,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.changed": {
     kind: "event",
+    label: "A display option or preference of this area changed",
+    summary: "A display option or preference of this area changed",
     params: "anim.display.changed.params",
     result: "anim.display.changed.result",
     examples: [
@@ -443,6 +525,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.envelopes.set": {
     kind: "toggle",
+    label: "Show bone influence envelopes",
+    summary: "Show bone influence envelopes",
     params: "anim.display.envelopes.set.params",
     result: "anim.display.envelopes.set.result",
     examples: [
@@ -454,6 +538,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.frameMarkers.set": {
     kind: "toggle",
+    label: "Show frame markers on paths",
+    summary: "Show frame markers on paths",
     params: "anim.display.frameMarkers.set.params",
     result: "anim.display.frameMarkers.set.result",
     examples: [
@@ -465,6 +551,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.get": {
     kind: "query",
+    label: "All display options of §4",
+    summary: "All display options of §4",
     params: "anim.display.get.params",
     result: "anim.display.get.result",
     examples: [
@@ -474,6 +562,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.pegGhosts.set": {
     kind: "toggle",
+    label: "Show peg ghosts",
+    summary: "Show peg ghosts",
     params: "anim.display.pegGhosts.set.params",
     result: "anim.display.pegGhosts.set.result",
     examples: [
@@ -485,6 +575,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.pivotPath.set": {
     kind: "toggle",
+    label: "Show pivot paths",
+    summary: "Show pivot paths",
     params: "anim.display.pivotPath.set.params",
     result: "anim.display.pivotPath.set.result",
     examples: [
@@ -496,6 +588,8 @@ export const COMMAND_INDEX = {
   },
   "anim.display.smoothPaths.set": {
     kind: "toggle",
+    label: "Anti-alias motion paths",
+    summary: "Anti-alias motion paths",
     params: "anim.display.smoothPaths.set.params",
     result: "anim.display.smoothPaths.set.result",
     examples: [
@@ -507,6 +601,8 @@ export const COMMAND_INDEX = {
   },
   "anim.evaluate": {
     kind: "query",
+    label: "Evaluate transforms",
+    summary: "Evaluate transforms of nodes at frames (no rendering)",
     params: "anim.evaluate.params",
     result: "anim.evaluate.result",
     examples: [
@@ -533,6 +629,8 @@ export const COMMAND_INDEX = {
   },
   "anim.flip.apply": {
     kind: "action",
+    label: "Flip nodes horizontally or vertically",
+    summary: "Flip nodes horizontally or vertically",
     params: "anim.flip.apply.params",
     result: "anim.flip.apply.result",
     examples: [
@@ -544,6 +642,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.curveType.set": {
     kind: "action",
+    label: "Set curve type",
+    summary: "Change a channel's curve type",
     params: "anim.function.curveType.set.params",
     result: "anim.function.curveType.set.result",
     examples: [
@@ -556,6 +656,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.get": {
     kind: "query",
+    label: "Get function curve",
+    summary: "Function curve as a key-point list",
     params: "anim.function.get.params",
     result: "anim.function.get.result",
     examples: [
@@ -567,6 +669,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.key.add": {
     kind: "action",
+    label: "Add function key",
+    summary: "Add a key point (value defaults to current curve value)",
     params: "anim.function.key.add.params",
     result: "anim.function.key.add.result",
     examples: [
@@ -580,6 +684,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.key.duplicate": {
     kind: "action",
+    label: "Duplicate function key",
+    summary: "Copy a key point to another frame",
     params: "anim.function.key.duplicate.params",
     result: "anim.function.key.duplicate.result",
     examples: [
@@ -593,6 +699,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.key.remove": {
     kind: "action",
+    label: "Remove function keys",
+    summary: "Remove key points",
     params: "anim.function.key.remove.params",
     result: "anim.function.key.remove.result",
     examples: [
@@ -607,6 +715,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.key.set": {
     kind: "action",
+    label: "Edit function key",
+    summary: "Edit a key point: move in time, value, handles, handle mode, constant flag, lock in time",
     params: "anim.function.key.set.params",
     result: "anim.function.key.set.result",
     examples: [
@@ -624,6 +734,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.list": {
     kind: "query",
+    label: "List channels",
+    summary: "Channels of a node with curve type and key count",
     params: "anim.function.list.params",
     result: "anim.function.list.result",
     examples: [
@@ -634,6 +746,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.preset.apply": {
     kind: "action",
+    label: "Apply easing preset",
+    summary: "Apply an easing preset to a segment or the whole curve",
     params: "anim.function.preset.apply.params",
     result: "anim.function.preset.apply.result",
     examples: [
@@ -647,6 +761,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.sample": {
     kind: "query",
+    label: "Sample a channel",
+    summary: "Evaluate a channel over a frame range",
     params: "anim.function.sample.params",
     result: "anim.function.sample.result",
     examples: [
@@ -660,6 +776,8 @@ export const COMMAND_INDEX = {
   },
   "anim.function.set": {
     kind: "action",
+    label: "Set function curve",
+    summary: "Replace a 1-D channel's key list and curve type",
     params: "anim.function.set.params",
     result: "anim.function.set.result",
     examples: [
@@ -683,6 +801,8 @@ export const COMMAND_INDEX = {
   },
   "anim.functionEditor.get": {
     kind: "query",
+    label: "Function-editor state",
+    summary: "Function-editor state",
     params: "anim.functionEditor.get.params",
     result: "anim.functionEditor.get.result",
     examples: [
@@ -692,6 +812,8 @@ export const COMMAND_INDEX = {
   },
   "anim.functionEditor.open": {
     kind: "ui",
+    label: "Open the function editor on a node/channel/projection",
+    summary: "Open the function editor on a node/channel/projection",
     params: "anim.functionEditor.open.params",
     result: "anim.functionEditor.open.result",
     examples: [
@@ -703,6 +825,8 @@ export const COMMAND_INDEX = {
   },
   "anim.functionEditor.syncFrame.set": {
     kind: "ui",
+    label: "Sync the editor's selected frame with the current frame",
+    summary: "Sync the editor's selected frame with the current frame",
     params: "anim.functionEditor.syncFrame.set.params",
     result: "anim.functionEditor.syncFrame.set.result",
     examples: [
@@ -714,6 +838,8 @@ export const COMMAND_INDEX = {
   },
   "anim.functionEditor.view.set": {
     kind: "ui",
+    label: "Function-editor view: fit, grid, zooms, panel and toolbar visibility, panel side",
+    summary: "Function-editor view: fit, grid, zooms, panel and toolbar visibility, panel side",
     params: "anim.functionEditor.view.set.params",
     result: "anim.functionEditor.view.set.result",
     examples: [
@@ -723,6 +849,8 @@ export const COMMAND_INDEX = {
   },
   "anim.hierarchy.attach": {
     kind: "action",
+    label: "Attach/reparent nodes under a parent",
+    summary: "Attach/reparent nodes under a parent (or the next peg/effect above)",
     params: "anim.hierarchy.attach.params",
     result: "anim.hierarchy.attach.result",
     examples: [
@@ -735,6 +863,8 @@ export const COMMAND_INDEX = {
   },
   "anim.hierarchy.changed": {
     kind: "event",
+    label: "Attachment/order of nodes changed",
+    summary: "Attachment/order of nodes changed",
     params: "anim.hierarchy.changed.params",
     result: "anim.hierarchy.changed.result",
     examples: [
@@ -745,6 +875,8 @@ export const COMMAND_INDEX = {
   },
   "anim.hierarchy.detach": {
     kind: "action",
+    label: "Detach nodes from their parent",
+    summary: "Detach nodes from their parent (up one level)",
     params: "anim.hierarchy.detach.params",
     result: "anim.hierarchy.detach.result",
     examples: [
@@ -756,6 +888,8 @@ export const COMMAND_INDEX = {
   },
   "anim.hierarchy.get": {
     kind: "query",
+    label: "Scene node tree with kinds and attachment",
+    summary: "Scene node tree with kinds and attachment",
     params: "anim.hierarchy.get.params",
     result: "anim.hierarchy.get.result",
     examples: [
@@ -765,6 +899,8 @@ export const COMMAND_INDEX = {
   },
   "anim.hierarchy.select": {
     kind: "ui",
+    label: "Select parent / descendants / first child / previous or next sibling",
+    summary: "Select parent / descendants / first child / previous or next sibling",
     params: "anim.hierarchy.select.params",
     result: "anim.hierarchy.select.result",
     examples: [
@@ -776,6 +912,8 @@ export const COMMAND_INDEX = {
   },
   "anim.key.add": {
     kind: "action",
+    label: "Add keyframe",
+    summary: "Add keyframes (full pose or chosen channels); optionally on a whole hierarchy or at segment bounds",
     params: "anim.key.add.params",
     result: "anim.key.add.result",
     examples: [
@@ -799,6 +937,8 @@ export const COMMAND_INDEX = {
   },
   "anim.key.list": {
     kind: "query",
+    label: "List keyframes",
+    summary: "Keyed frames and channels of a node",
     params: "anim.key.list.params",
     result: "anim.key.list.result",
     examples: [
@@ -815,6 +955,8 @@ export const COMMAND_INDEX = {
   },
   "anim.key.move": {
     kind: "action",
+    label: "Move keyframe",
+    summary: "Move keys of a node to another frame",
     params: "anim.key.move.params",
     result: "anim.key.move.result",
     examples: [
@@ -827,6 +969,8 @@ export const COMMAND_INDEX = {
   },
   "anim.key.remove": {
     kind: "action",
+    label: "Remove keyframe",
+    summary: "Remove keyframes at a frame (default channels position/rotation/scale/skew) or all keyframes",
     params: "anim.key.remove.params",
     result: "anim.key.remove.result",
     examples: [
@@ -846,6 +990,8 @@ export const COMMAND_INDEX = {
   },
   "anim.loop.set": {
     kind: "action",
+    label: "Set loop",
+    summary: "Set looping of a peg, effect, skeleton or bone",
     params: "anim.loop.set.params",
     result: "anim.loop.set.result",
     examples: [
@@ -858,6 +1004,8 @@ export const COMMAND_INDEX = {
   },
   "anim.node.get": {
     kind: "query",
+    label: "All animation properties of a node",
+    summary: "All animation properties of a node",
     params: "anim.node.get.params",
     result: "anim.node.get.result",
     examples: [
@@ -869,6 +1017,8 @@ export const COMMAND_INDEX = {
   },
   "anim.node.options.set": {
     kind: "action",
+    label: "Set non-transform node options",
+    summary: "Set non-transform node options",
     params: "anim.node.options.set.params",
     result: "anim.node.options.set.result",
     examples: [
@@ -878,6 +1028,8 @@ export const COMMAND_INDEX = {
   },
   "anim.node.pathDisplay.set": {
     kind: "ui",
+    label: "Per-node motion-path display switch",
+    summary: "Per-node motion-path display switch (as in the Timeline)",
     params: "anim.node.pathDisplay.set.params",
     result: "anim.node.pathDisplay.set.result",
     examples: [
@@ -890,6 +1042,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.get": {
     kind: "query",
+    label: "Get motion path",
+    summary: "Motion path with all points, parameters and arc lengths",
     params: "anim.path.get.params",
     result: "anim.path.get.result",
     examples: [
@@ -900,6 +1054,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.lockDepth.set": {
     kind: "action",
+    label: "Constant Z",
+    summary: "Constant Z for the segment starting at a keyframe",
     params: "anim.path.lockDepth.set.params",
     result: "anim.path.lockDepth.set.result",
     examples: [
@@ -912,6 +1068,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.point.add": {
     kind: "action",
+    label: "Add motion point",
+    summary: "Add a keyframe or control point (by frame, or at a curve location)",
     params: "anim.path.point.add.params",
     result: "anim.path.point.add.result",
     examples: [
@@ -929,6 +1087,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.point.remove": {
     kind: "action",
+    label: "Remove motion points",
+    summary: "Delete motion points",
     params: "anim.path.point.remove.params",
     result: "anim.path.point.remove.result",
     examples: [
@@ -941,6 +1101,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.point.select": {
     kind: "ui",
+    label: "Select a motion point, or the previous/next one",
+    summary: "Select a motion point, or the previous/next one",
     params: "anim.path.point.select.params",
     result: "anim.path.point.select.result",
     examples: [
@@ -950,6 +1112,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.point.set": {
     kind: "action",
+    label: "Edit motion point",
+    summary: "Edit a motion point (position, frame, lock in time, TCB, constant, per-key rotation/scale/pivot)",
     params: "anim.path.point.set.params",
     result: "anim.path.point.set.result",
     examples: [
@@ -964,6 +1128,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.sample": {
     kind: "query",
+    label: "Sample positions",
+    summary: "Positions per frame (frame markers, ghosts, pivot path)",
     params: "anim.path.sample.params",
     result: "anim.path.sample.result",
     examples: [
@@ -984,6 +1150,8 @@ export const COMMAND_INDEX = {
   },
   "anim.path.set": {
     kind: "action",
+    label: "Set motion path",
+    summary: "Replace a node's whole motion path",
     params: "anim.path.set.params",
     result: "anim.path.set.result",
     examples: [
@@ -1016,6 +1184,8 @@ export const COMMAND_INDEX = {
   },
   "anim.peg.create": {
     kind: "action",
+    label: "Add a peg",
+    summary: "Add a peg; with `wrapIds`, add a parent peg around those nodes",
     params: "anim.peg.create.params",
     result: "anim.peg.create.result",
     examples: [
@@ -1025,6 +1195,8 @@ export const COMMAND_INDEX = {
   },
   "anim.pegOnlyMode.set": {
     kind: "toggle",
+    label: "Peg-only mode on/off",
+    summary: "Peg-only mode on/off (§6.1)",
     params: "anim.pegOnlyMode.set.params",
     result: "anim.pegOnlyMode.set.result",
     examples: [
@@ -1036,6 +1208,8 @@ export const COMMAND_INDEX = {
   },
   "anim.point.copy": {
     kind: "ui",
+    label: "Copy a motion point to the clipboard",
+    summary: "Copy a motion point to the clipboard",
     params: "anim.point.copy.params",
     result: "anim.point.copy.result",
     examples: [
@@ -1047,6 +1221,8 @@ export const COMMAND_INDEX = {
   },
   "anim.point.paste": {
     kind: "action",
+    label: "Paste a copied point",
+    summary: "Paste a copied point (all properties, or chosen ones = paste special; `again` repeats the last choice)",
     params: "anim.point.paste.params",
     result: "anim.point.paste.result",
     examples: [
@@ -1058,6 +1234,8 @@ export const COMMAND_INDEX = {
   },
   "anim.prefs.get": {
     kind: "query",
+    label: "Scene-planning preferences",
+    summary: "Scene-planning preferences (§16)",
     params: "anim.prefs.get.params",
     result: "anim.prefs.get.result",
     examples: [
@@ -1067,6 +1245,8 @@ export const COMMAND_INDEX = {
   },
   "anim.prefs.set": {
     kind: "ui",
+    label: "Set scene-planning preferences",
+    summary: "Set scene-planning preferences",
     params: "anim.prefs.set.params",
     result: "anim.prefs.set.result",
     examples: [
@@ -1076,6 +1256,8 @@ export const COMMAND_INDEX = {
   },
   "anim.projection.get": {
     kind: "query",
+    label: "Project into output pixels",
+    summary: "Project world points or node bounds into output pixels",
     params: "anim.projection.get.params",
     result: "anim.projection.get.result",
     examples: [
@@ -1099,6 +1281,8 @@ export const COMMAND_INDEX = {
   },
   "anim.record.completed": {
     kind: "event",
+    label: "A motion recording",
+    summary: "A motion recording (interactive or by command) finished",
     params: "anim.record.completed.params",
     result: "anim.record.completed.result",
     examples: [
@@ -1109,6 +1293,8 @@ export const COMMAND_INDEX = {
   },
   "anim.record.options.get": {
     kind: "query",
+    label: "Motion-recording options",
+    summary: "Motion-recording options",
     params: "anim.record.options.get.params",
     result: "anim.record.options.get.result",
     examples: [
@@ -1118,6 +1304,8 @@ export const COMMAND_INDEX = {
   },
   "anim.record.options.set": {
     kind: "ui",
+    label: "Motion-recording options",
+    summary: "Motion-recording options (persisted user settings)",
     params: "anim.record.options.set.params",
     result: "anim.record.options.set.result",
     examples: [
@@ -1127,6 +1315,8 @@ export const COMMAND_INDEX = {
   },
   "anim.record.run": {
     kind: "action",
+    label: "Record motion from a sample list",
+    summary: "Record motion from a sample list (§14.4)",
     params: "anim.record.run.params",
     result: "anim.record.run.result",
     examples: [
@@ -1140,6 +1330,8 @@ export const COMMAND_INDEX = {
   },
   "anim.reset.apply": {
     kind: "action",
+    label: "Reset nodes: remove keys and restore default static values",
+    summary: "Reset nodes: remove keys and restore default static values",
     params: "anim.reset.apply.params",
     result: "anim.reset.apply.result",
     examples: [
@@ -1149,6 +1341,8 @@ export const COMMAND_INDEX = {
   },
   "anim.segment.set": {
     kind: "action",
+    label: "Set segment constant",
+    summary: "Make segments starting at a keyframe constant or tweened",
     params: "anim.segment.set.params",
     result: "anim.segment.set.result",
     examples: [
@@ -1166,6 +1360,8 @@ export const COMMAND_INDEX = {
   },
   "anim.segment.uniform.apply": {
     kind: "action",
+    label: "Make segment uniform",
+    summary: "Make the segment left/right of a key uniform (linear)",
     params: "anim.segment.uniform.apply.params",
     result: "anim.segment.uniform.apply.result",
     examples: [
@@ -1178,6 +1374,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.create": {
     kind: "action",
+    label: "Add a skeleton, optionally moving elements into its skin group",
+    summary: "Add a skeleton, optionally moving elements into its skin group",
     params: "anim.skeleton.create.params",
     result: "anim.skeleton.create.result",
     examples: [
@@ -1187,6 +1385,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.deform.get": {
     kind: "query",
+    label: "Deformed positions and weights of given rest-space points",
+    summary: "Deformed positions and weights of given rest-space points",
     params: "anim.skeleton.deform.get.params",
     result: "anim.skeleton.deform.get.result",
     examples: [
@@ -1199,6 +1399,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.delete": {
     kind: "action",
+    label: "Delete a skeleton",
+    summary: "Delete a skeleton (skin elements are moved out to its level)",
     params: "anim.skeleton.delete.params",
     result: "anim.skeleton.delete.result",
     examples: [
@@ -1210,6 +1412,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.get": {
     kind: "query",
+    label: "Bone tree with rest and current values",
+    summary: "Bone tree with rest and current values",
     params: "anim.skeleton.get.params",
     result: "anim.skeleton.get.result",
     examples: [
@@ -1221,6 +1425,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.restPose.apply": {
     kind: "action",
+    label: "Copy the rest pose to the current frame or to all keyframes",
+    summary: "Copy the rest pose to the current frame or to all keyframes",
     params: "anim.skeleton.restPose.apply.params",
     result: "anim.skeleton.restPose.apply.result",
     examples: [
@@ -1232,6 +1438,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.root.select": {
     kind: "ui",
+    label: "Select the skeleton root of the current bone/skin element",
+    summary: "Select the skeleton root of the current bone/skin element",
     params: "anim.skeleton.root.select.params",
     result: "anim.skeleton.root.select.result",
     examples: [
@@ -1241,6 +1449,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.set": {
     kind: "action",
+    label: "Skeleton display and quality options",
+    summary: "Skeleton display and quality options",
     params: "anim.skeleton.set.params",
     result: "anim.skeleton.set.result",
     examples: [
@@ -1252,6 +1462,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.skin.add": {
     kind: "action",
+    label: "Put elements into the skin group",
+    summary: "Put elements into the skin group",
     params: "anim.skeleton.skin.add.params",
     result: "anim.skeleton.skin.add.result",
     examples: [
@@ -1264,6 +1476,8 @@ export const COMMAND_INDEX = {
   },
   "anim.skeleton.skin.remove": {
     kind: "action",
+    label: "Take elements out of the skin group",
+    summary: "Take elements out of the skin group",
     params: "anim.skeleton.skin.remove.params",
     result: "anim.skeleton.skin.remove.result",
     examples: [
@@ -1276,6 +1490,8 @@ export const COMMAND_INDEX = {
   },
   "anim.snapLastKey.set": {
     kind: "toggle",
+    label: "Snap-last-keyframe on/off",
+    summary: "Snap-last-keyframe on/off (§6.5)",
     params: "anim.snapLastKey.set.params",
     result: "anim.snapLastKey.set.result",
     examples: [
@@ -1287,6 +1503,8 @@ export const COMMAND_INDEX = {
   },
   "anim.stretch.apply": {
     kind: "action",
+    label: "Re-time a node's channels proportionally to a new duration",
+    summary: "Re-time a node's channels proportionally to a new duration",
     params: "anim.stretch.apply.params",
     result: "anim.stretch.apply.result",
     examples: [
@@ -1299,36 +1517,41 @@ export const COMMAND_INDEX = {
   },
   "anim.tool.changed": {
     kind: "event",
+    label: "Scene tool changed",
+    summary: "Scene-planning tool changed",
     params: "anim.tool.changed.params",
     result: "anim.tool.changed.result",
     examples: [
       {},
     ],
-    milestone: "M6 C6.1",
     event: true,
   },
   "anim.tool.get": {
     kind: "query",
+    label: "Get the scene tool",
+    summary: "Current scene-planning tool",
     params: "anim.tool.get.params",
     result: "anim.tool.get.result",
     examples: [
       {},
     ],
-    milestone: "M6 C6.1",
   },
   "anim.tool.set": {
     kind: "ui",
+    label: "Select a scene tool",
+    summary: "Select the active scene-planning tool (independent of the drawing tool)",
     params: "anim.tool.set.params",
     result: "anim.tool.set.result",
     examples: [
       {
-        tool: "select",
+        tool: "transform",
       },
     ],
-    milestone: "M6 C6.1",
   },
   "anim.transform.set": {
     kind: "action",
+    label: "Set transform",
+    summary: "Set static values or key animated values (Select/Transform/Rotate/Scale/Skew tool equivalent)",
     params: "anim.transform.set.params",
     result: "anim.transform.set.result",
     examples: [
@@ -1366,19 +1589,27 @@ export const COMMAND_INDEX = {
   },
   "anim.view.coords.get": {
     kind: "query",
+    label: "Map scene and view coordinates",
+    summary: "Map points between scene space and view pixels (for pointer simulation)",
     params: "anim.view.coords.get.params",
     result: "anim.view.coords.get.result",
     examples: [
       {
-        viewId: "scene:#1",
-        points: [],
+        viewId: "cameraView",
+        points: [
+          {
+            x: 0,
+            y: 0,
+          },
+        ],
         from: "scene",
       },
     ],
-    milestone: "M6 C6.1",
   },
   "anim.view.get": {
     kind: "query",
+    label: "View state of a scene view",
+    summary: "View state of a scene view",
     params: "anim.view.get.params",
     result: "anim.view.get.result",
     examples: [
@@ -1390,6 +1621,8 @@ export const COMMAND_INDEX = {
   },
   "anim.view.slot.select": {
     kind: "ui",
+    label: "Switch active view: store current state and restore the other slot",
+    summary: "Switch active view: store current state and restore the other slot",
     params: "anim.view.slot.select.params",
     result: "anim.view.slot.select.result",
     examples: [
@@ -1401,6 +1634,8 @@ export const COMMAND_INDEX = {
   },
   "anim.view.type.set": {
     kind: "ui",
+    label: "Switch a view window between Drawing, Camera, Top and Side",
+    summary: "Switch a view window between Drawing, Camera, Top and Side",
     params: "anim.view.type.set.params",
     result: "anim.view.type.set.result",
     examples: [
@@ -1413,6 +1648,8 @@ export const COMMAND_INDEX = {
   },
   "app.context.set": {
     kind: "ui",
+    label: "Set current context",
+    summary: "Set several parts of the current context at once",
     params: "app.context.set.params",
     result: "app.context.set.result",
     examples: [
@@ -1427,6 +1664,8 @@ export const COMMAND_INDEX = {
   },
   "app.currentElement.move": {
     kind: "ui",
+    label: "Previous/next element",
+    summary: "Previous/next element (Timeline order, exposure-sheet order, or by mode)",
     params: "app.currentElement.move.params",
     result: "app.currentElement.move.result",
     examples: [
@@ -1438,6 +1677,8 @@ export const COMMAND_INDEX = {
   },
   "app.currentElement.set": {
     kind: "ui",
+    label: "Make element current",
+    summary: "Make an element current",
     params: "app.currentElement.set.params",
     result: "app.currentElement.set.result",
     examples: [
@@ -1448,6 +1689,8 @@ export const COMMAND_INDEX = {
   },
   "app.frame.move": {
     kind: "ui",
+    label: "Previous/next frame",
+    summary: "Previous/next frame, or previous/next different drawing in the current element",
     params: "app.frame.move.params",
     result: "app.frame.move.result",
     examples: [
@@ -1462,6 +1705,8 @@ export const COMMAND_INDEX = {
   },
   "app.frame.set": {
     kind: "ui",
+    label: "Go to frame",
+    summary: "Set the current frame",
     params: "app.frame.set.params",
     result: "app.frame.set.result",
     examples: [
@@ -1472,6 +1717,8 @@ export const COMMAND_INDEX = {
   },
   "app.info.get": {
     kind: "query",
+    label: "Application information",
+    summary: "Application name, version, platform, locale, installed languages, project format version",
     params: "app.info.get.params",
     result: "app.info.get.result",
     examples: [
@@ -1480,6 +1727,8 @@ export const COMMAND_INDEX = {
   },
   "app.mode.set": {
     kind: "ui",
+    label: "Set working mode",
+    summary: "Switch to drawing or staging mode by activating (or switching) a view of that type",
     params: "app.mode.set.params",
     result: "app.mode.set.result",
     examples: [
@@ -1490,6 +1739,8 @@ export const COMMAND_INDEX = {
   },
   "app.quit": {
     kind: "action",
+    label: "Quit",
+    summary: "Quit the application",
     params: "app.quit.params",
     result: "app.quit.result",
     examples: [
@@ -1500,6 +1751,8 @@ export const COMMAND_INDEX = {
   },
   "app.state.changed": {
     kind: "event",
+    label: "Application state changed",
+    summary: "Current context changed (project, scene, frame, element, mode, view, tool, workspace, modal state)",
     params: "app.state.changed.params",
     result: "app.state.changed.result",
     examples: [
@@ -1509,6 +1762,8 @@ export const COMMAND_INDEX = {
   },
   "app.state.get": {
     kind: "query",
+    label: "Get application state",
+    summary: "Current application state (project, scene, frame, element, drawing, mode, active view, focused panel, active tool, selection, workspace, modal state, agent sessions)",
     params: "app.state.get.params",
     result: "app.state.get.result",
     examples: [
@@ -1517,6 +1772,8 @@ export const COMMAND_INDEX = {
   },
   "capture.auto.start": {
     kind: "job",
+    label: "Start auto capture",
+    summary: "Start auto capture (each capture is its own undo step)",
     params: "capture.auto.start.params",
     result: "capture.auto.start.result",
     examples: [
@@ -1526,6 +1783,8 @@ export const COMMAND_INDEX = {
   },
   "capture.auto.stop": {
     kind: "ui",
+    label: "Stop auto capture",
+    summary: "Stop auto capture",
     params: "capture.auto.stop.params",
     result: "capture.auto.stop.result",
     examples: [
@@ -1535,6 +1794,8 @@ export const COMMAND_INDEX = {
   },
   "capture.device.added": {
     kind: "event",
+    label: "A device was connected",
+    summary: "A device was connected",
     params: "capture.device.added.params",
     result: "capture.device.added.result",
     examples: [
@@ -1545,6 +1806,8 @@ export const COMMAND_INDEX = {
   },
   "capture.device.dialog.open": {
     kind: "ui",
+    label: "Show the device's own settings interface, if it has one",
+    summary: "Show the device's own settings interface, if it has one (user-facing)",
     params: "capture.device.dialog.open.params",
     result: "capture.device.dialog.open.result",
     examples: [
@@ -1556,6 +1819,8 @@ export const COMMAND_INDEX = {
   },
   "capture.device.get": {
     kind: "query",
+    label: "Device descriptor, current settings and settings schema",
+    summary: "Device descriptor, current settings and settings schema",
     params: "capture.device.get.params",
     result: "capture.device.get.result",
     examples: [
@@ -1567,6 +1832,8 @@ export const COMMAND_INDEX = {
   },
   "capture.device.list": {
     kind: "query",
+    label: "List connected capture devices and scanners",
+    summary: "List connected capture devices and scanners",
     params: "capture.device.list.params",
     result: "capture.device.list.result",
     examples: [
@@ -1576,6 +1843,8 @@ export const COMMAND_INDEX = {
   },
   "capture.device.removed": {
     kind: "event",
+    label: "A device was disconnected",
+    summary: "A device was disconnected",
     params: "capture.device.removed.params",
     result: "capture.device.removed.result",
     examples: [
@@ -1586,6 +1855,8 @@ export const COMMAND_INDEX = {
   },
   "capture.device.select": {
     kind: "ui",
+    label: "Set the default acquisition device",
+    summary: "Set the default acquisition device (remembered)",
     params: "capture.device.select.params",
     result: "capture.device.select.result",
     examples: [
@@ -1597,6 +1868,8 @@ export const COMMAND_INDEX = {
   },
   "capture.device.settings.set": {
     kind: "ui",
+    label: "Set device settings",
+    summary: "Set device settings (exposure, ISO, white balance, focus, zoom, scan options…)",
     params: "capture.device.settings.set.params",
     result: "capture.device.settings.set.result",
     examples: [
@@ -1609,6 +1882,8 @@ export const COMMAND_INDEX = {
   },
   "capture.display.set": {
     kind: "ui",
+    label: "Preview display aids",
+    summary: "Preview display aids",
     params: "capture.display.set.params",
     result: "capture.display.set.result",
     examples: [
@@ -1618,6 +1893,8 @@ export const COMMAND_INDEX = {
   },
   "capture.frame.add": {
     kind: "action",
+    label: "Capture from the session's device into the target",
+    summary: "Capture from the session's device into the target (Capture Image)",
     params: "capture.frame.add.params",
     result: "capture.frame.add.result",
     examples: [
@@ -1627,6 +1904,8 @@ export const COMMAND_INDEX = {
   },
   "capture.frame.addFromFile": {
     kind: "action",
+    label: "Feed supplied image files through the capture pipeline",
+    summary: "Feed supplied image files through the capture pipeline (Capture Image)",
     params: "capture.frame.addFromFile.params",
     result: "capture.frame.addFromFile.result",
     examples: [
@@ -1638,6 +1917,8 @@ export const COMMAND_INDEX = {
   },
   "capture.frame.captured": {
     kind: "event",
+    label: "A capture was inserted",
+    summary: "A capture was inserted",
     params: "capture.frame.captured.params",
     result: "capture.frame.captured.result",
     examples: [
@@ -1648,6 +1929,8 @@ export const COMMAND_INDEX = {
   },
   "capture.inputLock.set": {
     kind: "toggle",
+    label: "Ignore pointer input during auto capture",
+    summary: "Ignore pointer input during auto capture",
     params: "capture.inputLock.set.params",
     result: "capture.inputLock.set.result",
     examples: [
@@ -1659,6 +1942,8 @@ export const COMMAND_INDEX = {
   },
   "capture.keyColour.set": {
     kind: "ui",
+    label: "Set key colour directly or by sampling the preview",
+    summary: "Set key colour directly or by sampling the preview",
     params: "capture.keyColour.set.params",
     result: "capture.keyColour.set.result",
     examples: [
@@ -1668,6 +1953,8 @@ export const COMMAND_INDEX = {
   },
   "capture.keying.set": {
     kind: "ui",
+    label: "Set keying parameters of the session",
+    summary: "Set keying parameters of the session (persisted)",
     params: "capture.keying.set.params",
     result: "capture.keying.set.result",
     examples: [
@@ -1687,6 +1974,8 @@ export const COMMAND_INDEX = {
   },
   "capture.lightTable.references.list": {
     kind: "query",
+    label: "Available light-table references for the current target frame",
+    summary: "Available light-table references for the current target frame",
     params: "capture.lightTable.references.list.params",
     result: "capture.lightTable.references.list.result",
     examples: [
@@ -1696,6 +1985,8 @@ export const COMMAND_INDEX = {
   },
   "capture.lightTable.set": {
     kind: "ui",
+    label: "Light-table reference, opacity and aspect-ratio mode",
+    summary: "Light-table reference, opacity and aspect-ratio mode",
     params: "capture.lightTable.set.params",
     result: "capture.lightTable.set.result",
     examples: [
@@ -1705,6 +1996,8 @@ export const COMMAND_INDEX = {
   },
   "capture.preview.get": {
     kind: "query",
+    label: "Current processed preview as PNG",
+    summary: "Current processed preview as PNG (keying, display aids, light table)",
     params: "capture.preview.get.params",
     result: "capture.preview.get.result",
     examples: [
@@ -1714,6 +2007,8 @@ export const COMMAND_INDEX = {
   },
   "capture.session.close": {
     kind: "ui",
+    label: "Close the session",
+    summary: "Close the session (stops auto capture)",
     params: "capture.session.close.params",
     result: "capture.session.close.result",
     examples: [
@@ -1723,6 +2018,8 @@ export const COMMAND_INDEX = {
   },
   "capture.session.error": {
     kind: "event",
+    label: "Session error",
+    summary: "Session error (busy, disconnected, no image…)",
     params: "capture.session.error.params",
     result: "capture.session.error.result",
     examples: [
@@ -1733,6 +2030,8 @@ export const COMMAND_INDEX = {
   },
   "capture.session.get": {
     kind: "query",
+    label: "Read session state",
+    summary: "Read session state",
     params: "capture.session.get.params",
     result: "capture.session.get.result",
     examples: [
@@ -1742,6 +2041,8 @@ export const COMMAND_INDEX = {
   },
   "capture.session.open": {
     kind: "ui",
+    label: "Open a capture session",
+    summary: "Open a capture session (and optionally the capture window)",
     params: "capture.session.open.params",
     result: "capture.session.open.result",
     examples: [
@@ -1751,6 +2052,8 @@ export const COMMAND_INDEX = {
   },
   "capture.source.set": {
     kind: "ui",
+    label: "Set source, resolution / image size, noise reduction",
+    summary: "Set source, resolution / image size, noise reduction",
     params: "capture.source.set.params",
     result: "capture.source.set.result",
     examples: [
@@ -1760,6 +2063,8 @@ export const COMMAND_INDEX = {
   },
   "capture.target.set": {
     kind: "ui",
+    label: "Target element/frame and insert/advance behaviour",
+    summary: "Target element/frame and insert/advance behaviour",
     params: "capture.target.set.params",
     result: "capture.target.set.result",
     examples: [
@@ -1769,6 +2074,8 @@ export const COMMAND_INDEX = {
   },
   "cell.blank.add": {
     kind: "action",
+    label: "Insert blank cell",
+    summary: "Insert blank cell(s) at a frame; following cells shift later",
     params: "cell.blank.add.params",
     result: "cell.blank.add.result",
     examples: [
@@ -1783,6 +2090,8 @@ export const COMMAND_INDEX = {
   },
   "cell.blank.remove": {
     kind: "action",
+    label: "Delete blank cell",
+    summary: "Delete blank cell(s) at a frame; fails with `cell.notBlank` on a non-blank cell",
     params: "cell.blank.remove.params",
     result: "cell.blank.remove.result",
     examples: [
@@ -1796,6 +2105,8 @@ export const COMMAND_INDEX = {
   },
   "cell.clipboard.apply": {
     kind: "action",
+    label: "Paste cells",
+    summary: "Paste the clipboard at a target, normally or as new drawings, with optional transfer options",
     params: "cell.clipboard.apply.params",
     result: "cell.clipboard.apply.result",
     examples: [
@@ -1812,6 +2123,8 @@ export const COMMAND_INDEX = {
   },
   "cell.clipboard.set": {
     kind: "action",
+    label: "Copy cells",
+    summary: "Copy (or cut, undoable) an explicit range or whole elements to the clipboard",
     params: "cell.clipboard.set.params",
     result: "cell.clipboard.set.result",
     examples: [
@@ -1834,6 +2147,8 @@ export const COMMAND_INDEX = {
   },
   "cell.columnate.apply": {
     kind: "action",
+    label: "Columnate",
+    summary: "Advanced cycle: write first..last drawings with exposure, loop mode and placement (13.10)",
     params: "cell.columnate.apply.params",
     result: "cell.columnate.apply.result",
     examples: [
@@ -1859,6 +2174,8 @@ export const COMMAND_INDEX = {
   },
   "cell.cycle.create": {
     kind: "action",
+    label: "Create cycle",
+    summary: "Repeat the range so that it appears N times in total; following cells shift",
     params: "cell.cycle.create.params",
     result: "cell.cycle.create.result",
     examples: [
@@ -1872,6 +2189,8 @@ export const COMMAND_INDEX = {
   },
   "cell.drawing.duplicate": {
     kind: "action",
+    label: "Duplicate drawing",
+    summary: "Duplicate drawing: copy the drawing at the range and expose the copy there",
     params: "cell.drawing.duplicate.params",
     result: "cell.drawing.duplicate.result",
     examples: [
@@ -1884,6 +2203,8 @@ export const COMMAND_INDEX = {
   },
   "cell.exposure.add": {
     kind: "action",
+    label: "Add exposure",
+    summary: "Add exposure: hold longer by N frames, following cells shift later",
     params: "cell.exposure.add.params",
     result: "cell.exposure.add.result",
     examples: [
@@ -1906,6 +2227,8 @@ export const COMMAND_INDEX = {
   },
   "cell.exposure.remove": {
     kind: "action",
+    label: "Remove exposure",
+    summary: "Remove exposure: shorten by N frames, following cells shift earlier",
     params: "cell.exposure.remove.params",
     result: "cell.exposure.remove.result",
     examples: [
@@ -1920,6 +2243,8 @@ export const COMMAND_INDEX = {
   },
   "cell.exposure.set": {
     kind: "action",
+    label: "Set exposure",
+    summary: "Set every exposure in the range to N frames (ones / twos / threes / N)",
     params: "cell.exposure.set.params",
     result: "cell.exposure.set.result",
     examples: [
@@ -1935,6 +2260,8 @@ export const COMMAND_INDEX = {
   },
   "cell.exposures.changed": {
     kind: "event",
+    label: "Cells changed",
+    summary: "Cells of an element changed in a frame range",
     params: "cell.exposures.changed.params",
     result: "cell.exposures.changed.result",
     examples: [
@@ -1944,6 +2271,8 @@ export const COMMAND_INDEX = {
   },
   "cell.fill.apply": {
     kind: "action",
+    label: "Extend exposure",
+    summary: "Extend exposure: expose the drawing at `frame` through `toFrame`, overwriting",
     params: "cell.fill.apply.params",
     result: "cell.fill.apply.result",
     examples: [
@@ -1958,6 +2287,8 @@ export const COMMAND_INDEX = {
   },
   "cell.label.set": {
     kind: "action",
+    label: "Change label",
+    summary: "Change label / substitute the drawing in the range by name, id, or by stepping through the bank",
     params: "cell.label.set.params",
     result: "cell.label.set.result",
     examples: [
@@ -1990,6 +2321,8 @@ export const COMMAND_INDEX = {
   },
   "cell.note.set": {
     kind: "action",
+    label: "Set cell note",
+    summary: "Set, update or remove (empty text) a cell note",
     params: "cell.note.set.params",
     result: "cell.note.set.result",
     examples: [
@@ -2007,6 +2340,8 @@ export const COMMAND_INDEX = {
   },
   "cell.range.add": {
     kind: "action",
+    label: "Insert cells",
+    summary: "Insert cells (blank or named; one element or all elements)",
     params: "cell.range.add.params",
     result: "cell.range.add.result",
     examples: [
@@ -2028,6 +2363,8 @@ export const COMMAND_INDEX = {
   },
   "cell.range.delete": {
     kind: "action",
+    label: "Delete cells",
+    summary: "Delete cells: clear (leave blanks) or remove and shift earlier",
     params: "cell.range.delete.params",
     result: "cell.range.delete.result",
     examples: [
@@ -2050,6 +2387,8 @@ export const COMMAND_INDEX = {
   },
   "cell.range.move": {
     kind: "action",
+    label: "Move cells",
+    summary: "Move / copy / link / copy-as-new-drawings a cell range to another frame or element (drag-and-drop equivalent)",
     params: "cell.range.move.params",
     result: "cell.range.move.result",
     examples: [
@@ -2075,6 +2414,8 @@ export const COMMAND_INDEX = {
   },
   "cell.select": {
     kind: "ui",
+    label: "Select cells",
+    summary: "Select cells (frames × elements), a whole track, or a sound clip extent",
     params: "cell.select.params",
     result: "cell.select.result",
     examples: [
@@ -2097,6 +2438,8 @@ export const COMMAND_INDEX = {
   },
   "cell.selection.changed": {
     kind: "event",
+    label: "Cell selection changed",
+    summary: "Cell or row selection or current position changed",
     params: "cell.selection.changed.params",
     result: "cell.selection.changed.result",
     examples: [
@@ -2106,6 +2449,8 @@ export const COMMAND_INDEX = {
   },
   "cell.selection.get": {
     kind: "query",
+    label: "Get cell selection",
+    summary: "Current cell/row selection and current position",
     params: "cell.selection.get.params",
     result: "cell.selection.get.result",
     examples: [
@@ -2114,6 +2459,8 @@ export const COMMAND_INDEX = {
   },
   "checkpoint.create": {
     kind: "ui",
+    label: "Create checkpoint",
+    summary: "Create a named in-memory snapshot of the document",
     params: "checkpoint.create.params",
     result: "checkpoint.create.result",
     examples: [
@@ -2124,6 +2471,8 @@ export const COMMAND_INDEX = {
   },
   "checkpoint.delete": {
     kind: "ui",
+    label: "Delete checkpoint",
+    summary: "Delete a checkpoint",
     params: "checkpoint.delete.params",
     result: "checkpoint.delete.result",
     examples: [
@@ -2134,6 +2483,8 @@ export const COMMAND_INDEX = {
   },
   "checkpoint.list": {
     kind: "query",
+    label: "List checkpoints",
+    summary: "List checkpoints",
     params: "checkpoint.list.params",
     result: "checkpoint.list.result",
     examples: [
@@ -2142,6 +2493,8 @@ export const COMMAND_INDEX = {
   },
   "checkpoint.restore": {
     kind: "action",
+    label: "Restore checkpoint",
+    summary: "Restore a checkpoint (one undo step \"Restore checkpoint\")",
     params: "checkpoint.restore.params",
     result: "checkpoint.restore.result",
     examples: [
@@ -2152,6 +2505,8 @@ export const COMMAND_INDEX = {
   },
   "colour.autoColourUpdate.set": {
     kind: "toggle",
+    label: "Project flag: template colours overwrite existing swatch values",
+    summary: "Project flag: template colours overwrite existing swatch values",
     params: "colour.autoColourUpdate.set.params",
     result: "colour.autoColourUpdate.set.result",
     examples: [
@@ -2163,16 +2518,19 @@ export const COMMAND_INDEX = {
   },
   "colour.current.changed": {
     kind: "event",
+    label: "Current palette or colour changed",
+    summary: "Current palette or colour changed",
     params: "colour.current.changed.params",
     result: "colour.current.changed.result",
     examples: [
       {},
     ],
-    milestone: "M7 C7.1",
     event: true,
   },
   "colour.current.get": {
     kind: "query",
+    label: "Current palette, swatch and style",
+    summary: "Current palette, swatch and style",
     params: "colour.current.get.params",
     result: "colour.current.get.result",
     examples: [
@@ -2182,17 +2540,20 @@ export const COMMAND_INDEX = {
   },
   "colour.current.set": {
     kind: "ui",
+    label: "Set the current colour",
+    summary: "Set the current colour (switches current palette if needed)",
     params: "colour.current.set.params",
     result: "colour.current.set.result",
     examples: [
       {
-        colourId: "scene:#1",
+        colourId: "palette:#1/swatch:#2",
       },
     ],
-    milestone: "M7 C7.1",
   },
   "colour.editor.close": {
     kind: "ui",
+    label: "Close the editor, committing or discarding the pending edit",
+    summary: "Close the editor, committing or discarding the pending edit",
     params: "colour.editor.close.params",
     result: "colour.editor.close.result",
     examples: [
@@ -2202,6 +2563,8 @@ export const COMMAND_INDEX = {
   },
   "colour.editor.open": {
     kind: "ui",
+    label: "Open the colour editor / texture properties for a swatch",
+    summary: "Open the colour editor / texture properties for a swatch",
     params: "colour.editor.open.params",
     result: "colour.editor.open.result",
     examples: [
@@ -2211,6 +2574,8 @@ export const COMMAND_INDEX = {
   },
   "colour.fillMapping.get": {
     kind: "query",
+    label: "Get fill mapping",
+    summary: "Fill mapping of a gradient/texture-filled object (optionally copy to clipboard)",
     params: "colour.fillMapping.get.params",
     result: "colour.fillMapping.get.result",
     examples: [
@@ -2222,6 +2587,8 @@ export const COMMAND_INDEX = {
   },
   "colour.fillMapping.set": {
     kind: "action",
+    label: "Edit fill mapping",
+    summary: "Set fill mapping on objects: explicit, default fit, or from clipboard (\"Edit Fill Mapping\")",
     params: "colour.fillMapping.set.params",
     result: "colour.fillMapping.set.result",
     examples: [
@@ -2252,6 +2619,8 @@ export const COMMAND_INDEX = {
   },
   "colour.gap.close": {
     kind: "action",
+    label: "Close Gap",
+    summary: "Close a gap by adding an invisible stroke between the nearest stroke ends (\"Close Gap\")",
     params: "colour.gap.close.params",
     result: "colour.gap.close.result",
     examples: [
@@ -2270,6 +2639,8 @@ export const COMMAND_INDEX = {
   },
   "colour.gapClosing.get": {
     kind: "query",
+    label: "Get automatic gap closing",
+    summary: "Current gap closing mode and tolerances",
     params: "colour.gapClosing.get.params",
     result: "colour.gapClosing.get.result",
     examples: [
@@ -2278,6 +2649,8 @@ export const COMMAND_INDEX = {
   },
   "colour.gapClosing.set": {
     kind: "ui",
+    label: "Automatic gap closing",
+    summary: "Set the automatic gap closing mode (persisted user setting)",
     params: "colour.gapClosing.set.params",
     result: "colour.gapClosing.set.result",
     examples: [
@@ -2288,6 +2661,8 @@ export const COMMAND_INDEX = {
   },
   "colour.missing.list": {
     kind: "query",
+    label: "List missing colours",
+    summary: "Colour IDs referenced by artwork but not found in any palette",
     params: "colour.missing.list.params",
     result: "colour.missing.list.result",
     examples: [
@@ -2296,6 +2671,8 @@ export const COMMAND_INDEX = {
   },
   "colour.paint.apply": {
     kind: "action",
+    label: "Paint",
+    summary: "Paint zones, lines, brush strokes or text by ID, point or crossing path (\"Paint\")",
     params: "colour.paint.apply.params",
     result: "colour.paint.apply.result",
     examples: [
@@ -2318,6 +2695,8 @@ export const COMMAND_INDEX = {
   },
   "colour.paint.remove": {
     kind: "action",
+    label: "Unpaint",
+    summary: "Unpaint zones or lines by ID or point (\"Unpaint\")",
     params: "colour.paint.remove.params",
     result: "colour.paint.remove.result",
     examples: [
@@ -2331,6 +2710,8 @@ export const COMMAND_INDEX = {
   },
   "colour.paintUnpainted.apply": {
     kind: "action",
+    label: "Paint Unpainted",
+    summary: "Fill unpainted zones only, by ID, point, lasso or all (\"Paint Unpainted\")",
     params: "colour.paintUnpainted.apply.params",
     result: "colour.paintUnpainted.apply.result",
     examples: [
@@ -2342,6 +2723,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.changed": {
     kind: "event",
+    label: "Palette created, deleted, renamed, reordered, imported or edited",
+    summary: "Palette created, deleted, renamed, reordered, imported or edited",
     params: "colour.palette.changed.params",
     result: "colour.palette.changed.result",
     examples: [
@@ -2352,6 +2735,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.create": {
     kind: "action",
+    label: "Add Palette",
+    summary: "Create a palette (\"Add Palette\")",
     params: "colour.palette.create.params",
     result: "colour.palette.create.result",
     examples: [
@@ -2361,6 +2746,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.delete": {
     kind: "action",
+    label: "Remove Palette",
+    summary: "Delete a palette and all its styles (\"Remove Palette\")",
     params: "colour.palette.delete.params",
     result: "colour.palette.delete.result",
     examples: [
@@ -2372,6 +2759,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.duplicate": {
     kind: "action",
+    label: "Duplicate Palette",
+    summary: "Duplicate a palette with new IDs (\"Duplicate Palette\")",
     params: "colour.palette.duplicate.params",
     result: "colour.palette.duplicate.result",
     examples: [
@@ -2383,6 +2772,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.export": {
     kind: "action",
+    label: "Write palettes to an `.animpal` file",
+    summary: "Write palettes to an `.animpal` file",
     params: "colour.palette.export.params",
     result: "colour.palette.export.result",
     examples: [
@@ -2395,6 +2786,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.get": {
     kind: "query",
+    label: "Full palette as JSON",
+    summary: "Full palette as JSON (§12.3)",
     params: "colour.palette.get.params",
     result: "colour.palette.get.result",
     examples: [
@@ -2406,6 +2799,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.import": {
     kind: "action",
+    label: "Import Palette",
+    summary: "Import palettes from an `.animpal` file (\"Import Palette\")",
     params: "colour.palette.import.params",
     result: "colour.palette.import.result",
     examples: [
@@ -2417,6 +2812,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.list": {
     kind: "query",
+    label: "List palettes in order",
+    summary: "List palettes in order",
     params: "colour.palette.list.params",
     result: "colour.palette.list.result",
     examples: [
@@ -2426,6 +2823,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.rename": {
     kind: "action",
+    label: "Rename Palette",
+    summary: "Rename a palette (\"Rename Palette\")",
     params: "colour.palette.rename.params",
     result: "colour.palette.rename.result",
     examples: [
@@ -2438,6 +2837,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.select": {
     kind: "ui",
+    label: "Make a palette current",
+    summary: "Make a palette current (selects its first swatch)",
     params: "colour.palette.select.params",
     result: "colour.palette.select.result",
     examples: [
@@ -2449,6 +2850,8 @@ export const COMMAND_INDEX = {
   },
   "colour.palette.set": {
     kind: "action",
+    label: "Replace or merge a palette's styles and swatches from a palette JSON object",
+    summary: "Replace or merge a palette's styles and swatches from a palette JSON object",
     params: "colour.palette.set.params",
     result: "colour.palette.set.result",
     examples: [
@@ -2461,6 +2864,8 @@ export const COMMAND_INDEX = {
   },
   "colour.pick": {
     kind: "query",
+    label: "Pick colour",
+    summary: "Colour at a rendered point (dropper read-back)",
     params: "colour.pick.params",
     result: "colour.pick.result",
     examples: [
@@ -2476,6 +2881,8 @@ export const COMMAND_INDEX = {
   },
   "colour.recolour.apply": {
     kind: "action",
+    label: "Replace colour",
+    summary: "Replace colour A with colour B across drawings/elements/scene/project (\"Replace Colour\")",
     params: "colour.recolour.apply.params",
     result: "colour.recolour.apply.result",
     examples: [
@@ -2492,6 +2899,8 @@ export const COMMAND_INDEX = {
   },
   "colour.recovery.performed": {
     kind: "event",
+    label: "Colour recovery performed",
+    summary: "Colour recovery added swatches",
     params: "colour.recovery.performed.params",
     result: "colour.recovery.performed.result",
     examples: [
@@ -2501,6 +2910,8 @@ export const COMMAND_INDEX = {
   },
   "colour.recovery.run": {
     kind: "action",
+    label: "Colour Recovery",
+    summary: "Recreate missing swatches from recovery copies (\"Colour Recovery\")",
     params: "colour.recovery.run.params",
     result: "colour.recovery.run.result",
     examples: [
@@ -2511,6 +2922,8 @@ export const COMMAND_INDEX = {
   },
   "colour.sceneStyle.changed": {
     kind: "event",
+    label: "A scene's style selection changed",
+    summary: "A scene's style selection changed",
     params: "colour.sceneStyle.changed.params",
     result: "colour.sceneStyle.changed.result",
     examples: [
@@ -2521,6 +2934,8 @@ export const COMMAND_INDEX = {
   },
   "colour.sceneStyles.get": {
     kind: "query",
+    label: "Style selected for every palette in a scene",
+    summary: "Style selected for every palette in a scene",
     params: "colour.sceneStyles.get.params",
     result: "colour.sceneStyles.get.result",
     examples: [
@@ -2530,6 +2945,8 @@ export const COMMAND_INDEX = {
   },
   "colour.selection.apply": {
     kind: "action",
+    label: "Set colour",
+    summary: "Recolour selected drawing objects (\"Set Colour\")",
     params: "colour.selection.apply.params",
     result: "colour.selection.apply.result",
     examples: [
@@ -2552,6 +2969,8 @@ export const COMMAND_INDEX = {
   },
   "colour.style.changed": {
     kind: "event",
+    label: "Style created, renamed, deleted or tinted",
+    summary: "Style created, renamed, deleted or tinted",
     params: "colour.style.changed.params",
     result: "colour.style.changed.result",
     examples: [
@@ -2562,6 +2981,8 @@ export const COMMAND_INDEX = {
   },
   "colour.style.delete": {
     kind: "action",
+    label: "Delete Style",
+    summary: "Delete a style (\"Delete Style\")",
     params: "colour.style.delete.params",
     result: "colour.style.delete.result",
     examples: [
@@ -2574,6 +2995,8 @@ export const COMMAND_INDEX = {
   },
   "colour.style.duplicate": {
     kind: "action",
+    label: "Duplicate Style",
+    summary: "Duplicate a style, same colour IDs (\"Duplicate Style\")",
     params: "colour.style.duplicate.params",
     result: "colour.style.duplicate.result",
     examples: [
@@ -2585,6 +3008,8 @@ export const COMMAND_INDEX = {
   },
   "colour.style.list": {
     kind: "query",
+    label: "List a palette's styles and which scenes use each",
+    summary: "List a palette's styles and which scenes use each",
     params: "colour.style.list.params",
     result: "colour.style.list.result",
     examples: [
@@ -2596,6 +3021,8 @@ export const COMMAND_INDEX = {
   },
   "colour.style.rename": {
     kind: "action",
+    label: "Rename Style",
+    summary: "Rename a style (\"Rename Style\")",
     params: "colour.style.rename.params",
     result: "colour.style.rename.result",
     examples: [
@@ -2609,6 +3036,8 @@ export const COMMAND_INDEX = {
   },
   "colour.style.select": {
     kind: "action",
+    label: "Style Change",
+    summary: "Set the style of a palette for a scene (\"Style Change\")",
     params: "colour.style.select.params",
     result: "colour.style.select.result",
     examples: [
@@ -2621,6 +3050,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatch.changed": {
     kind: "event",
+    label: "Swatch created, edited, moved or deleted",
+    summary: "Swatch created, edited, moved or deleted",
     params: "colour.swatch.changed.params",
     result: "colour.swatch.changed.result",
     examples: [
@@ -2631,6 +3062,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatch.create": {
     kind: "action",
+    label: "Add a colour or texture swatch",
+    summary: "Add a colour or texture swatch (\"Add Colour\" / \"Add Texture\")",
     params: "colour.swatch.create.params",
     result: "colour.swatch.create.result",
     examples: [
@@ -2640,6 +3073,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatch.delete": {
     kind: "action",
+    label: "Remove Colour",
+    summary: "Delete a swatch, optionally recolouring its uses (\"Remove Colour\")",
     params: "colour.swatch.delete.params",
     result: "colour.swatch.delete.result",
     examples: [
@@ -2651,6 +3086,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatch.get": {
     kind: "query",
+    label: "One swatch, all styles, plus value resolved for a scene",
+    summary: "One swatch, all styles, plus value resolved for a scene",
     params: "colour.swatch.get.params",
     result: "colour.swatch.get.result",
     examples: [
@@ -2662,6 +3099,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatch.list": {
     kind: "query",
+    label: "List swatches of a palette with values for a style",
+    summary: "List swatches of a palette with values for a style",
     params: "colour.swatch.list.params",
     result: "colour.swatch.list.result",
     examples: [
@@ -2671,6 +3110,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatch.move": {
     kind: "action",
+    label: "Move Colour",
+    summary: "Reorder a swatch within its palette (\"Move Colour\")",
     params: "colour.swatch.move.params",
     result: "colour.swatch.move.result",
     examples: [
@@ -2683,6 +3124,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatch.set": {
     kind: "action",
+    label: "Edit Colour",
+    summary: "Edit a swatch's name, kind, value(s) or flags (\"Edit Colour\")",
     params: "colour.swatch.set.params",
     result: "colour.swatch.set.result",
     examples: [
@@ -2694,6 +3137,8 @@ export const COMMAND_INDEX = {
   },
   "colour.swatchNames.set": {
     kind: "toggle",
+    label: "Show or hide swatch names in the palette view",
+    summary: "Show or hide swatch names in the palette view",
     params: "colour.swatchNames.set.params",
     result: "colour.swatchNames.set.result",
     examples: [
@@ -2705,6 +3150,8 @@ export const COMMAND_INDEX = {
   },
   "colour.tintBlend.apply": {
     kind: "action",
+    label: "Blend Style",
+    summary: "Blend a colour into all colours of a style (\"Blend Style\")",
     params: "colour.tintBlend.apply.params",
     result: "colour.tintBlend.apply.result",
     examples: [
@@ -2714,6 +3161,8 @@ export const COMMAND_INDEX = {
   },
   "colour.tintDialog.open": {
     kind: "ui",
+    label: "Open the tint offset or tint blend UI for a style",
+    summary: "Open the tint offset or tint blend UI for a style",
     params: "colour.tintDialog.open.params",
     result: "colour.tintDialog.open.result",
     examples: [
@@ -2725,6 +3174,8 @@ export const COMMAND_INDEX = {
   },
   "colour.tintOffset.apply": {
     kind: "action",
+    label: "Offset Style",
+    summary: "Offset all colours of a style (\"Offset Style\")",
     params: "colour.tintOffset.apply.params",
     result: "colour.tintOffset.apply.result",
     examples: [
@@ -2734,6 +3185,8 @@ export const COMMAND_INDEX = {
   },
   "colour.usage.list": {
     kind: "query",
+    label: "Where colours are used",
+    summary: "Where colours are used (by swatch or palette)",
     params: "colour.usage.list.params",
     result: "colour.usage.list.result",
     examples: [
@@ -2743,6 +3196,8 @@ export const COMMAND_INDEX = {
   },
   "doc.asset.embed": {
     kind: "action",
+    label: "Embed Media",
+    summary: "Copy linked files into the package (\"Embed Media\")",
     params: "doc.asset.embed.params",
     result: "doc.asset.embed.result",
     examples: [
@@ -2753,6 +3208,8 @@ export const COMMAND_INDEX = {
   },
   "doc.asset.export": {
     kind: "query",
+    label: "Export media file",
+    summary: "Write an asset's file to disk (e.g. to share or edit externally)",
     params: "doc.asset.export.params",
     result: "doc.asset.export.result",
     examples: [
@@ -2765,6 +3222,8 @@ export const COMMAND_INDEX = {
   },
   "doc.asset.list": {
     kind: "query",
+    label: "Assets",
+    summary: "List assets with storage, status and references",
     params: "doc.asset.list.params",
     result: "doc.asset.list.result",
     examples: [
@@ -2775,6 +3234,8 @@ export const COMMAND_INDEX = {
   },
   "doc.asset.relink": {
     kind: "action",
+    label: "Relink Media",
+    summary: "Point linked assets to a new file, or search a folder for missing ones (\"Relink Media\"); generic form of `sound.asset.relink` / `media.object.relink` (07)",
     params: "doc.asset.relink.params",
     result: "doc.asset.relink.result",
     examples: [
@@ -2785,6 +3246,8 @@ export const COMMAND_INDEX = {
   },
   "doc.asset.remove": {
     kind: "action",
+    label: "Remove Media",
+    summary: "Remove assets; only unreferenced ones unless `force` (\"Remove Media\")",
     params: "doc.asset.remove.params",
     result: "doc.asset.remove.result",
     examples: [
@@ -2795,6 +3258,8 @@ export const COMMAND_INDEX = {
   },
   "doc.asset.status.changed": {
     kind: "event",
+    label: "Asset status changed",
+    summary: "Assets became missing, changed or available again",
     params: "doc.asset.status.changed.params",
     result: "doc.asset.status.changed.result",
     examples: [
@@ -2804,6 +3269,8 @@ export const COMMAND_INDEX = {
   },
   "doc.blob.get": {
     kind: "query",
+    label: "Read blob",
+    summary: "Read a binary payload (asset file, bitmap node pixels, texture) as base64",
     params: "doc.blob.get.params",
     result: "doc.blob.get.result",
     examples: [
@@ -2814,6 +3281,8 @@ export const COMMAND_INDEX = {
   },
   "doc.changed": {
     kind: "event",
+    label: "Document changed",
+    summary: "A transaction was committed (payload defined in 11 §9.2 and §2.6)",
     params: "doc.changed.params",
     result: "doc.changed.result",
     examples: [
@@ -2823,6 +3292,8 @@ export const COMMAND_INDEX = {
   },
   "doc.diff": {
     kind: "query",
+    label: "Changes since",
+    summary: "Net changes since a revision or checkpoint (= `doc_diff`)",
     params: "doc.diff.params",
     result: "doc.diff.result",
     examples: [
@@ -2834,6 +3305,8 @@ export const COMMAND_INDEX = {
   },
   "doc.export.json": {
     kind: "query",
+    label: "Export JSON",
+    summary: "Export the project, scenes or elements as an interchange bundle (§6.8), inline or to a file",
     params: "doc.export.json.params",
     result: "doc.export.json.result",
     examples: [
@@ -2848,6 +3321,8 @@ export const COMMAND_INDEX = {
   },
   "doc.import.json": {
     kind: "action",
+    label: "Import JSON",
+    summary: "Import an interchange bundle as new scenes or into a scene (\"Import JSON\")",
     params: "doc.import.json.params",
     result: "doc.import.json.result",
     examples: [
@@ -2869,6 +3344,8 @@ export const COMMAND_INDEX = {
   },
   "doc.loadReport.get": {
     kind: "query",
+    label: "Load report",
+    summary: "The report of the last open (§7.3)",
     params: "doc.loadReport.get.params",
     result: "doc.loadReport.get.result",
     examples: [
@@ -2877,6 +3354,8 @@ export const COMMAND_INDEX = {
   },
   "doc.object.find": {
     kind: "query",
+    label: "Find objects",
+    summary: "Find objects by type, name and predicate (= `find_objects` / `query`)",
     params: "doc.object.find.params",
     result: "doc.object.find.result",
     examples: [
@@ -2904,6 +3383,8 @@ export const COMMAND_INDEX = {
   },
   "doc.object.get": {
     kind: "query",
+    label: "Get object",
+    summary: "Read one or more objects as object-model JSON (= `get_object`)",
     params: "doc.object.get.params",
     result: "doc.object.get.result",
     examples: [
@@ -2930,6 +3411,8 @@ export const COMMAND_INDEX = {
   },
   "doc.object.patch": {
     kind: "action",
+    label: "Set properties",
+    summary: "Generic validated property patch on one or more objects (= `set_properties`)",
     params: "doc.object.patch.params",
     result: "doc.object.patch.result",
     examples: [
@@ -2979,6 +3462,8 @@ export const COMMAND_INDEX = {
   },
   "doc.object.refs": {
     kind: "query",
+    label: "References",
+    summary: "List objects that reference an object (incoming) or that it references (outgoing)",
     params: "doc.object.refs.params",
     result: "doc.object.refs.result",
     examples: [
@@ -2989,6 +3474,8 @@ export const COMMAND_INDEX = {
   },
   "doc.object.resolve": {
     kind: "query",
+    label: "Resolve references",
+    summary: "Resolve paths to IDs and IDs to canonical paths",
     params: "doc.object.resolve.params",
     result: "doc.object.resolve.result",
     examples: [
@@ -3002,6 +3489,8 @@ export const COMMAND_INDEX = {
   },
   "doc.package.changedOnDisk": {
     kind: "event",
+    label: "Project changed on disk",
+    summary: "The open project's file or folder was modified by another process",
     params: "doc.package.changedOnDisk.params",
     result: "doc.package.changedOnDisk.result",
     examples: [
@@ -3011,6 +3500,8 @@ export const COMMAND_INDEX = {
   },
   "doc.package.export": {
     kind: "job",
+    label: "Export a copy",
+    summary: "Write a copy of the current project in package or folder form without changing the open project's location",
     params: "doc.package.export.params",
     result: "doc.package.export.result",
     examples: [
@@ -3023,6 +3514,8 @@ export const COMMAND_INDEX = {
   },
   "doc.package.get": {
     kind: "query",
+    label: "Inspect package",
+    summary: "Inspect a package, folder, template or palette file on disk without opening it",
     params: "doc.package.get.params",
     result: "doc.package.get.result",
     examples: [
@@ -3034,6 +3527,8 @@ export const COMMAND_INDEX = {
   },
   "doc.repair": {
     kind: "action",
+    label: "Repair",
+    summary: "Apply the default fix of selected issues (\"Repair Project\")",
     params: "doc.repair.params",
     result: "doc.repair.result",
     examples: [
@@ -3047,6 +3542,8 @@ export const COMMAND_INDEX = {
   },
   "doc.schema.get": {
     kind: "query",
+    label: "Get schema",
+    summary: "JSON Schema of an object type (or of one property)",
     params: "doc.schema.get.params",
     result: "doc.schema.get.result",
     examples: [
@@ -3061,6 +3558,8 @@ export const COMMAND_INDEX = {
   },
   "doc.schema.list": {
     kind: "query",
+    label: "List object types",
+    summary: "List object types with their parents and addressing",
     params: "doc.schema.list.params",
     result: "doc.schema.list.result",
     examples: [
@@ -3069,6 +3568,8 @@ export const COMMAND_INDEX = {
   },
   "doc.schema.validate": {
     kind: "query",
+    label: "Validate candidate",
+    summary: "Validate a candidate object or bundle against the schema and semantic rules without applying it",
     params: "doc.schema.validate.params",
     result: "doc.schema.validate.result",
     examples: [
@@ -3090,6 +3591,8 @@ export const COMMAND_INDEX = {
   },
   "doc.state.get": {
     kind: "query",
+    label: "Document state",
+    summary: "Document state",
     params: "doc.state.get.params",
     result: "doc.state.get.result",
     examples: [
@@ -3098,6 +3601,8 @@ export const COMMAND_INDEX = {
   },
   "doc.validate": {
     kind: "query",
+    label: "Validate project",
+    summary: "Lint the project or a subtree (§10.3)",
     params: "doc.validate.params",
     result: "doc.validate.result",
     examples: [
@@ -3108,6 +3613,8 @@ export const COMMAND_INDEX = {
   },
   "draw.arrange.apply": {
     kind: "action",
+    label: "Arrange",
+    summary: "Change stacking order (\"Bring to Front\", \"Bring Forward\", \"Send Backward\", \"Send to Back\")",
     params: "draw.arrange.apply.params",
     result: "draw.arrange.apply.result",
     examples: [
@@ -3129,6 +3636,8 @@ export const COMMAND_INDEX = {
   },
   "draw.bounds.get": {
     kind: "query",
+    label: "Get bounds",
+    summary: "Bounding box of the drawing or of given objects",
     params: "draw.bounds.get.params",
     result: "draw.bounds.get.result",
     examples: [
@@ -3139,6 +3648,8 @@ export const COMMAND_INDEX = {
   },
   "draw.breakApart.apply": {
     kind: "action",
+    label: "Break Text Apart",
+    summary: "Convert text to per-character vector groups (\"Break Text Apart\")",
     params: "draw.breakApart.apply.params",
     result: "draw.breakApart.apply.result",
     examples: [
@@ -3152,6 +3663,8 @@ export const COMMAND_INDEX = {
   },
   "draw.centreLine.apply": {
     kind: "action",
+    label: "Extract Centre Line",
+    summary: "Convert brush strokes to pencil lines (\"Extract Centre Line\")",
     params: "draw.centreLine.apply.params",
     result: "draw.centreLine.apply.result",
     examples: [
@@ -3165,6 +3678,8 @@ export const COMMAND_INDEX = {
   },
   "draw.content.add": {
     kind: "action",
+    label: "Insert drawing content",
+    summary: "Insert drawing content given in the §13.4 JSON shape (IDs reassigned; colour recovery applies) (\"Paste\")",
     params: "draw.content.add.params",
     result: "draw.content.add.result",
     examples: [
@@ -3260,6 +3775,8 @@ export const COMMAND_INDEX = {
   },
   "draw.current.get": {
     kind: "query",
+    label: "Get current drawing",
+    summary: "Current drawing target and context",
     params: "draw.current.get.params",
     result: "draw.current.get.result",
     examples: [
@@ -3268,6 +3785,8 @@ export const COMMAND_INDEX = {
   },
   "draw.cut.apply": {
     kind: "action",
+    label: "Cut",
+    summary: "Cut artwork along a polygon or rectangle; inside part selected or deleted (\"Cutter Tool\"/\"Scissor Tool\")",
     params: "draw.cut.apply.params",
     result: "draw.cut.apply.result",
     examples: [
@@ -3315,6 +3834,8 @@ export const COMMAND_INDEX = {
   },
   "draw.drawing.changed": {
     kind: "event",
+    label: "Drawing changed",
+    summary: "A drawing's content changed",
     params: "draw.drawing.changed.params",
     result: "draw.drawing.changed.result",
     examples: [
@@ -3324,6 +3845,8 @@ export const COMMAND_INDEX = {
   },
   "draw.drawing.get": {
     kind: "query",
+    label: "Get drawing content",
+    summary: "Full vector content as JSON (§13.4)",
     params: "draw.drawing.get.params",
     result: "draw.drawing.get.result",
     examples: [
@@ -3343,6 +3866,8 @@ export const COMMAND_INDEX = {
   },
   "draw.drawing.rename": {
     kind: "action",
+    label: "Rename drawing",
+    summary: "Rename a drawing (\"Rename Drawing\")",
     params: "draw.drawing.rename.params",
     result: "draw.drawing.rename.result",
     examples: [
@@ -3354,6 +3879,8 @@ export const COMMAND_INDEX = {
   },
   "draw.drawing.render": {
     kind: "query",
+    label: "Render drawing",
+    summary: "Render a drawing to PNG at a requested size",
     params: "draw.drawing.render.params",
     result: "draw.drawing.render.result",
     examples: [
@@ -3384,6 +3911,8 @@ export const COMMAND_INDEX = {
   },
   "draw.ellipse.add": {
     kind: "action",
+    label: "Ellipse",
+    summary: "Add an ellipse as a closed pencil path (\"Ellipse Tool\")",
     params: "draw.ellipse.add.params",
     result: "draw.ellipse.add.result",
     examples: [
@@ -3404,6 +3933,8 @@ export const COMMAND_INDEX = {
   },
   "draw.envelope.apply": {
     kind: "action",
+    label: "Perspective",
+    summary: "Perspective/envelope distortion of the selection (\"Perspective Tool\")",
     params: "draw.envelope.apply.params",
     result: "draw.envelope.apply.result",
     examples: [
@@ -3435,6 +3966,8 @@ export const COMMAND_INDEX = {
   },
   "draw.erase.apply": {
     kind: "action",
+    label: "Erase",
+    summary: "Erase along a path with the eraser tip, or everything inside a region (\"Eraser Tool\")",
     params: "draw.erase.apply.params",
     result: "draw.erase.apply.result",
     examples: [
@@ -3476,6 +4009,8 @@ export const COMMAND_INDEX = {
   },
   "draw.feather.apply": {
     kind: "job",
+    label: "Feather Edges",
+    summary: "Feather edges of filled shapes (\"Feather Edges\")",
     params: "draw.feather.apply.params",
     result: "draw.feather.apply.result",
     examples: [
@@ -3485,6 +4020,8 @@ export const COMMAND_INDEX = {
   },
   "draw.flatten.apply": {
     kind: "action",
+    label: "Flatten",
+    summary: "Merge selected layers into one (\"Flatten Drawing\")",
     params: "draw.flatten.apply.params",
     result: "draw.flatten.apply.result",
     examples: [
@@ -3511,6 +4048,8 @@ export const COMMAND_INDEX = {
   },
   "draw.flip.apply": {
     kind: "action",
+    label: "Flip",
+    summary: "Flip selection (\"Flip Horizontal\"/\"Flip Vertical\")",
     params: "draw.flip.apply.params",
     result: "draw.flip.apply.result",
     examples: [
@@ -3525,6 +4064,8 @@ export const COMMAND_INDEX = {
   },
   "draw.group.create": {
     kind: "action",
+    label: "Group drawing objects",
+    summary: "Group objects (\"Group Selection\")",
     params: "draw.group.create.params",
     result: "draw.group.create.result",
     examples: [
@@ -3539,6 +4080,8 @@ export const COMMAND_INDEX = {
   },
   "draw.group.delete": {
     kind: "action",
+    label: "Ungroup drawing objects",
+    summary: "Ungroup: dissolve groups, keep members (\"Ungroup Selection\")",
     params: "draw.group.delete.params",
     result: "draw.group.delete.result",
     examples: [
@@ -3552,6 +4095,8 @@ export const COMMAND_INDEX = {
   },
   "draw.hitTest.get": {
     kind: "query",
+    label: "Hit test",
+    summary: "Objects and zone under a point, front to back",
     params: "draw.hitTest.get.params",
     result: "draw.hitTest.get.result",
     examples: [
@@ -3567,6 +4112,8 @@ export const COMMAND_INDEX = {
   },
   "draw.inspectorPreview.set": {
     kind: "ui",
+    label: "Show drawing preview",
+    summary: "Show/hide the drawing thumbnail in the inspector",
     params: "draw.inspectorPreview.set.params",
     result: "draw.inspectorPreview.set.result",
     examples: [
@@ -3577,6 +4124,8 @@ export const COMMAND_INDEX = {
   },
   "draw.line.add": {
     kind: "action",
+    label: "Line",
+    summary: "Add a straight pencil line (\"Line Tool\")",
     params: "draw.line.add.params",
     result: "draw.line.add.result",
     examples: [
@@ -3595,6 +4144,8 @@ export const COMMAND_INDEX = {
   },
   "draw.linesToBrush.apply": {
     kind: "action",
+    label: "Convert Lines to Brush",
+    summary: "Convert centre lines to brush strokes (\"Convert Lines to Brush\")",
     params: "draw.linesToBrush.apply.params",
     result: "draw.linesToBrush.apply.result",
     examples: [
@@ -3608,6 +4159,8 @@ export const COMMAND_INDEX = {
   },
   "draw.lock.set": {
     kind: "toggle",
+    label: "Lock drawing",
+    summary: "Lock or unlock a drawing (\"Lock Drawing\"/\"Unlock Drawing\")",
     params: "draw.lock.set.params",
     result: "draw.lock.set.result",
     examples: [
@@ -3619,6 +4172,8 @@ export const COMMAND_INDEX = {
   },
   "draw.object.delete": {
     kind: "action",
+    label: "Delete drawing objects",
+    summary: "Delete objects (\"Delete Object\")",
     params: "draw.object.delete.params",
     result: "draw.object.delete.result",
     examples: [
@@ -3633,6 +4188,8 @@ export const COMMAND_INDEX = {
   },
   "draw.optimize.apply": {
     kind: "action",
+    label: "Optimize",
+    summary: "Merge layers only where appearance is unchanged (\"Optimize Drawing\")",
     params: "draw.optimize.apply.params",
     result: "draw.optimize.apply.result",
     examples: [
@@ -3647,6 +4204,8 @@ export const COMMAND_INDEX = {
   },
   "draw.pivot.set": {
     kind: "action",
+    label: "Change drawing pivot",
+    summary: "Move the drawing pivot (\"Change Drawing Pivot\")",
     params: "draw.pivot.set.params",
     result: "draw.pivot.set.result",
     examples: [
@@ -3662,6 +4221,8 @@ export const COMMAND_INDEX = {
   },
   "draw.point.add": {
     kind: "action",
+    label: "Add point",
+    summary: "Add an anchor on a stroke without changing its shape (\"Contour Editing\")",
     params: "draw.point.add.params",
     result: "draw.point.add.result",
     examples: [
@@ -3674,6 +4235,8 @@ export const COMMAND_INDEX = {
   },
   "draw.point.delete": {
     kind: "action",
+    label: "Delete points",
+    summary: "Delete anchors; strokes rebuilt or removed (\"Contour Editing\")",
     params: "draw.point.delete.params",
     result: "draw.point.delete.result",
     examples: [
@@ -3690,6 +4253,8 @@ export const COMMAND_INDEX = {
   },
   "draw.point.move": {
     kind: "action",
+    label: "Move points",
+    summary: "Move anchors (shared junction anchors move together) (\"Contour Editing\")",
     params: "draw.point.move.params",
     result: "draw.point.move.result",
     examples: [
@@ -3710,6 +4275,8 @@ export const COMMAND_INDEX = {
   },
   "draw.point.set": {
     kind: "action",
+    label: "Set point",
+    summary: "Set an anchor's position and handles (\"Contour Editing\")",
     params: "draw.point.set.params",
     result: "draw.point.set.result",
     examples: [
@@ -3726,6 +4293,8 @@ export const COMMAND_INDEX = {
   },
   "draw.pointSelection.set": {
     kind: "ui",
+    label: "Select anchor points",
+    summary: "Select anchor points (Contour Editor selection)",
     params: "draw.pointSelection.set.params",
     result: "draw.pointSelection.set.result",
     examples: [
@@ -3742,6 +4311,8 @@ export const COMMAND_INDEX = {
   },
   "draw.polyline.add": {
     kind: "action",
+    label: "Polyline",
+    summary: "Add a polyline of straight/curved segments (\"Polyline Tool\")",
     params: "draw.polyline.add.params",
     result: "draw.polyline.add.result",
     examples: [
@@ -3775,6 +4346,8 @@ export const COMMAND_INDEX = {
   },
   "draw.rectangle.add": {
     kind: "action",
+    label: "Rectangle",
+    summary: "Add a rectangle as a closed pencil path (\"Rectangle Tool\")",
     params: "draw.rectangle.add.params",
     result: "draw.rectangle.add.result",
     examples: [
@@ -3793,6 +4366,8 @@ export const COMMAND_INDEX = {
   },
   "draw.repositionAll.apply": {
     kind: "action",
+    label: "Reposition all drawings",
+    summary: "Apply one transform to every drawing of an element (\"Reposition All Drawings\")",
     params: "draw.repositionAll.apply.params",
     result: "draw.repositionAll.apply.result",
     examples: [
@@ -3807,6 +4382,8 @@ export const COMMAND_INDEX = {
   },
   "draw.rotate.apply": {
     kind: "action",
+    label: "Rotate",
+    summary: "Rotate selection by a fixed step (\"Rotate 90° CW\"/\"Rotate 90° CCW\"/\"Rotate 180°\")",
     params: "draw.rotate.apply.params",
     result: "draw.rotate.apply.result",
     examples: [
@@ -3821,6 +4398,8 @@ export const COMMAND_INDEX = {
   },
   "draw.segment.move": {
     kind: "action",
+    label: "Move segment",
+    summary: "Reshape a segment so its point at t moves by delta (\"Contour Editing\")",
     params: "draw.segment.move.params",
     result: "draw.segment.move.result",
     examples: [
@@ -3836,6 +4415,8 @@ export const COMMAND_INDEX = {
   },
   "draw.selection.changed": {
     kind: "event",
+    label: "Drawing selection changed",
+    summary: "Drawing selection changed",
     params: "draw.selection.changed.params",
     result: "draw.selection.changed.result",
     examples: [
@@ -3845,6 +4426,8 @@ export const COMMAND_INDEX = {
   },
   "draw.selection.get": {
     kind: "query",
+    label: "Get the drawing selection",
+    summary: "Current drawing selection",
     params: "draw.selection.get.params",
     result: "draw.selection.get.result",
     examples: [
@@ -3855,6 +4438,8 @@ export const COMMAND_INDEX = {
   },
   "draw.selection.set": {
     kind: "ui",
+    label: "Select drawing objects",
+    summary: "Select drawing objects by IDs, point, rectangle, lasso, all or none",
     params: "draw.selection.set.params",
     result: "draw.selection.set.result",
     examples: [
@@ -3878,6 +4463,8 @@ export const COMMAND_INDEX = {
   },
   "draw.smooth.apply": {
     kind: "action",
+    label: "Smooth",
+    summary: "Remove unnecessary points (\"Smooth Selection\")",
     params: "draw.smooth.apply.params",
     result: "draw.smooth.apply.result",
     examples: [
@@ -3891,6 +4478,8 @@ export const COMMAND_INDEX = {
   },
   "draw.stroke.add": {
     kind: "action",
+    label: "Add stroke",
+    summary: "Add a brush stroke, pencil line or invisible stroke (\"Brush Tool\"/\"Pencil Tool\"/\"Stroke Tool\")",
     params: "draw.stroke.add.params",
     result: "draw.stroke.add.result",
     examples: [
@@ -3966,6 +4555,8 @@ export const COMMAND_INDEX = {
   },
   "draw.stroke.set": {
     kind: "action",
+    label: "Edit stroke",
+    summary: "Replace a stroke's geometry, pressure, thickness or visibility (\"Edit Stroke\")",
     params: "draw.stroke.set.params",
     result: "draw.stroke.set.result",
     examples: [
@@ -3978,6 +4569,8 @@ export const COMMAND_INDEX = {
   },
   "draw.text.add": {
     kind: "action",
+    label: "Add text",
+    summary: "Add a text object (\"New Text Object\")",
     params: "draw.text.add.params",
     result: "draw.text.add.result",
     examples: [
@@ -4009,6 +4602,8 @@ export const COMMAND_INDEX = {
   },
   "draw.text.set": {
     kind: "action",
+    label: "Edit text",
+    summary: "Replace or edit text content, width mode or position (\"Typing\"/\"Set Text Width\"/\"Move Text Object\")",
     params: "draw.text.set.params",
     result: "draw.text.set.result",
     examples: [
@@ -4024,6 +4619,8 @@ export const COMMAND_INDEX = {
   },
   "draw.textFormat.set": {
     kind: "action",
+    label: "Format text",
+    summary: "Set character/paragraph formatting of a text range (\"Text Property Modified\")",
     params: "draw.textFormat.set.params",
     result: "draw.textFormat.set.result",
     examples: [
@@ -4039,6 +4636,8 @@ export const COMMAND_INDEX = {
   },
   "draw.transform.apply": {
     kind: "action",
+    label: "Transform",
+    summary: "Move/scale/rotate/skew objects numerically, optionally as a copy (\"Move/Scale/Rotate Object\", \"Copy Object\")",
     params: "draw.transform.apply.params",
     result: "draw.transform.apply.result",
     examples: [
@@ -4064,6 +4663,8 @@ export const COMMAND_INDEX = {
   },
   "draw.vectorFile.import": {
     kind: "job",
+    label: "Import Vector File",
+    summary: "Import an Illustrator/PDF file into a drawing (\"Import Vector File\")",
     params: "draw.vectorFile.import.params",
     result: "draw.vectorFile.import.result",
     examples: [
@@ -4075,6 +4676,8 @@ export const COMMAND_INDEX = {
   },
   "draw.vectorize.preview": {
     kind: "query",
+    label: "Preview vectorization",
+    summary: "Preview vectorization of one image as PNG",
     params: "draw.vectorize.preview.params",
     result: "draw.vectorize.preview.result",
     examples: [
@@ -4086,6 +4689,8 @@ export const COMMAND_INDEX = {
   },
   "draw.vectorize.run": {
     kind: "job",
+    label: "Import and Vectorize",
+    summary: "Import and vectorize image files, or convert an image element, into drawings (\"Import and Vectorize\"); omitted options default to `import.vectorize.settings.get` (09)",
     params: "draw.vectorize.run.params",
     result: "draw.vectorize.run.result",
     examples: [
@@ -4110,6 +4715,8 @@ export const COMMAND_INDEX = {
   },
   "draw.viewMapping.get": {
     kind: "query",
+    label: "Get the view mapping",
+    summary: "Mapping between a view's pixels and drawing space",
     params: "draw.viewMapping.get.params",
     result: "draw.viewMapping.get.result",
     examples: [
@@ -4120,6 +4727,8 @@ export const COMMAND_INDEX = {
   },
   "drawAid.autoLightTable.set": {
     kind: "ui",
+    label: "Auto light table",
+    summary: "Auto light table",
     params: "drawAid.autoLightTable.set.params",
     result: "drawAid.autoLightTable.set.result",
     examples: [
@@ -4127,29 +4736,34 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.background.set": {
     kind: "ui",
+    label: "Drawing View background",
+    summary: "Drawing View background",
     params: "drawAid.background.set.params",
     result: "drawAid.background.set.result",
     examples: [
-      {},
+      {
+        colour: "#FFFFFF",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.changed": {
     kind: "event",
+    label: "A drawing aid setting changed",
+    summary: "A drawing aid setting changed",
     params: "drawAid.changed.params",
     result: "drawAid.changed.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "drawAid.currentOnTop.set": {
     kind: "ui",
+    label: "Current drawing on top",
+    summary: "Show current drawing on top in the Camera View",
     params: "drawAid.currentOnTop.set.params",
     result: "drawAid.currentOnTop.set.result",
     examples: [
@@ -4157,37 +4771,49 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.grid.set": {
     kind: "ui",
+    label: "Grid",
+    summary: "Grid visibility, type and overlay",
     params: "drawAid.grid.set.params",
     result: "drawAid.grid.set.result",
     examples: [
-      {},
+      {
+        visible: true,
+        type: "field12",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.lightTableShade.set": {
     kind: "ui",
+    label: "Light-table shading",
+    summary: "Shading of auto and static light tables",
     params: "drawAid.lightTableShade.set.params",
     result: "drawAid.lightTableShade.set.result",
     examples: [
-      {},
+      {
+        static: false,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.onionSkin.set": {
     kind: "ui",
+    label: "Onion skin",
+    summary: "Onion skin on/off and counts",
     params: "drawAid.onionSkin.set.params",
     result: "drawAid.onionSkin.set.result",
     examples: [
-      {},
+      {
+        enabled: true,
+        previous: 2,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.onionSkinCycle.run": {
     kind: "ui",
+    label: "Cycle onion skin",
+    summary: "Cycle previous or next onion-skin count 0→1→2→3→0",
     params: "drawAid.onionSkinCycle.run.params",
     result: "drawAid.onionSkinCycle.run.result",
     examples: [
@@ -4195,73 +4821,103 @@ export const COMMAND_INDEX = {
         direction: "previous",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.onionSkinStyle.set": {
     kind: "ui",
+    label: "Onion-skin appearance",
+    summary: "Onion-skin appearance",
     params: "drawAid.onionSkinStyle.set.params",
     result: "drawAid.onionSkinStyle.set.result",
     examples: [
-      {},
+      {
+        outline: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.selectionDisplay.set": {
     kind: "ui",
+    label: "Selection display",
+    summary: "Camera View selection display options",
     params: "drawAid.selectionDisplay.set.params",
     result: "drawAid.selectionDisplay.set.result",
     examples: [
-      {},
+      {
+        outlineOnSelection: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.state.get": {
     kind: "query",
+    label: "Get drawing aids",
+    summary: "State of all drawing aids",
     params: "drawAid.state.get.params",
     result: "drawAid.state.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "drawAid.staticLightTable.add": {
     kind: "action",
+    label: "Send to static light table",
+    summary: "Send a drawing or image to the static light table",
     params: "drawAid.staticLightTable.add.params",
     result: "drawAid.staticLightTable.add.result",
     examples: [
-      {},
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 1,
+      },
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        frame: 3,
+        placement: "overlay",
+        visible: false,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTable.list": {
     kind: "query",
+    label: "List static light table",
+    summary: "Static light-table entries",
     params: "drawAid.staticLightTable.list.params",
     result: "drawAid.staticLightTable.list.result",
     examples: [
       {},
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTable.remove": {
     kind: "action",
+    label: "Delete static light-table entries",
+    summary: "Delete entries (sources untouched)",
     params: "drawAid.staticLightTable.remove.params",
     result: "drawAid.staticLightTable.remove.result",
     examples: [
-      {},
+      {
+        all: true,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTable.set": {
     kind: "action",
+    label: "Change static light-table entries",
+    summary: "Show/hide, hide all others, overlay/underlay entries",
     params: "drawAid.staticLightTable.set.params",
     result: "drawAid.staticLightTable.set.result",
     examples: [
-      {},
+      {
+        all: true,
+        placement: "overlay",
+      },
+      {
+        all: true,
+        visible: false,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.staticLightTablePanel.set": {
     kind: "ui",
+    label: "Static light-table panel",
+    summary: "Show/hide the static light-table panel",
     params: "drawAid.staticLightTablePanel.set.params",
     result: "drawAid.staticLightTablePanel.set.result",
     examples: [
@@ -4269,10 +4925,11 @@ export const COMMAND_INDEX = {
         visible: true,
       },
     ],
-    milestone: "M5 C5.2",
   },
   "drawAid.strokes.set": {
     kind: "ui",
+    label: "Show Strokes",
+    summary: "Show Strokes (invisible strokes and open ends)",
     params: "drawAid.strokes.set.params",
     result: "drawAid.strokes.set.result",
     examples: [
@@ -4280,10 +4937,11 @@ export const COMMAND_INDEX = {
         visible: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "edit.clipboard.changed": {
     kind: "event",
+    label: "Clipboard changed",
+    summary: "Clipboard content changed",
     params: "edit.clipboard.changed.params",
     result: "edit.clipboard.changed.result",
     examples: [
@@ -4293,6 +4951,8 @@ export const COMMAND_INDEX = {
   },
   "edit.clipboard.get": {
     kind: "query",
+    label: "Get clipboard",
+    summary: "Clipboard content as structured data",
     params: "edit.clipboard.get.params",
     result: "edit.clipboard.get.result",
     examples: [
@@ -4303,6 +4963,8 @@ export const COMMAND_INDEX = {
   },
   "edit.clipboard.set": {
     kind: "ui",
+    label: "Set clipboard",
+    summary: "Put structured content on the clipboard (validated against the schema of its kind)",
     params: "edit.clipboard.set.params",
     result: "edit.clipboard.set.result",
     examples: [
@@ -4323,6 +4985,8 @@ export const COMMAND_INDEX = {
   },
   "edit.copy": {
     kind: "ui",
+    label: "Copy",
+    summary: "Copy the selection (or the given objects) to the clipboard",
     params: "edit.copy.params",
     result: "edit.copy.result",
     examples: [
@@ -4337,6 +5001,8 @@ export const COMMAND_INDEX = {
   },
   "edit.cut": {
     kind: "action",
+    label: "Cut",
+    summary: "Cut the selection (or the given objects) of an edit context to the clipboard (\"Cut\")",
     params: "edit.cut.params",
     result: "edit.cut.result",
     examples: [
@@ -4350,6 +5016,8 @@ export const COMMAND_INDEX = {
   },
   "edit.cutSpecial": {
     kind: "action",
+    label: "Cut Special",
+    summary: "Cut cells with timeline edit options (\"Cut Special\")",
     params: "edit.cutSpecial.params",
     result: "edit.cutSpecial.result",
     examples: [
@@ -4366,6 +5034,8 @@ export const COMMAND_INDEX = {
   },
   "edit.delete": {
     kind: "action",
+    label: "Delete",
+    summary: "Delete the selection or the given objects; clears cells in cell contexts (\"Delete\")",
     params: "edit.delete.params",
     result: "edit.delete.result",
     examples: [
@@ -4379,6 +5049,8 @@ export const COMMAND_INDEX = {
   },
   "edit.deselectAll": {
     kind: "ui",
+    label: "Deselect All",
+    summary: "Clear the selection of an edit context",
     params: "edit.deselectAll.params",
     result: "edit.deselectAll.result",
     examples: [
@@ -4387,6 +5059,8 @@ export const COMMAND_INDEX = {
   },
   "edit.history.changed": {
     kind: "event",
+    label: "History changed",
+    summary: "Undo history changed",
     params: "edit.history.changed.params",
     result: "edit.history.changed.result",
     examples: [
@@ -4396,6 +5070,8 @@ export const COMMAND_INDEX = {
   },
   "edit.history.get": {
     kind: "query",
+    label: "History",
+    summary: "Undo history with attribution",
     params: "edit.history.get.params",
     result: "edit.history.get.result",
     examples: [
@@ -4406,6 +5082,8 @@ export const COMMAND_INDEX = {
   },
   "edit.history.move": {
     kind: "action",
+    label: "Go to history state",
+    summary: "Undo/redo to just after a given history entry (History panel click)",
     params: "edit.history.move.params",
     result: "edit.history.move.result",
     examples: [
@@ -4416,6 +5094,8 @@ export const COMMAND_INDEX = {
   },
   "edit.paste": {
     kind: "action",
+    label: "Paste",
+    summary: "Paste the clipboard into an edit context (\"Paste\")",
     params: "edit.paste.params",
     result: "edit.paste.result",
     examples: [
@@ -4430,6 +5110,8 @@ export const COMMAND_INDEX = {
   },
   "edit.pasteAsNewElement": {
     kind: "action",
+    label: "Paste as New Element",
+    summary: "Create a new element from copied cells, exposed from a frame (\"Paste as New Element\")",
     params: "edit.pasteAsNewElement.params",
     result: "edit.pasteAsNewElement.result",
     examples: [
@@ -4440,6 +5122,8 @@ export const COMMAND_INDEX = {
   },
   "edit.pasteSpecial": {
     kind: "action",
+    label: "Paste Special",
+    summary: "Paste with timeline or motion-point options; `useLast` = paste special again (\"Paste Special\")",
     params: "edit.pasteSpecial.params",
     result: "edit.pasteSpecial.result",
     examples: [
@@ -4457,6 +5141,8 @@ export const COMMAND_INDEX = {
   },
   "edit.redo": {
     kind: "action",
+    label: "Redo",
+    summary: "Redo one or more steps",
     params: "edit.redo.params",
     result: "edit.redo.result",
     examples: [
@@ -4467,6 +5153,8 @@ export const COMMAND_INDEX = {
   },
   "edit.selectAll": {
     kind: "ui",
+    label: "Select All",
+    summary: "Select all in an edit context",
     params: "edit.selectAll.params",
     result: "edit.selectAll.result",
     examples: [
@@ -4477,6 +5165,8 @@ export const COMMAND_INDEX = {
   },
   "edit.selection.changed": {
     kind: "event",
+    label: "Selection changed",
+    summary: "A selection changed",
     params: "edit.selection.changed.params",
     result: "edit.selection.changed.result",
     examples: [
@@ -4486,6 +5176,8 @@ export const COMMAND_INDEX = {
   },
   "edit.selection.get": {
     kind: "query",
+    label: "Get selection",
+    summary: "Selection of an edit context",
     params: "edit.selection.get.params",
     result: "edit.selection.get.result",
     examples: [
@@ -4494,6 +5186,8 @@ export const COMMAND_INDEX = {
   },
   "edit.selection.set": {
     kind: "ui",
+    label: "Set selection",
+    summary: "Change the selection of an edit context",
     params: "edit.selection.set.params",
     result: "edit.selection.set.result",
     examples: [
@@ -4507,6 +5201,8 @@ export const COMMAND_INDEX = {
   },
   "edit.undo": {
     kind: "action",
+    label: "Undo",
+    summary: "Undo one or more steps; with `ifTop`, only if that step is still the most recent (else `undo.notTop`)",
     params: "edit.undo.params",
     result: "edit.undo.result",
     examples: [
@@ -4517,6 +5213,8 @@ export const COMMAND_INDEX = {
   },
   "element.annotation.set": {
     kind: "toggle",
+    label: "Set as annotation element",
+    summary: "Set a drawing element as annotation element, or back",
     params: "element.annotation.set.params",
     result: "element.annotation.set.result",
     examples: [
@@ -4528,6 +5226,8 @@ export const COMMAND_INDEX = {
   },
   "element.childExposure.apply": {
     kind: "action",
+    label: "Extend children exposure",
+    summary: "Extend the exposure of a peg's children up to a frame",
     params: "element.childExposure.apply.params",
     result: "element.childExposure.apply.result",
     examples: [
@@ -4539,6 +5239,8 @@ export const COMMAND_INDEX = {
   },
   "element.clone": {
     kind: "action",
+    label: "Clone element",
+    summary: "Clone a cell-based element (shared drawing bank, independent timing)",
     params: "element.clone.params",
     result: "element.clone.result",
     examples: [
@@ -4549,6 +5251,8 @@ export const COMMAND_INDEX = {
   },
   "element.collapsed.set": {
     kind: "toggle",
+    label: "Collapse / expand",
+    summary: "Collapse / expand parent rows in the Timeline (saved with the scene)",
     params: "element.collapsed.set.params",
     result: "element.collapsed.set.result",
     examples: [
@@ -4562,6 +5266,8 @@ export const COMMAND_INDEX = {
   },
   "element.colour.set": {
     kind: "action",
+    label: "Set element colour",
+    summary: "Set marker and/or Timeline background colour; an empty string reverts to the category default",
     params: "element.colour.set.params",
     result: "element.colour.set.result",
     examples: [
@@ -4581,6 +5287,8 @@ export const COMMAND_INDEX = {
   },
   "element.create": {
     kind: "action",
+    label: "New elements",
+    summary: "Create one or more elements of a type (batch creation; the per-type add commands are this with `count: 1`)",
     params: "element.create.params",
     result: "element.create.result",
     examples: [
@@ -4601,6 +5309,8 @@ export const COMMAND_INDEX = {
   },
   "element.current.move": {
     kind: "ui",
+    label: "Previous/next element",
+    summary: "Previous / next element in Timeline or Exposure Sheet order",
     params: "element.current.move.params",
     result: "element.current.move.result",
     examples: [
@@ -4611,6 +5321,8 @@ export const COMMAND_INDEX = {
   },
   "element.current.set": {
     kind: "ui",
+    label: "Make element current",
+    summary: "Make an element the current element",
     params: "element.current.set.params",
     result: "element.current.set.result",
     examples: [
@@ -4621,6 +5333,8 @@ export const COMMAND_INDEX = {
   },
   "element.delete": {
     kind: "action",
+    label: "Delete elements",
+    summary: "Delete elements; children are re-attached to the deleted element's parent",
     params: "element.delete.params",
     result: "element.delete.result",
     examples: [
@@ -4633,6 +5347,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawing.changed": {
     kind: "event",
+    label: "Drawing bank changed",
+    summary: "Drawing bank changed (created, renamed, deleted, locked, cleared)",
     params: "element.drawing.changed.params",
     result: "element.drawing.changed.result",
     examples: [
@@ -4642,6 +5358,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawing.create": {
     kind: "action",
+    label: "Create drawing",
+    summary: "Create an empty drawing in the bank, optionally exposed over a range",
     params: "element.drawing.create.params",
     result: "element.drawing.create.result",
     examples: [
@@ -4658,6 +5376,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawing.delete": {
     kind: "action",
+    label: "Delete drawings",
+    summary: "Delete drawings from the bank; exposed drawings need `ifInUse: \"clearCells\"`",
     params: "element.drawing.delete.params",
     result: "element.drawing.delete.result",
     examples: [
@@ -4676,6 +5396,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawing.duplicate": {
     kind: "action",
+    label: "Duplicate drawing",
+    summary: "Copy a drawing into a new bank entry without exposing it",
     params: "element.drawing.duplicate.params",
     result: "element.drawing.duplicate.result",
     examples: [
@@ -4686,6 +5408,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawing.list": {
     kind: "query",
+    label: "List drawings",
+    summary: "Drawings of an element's bank with usage and optional thumbnails",
     params: "element.drawing.list.params",
     result: "element.drawing.list.result",
     examples: [
@@ -4701,6 +5425,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawing.rename": {
     kind: "action",
+    label: "Rename drawing",
+    summary: "Rename a drawing (all cells, all clones)",
     params: "element.drawing.rename.params",
     result: "element.drawing.rename.result",
     examples: [
@@ -4712,6 +5438,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawingContent.delete": {
     kind: "action",
+    label: "Clear drawing",
+    summary: "Clear drawing: delete content, keep the drawing and its labels",
     params: "element.drawingContent.delete.params",
     result: "element.drawingContent.delete.result",
     examples: [
@@ -4724,6 +5452,8 @@ export const COMMAND_INDEX = {
   },
   "element.drawingLock.set": {
     kind: "toggle",
+    label: "Lock drawing",
+    summary: "Lock / unlock drawings",
     params: "element.drawingLock.set.params",
     result: "element.drawingLock.set.result",
     examples: [
@@ -4737,6 +5467,8 @@ export const COMMAND_INDEX = {
   },
   "element.duplicate": {
     kind: "action",
+    label: "Duplicate element",
+    summary: "Independent copy of elements including copies of their drawings",
     params: "element.duplicate.params",
     result: "element.duplicate.result",
     examples: [
@@ -4749,6 +5481,8 @@ export const COMMAND_INDEX = {
   },
   "element.get": {
     kind: "query",
+    label: "Get element",
+    summary: "Full state of one element (17.5)",
     params: "element.get.params",
     result: "element.get.result",
     examples: [
@@ -4759,6 +5493,8 @@ export const COMMAND_INDEX = {
   },
   "element.hierarchy.get": {
     kind: "query",
+    label: "Get hierarchy",
+    summary: "Parent, children and siblings of an element",
     params: "element.hierarchy.get.params",
     result: "element.hierarchy.get.result",
     examples: [
@@ -4769,6 +5505,8 @@ export const COMMAND_INDEX = {
   },
   "element.hierarchy.select": {
     kind: "ui",
+    label: "Select in hierarchy",
+    summary: "Select parent, children, first child, previous/next sibling or skeleton root",
     params: "element.hierarchy.select.params",
     result: "element.hierarchy.select.result",
     examples: [
@@ -4780,6 +5518,8 @@ export const COMMAND_INDEX = {
   },
   "element.list": {
     kind: "query",
+    label: "List elements",
+    summary: "List the elements of a scene in Timeline or Exposure Sheet order",
     params: "element.list.params",
     result: "element.list.result",
     examples: [
@@ -4798,6 +5538,8 @@ export const COMMAND_INDEX = {
   },
   "element.lock.set": {
     kind: "toggle",
+    label: "Lock elements",
+    summary: "Lock / unlock in the scene-planning views: given, all, all others",
     params: "element.lock.set.params",
     result: "element.lock.set.result",
     examples: [
@@ -4815,6 +5557,8 @@ export const COMMAND_INDEX = {
   },
   "element.mediaLength.set": {
     kind: "action",
+    label: "Reset media",
+    summary: "Reset a media element's exposure to the natural media length, or set a length",
     params: "element.mediaLength.set.params",
     result: "element.mediaLength.set.result",
     examples: [
@@ -4826,6 +5570,8 @@ export const COMMAND_INDEX = {
   },
   "element.note.set": {
     kind: "action",
+    label: "Set element note",
+    summary: "Set, update or remove (empty text) an element note",
     params: "element.note.set.params",
     result: "element.note.set.result",
     examples: [
@@ -4837,6 +5583,8 @@ export const COMMAND_INDEX = {
   },
   "element.order.move": {
     kind: "action",
+    label: "Arrange",
+    summary: "Bring to front / forward, send backward / to back within the level (Timeline) or column order (Exposure Sheet)",
     params: "element.order.move.params",
     result: "element.order.move.result",
     examples: [
@@ -4857,6 +5605,8 @@ export const COMMAND_INDEX = {
   },
   "element.order.set": {
     kind: "action",
+    label: "Set order",
+    summary: "Set the complete order of one Timeline level or of the Exposure Sheet columns (drag reordering)",
     params: "element.order.set.params",
     result: "element.order.set.result",
     examples: [
@@ -4874,6 +5624,8 @@ export const COMMAND_INDEX = {
   },
   "element.parent.remove": {
     kind: "action",
+    label: "Detach from parent",
+    summary: "Detach elements from their parent (they move to the parent's level)",
     params: "element.parent.remove.params",
     result: "element.parent.remove.result",
     examples: [
@@ -4886,6 +5638,8 @@ export const COMMAND_INDEX = {
   },
   "element.parent.set": {
     kind: "action",
+    label: "Attach to parent",
+    summary: "Attach elements to a peg, effect, skeleton or camera, or to the nearest peg/effect above (attach to next object)",
     params: "element.parent.set.params",
     result: "element.parent.set.result",
     examples: [
@@ -4905,6 +5659,8 @@ export const COMMAND_INDEX = {
   },
   "element.parentPeg.create": {
     kind: "action",
+    label: "Add parent peg",
+    summary: "Create a peg and attach the given elements to it",
     params: "element.parentPeg.create.params",
     result: "element.parentPeg.create.result",
     examples: [
@@ -4917,6 +5673,8 @@ export const COMMAND_INDEX = {
   },
   "element.properties.set": {
     kind: "action",
+    label: "Set element properties",
+    summary: "Set composite role and deformable flag (transform values: section 05)",
     params: "element.properties.set.params",
     result: "element.properties.set.result",
     examples: [
@@ -4928,6 +5686,8 @@ export const COMMAND_INDEX = {
   },
   "element.rename": {
     kind: "action",
+    label: "Rename element",
+    summary: "Rename an element",
     params: "element.rename.params",
     result: "element.rename.result",
     examples: [
@@ -4939,6 +5699,8 @@ export const COMMAND_INDEX = {
   },
   "element.select": {
     kind: "ui",
+    label: "Select elements",
+    summary: "Select elements (rows / columns)",
     params: "element.select.params",
     result: "element.select.result",
     examples: [
@@ -4951,6 +5713,8 @@ export const COMMAND_INDEX = {
   },
   "element.solo.set": {
     kind: "toggle",
+    label: "Solo mode",
+    summary: "Solo mode on/off (view state)",
     params: "element.solo.set.params",
     result: "element.solo.set.result",
     examples: [
@@ -4967,6 +5731,8 @@ export const COMMAND_INDEX = {
   },
   "element.state.changed": {
     kind: "event",
+    label: "Elements changed",
+    summary: "Elements created, deleted, renamed, reordered, reparented, or flags/properties changed",
     params: "element.state.changed.params",
     result: "element.state.changed.result",
     examples: [
@@ -4976,6 +5742,8 @@ export const COMMAND_INDEX = {
   },
   "element.timing.set": {
     kind: "action",
+    label: "Change timing",
+    summary: "Change start frame, duration and loops of bar elements; move or stretch bars",
     params: "element.timing.set.params",
     result: "element.timing.set.result",
     examples: [
@@ -5002,6 +5770,8 @@ export const COMMAND_INDEX = {
   },
   "element.typeColour.get": {
     kind: "query",
+    label: "Get category colours",
+    summary: "Default colours of all categories",
     params: "element.typeColour.get.params",
     result: "element.typeColour.get.result",
     examples: [
@@ -5010,6 +5780,8 @@ export const COMMAND_INDEX = {
   },
   "element.typeColour.set": {
     kind: "ui",
+    label: "Set category colour",
+    summary: "Set the default colour of an element category (preference)",
     params: "element.typeColour.set.params",
     result: "element.typeColour.set.result",
     examples: [
@@ -5021,6 +5793,8 @@ export const COMMAND_INDEX = {
   },
   "element.unusedDrawing.list": {
     kind: "query",
+    label: "List unused drawings",
+    summary: "Find drawings not exposed in any cell, for given elements or the whole scene",
     params: "element.unusedDrawing.list.params",
     result: "element.unusedDrawing.list.result",
     examples: [
@@ -5031,6 +5805,8 @@ export const COMMAND_INDEX = {
   },
   "element.visibility.set": {
     kind: "toggle",
+    label: "Show/hide elements",
+    summary: "Show/hide in the scene or the Exposure Sheet for the given elements, all, or all others; optional type filter (e.g. all annotation elements)",
     params: "element.visibility.set.params",
     result: "element.visibility.set.result",
     examples: [
@@ -5056,6 +5832,8 @@ export const COMMAND_INDEX = {
   },
   "export.drawingPdf.run": {
     kind: "job",
+    label: "Export one vector drawing to a single-page PDF",
+    summary: "Export one vector drawing to a single-page PDF",
     params: "export.drawingPdf.run.params",
     result: "export.drawingPdf.run.result",
     examples: [
@@ -5067,6 +5845,8 @@ export const COMMAND_INDEX = {
   },
   "export.formats.list": {
     kind: "query",
+    label: "List export formats with capabilities and settings schemas",
+    summary: "List export formats with capabilities and settings schemas",
     params: "export.formats.list.params",
     result: "export.formats.list.result",
     examples: [
@@ -5076,6 +5856,8 @@ export const COMMAND_INDEX = {
   },
   "export.job.finished": {
     kind: "event",
+    label: "An export/render/print/publish job finished",
+    summary: "An export/render/print/publish job finished",
     params: "export.job.finished.params",
     result: "export.job.finished.result",
     examples: [
@@ -5086,6 +5868,8 @@ export const COMMAND_INDEX = {
   },
   "export.movie.defaults.get": {
     kind: "query",
+    label: "Read persisted export-dialog values",
+    summary: "Read persisted export-dialog values (path, format, type, range, publishing options)",
     params: "export.movie.defaults.get.params",
     result: "export.movie.defaults.get.result",
     examples: [
@@ -5095,6 +5879,8 @@ export const COMMAND_INDEX = {
   },
   "export.movie.defaults.set": {
     kind: "ui",
+    label: "Write persisted export-dialog values",
+    summary: "Write persisted export-dialog values",
     params: "export.movie.defaults.set.params",
     result: "export.movie.defaults.set.result",
     examples: [
@@ -5106,6 +5892,8 @@ export const COMMAND_INDEX = {
   },
   "export.movie.run": {
     kind: "job",
+    label: "Export movie / animated GIF / image sequence / vector animation",
+    summary: "Export movie / animated GIF / image sequence / vector animation",
     params: "export.movie.run.params",
     result: "export.movie.run.result",
     examples: [
@@ -5117,6 +5905,8 @@ export const COMMAND_INDEX = {
   },
   "export.movie.validate": {
     kind: "query",
+    label: "Dry-run an export: resolve frames, path, conflicts, estimates, enabled ranges",
+    summary: "Dry-run an export: resolve frames, path, conflicts, estimates, enabled ranges",
     params: "export.movie.validate.params",
     result: "export.movie.validate.result",
     examples: [
@@ -5128,6 +5918,8 @@ export const COMMAND_INDEX = {
   },
   "export.publish.account.close": {
     kind: "ui",
+    label: "Sign out and forget the stored token",
+    summary: "Sign out and forget the stored token",
     params: "export.publish.account.close.params",
     result: "export.publish.account.close.result",
     examples: [
@@ -5139,6 +5931,8 @@ export const COMMAND_INDEX = {
   },
   "export.publish.account.get": {
     kind: "query",
+    label: "Sign-in status for a service",
+    summary: "Sign-in status for a service",
     params: "export.publish.account.get.params",
     result: "export.publish.account.get.result",
     examples: [
@@ -5150,6 +5944,8 @@ export const COMMAND_INDEX = {
   },
   "export.publish.account.open": {
     kind: "ui",
+    label: "Start browser sign-in for a service",
+    summary: "Start browser sign-in for a service (user completes it)",
     params: "export.publish.account.open.params",
     result: "export.publish.account.open.result",
     examples: [
@@ -5161,6 +5957,8 @@ export const COMMAND_INDEX = {
   },
   "export.publish.categories.list": {
     kind: "query",
+    label: "Categories offered by a service",
+    summary: "Categories offered by a service",
     params: "export.publish.categories.list.params",
     result: "export.publish.categories.list.result",
     examples: [
@@ -5172,6 +5970,8 @@ export const COMMAND_INDEX = {
   },
   "export.publish.run": {
     kind: "job",
+    label: "Upload a movie to a service",
+    summary: "Upload a movie to a service (outward action; needs scope and confirm)",
     params: "export.publish.run.params",
     result: "export.publish.run.result",
     examples: [
@@ -5186,6 +5986,8 @@ export const COMMAND_INDEX = {
   },
   "export.publish.service.list": {
     kind: "query",
+    label: "Configured publishing services, limits and metadata requirements",
+    summary: "Configured publishing services, limits and metadata requirements",
     params: "export.publish.service.list.params",
     result: "export.publish.service.list.result",
     examples: [
@@ -5195,6 +5997,8 @@ export const COMMAND_INDEX = {
   },
   "export.publish.validate": {
     kind: "query",
+    label: "Check a file or export parameters against a service's limits and required metada",
+    summary: "Check a file or export parameters against a service's limits and required metadata",
     params: "export.publish.validate.params",
     result: "export.publish.validate.result",
     examples: [
@@ -5206,6 +6010,8 @@ export const COMMAND_INDEX = {
   },
   "export.report.get": {
     kind: "query",
+    label: "Size report of a finished vector-format export",
+    summary: "Size report of a finished vector-format export",
     params: "export.report.get.params",
     result: "export.report.get.result",
     examples: [
@@ -5217,6 +6023,8 @@ export const COMMAND_INDEX = {
   },
   "export.settings.get": {
     kind: "query",
+    label: "Read stored settings of a format and active preset",
+    summary: "Read stored settings of a format and active preset",
     params: "export.settings.get.params",
     result: "export.settings.get.result",
     examples: [
@@ -5228,6 +6036,8 @@ export const COMMAND_INDEX = {
   },
   "export.settings.set": {
     kind: "ui",
+    label: "Store Custom settings for a format, or reset to Default",
+    summary: "Store Custom settings for a format, or reset to Default",
     params: "export.settings.set.params",
     result: "export.settings.set.result",
     examples: [
@@ -5239,6 +6049,8 @@ export const COMMAND_INDEX = {
   },
   "export.snapshot.run": {
     kind: "job",
+    label: "Export the current",
+    summary: "Export the current (or given) frame as a still image, active-view composition by default",
     params: "export.snapshot.run.params",
     result: "export.snapshot.run.result",
     examples: [
@@ -5250,6 +6062,8 @@ export const COMMAND_INDEX = {
   },
   "fx.allEffects.changed": {
     kind: "event",
+    label: "All-effects display switch changed",
+    summary: "All-effects display switch changed",
     params: "fx.allEffects.changed.params",
     result: "fx.allEffects.changed.result",
     examples: [
@@ -5260,6 +6074,8 @@ export const COMMAND_INDEX = {
   },
   "fx.allEffects.get": {
     kind: "query",
+    label: "Current all-effects display state",
+    summary: "Current all-effects display state",
     params: "fx.allEffects.get.params",
     result: "fx.allEffects.get.result",
     examples: [
@@ -5269,6 +6085,8 @@ export const COMMAND_INDEX = {
   },
   "fx.allEffects.set": {
     kind: "toggle",
+    label: "Enable or disable effect display in interactive views",
+    summary: "Enable or disable effect display in interactive views",
     params: "fx.allEffects.set.params",
     result: "fx.allEffects.set.result",
     examples: [
@@ -5280,6 +6098,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.add": {
     kind: "action",
+    label: "Add Particle Block",
+    summary: "Add a block at a frame (split or append) (\"Add Particle Block\")",
     params: "fx.block.add.params",
     result: "fx.block.add.result",
     examples: [
@@ -5291,6 +6111,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.defaults.apply": {
     kind: "action",
+    label: "Reset to Defaults",
+    summary: "Reset a block's parameters to its type's defaults (\"Reset to Defaults\")",
     params: "fx.block.defaults.apply.params",
     result: "fx.block.defaults.apply.result",
     examples: [
@@ -5302,6 +6124,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.get": {
     kind: "query",
+    label: "Full block record",
+    summary: "Full block record (static values, dynamic curves/keyframes, seed, sprite set)",
     params: "fx.block.get.params",
     result: "fx.block.get.result",
     examples: [
@@ -5313,6 +6137,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.list": {
     kind: "query",
+    label: "List a particle effect's blocks",
+    summary: "List a particle effect's blocks",
     params: "fx.block.list.params",
     result: "fx.block.list.result",
     examples: [
@@ -5324,6 +6150,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.remove": {
     kind: "action",
+    label: "Remove Particle Block",
+    summary: "Remove a block; frames merge into a neighbour (\"Remove Particle Block\")",
     params: "fx.block.remove.params",
     result: "fx.block.remove.result",
     examples: [
@@ -5333,6 +6161,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.seed.set": {
     kind: "action",
+    label: "Set a block's seed, or draw a new random one",
+    summary: "Set a block's seed, or draw a new random one",
     params: "fx.block.seed.set.params",
     result: "fx.block.seed.set.result",
     examples: [
@@ -5344,6 +6174,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.set": {
     kind: "action",
+    label: "Change Particle Settings",
+    summary: "Set block static values (timing, background, region, floor, caps, lifetime, fade, sprite set) (\"Change Particle Settings\")",
     params: "fx.block.set.params",
     result: "fx.block.set.result",
     examples: [
@@ -5356,6 +6188,8 @@ export const COMMAND_INDEX = {
   },
   "fx.block.type.set": {
     kind: "action",
+    label: "Change Particle Type",
+    summary: "Change a block's particle type and variant, loading that type's defaults (\"Change Particle Type\")",
     params: "fx.block.type.set.params",
     result: "fx.block.type.set.result",
     examples: [
@@ -5368,6 +6202,8 @@ export const COMMAND_INDEX = {
   },
   "fx.changed": {
     kind: "event",
+    label: "An effect's parameters, keyframes, timing or slots changed",
+    summary: "An effect's parameters, keyframes, timing or slots changed",
     params: "fx.changed.params",
     result: "fx.changed.result",
     examples: [
@@ -5378,6 +6214,8 @@ export const COMMAND_INDEX = {
   },
   "fx.create": {
     kind: "action",
+    label: "Create Effect",
+    summary: "Create one or more effects with full parameters (\"Create Effect\")",
     params: "fx.create.params",
     result: "fx.create.result",
     examples: [
@@ -5389,6 +6227,8 @@ export const COMMAND_INDEX = {
   },
   "fx.curve.get": {
     kind: "query",
+    label: "Function-curve ids of animatable parameters",
+    summary: "Function-curve ids of animatable parameters (for editing with section 05 commands)",
     params: "fx.curve.get.params",
     result: "fx.curve.get.result",
     examples: [
@@ -5400,6 +6240,8 @@ export const COMMAND_INDEX = {
   },
   "fx.dropShadow.transform.set": {
     kind: "action",
+    label: "Change Drop Shadow",
+    summary: "Set or reset the shadow transform (\"Change Drop Shadow\")",
     params: "fx.dropShadow.transform.set.params",
     result: "fx.dropShadow.transform.set.result",
     examples: [
@@ -5411,6 +6253,8 @@ export const COMMAND_INDEX = {
   },
   "fx.get": {
     kind: "query",
+    label: "Full effect record",
+    summary: "Full effect record (static values, keyframes, blocks, slots, timing)",
     params: "fx.get.params",
     result: "fx.get.result",
     examples: [
@@ -5422,6 +6266,8 @@ export const COMMAND_INDEX = {
   },
   "fx.hitTest.run": {
     kind: "query",
+    label: "Identify pickable objects under a view position",
+    summary: "Identify pickable objects under a view position",
     params: "fx.hitTest.run.params",
     result: "fx.hitTest.run.result",
     examples: [
@@ -5435,6 +6281,8 @@ export const COMMAND_INDEX = {
   },
   "fx.keyframe.add": {
     kind: "action",
+    label: "Add Effect Keyframe",
+    summary: "Add an effect (or block) keyframe, optionally with values (\"Add Effect Keyframe\")",
     params: "fx.keyframe.add.params",
     result: "fx.keyframe.add.result",
     examples: [
@@ -5446,6 +6294,8 @@ export const COMMAND_INDEX = {
   },
   "fx.keyframe.list": {
     kind: "query",
+    label: "List keyframes with their values",
+    summary: "List keyframes with their values",
     params: "fx.keyframe.list.params",
     result: "fx.keyframe.list.result",
     examples: [
@@ -5457,6 +6307,8 @@ export const COMMAND_INDEX = {
   },
   "fx.keyframe.remove": {
     kind: "action",
+    label: "Remove Effect Keyframe",
+    summary: "Remove a keyframe (\"Remove Effect Keyframe\")",
     params: "fx.keyframe.remove.params",
     result: "fx.keyframe.remove.result",
     examples: [
@@ -5469,6 +6321,8 @@ export const COMMAND_INDEX = {
   },
   "fx.list": {
     kind: "query",
+    label: "List effects in a scene",
+    summary: "List effects in a scene",
     params: "fx.list.params",
     result: "fx.list.result",
     examples: [
@@ -5478,6 +6332,8 @@ export const COMMAND_INDEX = {
   },
   "fx.paramElement.add": {
     kind: "action",
+    label: "Attach elements to a parameter slot",
+    summary: "Attach elements to a parameter slot (mask, sprites, bones, skin)",
     params: "fx.paramElement.add.params",
     result: "fx.paramElement.add.result",
     examples: [
@@ -5491,6 +6347,8 @@ export const COMMAND_INDEX = {
   },
   "fx.paramElement.list": {
     kind: "query",
+    label: "List an effect's parameter elements and the elements attached to each",
+    summary: "List an effect's parameter elements and the elements attached to each",
     params: "fx.paramElement.list.params",
     result: "fx.paramElement.list.result",
     examples: [
@@ -5502,6 +6360,8 @@ export const COMMAND_INDEX = {
   },
   "fx.paramElement.remove": {
     kind: "action",
+    label: "Detach elements from a parameter slot",
+    summary: "Detach elements from a parameter slot",
     params: "fx.paramElement.remove.params",
     result: "fx.paramElement.remove.result",
     examples: [
@@ -5515,6 +6375,8 @@ export const COMMAND_INDEX = {
   },
   "fx.paramRows.get": {
     kind: "query",
+    label: "Parameter-row visibility per effect",
+    summary: "Parameter-row visibility per effect",
     params: "fx.paramRows.get.params",
     result: "fx.paramRows.get.result",
     examples: [
@@ -5524,6 +6386,8 @@ export const COMMAND_INDEX = {
   },
   "fx.paramRows.set": {
     kind: "ui",
+    label: "Show or hide parameter rows in the Timeline for given effects or all effects",
+    summary: "Show or hide parameter rows in the Timeline for given effects or all effects",
     params: "fx.paramRows.set.params",
     result: "fx.paramRows.set.result",
     examples: [
@@ -5535,6 +6399,8 @@ export const COMMAND_INDEX = {
   },
   "fx.params.get": {
     kind: "query",
+    label: "Resolved parameter values at a frame plus derived values",
+    summary: "Resolved parameter values at a frame plus derived values",
     params: "fx.params.get.params",
     result: "fx.params.get.result",
     examples: [
@@ -5546,6 +6412,8 @@ export const COMMAND_INDEX = {
   },
   "fx.params.set": {
     kind: "action",
+    label: "Change Effect Parameters",
+    summary: "Set any subset of an effect's (or block's) parameters (\"Change Effect Parameters\")",
     params: "fx.params.set.params",
     result: "fx.params.set.result",
     examples: [
@@ -5558,6 +6426,8 @@ export const COMMAND_INDEX = {
   },
   "fx.particles.get": {
     kind: "query",
+    label: "Deterministic particle snapshot of a block at a frame",
+    summary: "Deterministic particle snapshot of a block at a frame",
     params: "fx.particles.get.params",
     result: "fx.particles.get.result",
     examples: [
@@ -5570,6 +6440,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.apply": {
     kind: "action",
+    label: "Apply Preset",
+    summary: "Apply a preset to an effect or particle block (\"Apply Preset\")",
     params: "fx.preset.apply.params",
     result: "fx.preset.apply.result",
     examples: [
@@ -5582,6 +6454,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.changed": {
     kind: "event",
+    label: "User preset library changed",
+    summary: "User preset library changed",
     params: "fx.preset.changed.params",
     result: "fx.preset.changed.result",
     examples: [
@@ -5592,6 +6466,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.create": {
     kind: "action",
+    label: "Save an effect's or block's current parameters",
+    summary: "Save an effect's or block's current parameters (or an explicit body) as a user preset",
     params: "fx.preset.create.params",
     result: "fx.preset.create.result",
     examples: [
@@ -5603,6 +6479,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.delete": {
     kind: "action",
+    label: "Delete a user preset",
+    summary: "Delete a user preset",
     params: "fx.preset.delete.params",
     result: "fx.preset.delete.result",
     examples: [
@@ -5614,6 +6492,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.export": {
     kind: "action",
+    label: "Export user",
+    summary: "Export user (or built-in) presets to a preset file",
     params: "fx.preset.export.params",
     result: "fx.preset.export.result",
     examples: [
@@ -5626,6 +6506,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.get": {
     kind: "query",
+    label: "Full preset body, optionally with thumbnail PNG",
+    summary: "Full preset body, optionally with thumbnail PNG",
     params: "fx.preset.get.params",
     result: "fx.preset.get.result",
     examples: [
@@ -5637,6 +6519,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.import": {
     kind: "action",
+    label: "Import user presets from a preset file",
+    summary: "Import user presets from a preset file",
     params: "fx.preset.import.params",
     result: "fx.preset.import.result",
     examples: [
@@ -5648,6 +6532,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.list": {
     kind: "query",
+    label: "List presets",
+    summary: "List presets",
     params: "fx.preset.list.params",
     result: "fx.preset.list.result",
     examples: [
@@ -5657,6 +6543,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preset.rename": {
     kind: "action",
+    label: "Rename a user preset",
+    summary: "Rename a user preset",
     params: "fx.preset.rename.params",
     result: "fx.preset.rename.result",
     examples: [
@@ -5669,6 +6557,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.cache.delete": {
     kind: "ui",
+    label: "Clear the rendered-frame cache",
+    summary: "Clear the rendered-frame cache",
     params: "fx.preview.cache.delete.params",
     result: "fx.preview.cache.delete.result",
     examples: [
@@ -5678,6 +6568,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.close": {
     kind: "ui",
+    label: "Close the effect preview panel",
+    summary: "Close the effect preview panel",
     params: "fx.preview.close.params",
     result: "fx.preview.close.result",
     examples: [
@@ -5687,6 +6579,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.frame.get": {
     kind: "query",
+    label: "Cached preview render of a frame as PNG",
+    summary: "Cached preview render of a frame as PNG",
     params: "fx.preview.frame.get.params",
     result: "fx.preview.frame.get.result",
     examples: [
@@ -5696,6 +6590,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.frameRendered": {
     kind: "event",
+    label: "A preview frame finished rendering",
+    summary: "A preview frame finished rendering",
     params: "fx.preview.frameRendered.params",
     result: "fx.preview.frameRendered.result",
     examples: [
@@ -5706,6 +6602,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.invalidated": {
     kind: "event",
+    label: "Preview cache frames invalidated by an edit",
+    summary: "Preview cache frames invalidated by an edit",
     params: "fx.preview.invalidated.params",
     result: "fx.preview.invalidated.result",
     examples: [
@@ -5716,6 +6614,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.open": {
     kind: "ui",
+    label: "Open",
+    summary: "Open (or focus) the effect preview panel",
     params: "fx.preview.open.params",
     result: "fx.preview.open.result",
     examples: [
@@ -5725,6 +6625,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.options.get": {
     kind: "query",
+    label: "Effect preview settings",
+    summary: "Effect preview settings",
     params: "fx.preview.options.get.params",
     result: "fx.preview.options.get.result",
     examples: [
@@ -5734,6 +6636,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.options.set": {
     kind: "ui",
+    label: "Change effect preview settings",
+    summary: "Change effect preview settings",
     params: "fx.preview.options.set.params",
     result: "fx.preview.options.set.result",
     examples: [
@@ -5743,6 +6647,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.render": {
     kind: "job",
+    label: "Render frames into the effect preview cache",
+    summary: "Render frames into the effect preview cache",
     params: "fx.preview.render.params",
     result: "fx.preview.render.result",
     examples: [
@@ -5752,6 +6658,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.status.get": {
     kind: "query",
+    label: "Rendering state and cache usage",
+    summary: "Rendering state and cache usage",
     params: "fx.preview.status.get.params",
     result: "fx.preview.status.get.result",
     examples: [
@@ -5761,6 +6669,8 @@ export const COMMAND_INDEX = {
   },
   "fx.preview.stop": {
     kind: "ui",
+    label: "Stop the running preview render",
+    summary: "Stop the running preview render (same as `job_cancel`)",
     params: "fx.preview.stop.params",
     result: "fx.preview.stop.result",
     examples: [
@@ -5770,6 +6680,8 @@ export const COMMAND_INDEX = {
   },
   "fx.renderList.get": {
     kind: "query",
+    label: "Compositor output for a frame: ordered drawables with transforms, colour transfo",
+    summary: "Compositor output for a frame: ordered drawables with transforms, colour transforms and effect scopes",
     params: "fx.renderList.get.params",
     result: "fx.renderList.get.result",
     examples: [
@@ -5781,6 +6693,8 @@ export const COMMAND_INDEX = {
   },
   "fx.renderer.capabilities.get": {
     kind: "query",
+    label: "Renderer capabilities and computed recommendations",
+    summary: "Renderer capabilities and computed recommendations",
     params: "fx.renderer.capabilities.get.params",
     result: "fx.renderer.capabilities.get.result",
     examples: [
@@ -5790,6 +6704,8 @@ export const COMMAND_INDEX = {
   },
   "fx.renderer.options.changed": {
     kind: "event",
+    label: "Renderer options changed",
+    summary: "Renderer options changed",
     params: "fx.renderer.options.changed.params",
     result: "fx.renderer.options.changed.result",
     examples: [
@@ -5800,6 +6716,8 @@ export const COMMAND_INDEX = {
   },
   "fx.renderer.options.get": {
     kind: "query",
+    label: "Display-quality and renderer options",
+    summary: "Display-quality and renderer options (§6.9)",
     params: "fx.renderer.options.get.params",
     result: "fx.renderer.options.get.result",
     examples: [
@@ -5809,6 +6727,8 @@ export const COMMAND_INDEX = {
   },
   "fx.renderer.options.set": {
     kind: "ui",
+    label: "Change display-quality and renderer options",
+    summary: "Change display-quality and renderer options",
     params: "fx.renderer.options.set.params",
     result: "fx.renderer.options.set.result",
     examples: [
@@ -5820,6 +6740,8 @@ export const COMMAND_INDEX = {
   },
   "fx.shake.displacement.get": {
     kind: "query",
+    label: "Shake displacement samples",
+    summary: "Shake displacement samples",
     params: "fx.shake.displacement.get.params",
     result: "fx.shake.displacement.get.result",
     examples: [
@@ -5831,6 +6753,8 @@ export const COMMAND_INDEX = {
   },
   "fx.simulation.run": {
     kind: "job",
+    label: "Pre-simulate a block up to a frame",
+    summary: "Pre-simulate a block up to a frame (warms the cache)",
     params: "fx.simulation.run.params",
     result: "fx.simulation.run.result",
     examples: [
@@ -5843,6 +6767,8 @@ export const COMMAND_INDEX = {
   },
   "fx.spriteSet.get": {
     kind: "query",
+    label: "Sprite-set details and variant thumbnails",
+    summary: "Sprite-set details and variant thumbnails",
     params: "fx.spriteSet.get.params",
     result: "fx.spriteSet.get.result",
     examples: [
@@ -5854,6 +6780,8 @@ export const COMMAND_INDEX = {
   },
   "fx.spriteSet.list": {
     kind: "query",
+    label: "List built-in sprite sets",
+    summary: "List built-in sprite sets",
     params: "fx.spriteSet.list.params",
     result: "fx.spriteSet.list.result",
     examples: [
@@ -5863,6 +6791,8 @@ export const COMMAND_INDEX = {
   },
   "fx.timing.set": {
     kind: "action",
+    label: "Change Effect Timing",
+    summary: "Change start frame, duration and/or loop count (\"Change Effect Timing\")",
     params: "fx.timing.set.params",
     result: "fx.timing.set.result",
     examples: [
@@ -5874,6 +6804,8 @@ export const COMMAND_INDEX = {
   },
   "fx.types.get": {
     kind: "query",
+    label: "Descriptor of one effect type, optionally narrowed to one particle type",
+    summary: "Descriptor of one effect type, optionally narrowed to one particle type",
     params: "fx.types.get.params",
     result: "fx.types.get.result",
     examples: [
@@ -5885,6 +6817,8 @@ export const COMMAND_INDEX = {
   },
   "fx.types.list": {
     kind: "query",
+    label: "List all effect types with parameter JSON schemas, slots, flags, particle types,",
+    summary: "List all effect types with parameter JSON schemas, slots, flags, particle types, variants, defaults, caps and sprite sets",
     params: "fx.types.list.params",
     result: "fx.types.list.result",
     examples: [
@@ -5894,6 +6828,8 @@ export const COMMAND_INDEX = {
   },
   "import.completed": {
     kind: "event",
+    label: "An import job finished",
+    summary: "An import job finished",
     params: "import.completed.params",
     result: "import.completed.result",
     examples: [
@@ -5904,6 +6840,8 @@ export const COMMAND_INDEX = {
   },
   "import.file.get": {
     kind: "query",
+    label: "Inspect a file before import",
+    summary: "Inspect a file before import",
     params: "import.file.get.params",
     result: "import.file.get.result",
     examples: [
@@ -5915,6 +6853,8 @@ export const COMMAND_INDEX = {
   },
   "import.file.run": {
     kind: "job",
+    label: "Import files",
+    summary: "Import files (any family) at a target; one undo step",
     params: "import.file.run.params",
     result: "import.file.run.result",
     examples: [
@@ -5926,6 +6866,8 @@ export const COMMAND_INDEX = {
   },
   "import.formats.list": {
     kind: "query",
+    label: "Supported import formats by family",
+    summary: "Supported import formats by family",
     params: "import.formats.list.params",
     result: "import.formats.list.result",
     examples: [
@@ -5935,6 +6877,8 @@ export const COMMAND_INDEX = {
   },
   "import.keyedImage.get": {
     kind: "query",
+    label: "Preview keying on one image",
+    summary: "Preview keying on one image (PNG)",
     params: "import.keyedImage.get.params",
     result: "import.keyedImage.get.result",
     examples: [
@@ -5955,6 +6899,8 @@ export const COMMAND_INDEX = {
   },
   "import.keyedImages.run": {
     kind: "job",
+    label: "Import images with keying, one cell per file",
+    summary: "Import images with keying, one cell per file",
     params: "import.keyedImages.run.params",
     result: "import.keyedImages.run.result",
     examples: [
@@ -5975,6 +6921,8 @@ export const COMMAND_INDEX = {
   },
   "import.movie.run": {
     kind: "job",
+    label: "Import a movie as an image sequence",
+    summary: "Import a movie as an image sequence (and its audio)",
     params: "import.movie.run.params",
     result: "import.movie.run.result",
     examples: [
@@ -5986,6 +6934,8 @@ export const COMMAND_INDEX = {
   },
   "import.options.get": {
     kind: "query",
+    label: "Read persisted import options",
+    summary: "Read persisted import options",
     params: "import.options.get.params",
     result: "import.options.get.result",
     examples: [
@@ -5995,6 +6945,8 @@ export const COMMAND_INDEX = {
   },
   "import.options.set": {
     kind: "ui",
+    label: "Write persisted import options",
+    summary: "Write persisted import options",
     params: "import.options.set.params",
     result: "import.options.set.result",
     examples: [
@@ -6004,6 +6956,8 @@ export const COMMAND_INDEX = {
   },
   "import.vectorize.settings.get": {
     kind: "query",
+    label: "Read import-and-vectorize settings",
+    summary: "Read import-and-vectorize settings",
     params: "import.vectorize.settings.get.params",
     result: "import.vectorize.settings.get.result",
     examples: [
@@ -6013,6 +6967,8 @@ export const COMMAND_INDEX = {
   },
   "import.vectorize.settings.set": {
     kind: "ui",
+    label: "Write the remembered import-and-vectorize settings",
+    summary: "Write the remembered import-and-vectorize settings (defaults for `draw.vectorize.run`, 02)",
     params: "import.vectorize.settings.set.params",
     result: "import.vectorize.settings.set.result",
     examples: [
@@ -6022,6 +6978,8 @@ export const COMMAND_INDEX = {
   },
   "inspect.contactSheet.render": {
     kind: "query",
+    label: "Contact sheet",
+    summary: "Grid image of several frames (same as `render_contact_sheet`)",
     params: "inspect.contactSheet.render.params",
     result: "inspect.contactSheet.render.result",
     examples: [
@@ -6045,6 +7003,8 @@ export const COMMAND_INDEX = {
   },
   "inspect.coordinates.convert": {
     kind: "query",
+    label: "Convert coordinates",
+    summary: "Convert points between coordinate spaces",
     params: "inspect.coordinates.convert.params",
     result: "inspect.coordinates.convert.result",
     examples: [
@@ -6072,6 +7032,8 @@ export const COMMAND_INDEX = {
   },
   "inspect.frame.describe": {
     kind: "query",
+    label: "Describe frame",
+    summary: "Structured description of what is visible and audible at a frame (same as `describe_frame`)",
     params: "inspect.frame.describe.params",
     result: "inspect.frame.describe.result",
     examples: [
@@ -6084,6 +7046,8 @@ export const COMMAND_INDEX = {
   },
   "inspect.hitTest": {
     kind: "query",
+    label: "Hit test",
+    summary: "Objects under a point, top-most first",
     params: "inspect.hitTest.params",
     result: "inspect.hitTest.result",
     examples: [
@@ -6106,26 +7070,42 @@ export const COMMAND_INDEX = {
   },
   "inspect.screenshot": {
     kind: "query",
+    label: "Screenshot",
+    summary: "PNG of the real GUI (attached) or a virtual view (headless)",
     params: "inspect.screenshot.params",
     result: "inspect.screenshot.result",
     examples: [
       {},
+      {
+        target: "drawingView",
+        region: {
+          x: 760,
+          y: 390,
+          w: 400,
+          h: 300,
+        },
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "inspect.ui.tree": {
     kind: "query",
+    label: "UI tree",
+    summary: "UI tree of the window, a view, a panel or the open dialogs (same as `inspect_ui`)",
     params: "inspect.ui.tree.params",
     result: "inspect.ui.tree.result",
     examples: [
       {
         depth: 3,
       },
+      {
+        target: "history",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "job.cancel": {
     kind: "ui",
+    label: "Cancel job",
+    summary: "Cancel a job; partial results are discarded unless the command documents otherwise",
     params: "job.cancel.params",
     result: "job.cancel.result",
     examples: [
@@ -6136,6 +7116,8 @@ export const COMMAND_INDEX = {
   },
   "job.finished": {
     kind: "event",
+    label: "Job finished",
+    summary: "Job reached a final state",
     params: "job.finished.params",
     result: "job.finished.result",
     examples: [
@@ -6145,6 +7127,8 @@ export const COMMAND_INDEX = {
   },
   "job.list": {
     kind: "query",
+    label: "List jobs",
+    summary: "Jobs of this session (or all, for the GUI)",
     params: "job.list.params",
     result: "job.list.result",
     examples: [
@@ -6153,6 +7137,8 @@ export const COMMAND_INDEX = {
   },
   "job.progress": {
     kind: "event",
+    label: "Job progress",
+    summary: "Job progress changed",
     params: "job.progress.params",
     result: "job.progress.result",
     examples: [
@@ -6162,6 +7148,8 @@ export const COMMAND_INDEX = {
   },
   "job.wait": {
     kind: "query",
+    label: "Wait for a job",
+    summary: "Wait for a job to finish or a timeout",
     params: "job.wait.params",
     result: "job.wait.result",
     examples: [
@@ -6173,88 +7161,122 @@ export const COMMAND_INDEX = {
   },
   "keymap.changed": {
     kind: "event",
+    label: "Key bindings changed",
+    summary: "Bindings changed",
     params: "keymap.changed.params",
     result: "keymap.changed.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
     event: true,
   },
   "keymap.export": {
     kind: "ui",
+    label: "Export key bindings",
+    summary: "Write the keymap to a file",
     params: "keymap.export.params",
     result: "keymap.export.result",
     examples: [
       {
-        path: "review/example.out",
+        path: "/tmp/keymap.json",
+        onExists: "overwrite",
       },
     ],
-    milestone: "M4 C4.1",
   },
   "keymap.get": {
     kind: "query",
+    label: "Get key bindings",
+    summary: "Bindings of a command, or the command a key sequence runs in a context",
     params: "keymap.get.params",
     result: "keymap.get.result",
     examples: [
-      {},
+      {
+        keys: "Primary+S",
+      },
+      {
+        commandId: "project.save",
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "keymap.import": {
     kind: "ui",
+    label: "Import key bindings",
+    summary: "Read a keymap file",
     params: "keymap.import.params",
     result: "keymap.import.result",
     examples: [
       {
-        path: "review/example.out",
+        path: "/tmp/keymap.json",
+        mode: "merge",
+        onConflict: "override",
       },
     ],
-    milestone: "M4 C4.1",
   },
   "keymap.list": {
     kind: "query",
+    label: "List key bindings",
+    summary: "Bindings, filterable",
     params: "keymap.list.params",
     result: "keymap.list.result",
     examples: [
-      {},
+      {
+        commandId: "project.save",
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "keymap.remove": {
     kind: "ui",
+    label: "Remove key bindings",
+    summary: "Remove bindings of a command",
     params: "keymap.remove.params",
     result: "keymap.remove.result",
     examples: [
       {
-        commandId: "example",
+        commandId: "print.run",
+        keys: "Primary+P",
       },
     ],
-    milestone: "M4 C4.1",
   },
   "keymap.reset": {
     kind: "ui",
+    label: "Restore default key bindings",
+    summary: "Restore default bindings for one command or all",
     params: "keymap.reset.params",
     result: "keymap.reset.result",
     examples: [
-      {},
+      {
+        commandId: "project.save",
+      },
+      {
+        all: true,
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "keymap.set": {
     kind: "ui",
+    label: "Set a key binding",
+    summary: "Bind a key sequence to a command (with optional fixed parameters)",
     params: "keymap.set.params",
     result: "keymap.set.result",
     examples: [
       {
-        commandId: "example",
-        keys: "example",
+        commandId: "project.save",
+        keys: "F2",
+      },
+      {
+        commandId: "view.zoom.set",
+        params: {
+          steps: 1,
+        },
+        keys: "Primary+Shift+=",
+        onConflict: "override",
       },
     ],
-    milestone: "M4 C4.1",
   },
   "library.changed": {
     kind: "event",
+    label: "A library's content or state changed",
+    summary: "A library's content or state changed",
     params: "library.changed.params",
     result: "library.changed.result",
     examples: [
@@ -6265,6 +7287,8 @@ export const COMMAND_INDEX = {
   },
   "library.close": {
     kind: "action",
+    label: "Close a library",
+    summary: "Close a library (not the project-local one)",
     params: "library.close.params",
     result: "library.close.result",
     examples: [
@@ -6276,6 +7300,8 @@ export const COMMAND_INDEX = {
   },
   "library.closed": {
     kind: "event",
+    label: "A library was closed",
+    summary: "A library was closed",
     params: "library.closed.params",
     result: "library.closed.result",
     examples: [
@@ -6286,6 +7312,8 @@ export const COMMAND_INDEX = {
   },
   "library.create": {
     kind: "action",
+    label: "Create a new empty library in a folder and open it",
+    summary: "Create a new empty library in a folder and open it",
     params: "library.create.params",
     result: "library.create.result",
     examples: [
@@ -6297,6 +7325,8 @@ export const COMMAND_INDEX = {
   },
   "library.drawing.insert": {
     kind: "action",
+    label: "Copy drawing",
+    summary: "Copy a drawing (project branch or single-drawing item) to an element frame (\"Copy drawing\")",
     params: "library.drawing.insert.params",
     result: "library.drawing.insert.result",
     examples: [
@@ -6308,6 +7338,8 @@ export const COMMAND_INDEX = {
   },
   "library.element.duplicate": {
     kind: "action",
+    label: "Copy an element into another scene",
+    summary: "Copy an element into another scene (project branch)",
     params: "library.element.duplicate.params",
     result: "library.element.duplicate.result",
     examples: [
@@ -6320,6 +7352,8 @@ export const COMMAND_INDEX = {
   },
   "library.folder.create": {
     kind: "action",
+    label: "New folder",
+    summary: "Create a folder (\"New folder\")",
     params: "library.folder.create.params",
     result: "library.folder.create.result",
     examples: [
@@ -6331,6 +7365,8 @@ export const COMMAND_INDEX = {
   },
   "library.folder.delete": {
     kind: "action",
+    label: "Delete a folder and its contents",
+    summary: "Delete a folder and its contents",
     params: "library.folder.delete.params",
     result: "library.folder.delete.result",
     examples: [
@@ -6342,6 +7378,8 @@ export const COMMAND_INDEX = {
   },
   "library.folder.rename": {
     kind: "action",
+    label: "Rename a folder",
+    summary: "Rename a folder",
     params: "library.folder.rename.params",
     result: "library.folder.rename.result",
     examples: [
@@ -6354,6 +7392,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.delete": {
     kind: "action",
+    label: "Delete items",
+    summary: "Delete items",
     params: "library.item.delete.params",
     result: "library.item.delete.result",
     examples: [
@@ -6365,6 +7405,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.duplicate": {
     kind: "action",
+    label: "Copy folders/items into a folder",
+    summary: "Copy folders/items into a folder",
     params: "library.item.duplicate.params",
     result: "library.item.duplicate.result",
     examples: [
@@ -6377,6 +7419,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.get": {
     kind: "query",
+    label: "Get item properties",
+    summary: "Get item properties (§9)",
     params: "library.item.get.params",
     result: "library.item.get.result",
     examples: [
@@ -6388,6 +7432,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.import": {
     kind: "action",
+    label: "Import media or template files into a folder",
+    summary: "Import media or template files into a folder",
     params: "library.item.import.params",
     result: "library.item.import.result",
     examples: [
@@ -6400,6 +7446,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.list": {
     kind: "query",
+    label: "List the contents of a folder",
+    summary: "List the contents of a folder",
     params: "library.item.list.params",
     result: "library.item.list.result",
     examples: [
@@ -6411,6 +7459,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.move": {
     kind: "action",
+    label: "Move folders/items to a folder",
+    summary: "Move folders/items to a folder (same or another library)",
     params: "library.item.move.params",
     result: "library.item.move.result",
     examples: [
@@ -6423,6 +7473,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.rename": {
     kind: "action",
+    label: "Rename an item",
+    summary: "Rename an item",
     params: "library.item.rename.params",
     result: "library.item.rename.result",
     examples: [
@@ -6435,6 +7487,8 @@ export const COMMAND_INDEX = {
   },
   "library.item.thumbnail.get": {
     kind: "query",
+    label: "Get an item's thumbnail",
+    summary: "Get an item's thumbnail (generated if missing)",
     params: "library.item.thumbnail.get.params",
     result: "library.item.thumbnail.get.result",
     examples: [
@@ -6446,6 +7500,8 @@ export const COMMAND_INDEX = {
   },
   "library.list": {
     kind: "query",
+    label: "List open libraries",
+    summary: "List open libraries",
     params: "library.list.params",
     result: "library.list.result",
     examples: [
@@ -6455,6 +7511,8 @@ export const COMMAND_INDEX = {
   },
   "library.node.get": {
     kind: "query",
+    label: "Get one library, folder or item with its location",
+    summary: "Get one library, folder or item with its location (library name and folder path)",
     params: "library.node.get.params",
     result: "library.node.get.result",
     examples: [
@@ -6466,6 +7524,8 @@ export const COMMAND_INDEX = {
   },
   "library.open": {
     kind: "action",
+    label: "Open an existing library",
+    summary: "Open an existing library",
     params: "library.open.params",
     result: "library.open.result",
     examples: [
@@ -6477,6 +7537,8 @@ export const COMMAND_INDEX = {
   },
   "library.opened": {
     kind: "event",
+    label: "A library was opened",
+    summary: "A library was opened",
     params: "library.opened.params",
     result: "library.opened.result",
     examples: [
@@ -6487,6 +7549,8 @@ export const COMMAND_INDEX = {
   },
   "library.preview.get": {
     kind: "query",
+    label: "Get preview state",
+    summary: "Get preview state",
     params: "library.preview.get.params",
     result: "library.preview.get.result",
     examples: [
@@ -6496,6 +7560,8 @@ export const COMMAND_INDEX = {
   },
   "library.preview.set": {
     kind: "ui",
+    label: "Set preview item, frame, playing and enabled state",
+    summary: "Set preview item, frame, playing and enabled state",
     params: "library.preview.set.params",
     result: "library.preview.set.result",
     examples: [
@@ -6505,6 +7571,8 @@ export const COMMAND_INDEX = {
   },
   "library.project.get": {
     kind: "query",
+    label: "Get the project branch: scenes, elements, optionally drawings",
+    summary: "Get the project branch: scenes, elements, optionally drawings",
     params: "library.project.get.params",
     result: "library.project.get.result",
     examples: [
@@ -6514,6 +7582,8 @@ export const COMMAND_INDEX = {
   },
   "library.refresh.run": {
     kind: "action",
+    label: "Re-read a library or folder from disk and regenerate missing thumbnails",
+    summary: "Re-read a library or folder from disk and regenerate missing thumbnails",
     params: "library.refresh.run.params",
     result: "library.refresh.run.result",
     examples: [
@@ -6525,6 +7595,8 @@ export const COMMAND_INDEX = {
   },
   "library.save": {
     kind: "action",
+    label: "Save modified libraries",
+    summary: "Save modified libraries (project-local is saved with the project)",
     params: "library.save.params",
     result: "library.save.result",
     examples: [
@@ -6534,6 +7606,8 @@ export const COMMAND_INDEX = {
   },
   "library.selection.get": {
     kind: "query",
+    label: "Get the library selection",
+    summary: "Get the library selection",
     params: "library.selection.get.params",
     result: "library.selection.get.result",
     examples: [
@@ -6543,6 +7617,8 @@ export const COMMAND_INDEX = {
   },
   "library.selection.set": {
     kind: "ui",
+    label: "Select library nodes",
+    summary: "Select library nodes (tree or item list)",
     params: "library.selection.set.params",
     result: "library.selection.set.result",
     examples: [
@@ -6554,6 +7630,8 @@ export const COMMAND_INDEX = {
   },
   "library.starter.open": {
     kind: "action",
+    label: "Restore the starter library",
+    summary: "Restore the starter library (re-open; optionally reinstall its files)",
     params: "library.starter.open.params",
     result: "library.starter.open.result",
     examples: [
@@ -6563,6 +7641,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.changed": {
     kind: "event",
+    label: "A template's content changed",
+    summary: "A template's content changed (version ID bumped)",
     params: "library.template.changed.params",
     result: "library.template.changed.result",
     examples: [
@@ -6573,6 +7653,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.create": {
     kind: "action",
+    label: "Create a template from project objects",
+    summary: "Create a template from project objects (elements, a scene, a drawing, strokes)",
     params: "library.template.create.params",
     result: "library.template.create.result",
     examples: [
@@ -6585,6 +7667,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.edit.changed": {
     kind: "event",
+    label: "Template edit mode entered or left",
+    summary: "Template edit mode entered or left",
     params: "library.template.edit.changed.params",
     result: "library.template.edit.changed.result",
     examples: [
@@ -6595,6 +7679,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.edit.get": {
     kind: "query",
+    label: "Get template edit mode state",
+    summary: "Get template edit mode state",
     params: "library.template.edit.get.params",
     result: "library.template.edit.get.result",
     examples: [
@@ -6604,6 +7690,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.edit.start": {
     kind: "action",
+    label: "Enter template edit mode",
+    summary: "Enter template edit mode",
     params: "library.template.edit.start.params",
     result: "library.template.edit.start.result",
     examples: [
@@ -6615,6 +7703,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.edit.stop": {
     kind: "action",
+    label: "Edit template",
+    summary: "Return to scene, committing edits into the template (\"Edit template\")",
     params: "library.template.edit.stop.params",
     result: "library.template.edit.stop.result",
     examples: [
@@ -6624,6 +7714,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.export": {
     kind: "action",
+    label: "Export a template as a standalone `.animtpl` file",
+    summary: "Export a template as a standalone `.animtpl` file",
     params: "library.template.export.params",
     result: "library.template.export.result",
     examples: [
@@ -6636,6 +7728,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.frame.render": {
     kind: "query",
+    label: "Render one frame of a template",
+    summary: "Render one frame of a template (preview)",
     params: "library.template.frame.render.params",
     result: "library.template.frame.render.result",
     examples: [
@@ -6647,6 +7741,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.get": {
     kind: "query",
+    label: "Get full template metadata and element tree",
+    summary: "Get full template metadata and element tree",
     params: "library.template.get.params",
     result: "library.template.get.result",
     examples: [
@@ -6658,6 +7754,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.insert": {
     kind: "action",
+    label: "Insert a template or media item into a scene by copy or link",
+    summary: "Insert a template or media item into a scene by copy or link",
     params: "library.template.insert.params",
     result: "library.template.insert.result",
     examples: [
@@ -6669,6 +7767,8 @@ export const COMMAND_INDEX = {
   },
   "library.template.search": {
     kind: "query",
+    label: "Search templates and items across libraries with metadata",
+    summary: "Search templates and items across libraries with metadata",
     params: "library.template.search.params",
     result: "library.template.search.result",
     examples: [
@@ -6678,6 +7778,8 @@ export const COMMAND_INDEX = {
   },
   "library.templateUpdate.apply": {
     kind: "action",
+    label: "Update chosen drawings from their template",
+    summary: "Update chosen drawings from their template",
     params: "library.templateUpdate.apply.params",
     result: "library.templateUpdate.apply.result",
     examples: [
@@ -6690,6 +7792,8 @@ export const COMMAND_INDEX = {
   },
   "library.templateUpdate.list": {
     kind: "query",
+    label: "List drawings of an element derived from templates, with changed state",
+    summary: "List drawings of an element derived from templates, with changed state",
     params: "library.templateUpdate.list.params",
     result: "library.templateUpdate.list.result",
     examples: [
@@ -6701,6 +7805,8 @@ export const COMMAND_INDEX = {
   },
   "library.tree.get": {
     kind: "query",
+    label: "Get the folder/item hierarchy",
+    summary: "Get the folder/item hierarchy",
     params: "library.tree.get.params",
     result: "library.tree.get.result",
     examples: [
@@ -6710,6 +7816,8 @@ export const COMMAND_INDEX = {
   },
   "library.view.get": {
     kind: "query",
+    label: "Get panel state",
+    summary: "Get panel state",
     params: "library.view.get.params",
     result: "library.view.get.result",
     examples: [
@@ -6719,6 +7827,8 @@ export const COMMAND_INDEX = {
   },
   "library.view.set": {
     kind: "ui",
+    label: "Set the item-list display mode",
+    summary: "Set the item-list display mode",
     params: "library.view.set.params",
     result: "library.view.set.result",
     examples: [
@@ -6730,6 +7840,8 @@ export const COMMAND_INDEX = {
   },
   "library.writeAccess.set": {
     kind: "toggle",
+    label: "Request or release exclusive write access to a library",
+    summary: "Request or release exclusive write access to a library",
     params: "library.writeAccess.set.params",
     result: "library.writeAccess.set.result",
     examples: [
@@ -6742,6 +7854,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.apply": {
     kind: "action",
+    label: "Write the drawing element's exposures from the mouth track",
+    summary: "Write the drawing element's exposures from the mouth track (Apply Lip-sync; a dry run changes nothing)",
     params: "lipsync.apply.params",
     result: "lipsync.apply.result",
     examples: [
@@ -6754,6 +7868,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.detect": {
     kind: "job",
+    label: "Detect the mouth track for a placement",
+    summary: "Detect the mouth track for a placement (or all placements of an element), optionally transcript- or phoneme-assisted",
     params: "lipsync.detect.params",
     result: "lipsync.detect.result",
     examples: [
@@ -6763,6 +7879,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.display.set": {
     kind: "toggle",
+    label: "Show/hide lip-sync mode for a sound column",
+    summary: "Show/hide lip-sync mode for a sound column (detects first if needed)",
     params: "lipsync.display.set.params",
     result: "lipsync.display.set.result",
     examples: [
@@ -6775,6 +7893,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.mapping.get": {
     kind: "query",
+    label: "Read the stored mapping, or resolve the automatic mapping, for a sound/drawing p",
+    summary: "Read the stored mapping, or resolve the automatic mapping, for a sound/drawing pair",
     params: "lipsync.mapping.get.params",
     result: "lipsync.mapping.get.result",
     examples: [
@@ -6787,6 +7907,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.mapping.mouth.set": {
     kind: "action",
+    label: "Map one shape to a drawing, or step to the previous/next drawing",
+    summary: "Map one shape to a drawing, or step to the previous/next drawing",
     params: "lipsync.mapping.mouth.set.params",
     result: "lipsync.mapping.mouth.set.result",
     examples: [
@@ -6800,6 +7922,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.mapping.set": {
     kind: "action",
+    label: "Store a full or partial mapping",
+    summary: "Store a full or partial mapping (by drawing id or name; null = empty)",
     params: "lipsync.mapping.set.params",
     result: "lipsync.mapping.set.result",
     examples: [
@@ -6815,6 +7939,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.mouth.set": {
     kind: "action",
+    label: "Set one mouth on a frame range and mark it manual",
+    summary: "Set one mouth on a frame range and mark it manual (Set Mouth)",
     params: "lipsync.mouth.set.params",
     result: "lipsync.mouth.set.result",
     examples: [
@@ -6828,6 +7954,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.panel.close": {
     kind: "ui",
+    label: "Close the lip-sync panel",
+    summary: "Close the lip-sync panel",
     params: "lipsync.panel.close.params",
     result: "lipsync.panel.close.result",
     examples: [
@@ -6837,6 +7965,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.panel.open": {
     kind: "ui",
+    label: "Open/raise the lip-sync panel",
+    summary: "Open/raise the lip-sync panel",
     params: "lipsync.panel.open.params",
     result: "lipsync.panel.open.result",
     examples: [
@@ -6846,6 +7976,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.panel.state.set": {
     kind: "ui",
+    label: "Set the panel's selected sound, mouth element and advanced-area visibility",
+    summary: "Set the panel's selected sound, mouth element and advanced-area visibility",
     params: "lipsync.panel.state.set.params",
     result: "lipsync.panel.state.set.result",
     examples: [
@@ -6855,6 +7987,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.settings.get": {
     kind: "query",
+    label: "Project defaults for detection",
+    summary: "Project defaults for detection",
     params: "lipsync.settings.get.params",
     result: "lipsync.settings.get.result",
     examples: [
@@ -6864,6 +7998,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.settings.set": {
     kind: "action",
+    label: "Set project defaults for detection",
+    summary: "Set project defaults for detection (including the phoneme map)",
     params: "lipsync.settings.set.params",
     result: "lipsync.settings.set.result",
     examples: [
@@ -6873,6 +8009,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.shapes.list": {
     kind: "query",
+    label: "The eight mouth shapes with descriptions, covered sounds and reference images",
+    summary: "The eight mouth shapes with descriptions, covered sounds and reference images",
     params: "lipsync.shapes.list.params",
     result: "lipsync.shapes.list.result",
     examples: [
@@ -6882,6 +8020,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.template.import": {
     kind: "action",
+    label: "Import a mouth template as a new drawing element",
+    summary: "Import a mouth template as a new drawing element (eight tagged drawings)",
     params: "lipsync.template.import.params",
     result: "lipsync.template.import.result",
     examples: [
@@ -6893,6 +8033,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.template.list": {
     kind: "query",
+    label: "Mouth templates available in the Library",
+    summary: "Mouth templates available in the Library",
     params: "lipsync.template.list.params",
     result: "lipsync.template.list.result",
     examples: [
@@ -6902,6 +8044,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.track.changed": {
     kind: "event",
+    label: "A mouth track was detected, set or edited",
+    summary: "A mouth track was detected, set or edited",
     params: "lipsync.track.changed.params",
     result: "lipsync.track.changed.result",
     examples: [
@@ -6912,6 +8056,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.track.clear": {
     kind: "action",
+    label: "Delete the lip-sync track of a placement or element",
+    summary: "Delete the lip-sync track of a placement or element",
     params: "lipsync.track.clear.params",
     result: "lipsync.track.clear.result",
     examples: [
@@ -6921,6 +8067,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.track.get": {
     kind: "query",
+    label: "Read the per-frame mouth track",
+    summary: "Read the per-frame mouth track",
     params: "lipsync.track.get.params",
     result: "lipsync.track.get.result",
     examples: [
@@ -6930,6 +8078,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.track.set": {
     kind: "action",
+    label: "Write a mouth track explicitly",
+    summary: "Write a mouth track explicitly (whole or part)",
     params: "lipsync.track.set.params",
     result: "lipsync.track.set.result",
     examples: [
@@ -6942,6 +8092,8 @@ export const COMMAND_INDEX = {
   },
   "lipsync.track.stale": {
     kind: "event",
+    label: "A track no longer matches its placement's timing or the frame rate",
+    summary: "A track no longer matches its placement's timing or the frame rate",
     params: "lipsync.track.stale.params",
     result: "lipsync.track.stale.result",
     examples: [
@@ -6952,6 +8104,8 @@ export const COMMAND_INDEX = {
   },
   "media.movie.import": {
     kind: "job",
+    label: "Import a movie as an image sequence",
+    summary: "Import a movie as an image sequence (plus optional audio)",
     params: "media.movie.import.params",
     result: "media.movie.import.result",
     examples: [
@@ -6963,6 +8117,8 @@ export const COMMAND_INDEX = {
   },
   "media.movie.probe": {
     kind: "query",
+    label: "Inspect a movie file",
+    summary: "Inspect a movie file",
     params: "media.movie.probe.params",
     result: "media.movie.probe.result",
     examples: [
@@ -6974,6 +8130,8 @@ export const COMMAND_INDEX = {
   },
   "media.object.list": {
     kind: "query",
+    label: "Project media registry",
+    summary: "Project media registry (linked sources, location, missing state, usage)",
     params: "media.object.list.params",
     result: "media.object.list.result",
     examples: [
@@ -6983,6 +8141,8 @@ export const COMMAND_INDEX = {
   },
   "media.object.relink": {
     kind: "action",
+    label: "Point a media object at a new file or Library item",
+    summary: "Point a media object at a new file or Library item",
     params: "media.object.relink.params",
     result: "media.object.relink.result",
     examples: [
@@ -6994,6 +8154,8 @@ export const COMMAND_INDEX = {
   },
   "media.sequence.add": {
     kind: "action",
+    label: "Link a Library item or external file into a media element as a new sequence",
+    summary: "Link a Library item or external file into a media element as a new sequence",
     params: "media.sequence.add.params",
     result: "media.sequence.add.result",
     examples: [
@@ -7005,6 +8167,8 @@ export const COMMAND_INDEX = {
   },
   "media.sequence.get": {
     kind: "query",
+    label: "One sequence",
+    summary: "One sequence (name, location, frames, link offset, source length)",
     params: "media.sequence.get.params",
     result: "media.sequence.get.result",
     examples: [
@@ -7016,6 +8180,8 @@ export const COMMAND_INDEX = {
   },
   "media.sequence.list": {
     kind: "query",
+    label: "List sequences of a media element",
+    summary: "List sequences of a media element",
     params: "media.sequence.list.params",
     result: "media.sequence.list.result",
     examples: [
@@ -7027,6 +8193,8 @@ export const COMMAND_INDEX = {
   },
   "media.sequence.move": {
     kind: "action",
+    label: "Move a sequence to a new start frame",
+    summary: "Move a sequence to a new start frame",
     params: "media.sequence.move.params",
     result: "media.sequence.move.result",
     examples: [
@@ -7039,6 +8207,8 @@ export const COMMAND_INDEX = {
   },
   "media.sequence.naturalTiming.apply": {
     kind: "action",
+    label: "Reset a sequence to one exposure per source frame from its link offset",
+    summary: "Reset a sequence to one exposure per source frame from its link offset (Reset Media Timing)",
     params: "media.sequence.naturalTiming.apply.params",
     result: "media.sequence.naturalTiming.apply.result",
     examples: [
@@ -7050,6 +8220,8 @@ export const COMMAND_INDEX = {
   },
   "media.sequence.remove": {
     kind: "action",
+    label: "Remove a sequence",
+    summary: "Remove a sequence",
     params: "media.sequence.remove.params",
     result: "media.sequence.remove.result",
     examples: [
@@ -7061,6 +8233,8 @@ export const COMMAND_INDEX = {
   },
   "media.sequence.set": {
     kind: "action",
+    label: "Change a sequence's stop frame or link offset",
+    summary: "Change a sequence's stop frame or link offset",
     params: "media.sequence.set.params",
     result: "media.sequence.set.result",
     examples: [
@@ -7072,6 +8246,8 @@ export const COMMAND_INDEX = {
   },
   "media.sound.play": {
     kind: "ui",
+    label: "Play the sound contained in a media cell's linked source",
+    summary: "Play the sound contained in a media cell's linked source",
     params: "media.sound.play.params",
     result: "media.sound.play.result",
     examples: [
@@ -7084,6 +8260,8 @@ export const COMMAND_INDEX = {
   },
   "media.sound.stop": {
     kind: "ui",
+    label: "Stop media sound playback",
+    summary: "Stop media sound playback",
     params: "media.sound.stop.params",
     result: "media.sound.stop.result",
     examples: [
@@ -7093,6 +8271,8 @@ export const COMMAND_INDEX = {
   },
   "media.source.missing": {
     kind: "event",
+    label: "A linked media source could not be found",
+    summary: "A linked media source could not be found",
     params: "media.source.missing.params",
     result: "media.source.missing.result",
     examples: [
@@ -7103,6 +8283,8 @@ export const COMMAND_INDEX = {
   },
   "playback.forceRate.set": {
     kind: "toggle",
+    label: "Force frame rate",
+    summary: "Force frame rate (drop frames to keep real time)",
     params: "playback.forceRate.set.params",
     result: "playback.forceRate.set.result",
     examples: [
@@ -7114,6 +8296,8 @@ export const COMMAND_INDEX = {
   },
   "playback.loop.set": {
     kind: "toggle",
+    label: "Loop playback on/off",
+    summary: "Loop playback on/off",
     params: "playback.loop.set.params",
     result: "playback.loop.set.result",
     examples: [
@@ -7125,6 +8309,8 @@ export const COMMAND_INDEX = {
   },
   "playback.player.close": {
     kind: "ui",
+    label: "Close the player",
+    summary: "Close the player",
     params: "playback.player.close.params",
     result: "playback.player.close.result",
     examples: [
@@ -7134,6 +8320,8 @@ export const COMMAND_INDEX = {
   },
   "playback.player.get": {
     kind: "query",
+    label: "Read player state",
+    summary: "Read player state",
     params: "playback.player.get.params",
     result: "playback.player.get.result",
     examples: [
@@ -7143,6 +8331,8 @@ export const COMMAND_INDEX = {
   },
   "playback.player.open": {
     kind: "ui",
+    label: "Open the preview player on a preview or a movie file",
+    summary: "Open the preview player on a preview or a movie file",
     params: "playback.player.open.params",
     result: "playback.player.open.result",
     examples: [
@@ -7152,6 +8342,8 @@ export const COMMAND_INDEX = {
   },
   "playback.player.set": {
     kind: "ui",
+    label: "Control the player",
+    summary: "Control the player (play/pause, seek, loop, volume, mute, size report)",
     params: "playback.player.set.params",
     result: "playback.player.set.result",
     examples: [
@@ -7161,6 +8353,8 @@ export const COMMAND_INDEX = {
   },
   "playback.preview.run": {
     kind: "job",
+    label: "Render a preview",
+    summary: "Render a preview (movie / scene / exposure sheet / selection / quick) and optionally open the player",
     params: "playback.preview.run.params",
     result: "playback.preview.run.result",
     examples: [
@@ -7172,6 +8366,8 @@ export const COMMAND_INDEX = {
   },
   "playback.range.changed": {
     kind: "event",
+    label: "Playback range or mode changed",
+    summary: "Playback range or mode changed",
     params: "playback.range.changed.params",
     result: "playback.range.changed.result",
     examples: [
@@ -7182,6 +8378,8 @@ export const COMMAND_INDEX = {
   },
   "playback.range.get": {
     kind: "query",
+    label: "Read a scene's playback range",
+    summary: "Read a scene's playback range",
     params: "playback.range.get.params",
     result: "playback.range.get.result",
     examples: [
@@ -7191,6 +8389,8 @@ export const COMMAND_INDEX = {
   },
   "playback.range.mode.set": {
     kind: "action",
+    label: "Set range mode Automatic Fit / Free",
+    summary: "Set range mode Automatic Fit / Free (restores last free values)",
     params: "playback.range.mode.set.params",
     result: "playback.range.mode.set.result",
     examples: [
@@ -7202,6 +8402,8 @@ export const COMMAND_INDEX = {
   },
   "playback.range.set": {
     kind: "action",
+    label: "Set free range ends",
+    summary: "Set free range ends (switches to Free; validated and adjusted)",
     params: "playback.range.set.params",
     result: "playback.range.set.result",
     examples: [
@@ -7211,6 +8413,8 @@ export const COMMAND_INDEX = {
   },
   "playback.rate.set": {
     kind: "ui",
+    label: "Interactive playback rate",
+    summary: "Interactive playback rate (does not change project fps)",
     params: "playback.rate.set.params",
     result: "playback.rate.set.result",
     examples: [
@@ -7220,6 +8424,8 @@ export const COMMAND_INDEX = {
   },
   "playback.start": {
     kind: "ui",
+    label: "Start interactive playback of the current scene in the views",
+    summary: "Start interactive playback of the current scene in the views (Play); storyline playback is `storyline.play.start`",
     params: "playback.start.params",
     result: "playback.start.result",
     examples: [
@@ -7229,6 +8435,8 @@ export const COMMAND_INDEX = {
   },
   "playback.started": {
     kind: "event",
+    label: "Playback started",
+    summary: "Playback started",
     params: "playback.started.params",
     result: "playback.started.result",
     examples: [
@@ -7239,6 +8447,8 @@ export const COMMAND_INDEX = {
   },
   "playback.state.get": {
     kind: "query",
+    label: "Read playback state and options",
+    summary: "Read playback state and options",
     params: "playback.state.get.params",
     result: "playback.state.get.result",
     examples: [
@@ -7248,6 +8458,8 @@ export const COMMAND_INDEX = {
   },
   "playback.stop": {
     kind: "ui",
+    label: "Stop interactive playback",
+    summary: "Stop interactive playback (scene or storyline); current frame stays where stopped",
     params: "playback.stop.params",
     result: "playback.stop.result",
     examples: [
@@ -7257,6 +8469,8 @@ export const COMMAND_INDEX = {
   },
   "playback.stopped": {
     kind: "event",
+    label: "Playback stopped",
+    summary: "Playback stopped",
     params: "playback.stopped.params",
     result: "playback.stopped.result",
     examples: [
@@ -7267,58 +8481,78 @@ export const COMMAND_INDEX = {
   },
   "prefs.changed": {
     kind: "event",
+    label: "Preferences changed",
+    summary: "Preferences changed",
     params: "prefs.changed.params",
     result: "prefs.changed.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
     event: true,
   },
   "prefs.get": {
     kind: "query",
+    label: "Get preferences",
+    summary: "Values of preferences by key",
     params: "prefs.get.params",
     result: "prefs.get.result",
     examples: [
       {
-        keys: [],
+        keys: [
+          "interface.theme",
+          "files.autosave.intervalMinutes",
+        ],
       },
     ],
-    milestone: "M4 C4.1",
   },
   "prefs.list": {
     kind: "query",
+    label: "List preferences",
+    summary: "Preference schema and values",
     params: "prefs.list.params",
     result: "prefs.list.result",
     examples: [
-      {},
+      {
+        prefix: "project.defaults.",
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "prefs.reset": {
     kind: "ui",
+    label: "Restore default preferences",
+    summary: "Reset preferences to defaults by key or prefix (`prefix: \"\"` = all)",
     params: "prefs.reset.params",
     result: "prefs.reset.result",
     examples: [
-      {},
+      {
+        prefix: "display.",
+      },
+      {
+        keys: [
+          "interface.theme",
+        ],
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "prefs.set": {
     kind: "ui",
+    label: "Set preferences",
+    summary: "Set one or more preferences atomically",
     params: "prefs.set.params",
     result: "prefs.set.result",
     examples: [
       {
         values: {
-          key1: true,
+          "interface.theme": "dark",
+          "files.autosave.intervalMinutes": 10,
         },
       },
     ],
-    milestone: "M4 C4.1",
   },
   "print.pageSetup.get": {
     kind: "query",
+    label: "Read page setup",
+    summary: "Read page setup",
     params: "print.pageSetup.get.params",
     result: "print.pageSetup.get.result",
     examples: [
@@ -7328,6 +8562,8 @@ export const COMMAND_INDEX = {
   },
   "print.pageSetup.set": {
     kind: "ui",
+    label: "Set paper size and orientation",
+    summary: "Set paper size and orientation",
     params: "print.pageSetup.set.params",
     result: "print.pageSetup.set.result",
     examples: [
@@ -7337,6 +8573,8 @@ export const COMMAND_INDEX = {
   },
   "print.preview.get": {
     kind: "query",
+    label: "Lay out pages and return page count and one page image",
+    summary: "Lay out pages and return page count and one page image",
     params: "print.preview.get.params",
     result: "print.preview.get.result",
     examples: [
@@ -7346,6 +8584,8 @@ export const COMMAND_INDEX = {
   },
   "print.printer.list": {
     kind: "query",
+    label: "Installed printers and their capabilities",
+    summary: "Installed printers and their capabilities",
     params: "print.printer.list.params",
     result: "print.printer.list.result",
     examples: [
@@ -7355,6 +8595,8 @@ export const COMMAND_INDEX = {
   },
   "print.run": {
     kind: "job",
+    label: "Print to a printer",
+    summary: "Print to a printer (needs scope + confirm) or to a file/PDF",
     params: "print.run.params",
     result: "print.run.result",
     examples: [
@@ -7364,6 +8606,8 @@ export const COMMAND_INDEX = {
   },
   "print.settings.get": {
     kind: "query",
+    label: "Read persisted print parameters",
+    summary: "Read persisted print parameters",
     params: "print.settings.get.params",
     result: "print.settings.get.result",
     examples: [
@@ -7373,6 +8617,8 @@ export const COMMAND_INDEX = {
   },
   "print.settings.set": {
     kind: "ui",
+    label: "Write persisted print parameters",
+    summary: "Write persisted print parameters",
     params: "print.settings.set.params",
     result: "print.settings.set.result",
     examples: [
@@ -7384,6 +8630,8 @@ export const COMMAND_INDEX = {
   },
   "project.autosaved": {
     kind: "event",
+    label: "Autosaved",
+    summary: "A recovery copy was written",
     params: "project.autosaved.params",
     result: "project.autosaved.result",
     examples: [
@@ -7393,6 +8641,8 @@ export const COMMAND_INDEX = {
   },
   "project.backup.list": {
     kind: "query",
+    label: "Backups",
+    summary: "Backups of a project",
     params: "project.backup.list.params",
     result: "project.backup.list.result",
     examples: [
@@ -7401,6 +8651,8 @@ export const COMMAND_INDEX = {
   },
   "project.backup.open": {
     kind: "action",
+    label: "Open backup",
+    summary: "Open a backup as an untitled copy",
     params: "project.backup.open.params",
     result: "project.backup.open.result",
     examples: [
@@ -7411,6 +8663,8 @@ export const COMMAND_INDEX = {
   },
   "project.close": {
     kind: "action",
+    label: "Close Project",
+    summary: "Close the current project",
     params: "project.close.params",
     result: "project.close.result",
     examples: [
@@ -7419,6 +8673,8 @@ export const COMMAND_INDEX = {
   },
   "project.closed": {
     kind: "event",
+    label: "Project closed",
+    summary: "The project was closed",
     params: "project.closed.params",
     result: "project.closed.result",
     examples: [
@@ -7428,6 +8684,8 @@ export const COMMAND_INDEX = {
   },
   "project.create": {
     kind: "action",
+    label: "New Project",
+    summary: "Create a new project and make it current; if `path` is given it is saved there immediately",
     params: "project.create.params",
     result: "project.create.result",
     examples: [
@@ -7441,6 +8699,8 @@ export const COMMAND_INDEX = {
   },
   "project.dirty.changed": {
     kind: "event",
+    label: "Modified state changed",
+    summary: "Modified state changed",
     params: "project.dirty.changed.params",
     result: "project.dirty.changed.result",
     examples: [
@@ -7450,6 +8710,8 @@ export const COMMAND_INDEX = {
   },
   "project.info.get": {
     kind: "query",
+    label: "Project information",
+    summary: "Project summary",
     params: "project.info.get.params",
     result: "project.info.get.result",
     examples: [
@@ -7458,6 +8720,8 @@ export const COMMAND_INDEX = {
   },
   "project.open": {
     kind: "job",
+    label: "Open…",
+    summary: "Open a project package",
     params: "project.open.params",
     result: "project.open.result",
     examples: [
@@ -7468,6 +8732,8 @@ export const COMMAND_INDEX = {
   },
   "project.opened": {
     kind: "event",
+    label: "Project opened",
+    summary: "A project was opened or created",
     params: "project.opened.params",
     result: "project.opened.result",
     examples: [
@@ -7477,6 +8743,8 @@ export const COMMAND_INDEX = {
   },
   "project.presets.list": {
     kind: "query",
+    label: "Format presets",
+    summary: "Format presets for new projects",
     params: "project.presets.list.params",
     result: "project.presets.list.result",
     examples: [
@@ -7485,6 +8753,8 @@ export const COMMAND_INDEX = {
   },
   "project.properties.get": {
     kind: "query",
+    label: "Project properties",
+    summary: "Frame rate and camera size",
     params: "project.properties.get.params",
     result: "project.properties.get.result",
     examples: [
@@ -7493,6 +8763,8 @@ export const COMMAND_INDEX = {
   },
   "project.properties.set": {
     kind: "action",
+    label: "Set project properties",
+    summary: "Change frame rate / camera size (\"Change Project Properties\"); optionally store as defaults for new projects",
     params: "project.properties.set.params",
     result: "project.properties.set.result",
     examples: [
@@ -7503,6 +8775,8 @@ export const COMMAND_INDEX = {
   },
   "project.recent.list": {
     kind: "query",
+    label: "Recent projects",
+    summary: "Recent-projects list",
     params: "project.recent.list.params",
     result: "project.recent.list.result",
     examples: [
@@ -7511,6 +8785,8 @@ export const COMMAND_INDEX = {
   },
   "project.recent.remove": {
     kind: "ui",
+    label: "Remove from recent",
+    summary: "Remove one entry or clear the recent list",
     params: "project.recent.remove.params",
     result: "project.recent.remove.result",
     examples: [
@@ -7521,6 +8797,8 @@ export const COMMAND_INDEX = {
   },
   "project.recovery.delete": {
     kind: "ui",
+    label: "Discard recovery data",
+    summary: "Discard recovery data",
     params: "project.recovery.delete.params",
     result: "project.recovery.delete.result",
     examples: [
@@ -7531,6 +8809,8 @@ export const COMMAND_INDEX = {
   },
   "project.recovery.list": {
     kind: "query",
+    label: "Recovery data",
+    summary: "Autosave recovery data available",
     params: "project.recovery.list.params",
     result: "project.recovery.list.result",
     examples: [
@@ -7539,6 +8819,8 @@ export const COMMAND_INDEX = {
   },
   "project.recovery.open": {
     kind: "job",
+    label: "Recover",
+    summary: "Open recovery data as a modified project targeting its original path",
     params: "project.recovery.open.params",
     result: "project.recovery.open.result",
     examples: [
@@ -7549,6 +8831,8 @@ export const COMMAND_INDEX = {
   },
   "project.save": {
     kind: "job",
+    label: "Save",
+    summary: "Save the project (and the global library if modified) to its location",
     params: "project.save.params",
     result: "project.save.result",
     examples: [
@@ -7557,6 +8841,8 @@ export const COMMAND_INDEX = {
   },
   "project.saveAs": {
     kind: "job",
+    label: "Save As…",
+    summary: "Save the project to a new location; the copy becomes current",
     params: "project.saveAs.params",
     result: "project.saveAs.result",
     examples: [
@@ -7567,6 +8853,8 @@ export const COMMAND_INDEX = {
   },
   "project.saved": {
     kind: "event",
+    label: "Project saved",
+    summary: "The project and/or global library was saved",
     params: "project.saved.params",
     result: "project.saved.result",
     examples: [
@@ -7576,6 +8864,8 @@ export const COMMAND_INDEX = {
   },
   "render.frame.run": {
     kind: "query",
+    label: "Render frame",
+    summary: "Deterministically render one frame to PNG/JPEG, inline or to file",
     params: "render.frame.run.params",
     result: "render.frame.run.result",
     examples: [
@@ -7591,6 +8881,8 @@ export const COMMAND_INDEX = {
   },
   "render.limits.get": {
     kind: "query",
+    label: "Render limits",
+    summary: "Inline size limits, max output size, supported render formats",
     params: "render.limits.get.params",
     result: "render.limits.get.result",
     examples: [
@@ -7599,6 +8891,8 @@ export const COMMAND_INDEX = {
   },
   "render.range.run": {
     kind: "job",
+    label: "Render range",
+    summary: "Render a frame range of one scene to an image sequence (movie ranges with transitions: `export.movie.run` with a sequence format)",
     params: "render.range.run.params",
     result: "render.range.run.result",
     examples: [
@@ -7614,6 +8908,8 @@ export const COMMAND_INDEX = {
   },
   "sound.asset.get": {
     kind: "query",
+    label: "Get one asset's format, status and users",
+    summary: "Get one asset's format, status and users",
     params: "sound.asset.get.params",
     result: "sound.asset.get.result",
     examples: [
@@ -7625,6 +8921,8 @@ export const COMMAND_INDEX = {
   },
   "sound.asset.import": {
     kind: "action",
+    label: "Add an audio file to the project's sound assets without placing it",
+    summary: "Add an audio file to the project's sound assets without placing it",
     params: "sound.asset.import.params",
     result: "sound.asset.import.result",
     examples: [
@@ -7636,6 +8934,8 @@ export const COMMAND_INDEX = {
   },
   "sound.asset.list": {
     kind: "query",
+    label: "List sound assets of the project",
+    summary: "List sound assets of the project",
     params: "sound.asset.list.params",
     result: "sound.asset.list.result",
     examples: [
@@ -7645,6 +8945,8 @@ export const COMMAND_INDEX = {
   },
   "sound.asset.missing": {
     kind: "event",
+    label: "A referenced asset could not be found on open",
+    summary: "A referenced asset could not be found on open",
     params: "sound.asset.missing.params",
     result: "sound.asset.missing.result",
     examples: [
@@ -7655,6 +8957,8 @@ export const COMMAND_INDEX = {
   },
   "sound.asset.probe": {
     kind: "query",
+    label: "Inspect an audio",
+    summary: "Inspect an audio (or movie) file without importing it",
     params: "sound.asset.probe.params",
     result: "sound.asset.probe.result",
     examples: [
@@ -7666,6 +8970,8 @@ export const COMMAND_INDEX = {
   },
   "sound.asset.relink": {
     kind: "action",
+    label: "Point a",
+    summary: "Point a (missing) asset at a new file; placements keep their timing",
     params: "sound.asset.relink.params",
     result: "sound.asset.relink.result",
     examples: [
@@ -7678,6 +8984,8 @@ export const COMMAND_INDEX = {
   },
   "sound.editor.close": {
     kind: "action",
+    label: "Close the editor, committing all its edits as one *Edit Sound* step or discardin",
+    summary: "Close the editor, committing all its edits as one *Edit Sound* step or discarding them",
     params: "sound.editor.close.params",
     result: "sound.editor.close.result",
     examples: [
@@ -7689,6 +8997,8 @@ export const COMMAND_INDEX = {
   },
   "sound.editor.open": {
     kind: "ui",
+    label: "Open the sound element editor on an element",
+    summary: "Open the sound element editor on an element",
     params: "sound.editor.open.params",
     result: "sound.editor.open.result",
     examples: [
@@ -7700,6 +9010,8 @@ export const COMMAND_INDEX = {
   },
   "sound.editor.state.get": {
     kind: "query",
+    label: "Editor state",
+    summary: "Editor state",
     params: "sound.editor.state.get.params",
     result: "sound.editor.state.get.result",
     examples: [
@@ -7709,6 +9021,8 @@ export const COMMAND_INDEX = {
   },
   "sound.editor.state.set": {
     kind: "ui",
+    label: "Set editor current frame, selection, zoom, scrubbing, loop",
+    summary: "Set editor current frame, selection, zoom, scrubbing, loop",
     params: "sound.editor.state.set.params",
     result: "sound.editor.state.set.result",
     examples: [
@@ -7718,6 +9032,8 @@ export const COMMAND_INDEX = {
   },
   "sound.element.changed": {
     kind: "event",
+    label: "Placements, envelope or flags of a sound element changed",
+    summary: "Placements, envelope or flags of a sound element changed",
     params: "sound.element.changed.params",
     result: "sound.element.changed.result",
     examples: [
@@ -7728,6 +9044,8 @@ export const COMMAND_INDEX = {
   },
   "sound.element.streamed.set": {
     kind: "toggle",
+    label: "Mark a sound element for streamed SWF export",
+    summary: "Mark a sound element for streamed SWF export",
     params: "sound.element.streamed.set.params",
     result: "sound.element.streamed.set.result",
     examples: [
@@ -7740,6 +9058,8 @@ export const COMMAND_INDEX = {
   },
   "sound.envelope.clear": {
     kind: "action",
+    label: "Remove the envelope",
+    summary: "Remove the envelope (unity gain)",
     params: "sound.envelope.clear.params",
     result: "sound.envelope.clear.result",
     examples: [
@@ -7751,6 +9071,8 @@ export const COMMAND_INDEX = {
   },
   "sound.envelope.get": {
     kind: "query",
+    label: "Read a placement's envelope",
+    summary: "Read a placement's envelope",
     params: "sound.envelope.get.params",
     result: "sound.envelope.get.result",
     examples: [
@@ -7762,6 +9084,8 @@ export const COMMAND_INDEX = {
   },
   "sound.envelope.point.add": {
     kind: "action",
+    label: "Add one envelope point",
+    summary: "Add one envelope point",
     params: "sound.envelope.point.add.params",
     result: "sound.envelope.point.add.result",
     examples: [
@@ -7774,6 +9098,8 @@ export const COMMAND_INDEX = {
   },
   "sound.envelope.point.move": {
     kind: "action",
+    label: "Move/re-level one envelope point",
+    summary: "Move/re-level one envelope point (time clamped between neighbours)",
     params: "sound.envelope.point.move.params",
     result: "sound.envelope.point.move.result",
     examples: [
@@ -7786,6 +9112,8 @@ export const COMMAND_INDEX = {
   },
   "sound.envelope.point.remove": {
     kind: "action",
+    label: "Remove one envelope point",
+    summary: "Remove one envelope point",
     params: "sound.envelope.point.remove.params",
     result: "sound.envelope.point.remove.result",
     examples: [
@@ -7798,6 +9126,8 @@ export const COMMAND_INDEX = {
   },
   "sound.envelope.set": {
     kind: "action",
+    label: "Replace the whole envelope",
+    summary: "Replace the whole envelope",
     params: "sound.envelope.set.params",
     result: "sound.envelope.set.result",
     examples: [
@@ -7810,6 +9140,8 @@ export const COMMAND_INDEX = {
   },
   "sound.fade.apply": {
     kind: "action",
+    label: "Apply a fade preset",
+    summary: "Apply a fade preset",
     params: "sound.fade.apply.params",
     result: "sound.fade.apply.result",
     examples: [
@@ -7822,6 +9154,8 @@ export const COMMAND_INDEX = {
   },
   "sound.import": {
     kind: "action",
+    label: "Import an audio file and place it in a sound element",
+    summary: "Import an audio file and place it in a sound element (Import Sound)",
     params: "sound.import.params",
     result: "sound.import.result",
     examples: [
@@ -7833,6 +9167,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.add": {
     kind: "action",
+    label: "Place an existing asset or Library sound item in a sound element",
+    summary: "Place an existing asset or Library sound item in a sound element",
     params: "sound.placement.add.params",
     result: "sound.placement.add.result",
     examples: [
@@ -7845,6 +9181,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.get": {
     kind: "query",
+    label: "Full parameters of one placement",
+    summary: "Full parameters of one placement",
     params: "sound.placement.get.params",
     result: "sound.placement.get.result",
     examples: [
@@ -7856,6 +9194,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.list": {
     kind: "query",
+    label: "List placements of an element or a scene",
+    summary: "List placements of an element or a scene",
     params: "sound.placement.list.params",
     result: "sound.placement.list.result",
     examples: [
@@ -7865,6 +9205,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.move": {
     kind: "action",
+    label: "Move a placement to a new start frame, keeping its length",
+    summary: "Move a placement to a new start frame, keeping its length",
     params: "sound.placement.move.params",
     result: "sound.placement.move.result",
     examples: [
@@ -7877,6 +9219,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.remove": {
     kind: "action",
+    label: "Remove a placement",
+    summary: "Remove a placement (Remove Sound)",
     params: "sound.placement.remove.params",
     result: "sound.placement.remove.result",
     examples: [
@@ -7888,6 +9232,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.set": {
     kind: "action",
+    label: "Set loop count and/or volume",
+    summary: "Set loop count and/or volume (and any trim/move field) of a placement",
     params: "sound.placement.set.params",
     result: "sound.placement.set.result",
     examples: [
@@ -7899,6 +9245,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.split": {
     kind: "action",
+    label: "Split a placement into two at a frame",
+    summary: "Split a placement into two at a frame",
     params: "sound.placement.split.params",
     result: "sound.placement.split.result",
     examples: [
@@ -7911,6 +9259,8 @@ export const COMMAND_INDEX = {
   },
   "sound.placement.trim": {
     kind: "action",
+    label: "Set in/out points",
+    summary: "Set in/out points (source seconds) and/or truncate at a stop frame",
     params: "sound.placement.trim.params",
     result: "sound.placement.trim.result",
     examples: [
@@ -7922,6 +9272,8 @@ export const COMMAND_INDEX = {
   },
   "sound.play": {
     kind: "ui",
+    label: "Play audio without picture: one placement, one element's mix, an asset, or the s",
+    summary: "Play audio without picture: one placement, one element's mix, an asset, or the scene mix",
     params: "sound.play.params",
     result: "sound.play.result",
     examples: [
@@ -7931,6 +9283,8 @@ export const COMMAND_INDEX = {
   },
   "sound.playback.set": {
     kind: "toggle",
+    label: "Enable/disable sound during interactive playback",
+    summary: "Enable/disable sound during interactive playback (per user)",
     params: "sound.playback.set.params",
     result: "sound.playback.set.result",
     examples: [
@@ -7942,6 +9296,8 @@ export const COMMAND_INDEX = {
   },
   "sound.range.delete": {
     kind: "action",
+    label: "Empty a frame range of a sound element, splitting and trimming placements",
+    summary: "Empty a frame range of a sound element, splitting and trimming placements (§7.2)",
     params: "sound.range.delete.params",
     result: "sound.range.delete.result",
     examples: [
@@ -7955,6 +9311,8 @@ export const COMMAND_INDEX = {
   },
   "sound.range.select": {
     kind: "ui",
+    label: "Select frames of a placement in the Exposure Sheet/Timeline",
+    summary: "Select frames of a placement in the Exposure Sheet/Timeline (whole, from start, to end)",
     params: "sound.range.select.params",
     result: "sound.range.select.result",
     examples: [
@@ -7966,6 +9324,8 @@ export const COMMAND_INDEX = {
   },
   "sound.recent.list": {
     kind: "query",
+    label: "Recently imported sounds",
+    summary: "Recently imported sounds (for quick re-import)",
     params: "sound.recent.list.params",
     result: "sound.recent.list.result",
     examples: [
@@ -7975,6 +9335,8 @@ export const COMMAND_INDEX = {
   },
   "sound.scrubbing.set": {
     kind: "toggle",
+    label: "Enable/disable Timeline sound scrubbing",
+    summary: "Enable/disable Timeline sound scrubbing (per user)",
     params: "sound.scrubbing.set.params",
     result: "sound.scrubbing.set.result",
     examples: [
@@ -7986,6 +9348,8 @@ export const COMMAND_INDEX = {
   },
   "sound.settings.get": {
     kind: "query",
+    label: "Read sound playback/scrubbing/waveform settings and audio device status",
+    summary: "Read sound playback/scrubbing/waveform settings and audio device status",
     params: "sound.settings.get.params",
     result: "sound.settings.get.result",
     examples: [
@@ -7995,6 +9359,8 @@ export const COMMAND_INDEX = {
   },
   "sound.silence.list": {
     kind: "query",
+    label: "Silence and speech ranges",
+    summary: "Silence and speech ranges",
     params: "sound.silence.list.params",
     result: "sound.silence.list.result",
     examples: [
@@ -8004,6 +9370,8 @@ export const COMMAND_INDEX = {
   },
   "sound.stop": {
     kind: "ui",
+    label: "Stop one-shot sound playback",
+    summary: "Stop one-shot sound playback (one or all)",
     params: "sound.stop.params",
     result: "sound.stop.result",
     examples: [
@@ -8013,6 +9381,8 @@ export const COMMAND_INDEX = {
   },
   "sound.waveform.get": {
     kind: "query",
+    label: "Numeric waveform summary per frame",
+    summary: "Numeric waveform summary per frame (or per time bucket for an asset)",
     params: "sound.waveform.get.params",
     result: "sound.waveform.get.result",
     examples: [
@@ -8022,6 +9392,8 @@ export const COMMAND_INDEX = {
   },
   "sound.waveform.ready": {
     kind: "event",
+    label: "Waveform cache computed for an asset",
+    summary: "Waveform cache computed for an asset",
     params: "sound.waveform.ready.params",
     result: "sound.waveform.ready.result",
     examples: [
@@ -8032,6 +9404,8 @@ export const COMMAND_INDEX = {
   },
   "sound.waveforms.set": {
     kind: "toggle",
+    label: "Show waveforms or solid bars in Timeline/Exposure Sheet",
+    summary: "Show waveforms or solid bars in Timeline/Exposure Sheet (per user)",
     params: "sound.waveforms.set.params",
     result: "sound.waveforms.set.result",
     examples: [
@@ -8043,6 +9417,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.changed": {
     kind: "event",
+    label: "Scenes, order, visibility, lengths or transitions changed",
+    summary: "Scenes, order, visibility, lengths or transitions changed",
     params: "storyline.changed.params",
     result: "storyline.changed.result",
     examples: [
@@ -8053,6 +9429,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.currentScene.changed": {
     kind: "event",
+    label: "The current scene changed",
+    summary: "The current scene changed",
     params: "storyline.currentScene.changed.params",
     result: "storyline.currentScene.changed.result",
     examples: [
@@ -8063,6 +9441,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.currentScene.get": {
     kind: "query",
+    label: "Get the current scene",
+    summary: "Get the current scene",
     params: "storyline.currentScene.get.params",
     result: "storyline.currentScene.get.result",
     examples: [
@@ -8072,6 +9452,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.currentScene.set": {
     kind: "ui",
+    label: "Make a scene current in all editing views",
+    summary: "Make a scene current in all editing views",
     params: "storyline.currentScene.set.params",
     result: "storyline.currentScene.set.result",
     examples: [
@@ -8083,6 +9465,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.frame.get": {
     kind: "query",
+    label: "Map a global frame to scene",
+    summary: "Map a global frame to scene(s), local frame(s) and transition",
     params: "storyline.frame.get.params",
     result: "storyline.frame.get.result",
     examples: [
@@ -8094,6 +9478,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.frame.render": {
     kind: "query",
+    label: "Render a global storyline frame including transitions",
+    summary: "Render a global storyline frame including transitions",
     params: "storyline.frame.render.params",
     result: "storyline.frame.render.result",
     examples: [
@@ -8105,6 +9491,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.get": {
     kind: "query",
+    label: "Get the full storyline model with computed global timing",
+    summary: "Get the full storyline model with computed global timing",
     params: "storyline.get.params",
     result: "storyline.get.result",
     examples: [
@@ -8114,6 +9502,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.play.changed": {
     kind: "event",
+    label: "Storyline playback started/stopped or crossed an edit point",
+    summary: "Storyline playback started/stopped or crossed an edit point",
     params: "storyline.play.changed.params",
     result: "storyline.play.changed.result",
     examples: [
@@ -8124,6 +9514,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.play.start": {
     kind: "ui",
+    label: "Start Play Storyline",
+    summary: "Start Play Storyline (whole movie with transitions)",
     params: "storyline.play.start.params",
     result: "storyline.play.start.result",
     examples: [
@@ -8133,6 +9525,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.play.stop": {
     kind: "ui",
+    label: "Stop Play Storyline",
+    summary: "Stop Play Storyline",
     params: "storyline.play.stop.params",
     result: "storyline.play.stop.result",
     examples: [
@@ -8142,6 +9536,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.playhead.get": {
     kind: "query",
+    label: "Get the storyline playhead",
+    summary: "Get the storyline playhead",
     params: "storyline.playhead.get.params",
     result: "storyline.playhead.get.result",
     examples: [
@@ -8151,6 +9547,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.playhead.set": {
     kind: "ui",
+    label: "Move the storyline playhead",
+    summary: "Move the storyline playhead (scrub)",
     params: "storyline.playhead.set.params",
     result: "storyline.playhead.set.result",
     examples: [
@@ -8160,6 +9558,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.create": {
     kind: "action",
+    label: "Add scene",
+    summary: "Add a scene (\"Add scene\")",
     params: "storyline.scene.create.params",
     result: "storyline.scene.create.result",
     examples: [
@@ -8169,6 +9569,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.delete": {
     kind: "action",
+    label: "Delete scene",
+    summary: "Delete a scene and its content (\"Delete scene\")",
     params: "storyline.scene.delete.params",
     result: "storyline.scene.delete.result",
     examples: [
@@ -8180,6 +9582,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.get": {
     kind: "query",
+    label: "Get one scene",
+    summary: "Get one scene",
     params: "storyline.scene.get.params",
     result: "storyline.scene.get.result",
     examples: [
@@ -8191,6 +9595,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.list": {
     kind: "query",
+    label: "List scenes in order",
+    summary: "List scenes in order",
     params: "storyline.scene.list.params",
     result: "storyline.scene.list.result",
     examples: [
@@ -8200,6 +9606,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.move": {
     kind: "action",
+    label: "Reorder scene",
+    summary: "Move a scene to an index (\"Reorder scene\")",
     params: "storyline.scene.move.params",
     result: "storyline.scene.move.result",
     examples: [
@@ -8212,6 +9620,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.rename": {
     kind: "action",
+    label: "Change scene name",
+    summary: "Rename a scene (\"Change scene name\")",
     params: "storyline.scene.rename.params",
     result: "storyline.scene.rename.result",
     examples: [
@@ -8224,6 +9634,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.set": {
     kind: "action",
+    label: "Change scene properties",
+    summary: "Set scene properties in one step (\"Change scene properties\")",
     params: "storyline.scene.set.params",
     result: "storyline.scene.set.result",
     examples: [
@@ -8235,6 +9647,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.scene.visible.set": {
     kind: "toggle",
+    label: "Show/Hide scene",
+    summary: "Show or hide a scene in the movie (\"Show/Hide scene\")",
     params: "storyline.scene.visible.set.params",
     result: "storyline.scene.visible.set.result",
     examples: [
@@ -8247,6 +9661,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.selection.changed": {
     kind: "event",
+    label: "Storyline selection changed",
+    summary: "Storyline selection changed",
     params: "storyline.selection.changed.params",
     result: "storyline.selection.changed.result",
     examples: [
@@ -8257,6 +9673,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.selection.get": {
     kind: "query",
+    label: "Get the storyline selection",
+    summary: "Get the storyline selection",
     params: "storyline.selection.get.params",
     result: "storyline.selection.get.result",
     examples: [
@@ -8266,6 +9684,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.selection.set": {
     kind: "ui",
+    label: "Select a scene or an edit point in the Storyline/Scene Manager",
+    summary: "Select a scene or an edit point in the Storyline/Scene Manager",
     params: "storyline.selection.set.params",
     result: "storyline.selection.set.result",
     examples: [
@@ -8275,6 +9695,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.transition.get": {
     kind: "query",
+    label: "Get the transition at an edit point",
+    summary: "Get the transition at an edit point",
     params: "storyline.transition.get.params",
     result: "storyline.transition.get.result",
     examples: [
@@ -8284,6 +9706,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.transition.list": {
     kind: "query",
+    label: "List all edit points with their transitions and computed spans",
+    summary: "List all edit points with their transitions and computed spans",
     params: "storyline.transition.list.params",
     result: "storyline.transition.list.result",
     examples: [
@@ -8293,6 +9717,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.transition.remove": {
     kind: "action",
+    label: "Set an edit point's transition to none",
+    summary: "Set an edit point's transition to none (cut)",
     params: "storyline.transition.remove.params",
     result: "storyline.transition.remove.result",
     examples: [
@@ -8302,6 +9728,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.transition.set": {
     kind: "action",
+    label: "Set transition type and parameters at an edit point",
+    summary: "Set transition type and parameters at an edit point (one undo step)",
     params: "storyline.transition.set.params",
     result: "storyline.transition.set.result",
     examples: [
@@ -8311,6 +9739,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.transition.types.list": {
     kind: "query",
+    label: "List transition types with their parameters, ranges, defaults and allowed direct",
+    summary: "List transition types with their parameters, ranges, defaults and allowed directions",
     params: "storyline.transition.types.list.params",
     result: "storyline.transition.types.list.result",
     examples: [
@@ -8320,6 +9750,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.view.get": {
     kind: "query",
+    label: "Get storyline view state",
+    summary: "Get storyline view state",
     params: "storyline.view.get.params",
     result: "storyline.view.get.result",
     examples: [
@@ -8329,6 +9761,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.view.set": {
     kind: "ui",
+    label: "Set storyline zoom or fit to view",
+    summary: "Set storyline zoom or fit to view",
     params: "storyline.view.set.params",
     result: "storyline.view.set.result",
     examples: [
@@ -8338,6 +9772,8 @@ export const COMMAND_INDEX = {
   },
   "storyline.warning.changed": {
     kind: "event",
+    label: "A scene's too-short warning appeared or cleared",
+    summary: "A scene's too-short warning appeared or cleared",
     params: "storyline.warning.changed.params",
     result: "storyline.warning.changed.result",
     examples: [
@@ -8348,6 +9784,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.backgroundColour.set": {
     kind: "ui",
+    label: "Timeline background colour preference",
+    summary: "Timeline background colour preference",
     params: "timeline.backgroundColour.set.params",
     result: "timeline.backgroundColour.set.result",
     examples: [
@@ -8359,6 +9797,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.currentFrame.changed": {
     kind: "event",
+    label: "Current frame changed",
+    summary: "Current frame changed (throttled to at most 10 per second during playback)",
     params: "timeline.currentFrame.changed.params",
     result: "timeline.currentFrame.changed.result",
     examples: [
@@ -8369,6 +9809,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.currentFrame.move": {
     kind: "ui",
+    label: "First / previous / next / last frame, or previous / next drawing of an element",
+    summary: "First / previous / next / last frame, or previous / next drawing of an element; `withinRange` limits movement to the playback range",
     params: "timeline.currentFrame.move.params",
     result: "timeline.currentFrame.move.result",
     examples: [
@@ -8380,6 +9822,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.currentFrame.set": {
     kind: "ui",
+    label: "Set the current frame",
+    summary: "Set the current frame (clamped to 1..scene length)",
     params: "timeline.currentFrame.set.params",
     result: "timeline.currentFrame.set.result",
     examples: [
@@ -8391,6 +9835,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.effectParameterRows.set": {
     kind: "toggle",
+    label: "Show/hide effect-parameter rows of one effect",
+    summary: "Show/hide effect-parameter rows of one effect (omit = all effects)",
     params: "timeline.effectParameterRows.set.params",
     result: "timeline.effectParameterRows.set.result",
     examples: [
@@ -8402,6 +9848,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.frameLabel.get": {
     kind: "query",
+    label: "Format frame numbers per the current time display",
+    summary: "Format frame numbers per the current time display",
     params: "timeline.frameLabel.get.params",
     result: "timeline.frameLabel.get.result",
     examples: [
@@ -8413,6 +9861,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.playbackRange.changed": {
     kind: "event",
+    label: "Playback range changed",
+    summary: "Playback range changed",
     params: "timeline.playbackRange.changed.params",
     result: "timeline.playbackRange.changed.result",
     examples: [
@@ -8423,6 +9873,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.playbackRange.get": {
     kind: "query",
+    label: "Current playback range",
+    summary: "Current playback range",
     params: "timeline.playbackRange.get.params",
     result: "timeline.playbackRange.get.result",
     examples: [
@@ -8432,6 +9884,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.playbackRange.set": {
     kind: "ui",
+    label: "Automatic or free playback range, start and end",
+    summary: "Automatic or free playback range, start and end (clamped)",
     params: "timeline.playbackRange.set.params",
     result: "timeline.playbackRange.set.result",
     examples: [
@@ -8441,6 +9895,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.rows.list": {
     kind: "query",
+    label: "Timeline read model: rows, bars, keyframe markers, clips",
+    summary: "Timeline read model: rows, bars, keyframe markers, clips (17.5)",
     params: "timeline.rows.list.params",
     result: "timeline.rows.list.result",
     examples: [
@@ -8450,6 +9906,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.singleCellSelection.set": {
     kind: "toggle",
+    label: "Single cell selection preference",
+    summary: "Single cell selection preference",
     params: "timeline.singleCellSelection.set.params",
     result: "timeline.singleCellSelection.set.result",
     examples: [
@@ -8461,6 +9919,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.soundWaveforms.set": {
     kind: "toggle",
+    label: "Show sound rows as waveforms or solid bars",
+    summary: "Show sound rows as waveforms or solid bars",
     params: "timeline.soundWaveforms.set.params",
     result: "timeline.soundWaveforms.set.result",
     examples: [
@@ -8472,6 +9932,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.timeDisplay.set": {
     kind: "ui",
+    label: "Display frames or feet and frames",
+    summary: "Display frames or feet and frames (preference)",
     params: "timeline.timeDisplay.set.params",
     result: "timeline.timeDisplay.set.result",
     examples: [
@@ -8483,6 +9945,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.transferOptions.get": {
     kind: "query",
+    label: "Read a stored option set",
+    summary: "Read a stored option set",
     params: "timeline.transferOptions.get.params",
     result: "timeline.transferOptions.get.result",
     examples: [
@@ -8494,6 +9958,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.transferOptions.set": {
     kind: "ui",
+    label: "Store the paste-special, cut-special or drag-and-drop option set",
+    summary: "Store the paste-special, cut-special or drag-and-drop option set (17.3)",
     params: "timeline.transferOptions.set.params",
     result: "timeline.transferOptions.set.result",
     examples: [
@@ -8521,6 +9987,8 @@ export const COMMAND_INDEX = {
   },
   "timeline.view.set": {
     kind: "ui",
+    label: "Zoom level, scroll position, reveal an element",
+    summary: "Zoom level, scroll position, reveal an element (show Timeline selection)",
     params: "timeline.view.set.params",
     result: "timeline.view.set.result",
     examples: [
@@ -8530,47 +9998,53 @@ export const COMMAND_INDEX = {
   },
   "tool.active.changed": {
     kind: "event",
+    label: "Active tool changed",
+    summary: "Active tool changed (including temporary overrides)",
     params: "tool.active.changed.params",
     result: "tool.active.changed.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "tool.active.get": {
     kind: "query",
+    label: "Get the active tool",
+    summary: "Active tool (and temporary override, if any)",
     params: "tool.active.get.params",
     result: "tool.active.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "tool.active.set": {
     kind: "ui",
+    label: "Activate a tool",
+    summary: "Activate a tool",
     params: "tool.active.set.params",
     result: "tool.active.set.result",
     examples: [
       {
-        toolId: "select",
+        toolId: "brush",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.brush.options.set": {
     kind: "ui",
+    label: "Brush options",
+    summary: "Brush options (current brush pen)",
     params: "tool.brush.options.set.params",
     result: "tool.brush.options.set.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 1\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.drawTopLayer.set": {
     kind: "toggle",
+    label: "Draw on Top Layer",
+    summary: "Draw on Top Layer",
     params: "tool.drawTopLayer.set.params",
     result: "tool.drawTopLayer.set.result",
     examples: [
@@ -8578,156 +10052,188 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.eraser.options.set": {
     kind: "ui",
+    label: "Eraser options",
+    summary: "Eraser options (current eraser pen)",
     params: "tool.eraser.options.set.params",
     result: "tool.eraser.options.set.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Eraser 1\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.group.select": {
     kind: "ui",
+    label: "Select a tool group",
+    summary: "Select a tool group; advance within it if already active (group cycling)",
     params: "tool.group.select.params",
     result: "tool.group.select.result",
     examples: [
       {
-        group: "select",
+        group: "brush",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.list": {
     kind: "query",
+    label: "List tools",
+    summary: "All drawing tools with group, option schema and current options",
     params: "tool.list.params",
     result: "tool.list.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "tool.options.changed": {
     kind: "event",
+    label: "A tool option or global drawing setting changed",
+    summary: "A tool option or global drawing setting changed",
     params: "tool.options.changed.params",
     result: "tool.options.changed.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "tool.options.get": {
     kind: "query",
+    label: "Get tool options",
+    summary: "Options of a tool",
     params: "tool.options.get.params",
     result: "tool.options.get.result",
     examples: [
       {
-        toolId: "example",
+        toolId: "select",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.options.set": {
     kind: "ui",
+    label: "Set tool options",
+    summary: "Set any option(s) of any tool (generic form of the rows below)",
     params: "tool.options.set.params",
     result: "tool.options.set.result",
     examples: [
       {
-        toolId: "example",
-        options: {},
+        toolId: "polyline",
+        options: {
+          snapRadius: 12,
+        },
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.changed": {
     kind: "event",
+    label: "Pen list or pen settings changed",
+    summary: "Pen list or pen settings changed",
     params: "tool.pen.changed.params",
     result: "tool.pen.changed.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
     event: true,
   },
   "tool.pen.create": {
     kind: "action",
+    label: "New pen",
+    summary: "New pen from current or given pen (\"New Pen\")",
     params: "tool.pen.create.params",
     result: "tool.pen.create.result",
     examples: [
       {},
+      {
+        type: "eraser",
+        name: "Wide",
+        settings: {
+          maxSize: 80,
+          minSize: 80,
+        },
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.delete": {
     kind: "action",
+    label: "Delete pen",
+    summary: "Delete a pen (\"Delete Pen\")",
     params: "tool.pen.delete.params",
     result: "tool.pen.delete.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 2\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.list": {
     kind: "query",
+    label: "List pens",
+    summary: "Pens of the project with all settings",
     params: "tool.pen.list.params",
     result: "tool.pen.list.result",
     examples: [
       {},
+      {
+        type: "eraser",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.rename": {
     kind: "action",
+    label: "Rename pen",
+    summary: "Rename a pen (\"Rename Pen\")",
     params: "tool.pen.rename.params",
     result: "tool.pen.rename.result",
     examples: [
       {
-        penId: "scene:#1",
-        name: "example",
+        penId: "pen:\"Pen 1\"",
+        name: "Fine",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.select": {
     kind: "ui",
+    label: "Select pen",
+    summary: "Make a pen current for its tool family",
     params: "tool.pen.select.params",
     result: "tool.pen.select.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 2\"",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pen.set": {
     kind: "action",
+    label: "Set pen style",
+    summary: "Change pen settings (\"Set Pen Style\")",
     params: "tool.pen.set.params",
     result: "tool.pen.set.result",
     examples: [
       {
-        penId: "scene:#1",
+        penId: "pen:\"Pen 2\"",
+        maxSize: 6,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.pencil.options.set": {
     kind: "ui",
+    label: "Pencil options",
+    summary: "Pencil and shape-tool line thickness source",
     params: "tool.pencil.options.set.params",
     result: "tool.pencil.options.set.result",
     examples: [
-      {},
+      {
+        thicknessSource: "fixed",
+        thickness: 3,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.placeBehind.set": {
     kind: "toggle",
+    label: "Draw Behind",
+    summary: "Draw Behind",
     params: "tool.placeBehind.set.params",
     result: "tool.placeBehind.set.result",
     examples: [
@@ -8735,37 +10241,46 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.polyline.options.set": {
     kind: "ui",
+    label: "Polyline options",
+    summary: "Polyline snapping",
     params: "tool.polyline.options.set.params",
     result: "tool.polyline.options.set.result",
     examples: [
-      {},
+      {
+        snap: true,
+        snapRadius: 12,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.select.options.set": {
     kind: "ui",
+    label: "Select tool options",
+    summary: "Select tool options",
     params: "tool.select.options.set.params",
     result: "tool.select.options.set.result",
     examples: [
-      {},
+      {
+        rectRule: "intersect",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.settings.get": {
     kind: "query",
+    label: "Get drawing-tool settings",
+    summary: "All global drawing-tool settings",
     params: "tool.settings.get.params",
     result: "tool.settings.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "tool.snapToContour.set": {
     kind: "toggle",
+    label: "Snap to Contour",
+    summary: "Snap to Contour (Contour Editor)",
     params: "tool.snapToContour.set.params",
     result: "tool.snapToContour.set.result",
     examples: [
@@ -8773,10 +10288,11 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.symmetry.set": {
     kind: "ui",
+    label: "Symmetry drawing mode",
+    summary: "Symmetry drawing mode",
     params: "tool.symmetry.set.params",
     result: "tool.symmetry.set.result",
     examples: [
@@ -8792,24 +10308,33 @@ export const COMMAND_INDEX = {
   },
   "tool.tablet.set": {
     kind: "ui",
+    label: "Tablet input settings",
+    summary: "Tablet input settings",
     params: "tool.tablet.set.params",
     result: "tool.tablet.set.result",
     examples: [
-      {},
+      {
+        ignoreTablet: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "tool.text.options.set": {
     kind: "ui",
+    label: "Text options",
+    summary: "Text panel defaults for new text",
     params: "tool.text.options.set.params",
     result: "tool.text.options.set.result",
     examples: [
-      {},
+      {
+        size: 48,
+        bold: true,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "ui.contextHelpMode.set": {
     kind: "toggle",
+    label: "Context Help",
+    summary: "Enter/leave context-help mode",
     params: "ui.contextHelpMode.set.params",
     result: "ui.contextHelpMode.set.result",
     examples: [
@@ -8817,210 +10342,274 @@ export const COMMAND_INDEX = {
         enabled: true,
       },
     ],
-    milestone: "M4 C4.1",
   },
   "ui.help.get": {
     kind: "query",
+    label: "Get help",
+    summary: "Help text of a command, panel, preference or message",
     params: "ui.help.get.params",
     result: "ui.help.get.result",
     examples: [
-      {},
+      {
+        commandId: "edit.undo",
+      },
+      {
+        preferenceKey: "files.autosave.intervalMinutes",
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "ui.help.open": {
     kind: "ui",
+    label: "Documentation",
+    summary: "Open the documentation, optionally at a topic",
     params: "ui.help.open.params",
     result: "ui.help.open.result",
     examples: [
       {},
+      {
+        topic: "agent-guide",
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "ui.message.shown": {
     kind: "event",
+    label: "Message shown",
+    summary: "A message was shown or returned as a warning",
     params: "ui.message.shown.params",
     result: "ui.message.shown.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
     event: true,
   },
   "ui.preferences.open": {
     kind: "ui",
+    label: "Preferences…",
+    summary: "Open the preferences window at a category (GUI convenience)",
     params: "ui.preferences.open.params",
     result: "ui.preferences.open.result",
     examples: [
       {},
+      {
+        category: "keyboard",
+      },
     ],
-    milestone: "M4 C4.1",
   },
   "ui.startScreen.set": {
     kind: "toggle",
+    label: "Start Screen",
+    summary: "Show/hide the start screen",
     params: "ui.startScreen.set.params",
     result: "ui.startScreen.set.result",
     examples: [
       {
-        visible: true,
+        visible: false,
       },
     ],
-    milestone: "M4 C4.1",
   },
   "ui.statusBar.get": {
     kind: "query",
+    label: "Read the status bar",
+    summary: "Status bar segment texts",
     params: "ui.statusBar.get.params",
     result: "ui.statusBar.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
   },
   "ui.statusBar.set": {
     kind: "toggle",
+    label: "Status Bar",
+    summary: "Show/hide the status bar (same as `interface.statusBar.visible`)",
     params: "ui.statusBar.set.params",
     result: "ui.statusBar.set.result",
     examples: [
       {
-        visible: true,
+        visible: false,
       },
     ],
-    milestone: "M4 C4.1",
   },
   "ui.theme.list": {
     kind: "query",
+    label: "List themes",
+    summary: "Available themes (selected via `interface.theme`)",
     params: "ui.theme.list.params",
     result: "ui.theme.list.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
   },
   "ui.tips.list": {
     kind: "query",
+    label: "List tips",
+    summary: "Suppressible messages and their state",
     params: "ui.tips.list.params",
     result: "ui.tips.list.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
   },
   "ui.tips.reset": {
     kind: "ui",
+    label: "Show all tips again",
+    summary: "Show all tips again",
     params: "ui.tips.reset.params",
     result: "ui.tips.reset.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
   },
   "ui.tips.set": {
     kind: "ui",
+    label: "Suppress or re-enable a tip",
+    summary: "Suppress or re-enable one message",
     params: "ui.tips.set.params",
     result: "ui.tips.set.result",
     examples: [
       {
-        messageId: "example",
+        messageId: "timing.elementsHiddenInDrawingMode",
         suppressed: true,
       },
     ],
-    milestone: "M4 C4.1",
   },
   "view.active.set": {
     kind: "ui",
+    label: "Activate view",
+    summary: "Make a view window active (focus it)",
     params: "view.active.set.params",
     result: "view.active.set.result",
     examples: [
       {
-        viewId: "scene:#1",
+        viewId: "drawingView",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "view.coordinates.convert": {
     kind: "query",
+    label: "Convert view coordinates",
+    summary: "Convert a point between view pixels, drawing space and scene space for a view",
     params: "view.coordinates.convert.params",
     result: "view.coordinates.convert.result",
     examples: [
       {
-        viewId: "scene:#1",
+        viewId: "drawingView",
         point: {
-          x: 1,
-          y: 1,
+          x: 960,
+          y: 540,
         },
         from: "view",
-        to: "view",
+        to: "drawing",
       },
     ],
-    milestone: "M4 C4.2",
   },
   "view.list": {
     kind: "query",
+    label: "List views",
+    summary: "View windows with type, focus, size and transform",
     params: "view.list.params",
     result: "view.list.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "view.pan.set": {
     kind: "ui",
+    label: "Pan view",
+    summary: "Pan: centre on a document point, by a pixel offset, or on the pointer (centre on pointer)",
     params: "view.pan.set.params",
     result: "view.pan.set.result",
     examples: [
-      {},
+      {
+        viewId: "drawingView",
+        centre: {
+          x: 100,
+          y: 50,
+        },
+      },
+      {
+        by: {
+          x: 40,
+          y: 0,
+        },
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.rotation.set": {
     kind: "ui",
+    label: "Rotate view",
+    summary: "Set view rotation absolutely or in 30° steps",
     params: "view.rotation.set.params",
     result: "view.rotation.set.result",
     examples: [
-      {},
+      {
+        steps: 1,
+      },
+      {
+        viewId: "drawingView",
+        degrees: 45,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.transform.get": {
     kind: "query",
+    label: "Get view transform",
+    summary: "Zoom, rotation and centre of a view",
     params: "view.transform.get.params",
     result: "view.transform.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.2",
   },
   "view.transform.reset": {
     kind: "ui",
+    label: "Reset view",
+    summary: "Reset view / reset zoom / reset rotation / recentre",
     params: "view.transform.reset.params",
     result: "view.transform.reset.result",
     examples: [
       {},
+      {
+        parts: [
+          "rotation",
+        ],
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.type.set": {
     kind: "ui",
+    label: "Set view type",
+    summary: "Switch a view window's type; `\"previous\"` = switch active view",
     params: "view.type.set.params",
     result: "view.type.set.result",
     examples: [
       {
         type: "drawing",
       },
+      {
+        type: "previous",
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "view.zoom.set": {
     kind: "ui",
+    label: "Zoom",
+    summary: "Set zoom absolutely or by table steps (zoom in = +1, zoom out = −1)",
     params: "view.zoom.set.params",
     result: "view.zoom.set.result",
     examples: [
-      {},
+      {
+        steps: 1,
+      },
+      {
+        viewId: "drawingView",
+        zoom: 2,
+      },
     ],
-    milestone: "M4 C4.2",
   },
   "window.floatingPanels.set": {
     kind: "toggle",
+    label: "Show/hide floating panels",
+    summary: "Hide/show all floating panels and tool palettes",
     params: "window.floatingPanels.set.params",
     result: "window.floatingPanels.set.result",
     examples: [
@@ -9031,6 +10620,8 @@ export const COMMAND_INDEX = {
   },
   "window.fullScreen.set": {
     kind: "toggle",
+    label: "Full Screen",
+    summary: "Full-screen presentation",
     params: "window.fullScreen.set.params",
     result: "window.fullScreen.set.result",
     examples: [
@@ -9044,15 +10635,18 @@ export const COMMAND_INDEX = {
   },
   "window.geometry.get": {
     kind: "query",
+    label: "Window geometry",
+    summary: "Main window geometry and screens",
     params: "window.geometry.get.params",
     result: "window.geometry.get.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
   },
   "window.geometry.set": {
     kind: "ui",
+    label: "Set window geometry",
+    summary: "Move/resize/maximise the main window",
     params: "window.geometry.set.params",
     result: "window.geometry.set.result",
     examples: [
@@ -9061,10 +10655,11 @@ export const COMMAND_INDEX = {
         height: 1000,
       },
     ],
-    milestone: "M4 C4.1",
   },
   "window.minimized.set": {
     kind: "toggle",
+    label: "Minimise",
+    summary: "Minimise or restore the main window",
     params: "window.minimized.set.params",
     result: "window.minimized.set.result",
     examples: [
@@ -9072,10 +10667,11 @@ export const COMMAND_INDEX = {
         minimized: true,
       },
     ],
-    milestone: "M4 C4.1",
   },
   "window.panel.list": {
     kind: "query",
+    label: "List panels",
+    summary: "Panels with visibility, dock area, tab group, floating geometry and focus",
     params: "window.panel.list.params",
     result: "window.panel.list.result",
     examples: [
@@ -9084,6 +10680,8 @@ export const COMMAND_INDEX = {
   },
   "window.panel.move": {
     kind: "ui",
+    label: "Move panel",
+    summary: "Dock a panel into an area, next to or tabbed with another panel",
     params: "window.panel.move.params",
     result: "window.panel.move.result",
     examples: [
@@ -9097,6 +10695,8 @@ export const COMMAND_INDEX = {
   },
   "window.panel.set": {
     kind: "toggle",
+    label: "Show/hide panel",
+    summary: "Show/hide, float/dock, focus a panel; `\"active\"` addresses the focused panel (close active panel = `visible: false`)",
     params: "window.panel.set.params",
     result: "window.panel.set.result",
     examples: [
@@ -9118,15 +10718,18 @@ export const COMMAND_INDEX = {
   },
   "window.raiseAll.run": {
     kind: "ui",
+    label: "Bring All to Front",
+    summary: "Bring all application windows to the front",
     params: "window.raiseAll.run.params",
     result: "window.raiseAll.run.result",
     examples: [
       {},
     ],
-    milestone: "M4 C4.1",
   },
   "window.sidePanelsExtended.set": {
     kind: "toggle",
+    label: "Extend side panels",
+    summary: "Side dock areas own the corners (true) or top/bottom areas do (false)",
     params: "window.sidePanelsExtended.set.params",
     result: "window.sidePanelsExtended.set.result",
     examples: [
@@ -9137,6 +10740,8 @@ export const COMMAND_INDEX = {
   },
   "window.toolbar.items.reset": {
     kind: "ui",
+    label: "Reset toolbar",
+    summary: "Restore the default main toolbar items",
     params: "window.toolbar.items.reset.params",
     result: "window.toolbar.items.reset.result",
     examples: [
@@ -9145,6 +10750,8 @@ export const COMMAND_INDEX = {
   },
   "window.toolbar.items.set": {
     kind: "ui",
+    label: "Customise toolbar",
+    summary: "Customise the main toolbar (stored in the current workspace)",
     params: "window.toolbar.items.set.params",
     result: "window.toolbar.items.set.result",
     examples: [
@@ -9160,6 +10767,8 @@ export const COMMAND_INDEX = {
   },
   "window.toolbar.list": {
     kind: "query",
+    label: "List toolbars",
+    summary: "Toolbars and tool palettes with visibility, items and allowed items",
     params: "window.toolbar.list.params",
     result: "window.toolbar.list.result",
     examples: [
@@ -9168,6 +10777,8 @@ export const COMMAND_INDEX = {
   },
   "window.toolbar.set": {
     kind: "toggle",
+    label: "Show/hide toolbar",
+    summary: "Show/hide (and float/position) the main toolbar or a tool palette",
     params: "window.toolbar.set.params",
     result: "window.toolbar.set.result",
     examples: [
@@ -9179,6 +10790,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.changed": {
     kind: "event",
+    label: "Workspace changed",
+    summary: "Current workspace switched or modified",
     params: "workspace.changed.params",
     result: "workspace.changed.result",
     examples: [
@@ -9188,6 +10801,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.create": {
     kind: "ui",
+    label: "New workspace",
+    summary: "Create a workspace from the current arrangement or a given layout",
     params: "workspace.create.params",
     result: "workspace.create.result",
     examples: [
@@ -9198,6 +10813,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.delete": {
     kind: "ui",
+    label: "Delete workspace",
+    summary: "Delete a user workspace",
     params: "workspace.delete.params",
     result: "workspace.delete.result",
     examples: [
@@ -9208,18 +10825,22 @@ export const COMMAND_INDEX = {
   },
   "workspace.export": {
     kind: "ui",
+    label: "Export workspace",
+    summary: "Write a workspace to a file",
     params: "workspace.export.params",
     result: "workspace.export.result",
     examples: [
       {
         name: "Drawing",
         path: "/tmp/drawing.ttworkspace",
+        onExists: "overwrite",
       },
     ],
-    milestone: "M4 C4.1",
   },
   "workspace.get": {
     kind: "query",
+    label: "Get workspace layout",
+    summary: "Full layout of a workspace (default: the current arrangement)",
     params: "workspace.get.params",
     result: "workspace.get.result",
     examples: [
@@ -9231,6 +10852,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.import": {
     kind: "ui",
+    label: "Import workspace",
+    summary: "Read a workspace from a file",
     params: "workspace.import.params",
     result: "workspace.import.result",
     examples: [
@@ -9239,10 +10862,11 @@ export const COMMAND_INDEX = {
         onExists: "rename",
       },
     ],
-    milestone: "M4 C4.1",
   },
   "workspace.layout.set": {
     kind: "ui",
+    label: "Apply layout",
+    summary: "Apply a layout to the window without saving it to a workspace",
     params: "workspace.layout.set.params",
     result: "workspace.layout.set.result",
     examples: [
@@ -9284,6 +10908,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.list": {
     kind: "query",
+    label: "List workspaces",
+    summary: "Workspaces",
     params: "workspace.list.params",
     result: "workspace.list.result",
     examples: [
@@ -9292,6 +10918,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.rename": {
     kind: "ui",
+    label: "Rename workspace",
+    summary: "Rename a workspace",
     params: "workspace.rename.params",
     result: "workspace.rename.result",
     examples: [
@@ -9303,6 +10931,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.reset": {
     kind: "ui",
+    label: "Reset workspace",
+    summary: "Restore built-in workspace(s) to the bundled arrangement; `select` also applies it (restore default workspace = `name: \"Default\", select: true`)",
     params: "workspace.reset.params",
     result: "workspace.reset.result",
     examples: [
@@ -9314,6 +10944,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.save": {
     kind: "ui",
+    label: "Save workspace",
+    summary: "Store the current arrangement into a workspace",
     params: "workspace.save.params",
     result: "workspace.save.result",
     examples: [
@@ -9322,6 +10954,8 @@ export const COMMAND_INDEX = {
   },
   "workspace.select": {
     kind: "ui",
+    label: "Select workspace",
+    summary: "Switch workspace",
     params: "workspace.select.params",
     result: "workspace.select.result",
     examples: [
@@ -9332,6 +10966,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.columnWidth.set": {
     kind: "ui",
+    label: "Set one column's width, or reset all widths",
+    summary: "Set one column's width, or reset all widths",
     params: "xsheet.columnWidth.set.params",
     result: "xsheet.columnWidth.set.result",
     examples: [
@@ -9341,6 +10977,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.currentCell.set": {
     kind: "ui",
+    label: "Set the current element and frame together",
+    summary: "Set the current element and frame together",
     params: "xsheet.currentCell.set.params",
     result: "xsheet.currentCell.set.result",
     examples: [
@@ -9353,6 +10991,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.display.set": {
     kind: "ui",
+    label: "Thumbnails, exposure text in held cells, element-name prefix, notes",
+    summary: "Thumbnails, exposure text in held cells, element-name prefix, notes",
     params: "xsheet.display.set.params",
     result: "xsheet.display.set.result",
     examples: [
@@ -9362,6 +11002,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.exposures.get": {
     kind: "query",
+    label: "Get exposure sheet",
+    summary: "Exposure sheet of a frame window as run-length JSON (17.2)",
     params: "xsheet.exposures.get.params",
     result: "xsheet.exposures.get.result",
     examples: [
@@ -9382,6 +11024,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.exposures.set": {
     kind: "action",
+    label: "Set exposure sheet",
+    summary: "Atomically replace exposures of one or more columns over frame windows (17.2)",
     params: "xsheet.exposures.set.params",
     result: "xsheet.exposures.set.result",
     examples: [
@@ -9434,6 +11078,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.add": {
     kind: "ui",
+    label: "Send drawings to the static light table",
+    summary: "Send drawings to the static light table (omit items = selection)",
     params: "xsheet.lightTable.add.params",
     result: "xsheet.lightTable.add.result",
     examples: [
@@ -9443,6 +11089,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.changed": {
     kind: "event",
+    label: "Light table changed",
+    summary: "Static light table contents or item state changed",
     params: "xsheet.lightTable.changed.params",
     result: "xsheet.lightTable.changed.result",
     examples: [
@@ -9452,6 +11100,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.list": {
     kind: "query",
+    label: "List light table",
+    summary: "Light-table items in stacking order",
     params: "xsheet.lightTable.list.params",
     result: "xsheet.lightTable.list.result",
     examples: [
@@ -9460,6 +11110,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.move": {
     kind: "ui",
+    label: "Reorder a light-table item",
+    summary: "Reorder a light-table item",
     params: "xsheet.lightTable.move.params",
     result: "xsheet.lightTable.move.result",
     examples: [
@@ -9472,6 +11124,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.remove": {
     kind: "ui",
+    label: "Remove light-table items, or all",
+    summary: "Remove light-table items, or all",
     params: "xsheet.lightTable.remove.params",
     result: "xsheet.lightTable.remove.result",
     examples: [
@@ -9481,6 +11135,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.set": {
     kind: "ui",
+    label: "Show/hide and over/under for given items, all, or all others",
+    summary: "Show/hide and over/under for given items, all, or all others",
     params: "xsheet.lightTable.set.params",
     result: "xsheet.lightTable.set.result",
     examples: [
@@ -9490,6 +11146,8 @@ export const COMMAND_INDEX = {
   },
   "xsheet.panel.set": {
     kind: "ui",
+    label: "Show/hide the element list panel, static light table panel and toolbar",
+    summary: "Show/hide the element list panel, static light table panel and toolbar",
     params: "xsheet.panel.set.params",
     result: "xsheet.panel.set.result",
     examples: [
@@ -17280,64 +18938,51 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "anim.tool.changed.params": {
-    title: "anim.tool.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "anim.tool.changed.result": {
-    title: "anim.tool.changed result",
+    title: "ToolChanged",
+    description: "`anim.tool.changed` payload.",
     type: "object",
     properties: {
       tool: {
+        description: "The scene-planning tool now.",
         type: "string",
       },
     },
     required: [
       "tool",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{tool}`",
-    additionalProperties: false,
   },
   "anim.tool.get.params": {
-    title: "anim.tool.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "anim.tool.get.result": {
-    title: "anim.tool.get result",
+    title: "ToolResult",
+    description: "`{tool}`.",
     type: "object",
     properties: {
       tool: {
+        description: "The scene-planning tool.",
         type: "string",
       },
     },
     required: [
       "tool",
     ],
-    "x-spec": "`{tool}`",
-    additionalProperties: false,
   },
-  "anim.tool.set.params": {
-    title: "anim.tool.set parameters",
-    type: "object",
-    properties: {
-      tool: {
+  "anim.tool.set.SceneTool": {
+    description: "A scene-planning tool (05 line 1217).",
+    oneOf: [
+      {
         type: "string",
         enum: [
-          "select",
-          "transform",
-          "record",
-          "rotate",
-          "skew",
-          "scale",
-          "motion",
-          "boneCreate",
           "boneSetup",
           "boneManipulate",
           "boneInverse",
@@ -17346,30 +18991,81 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           "boneParent",
         ],
       },
+      {
+        description: "Select (05 §5.1): static values.",
+        type: "string",
+        const: "select",
+      },
+      {
+        description: "Transform (05 §5.2): keyed at the current frame.",
+        type: "string",
+        const: "transform",
+      },
+      {
+        description: "Motion recording.",
+        type: "string",
+        const: "record",
+      },
+      {
+        description: "Rotate.",
+        type: "string",
+        const: "rotate",
+      },
+      {
+        description: "Skew.",
+        type: "string",
+        const: "skew",
+      },
+      {
+        description: "Scale.",
+        type: "string",
+        const: "scale",
+      },
+      {
+        description: "Motion.",
+        type: "string",
+        const: "motion",
+      },
+      {
+        description: "Bone tools (§13.4).",
+        type: "string",
+        const: "boneCreate",
+      },
+    ],
+  },
+  "anim.tool.set.params": {
+    title: "ToolParams",
+    description: "`anim.tool.set` parameters.",
+    type: "object",
+    properties: {
+      tool: {
+        description: "The tool.",
+        $ref: "#/$defs/anim.tool.set.SceneTool",
+      },
       cycleRotate: {
+        description: "Cycle between Rotate and Skew (05 §5.0's *cycle rotate tools*).",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "tool",
     ],
-    additionalProperties: false,
-    "x-spec": "`tool: enum \"select\"|\"transform\"|\"record\"|\"rotate\"|\"skew\"|\"scale\"|\"motion\"|\"boneCreate\"|\"boneSetup\"|\"boneManipulate\"|\"boneInverse\"|\"boneForward\"|\"boneInfluence\"|\"boneParent\"; cycleRotate?: bool = false`",
   },
   "anim.tool.set.result": {
-    title: "anim.tool.set result",
+    title: "ToolResult",
+    description: "`{tool}`.",
     type: "object",
     properties: {
       tool: {
+        description: "The scene-planning tool.",
         type: "string",
       },
     },
     required: [
       "tool",
     ],
-    "x-spec": "`{tool}`",
-    additionalProperties: false,
   },
   "anim.transform.set.Target": {
     description: "What `anim.transform.set` writes.",
@@ -17599,70 +19295,98 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "warnings",
     ],
   },
+  "anim.view.coords.get.Pt": {
+    description: "A point of `anim.view.coords.get`.",
+    type: "object",
+    properties: {
+      x: {
+        description: "X.",
+        type: "number",
+      },
+      y: {
+        description: "Y.",
+        type: "number",
+      },
+      z: {
+        description: "Scene Z (scene points; a view point's answer carries it).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "anim.view.coords.get.From": {
+    description: "The space of `points`.",
+    oneOf: [
+      {
+        description: "Scene points (fields).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "View pixels.",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "anim.view.coords.get.params": {
-    title: "anim.view.coords.get parameters",
+    title: "CoordsParams",
+    description: "`anim.view.coords.get` parameters.",
     type: "object",
     properties: {
       viewId: {
+        description: "A Camera view window.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       points: {
+        description: "The points.",
         type: "array",
         items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-023",
+          $ref: "#/$defs/anim.view.coords.get.Pt",
         },
+        minItems: 1,
         maxItems: 100000,
       },
       from: {
-        type: "string",
-        enum: [
-          "scene",
-          "view",
-        ],
+        description: "Their space.",
+        $ref: "#/$defs/anim.view.coords.get.From",
       },
       depth: {
+        description: "The scene Z of the plane view points are unprojected onto, and of scene points given without `z` (SI-149).",
         type: "number",
         default: 0,
       },
     },
+    additionalProperties: false,
     required: [
       "viewId",
       "points",
       "from",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId: id; points: [object]; from: enum \"scene\"|\"view\"; depth?: number = 0`",
   },
   "anim.view.coords.get.result": {
-    title: "anim.view.coords.get result",
+    title: "CoordsResult",
+    description: "`{points}`.",
     type: "object",
     properties: {
       points: {
+        description: "The converted points.",
         type: "array",
         items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-023",
+          $ref: "#/$defs/anim.view.coords.get.Pt",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "points",
     ],
-    "x-spec": "`{points: [object]}`",
-    additionalProperties: false,
   },
   "anim.view.get.params": {
     title: "anim.view.get parameters",
@@ -18111,7 +19835,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "app.context.set.Modal": {
-    description: "A modal GUI state (never set by the kernel: 11 P5).",
+    description: "A modal GUI state (reported by the desktop host, never set by a command: 11 P5).",
     type: "object",
     properties: {
       kind: {
@@ -18306,7 +20030,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       modal: {
-        description: "Modal state (always `null` in the kernel).",
+        description: "Modal state (reported by the desktop host; `null` headless).",
         anyOf: [
           {
             $ref: "#/$defs/app.context.set.Modal",
@@ -18836,7 +20560,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       modal: {
-        description: "Modal state (always `null` in the kernel).",
+        description: "Modal state (reported by the desktop host; `null` headless).",
         anyOf: [
           {
             $ref: "#/$defs/app.state.changed.Modal",
@@ -19096,7 +20820,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "app.state.changed.Modal": {
-    description: "A modal GUI state (never set by the kernel: 11 P5).",
+    description: "A modal GUI state (reported by the desktop host, never set by a command: 11 P5).",
     type: "object",
     properties: {
       kind: {
@@ -19422,7 +21146,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "app.state.get.Modal": {
-    description: "A modal GUI state (never set by the kernel: 11 P5).",
+    description: "A modal GUI state (reported by the desktop host, never set by a command: 11 P5).",
     type: "object",
     properties: {
       kind: {
@@ -19617,7 +21341,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       modal: {
-        description: "Modal state (always `null` in the kernel).",
+        description: "Modal state (reported by the desktop host; `null` headless).",
         anyOf: [
           {
             $ref: "#/$defs/app.state.get.Modal",
@@ -23821,37 +25545,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "colour.current.changed.params": {
-    title: "colour.current.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "colour.current.changed.result": {
-    title: "colour.current.changed result",
+    title: "CurrentChanged",
+    description: "`colour.current.changed` payload.",
     type: "object",
     properties: {
       paletteId: {
+        description: "The current palette.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       colourId: {
+        description: "The current colour.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "paletteId",
       "colourId",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{paletteId, colourId}`",
-    additionalProperties: false,
   },
   "colour.current.get.params": {
     title: "colour.current.get parameters",
@@ -23897,45 +25613,38 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "colour.current.set.params": {
-    title: "colour.current.set parameters",
+    title: "CurrentSetParams",
+    description: "`colour.current.set` parameters.",
     type: "object",
     properties: {
       colourId: {
+        description: "The colour (a swatch's colour id or a swatch reference).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "colourId",
     ],
-    additionalProperties: false,
-    "x-spec": "`colourId: id`",
   },
   "colour.current.set.result": {
-    title: "colour.current.set result",
+    title: "CurrentColour",
+    description: "`{paletteId, colourId}`.",
     type: "object",
     properties: {
       paletteId: {
+        description: "The current palette (switched when the colour is in another one, 03 §2.4).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       colourId: {
+        description: "The current colour.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "paletteId",
       "colourId",
     ],
-    "x-spec": "`{paletteId, colourId}`",
-    additionalProperties: false,
   },
   "colour.editor.close.params": {
     title: "colour.editor.close parameters",
@@ -24371,6 +26080,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       view: {
         description: "View of `view` points.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
         type: [
           "string",
           "null",
@@ -25245,6 +26962,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
   },
@@ -25526,6 +27251,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -32778,6 +34511,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.content.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.content.add.params": {
     title: "ContentAddParams",
     description: "`draw.content.add` parameters (02 §13.5).",
@@ -32838,6 +34591,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Make the inserted objects the drawing selection.",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.content.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -33078,6 +34843,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.cut.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.cut.apply.params": {
     title: "CutParams",
     description: "`draw.cut.apply` parameters (`segment`: SI-071).",
@@ -33127,6 +34912,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       then: {
         description: "What happens to the inside.",
         $ref: "#/$defs/draw.cut.apply.Then",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.cut.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -34463,6 +36278,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.ellipse.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.ellipse.add.params": {
     title: "EllipseParams",
     description: "`draw.ellipse.add` parameters.",
@@ -34552,6 +36387,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.ellipse.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -34665,6 +36512,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.envelope.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.envelope.apply.params": {
     title: "EnvelopeParams",
     description: "`draw.envelope.apply` parameters.",
@@ -34701,6 +36568,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       mapping: {
         description: "Mapping.",
         $ref: "#/$defs/draw.envelope.apply.Mapping",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.envelope.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -34858,6 +36755,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.erase.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.erase.apply.params": {
     title: "EraseParams",
     description: "`draw.erase.apply` parameters.",
@@ -34882,7 +36799,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
       },
       penId: {
-        description: "The eraser pen (default: the project's first eraser pen, \"Eraser 1\").",
+        description: "The eraser pen (default: the current eraser pen, 02 §6.1; \"Eraser 2\", else the first eraser pen, 02 §7.7).",
         type: [
           "string",
           "null",
@@ -34914,6 +36831,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       layers: {
         description: "Layers to erase.",
         $ref: "#/$defs/draw.erase.apply.LayersIn",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.erase.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -35525,6 +37472,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.hitTest.get.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.hitTest.get.params": {
     title: "HitTestParams",
     description: "`draw.hitTest.get` parameters (02 §13.5).",
@@ -35571,6 +37538,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Report invisible strokes.",
         type: "boolean",
         default: false,
+      },
+      space: {
+        description: "Coordinate space of the point (02 §13.1 item 5): a `view` point goes through the view's one mapping.",
+        $ref: "#/$defs/draw.hitTest.get.Space",
+      },
+      view: {
+        description: "The view of a `view` point and of the view-pixel tolerance (default: the Drawing view; the tolerance at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -35702,6 +37681,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.line.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.line.add.params": {
     title: "LineParams",
     description: "`draw.line.add` parameters.",
@@ -35799,6 +37798,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Symmetry copies.",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.line.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -36223,6 +38234,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.pivot.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.pivot.set.params": {
     title: "PivotParams",
     description: "`draw.pivot.set` parameters.",
@@ -36266,6 +38297,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.pivot.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -36343,6 +38386,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.point.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.point.add.params": {
     title: "PointAddParams",
     description: "`draw.point.add` parameters.",
@@ -36383,6 +38446,44 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
         minimum: 0,
         maximum: 1,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.point.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified\nwith its drawing (`<drawingId>/<strokeId>`) names the drawing itself.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -36575,6 +38676,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.point.move.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.point.move.params": {
     title: "PointMoveParams",
     description: "`draw.point.move` parameters.",
@@ -36604,9 +38725,42 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/draw.point.move.Point",
       },
       snap: {
-        description: "Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).",
-        type: "boolean",
-        default: false,
+        description: "Snap moved anchors to the other strokes of their layer within 8 view pixels (Snap to Contour, 02 §8.9 and line\n1338; default: the Snap to Contour setting, `tool.snapToContour.set`; SI-187).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.point.move.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -36692,9 +38846,29 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         const: "broken",
       },
       {
-        description: "Both handles removed (a corner).",
+        description: "The handles made collinear (smooth), each keeping its length, along the out handle minus the in handle; with\nboth handles zero, along the next anchor minus the previous one, a third of each adjacent chord long (an open end\ntakes its one neighbour's direction and no handle on its free side). SI-186, ruling D-75 item 4.",
         type: "string",
         const: "reset",
+      },
+    ],
+  },
+  "draw.point.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
       },
     ],
   },
@@ -36759,6 +38933,44 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.point.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified\nwith its drawing (`<drawingId>/<strokeId>`) names the drawing itself.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -36889,6 +39101,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.pointSelection.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.pointSelection.set.params": {
     title: "PointSelectionParams",
     description: "`draw.pointSelection.set` parameters.",
@@ -36927,6 +39159,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       mode: {
         description: "How to combine.",
         $ref: "#/$defs/draw.pointSelection.set.Mode",
+      },
+      space: {
+        description: "Coordinate space of the rectangle (02 §13.1 item 5): `view` coordinates go through the view's one mapping.",
+        $ref: "#/$defs/draw.pointSelection.set.Space",
+      },
+      view: {
+        description: "The view of `view` coordinates (default: the Drawing view).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -37008,6 +39270,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     required: [
       "x",
       "y",
+    ],
+  },
+  "draw.polyline.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
     ],
   },
   "draw.polyline.add.params": {
@@ -37108,6 +39390,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
         default: true,
       },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.polyline.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
     required: [
@@ -37199,6 +39493,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.rectangle.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.rectangle.add.params": {
     title: "BoxShapeParams",
     description: "`draw.rectangle.add` / `draw.ellipse.add` parameters.",
@@ -37288,6 +39602,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Symmetry copies (02 §6.2).",
         type: "boolean",
         default: true,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.rectangle.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -37400,6 +39726,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.repositionAll.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.repositionAll.apply.params": {
     title: "RepositionParams",
     description: "`draw.repositionAll.apply` parameters.",
@@ -37470,7 +39816,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       corners: {
-        description: "Envelope corners (of each drawing's bounds).",
+        description: "Envelope corners: targets of the corners of the bounds of the element's drawing at the current frame, one map\napplied to every drawing (02 §7.1.4 \"applied identically to every drawing\"; SI-189, ruling D-75 item 7).",
         type: [
           "array",
           "null",
@@ -37480,12 +39826,34 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         },
         default: null,
       },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.repositionAll.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
     },
     additionalProperties: false,
   },
   "draw.repositionAll.apply.result": {
     title: "RepositionResult",
-    description: "`{drawingIds}`.",
+    description: "`{drawingIds, skippedIds}`.",
     type: "object",
     properties: {
       drawingIds: {
@@ -37495,9 +39863,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
           type: "string",
         },
       },
+      skippedIds: {
+        description: "The locked drawings left unchanged (02 line 414; SI-189).",
+        type: "array",
+        items: {
+          type: "string",
+        },
+      },
     },
     required: [
       "drawingIds",
+      "skippedIds",
     ],
   },
   "draw.rotate.apply.Step": {
@@ -37626,6 +40002,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.segment.move.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.segment.move.params": {
     title: "SegmentMoveParams",
     description: "`draw.segment.move` parameters.",
@@ -37651,6 +40047,44 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       delta: {
         description: "Offset of that point (du).",
         $ref: "#/$defs/draw.segment.move.Point",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.segment.move.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      drawingId: {
+        description: "The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified\nwith its drawing (`<drawingId>/<strokeId>`) names the drawing itself.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -37988,6 +40422,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.selection.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.selection.set.params": {
     title: "SelectionSetParams",
     description: "`draw.selection.set` parameters.",
@@ -38057,6 +40511,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       mode: {
         description: "How to combine with the current selection.",
         $ref: "#/$defs/draw.selection.set.Mode",
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.selection.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
@@ -38386,6 +40870,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.stroke.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.stroke.add.params": {
     title: "StrokeAddParams",
     description: "`draw.stroke.add` parameters (02 §13.5).",
@@ -38541,6 +41045,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
         default: null,
       },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.stroke.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
     },
     additionalProperties: false,
   },
@@ -38680,6 +41196,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.stroke.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.stroke.set.params": {
     title: "StrokeSetParams",
     description: "`draw.stroke.set` parameters (02 §13.5).",
@@ -38778,6 +41314,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.stroke.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -38908,6 +41456,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       kerning: {
         description: "Manual kerning (1/100 em).",
@@ -38937,6 +41486,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       leftMargin: {
         description: "Left margin (du).",
@@ -39034,6 +41584,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
     ],
   },
+  "draw.text.add.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.text.add.params": {
     title: "TextAddParams",
     description: "`draw.text.add` parameters (02 §13.5).",
@@ -39100,6 +41670,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       },
       colourId: {
         description: "Text colour (default: the current colour).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.text.add.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
         type: [
           "string",
           "null",
@@ -39275,6 +41857,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.text.set.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.text.set.params": {
     title: "TextSetParams",
     description: "`draw.text.set` parameters (02 §13.5).",
@@ -39380,6 +41982,18 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.text.set.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -39614,6 +42228,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       kerning: {
         description: "Manual kerning (1/100 em).",
@@ -39643,6 +42258,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
             type: "null",
           },
         ],
+        default: null,
       },
       leftMargin: {
         description: "Left margin (du).",
@@ -39858,6 +42474,26 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "y",
     ],
   },
+  "draw.transform.apply.Space": {
+    description: "Coordinate space of point targets (03 §16.2).",
+    oneOf: [
+      {
+        description: "Drawing space of the target drawing.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space at a frame (M3 C3.2).",
+        type: "string",
+        const: "scene",
+      },
+      {
+        description: "A view's pixels (M4 C4.2).",
+        type: "string",
+        const: "view",
+      },
+    ],
+  },
   "draw.transform.apply.params": {
     title: "TransformParams",
     description: "`draw.transform.apply` parameters.",
@@ -39973,6 +42609,36 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
         maximum: 18446744073709551615n,
         minimum: 0,
+        default: null,
+      },
+      space: {
+        description: "Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.",
+        $ref: "#/$defs/draw.transform.apply.Space",
+      },
+      view: {
+        description: "The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+      frame: {
+        description: "The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
+      },
+      elementId: {
+        description: "With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).",
+        type: [
+          "string",
+          "null",
+        ],
         default: null,
       },
     },
@@ -40481,7 +43147,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       view: {
-        description: "The view (`drawing`; views arrive with M4 C4.2).",
+        description: "The view: `drawing` (the Drawing view window) or a view id.",
         type: "string",
         default: "drawing",
       },
@@ -40562,411 +43228,697 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "drawAid.autoLightTable.set.params": {
-    title: "drawAid.autoLightTable.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "drawAid.autoLightTable.set.result": {
-    title: "drawAid.autoLightTable.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "drawAid.background.set.params": {
-    title: "drawAid.background.set parameters",
+    title: "BackgroundParams",
+    description: "`drawAid.background.set` parameters.",
     type: "object",
     properties: {
       colour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Colour (`#RRGGBB` or `#RRGGBBAA`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       useSceneColour: {
-        type: "boolean",
+        description: "Use the scene's background colour.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`colour?: colour; useSceneColour?: bool`",
   },
   "drawAid.background.set.result": {
-    title: "drawAid.background.set result",
+    title: "Background",
+    description: "Drawing View background (02 §10.7).",
     type: "object",
     properties: {
       colour: {
+        description: "Colour.",
         type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        default: "#F0F0F0FF",
       },
       useSceneColour: {
+        description: "Use the scene's background colour instead.",
         type: "boolean",
+        default: false,
       },
     },
-    required: [
-      "colour",
-      "useSceneColour",
-    ],
-    "x-spec": "`{colour, useSceneColour}`",
-    additionalProperties: false,
   },
   "drawAid.changed.params": {
-    title: "drawAid.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "drawAid.changed.result": {
-    title: "drawAid.changed result",
+    title: "AidChanged",
+    description: "`drawAid.changed` payload.",
     type: "object",
     properties: {
       aid: {
+        description: "The aid (`grid`, `onionSkin`, `onionSkinStyle`, `autoLightTable`, `staticLightTable`, `lightTableShade`,\n`staticLightTablePanel`, `strokes`, `currentOnTop`, `selectionDisplay`, `background`).",
         type: "string",
-        maxLength: 65536,
       },
       state: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-027",
+        description: "Its state now.",
       },
     },
     required: [
       "aid",
       "state",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{aid, state: object}`",
-    additionalProperties: false,
   },
   "drawAid.currentOnTop.set.params": {
-    title: "drawAid.currentOnTop.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "drawAid.currentOnTop.set.result": {
-    title: "drawAid.currentOnTop.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
+  },
+  "drawAid.grid.set.GridType": {
+    description: "Grid type (02 §10.1).",
+    oneOf: [
+      {
+        description: "Square grid.",
+        type: "string",
+        const: "normal",
+      },
+      {
+        description: "12-field.",
+        type: "string",
+        const: "field12",
+      },
+      {
+        description: "16-field.",
+        type: "string",
+        const: "field16",
+      },
+    ],
   },
   "drawAid.grid.set.params": {
-    title: "drawAid.grid.set parameters",
+    title: "GridParams",
+    description: "`drawAid.grid.set` parameters.",
     type: "object",
     properties: {
       visible: {
-        type: "boolean",
+        description: "Shown.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       type: {
-        type: "string",
-        enum: [
-          "normal",
-          "field12",
-          "field16",
+        description: "The grid type.",
+        anyOf: [
+          {
+            $ref: "#/$defs/drawAid.grid.set.GridType",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       overlay: {
-        type: "boolean",
+        description: "Drawn over the drawings.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`visible?: bool; type?: enum \"normal\"|\"field12\"|\"field16\"; overlay?: bool`",
   },
   "drawAid.grid.set.result": {
-    title: "drawAid.grid.set result",
+    title: "Grid",
+    description: "The grid (02 §10.1).",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
+        default: false,
       },
       type: {
+        description: "`normal`, `field12` or `field16`.",
         type: "string",
+        default: "normal",
       },
       overlay: {
+        description: "Drawn over the drawings.",
         type: "boolean",
+        default: false,
       },
     },
-    required: [
-      "visible",
-      "type",
-      "overlay",
-    ],
-    "x-spec": "`{visible, type, overlay}`",
-    additionalProperties: false,
   },
   "drawAid.lightTableShade.set.params": {
-    title: "drawAid.lightTableShade.set parameters",
+    title: "ShadeParams",
+    description: "`drawAid.lightTableShade.set` parameters.",
     type: "object",
     properties: {
       auto: {
-        type: "boolean",
+        description: "Shade the auto light table.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       static: {
-        type: "boolean",
+        description: "Shade static light-table entries.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`auto?: bool; static?: bool`",
   },
   "drawAid.lightTableShade.set.result": {
-    title: "drawAid.lightTableShade.set result",
+    title: "Shade",
+    description: "Light-table shading (02 §10.3-10.4).",
     type: "object",
     properties: {
       auto: {
+        description: "The auto light table is washed out.",
         type: "boolean",
+        default: true,
       },
       static: {
+        description: "Static light-table entries are washed out.",
         type: "boolean",
+        default: true,
       },
     },
-    required: [
-      "auto",
-      "static",
-    ],
-    "x-spec": "`{auto, static}`",
-    additionalProperties: false,
   },
   "drawAid.onionSkin.set.params": {
-    title: "drawAid.onionSkin.set parameters",
+    title: "OnionParams",
+    description: "`drawAid.onionSkin.set` parameters.",
     type: "object",
     properties: {
       enabled: {
-        type: "boolean",
+        description: "Master switch.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       previous: {
-        type: "integer",
+        description: "Previous drawings shown (0-3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 3,
       },
       next: {
-        type: "integer",
+        description: "Next drawings shown (0-3).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 3,
       },
     },
     additionalProperties: false,
-    "x-spec": "`enabled?: bool; previous?: int (0–3); next?: int (0–3)`",
   },
   "drawAid.onionSkin.set.result": {
-    title: "drawAid.onionSkin.set result",
+    title: "OnionSkin",
+    description: "Onion skin (02 §10.2).",
     type: "object",
     properties: {
       enabled: {
+        description: "Master switch.",
         type: "boolean",
+        default: false,
       },
       previous: {
+        description: "Previous drawings, 0-3.",
         type: "integer",
-        minimum: 0,
-        maximum: 3,
+        maximum: 9223372036854775807n,
+        default: 1,
+        minimum: -9223372036854775808n,
       },
       next: {
+        description: "Next drawings, 0-3.",
         type: "integer",
-        minimum: 0,
-        maximum: 3,
+        maximum: 9223372036854775807n,
+        default: 0,
+        minimum: -9223372036854775808n,
       },
     },
-    required: [
-      "enabled",
-      "previous",
-      "next",
+  },
+  "drawAid.onionSkinCycle.run.Direction": {
+    description: "Onion-skin direction.",
+    oneOf: [
+      {
+        description: "Previous drawings.",
+        type: "string",
+        const: "previous",
+      },
+      {
+        description: "Next drawings.",
+        type: "string",
+        const: "next",
+      },
     ],
-    "x-spec": "`{enabled, previous, next}`",
-    additionalProperties: false,
   },
   "drawAid.onionSkinCycle.run.params": {
-    title: "drawAid.onionSkinCycle.run parameters",
+    title: "CycleParams",
+    description: "`drawAid.onionSkinCycle.run` parameters.",
     type: "object",
     properties: {
       direction: {
-        type: "string",
-        enum: [
-          "previous",
-          "next",
-        ],
+        description: "Which count to cycle.",
+        $ref: "#/$defs/drawAid.onionSkinCycle.run.Direction",
       },
     },
+    additionalProperties: false,
     required: [
       "direction",
     ],
-    additionalProperties: false,
-    "x-spec": "`direction: enum \"previous\"|\"next\"`",
   },
   "drawAid.onionSkinCycle.run.result": {
-    title: "drawAid.onionSkinCycle.run result",
+    title: "Counts",
+    description: "`{previous, next}`.",
     type: "object",
     properties: {
       previous: {
-        type: "string",
-        maxLength: 65536,
+        description: "Previous drawings shown.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
       next: {
-        type: "string",
-        maxLength: 65536,
+        description: "Next drawings shown.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        minimum: -9223372036854775808n,
       },
     },
     required: [
       "previous",
       "next",
     ],
-    "x-spec": "`{previous, next}`",
-    additionalProperties: false,
   },
   "drawAid.onionSkinStyle.set.params": {
-    title: "drawAid.onionSkinStyle.set parameters",
+    title: "StyleParams",
+    description: "`drawAid.onionSkinStyle.set` parameters.",
     type: "object",
     properties: {
       outline: {
-        type: "boolean",
+        description: "Outlines only.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       transparency: {
-        type: "boolean",
+        description: "Semi-transparent.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       colourShading: {
-        type: "boolean",
+        description: "Tinted.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       previousColour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Tint of previous drawings (`#RRGGBB` or `#RRGGBBAA`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       nextColour: {
-        type: "string",
-        pattern: "^#[0-9A-Fa-f]{6}([0-9A-Fa-f]{2})?$",
-        description: "#RRGGBB or #RRGGBBAA",
+        description: "Tint of next drawings.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`outline?: bool; transparency?: bool; colourShading?: bool; previousColour?: colour; nextColour?: colour`",
   },
   "drawAid.onionSkinStyle.set.result": {
-    title: "drawAid.onionSkinStyle.set result",
+    title: "StyleResult",
+    description: "`{style}`.",
     type: "object",
     properties: {
       style: {
-        type: "string",
-        maxLength: 65536,
+        description: "The appearance now.",
       },
     },
     required: [
       "style",
     ],
-    "x-spec": "`{style}`",
-    additionalProperties: false,
   },
   "drawAid.selectionDisplay.set.params": {
-    title: "drawAid.selectionDisplay.set parameters",
+    title: "SelectionDisplayParams",
+    description: "`drawAid.selectionDisplay.set` parameters.",
     type: "object",
     properties: {
       outlineOnSelection: {
-        type: "boolean",
+        description: "Outline on selection.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       boxHighlighting: {
-        type: "boolean",
+        description: "Box highlighting.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       keepSelectionVisible: {
-        type: "boolean",
+        description: "Keep the selection visible.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`outlineOnSelection?: bool; boxHighlighting?: bool; keepSelectionVisible?: bool`",
   },
   "drawAid.selectionDisplay.set.result": {
-    title: "drawAid.selectionDisplay.set result",
+    title: "SettingsResult",
+    description: "`{settings}`.",
     type: "object",
     properties: {
       settings: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        description: "The selection display now.",
       },
     },
     required: [
       "settings",
     ],
-    "x-spec": "`{settings}`",
-    additionalProperties: false,
   },
   "drawAid.state.get.params": {
-    title: "drawAid.state.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
+  },
+  "drawAid.state.get.Grid": {
+    description: "The grid (02 §10.1).",
+    type: "object",
+    properties: {
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+        default: false,
+      },
+      type: {
+        description: "`normal`, `field12` or `field16`.",
+        type: "string",
+        default: "normal",
+      },
+      overlay: {
+        description: "Drawn over the drawings.",
+        type: "boolean",
+        default: false,
+      },
+    },
+  },
+  "drawAid.state.get.OnionSkin": {
+    description: "Onion skin (02 §10.2).",
+    type: "object",
+    properties: {
+      enabled: {
+        description: "Master switch.",
+        type: "boolean",
+        default: false,
+      },
+      previous: {
+        description: "Previous drawings, 0-3.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 1,
+        minimum: -9223372036854775808n,
+      },
+      next: {
+        description: "Next drawings, 0-3.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 0,
+        minimum: -9223372036854775808n,
+      },
+    },
+  },
+  "drawAid.state.get.OnionSkinStyle": {
+    description: "Onion-skin appearance (02 §10.2).",
+    type: "object",
+    properties: {
+      outline: {
+        description: "Outlines only.",
+        type: "boolean",
+        default: false,
+      },
+      transparency: {
+        description: "Semi-transparent.",
+        type: "boolean",
+        default: true,
+      },
+      colourShading: {
+        description: "Tinted.",
+        type: "boolean",
+        default: true,
+      },
+      previousColour: {
+        description: "Tint of previous drawings.",
+        type: "string",
+        default: "#FF0000FF",
+      },
+      nextColour: {
+        description: "Tint of next drawings.",
+        type: "string",
+        default: "#00C000FF",
+      },
+    },
+  },
+  "drawAid.state.get.Entry": {
+    description: "One static light-table entry.",
+    type: "object",
+    properties: {
+      entryId: {
+        description: "Entry id.",
+        type: "string",
+      },
+      sourceId: {
+        description: "The source drawing.",
+        type: "string",
+      },
+      sourceKind: {
+        description: "`drawing` or `image` (by the source element's type).",
+        type: "string",
+      },
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+      placement: {
+        description: "Overlay or underlay.",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
+        ],
+      },
+    },
+    required: [
+      "entryId",
+      "sourceId",
+      "sourceKind",
+      "visible",
+      "placement",
+    ],
+  },
+  "drawAid.state.get.Shade": {
+    description: "Light-table shading (02 §10.3-10.4).",
+    type: "object",
+    properties: {
+      auto: {
+        description: "The auto light table is washed out.",
+        type: "boolean",
+        default: true,
+      },
+      static: {
+        description: "Static light-table entries are washed out.",
+        type: "boolean",
+        default: true,
+      },
+    },
+  },
+  "drawAid.state.get.SelectionDisplay": {
+    description: "Camera-view selection display (02 §10.7).",
+    type: "object",
+    properties: {
+      outlineOnSelection: {
+        description: "Outline on selection.",
+        type: "boolean",
+        default: false,
+      },
+      boxHighlighting: {
+        description: "Box highlighting.",
+        type: "boolean",
+        default: true,
+      },
+      keepSelectionVisible: {
+        description: "Selection always visible (SI-117: 02 §10.7's default off is kept).",
+        type: "boolean",
+        default: false,
+      },
+    },
+  },
+  "drawAid.state.get.Background": {
+    description: "Drawing View background (02 §10.7).",
+    type: "object",
+    properties: {
+      colour: {
+        description: "Colour.",
+        type: "string",
+        default: "#F0F0F0FF",
+      },
+      useSceneColour: {
+        description: "Use the scene's background colour instead.",
+        type: "boolean",
+        default: false,
+      },
+    },
   },
   "drawAid.state.get.result": {
-    title: "drawAid.state.get result",
+    title: "AidState",
+    description: "`drawAid.state.get` result.",
     type: "object",
     properties: {
       grid: {
-        type: "boolean",
+        description: "Grid.",
+        $ref: "#/$defs/drawAid.state.get.Grid",
       },
       onionSkin: {
-        type: "boolean",
+        description: "Onion skin.",
+        $ref: "#/$defs/drawAid.state.get.OnionSkin",
       },
       onionSkinStyle: {
-        type: "string",
-        maxLength: 65536,
+        description: "Onion-skin appearance.",
+        $ref: "#/$defs/drawAid.state.get.OnionSkinStyle",
       },
       autoLightTable: {
+        description: "Auto light table.",
         type: "boolean",
       },
       staticLightTable: {
-        type: "boolean",
+        description: "The current scene's static light table.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/drawAid.state.get.Entry",
+        },
       },
       lightTableShade: {
-        type: "number",
+        description: "Light-table shading.",
+        $ref: "#/$defs/drawAid.state.get.Shade",
       },
       strokes: {
+        description: "Show Strokes.",
         type: "boolean",
       },
       currentOnTop: {
+        description: "Current drawing on top.",
         type: "boolean",
       },
       selectionDisplay: {
-        type: "boolean",
+        description: "Selection display.",
+        $ref: "#/$defs/drawAid.state.get.SelectionDisplay",
       },
       background: {
-        type: "string",
-        maxLength: 65536,
+        description: "Background.",
+        $ref: "#/$defs/drawAid.state.get.Background",
       },
     },
     required: [
@@ -40981,313 +43933,380 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "selectionDisplay",
       "background",
     ],
-    "x-spec": "`{grid, onionSkin, onionSkinStyle, autoLightTable, staticLightTable, lightTableShade, strokes, currentOnTop, selectionDisplay, background}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTable.add.params": {
-    title: "drawAid.staticLightTable.add parameters",
+    title: "AddParams",
+    description: "`drawAid.staticLightTable.add` parameters.",
     type: "object",
     properties: {
       drawingId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The drawing (default: the drawing at `elementId` and `frame`, else the current drawing).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The element whose cell is sent (default: the current element).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       frame: {
-        type: "integer",
+        description: "The frame of that cell (default: the current frame).",
+        type: [
+          "integer",
+          "null",
+        ],
+        maximum: 2147483647,
+        minimum: 0,
+        default: null,
       },
       placement: {
-        type: "string",
-        enum: [
-          "overlay",
-          "underlay",
+        description: "Overlay or underlay.",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
         ],
         default: "underlay",
       },
       visible: {
+        description: "Shown.",
         type: "boolean",
         default: true,
       },
     },
     additionalProperties: false,
-    "x-spec": "`drawingId?: id; elementId?: id; frame?: int; placement: enum \"overlay\"|\"underlay\" = \"underlay\"; visible: bool = true`",
   },
   "drawAid.staticLightTable.add.result": {
-    title: "drawAid.staticLightTable.add result",
+    title: "EntryIdResult",
+    description: "`{entryId}`.",
     type: "object",
     properties: {
       entryId: {
+        description: "The new entry.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "entryId",
     ],
-    "x-spec": "`{entryId}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTable.list.params": {
-    title: "drawAid.staticLightTable.list parameters",
+    title: "ListParams",
+    description: "`drawAid.staticLightTable.list` parameters.",
     type: "object",
     properties: {
       sceneId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The scene (default: the current scene).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`sceneId?: id`",
+  },
+  "drawAid.staticLightTable.list.Entry": {
+    description: "One static light-table entry.",
+    type: "object",
+    properties: {
+      entryId: {
+        description: "Entry id.",
+        type: "string",
+      },
+      sourceId: {
+        description: "The source drawing.",
+        type: "string",
+      },
+      sourceKind: {
+        description: "`drawing` or `image` (by the source element's type).",
+        type: "string",
+      },
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+      placement: {
+        description: "Overlay or underlay.",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
+        ],
+      },
+    },
+    required: [
+      "entryId",
+      "sourceId",
+      "sourceKind",
+      "visible",
+      "placement",
+    ],
   },
   "drawAid.staticLightTable.list.result": {
-    title: "drawAid.staticLightTable.list result",
+    title: "EntriesResult",
+    description: "`{entries}`.",
     type: "object",
     properties: {
       entries: {
+        description: "The scene's entries now.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            entryId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            visible: {
-              type: "boolean",
-              default: true,
-            },
-            placement: {
-              type: "string",
-              default: "underlay",
-            },
-          },
-          required: [
-            "entryId",
-            "sourceId",
-            "sourceKind",
-            "visible",
-            "placement",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/drawAid.staticLightTable.list.Entry",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "entries",
     ],
-    "x-spec": "`{entries: [{entryId, sourceId, sourceKind, visible, placement}]}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTable.remove.params": {
-    title: "drawAid.staticLightTable.remove parameters",
+    title: "RemoveParams",
+    description: "`drawAid.staticLightTable.remove` parameters.",
     type: "object",
     properties: {
       entryIds: {
-        type: "array",
+        description: "Entries to delete.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        maxItems: 256,
+        default: null,
       },
       all: {
+        description: "Delete every entry.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`entryIds?: [id]; all: bool = false`",
   },
   "drawAid.staticLightTable.remove.result": {
-    title: "drawAid.staticLightTable.remove result",
+    title: "Removed",
+    description: "`{removedEntryIds}`.",
     type: "object",
     properties: {
       removedEntryIds: {
+        description: "The entries removed (sources untouched).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "removedEntryIds",
     ],
-    "x-spec": "`{removedEntryIds: [id]}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTable.set.params": {
-    title: "drawAid.staticLightTable.set parameters",
+    title: "SetParams",
+    description: "`drawAid.staticLightTable.set` parameters.",
     type: "object",
     properties: {
       entryIds: {
-        type: "array",
+        description: "Entries to change.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        maxItems: 256,
+        default: null,
       },
       all: {
+        description: "Change every entry.",
         type: "boolean",
         default: false,
       },
       visible: {
-        type: "boolean",
+        description: "Show or hide them.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       placement: {
-        type: "string",
-        enum: [
-          "overlay",
-          "underlay",
+        description: "Overlay or underlay them.",
+        anyOf: [
+          {
+            description: "Overlay or underlay.",
+            oneOf: [
+              {
+                description: "Over the current drawing.",
+                type: "string",
+                const: "overlay",
+              },
+              {
+                description: "Under it.",
+                type: "string",
+                const: "underlay",
+              },
+            ],
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       onlyVisibleEntryId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "Show only this entry (hide all others).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`entryIds?: [id]; all: bool = false; visible?: bool; placement?: enum \"overlay\"|\"underlay\"; onlyVisibleEntryId?: id`",
+  },
+  "drawAid.staticLightTable.set.Entry": {
+    description: "One static light-table entry.",
+    type: "object",
+    properties: {
+      entryId: {
+        description: "Entry id.",
+        type: "string",
+      },
+      sourceId: {
+        description: "The source drawing.",
+        type: "string",
+      },
+      sourceKind: {
+        description: "`drawing` or `image` (by the source element's type).",
+        type: "string",
+      },
+      visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+      placement: {
+        description: "Overlay or underlay.",
+        oneOf: [
+          {
+            description: "Over the current drawing.",
+            type: "string",
+            const: "overlay",
+          },
+          {
+            description: "Under it.",
+            type: "string",
+            const: "underlay",
+          },
+        ],
+      },
+    },
+    required: [
+      "entryId",
+      "sourceId",
+      "sourceKind",
+      "visible",
+      "placement",
+    ],
   },
   "drawAid.staticLightTable.set.result": {
-    title: "drawAid.staticLightTable.set result",
+    title: "EntriesResult",
+    description: "`{entries}`.",
     type: "object",
     properties: {
       entries: {
+        description: "The scene's entries now.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            entryId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            sourceKind: {
-              type: "string",
-              maxLength: 65536,
-            },
-            visible: {
-              type: "boolean",
-            },
-            placement: {
-              type: "string",
-            },
-          },
-          required: [
-            "entryId",
-            "sourceId",
-            "sourceKind",
-            "visible",
-            "placement",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/drawAid.staticLightTable.set.Entry",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "entries",
     ],
-    "x-spec": "`{entries: [object]}`",
-    additionalProperties: false,
   },
   "drawAid.staticLightTablePanel.set.params": {
-    title: "drawAid.staticLightTablePanel.set parameters",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
   },
   "drawAid.staticLightTablePanel.set.result": {
-    title: "drawAid.staticLightTablePanel.set result",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
   },
   "drawAid.strokes.set.params": {
-    title: "drawAid.strokes.set parameters",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
   },
   "drawAid.strokes.set.result": {
-    title: "drawAid.strokes.set result",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
   },
   "edit.clipboard.changed.params": {
     title: "NoParams",
@@ -59680,11 +62699,8 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       target: {
         description: "Window, view, panel or dialog.",
-        type: [
-          "string",
-          "null",
-        ],
-        default: null,
+        type: "string",
+        default: "window",
       },
       region: {
         description: "Region.",
@@ -59702,17 +62718,83 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "inspect.screenshot.result": {
-    title: "Map_of_AnyValue",
+    title: "ScreenshotResult",
+    description: "`inspect.screenshot` result (spec A row 1062: `{png, width, height, sha256}`; design note 5 §3).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      png: {
+        description: "The PNG, base64 (`null` only inside a batch, where the capture job's id is answered instead of waiting).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      width: {
+        description: "Width in pixels.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      height: {
+        description: "Height in pixels.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      sha256: {
+        description: "The PNG's sha256 (hex; `null` with `png`).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      target: {
+        description: "The target captured.",
+        type: "string",
+      },
+      viewId: {
+        description: "The view window captured.",
+        type: "string",
+      },
+      source: {
+        description: "`virtual` (headless) or `gui` (attached, C4.2b).",
+        type: "string",
+      },
+      drawingId: {
+        description: "The drawing shown.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      note: {
+        description: "What a headless capture contains.",
+        type: "string",
+      },
+      jobId: {
+        description: "The capture job (the handle waits for it; design note 5 §1a).",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+    },
+    required: [
+      "width",
+      "height",
+      "target",
+      "viewId",
+      "source",
+      "note",
+    ],
   },
   "inspect.ui.tree.params": {
     title: "UiTreeParams",
-    description: "`inspect.ui.tree` parameters.",
+    description: "`inspect.ui.tree` parameters (11 §7.5 `inspect_ui`).",
     type: "object",
     properties: {
       target: {
-        description: "Window, panel or dialog.",
+        description: "`window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`; an unknown target, however\nlong, is `window.panelNotFound` (no schema bound pre-empts it: C41-R2-21 audit).",
         type: [
           "string",
           "null",
@@ -59720,7 +62802,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       depth: {
-        description: "Depth.",
+        description: "Levels below the target to include (default: all).",
         type: [
           "integer",
           "null",
@@ -59733,9 +62815,41 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "inspect.ui.tree.result": {
-    title: "Map_of_AnyValue",
+    title: "UiTreeResult",
+    description: "`inspect.ui.tree` result (11 §7.5; additive fields `renderedSeq` and `stale`: ADR-0021 decision 5, SI-121).",
     type: "object",
-    additionalProperties: true,
+    properties: {
+      source: {
+        description: "`gui` (the tree the front end rendered and reported) or `virtual` (the kernel's tree, headless).",
+        type: "string",
+      },
+      target: {
+        description: "The target the tree starts at.",
+        type: "string",
+      },
+      root: {
+        description: "The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`.",
+      },
+      renderedSeq: {
+        description: "The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to\nit; `null` when the tree is not vouched for or is the headless virtual tree. Always present.",
+        type: [
+          "integer",
+          "null",
+        ],
+        minimum: 0,
+        maximum: 18446744073709551615n,
+      },
+      stale: {
+        description: "Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call\nwithin 2 s (the tree is the last one it has). Absent otherwise; never `null`.",
+        type: "boolean",
+      },
+    },
+    required: [
+      "source",
+      "target",
+      "root",
+      "renderedSeq",
+    ],
   },
   "job.cancel.params": {
     title: "JobIdParams",
@@ -59857,6 +62971,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       session: {
         description: "Session that started it.",
         type: "string",
+      },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
       },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
@@ -59986,6 +63105,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
+      },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
         type: "array",
@@ -60068,6 +63192,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       session: {
         description: "Session that started it.",
         type: "string",
+      },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
       },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
@@ -60263,6 +63392,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
+      },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
         type: "array",
@@ -60407,6 +63541,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         description: "Session that started it.",
         type: "string",
       },
+      cancellable: {
+        description: "The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the\nprogress window offers Cancel only then, 01 §9.5; C43B-R2-06).",
+        type: "boolean",
+        default: false,
+      },
       warnings: {
         description: "Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.",
         type: "array",
@@ -60431,552 +63570,736 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "keymap.changed.params": {
-    title: "keymap.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "`{commandIds: [string]}`",
   },
   "keymap.changed.result": {
-    title: "keymap.changed result",
+    title: "ChangedPayload",
+    description: "`keymap.changed` payload.",
     type: "object",
     properties: {
       commandIds: {
+        description: "Commands whose bindings changed.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
       "commandIds",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "—",
-    additionalProperties: false,
+  },
+  "keymap.export.OnExists": {
+    description: "Overwrite policy of `keymap.export` (01 §12.1 rule 4).",
+    oneOf: [
+      {
+        description: "Refuse with `fs.exists`.",
+        type: "string",
+        const: "fail",
+      },
+      {
+        description: "Replace the file.",
+        type: "string",
+        const: "overwrite",
+      },
+    ],
   },
   "keymap.export.params": {
-    title: "keymap.export parameters",
+    title: "ExportParams",
+    description: "`keymap.export` parameters.",
     type: "object",
     properties: {
       path: {
+        description: "Absolute file path.",
         type: "string",
-        minLength: 1,
         maxLength: 4096,
-        description: "file-system path (11 §6.2)",
       },
       onExists: {
-        type: "string",
-        enum: [
-          "fail",
-          "overwrite",
-        ],
-        default: "fail",
+        description: "When the file exists.",
+        $ref: "#/$defs/keymap.export.OnExists",
       },
     },
+    additionalProperties: false,
     required: [
       "path",
     ],
-    additionalProperties: false,
-    "x-spec": "`path: path; onExists: enum \"fail\"|\"overwrite\" = \"fail\"`",
   },
   "keymap.export.result": {
-    title: "keymap.export result",
+    title: "PathResult",
+    description: "`{path}`.",
     type: "object",
     properties: {
       path: {
+        description: "The file written.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "file-system path (11 §6.2)",
       },
     },
     required: [
       "path",
     ],
-    "x-spec": "`{path}`",
-    additionalProperties: false,
+  },
+  "keymap.get.Context": {
+    description: "A keymap context (01 §8.1).",
+    oneOf: [
+      {
+        description: "Everywhere.",
+        type: "string",
+        const: "global",
+      },
+      {
+        description: "Drawing mode.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Staging mode.",
+        type: "string",
+        const: "staging",
+      },
+    ],
   },
   "keymap.get.params": {
-    title: "keymap.get parameters",
+    title: "GetParams",
+    description: "`keymap.get` parameters.",
     type: "object",
     properties: {
       commandId: {
-        type: "string",
-        maxLength: 65536,
+        description: "The command whose bindings to read.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       keys: {
-        type: "string",
-        maxLength: 65536,
+        description: "The key sequence whose command to read.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       context: {
-        type: "string",
-        enum: [
-          "global",
-          "drawing",
-          "staging",
-        ],
+        description: "Context of `keys` (a mode context falls back to `global`).",
+        $ref: "#/$defs/keymap.get.Context",
         default: "global",
       },
     },
     additionalProperties: false,
-    "x-spec": "`commandId?: string; keys?: string; context: enum \"global\"|\"drawing\"|\"staging\" = \"global\"`",
   },
-  "keymap.get.spec.Binding": {
+  "keymap.get.Binding": {
+    description: "A binding (01 §12.4 `Binding`).",
     type: "object",
     properties: {
       commandId: {
+        description: "The bound command.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       params: {
-        type: "object",
-        "x-open": true,
-        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
+        description: "Fixed parameters of the command reference.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
       },
       keys: {
+        description: "Canonical key sequence.",
         type: "string",
-        maxLength: 65536,
       },
       context: {
-        type: "string",
-        maxLength: 65536,
+        description: "Context.",
+        $ref: "#/$defs/keymap.get.Context",
       },
       isDefault: {
+        description: "Part of the bundled default set.",
         type: "boolean",
       },
     },
     additionalProperties: false,
     required: [
       "commandId",
-      "params",
       "keys",
       "context",
       "isDefault",
     ],
-    "x-specSection": "01",
+  },
+  "keymap.get.CommandRef": {
+    description: "A command reference.",
+    type: "object",
+    properties: {
+      commandId: {
+        description: "Command id.",
+        type: "string",
+      },
+      params: {
+        description: "Fixed parameters.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
+      },
+    },
+    required: [
+      "commandId",
+    ],
   },
   "keymap.get.result": {
-    title: "keymap.get result",
+    title: "GetResult",
+    description: "`keymap.get` result.",
     type: "object",
     properties: {
       bindings: {
+        description: "Bindings of the command, or the binding of the sequence.",
         type: "array",
         items: {
-          $ref: "#/$defs/keymap.get.spec.Binding",
+          $ref: "#/$defs/keymap.get.Binding",
         },
-        maxItems: 100000,
       },
       effectiveCommand: {
-        type: "object",
-        properties: {
-          commandId: {
-            type: "string",
-            maxLength: 65536,
+        description: "The command the sequence runs in the context.",
+        anyOf: [
+          {
+            $ref: "#/$defs/keymap.get.CommandRef",
           },
-          params: {
-            type: "array",
-            items: {
-              type: "string",
-              maxLength: 65536,
-            },
-            maxItems: 100000,
+          {
+            type: "null",
           },
-        },
-        required: [
-          "commandId",
         ],
-        additionalProperties: false,
       },
     },
     required: [
       "bindings",
     ],
-    "x-spec": "`{bindings: [Binding], effectiveCommand?: {commandId, params?}}`",
-    additionalProperties: false,
+  },
+  "keymap.import.ImportMode": {
+    description: "Import mode.",
+    oneOf: [
+      {
+        description: "Add the file's bindings to the current keymap.",
+        type: "string",
+        const: "merge",
+      },
+      {
+        description: "The file's bindings become the whole keymap.",
+        type: "string",
+        const: "replace",
+      },
+    ],
+  },
+  "keymap.import.OnConflict": {
+    description: "Conflict policy.",
+    oneOf: [
+      {
+        description: "Refuse with `keymap.conflict`.",
+        type: "string",
+        const: "fail",
+      },
+      {
+        description: "Move the sequence to this command.",
+        type: "string",
+        const: "override",
+      },
+    ],
   },
   "keymap.import.params": {
-    title: "keymap.import parameters",
+    title: "ImportParams",
+    description: "`keymap.import` parameters.",
     type: "object",
     properties: {
       path: {
+        description: "Absolute file path.",
         type: "string",
-        minLength: 1,
         maxLength: 4096,
-        description: "file-system path (11 §6.2)",
       },
       mode: {
-        type: "string",
-        enum: [
-          "merge",
-          "replace",
-        ],
-        default: "merge",
+        description: "Merge or replace.",
+        $ref: "#/$defs/keymap.import.ImportMode",
       },
       onConflict: {
-        type: "string",
-        enum: [
-          "fail",
-          "override",
-        ],
-        default: "fail",
+        description: "Conflicts with the current keymap (merge): refuse the whole import, or let the file win.",
+        $ref: "#/$defs/keymap.import.OnConflict",
       },
     },
+    additionalProperties: false,
     required: [
       "path",
     ],
-    additionalProperties: false,
-    "x-spec": "`path: path; mode: enum \"merge\"|\"replace\" = \"merge\"; onConflict: enum \"fail\"|\"override\" = \"fail\"`",
   },
-  "keymap.import.spec.Binding": {
+  "keymap.import.Binding": {
+    description: "A binding (01 §12.4 `Binding`).",
     type: "object",
     properties: {
       commandId: {
+        description: "The bound command.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       params: {
-        type: "object",
-        "x-open": true,
-        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
+        description: "Fixed parameters of the command reference.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
       },
       keys: {
+        description: "Canonical key sequence.",
         type: "string",
-        maxLength: 65536,
       },
       context: {
-        type: "string",
-        maxLength: 65536,
+        description: "Context.",
+        $ref: "#/$defs/keymap.import.Context",
       },
       isDefault: {
+        description: "Part of the bundled default set.",
         type: "boolean",
       },
     },
     additionalProperties: false,
     required: [
       "commandId",
-      "params",
       "keys",
       "context",
       "isDefault",
     ],
-    "x-specSection": "01",
+  },
+  "keymap.import.Context": {
+    description: "A keymap context (01 §8.1).",
+    oneOf: [
+      {
+        description: "Everywhere.",
+        type: "string",
+        const: "global",
+      },
+      {
+        description: "Drawing mode.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Staging mode.",
+        type: "string",
+        const: "staging",
+      },
+    ],
   },
   "keymap.import.result": {
-    title: "keymap.import result",
+    title: "ImportResult",
+    description: "`keymap.import` result.",
     type: "object",
     properties: {
       imported: {
+        description: "Bindings imported.",
         type: "integer",
+        format: "uint",
+        minimum: 0,
       },
       conflicts: {
+        description: "Bindings the file displaced (`onConflict: \"override\"`).",
         type: "array",
         items: {
-          $ref: "#/$defs/keymap.import.spec.Binding",
+          $ref: "#/$defs/keymap.import.Binding",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "imported",
       "conflicts",
     ],
-    "x-spec": "`{imported: int, conflicts: [Binding]}`",
-    additionalProperties: false,
+  },
+  "keymap.list.Context": {
+    description: "A keymap context (01 §8.1).",
+    oneOf: [
+      {
+        description: "Everywhere.",
+        type: "string",
+        const: "global",
+      },
+      {
+        description: "Drawing mode.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Staging mode.",
+        type: "string",
+        const: "staging",
+      },
+    ],
   },
   "keymap.list.params": {
-    title: "keymap.list parameters",
+    title: "ListParams",
+    description: "`keymap.list` parameters.",
     type: "object",
     properties: {
       context: {
-        type: "string",
-        enum: [
-          "global",
-          "drawing",
-          "staging",
+        description: "Only this context.",
+        anyOf: [
+          {
+            $ref: "#/$defs/keymap.list.Context",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
       commandId: {
-        type: "string",
-        maxLength: 65536,
+        description: "Only this command.",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 256,
+        default: null,
       },
       prefix: {
-        type: "string",
-        maxLength: 65536,
+        description: "Only commands whose id starts with this prefix.",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 256,
+        default: null,
       },
       onlyModified: {
+        description: "Only bindings the user added.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`context?: enum \"global\"|\"drawing\"|\"staging\"; commandId?: string; prefix?: string; onlyModified: bool = false`",
   },
-  "keymap.list.spec.Binding": {
+  "keymap.list.Binding": {
+    description: "A binding (01 §12.4 `Binding`).",
     type: "object",
     properties: {
       commandId: {
+        description: "The bound command.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       params: {
-        type: "object",
-        "x-open": true,
-        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
+        description: "Fixed parameters of the command reference.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
       },
       keys: {
+        description: "Canonical key sequence.",
         type: "string",
-        maxLength: 65536,
       },
       context: {
-        type: "string",
-        maxLength: 65536,
+        description: "Context.",
+        $ref: "#/$defs/keymap.list.Context",
       },
       isDefault: {
+        description: "Part of the bundled default set.",
         type: "boolean",
       },
     },
     additionalProperties: false,
     required: [
       "commandId",
-      "params",
       "keys",
       "context",
       "isDefault",
     ],
-    "x-specSection": "01",
   },
   "keymap.list.result": {
-    title: "keymap.list result",
+    title: "Array_of_Binding",
     type: "array",
     items: {
-      $ref: "#/$defs/keymap.list.spec.Binding",
+      $ref: "#/$defs/keymap.list.Binding",
     },
-    "x-spec": "`[Binding]` (§12.4)",
+  },
+  "keymap.remove.Context": {
+    description: "A keymap context (01 §8.1).",
+    oneOf: [
+      {
+        description: "Everywhere.",
+        type: "string",
+        const: "global",
+      },
+      {
+        description: "Drawing mode.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Staging mode.",
+        type: "string",
+        const: "staging",
+      },
+    ],
   },
   "keymap.remove.params": {
-    title: "keymap.remove parameters",
+    title: "RemoveParams",
+    description: "`keymap.remove` parameters.",
     type: "object",
     properties: {
       commandId: {
+        description: "Command whose bindings to remove (empty or unknown: `keymap.unknownCommand`).",
         type: "string",
-        maxLength: 65536,
       },
       keys: {
-        type: "string",
-        maxLength: 65536,
+        description: "Only this sequence.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       context: {
-        type: "string",
-        enum: [
-          "global",
-          "drawing",
-          "staging",
+        description: "Only this context.",
+        anyOf: [
+          {
+            $ref: "#/$defs/keymap.remove.Context",
+          },
+          {
+            type: "null",
+          },
         ],
+        default: null,
       },
     },
+    additionalProperties: false,
     required: [
       "commandId",
     ],
-    additionalProperties: false,
-    "x-spec": "`commandId: string; keys?: string; context?: enum \"global\"|\"drawing\"|\"staging\"`",
   },
-  "keymap.remove.spec.Binding": {
+  "keymap.remove.Binding": {
+    description: "A binding (01 §12.4 `Binding`).",
     type: "object",
     properties: {
       commandId: {
+        description: "The bound command.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       params: {
-        type: "object",
-        "x-open": true,
-        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
+        description: "Fixed parameters of the command reference.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
       },
       keys: {
+        description: "Canonical key sequence.",
         type: "string",
-        maxLength: 65536,
       },
       context: {
-        type: "string",
-        maxLength: 65536,
+        description: "Context.",
+        $ref: "#/$defs/keymap.remove.Context",
       },
       isDefault: {
+        description: "Part of the bundled default set.",
         type: "boolean",
       },
     },
     additionalProperties: false,
     required: [
       "commandId",
-      "params",
       "keys",
       "context",
       "isDefault",
     ],
-    "x-specSection": "01",
   },
   "keymap.remove.result": {
-    title: "keymap.remove result",
+    title: "RemoveResult",
+    description: "`keymap.remove` result.",
     type: "object",
     properties: {
       removed: {
+        description: "Bindings removed.",
         type: "array",
         items: {
-          $ref: "#/$defs/keymap.remove.spec.Binding",
+          $ref: "#/$defs/keymap.remove.Binding",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "removed",
     ],
-    "x-spec": "`{removed: [Binding]}`",
-    additionalProperties: false,
   },
   "keymap.reset.params": {
-    title: "keymap.reset parameters",
+    title: "ResetParams",
+    description: "`keymap.reset` parameters.",
     type: "object",
     properties: {
       commandId: {
-        type: "string",
-        maxLength: 65536,
+        description: "The command to reset to its default bindings.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       all: {
+        description: "Restore the whole default keymap.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`commandId?: string; all: bool = false`",
   },
   "keymap.reset.result": {
-    title: "keymap.reset result",
+    title: "ResetResult",
+    description: "`keymap.reset` result.",
     type: "object",
     properties: {
       reset: {
+        description: "Commands whose bindings changed.",
         type: "integer",
+        format: "uint",
+        minimum: 0,
       },
     },
     required: [
       "reset",
     ],
-    "x-spec": "`{reset: int}`",
-    additionalProperties: false,
+  },
+  "keymap.set.Context": {
+    description: "A keymap context (01 §8.1).",
+    oneOf: [
+      {
+        description: "Everywhere.",
+        type: "string",
+        const: "global",
+      },
+      {
+        description: "Drawing mode.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Staging mode.",
+        type: "string",
+        const: "staging",
+      },
+    ],
+  },
+  "keymap.set.OnConflict": {
+    description: "Conflict policy.",
+    oneOf: [
+      {
+        description: "Refuse with `keymap.conflict`.",
+        type: "string",
+        const: "fail",
+      },
+      {
+        description: "Move the sequence to this command.",
+        type: "string",
+        const: "override",
+      },
+    ],
   },
   "keymap.set.params": {
-    title: "keymap.set parameters",
+    title: "SetParams",
+    description: "`keymap.set` parameters.",
     type: "object",
     properties: {
       commandId: {
+        description: "Command to bind (an empty, unknown or over-long id is `keymap.unknownCommand`, not a schema error: C41-R1-13,\nC41-R2-21).",
         type: "string",
-        maxLength: 65536,
       },
       params: {
-        type: "object",
-        "x-open": true,
-        description: "the bound command's parameters, validated against its schema (01 §12.4)",
+        description: "Fixed parameters of the command reference.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
+        default: null,
       },
       keys: {
+        description: "Key sequence (01 §12.1 rule 17); an empty or over-long one (more than 64 characters) is\n`keymap.invalidSequence` (C41-R1-13, C41-R2-21).",
         type: "string",
-        maxLength: 65536,
       },
       context: {
-        type: "string",
-        enum: [
-          "global",
-          "drawing",
-          "staging",
-        ],
+        description: "Context.",
+        $ref: "#/$defs/keymap.set.Context",
         default: "global",
       },
       onConflict: {
-        type: "string",
-        enum: [
-          "fail",
-          "override",
-        ],
-        default: "fail",
+        description: "What to do when the sequence is taken.",
+        $ref: "#/$defs/keymap.set.OnConflict",
       },
       replaceExisting: {
+        description: "Remove the command reference's other bindings in this context first.",
         type: "boolean",
         default: false,
       },
     },
+    additionalProperties: false,
     required: [
       "commandId",
       "keys",
     ],
-    additionalProperties: false,
-    "x-spec": "`commandId: string; params?: object; keys: string; context: enum \"global\"|\"drawing\"|\"staging\" = \"global\"; onConflict: enum \"fail\"|\"override\" = \"fail\"; replaceExisting: bool = false`",
   },
-  "keymap.set.spec.Binding": {
+  "keymap.set.Binding": {
+    description: "A binding (01 §12.4 `Binding`).",
     type: "object",
     properties: {
       commandId: {
+        description: "The bound command.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       params: {
-        type: "object",
-        "x-open": true,
-        description: "the bound command's parameters, validated against that command's parameter schema (01 §12.4)",
+        description: "Fixed parameters of the command reference.",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
       },
       keys: {
+        description: "Canonical key sequence.",
         type: "string",
-        maxLength: 65536,
       },
       context: {
-        type: "string",
-        maxLength: 65536,
+        description: "Context.",
+        $ref: "#/$defs/keymap.set.Context",
       },
       isDefault: {
+        description: "Part of the bundled default set.",
         type: "boolean",
       },
     },
     additionalProperties: false,
     required: [
       "commandId",
-      "params",
       "keys",
       "context",
       "isDefault",
     ],
-    "x-specSection": "01",
   },
   "keymap.set.result": {
-    title: "keymap.set result",
+    title: "SetResult",
+    description: "`keymap.set` result.",
     type: "object",
     properties: {
       binding: {
-        $ref: "#/$defs/keymap.set.spec.Binding",
+        description: "The new binding.",
+        $ref: "#/$defs/keymap.set.Binding",
       },
       removed: {
+        description: "Bindings removed (moved away from another command, or replaced).",
         type: "array",
         items: {
-          $ref: "#/$defs/keymap.set.spec.Binding",
+          $ref: "#/$defs/keymap.set.Binding",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "binding",
       "removed",
     ],
-    "x-spec": "`{binding: Binding, removed: [Binding]}`",
-    additionalProperties: false,
   },
   "library.changed.params": {
     title: "library.changed parameters",
@@ -67573,266 +70896,237 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "prefs.changed.params": {
-    title: "prefs.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "`{keys: [string], source: \"user\"|\"agent\"}`",
   },
   "prefs.changed.result": {
-    title: "prefs.changed result",
+    title: "ChangedPayload",
+    description: "`prefs.changed` payload.",
     type: "object",
     properties: {
       keys: {
+        description: "Keys whose value was set.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
       source: {
+        description: "`user` or `agent`.",
         type: "string",
-        enum: [
-          "user",
-          "agent",
-        ],
       },
     },
     required: [
       "keys",
       "source",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "—",
-    additionalProperties: false,
   },
   "prefs.get.params": {
-    title: "prefs.get parameters",
+    title: "GetParams",
+    description: "`prefs.get` parameters.",
     type: "object",
     properties: {
       keys: {
+        description: "Keys to read (an empty list reads nothing; spec A sets no minimum: C41-R1-13 audit).",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
+        maxItems: 1000,
       },
     },
+    additionalProperties: false,
     required: [
       "keys",
     ],
-    additionalProperties: false,
-    "x-spec": "`keys: [string]`",
   },
   "prefs.get.result": {
-    title: "prefs.get result",
+    title: "GetResult",
+    description: "`prefs.get` result.",
     type: "object",
     properties: {
       values: {
+        description: "Key → current value.",
         type: "object",
-        properties: {},
-        additionalProperties: {
-          type: [
-            "boolean",
-            "integer",
-            "number",
-            "string",
-          ],
-          description: "a preference value of the key's type (01 §7)",
-        },
-        propertyNames: {
-          minLength: 1,
-          maxLength: 256,
-        },
-        description: "preference key → value (01 §7)",
+        additionalProperties: true,
       },
     },
     required: [
       "values",
     ],
-    "x-spec": "`{values: object}`",
-    additionalProperties: false,
   },
   "prefs.list.params": {
-    title: "prefs.list parameters",
+    title: "ListParams",
+    description: "`prefs.list` parameters.",
     type: "object",
     properties: {
       prefix: {
-        type: "string",
-        maxLength: 65536,
+        description: "Only keys starting with this prefix.",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 256,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`prefix?: string`",
   },
-  "prefs.list.result": {
-    title: "prefs.list result",
-    type: "array",
-    items: {
-      type: "object",
-      properties: {
-        key: {
+  "prefs.list.PrefEntry": {
+    description: "One preference as `prefs.list` reports it (01 §12.2).",
+    type: "object",
+    properties: {
+      key: {
+        description: "Key (`<category>.<group>.<name>`).",
+        type: "string",
+      },
+      type: {
+        description: "`bool`, `int`, `number`, `string`, `enum`, `colour`, `path` or `object`.",
+        type: "string",
+      },
+      default: {
+        description: "Default value.",
+      },
+      value: {
+        description: "Current value.",
+      },
+      min: {
+        description: "Minimum (numbers).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      max: {
+        description: "Maximum (numbers).",
+        type: [
+          "number",
+          "null",
+        ],
+      },
+      values: {
+        description: "Allowed values (enums; `interface.theme` includes installed user themes).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
           type: "string",
-          maxLength: 65536,
-        },
-        type: {
-          type: "string",
-          maxLength: 65536,
-        },
-        default: {
-          type: [
-            "boolean",
-            "integer",
-            "number",
-            "string",
-          ],
-          description: "a preference value of the key's type (01 §7)",
-        },
-        value: {
-          type: [
-            "boolean",
-            "integer",
-            "number",
-            "string",
-          ],
-          description: "a preference value of the key's type (01 §7)",
-        },
-        min: {
-          type: "number",
-        },
-        max: {
-          type: "number",
-        },
-        values: {
-          type: "array",
-          items: {
-            type: "number",
-          },
-          maxItems: 100000,
-        },
-        applies: {
-          type: "string",
-          enum: [
-            "live",
-            "nextLaunch",
-            "restart",
-          ],
-        },
-        description: {
-          type: "string",
-          maxLength: 65536,
         },
       },
-      required: [
-        "key",
-        "type",
-        "default",
-        "value",
-        "applies",
-        "description",
-      ],
-      additionalProperties: false,
+      applies: {
+        description: "When a change takes effect.",
+        type: "string",
+      },
+      description: {
+        description: "What the preference does.",
+        type: "string",
+      },
     },
-    "x-spec": "`[{key, type, default, value, min?, max?, values?, applies: \"live\"|\"nextLaunch\"|\"restart\", description}]`",
+    required: [
+      "key",
+      "type",
+      "default",
+      "value",
+      "applies",
+      "description",
+    ],
+  },
+  "prefs.list.result": {
+    title: "Array_of_PrefEntry",
+    type: "array",
+    items: {
+      $ref: "#/$defs/prefs.list.PrefEntry",
+    },
   },
   "prefs.reset.params": {
-    title: "prefs.reset parameters",
+    title: "ResetParams",
+    description: "`prefs.reset` parameters.",
     type: "object",
     properties: {
       keys: {
-        type: "array",
+        description: "Keys to reset.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
+        maxItems: 1000,
+        default: null,
       },
       prefix: {
-        type: "string",
-        maxLength: 65536,
+        description: "Reset every key with this prefix (`\"\"` = all).",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 256,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`keys?: [string]; prefix?: string`",
   },
   "prefs.reset.result": {
-    title: "prefs.reset result",
+    title: "ResetResult",
+    description: "`prefs.reset` result.",
     type: "object",
     properties: {
       reset: {
+        description: "Keys reset to their defaults.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
       "reset",
     ],
-    "x-spec": "`{reset: [string]}`",
-    additionalProperties: false,
   },
   "prefs.set.params": {
-    title: "prefs.set parameters",
+    title: "SetParams",
+    description: "`prefs.set` parameters.",
     type: "object",
     properties: {
       values: {
+        description: "Key → value (01 §7.2). Every value must be valid, or nothing changes.",
         type: "object",
-        properties: {},
-        additionalProperties: {
-          type: [
-            "boolean",
-            "integer",
-            "number",
-            "string",
-          ],
-          description: "a preference value of the key's type (01 §7)",
-        },
-        propertyNames: {
-          minLength: 1,
-          maxLength: 256,
-        },
-        description: "preference key → value (01 §7)",
+        additionalProperties: true,
       },
     },
+    additionalProperties: false,
     required: [
       "values",
     ],
-    additionalProperties: false,
-    "x-spec": "`values: object (key → value)`",
   },
   "prefs.set.result": {
-    title: "prefs.set result",
+    title: "SetResult",
+    description: "`prefs.set` result.",
     type: "object",
     properties: {
       applied: {
+        description: "Keys set.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
       restartRequired: {
+        description: "Keys that take effect only after a restart.",
         type: "array",
         items: {
           type: "string",
-          maxLength: 65536,
         },
-        maxItems: 100000,
       },
     },
     required: [
       "applied",
       "restartRequired",
     ],
-    "x-spec": "`{applied: [string], restartRequired: [string]}`",
-    additionalProperties: false,
   },
   "print.pageSetup.get.params": {
     title: "print.pageSetup.get parameters",
@@ -70732,8 +74026,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
       },
       files: {
-        description: "One entry per frame file.",
-        type: "array",
+        description: "One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to\n[`OUTPUTS_INLINE`] frames (ruling D-51 as corrected by D-56, SI-181: a range's answer stays small), `outputs` summarising them always.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           $ref: "#/$defs/render.range.run.ManifestFile",
         },
@@ -70747,6 +74044,17 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "array",
         items: true,
       },
+      outputs: {
+        description: "The frames written, summarised (D-51): in the job's answer, never in the companion file.",
+        anyOf: [
+          {
+            $ref: "#/$defs/render.range.run.Outputs",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
     },
     required: [
       "status",
@@ -70759,7 +74067,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "height",
       "range",
       "documentRevision",
-      "files",
       "manifestPath",
       "warnings",
     ],
@@ -70813,6 +74120,58 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "width",
       "height",
       "frame",
+    ],
+  },
+  "render.range.run.Outputs": {
+    description: "A job's outputs, summarised (ruling D-51, SI-163): the count, where they are and how they are named, the first and\nthe last in full, and whether the list itself was left out.",
+    type: "object",
+    properties: {
+      count: {
+        description: "How many outputs.",
+        type: "integer",
+        maximum: 2147483647,
+        minimum: 0,
+      },
+      location: {
+        description: "Where they are: the output directory.",
+        type: "string",
+      },
+      pattern: {
+        description: "How they are named (the name pattern with the scene's name, `{frame}` or `{frame:N}` for the frame).",
+        type: "string",
+      },
+      first: {
+        description: "The first output.",
+        anyOf: [
+          {
+            $ref: "#/$defs/render.range.run.ManifestFile",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      last: {
+        description: "The last output.",
+        anyOf: [
+          {
+            $ref: "#/$defs/render.range.run.ManifestFile",
+          },
+          {
+            type: "null",
+          },
+        ],
+      },
+      truncated: {
+        description: "The list itself is not in this answer (the companion manifest file at `manifestPath` has every entry).",
+        type: "boolean",
+      },
+    },
+    required: [
+      "count",
+      "location",
+      "pattern",
+      "truncated",
     ],
   },
   "render.range.run.result": {
@@ -76559,21 +79918,22 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "tool.active.changed.params": {
-    title: "tool.active.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "tool.active.changed.result": {
-    title: "tool.active.changed result",
+    title: "ActiveChanged",
+    description: "`tool.active.changed` payload.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
       },
       temporary: {
+        description: "A temporary override.",
         type: "boolean",
       },
     },
@@ -76581,1221 +79941,1231 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "toolId",
       "temporary",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{toolId, temporary: bool}`",
-    additionalProperties: false,
   },
   "tool.active.get.params": {
-    title: "tool.active.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "tool.active.get.result": {
-    title: "tool.active.get result",
+    title: "ActiveResult",
+    description: "`tool.active.get` result.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
       },
       temporaryToolId: {
-        anyOf: [
-          {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-          {
-            type: "null",
-          },
+        description: "A temporary override in force (`null`: none; overrides are held by the GUI while a key is held).",
+        type: [
+          "string",
+          "null",
         ],
       },
       group: {
+        description: "Its group.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "toolId",
-      "temporaryToolId",
       "group",
     ],
-    "x-spec": "`{toolId, temporaryToolId|null, group}`",
-    additionalProperties: false,
   },
   "tool.active.set.params": {
-    title: "tool.active.set parameters",
+    title: "ActiveParams",
+    description: "`tool.active.set` parameters.",
     type: "object",
     properties: {
       toolId: {
-        type: "string",
-        enum: [
-          "select",
-          "contourEditor",
-          "perspective",
-          "repositionAll",
-          "brush",
-          "pencil",
-          "rectangle",
-          "ellipse",
-          "polyline",
-          "line",
-          "paint",
-          "unpaint",
-          "paintUnpainted",
-          "dropper",
-          "closeGap",
-          "stroke",
-          "editTexture",
-          "eraser",
-          "cutter",
-          "scissor",
-          "zoom",
-          "grabber",
-          "text",
+        description: "The tool.",
+        oneOf: [
+          {
+            description: "Select.",
+            type: "string",
+            const: "select",
+          },
+          {
+            description: "Contour Editor.",
+            type: "string",
+            const: "contourEditor",
+          },
+          {
+            description: "Perspective.",
+            type: "string",
+            const: "perspective",
+          },
+          {
+            description: "Reposition All Drawings.",
+            type: "string",
+            const: "repositionAll",
+          },
+          {
+            description: "Brush.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Pencil.",
+            type: "string",
+            const: "pencil",
+          },
+          {
+            description: "Rectangle.",
+            type: "string",
+            const: "rectangle",
+          },
+          {
+            description: "Ellipse.",
+            type: "string",
+            const: "ellipse",
+          },
+          {
+            description: "Polyline.",
+            type: "string",
+            const: "polyline",
+          },
+          {
+            description: "Line.",
+            type: "string",
+            const: "line",
+          },
+          {
+            description: "Paint.",
+            type: "string",
+            const: "paint",
+          },
+          {
+            description: "Unpaint.",
+            type: "string",
+            const: "unpaint",
+          },
+          {
+            description: "Paint Unpainted.",
+            type: "string",
+            const: "paintUnpainted",
+          },
+          {
+            description: "Dropper.",
+            type: "string",
+            const: "dropper",
+          },
+          {
+            description: "Close Gap.",
+            type: "string",
+            const: "closeGap",
+          },
+          {
+            description: "Stroke.",
+            type: "string",
+            const: "stroke",
+          },
+          {
+            description: "Edit Texture.",
+            type: "string",
+            const: "editTexture",
+          },
+          {
+            description: "Eraser.",
+            type: "string",
+            const: "eraser",
+          },
+          {
+            description: "Cutter.",
+            type: "string",
+            const: "cutter",
+          },
+          {
+            description: "Scissor.",
+            type: "string",
+            const: "scissor",
+          },
+          {
+            description: "Zoom.",
+            type: "string",
+            const: "zoom",
+          },
+          {
+            description: "Grabber.",
+            type: "string",
+            const: "grabber",
+          },
+          {
+            description: "Text.",
+            type: "string",
+            const: "text",
+          },
         ],
       },
     },
+    additionalProperties: false,
     required: [
       "toolId",
     ],
-    additionalProperties: false,
-    "x-spec": "`toolId: enum \"select\"|\"contourEditor\"|\"perspective\"|\"repositionAll\"|\"brush\"|\"pencil\"|\"rectangle\"|\"ellipse\"|\"polyline\"|\"line\"|\"paint\"|\"unpaint\"|\"paintUnpainted\"|\"dropper\"|\"closeGap\"|\"stroke\"|\"editTexture\"|\"eraser\"|\"cutter\"|\"scissor\"|\"zoom\"|\"grabber\"|\"text\"`",
   },
   "tool.active.set.result": {
-    title: "tool.active.set result",
+    title: "ToolIdResult",
+    description: "`{toolId}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
       },
     },
     required: [
       "toolId",
     ],
-    "x-spec": "`{toolId}`",
-    additionalProperties: false,
   },
   "tool.brush.options.set.params": {
-    title: "tool.brush.options.set parameters",
+    title: "PenParams",
+    description: "`penId`.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "penId",
     ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
   },
   "tool.brush.options.set.result": {
-    title: "tool.brush.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          penId: {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-        },
-        required: [
-          "penId",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "tool.drawTopLayer.set.params": {
-    title: "tool.drawTopLayer.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "tool.drawTopLayer.set.result": {
-    title: "tool.drawTopLayer.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "tool.eraser.options.set.params": {
-    title: "tool.eraser.options.set parameters",
+    title: "PenParams",
+    description: "`penId`.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "penId",
     ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
   },
   "tool.eraser.options.set.result": {
-    title: "tool.eraser.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          penId: {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
-          },
-        },
-        required: [
-          "penId",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
+  },
+  "tool.group.select.Group": {
+    description: "A tool group (02 §5.1).",
+    oneOf: [
+      {
+        description: "Select group.",
+        type: "string",
+        const: "select",
+      },
+      {
+        description: "Brush group.",
+        type: "string",
+        const: "brush",
+      },
+      {
+        description: "Paint group.",
+        type: "string",
+        const: "paint",
+      },
+      {
+        description: "Eraser group.",
+        type: "string",
+        const: "eraser",
+      },
+      {
+        description: "Navigate group.",
+        type: "string",
+        const: "navigate",
+      },
+      {
+        description: "Text group.",
+        type: "string",
+        const: "text",
+      },
+    ],
   },
   "tool.group.select.params": {
-    title: "tool.group.select parameters",
+    title: "GroupParams",
+    description: "`tool.group.select` parameters.",
     type: "object",
     properties: {
       group: {
-        type: "string",
-        enum: [
-          "select",
-          "brush",
-          "paint",
-          "eraser",
-          "navigate",
-          "text",
-        ],
+        description: "The group.",
+        $ref: "#/$defs/tool.group.select.Group",
       },
       advance: {
+        description: "Advance within the group if it is already active (group cycling).",
         type: "boolean",
         default: true,
       },
     },
+    additionalProperties: false,
     required: [
       "group",
     ],
-    additionalProperties: false,
-    "x-spec": "`group: enum \"select\"|\"brush\"|\"paint\"|\"eraser\"|\"navigate\"|\"text\"; advance: bool = true`",
   },
   "tool.group.select.result": {
-    title: "tool.group.select result",
+    title: "ToolIdResult",
+    description: "`{toolId}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The active tool.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "toolId",
     ],
-    "x-spec": "`{toolId}`",
-    additionalProperties: false,
   },
   "tool.list.params": {
-    title: "tool.list parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
+  },
+  "tool.list.ToolEntry": {
+    description: "One tool.",
+    type: "object",
+    properties: {
+      toolId: {
+        description: "Tool id.",
+        type: "string",
+      },
+      group: {
+        description: "Its group.",
+        type: "string",
+      },
+      options: {
+        description: "Current options (empty: the tool has none).",
+        type: "object",
+        additionalProperties: true,
+      },
+      optionSchema: {
+        description: "The options' schema.",
+      },
+    },
+    required: [
+      "toolId",
+      "group",
+      "options",
+      "optionSchema",
+    ],
   },
   "tool.list.result": {
-    title: "tool.list result",
+    title: "ToolList",
+    description: "`tool.list` result.",
     type: "object",
     properties: {
       tools: {
+        description: "Every tool in palette order.",
         type: "array",
         items: {
-          type: "object",
-          properties: {
-            toolId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            group: {
-              type: "string",
-              maxLength: 65536,
-            },
-            options: {
-              type: "object",
-              properties: {},
-              additionalProperties: false,
-              "x-placeholder": true,
-              description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-              "x-specIssue": "SI-040",
-            },
-            optionSchema: {
-              type: "object",
-              properties: {},
-              additionalProperties: false,
-              "x-placeholder": true,
-              description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-              "x-specIssue": "SI-040",
-            },
-          },
-          required: [
-            "toolId",
-            "group",
-            "options",
-            "optionSchema",
-          ],
-          additionalProperties: false,
+          $ref: "#/$defs/tool.list.ToolEntry",
         },
-        maxItems: 100000,
       },
       activeToolId: {
+        description: "The active tool.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "tools",
       "activeToolId",
     ],
-    "x-spec": "`{tools: [{toolId, group, options: object, optionSchema: object}], activeToolId}`",
-    additionalProperties: false,
   },
   "tool.options.changed.params": {
-    title: "tool.options.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
   },
   "tool.options.changed.result": {
-    title: "tool.options.changed result",
+    title: "OptionsChanged",
+    description: "`tool.options.changed` payload.",
     type: "object",
     properties: {
       toolId: {
-        type: "string",
-        maxLength: 65536,
+        description: "The tool (`null` for a global drawing setting).",
+        type: [
+          "string",
+          "null",
+        ],
       },
       options: {
+        description: "The options or settings now.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
     required: [
-      "toolId",
       "options",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{toolId|null, options}`",
-    additionalProperties: false,
   },
   "tool.options.get.params": {
-    title: "tool.options.get parameters",
+    title: "ToolParams",
+    description: "`toolId`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
     },
+    additionalProperties: false,
     required: [
       "toolId",
     ],
-    additionalProperties: false,
-    "x-spec": "`toolId: string`",
   },
   "tool.options.get.result": {
-    title: "tool.options.get result",
+    title: "ToolOptions",
+    description: "`{toolId, options}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
       options: {
+        description: "Its options.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
     required: [
       "toolId",
       "options",
     ],
-    "x-spec": "`{toolId, options: object}`",
-    additionalProperties: false,
   },
   "tool.options.set.params": {
-    title: "tool.options.set parameters",
+    title: "OptionsParams",
+    description: "`tool.options.set` parameters.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
       options: {
+        description: "Options to set.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
+    additionalProperties: false,
     required: [
       "toolId",
       "options",
     ],
-    additionalProperties: false,
-    "x-spec": "`toolId: string; options: object`",
   },
   "tool.options.set.result": {
-    title: "tool.options.set result",
+    title: "ToolOptions",
+    description: "`{toolId, options}`.",
     type: "object",
     properties: {
       toolId: {
+        description: "The tool.",
         type: "string",
-        maxLength: 65536,
       },
       options: {
+        description: "Its options.",
         type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        additionalProperties: true,
       },
     },
     required: [
       "toolId",
       "options",
     ],
-    "x-spec": "`{toolId, options}`",
-    additionalProperties: false,
   },
   "tool.pen.changed.params": {
-    title: "tool.pen.changed parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "—",
+  },
+  "tool.pen.changed.PenChange": {
+    description: "A pen change.",
+    oneOf: [
+      {
+        description: "Created.",
+        type: "string",
+        const: "created",
+      },
+      {
+        description: "Settings changed or renamed.",
+        type: "string",
+        const: "modified",
+      },
+      {
+        description: "Deleted.",
+        type: "string",
+        const: "deleted",
+      },
+      {
+        description: "Made current.",
+        type: "string",
+        const: "selected",
+      },
+    ],
   },
   "tool.pen.changed.result": {
-    title: "tool.pen.changed result",
+    title: "PenChanged",
+    description: "`tool.pen.changed` payload.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       change: {
-        type: "string",
-        enum: [
-          "created",
-          "modified",
-          "deleted",
-          "selected",
-        ],
+        description: "What changed.",
+        $ref: "#/$defs/tool.pen.changed.PenChange",
       },
     },
     required: [
       "penId",
       "change",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "`{penId, change: enum \"created\"|\"modified\"|\"deleted\"|\"selected\"}`",
-    additionalProperties: false,
   },
   "tool.pen.create.params": {
-    title: "tool.pen.create parameters",
+    title: "PenCreateParams",
+    description: "`tool.pen.create` parameters.",
     type: "object",
     properties: {
       type: {
-        type: "string",
-        enum: [
-          "brush",
-          "eraser",
+        description: "Family.",
+        oneOf: [
+          {
+            description: "Brush pens.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Eraser pens.",
+            type: "string",
+            const: "eraser",
+          },
         ],
         default: "brush",
       },
       fromPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3) Default: current.",
+        description: "The pen to copy (default: the family's current pen).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       name: {
-        type: "string",
-        maxLength: 65536,
+        description: "Name (default: the next free \"Pen n\" or \"Eraser n\").",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       settings: {
-        type: "object",
-        properties: {},
-        additionalProperties: false,
-        "x-placeholder": true,
-        description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-        "x-specIssue": "SI-040",
+        description: "Settings over the copied ones (`tipShape`, `minSize`, `maxSize`, `smoothness`, `tipAngle`).",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`type: enum \"brush\"|\"eraser\" = \"brush\"; fromPenId?: id = current; name?: string; settings?: object`",
   },
   "tool.pen.create.result": {
-    title: "tool.pen.create result",
+    title: "PenIdName",
+    description: "`{penId, name}`.",
     type: "object",
     properties: {
       penId: {
+        description: "Pen id.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       name: {
+        description: "Name.",
         type: "string",
-        maxLength: 65536,
       },
     },
     required: [
       "penId",
       "name",
     ],
-    "x-spec": "`{penId, name}`",
-    additionalProperties: false,
   },
   "tool.pen.delete.params": {
-    title: "tool.pen.delete parameters",
+    title: "PenParams",
+    description: "`penId`.",
     type: "object",
     properties: {
       penId: {
+        description: "The pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "penId",
     ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
   },
   "tool.pen.delete.result": {
-    title: "tool.pen.delete result",
+    title: "PenDeleted",
+    description: "`tool.pen.delete` result.",
     type: "object",
     properties: {
       removedPenId: {
+        description: "The removed pen.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       currentPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The family's current pen now.",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     required: [
       "removedPenId",
-      "currentPenId",
     ],
-    "x-spec": "`{removedPenId, currentPenId}`",
-    additionalProperties: false,
   },
   "tool.pen.list.params": {
-    title: "tool.pen.list parameters",
+    title: "PenListParams",
+    description: "`tool.pen.list` parameters.",
     type: "object",
     properties: {
       type: {
-        type: "string",
-        enum: [
-          "brush",
-          "eraser",
-        ],
-      },
-    },
-    additionalProperties: false,
-    "x-spec": "`type?: enum \"brush\"|\"eraser\"`",
-  },
-  "tool.pen.list.result": {
-    title: "tool.pen.list result",
-    type: "object",
-    properties: {
-      pens: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {
-            penId: {
-              type: "string",
-              minLength: 1,
-              maxLength: 4096,
-              description: "object ID or path reference (10 §3)",
-            },
-            name: {
-              type: "string",
-              maxLength: 65536,
-            },
-            type: {
-              type: "string",
-            },
-            tipShape: {
-              type: "string",
-            },
-            minSize: {
-              type: "number",
-              minimum: 0,
-              maximum: 100,
-            },
-            maxSize: {
-              type: "number",
-              minimum: 0,
-              maximum: 100,
-            },
-            smoothness: {
-              type: "number",
-              minimum: 0,
-              maximum: 10,
-            },
-            tipAngle: {
-              type: "number",
-              minimum: 0,
-              maximum: 360,
-            },
-          },
-          required: [
-            "penId",
-            "name",
-            "type",
-            "tipShape",
-            "minSize",
-            "maxSize",
-            "smoothness",
-            "tipAngle",
-          ],
-          additionalProperties: false,
-        },
-        maxItems: 100000,
-      },
-      currentBrushPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      currentEraserPenId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-    },
-    required: [
-      "pens",
-      "currentBrushPenId",
-      "currentEraserPenId",
-    ],
-    "x-spec": "`{pens: [{penId, name, type, tipShape, minSize, maxSize, smoothness, tipAngle}], currentBrushPenId, currentEraserPenId}`",
-    additionalProperties: false,
-  },
-  "tool.pen.rename.params": {
-    title: "tool.pen.rename parameters",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      name: {
-        type: "string",
-        maxLength: 65536,
-      },
-    },
-    required: [
-      "penId",
-      "name",
-    ],
-    additionalProperties: false,
-    "x-spec": "`penId: id; name: string`",
-  },
-  "tool.pen.rename.result": {
-    title: "tool.pen.rename result",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      name: {
-        type: "string",
-        maxLength: 65536,
-      },
-    },
-    required: [
-      "penId",
-      "name",
-    ],
-    "x-spec": "`{penId, name}`",
-    additionalProperties: false,
-  },
-  "tool.pen.select.params": {
-    title: "tool.pen.select parameters",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-    },
-    required: [
-      "penId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`penId: id`",
-  },
-  "tool.pen.select.result": {
-    title: "tool.pen.select result",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      type: {
-        type: "string",
-        default: "brush",
-      },
-    },
-    required: [
-      "penId",
-      "type",
-    ],
-    "x-spec": "`{penId, type}`",
-    additionalProperties: false,
-  },
-  "tool.pen.set.params": {
-    title: "tool.pen.set parameters",
-    type: "object",
-    properties: {
-      penId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
-      },
-      tipShape: {
-        type: "string",
-        enum: [
-          "round",
-          "oval",
-          "square",
-          "flat",
-        ],
-      },
-      minSize: {
-        type: "number",
-        minimum: 0,
-        maximum: 100,
-      },
-      maxSize: {
-        type: "number",
-        minimum: 0,
-        maximum: 100,
-      },
-      smoothness: {
-        type: "number",
-        minimum: 0,
-        maximum: 10,
-      },
-      tipAngle: {
-        type: "number",
-        minimum: 0,
-        maximum: 360,
-      },
-    },
-    required: [
-      "penId",
-    ],
-    additionalProperties: false,
-    "x-spec": "`penId: id; tipShape?: enum \"round\"|\"oval\"|\"square\"|\"flat\"; minSize?: number (0–100); maxSize?: number (0–100); smoothness?: number (0–10); tipAngle?: number (0–360)`",
-  },
-  "tool.pen.set.Ext": {
-    type: "object",
-    propertyNames: {
-      pattern: "^[A-Za-z0-9][A-Za-z0-9-]*(\\.[A-Za-z0-9][A-Za-z0-9-]*)+$",
-    },
-    description: "Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim.",
-  },
-  "tool.pen.set.Id": {
-    type: "string",
-    pattern: "^[A-Za-z0-9_-]{1,64}$",
-  },
-  "tool.pen.set.Pen": {
-    type: "object",
-    additionalProperties: false,
-    properties: {
-      id: {
-        $ref: "#/$defs/tool.pen.set.Id",
-        description: "Immutable ID.",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      type: {
-        type: "string",
-        const: "pen",
-        readOnly: true,
-        description: "Always `pen`.",
-        "x-since": "1.0",
-      },
-      rev: {
-        type: "integer",
-        maximum: 18446744073709551615n,
-        minimum: 0,
-        description: "Revision of the last change (10 REV-02).",
-        readOnly: true,
-        "x-since": "1.0",
-      },
-      name: {
-        pattern: "^(?:[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s]|[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s][^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|]*[^\\u0000-\\u001F\\u007F\\\\/:*?\"<>|\\s])$",
-        description: "Unique in the project; default `Pen <n>`.",
-        "x-command": "tool.pen.rename",
-        minLength: 1,
-        maxLength: 64,
-        type: "string",
-        "x-since": "1.0",
-      },
-      kind: {
-        $ref: "#/$defs/tool.pen.set.PenKind",
-        description: "Brush or eraser pen (02 §6.1; SI-004).",
-        "x-since": "1.0",
-      },
-      minSize: {
-        type: "number",
-        "x-unit": "du",
-        description: "Width at lowest pressure, 0–100 du; `minSize ≤ maxSize`.",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-      maxSize: {
-        type: "number",
-        "x-unit": "du",
-        description: "Width at full pressure, 0–100 du.",
-        minimum: 0,
-        maximum: 100,
-        "x-since": "1.0",
-      },
-      smoothness: {
-        type: "integer",
-        description: "Curve-fitting tolerance and pressure smoothing, 0–10 (10 §4.2: int).",
-        minimum: 0,
-        maximum: 10,
-        "x-since": "1.0",
-      },
-      tip: {
-        $ref: "#/$defs/tool.pen.set.Tip",
-        description: "Tip shape.",
-        "x-since": "1.0",
-      },
-      tipAngle: {
-        type: "number",
-        "x-unit": "degree",
-        description: "Orientation of non-round tips, 0–360 degrees (02 §6.1; SI-004).",
-        minimum: 0,
-        maximum: 360,
-        "x-since": "1.0",
-      },
-      colourId: {
+        description: "Only pens of this family.",
         anyOf: [
           {
-            $ref: "#/$defs/tool.pen.set.Id",
+            description: "A pen family.",
+            oneOf: [
+              {
+                description: "Brush pens.",
+                type: "string",
+                const: "brush",
+              },
+              {
+                description: "Eraser pens.",
+                type: "string",
+                const: "eraser",
+              },
+            ],
           },
           {
             type: "null",
           },
         ],
-        description: "Colour bound to the pen; `null` = use the current colour.",
-        "x-ref": "swatch",
-        "x-since": "1.0",
+        default: null,
       },
-      meta: {
-        type: "object",
-        additionalProperties: true,
-        description: "Free-form metadata.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      ext: {
-        $ref: "#/$defs/tool.pen.set.Ext",
-        description: "Extension data.",
-        "x-omitDefault": true,
-        "x-since": "1.0",
-      },
-      path: {
+    },
+    additionalProperties: false,
+  },
+  "tool.pen.list.PenEntry": {
+    description: "One pen.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "Pen id.",
         type: "string",
-        description: "Canonical path (10 §2.4).",
-        "x-transient": true,
-        readOnly: true,
-        "x-since": "1.0",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+      type: {
+        description: "Family.",
+        oneOf: [
+          {
+            description: "Brush pens.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Eraser pens.",
+            type: "string",
+            const: "eraser",
+          },
+        ],
+      },
+      tipShape: {
+        description: "Tip shape.",
+        type: "string",
+      },
+      minSize: {
+        description: "Minimum size (du).",
+        type: "number",
+      },
+      maxSize: {
+        description: "Maximum size (du).",
+        type: "number",
+      },
+      smoothness: {
+        description: "Smoothness 0-10.",
+        type: "integer",
+        maximum: 255,
+        minimum: 0,
+      },
+      tipAngle: {
+        description: "Tip angle (degrees).",
+        type: "number",
       },
     },
-    "x-since": "1.0",
-    description: "A pen preset (10 §4.2). Unique name in the project.",
-    "x-objectType": "pen",
     required: [
-      "id",
+      "penId",
+      "name",
       "type",
+      "tipShape",
+      "minSize",
+      "maxSize",
+      "smoothness",
+      "tipAngle",
     ],
-    if: {
-      required: [
-        "rev",
-      ],
-    },
-    then: {
-      required: [
-        "id",
-        "type",
-        "rev",
-        "name",
-        "kind",
-        "minSize",
-        "maxSize",
-        "smoothness",
-        "tip",
-        "tipAngle",
-        "colourId",
-      ],
-    },
-    else: {
-      propertyNames: {
-        enum: [
-          "id",
-          "type",
-          "name",
+  },
+  "tool.pen.list.result": {
+    title: "PenList",
+    description: "`tool.pen.list` result.",
+    type: "object",
+    properties: {
+      pens: {
+        description: "Pens in project order.",
+        type: "array",
+        items: {
+          $ref: "#/$defs/tool.pen.list.PenEntry",
+        },
+      },
+      currentBrushPenId: {
+        description: "The current brush pen.",
+        type: [
+          "string",
+          "null",
+        ],
+      },
+      currentEraserPenId: {
+        description: "The current eraser pen.",
+        type: [
+          "string",
+          "null",
         ],
       },
     },
-  },
-  "tool.pen.set.PenKind": {
-    oneOf: [
-      {
-        type: "string",
-        const: "brush",
-        description: "Used by the Brush (and Pencil/shape thickness).",
-      },
-      {
-        type: "string",
-        const: "eraser",
-        description: "Used by the Eraser.",
-      },
+    required: [
+      "pens",
     ],
-    description: "Tool family of a pen (02 §6.1 \"Type\"). Persisted as `kind` because `type` is the envelope field (SI-004).",
   },
-  "tool.pen.set.Tip": {
-    oneOf: [
-      {
+  "tool.pen.rename.params": {
+    title: "PenRenameParams",
+    description: "`tool.pen.rename` parameters.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
         type: "string",
-        const: "round",
-        description: "Round nib (default).",
       },
-      {
+      name: {
+        description: "The new name.",
         type: "string",
-        const: "oval",
-        description: "Oval nib.",
       },
-      {
-        type: "string",
-        const: "square",
-        description: "Square nib.",
-      },
-      {
-        type: "string",
-        const: "flat",
-        description: "Flat nib.",
-      },
+    },
+    additionalProperties: false,
+    required: [
+      "penId",
+      "name",
     ],
-    description: "Tip shape (02 §6.1).",
+  },
+  "tool.pen.rename.result": {
+    title: "PenIdName",
+    description: "`{penId, name}`.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "Pen id.",
+        type: "string",
+      },
+      name: {
+        description: "Name.",
+        type: "string",
+      },
+    },
+    required: [
+      "penId",
+      "name",
+    ],
+  },
+  "tool.pen.select.params": {
+    title: "PenParams",
+    description: "`penId`.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
+        type: "string",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "penId",
+    ],
+  },
+  "tool.pen.select.result": {
+    title: "PenSelected",
+    description: "`{penId, type}`.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
+        type: "string",
+      },
+      type: {
+        description: "Its family.",
+        oneOf: [
+          {
+            description: "Brush pens.",
+            type: "string",
+            const: "brush",
+          },
+          {
+            description: "Eraser pens.",
+            type: "string",
+            const: "eraser",
+          },
+        ],
+      },
+    },
+    required: [
+      "penId",
+      "type",
+    ],
+  },
+  "tool.pen.set.params": {
+    title: "PenSetParams",
+    description: "`tool.pen.set` parameters.",
+    type: "object",
+    properties: {
+      penId: {
+        description: "The pen.",
+        type: "string",
+      },
+      tipShape: {
+        description: "Tip shape.",
+        anyOf: [
+          {
+            description: "A pen's tip shape (02 §6.1).",
+            oneOf: [
+              {
+                description: "Round.",
+                type: "string",
+                const: "round",
+              },
+              {
+                description: "Oval.",
+                type: "string",
+                const: "oval",
+              },
+              {
+                description: "Square.",
+                type: "string",
+                const: "square",
+              },
+              {
+                description: "Flat.",
+                type: "string",
+                const: "flat",
+              },
+            ],
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
+      },
+      minSize: {
+        description: "Minimum size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
+      },
+      maxSize: {
+        description: "Maximum size (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 100,
+      },
+      smoothness: {
+        description: "Smoothness.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 10,
+      },
+      tipAngle: {
+        description: "Tip angle (degrees).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
+        minimum: 0,
+        maximum: 360,
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "penId",
+    ],
   },
   "tool.pen.set.result": {
-    title: "tool.pen.set result",
+    title: "PenResult",
+    description: "`{pen}`.",
     type: "object",
     properties: {
       pen: {
-        $ref: "#/$defs/tool.pen.set.Pen",
+        description: "The pen now.",
       },
     },
     required: [
       "pen",
     ],
-    "x-spec": "`{pen}`",
-    additionalProperties: false,
   },
   "tool.pencil.options.set.params": {
-    title: "tool.pencil.options.set parameters",
+    title: "PencilOptions",
+    description: "Pencil and shape-tool line thickness.",
     type: "object",
     properties: {
       thicknessSource: {
-        type: "string",
-        enum: [
-          "penMax",
-          "fixed",
+        description: "`penMax` (the current brush pen's maximum size) or `fixed`.",
+        oneOf: [
+          {
+            description: "The current brush pen's maximum size.",
+            type: "string",
+            const: "penMax",
+          },
+          {
+            description: "A fixed thickness.",
+            type: "string",
+            const: "fixed",
+          },
         ],
         default: "penMax",
       },
       thickness: {
-        type: "number",
+        description: "The fixed thickness (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0,
         maximum: 100,
       },
     },
     additionalProperties: false,
-    "x-spec": "`thicknessSource: enum \"penMax\"|\"fixed\" = \"penMax\"; thickness?: number (0–100)`",
   },
   "tool.pencil.options.set.result": {
-    title: "tool.pencil.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          thicknessSource: {
-            type: "string",
-            enum: [
-              "penMax",
-              "fixed",
-            ],
-            default: "penMax",
-          },
-          thickness: {
-            type: "number",
-            minimum: 0,
-            maximum: 100,
-          },
-        },
-        required: [
-          "thicknessSource",
-          "thickness",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "tool.placeBehind.set.params": {
-    title: "tool.placeBehind.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "tool.placeBehind.set.result": {
-    title: "tool.placeBehind.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "tool.polyline.options.set.params": {
-    title: "tool.polyline.options.set parameters",
+    title: "PolylineOptions",
+    description: "Polyline snapping.",
     type: "object",
     properties: {
       snap: {
+        description: "Snap to existing anchors.",
         type: "boolean",
         default: true,
       },
       snapRadius: {
+        description: "Snap radius in view pixels.",
         type: "number",
+        default: 8,
         minimum: 1,
         maximum: 50,
-        default: 8,
       },
     },
     additionalProperties: false,
-    "x-spec": "`snap: bool = true; snapRadius: number = 8 (1–50 view px)`",
   },
   "tool.polyline.options.set.result": {
-    title: "tool.polyline.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          snap: {
-            type: "boolean",
-            default: true,
-          },
-          snapRadius: {
-            type: "number",
-            minimum: 1,
-            maximum: 50,
-            default: 8,
-          },
-        },
-        required: [
-          "snap",
-          "snapRadius",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "tool.select.options.set.params": {
-    title: "tool.select.options.set parameters",
+    title: "SelectOptions",
+    description: "Select tool options.",
     type: "object",
     properties: {
       rectRule: {
-        type: "string",
-        enum: [
-          "inside",
-          "intersect",
+        description: "`inside` (objects wholly inside) or `intersect`.",
+        oneOf: [
+          {
+            description: "Wholly inside.",
+            type: "string",
+            const: "inside",
+          },
+          {
+            description: "Intersecting.",
+            type: "string",
+            const: "intersect",
+          },
         ],
         default: "inside",
       },
     },
     additionalProperties: false,
-    "x-spec": "`rectRule: enum \"inside\"|\"intersect\" = \"inside\"`",
   },
   "tool.select.options.set.result": {
-    title: "tool.select.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          rectRule: {
-            type: "string",
-            enum: [
-              "inside",
-              "intersect",
-            ],
-            default: "inside",
-          },
-        },
-        required: [
-          "rectRule",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "tool.settings.get.params": {
-    title: "tool.settings.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
+  },
+  "tool.settings.get.SymmetrySetting": {
+    description: "Symmetry (02 §6.2).",
+    type: "object",
+    properties: {
+      mode: {
+        description: "`none`, `mirror` or `kaleidoscope`.",
+        type: "string",
+        default: "none",
+      },
+      angle: {
+        description: "Angle, 0-360°.",
+        type: "number",
+        default: 0,
+      },
+      mirrors: {
+        description: "Mirrors, 2-16.",
+        type: "integer",
+        maximum: 9223372036854775807n,
+        default: 6,
+        minimum: -9223372036854775808n,
+      },
+    },
+  },
+  "tool.settings.get.TabletSetting": {
+    description: "Tablet input settings (02 §6.3).",
+    type: "object",
+    properties: {
+      ignoreTablet: {
+        description: "The tablet acts as a mouse.",
+        type: "boolean",
+        default: false,
+      },
+      portraitCorrection: {
+        description: "Portrait-mode correction.",
+        type: "boolean",
+        default: false,
+      },
+      compatibilityMode: {
+        description: "Compatibility handling.",
+        type: "boolean",
+        default: false,
+      },
+      inputInterface: {
+        description: "The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+  },
+  "tool.settings.get.GapMode": {
+    description: "The automatic gap-closing mode (03 §8.8).",
+    oneOf: [
+      {
+        description: "Off (default).",
+        type: "string",
+        const: "off",
+      },
+      {
+        description: "Small.",
+        type: "string",
+        const: "small",
+      },
+      {
+        description: "Medium.",
+        type: "string",
+        const: "medium",
+      },
+      {
+        description: "Large.",
+        type: "string",
+        const: "large",
+      },
+    ],
   },
   "tool.settings.get.result": {
-    title: "tool.settings.get result",
+    title: "SettingsResult",
+    description: "`tool.settings.get` result (spec A: `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`).",
     type: "object",
     properties: {
       placeBehind: {
+        description: "Draw Behind.",
         type: "boolean",
       },
       drawTopLayer: {
+        description: "Draw on Top Layer.",
         type: "boolean",
       },
       snapToContour: {
+        description: "Snap to Contour.",
         type: "boolean",
       },
       symmetry: {
-        type: "boolean",
+        description: "Symmetry.",
+        $ref: "#/$defs/tool.settings.get.SymmetrySetting",
       },
       tablet: {
-        type: "boolean",
+        description: "Tablet input settings.",
+        $ref: "#/$defs/tool.settings.get.TabletSetting",
       },
       gapClosing: {
-        type: "string",
-        maxLength: 65536,
+        description: "The automatic gap-closing mode (03 §8.8).",
+        $ref: "#/$defs/tool.settings.get.GapMode",
       },
     },
     required: [
@@ -77806,55 +81176,35 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "tablet",
       "gapClosing",
     ],
-    "x-spec": "`{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`",
-    additionalProperties: false,
   },
   "tool.snapToContour.set.params": {
-    title: "tool.snapToContour.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "tool.snapToContour.set.result": {
-    title: "tool.snapToContour.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
-    ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
-  },
-  "tool.symmetry.set.Mode": {
-    description: "Symmetry mode.",
-    oneOf: [
-      {
-        description: "No copies.",
-        type: "string",
-        const: "none",
-      },
-      {
-        description: "One mirror axis.",
-        type: "string",
-        const: "mirror",
-      },
-      {
-        description: "Dihedral symmetry.",
-        type: "string",
-        const: "kaleidoscope",
-      },
     ],
   },
   "tool.symmetry.set.params": {
@@ -77863,8 +81213,24 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       mode: {
-        description: "Mode.",
-        $ref: "#/$defs/tool.symmetry.set.Mode",
+        description: "Mode (spec A: `= \"none\"`).",
+        oneOf: [
+          {
+            description: "No copies.",
+            type: "string",
+            const: "none",
+          },
+          {
+            description: "One mirror axis.",
+            type: "string",
+            const: "mirror",
+          },
+          {
+            description: "Dihedral symmetry.",
+            type: "string",
+            const: "kaleidoscope",
+          },
+        ],
         default: "none",
       },
       angle: {
@@ -77889,7 +81255,23 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     properties: {
       mode: {
         description: "Mode.",
-        $ref: "#/$defs/tool.symmetry.set.Mode",
+        oneOf: [
+          {
+            description: "No copies.",
+            type: "string",
+            const: "none",
+          },
+          {
+            description: "One mirror axis.",
+            type: "string",
+            const: "mirror",
+          },
+          {
+            description: "Dihedral symmetry.",
+            type: "string",
+            const: "kaleidoscope",
+          },
+        ],
       },
       angle: {
         description: "Axis angle (degrees).",
@@ -77909,42 +81291,85 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "tool.tablet.set.params": {
-    title: "tool.tablet.set parameters",
+    title: "TabletParams",
+    description: "`tool.tablet.set` parameters.",
     type: "object",
     properties: {
       ignoreTablet: {
+        description: "The tablet acts as a mouse (absent: unchanged; a new user's value is false).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: false,
+      },
+      portraitCorrection: {
+        description: "Portrait-mode correction.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: false,
+      },
+      compatibilityMode: {
+        description: "Compatibility handling.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: false,
+      },
+      inputInterface: {
+        description: "The input interface.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
+      },
+    },
+    additionalProperties: false,
+  },
+  "tool.tablet.set.TabletSetting": {
+    description: "Tablet input settings (02 §6.3).",
+    type: "object",
+    properties: {
+      ignoreTablet: {
+        description: "The tablet acts as a mouse.",
         type: "boolean",
         default: false,
       },
       portraitCorrection: {
+        description: "Portrait-mode correction.",
         type: "boolean",
         default: false,
       },
       compatibilityMode: {
+        description: "Compatibility handling.",
         type: "boolean",
         default: false,
       },
       inputInterface: {
-        type: "string",
-        maxLength: 65536,
+        description: "The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
-    additionalProperties: false,
-    "x-spec": "`ignoreTablet?: bool = false; portraitCorrection?: bool = false; compatibilityMode?: bool = false; inputInterface?: string`",
   },
   "tool.tablet.set.result": {
-    title: "tool.tablet.set result",
+    title: "TabletResult",
+    description: "`{settings, restartRequired}`.",
     type: "object",
     properties: {
       settings: {
-        type: "array",
-        items: {
-          type: "string",
-          maxLength: 65536,
-        },
-        maxItems: 100000,
+        description: "The tablet settings now.",
+        $ref: "#/$defs/tool.tablet.set.TabletSetting",
       },
       restartRequired: {
+        description: "A change applies after a restart (the input interface).",
         type: "boolean",
       },
     },
@@ -77952,343 +81377,334 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "settings",
       "restartRequired",
     ],
-    "x-spec": "`{settings, restartRequired: bool}`",
-    additionalProperties: false,
   },
   "tool.text.options.set.params": {
-    title: "tool.text.options.set parameters",
+    title: "TextOptions",
+    description: "Text defaults for new text (02 §7.6.1).",
     type: "object",
     properties: {
       font: {
-        type: "string",
-        maxLength: 65536,
+        description: "Font family.",
+        type: [
+          "string",
+          "null",
+        ],
       },
       size: {
-        type: "number",
+        description: "Size.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: 36,
         minimum: 1,
         maximum: 512,
-        default: 36,
       },
       bold: {
-        type: "boolean",
+        description: "Bold.",
+        type: [
+          "boolean",
+          "null",
+        ],
         default: false,
       },
       italic: {
-        type: "boolean",
+        description: "Italic.",
+        type: [
+          "boolean",
+          "null",
+        ],
         default: false,
       },
       baseline: {
-        type: "string",
-        enum: [
-          "normal",
-          "subscript",
-          "superscript",
-        ],
-        default: "normal",
-      },
-      kerning: {
-        type: "integer",
-        minimum: -60,
-        maximum: 60,
-        default: 0,
-      },
-      autoKern: {
-        type: "boolean",
-        default: true,
-      },
-      align: {
-        type: "string",
-        enum: [
-          "left",
-          "centre",
-          "right",
-          "justify",
-        ],
-        default: "left",
-      },
-      leftMargin: {
-        type: "number",
-        default: 0,
-      },
-      rightMargin: {
-        type: "number",
-        default: 0,
-      },
-      indent: {
-        type: "number",
-        default: 0,
-      },
-      lineSpacing: {
-        type: "number",
-        default: 0,
-      },
-      outlineColourId: {
+        description: "Baseline.",
         anyOf: [
           {
-            type: "string",
-            minLength: 1,
-            maxLength: 4096,
-            description: "object ID or path reference (10 §3)",
+            description: "Baseline.",
+            oneOf: [
+              {
+                description: "Normal.",
+                type: "string",
+                const: "normal",
+              },
+              {
+                description: "Subscript.",
+                type: "string",
+                const: "subscript",
+              },
+              {
+                description: "Superscript.",
+                type: "string",
+                const: "superscript",
+              },
+            ],
           },
           {
             type: "null",
           },
         ],
+        default: "normal",
+      },
+      kerning: {
+        description: "Kerning.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: 0,
+        minimum: -60,
+        maximum: 60,
+      },
+      autoKern: {
+        description: "Automatic kerning.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: true,
+      },
+      align: {
+        description: "Alignment.",
+        anyOf: [
+          {
+            description: "Alignment.",
+            oneOf: [
+              {
+                description: "Left.",
+                type: "string",
+                const: "left",
+              },
+              {
+                description: "Centre.",
+                type: "string",
+                const: "centre",
+              },
+              {
+                description: "Right.",
+                type: "string",
+                const: "right",
+              },
+              {
+                description: "Justified.",
+                type: "string",
+                const: "justify",
+              },
+            ],
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: "left",
+      },
+      leftMargin: {
+        description: "Left margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: 0,
+        minimum: 0,
+        maximum: 1000,
+      },
+      rightMargin: {
+        description: "Right margin (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: 0,
+        minimum: 0,
+        maximum: 1000,
+      },
+      indent: {
+        description: "First-line indent (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: 0,
+        minimum: -99,
+        maximum: 1000,
+      },
+      lineSpacing: {
+        description: "Extra line spacing (du).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: 0,
+        minimum: -99,
+        maximum: 1000,
+      },
+      outlineColourId: {
+        description: "Outline colour of new text (`null`: none). Absent leaves it; `null` clears it (ruling D-7e).",
+        type: [
+          "string",
+          "null",
+        ],
       },
     },
     additionalProperties: false,
-    "x-spec": "`font?: string; size?: number (1–512) = 36; bold?: bool = false; italic?: bool = false; baseline?: enum \"normal\"|\"subscript\"|\"superscript\" = \"normal\"; kerning?: int (−60–60) = 0; autoKern?: bool = true; align?: enum \"left\"|\"centre\"|\"right\"|\"justify\" = \"left\"; leftMargin?: number = 0; rightMargin?: number = 0; indent?: number = 0; lineSpacing?: number = 0; outlineColourId?: id|null`",
   },
   "tool.text.options.set.result": {
-    title: "tool.text.options.set result",
+    title: "OptionsResult",
+    description: "`{options}`.",
     type: "object",
     properties: {
       options: {
+        description: "The tool's options now.",
         type: "object",
-        properties: {
-          font: {
-            type: "string",
-            maxLength: 65536,
-          },
-          size: {
-            type: "number",
-            minimum: 1,
-            maximum: 512,
-            default: 36,
-          },
-          bold: {
-            type: "boolean",
-            default: false,
-          },
-          italic: {
-            type: "boolean",
-            default: false,
-          },
-          baseline: {
-            type: "string",
-            enum: [
-              "normal",
-              "subscript",
-              "superscript",
-            ],
-            default: "normal",
-          },
-          kerning: {
-            type: "integer",
-            minimum: -60,
-            maximum: 60,
-            default: 0,
-          },
-          autoKern: {
-            type: "boolean",
-            default: true,
-          },
-          align: {
-            type: "string",
-            enum: [
-              "left",
-              "centre",
-              "right",
-              "justify",
-            ],
-            default: "left",
-          },
-          leftMargin: {
-            type: "number",
-            default: 0,
-          },
-          rightMargin: {
-            type: "number",
-            default: 0,
-          },
-          indent: {
-            type: "number",
-            default: 0,
-          },
-          lineSpacing: {
-            type: "number",
-            default: 0,
-          },
-          outlineColourId: {
-            anyOf: [
-              {
-                type: "string",
-                minLength: 1,
-                maxLength: 4096,
-                description: "object ID or path reference (10 §3)",
-              },
-              {
-                type: "null",
-              },
-            ],
-          },
-        },
-        required: [
-          "font",
-          "size",
-          "bold",
-          "italic",
-          "baseline",
-          "kerning",
-          "autoKern",
-          "align",
-          "leftMargin",
-          "rightMargin",
-          "indent",
-          "lineSpacing",
-          "outlineColourId",
-        ],
-        additionalProperties: false,
+        additionalProperties: true,
       },
     },
     required: [
       "options",
     ],
-    "x-spec": "`{options}`",
-    additionalProperties: false,
   },
   "ui.contextHelpMode.set.params": {
-    title: "ui.contextHelpMode.set parameters",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    additionalProperties: false,
-    "x-spec": "`enabled: bool`",
   },
   "ui.contextHelpMode.set.result": {
-    title: "ui.contextHelpMode.set result",
+    title: "Enabled",
+    description: "`{enabled}`.",
     type: "object",
     properties: {
       enabled: {
+        description: "On or off.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "enabled",
     ],
-    "x-spec": "`{enabled}`",
-    additionalProperties: false,
   },
   "ui.help.get.params": {
-    title: "ui.help.get parameters",
+    title: "HelpParams",
+    description: "`ui.help.get` parameters (exactly one target). No schema length bound: an id longer than any catalogue id is\nunknown and answers its typed error (`command.unknown`, `window.panelNotFound`, `prefs.unknownKey`,\n`ui.unknownMessage`), which a schema bound would pre-empt (C41-R2-21 audit); the frame limit bounds the input.",
     type: "object",
     properties: {
       commandId: {
-        type: "string",
-        maxLength: 65536,
+        description: "A command.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       panelId: {
-        type: "string",
-        maxLength: 65536,
+        description: "A panel (01 §5.2) or tool palette.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       preferenceKey: {
-        type: "string",
-        maxLength: 65536,
+        description: "A preference.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       messageId: {
-        type: "string",
-        maxLength: 65536,
+        description: "A message.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`commandId?: string; panelId?: string; preferenceKey?: string; messageId?: string`",
   },
   "ui.help.get.result": {
-    title: "ui.help.get result",
+    title: "Help",
+    description: "`{title, text}`.",
     type: "object",
     properties: {
       title: {
+        description: "Title.",
         type: "string",
-        maxLength: 65536,
       },
       text: {
+        description: "Help content (Markdown).",
         type: "string",
-        maxLength: 65536,
-        description: "Markdown",
       },
     },
     required: [
       "title",
       "text",
     ],
-    "x-spec": "`{title, text (Markdown)}`",
-    additionalProperties: false,
   },
   "ui.help.open.params": {
-    title: "ui.help.open parameters",
+    title: "HelpOpenParams",
+    description: "`ui.help.open` parameters.",
     type: "object",
     properties: {
       topic: {
-        type: "string",
-        maxLength: 65536,
+        description: "A documentation topic (a `get_docs` topic, a command id, a panel id or a preference key).",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 256,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`topic?: string`",
   },
   "ui.help.open.result": {
-    title: "ui.help.open result",
+    title: "Empty",
+    description: "`{}`.",
     type: "object",
-    properties: {},
-    additionalProperties: false,
-    "x-spec": "`{}`",
   },
   "ui.message.shown.params": {
-    title: "ui.message.shown parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    description: "Events take no parameters; subscribe to them (11 §9).",
-    "x-spec": "`{messageId, severity: \"info\"|\"warning\"|\"error\"|\"question\", text, details?, source: \"user\"|\"agent\", suppressed}`",
   },
   "ui.message.shown.result": {
-    title: "ui.message.shown result",
+    title: "MessageShown",
+    description: "`ui.message.shown` payload (01 §12.2).",
     type: "object",
     properties: {
       messageId: {
+        description: "Message id (`area.reason`).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       severity: {
+        description: "`info`, `warning`, `error` or `question`.",
         type: "string",
-        enum: [
-          "info",
-          "warning",
-          "error",
-          "question",
-        ],
       },
       text: {
+        description: "Text.",
         type: "string",
-        maxLength: 65536,
       },
       details: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
-        "x-specIssue": "SI-041",
+        description: "Structured details.",
       },
       source: {
+        description: "`user` or `agent`.",
         type: "string",
-        enum: [
-          "user",
-          "agent",
-        ],
       },
       suppressed: {
+        description: "The GUI suppressed it (\"don't show again\").",
         type: "boolean",
       },
     },
@@ -78299,95 +81715,93 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "source",
       "suppressed",
     ],
-    description: "Event payload (delivered to subscribers).",
-    "x-spec": "—",
-    additionalProperties: false,
   },
   "ui.preferences.open.params": {
-    title: "ui.preferences.open parameters",
+    title: "PrefsOpenParams",
+    description: "`ui.preferences.open` parameters.",
     type: "object",
     properties: {
       category: {
-        type: "string",
-        maxLength: 65536,
+        description: "The category to show (a Preferences category id such as `interface`, or `keyboard`, `tips`).",
+        type: [
+          "string",
+          "null",
+        ],
+        maxLength: 64,
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`category?: string`",
   },
   "ui.preferences.open.result": {
-    title: "ui.preferences.open result",
+    title: "Empty",
+    description: "`{}`.",
     type: "object",
-    properties: {},
-    additionalProperties: false,
-    "x-spec": "`{}`",
   },
   "ui.startScreen.set.params": {
-    title: "ui.startScreen.set parameters",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
   },
   "ui.startScreen.set.result": {
-    title: "ui.startScreen.set result",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
   },
   "ui.statusBar.get.params": {
-    title: "ui.statusBar.get parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "ui.statusBar.get.result": {
-    title: "ui.statusBar.get result",
+    title: "StatusBar",
+    description: "`ui.statusBar.get` result: the segment texts of 01 §9.1.",
     type: "object",
     properties: {
       visible: {
+        description: "The status bar is shown.",
         type: "boolean",
       },
       description: {
+        description: "Long description of the item under the pointer (empty when none).",
         type: "string",
-        maxLength: 65536,
       },
       context: {
+        description: "Current scene and frame.",
         type: "string",
-        maxLength: 65536,
       },
       pointer: {
-        type: [
-          "string",
-          "number",
-          "boolean",
-          "null",
-        ],
-        "x-placeholder": true,
-        description: "type not stated by the owning section (spec issue); a scalar",
-        "x-specIssue": "SI-041",
+        description: "Pointer coordinates in the current view and the selection summary.",
+        type: "string",
       },
       playback: {
-        type: "boolean",
+        description: "Achieved frame rate and played range during playback (empty otherwise).",
+        type: "string",
       },
       agentIndicator: {
-        type: "boolean",
+        description: "The agent-session indicator (empty when no agent is connected).",
+        type: "string",
       },
     },
     required: [
@@ -78398,736 +81812,942 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "playback",
       "agentIndicator",
     ],
-    "x-spec": "`{visible, description, context, pointer, playback, agentIndicator}`",
-    additionalProperties: false,
   },
   "ui.statusBar.set.params": {
-    title: "ui.statusBar.set parameters",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "visible",
     ],
-    additionalProperties: false,
-    "x-spec": "`visible: bool`",
   },
   "ui.statusBar.set.result": {
-    title: "ui.statusBar.set result",
+    title: "Visible",
+    description: "`{visible}`.",
     type: "object",
     properties: {
       visible: {
+        description: "Shown.",
+        type: "boolean",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "visible",
+    ],
+  },
+  "ui.theme.list.params": {
+    title: "NoParams",
+    description: "No parameters.",
+    type: "object",
+    additionalProperties: false,
+  },
+  "ui.theme.list.Theme": {
+    description: "One theme.",
+    type: "object",
+    properties: {
+      themeId: {
+        description: "Theme id (a value of `interface.theme`).",
+        type: "string",
+      },
+      name: {
+        description: "Display name.",
+        type: "string",
+      },
+      builtIn: {
+        description: "Shipped with the application.",
+        type: "boolean",
+      },
+      dark: {
+        description: "A dark theme.",
+        type: "boolean",
+      },
+      colours: {
+        description: "The colour tokens of a user theme (`--tt-<token>`); built-in themes carry their colours in the front end\n(additive member, SI-115).",
+        type: [
+          "object",
+          "null",
+        ],
+        additionalProperties: true,
+      },
+    },
+    required: [
+      "themeId",
+      "name",
+      "builtIn",
+      "dark",
+    ],
+  },
+  "ui.theme.list.result": {
+    title: "Array_of_Theme",
+    type: "array",
+    items: {
+      $ref: "#/$defs/ui.theme.list.Theme",
+    },
+  },
+  "ui.tips.list.params": {
+    title: "NoParams",
+    description: "No parameters.",
+    type: "object",
+    additionalProperties: false,
+  },
+  "ui.tips.list.Tip": {
+    description: "One suppressible message.",
+    type: "object",
+    properties: {
+      messageId: {
+        description: "Message id.",
+        type: "string",
+      },
+      description: {
+        description: "What it conveys.",
+        type: "string",
+      },
+      suppressed: {
+        description: "Suppressed (\"don't show again\" was checked).",
         type: "boolean",
       },
     },
     required: [
-      "visible",
+      "messageId",
+      "description",
+      "suppressed",
     ],
-    "x-spec": "`{visible}`",
-    additionalProperties: false,
-  },
-  "ui.theme.list.params": {
-    title: "ui.theme.list parameters",
-    type: "object",
-    properties: {},
-    additionalProperties: false,
-    "x-spec": "—",
-  },
-  "ui.theme.list.result": {
-    title: "ui.theme.list result",
-    type: "array",
-    items: {
-      type: "object",
-      properties: {
-        themeId: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        name: {
-          type: "string",
-          maxLength: 65536,
-        },
-        builtIn: {
-          type: "boolean",
-        },
-        dark: {
-          type: "boolean",
-        },
-      },
-      required: [
-        "themeId",
-        "name",
-        "builtIn",
-        "dark",
-      ],
-      additionalProperties: false,
-    },
-    "x-spec": "`[{themeId, name, builtIn, dark}]`",
-  },
-  "ui.tips.list.params": {
-    title: "ui.tips.list parameters",
-    type: "object",
-    properties: {},
-    additionalProperties: false,
-    "x-spec": "—",
   },
   "ui.tips.list.result": {
-    title: "ui.tips.list result",
+    title: "Array_of_Tip",
     type: "array",
     items: {
-      type: "object",
-      properties: {
-        messageId: {
-          type: "string",
-          maxLength: 65536,
-        },
-        description: {
-          type: "string",
-          maxLength: 65536,
-        },
-        suppressed: {
-          type: "boolean",
-        },
-      },
-      required: [
-        "messageId",
-        "description",
-        "suppressed",
-      ],
-      additionalProperties: false,
+      $ref: "#/$defs/ui.tips.list.Tip",
     },
-    "x-spec": "`[{messageId, description, suppressed}]`",
   },
   "ui.tips.reset.params": {
-    title: "ui.tips.reset parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
   "ui.tips.reset.result": {
-    title: "ui.tips.reset result",
+    title: "TipsReset",
+    description: "`ui.tips.reset` result.",
     type: "object",
     properties: {
       reenabled: {
+        description: "Messages shown again.",
         type: "integer",
+        format: "uint",
+        minimum: 0,
       },
     },
     required: [
       "reenabled",
     ],
-    "x-spec": "`{reenabled: int}`",
-    additionalProperties: false,
   },
   "ui.tips.set.params": {
-    title: "ui.tips.set parameters",
+    title: "TipSet",
+    description: "`ui.tips.set` parameters and result.",
     type: "object",
     properties: {
       messageId: {
+        description: "Message id.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       suppressed: {
+        description: "Suppress (true) or show again (false).",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "messageId",
       "suppressed",
     ],
-    additionalProperties: false,
-    "x-spec": "`messageId: string; suppressed: bool`",
   },
   "ui.tips.set.result": {
-    title: "ui.tips.set result",
+    title: "TipSet",
+    description: "`ui.tips.set` parameters and result.",
     type: "object",
     properties: {
       messageId: {
+        description: "Message id.",
         type: "string",
-        maxLength: 65536,
+        minLength: 1,
+        maxLength: 256,
       },
       suppressed: {
+        description: "Suppress (true) or show again (false).",
         type: "boolean",
       },
     },
+    additionalProperties: false,
     required: [
       "messageId",
       "suppressed",
     ],
-    "x-spec": "`{messageId, suppressed}`",
-    additionalProperties: false,
   },
   "view.active.set.params": {
-    title: "view.active.set parameters",
+    title: "ActiveParams",
+    description: "`view.active.set` parameters.",
     type: "object",
     properties: {
       viewId: {
+        description: "The view window to activate.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
+    additionalProperties: false,
     required: [
       "viewId",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId: id`",
   },
   "view.active.set.result": {
-    title: "view.active.set result",
+    title: "ViewIdResult",
+    description: "`{viewId}`.",
     type: "object",
     properties: {
       viewId: {
+        description: "View id.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
     },
     required: [
       "viewId",
     ],
-    "x-spec": "`{viewId}`",
+  },
+  "view.coordinates.convert.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "view.coordinates.convert.Space": {
+    description: "A space a view converts between.",
+    oneOf: [
+      {
+        description: "View pixels (y down).",
+        type: "string",
+        const: "view",
+      },
+      {
+        description: "Drawing space of the view's drawing (du, y up).",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Scene space (fields) under the current element's transform at the current frame.",
+        type: "string",
+        const: "scene",
+      },
+    ],
   },
   "view.coordinates.convert.params": {
-    title: "view.coordinates.convert parameters",
+    title: "ConvertParams",
+    description: "`view.coordinates.convert` parameters.",
     type: "object",
     properties: {
       viewId: {
+        description: "View window.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The point.",
+        $ref: "#/$defs/view.coordinates.convert.Point",
       },
       from: {
-        type: "string",
-        enum: [
-          "view",
-          "drawing",
-          "scene",
-        ],
+        description: "Its space.",
+        $ref: "#/$defs/view.coordinates.convert.Space",
       },
       to: {
-        type: "string",
-        enum: [
-          "view",
-          "drawing",
-          "scene",
-        ],
+        description: "The space wanted.",
+        $ref: "#/$defs/view.coordinates.convert.Space",
       },
     },
+    additionalProperties: false,
     required: [
       "viewId",
       "point",
       "from",
       "to",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId: id; point: point; from: enum \"view\"|\"drawing\"|\"scene\"; to: enum \"view\"|\"drawing\"|\"scene\"`",
   },
   "view.coordinates.convert.result": {
-    title: "view.coordinates.convert result",
+    title: "PointResult",
+    description: "`{point}`.",
     type: "object",
     properties: {
       point: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "The converted point.",
+        $ref: "#/$defs/view.coordinates.convert.Point",
       },
     },
     required: [
       "point",
     ],
-    "x-spec": "`{point}`",
-    additionalProperties: false,
   },
   "view.list.params": {
-    title: "view.list parameters",
+    title: "NoParams",
+    description: "No parameters.",
     type: "object",
-    properties: {},
     additionalProperties: false,
-    "x-spec": "—",
   },
-  "view.list.result": {
-    title: "view.list result",
-    type: "array",
-    items: {
-      type: "object",
-      properties: {
-        viewId: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        panelId: {
-          type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
-        },
-        type: {
-          type: "string",
-          maxLength: 65536,
-        },
-        focused: {
-          type: "boolean",
-        },
-        size: {
-          type: "object",
-          properties: {
-            width: {
-              type: "number",
-            },
-            height: {
-              type: "number",
-            },
-          },
-          required: [
-            "width",
-            "height",
-          ],
-          additionalProperties: false,
-        },
-        transform: {
-          type: [
-            "string",
-            "number",
-            "boolean",
-            "null",
-          ],
-          "x-placeholder": true,
-          description: "type not stated by the owning section (spec issue); a scalar",
-          "x-specIssue": "SI-042",
-        },
-      },
-      required: [
-        "viewId",
-        "panelId",
-        "type",
-        "focused",
-        "size",
-        "transform",
-      ],
-      additionalProperties: false,
-    },
-    "x-spec": "`[{viewId, panelId, type, focused, size: {width, height}, transform}]`",
-  },
-  "view.pan.set.params": {
-    title: "view.pan.set parameters",
+  "view.list.ViewEntry": {
+    description: "A view window entry.",
     type: "object",
     properties: {
       viewId: {
+        description: "View id (= its panel id, SI-112).",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+      },
+      panelId: {
+        description: "Panel id.",
+        type: "string",
+      },
+      type: {
+        description: "Current type.",
+        $ref: "#/$defs/view.list.ViewType",
+      },
+      focused: {
+        description: "The active view window.",
+        type: "boolean",
+      },
+      size: {
+        description: "Canvas size in logical pixels.",
+        $ref: "#/$defs/view.list.Size",
+      },
+      transform: {
+        description: "The current type's transform.",
+        $ref: "#/$defs/view.list.ViewTransform",
+      },
+    },
+    required: [
+      "viewId",
+      "panelId",
+      "type",
+      "focused",
+      "size",
+      "transform",
+    ],
+  },
+  "view.list.ViewType": {
+    description: "A view window's type (01 §4, §5.3).",
+    oneOf: [
+      {
+        description: "Drawing view.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Camera view.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Top view.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Side view.",
+        type: "string",
+        const: "side",
+      },
+    ],
+  },
+  "view.list.Size": {
+    description: "A size in logical pixels.",
+    type: "object",
+    properties: {
+      width: {
+        description: "Width.",
+        type: "number",
+      },
+      height: {
+        description: "Height.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "width",
+      "height",
+    ],
+  },
+  "view.list.ViewTransform": {
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+    type: "object",
+    properties: {
+      zoom: {
+        description: "Zoom factor (1 = 100 %).",
+        type: "number",
+      },
+      rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
+        type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.list.Point",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "zoom",
+      "rotationDegrees",
+      "centre",
+    ],
+  },
+  "view.list.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "view.list.result": {
+    title: "Array_of_ViewEntry",
+    type: "array",
+    items: {
+      $ref: "#/$defs/view.list.ViewEntry",
+    },
+  },
+  "view.pan.set.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
+  },
+  "view.pan.set.params": {
+    title: "PanParams",
+    description: "`view.pan.set` parameters.",
+    type: "object",
+    properties: {
+      viewId: {
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
         ],
-        additionalProperties: false,
+        default: null,
+      },
+      centre: {
+        description: "The document point to centre on.",
+        anyOf: [
+          {
+            $ref: "#/$defs/view.pan.set.Point",
+          },
+          {
+            type: "null",
+          },
+        ],
+        default: null,
       },
       by: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "A pan by view pixels (the content moves by this offset).",
+        anyOf: [
+          {
+            $ref: "#/$defs/view.pan.set.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
-        description: "(view pixels)",
+        default: null,
       },
       atPointer: {
+        description: "Centre on the pointer.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; centre?: point; by?: point (view pixels); atPointer: bool = false`",
   },
   "view.pan.set.result": {
-    title: "view.pan.set result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.pan.set.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
   },
   "view.rotation.set.params": {
-    title: "view.rotation.set parameters",
+    title: "RotationParams",
+    description: "`view.rotation.set` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       degrees: {
-        type: "number",
+        description: "Absolute rotation in degrees (clockwise positive in the view).",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: -360,
         maximum: 360,
       },
       steps: {
-        type: "integer",
+        description: "30° steps (clockwise = +1).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -12,
+        maximum: 12,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; degrees?: number (−360–360); steps?: int`",
+  },
+  "view.rotation.set.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.rotation.set.result": {
-    title: "view.rotation.set result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.rotation.set.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
   },
   "view.transform.get.params": {
-    title: "view.transform.get parameters",
+    title: "ViewParams",
+    description: "`viewId?`.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id`",
+  },
+  "view.transform.get.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.transform.get.result": {
-    title: "view.transform.get result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.transform.get.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre: point}`",
-    additionalProperties: false,
+  },
+  "view.transform.reset.Part": {
+    description: "A part of a view transform.",
+    oneOf: [
+      {
+        description: "Zoom back to 100 %.",
+        type: "string",
+        const: "zoom",
+      },
+      {
+        description: "Rotation back to 0°.",
+        type: "string",
+        const: "rotation",
+      },
+      {
+        description: "Recentre on the drawing centre.",
+        type: "string",
+        const: "pan",
+      },
+    ],
   },
   "view.transform.reset.params": {
-    title: "view.transform.reset parameters",
+    title: "ResetParams",
+    description: "`view.transform.reset` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       parts: {
+        description: "Parts to reset.",
         type: "array",
         items: {
-          type: "string",
-          enum: [
-            "zoom",
-            "rotation",
-            "pan",
-          ],
+          $ref: "#/$defs/view.transform.reset.Part",
         },
-        maxItems: 100000,
-        default: [
-          "zoom",
-          "rotation",
-          "pan",
-        ],
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; parts: [enum \"zoom\"|\"rotation\"|\"pan\"] = [\"zoom\",\"rotation\",\"pan\"]`",
+  },
+  "view.transform.reset.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
+    additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.transform.reset.result": {
-    title: "view.transform.reset result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.transform.reset.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
+  },
+  "view.type.set.TypeParam": {
+    description: "A view type, or `previous` (switch active view, 01 §4).",
+    oneOf: [
+      {
+        description: "Drawing view.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Camera view.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Top view.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Side view.",
+        type: "string",
+        const: "side",
+      },
+      {
+        description: "The type before the last switch.",
+        type: "string",
+        const: "previous",
+      },
+    ],
   },
   "view.type.set.params": {
-    title: "view.type.set parameters",
+    title: "TypeParams",
+    description: "`view.type.set` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       type: {
-        type: "string",
-        enum: [
-          "drawing",
-          "camera",
-          "top",
-          "side",
-          "previous",
-        ],
+        description: "The type.",
+        $ref: "#/$defs/view.type.set.TypeParam",
       },
     },
+    additionalProperties: false,
     required: [
       "type",
     ],
-    additionalProperties: false,
-    "x-spec": "`viewId?: id; type: enum \"drawing\"|\"camera\"|\"top\"|\"side\"|\"previous\"`",
+  },
+  "view.type.set.ViewType": {
+    description: "A view window's type (01 §4, §5.3).",
+    oneOf: [
+      {
+        description: "Drawing view.",
+        type: "string",
+        const: "drawing",
+      },
+      {
+        description: "Camera view.",
+        type: "string",
+        const: "camera",
+      },
+      {
+        description: "Top view.",
+        type: "string",
+        const: "top",
+      },
+      {
+        description: "Side view.",
+        type: "string",
+        const: "side",
+      },
+    ],
   },
   "view.type.set.result": {
-    title: "view.type.set result",
+    title: "TypeResult",
+    description: "`{viewId, type}`.",
     type: "object",
     properties: {
       viewId: {
+        description: "View id.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       type: {
-        type: "string",
+        description: "Its type now.",
+        $ref: "#/$defs/view.type.set.ViewType",
       },
     },
     required: [
       "viewId",
       "type",
     ],
-    "x-spec": "`{viewId, type}`",
+  },
+  "view.zoom.set.Point": {
+    description: "A point in document or view coordinates.",
+    type: "object",
+    properties: {
+      x: {
+        description: "x.",
+        type: "number",
+      },
+      y: {
+        description: "y.",
+        type: "number",
+      },
+    },
     additionalProperties: false,
+    required: [
+      "x",
+      "y",
+    ],
   },
   "view.zoom.set.params": {
-    title: "view.zoom.set parameters",
+    title: "ZoomParams",
+    description: "`view.zoom.set` parameters.",
     type: "object",
     properties: {
       viewId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "View window (default: the active one).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       zoom: {
-        type: "number",
+        description: "Absolute zoom factor.",
+        type: [
+          "number",
+          "null",
+        ],
+        default: null,
         minimum: 0.0625,
         maximum: 64,
       },
       steps: {
-        type: "integer",
+        description: "Table steps (zoom in = +1, zoom out = −1).",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: -64,
+        maximum: 64,
       },
       anchor: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
+        description: "The view point that stays fixed (view pixels; default the view centre).",
+        anyOf: [
+          {
+            $ref: "#/$defs/view.zoom.set.Point",
           },
-          y: {
-            type: "number",
+          {
+            type: "null",
           },
-        },
-        required: [
-          "x",
-          "y",
         ],
-        additionalProperties: false,
-        description: "(view pixels)",
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`viewId?: id; zoom?: number (0.0625–64); steps?: int; anchor?: point (view pixels)`",
   },
   "view.zoom.set.result": {
-    title: "view.zoom.set result",
+    title: "ViewTransform",
+    description: "A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
     type: "object",
     properties: {
       zoom: {
+        description: "Zoom factor (1 = 100 %).",
         type: "number",
-        minimum: 0.0625,
-        maximum: 64,
       },
       rotationDegrees: {
+        description: "View rotation in degrees, in (−180, 180].",
         type: "number",
       },
       centre: {
-        type: "object",
-        properties: {
-          x: {
-            type: "number",
-          },
-          y: {
-            type: "number",
-          },
-        },
-        required: [
-          "x",
-          "y",
-        ],
-        additionalProperties: false,
+        description: "Document point at the view centre.",
+        $ref: "#/$defs/view.zoom.set.Point",
       },
     },
+    additionalProperties: false,
     required: [
       "zoom",
       "rotationDegrees",
       "centre",
     ],
-    "x-spec": "`{zoom, rotationDegrees, centre}`",
-    additionalProperties: false,
   },
   "window.floatingPanels.set.params": {
     title: "Visible",
@@ -79196,11 +82816,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "window.geometry.get.Screen": {
-    description: "A screen.",
+    description: "A screen (01 §12.2 `window.geometry.get`).",
     type: "object",
     properties: {
       x: {
-        description: "Left.",
+        description: "Left, logical pixels.",
         type: "integer",
         maximum: 2147483647,
         minimum: -2147483648,
@@ -79224,10 +82844,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
       },
       scale: {
-        description: "Scale factor.",
+        description: "Scale factor (device pixels per logical pixel).",
         type: "number",
       },
     },
+    additionalProperties: false,
     required: [
       "x",
       "y",
@@ -79238,7 +82859,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "window.geometry.get.result": {
     title: "WindowGeometry",
-    description: "Window geometry.",
+    description: "Window geometry (01 §12.2 `window.geometry.get`).",
     type: "object",
     properties: {
       x: {
@@ -79348,11 +82969,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     additionalProperties: false,
   },
   "window.geometry.set.Screen": {
-    description: "A screen.",
+    description: "A screen (01 §12.2 `window.geometry.get`).",
     type: "object",
     properties: {
       x: {
-        description: "Left.",
+        description: "Left, logical pixels.",
         type: "integer",
         maximum: 2147483647,
         minimum: -2147483648,
@@ -79376,10 +82997,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: 0,
       },
       scale: {
-        description: "Scale factor.",
+        description: "Scale factor (device pixels per logical pixel).",
         type: "number",
       },
     },
+    additionalProperties: false,
     required: [
       "x",
       "y",
@@ -79390,7 +83012,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
   },
   "window.geometry.set.result": {
     title: "WindowGeometry",
-    description: "Window geometry.",
+    description: "Window geometry (01 §12.2 `window.geometry.get`).",
     type: "object",
     properties: {
       x: {
@@ -80983,12 +84605,13 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       name: {
-        description: "Workspace name.",
+        description: "Workspace name (empty, unknown or longer than any name: `workspace.notFound`; C41-R1-13, C41-R2-21 audits).",
         type: "string",
       },
       path: {
         description: "Absolute target path.",
         type: "string",
+        maxLength: 4096,
       },
       onExists: {
         description: "Overwrite policy.",
@@ -81381,6 +85004,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       path: {
         description: "Absolute source path.",
         type: "string",
+        maxLength: 4096,
       },
       onExists: {
         description: "Name-conflict policy.",
@@ -85105,26 +88729,38 @@ export interface anim_stretch_apply_result {
   mergedKeys: string[];
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type anim_tool_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `anim.tool.changed` payload. */
 export interface anim_tool_changed_result {
+  /** The scene-planning tool now. */
   tool: string;
 }
 
+/** No parameters. */
 export type anim_tool_get_params = Record<string, unknown>;
 
+/** `{tool}`. */
 export interface anim_tool_get_result {
+  /** The scene-planning tool. */
   tool: string;
 }
 
+/** A scene-planning tool (05 line 1217). */
+export type anim_tool_set_SceneTool = 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent' | 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate';
+
+/** `anim.tool.set` parameters. */
 export interface anim_tool_set_params {
-  tool: 'select' | 'transform' | 'record' | 'rotate' | 'skew' | 'scale' | 'motion' | 'boneCreate' | 'boneSetup' | 'boneManipulate' | 'boneInverse' | 'boneForward' | 'boneInfluence' | 'boneParent';
+  /** The tool. */
+  tool: anim_tool_set_SceneTool;
+  /** Cycle between Rotate and Skew (05 §5.0's *cycle rotate tools*). */
   cycleRotate?: boolean;
 }
 
+/** `{tool}`. */
 export interface anim_tool_set_result {
+  /** The scene-planning tool. */
   tool: string;
 }
 
@@ -85188,16 +88824,35 @@ export interface anim_transform_set_result {
   warnings: string[];
 }
 
+/** A point of `anim.view.coords.get`. */
+export interface anim_view_coords_get_Pt {
+  /** X. */
+  x: number;
+  /** Y. */
+  y: number;
+  /** Scene Z (scene points; a view point's answer carries it). */
+  z?: number | null;
+}
+
+/** The space of `points`. */
+export type anim_view_coords_get_From = 'scene' | 'view';
+
+/** `anim.view.coords.get` parameters. */
 export interface anim_view_coords_get_params {
-  /** object ID or path reference (10 §3) */
+  /** A Camera view window. */
   viewId: string;
-  points: (Record<string, unknown>)[];
-  from: 'scene' | 'view';
+  /** The points. */
+  points: anim_view_coords_get_Pt[];
+  /** Their space. */
+  from: anim_view_coords_get_From;
+  /** The scene Z of the plane view points are unprojected onto, and of scene points given without `z` (SI-149). */
   depth?: number;
 }
 
+/** `{points}`. */
 export interface anim_view_coords_get_result {
-  points: (Record<string, unknown>)[];
+  /** The converted points. */
+  points: anim_view_coords_get_Pt[];
 }
 
 export interface anim_view_get_params {
@@ -85346,7 +89001,7 @@ export interface app_context_set_PlaybackState {
   playing: boolean;
 }
 
-/** A modal GUI state (never set by the kernel: 11 P5). */
+/** A modal GUI state (reported by the desktop host, never set by a command: 11 P5). */
 export interface app_context_set_Modal {
   /** `dialog`, `gesture` or `progress`. */
   kind: string;
@@ -85408,7 +89063,7 @@ export interface app_context_set_result {
   playback: app_context_set_PlaybackState;
   /** Start screen shown (no project). */
   startScreenVisible: boolean;
-  /** Modal state (always `null` in the kernel). */
+  /** Modal state (reported by the desktop host; `null` headless). */
   modal?: app_context_set_Modal | null;
   /** Connected agent sessions. */
   agentSessions: app_context_set_AgentSessionState[];
@@ -85571,7 +89226,7 @@ export interface app_state_changed_AppState {
   playback: app_state_changed_PlaybackState;
   /** Start screen shown (no project). */
   startScreenVisible: boolean;
-  /** Modal state (always `null` in the kernel). */
+  /** Modal state (reported by the desktop host; `null` headless). */
   modal?: app_state_changed_Modal | null;
   /** Connected agent sessions. */
   agentSessions: app_state_changed_AgentSessionState[];
@@ -85668,7 +89323,7 @@ export interface app_state_changed_PlaybackState {
   playing: boolean;
 }
 
-/** A modal GUI state (never set by the kernel: 11 P5). */
+/** A modal GUI state (reported by the desktop host, never set by a command: 11 P5). */
 export interface app_state_changed_Modal {
   /** `dialog`, `gesture` or `progress`. */
   kind: string;
@@ -85800,7 +89455,7 @@ export interface app_state_get_PlaybackState {
   playing: boolean;
 }
 
-/** A modal GUI state (never set by the kernel: 11 P5). */
+/** A modal GUI state (reported by the desktop host, never set by a command: 11 P5). */
 export interface app_state_get_Modal {
   /** `dialog`, `gesture` or `progress`. */
   kind: string;
@@ -85862,7 +89517,7 @@ export interface app_state_get_result {
   playback: app_state_get_PlaybackState;
   /** Start screen shown (no project). */
   startScreenVisible: boolean;
-  /** Modal state (always `null` in the kernel). */
+  /** Modal state (reported by the desktop host; `null` headless). */
   modal?: app_state_get_Modal | null;
   /** Connected agent sessions. */
   agentSessions: app_state_get_AgentSessionState[];
@@ -87073,14 +90728,14 @@ export interface colour_autoColourUpdate_set_result {
   enabled: boolean;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type colour_current_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `colour.current.changed` payload. */
 export interface colour_current_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The current palette. */
   paletteId: string;
-  /** object ID or path reference (10 §3) */
+  /** The current colour. */
   colourId: string;
 }
 
@@ -87096,15 +90751,17 @@ export interface colour_current_get_result {
   swatch: string;
 }
 
+/** `colour.current.set` parameters. */
 export interface colour_current_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The colour (a swatch's colour id or a swatch reference). */
   colourId: string;
 }
 
+/** `{paletteId, colourId}`. */
 export interface colour_current_set_result {
-  /** object ID or path reference (10 §3) */
+  /** The current palette (switched when the colour is in another one, 03 §2.4). */
   paletteId: string;
-  /** object ID or path reference (10 §3) */
+  /** The current colour. */
   colourId: string;
 }
 
@@ -87254,6 +90911,8 @@ export interface colour_gap_close_params {
   frame?: number | null;
   /** View of `view` points. */
   view?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `colour.gap.close` result (03 §16.3 plus the common edit members, SI-058). */
@@ -87496,6 +91155,8 @@ export interface colour_paint_remove_params {
   gapClosing?: colour_paint_remove_GapChoice;
   /** The drawing revision the caller read. */
   expectRev?: number | bigint | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** One unpainted object. */
@@ -87574,6 +91235,8 @@ export interface colour_paintUnpainted_apply_params {
   gapClosing?: colour_paintUnpainted_apply_GapChoice;
   /** The drawing revision the caller read. */
   expectRev?: number | bigint | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** One painted object. */
@@ -89635,6 +93298,9 @@ export interface draw_content_add_Point {
 /** Where inserted content goes. */
 export type draw_content_add_ContentLayer = 'top' | 'behind';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_content_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.content.add` parameters (02 §13.5). */
 export interface draw_content_add_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -89653,6 +93319,10 @@ export interface draw_content_add_params {
   layer?: draw_content_add_ContentLayer;
   /** Make the inserted objects the drawing selection. */
   select?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_content_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{idMap, rev}`. */
@@ -89738,6 +93408,9 @@ export interface draw_cut_apply_SegmentIn {
 /** What happens to the inside of a cut. */
 export type draw_cut_apply_Then = 'select' | 'delete';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_cut_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.cut.apply` parameters (`segment`: SI-071). */
 export interface draw_cut_apply_params {
   /** The drawing (default: current). */
@@ -89750,6 +93423,14 @@ export interface draw_cut_apply_params {
   segment?: draw_cut_apply_SegmentIn | null;
   /** What happens to the inside. */
   then?: draw_cut_apply_Then;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_cut_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** A node a cut leaves whole. */
@@ -90080,6 +93761,9 @@ export interface draw_ellipse_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_ellipse_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.ellipse.add` parameters. */
 export interface draw_ellipse_add_params {
   /** The drawing (default: current). */
@@ -90108,6 +93792,10 @@ export interface draw_ellipse_add_params {
   layer?: string;
   /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_ellipse_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -90141,6 +93829,9 @@ export interface draw_envelope_apply_Point {
 /** Envelope mapping. */
 export type draw_envelope_apply_Mapping = 'auto' | 'projective' | 'bilinear';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_envelope_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.envelope.apply` parameters. */
 export interface draw_envelope_apply_params {
   /** The drawing (default: current). */
@@ -90151,6 +93842,14 @@ export interface draw_envelope_apply_params {
   corners: draw_envelope_apply_Point[];
   /** Mapping. */
   mapping?: draw_envelope_apply_Mapping;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_envelope_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{ids, removedIds, rev}` and the changed IDs. */
@@ -90201,13 +93900,16 @@ export type draw_erase_apply_LayersIn = draw_erase_apply_AllLayers | string[];
 /** `"all"`. */
 export type draw_erase_apply_AllLayers = 'all';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_erase_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.erase.apply` parameters. */
 export interface draw_erase_apply_params {
   /** The drawing (default: current). */
   drawingId?: string | null;
   /** The eraser's path (swept with the eraser pen). */
   path?: draw_erase_apply_ErasePoint[] | null;
-  /** The eraser pen (default: the project's first eraser pen, "Eraser 1"). */
+  /** The eraser pen (default: the current eraser pen, 02 §6.1; "Eraser 2", else the first eraser pen, 02 §7.7). */
   penId?: string | null;
   /** An explicit eraser (SI-072). */
   pen?: draw_erase_apply_EraserPen | null;
@@ -90215,6 +93917,14 @@ export interface draw_erase_apply_params {
   region?: draw_erase_apply_Point[] | null;
   /** Layers to erase. */
   layers?: draw_erase_apply_LayersIn;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_erase_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{removedIds, createdIds, rev}`. */
@@ -90385,6 +94095,9 @@ export interface draw_hitTest_get_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_hitTest_get_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.hitTest.get` parameters (02 §13.5). */
 export interface draw_hitTest_get_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -90399,6 +94112,10 @@ export interface draw_hitTest_get_params {
   tolerance?: number;
   /** Report invisible strokes. */
   includeInvisible?: boolean;
+  /** Coordinate space of the point (02 §13.1 item 5): a `view` point goes through the view's one mapping. */
+  space?: draw_hitTest_get_Space;
+  /** The view of a `view` point and of the view-pixel tolerance (default: the Drawing view; the tolerance at 100 %). */
+  view?: string | null;
 }
 
 /** One hit. */
@@ -90447,6 +94164,9 @@ export interface draw_line_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_line_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.line.add` parameters. */
 export interface draw_line_add_params {
   /** The drawing (default: current). */
@@ -90475,6 +94195,10 @@ export interface draw_line_add_params {
   layer?: string;
   /** Symmetry copies. */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_line_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -90605,6 +94329,9 @@ export interface draw_pivot_set_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_pivot_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.pivot.set` parameters. */
 export interface draw_pivot_set_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -90617,6 +94344,10 @@ export interface draw_pivot_set_params {
   point: draw_pivot_set_Point;
   /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_pivot_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{drawingId, pivot, rev}` and the changed IDs. */
@@ -90643,6 +94374,9 @@ export interface draw_point_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_point_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.point.add` parameters. */
 export interface draw_point_add_params {
   /** The stroke (local or `<drawingId>/<strokeId>`). */
@@ -90653,6 +94387,16 @@ export interface draw_point_add_params {
   segment?: number | null;
   /** … and the parameter on it (0–1). */
   t?: number | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_point_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
+  drawingId?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{strokeId, anchor, rev}`. */
@@ -90717,6 +94461,9 @@ export interface draw_point_move_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_point_move_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.point.move` parameters. */
 export interface draw_point_move_params {
   /** The drawing (default: current). */
@@ -90725,8 +94472,16 @@ export interface draw_point_move_params {
   points?: draw_point_move_AnchorRef[] | null;
   /** Offset (du). */
   delta: draw_point_move_Point;
-  /** Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off). */
-  snap?: boolean;
+  /** Snap moved anchors to the other strokes of their layer within 8 view pixels (Snap to Contour, 02 §8.9 and line 1338; default: the Snap to Contour setting, `tool.snapToContour.set`; SI-187). */
+  snap?: boolean | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_point_move_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{modifiedIds, removedIds, rev}`. */
@@ -90754,6 +94509,9 @@ export interface draw_point_set_Point {
 /** Handle behaviour of `draw.point.set`. */
 export type draw_point_set_HandleMode = 'symmetric' | 'broken' | 'reset';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_point_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.point.set` parameters. */
 export interface draw_point_set_params {
   /** The stroke. */
@@ -90768,6 +94526,16 @@ export interface draw_point_set_params {
   outHandle?: draw_point_set_Point | null;
   /** Handle mode. */
   handleMode?: draw_point_set_HandleMode | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_point_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
+  drawingId?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{strokeId, rev}`. */
@@ -90807,6 +94575,9 @@ export interface draw_pointSelection_set_RectIn {
 /** How a selection combines with the current one. */
 export type draw_pointSelection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_pointSelection_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.pointSelection.set` parameters. */
 export interface draw_pointSelection_set_params {
   /** The drawing (default: current). */
@@ -90817,6 +94588,14 @@ export interface draw_pointSelection_set_params {
   rect?: draw_pointSelection_set_RectIn | null;
   /** How to combine. */
   mode?: draw_pointSelection_set_Mode;
+  /** Coordinate space of the rectangle (02 §13.1 item 5): `view` coordinates go through the view's one mapping. */
+  space?: draw_pointSelection_set_Space;
+  /** The view of `view` coordinates (default: the Drawing view). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{selectedPoints}`. */
@@ -90844,6 +94623,9 @@ export interface draw_polyline_add_Point {
   /** Y (du, up). */
   y: number;
 }
+
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_polyline_add_Space = 'drawing' | 'scene' | 'view';
 
 /** `draw.polyline.add` parameters. */
 export interface draw_polyline_add_params {
@@ -90873,6 +94655,10 @@ export interface draw_polyline_add_params {
   layer?: string;
   /** Symmetry copies. */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_polyline_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -90903,6 +94689,9 @@ export interface draw_rectangle_add_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_rectangle_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.rectangle.add` / `draw.ellipse.add` parameters. */
 export interface draw_rectangle_add_params {
   /** The drawing (default: current). */
@@ -90931,6 +94720,10 @@ export interface draw_rectangle_add_params {
   layer?: string;
   /** Symmetry copies (02 §6.2). */
   symmetry?: boolean;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_rectangle_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** The result of a shape tool. */
@@ -90969,6 +94762,9 @@ export interface draw_repositionAll_apply_Xy {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_repositionAll_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.repositionAll.apply` parameters. */
 export interface draw_repositionAll_apply_params {
   /** The element (default: current). */
@@ -90983,14 +94779,22 @@ export interface draw_repositionAll_apply_params {
   pivot?: draw_repositionAll_apply_Point | null;
   /** Matrix (overrides). */
   matrix?: number[] | null;
-  /** Envelope corners (of each drawing's bounds). */
+  /** Envelope corners: targets of the corners of the bounds of the element's drawing at the current frame, one map applied to every drawing (02 §7.1.4 "applied identically to every drawing"; SI-189, ruling D-75 item 7). */
   corners?: draw_repositionAll_apply_Point[] | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_repositionAll_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
 }
 
-/** `{drawingIds}`. */
+/** `{drawingIds, skippedIds}`. */
 export interface draw_repositionAll_apply_result {
   /** The drawings changed. */
   drawingIds: string[];
+  /** The locked drawings left unchanged (02 line 414; SI-189). */
+  skippedIds: string[];
 }
 
 /** A fixed rotation step. */
@@ -91030,6 +94834,9 @@ export interface draw_segment_move_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_segment_move_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.segment.move` parameters. */
 export interface draw_segment_move_params {
   /** The stroke. */
@@ -91040,6 +94847,16 @@ export interface draw_segment_move_params {
   t?: number;
   /** Offset of that point (du). */
   delta: draw_segment_move_Point;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_segment_move_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified with its drawing (`<drawingId>/<strokeId>`) names the drawing itself. */
+  drawingId?: string | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{strokeId, rev}`. */
@@ -91142,6 +94959,9 @@ export type draw_selection_set_RectRule = 'inside' | 'intersect';
 /** How a selection combines with the current one. */
 export type draw_selection_set_Mode = 'replace' | 'add' | 'toggle' | 'remove';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_selection_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.selection.set` parameters. */
 export interface draw_selection_set_params {
   /** The drawing (default: current). */
@@ -91160,6 +94980,14 @@ export interface draw_selection_set_params {
   rectRule?: draw_selection_set_RectRule;
   /** How to combine with the current selection. */
   mode?: draw_selection_set_Mode;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_selection_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{x, y, width, height}`. */
@@ -91262,6 +95090,9 @@ export interface draw_stroke_add_PenIn {
 /** Tip shape parameter. */
 export type draw_stroke_add_TipParam = 'round' | 'oval' | 'square' | 'flat';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_stroke_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.stroke.add` parameters (02 §13.5). */
 export interface draw_stroke_add_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -91300,6 +95131,10 @@ export interface draw_stroke_add_params {
   symmetry?: boolean;
   /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_stroke_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `draw.stroke.add` result (02 §13.5). */
@@ -91345,6 +95180,9 @@ export interface draw_stroke_set_PressureIn {
 /** Kind conversion of `draw.stroke.set`. */
 export type draw_stroke_set_LineKind = 'pencil' | 'invisible';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_stroke_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.stroke.set` parameters (02 §13.5). */
 export interface draw_stroke_set_params {
   /** The stroke (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
@@ -91367,6 +95205,10 @@ export interface draw_stroke_set_params {
   kind?: draw_stroke_set_LineKind | null;
   /** The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_stroke_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{strokeIds, removedIds, rev}`. */
@@ -91429,6 +95271,9 @@ export type draw_text_add_Baseline = 'normal' | 'subscript' | 'superscript';
 /** Paragraph alignment. */
 export type draw_text_add_Align = 'left' | 'centre' | 'right' | 'justify';
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_text_add_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.text.add` parameters (02 §13.5). */
 export interface draw_text_add_params {
   /** The drawing (default: `elementId` + `frame`, else the current drawing). */
@@ -91449,6 +95294,10 @@ export interface draw_text_add_params {
   format?: draw_text_add_TextFormat | null;
   /** Text colour (default: the current colour). */
   colourId?: string | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_text_add_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{x, y, width, height}`. */
@@ -91508,6 +95357,9 @@ export interface draw_text_set_Point {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_text_set_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.text.set` parameters (02 §13.5). */
 export interface draw_text_set_params {
   /** The text object (`<drawingId>/<localId>`, or local with `drawingId` / the current drawing). */
@@ -91532,6 +95384,10 @@ export interface draw_text_set_params {
   position?: draw_text_set_Point | null;
   /** The drawing revision the caller read (02 §3.12). */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_text_set_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
 }
 
 /** `{x, y, width, height}`. */
@@ -91670,6 +95526,9 @@ export interface draw_transform_apply_Xy {
   y: number;
 }
 
+/** Coordinate space of point targets (03 §16.2). */
+export type draw_transform_apply_Space = 'drawing' | 'scene' | 'view';
+
 /** `draw.transform.apply` parameters. */
 export interface draw_transform_apply_params {
   /** The drawing (default: current). */
@@ -91694,6 +95553,14 @@ export interface draw_transform_apply_params {
   copy?: boolean;
   /** The drawing revision the caller read. */
   expectRev?: number | bigint | null;
+  /** Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping. */
+  space?: draw_transform_apply_Space;
+  /** The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %). */
+  view?: string | null;
+  /** The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146). */
+  frame?: number | null;
+  /** With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4). */
+  elementId?: string | null;
 }
 
 /** `{ids, removedIds, rev}` and the changed IDs. */
@@ -91820,7 +95687,7 @@ export interface draw_vectorize_run_result {
 
 /** `draw.viewMapping.get` parameters. */
 export interface draw_viewMapping_get_params {
-  /** The view (`drawing`; views arrive with M4 C4.2). */
+  /** The view: `drawing` (the Drawing view window) or a view id. */
   view?: string;
 }
 
@@ -91848,201 +95715,385 @@ export interface draw_viewMapping_get_result {
   viewSize: draw_viewMapping_get_ViewSize;
 }
 
+/** `{enabled}`. */
 export interface drawAid_autoLightTable_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface drawAid_autoLightTable_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** `drawAid.background.set` parameters. */
 export interface drawAid_background_set_params {
-  /** #RRGGBB or #RRGGBBAA */
+  /** Colour (`#RRGGBB` or `#RRGGBBAA`). */
+  colour?: string | null;
+  /** Use the scene's background colour. */
+  useSceneColour?: boolean | null;
+}
+
+/** Drawing View background (02 §10.7). */
+export interface drawAid_background_set_result {
+  /** Colour. */
   colour?: string;
+  /** Use the scene's background colour instead. */
   useSceneColour?: boolean;
 }
 
-export interface drawAid_background_set_result {
-  /** #RRGGBB or #RRGGBBAA */
-  colour: string;
-  useSceneColour: boolean;
-}
-
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type drawAid_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `drawAid.changed` payload. */
 export interface drawAid_changed_result {
+  /** The aid (`grid`, `onionSkin`, `onionSkinStyle`, `autoLightTable`, `staticLightTable`, `lightTableShade`, `staticLightTablePanel`, `strokes`, `currentOnTop`, `selectionDisplay`, `background`). */
   aid: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  state: Record<string, unknown>;
+  /** Its state now. */
+  state: unknown;
 }
 
+/** `{enabled}`. */
 export interface drawAid_currentOnTop_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface drawAid_currentOnTop_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** Grid type (02 §10.1). */
+export type drawAid_grid_set_GridType = 'normal' | 'field12' | 'field16';
+
+/** `drawAid.grid.set` parameters. */
 export interface drawAid_grid_set_params {
+  /** Shown. */
+  visible?: boolean | null;
+  /** The grid type. */
+  type?: drawAid_grid_set_GridType | null;
+  /** Drawn over the drawings. */
+  overlay?: boolean | null;
+}
+
+/** The grid (02 §10.1). */
+export interface drawAid_grid_set_result {
+  /** Shown. */
   visible?: boolean;
-  type?: 'normal' | 'field12' | 'field16';
+  /** `normal`, `field12` or `field16`. */
+  type?: string;
+  /** Drawn over the drawings. */
   overlay?: boolean;
 }
 
-export interface drawAid_grid_set_result {
-  visible: boolean;
-  type: string;
-  overlay: boolean;
+/** `drawAid.lightTableShade.set` parameters. */
+export interface drawAid_lightTableShade_set_params {
+  /** Shade the auto light table. */
+  auto?: boolean | null;
+  /** Shade static light-table entries. */
+  static?: boolean | null;
 }
 
-export interface drawAid_lightTableShade_set_params {
+/** Light-table shading (02 §10.3-10.4). */
+export interface drawAid_lightTableShade_set_result {
+  /** The auto light table is washed out. */
   auto?: boolean;
+  /** Static light-table entries are washed out. */
   static?: boolean;
 }
 
-export interface drawAid_lightTableShade_set_result {
-  auto: boolean;
-  static: boolean;
-}
-
+/** `drawAid.onionSkin.set` parameters. */
 export interface drawAid_onionSkin_set_params {
-  enabled?: boolean;
-  previous?: number;
-  next?: number;
+  /** Master switch. */
+  enabled?: boolean | null;
+  /** Previous drawings shown (0-3). */
+  previous?: number | null;
+  /** Next drawings shown (0-3). */
+  next?: number | null;
 }
 
+/** Onion skin (02 §10.2). */
 export interface drawAid_onionSkin_set_result {
-  enabled: boolean;
-  previous: number;
-  next: number;
+  /** Master switch. */
+  enabled?: boolean;
+  /** Previous drawings, 0-3. */
+  previous?: number | bigint;
+  /** Next drawings, 0-3. */
+  next?: number | bigint;
 }
 
+/** Onion-skin direction. */
+export type drawAid_onionSkinCycle_run_Direction = 'previous' | 'next';
+
+/** `drawAid.onionSkinCycle.run` parameters. */
 export interface drawAid_onionSkinCycle_run_params {
-  direction: 'previous' | 'next';
+  /** Which count to cycle. */
+  direction: drawAid_onionSkinCycle_run_Direction;
 }
 
+/** `{previous, next}`. */
 export interface drawAid_onionSkinCycle_run_result {
-  previous: string;
-  next: string;
+  /** Previous drawings shown. */
+  previous: number | bigint;
+  /** Next drawings shown. */
+  next: number | bigint;
 }
 
+/** `drawAid.onionSkinStyle.set` parameters. */
 export interface drawAid_onionSkinStyle_set_params {
+  /** Outlines only. */
+  outline?: boolean | null;
+  /** Semi-transparent. */
+  transparency?: boolean | null;
+  /** Tinted. */
+  colourShading?: boolean | null;
+  /** Tint of previous drawings (`#RRGGBB` or `#RRGGBBAA`). */
+  previousColour?: string | null;
+  /** Tint of next drawings. */
+  nextColour?: string | null;
+}
+
+/** `{style}`. */
+export interface drawAid_onionSkinStyle_set_result {
+  /** The appearance now. */
+  style: unknown;
+}
+
+/** `drawAid.selectionDisplay.set` parameters. */
+export interface drawAid_selectionDisplay_set_params {
+  /** Outline on selection. */
+  outlineOnSelection?: boolean | null;
+  /** Box highlighting. */
+  boxHighlighting?: boolean | null;
+  /** Keep the selection visible. */
+  keepSelectionVisible?: boolean | null;
+}
+
+/** `{settings}`. */
+export interface drawAid_selectionDisplay_set_result {
+  /** The selection display now. */
+  settings: unknown;
+}
+
+/** No parameters. */
+export type drawAid_state_get_params = Record<string, unknown>;
+
+/** The grid (02 §10.1). */
+export interface drawAid_state_get_Grid {
+  /** Shown. */
+  visible?: boolean;
+  /** `normal`, `field12` or `field16`. */
+  type?: string;
+  /** Drawn over the drawings. */
+  overlay?: boolean;
+}
+
+/** Onion skin (02 §10.2). */
+export interface drawAid_state_get_OnionSkin {
+  /** Master switch. */
+  enabled?: boolean;
+  /** Previous drawings, 0-3. */
+  previous?: number | bigint;
+  /** Next drawings, 0-3. */
+  next?: number | bigint;
+}
+
+/** Onion-skin appearance (02 §10.2). */
+export interface drawAid_state_get_OnionSkinStyle {
+  /** Outlines only. */
   outline?: boolean;
+  /** Semi-transparent. */
   transparency?: boolean;
+  /** Tinted. */
   colourShading?: boolean;
-  /** #RRGGBB or #RRGGBBAA */
+  /** Tint of previous drawings. */
   previousColour?: string;
-  /** #RRGGBB or #RRGGBBAA */
+  /** Tint of next drawings. */
   nextColour?: string;
 }
 
-export interface drawAid_onionSkinStyle_set_result {
-  style: string;
+/** One static light-table entry. */
+export interface drawAid_state_get_Entry {
+  /** Entry id. */
+  entryId: string;
+  /** The source drawing. */
+  sourceId: string;
+  /** `drawing` or `image` (by the source element's type). */
+  sourceKind: string;
+  /** Shown. */
+  visible: boolean;
+  /** Overlay or underlay. */
+  placement: 'overlay' | 'underlay';
 }
 
-export interface drawAid_selectionDisplay_set_params {
+/** Light-table shading (02 §10.3-10.4). */
+export interface drawAid_state_get_Shade {
+  /** The auto light table is washed out. */
+  auto?: boolean;
+  /** Static light-table entries are washed out. */
+  static?: boolean;
+}
+
+/** Camera-view selection display (02 §10.7). */
+export interface drawAid_state_get_SelectionDisplay {
+  /** Outline on selection. */
   outlineOnSelection?: boolean;
+  /** Box highlighting. */
   boxHighlighting?: boolean;
+  /** Selection always visible (SI-117: 02 §10.7's default off is kept). */
   keepSelectionVisible?: boolean;
 }
 
-export interface drawAid_selectionDisplay_set_result {
-  settings: string[];
+/** Drawing View background (02 §10.7). */
+export interface drawAid_state_get_Background {
+  /** Colour. */
+  colour?: string;
+  /** Use the scene's background colour instead. */
+  useSceneColour?: boolean;
 }
 
-export type drawAid_state_get_params = Record<string, unknown>;
-
+/** `drawAid.state.get` result. */
 export interface drawAid_state_get_result {
-  grid: boolean;
-  onionSkin: boolean;
-  onionSkinStyle: string;
+  /** Grid. */
+  grid: drawAid_state_get_Grid;
+  /** Onion skin. */
+  onionSkin: drawAid_state_get_OnionSkin;
+  /** Onion-skin appearance. */
+  onionSkinStyle: drawAid_state_get_OnionSkinStyle;
+  /** Auto light table. */
   autoLightTable: boolean;
-  staticLightTable: boolean;
-  lightTableShade: number;
+  /** The current scene's static light table. */
+  staticLightTable: drawAid_state_get_Entry[];
+  /** Light-table shading. */
+  lightTableShade: drawAid_state_get_Shade;
+  /** Show Strokes. */
   strokes: boolean;
+  /** Current drawing on top. */
   currentOnTop: boolean;
-  selectionDisplay: boolean;
-  background: string;
+  /** Selection display. */
+  selectionDisplay: drawAid_state_get_SelectionDisplay;
+  /** Background. */
+  background: drawAid_state_get_Background;
 }
 
+/** `drawAid.staticLightTable.add` parameters. */
 export interface drawAid_staticLightTable_add_params {
-  /** object ID or path reference (10 §3) */
-  drawingId?: string;
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  frame?: number | bigint;
+  /** The drawing (default: the drawing at `elementId` and `frame`, else the current drawing). */
+  drawingId?: string | null;
+  /** The element whose cell is sent (default: the current element). */
+  elementId?: string | null;
+  /** The frame of that cell (default: the current frame). */
+  frame?: number | null;
+  /** Overlay or underlay. */
   placement?: 'overlay' | 'underlay';
+  /** Shown. */
   visible?: boolean;
 }
 
+/** `{entryId}`. */
 export interface drawAid_staticLightTable_add_result {
-  /** object ID or path reference (10 §3) */
+  /** The new entry. */
   entryId: string;
 }
 
+/** `drawAid.staticLightTable.list` parameters. */
 export interface drawAid_staticLightTable_list_params {
-  /** object ID or path reference (10 §3) */
-  sceneId?: string;
+  /** The scene (default: the current scene). */
+  sceneId?: string | null;
 }
 
+/** One static light-table entry. */
+export interface drawAid_staticLightTable_list_Entry {
+  /** Entry id. */
+  entryId: string;
+  /** The source drawing. */
+  sourceId: string;
+  /** `drawing` or `image` (by the source element's type). */
+  sourceKind: string;
+  /** Shown. */
+  visible: boolean;
+  /** Overlay or underlay. */
+  placement: 'overlay' | 'underlay';
+}
+
+/** `{entries}`. */
 export interface drawAid_staticLightTable_list_result {
-  entries: ({
-    /** object ID or path reference (10 §3) */
-    entryId: string;
-    /** object ID or path reference (10 §3) */
-    sourceId: string;
-    sourceKind: string;
-    visible: boolean;
-    placement: string;
-  })[];
+  /** The scene's entries now. */
+  entries: drawAid_staticLightTable_list_Entry[];
 }
 
+/** `drawAid.staticLightTable.remove` parameters. */
 export interface drawAid_staticLightTable_remove_params {
-  entryIds?: string[];
+  /** Entries to delete. */
+  entryIds?: string[] | null;
+  /** Delete every entry. */
   all?: boolean;
 }
 
+/** `{removedEntryIds}`. */
 export interface drawAid_staticLightTable_remove_result {
+  /** The entries removed (sources untouched). */
   removedEntryIds: string[];
 }
 
+/** `drawAid.staticLightTable.set` parameters. */
 export interface drawAid_staticLightTable_set_params {
-  entryIds?: string[];
+  /** Entries to change. */
+  entryIds?: string[] | null;
+  /** Change every entry. */
   all?: boolean;
-  visible?: boolean;
-  placement?: 'overlay' | 'underlay';
-  /** object ID or path reference (10 §3) */
-  onlyVisibleEntryId?: string;
+  /** Show or hide them. */
+  visible?: boolean | null;
+  /** Overlay or underlay them. */
+  placement?: 'overlay' | 'underlay' | null;
+  /** Show only this entry (hide all others). */
+  onlyVisibleEntryId?: string | null;
 }
 
+/** One static light-table entry. */
+export interface drawAid_staticLightTable_set_Entry {
+  /** Entry id. */
+  entryId: string;
+  /** The source drawing. */
+  sourceId: string;
+  /** `drawing` or `image` (by the source element's type). */
+  sourceKind: string;
+  /** Shown. */
+  visible: boolean;
+  /** Overlay or underlay. */
+  placement: 'overlay' | 'underlay';
+}
+
+/** `{entries}`. */
 export interface drawAid_staticLightTable_set_result {
-  entries: ({
-    /** object ID or path reference (10 §3) */
-    entryId: string;
-    /** object ID or path reference (10 §3) */
-    sourceId: string;
-    sourceKind: string;
-    visible: boolean;
-    placement: string;
-  })[];
+  /** The scene's entries now. */
+  entries: drawAid_staticLightTable_set_Entry[];
 }
 
+/** `{visible}`. */
 export interface drawAid_staticLightTablePanel_set_params {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface drawAid_staticLightTablePanel_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface drawAid_strokes_set_params {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface drawAid_strokes_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
@@ -96420,22 +100471,56 @@ export interface inspect_screenshot_Rect {
 /** `inspect.screenshot` parameters. */
 export interface inspect_screenshot_params {
   /** Window, view, panel or dialog. */
-  target?: string | null;
+  target?: string;
   /** Region. */
   region?: inspect_screenshot_Rect | null;
 }
 
-export type inspect_screenshot_result = Record<string, unknown>;
+/** `inspect.screenshot` result (spec A row 1062: `{png, width, height, sha256}`; design note 5 §3). */
+export interface inspect_screenshot_result {
+  /** The PNG, base64 (`null` only inside a batch, where the capture job's id is answered instead of waiting). */
+  png?: string | null;
+  /** Width in pixels. */
+  width: number;
+  /** Height in pixels. */
+  height: number;
+  /** The PNG's sha256 (hex; `null` with `png`). */
+  sha256?: string | null;
+  /** The target captured. */
+  target: string;
+  /** The view window captured. */
+  viewId: string;
+  /** `virtual` (headless) or `gui` (attached, C4.2b). */
+  source: string;
+  /** The drawing shown. */
+  drawingId?: string | null;
+  /** What a headless capture contains. */
+  note: string;
+  /** The capture job (the handle waits for it; design note 5 §1a). */
+  jobId?: string | null;
+}
 
-/** `inspect.ui.tree` parameters. */
+/** `inspect.ui.tree` parameters (11 §7.5 `inspect_ui`). */
 export interface inspect_ui_tree_params {
-  /** Window, panel or dialog. */
+  /** `window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`; an unknown target, however long, is `window.panelNotFound` (no schema bound pre-empts it: C41-R2-21 audit). */
   target?: string | null;
-  /** Depth. */
+  /** Levels below the target to include (default: all). */
   depth?: number | null;
 }
 
-export type inspect_ui_tree_result = Record<string, unknown>;
+/** `inspect.ui.tree` result (11 §7.5; additive fields `renderedSeq` and `stale`: ADR-0021 decision 5, SI-121). */
+export interface inspect_ui_tree_result {
+  /** `gui` (the tree the front end rendered and reported) or `virtual` (the kernel's tree, headless). */
+  source: string;
+  /** The target the tree starts at. */
+  target: string;
+  /** The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`. */
+  root: unknown;
+  /** The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to it; `null` when the tree is not vouched for or is the headless virtual tree. Always present. */
+  renderedSeq: number | bigint | null;
+  /** Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call within 2 s (the tree is the last one it has). Absent otherwise; never `null`. */
+  stale?: boolean;
+}
 
 /** `{jobId}` parameters. */
 export interface job_cancel_params {
@@ -96478,6 +100563,8 @@ export interface job_cancel_result {
   error?: job_cancel_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -96520,6 +100607,8 @@ export interface job_finished_result {
   error?: job_finished_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -96552,6 +100641,8 @@ export interface job_list_JobRecord {
   error?: job_list_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -96611,6 +100702,8 @@ export interface job_progress_result {
   error?: job_progress_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
 }
@@ -96658,148 +100751,244 @@ export interface job_wait_result {
   error?: job_wait_CommandError | null;
   /** Session that started it. */
   session: string;
+  /** The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the progress window offers Cancel only then, 01 §9.5; C43B-R2-06). */
+  cancellable?: boolean;
   /** Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state. */
   warnings?: unknown[];
   /** `true` when the job was still running when the timeout passed; absent otherwise (A / 11 §15.2 `timedOut?`; C12-R1-13). */
   timedOut?: boolean | null;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type keymap_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `keymap.changed` payload. */
 export interface keymap_changed_result {
+  /** Commands whose bindings changed. */
   commandIds: string[];
 }
 
+/** Overwrite policy of `keymap.export` (01 §12.1 rule 4). */
+export type keymap_export_OnExists = 'fail' | 'overwrite';
+
+/** `keymap.export` parameters. */
 export interface keymap_export_params {
-  /** file-system path (11 §6.2) */
+  /** Absolute file path. */
   path: string;
-  onExists?: 'fail' | 'overwrite';
+  /** When the file exists. */
+  onExists?: keymap_export_OnExists;
 }
 
+/** `{path}`. */
 export interface keymap_export_result {
-  /** file-system path (11 §6.2) */
+  /** The file written. */
   path: string;
 }
 
+/** A keymap context (01 §8.1). */
+export type keymap_get_Context = 'global' | 'drawing' | 'staging';
+
+/** `keymap.get` parameters. */
 export interface keymap_get_params {
-  commandId?: string;
-  keys?: string;
-  context?: 'global' | 'drawing' | 'staging';
+  /** The command whose bindings to read. */
+  commandId?: string | null;
+  /** The key sequence whose command to read. */
+  keys?: string | null;
+  /** Context of `keys` (a mode context falls back to `global`). */
+  context?: keymap_get_Context;
 }
 
-export interface keymap_get_spec_Binding {
-  /** object ID or path reference (10 §3) */
+/** A binding (01 §12.4 `Binding`). */
+export interface keymap_get_Binding {
+  /** The bound command. */
   commandId: string;
-  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
-  params: Record<string, unknown>;
+  /** Fixed parameters of the command reference. */
+  params?: Record<string, unknown> | null;
+  /** Canonical key sequence. */
   keys: string;
-  context: string;
+  /** Context. */
+  context: keymap_get_Context;
+  /** Part of the bundled default set. */
   isDefault: boolean;
 }
 
+/** A command reference. */
+export interface keymap_get_CommandRef {
+  /** Command id. */
+  commandId: string;
+  /** Fixed parameters. */
+  params?: Record<string, unknown> | null;
+}
+
+/** `keymap.get` result. */
 export interface keymap_get_result {
-  bindings: keymap_get_spec_Binding[];
-  effectiveCommand?: {
-    commandId: string;
-    params?: string[];
-  };
+  /** Bindings of the command, or the binding of the sequence. */
+  bindings: keymap_get_Binding[];
+  /** The command the sequence runs in the context. */
+  effectiveCommand?: keymap_get_CommandRef | null;
 }
 
+/** Import mode. */
+export type keymap_import_ImportMode = 'merge' | 'replace';
+
+/** Conflict policy. */
+export type keymap_import_OnConflict = 'fail' | 'override';
+
+/** `keymap.import` parameters. */
 export interface keymap_import_params {
-  /** file-system path (11 §6.2) */
+  /** Absolute file path. */
   path: string;
-  mode?: 'merge' | 'replace';
-  onConflict?: 'fail' | 'override';
+  /** Merge or replace. */
+  mode?: keymap_import_ImportMode;
+  /** Conflicts with the current keymap (merge): refuse the whole import, or let the file win. */
+  onConflict?: keymap_import_OnConflict;
 }
 
-export interface keymap_import_spec_Binding {
-  /** object ID or path reference (10 §3) */
+/** A binding (01 §12.4 `Binding`). */
+export interface keymap_import_Binding {
+  /** The bound command. */
   commandId: string;
-  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
-  params: Record<string, unknown>;
+  /** Fixed parameters of the command reference. */
+  params?: Record<string, unknown> | null;
+  /** Canonical key sequence. */
   keys: string;
-  context: string;
+  /** Context. */
+  context: keymap_import_Context;
+  /** Part of the bundled default set. */
   isDefault: boolean;
 }
 
+/** A keymap context (01 §8.1). */
+export type keymap_import_Context = 'global' | 'drawing' | 'staging';
+
+/** `keymap.import` result. */
 export interface keymap_import_result {
+  /** Bindings imported. */
   imported: number | bigint;
-  conflicts: keymap_import_spec_Binding[];
+  /** Bindings the file displaced (`onConflict: "override"`). */
+  conflicts: keymap_import_Binding[];
 }
 
+/** A keymap context (01 §8.1). */
+export type keymap_list_Context = 'global' | 'drawing' | 'staging';
+
+/** `keymap.list` parameters. */
 export interface keymap_list_params {
-  context?: 'global' | 'drawing' | 'staging';
-  commandId?: string;
-  prefix?: string;
+  /** Only this context. */
+  context?: keymap_list_Context | null;
+  /** Only this command. */
+  commandId?: string | null;
+  /** Only commands whose id starts with this prefix. */
+  prefix?: string | null;
+  /** Only bindings the user added. */
   onlyModified?: boolean;
 }
 
-export interface keymap_list_spec_Binding {
-  /** object ID or path reference (10 §3) */
+/** A binding (01 §12.4 `Binding`). */
+export interface keymap_list_Binding {
+  /** The bound command. */
   commandId: string;
-  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
-  params: Record<string, unknown>;
+  /** Fixed parameters of the command reference. */
+  params?: Record<string, unknown> | null;
+  /** Canonical key sequence. */
   keys: string;
-  context: string;
+  /** Context. */
+  context: keymap_list_Context;
+  /** Part of the bundled default set. */
   isDefault: boolean;
 }
 
-export type keymap_list_result = keymap_list_spec_Binding[];
+export type keymap_list_result = keymap_list_Binding[];
 
+/** A keymap context (01 §8.1). */
+export type keymap_remove_Context = 'global' | 'drawing' | 'staging';
+
+/** `keymap.remove` parameters. */
 export interface keymap_remove_params {
+  /** Command whose bindings to remove (empty or unknown: `keymap.unknownCommand`). */
   commandId: string;
-  keys?: string;
-  context?: 'global' | 'drawing' | 'staging';
+  /** Only this sequence. */
+  keys?: string | null;
+  /** Only this context. */
+  context?: keymap_remove_Context | null;
 }
 
-export interface keymap_remove_spec_Binding {
-  /** object ID or path reference (10 §3) */
+/** A binding (01 §12.4 `Binding`). */
+export interface keymap_remove_Binding {
+  /** The bound command. */
   commandId: string;
-  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
-  params: Record<string, unknown>;
+  /** Fixed parameters of the command reference. */
+  params?: Record<string, unknown> | null;
+  /** Canonical key sequence. */
   keys: string;
-  context: string;
+  /** Context. */
+  context: keymap_remove_Context;
+  /** Part of the bundled default set. */
   isDefault: boolean;
 }
 
+/** `keymap.remove` result. */
 export interface keymap_remove_result {
-  removed: keymap_remove_spec_Binding[];
+  /** Bindings removed. */
+  removed: keymap_remove_Binding[];
 }
 
+/** `keymap.reset` parameters. */
 export interface keymap_reset_params {
-  commandId?: string;
+  /** The command to reset to its default bindings. */
+  commandId?: string | null;
+  /** Restore the whole default keymap. */
   all?: boolean;
 }
 
+/** `keymap.reset` result. */
 export interface keymap_reset_result {
+  /** Commands whose bindings changed. */
   reset: number | bigint;
 }
 
+/** A keymap context (01 §8.1). */
+export type keymap_set_Context = 'global' | 'drawing' | 'staging';
+
+/** Conflict policy. */
+export type keymap_set_OnConflict = 'fail' | 'override';
+
+/** `keymap.set` parameters. */
 export interface keymap_set_params {
+  /** Command to bind (an empty, unknown or over-long id is `keymap.unknownCommand`, not a schema error: C41-R1-13, C41-R2-21). */
   commandId: string;
-  /** the bound command's parameters, validated against its schema (01 §12.4) */
-  params?: Record<string, unknown>;
+  /** Fixed parameters of the command reference. */
+  params?: Record<string, unknown> | null;
+  /** Key sequence (01 §12.1 rule 17); an empty or over-long one (more than 64 characters) is `keymap.invalidSequence` (C41-R1-13, C41-R2-21). */
   keys: string;
-  context?: 'global' | 'drawing' | 'staging';
-  onConflict?: 'fail' | 'override';
+  /** Context. */
+  context?: keymap_set_Context;
+  /** What to do when the sequence is taken. */
+  onConflict?: keymap_set_OnConflict;
+  /** Remove the command reference's other bindings in this context first. */
   replaceExisting?: boolean;
 }
 
-export interface keymap_set_spec_Binding {
-  /** object ID or path reference (10 §3) */
+/** A binding (01 §12.4 `Binding`). */
+export interface keymap_set_Binding {
+  /** The bound command. */
   commandId: string;
-  /** the bound command's parameters, validated against that command's parameter schema (01 §12.4) */
-  params: Record<string, unknown>;
+  /** Fixed parameters of the command reference. */
+  params?: Record<string, unknown> | null;
+  /** Canonical key sequence. */
   keys: string;
-  context: string;
+  /** Context. */
+  context: keymap_set_Context;
+  /** Part of the bundled default set. */
   isDefault: boolean;
 }
 
+/** `keymap.set` result. */
 export interface keymap_set_result {
-  binding: keymap_set_spec_Binding;
-  removed: keymap_set_spec_Binding[];
+  /** The new binding. */
+  binding: keymap_set_Binding;
+  /** Bindings removed (moved away from another command, or replaced). */
+  removed: keymap_set_Binding[];
 }
 
 /** Events take no parameters; subscribe to them (11 §9). */
@@ -98404,58 +102593,84 @@ export interface playback_stopped_result {
   reason: 'user' | 'end' | 'navigation' | 'sceneChanged';
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type prefs_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `prefs.changed` payload. */
 export interface prefs_changed_result {
+  /** Keys whose value was set. */
   keys: string[];
-  source: 'user' | 'agent';
+  /** `user` or `agent`. */
+  source: string;
 }
 
+/** `prefs.get` parameters. */
 export interface prefs_get_params {
+  /** Keys to read (an empty list reads nothing; spec A sets no minimum: C41-R1-13 audit). */
   keys: string[];
 }
 
+/** `prefs.get` result. */
 export interface prefs_get_result {
-  /** preference key → value (01 §7) */
-  values: Record<string, boolean | number | bigint | string>;
+  /** Key → current value. */
+  values: Record<string, unknown>;
 }
 
+/** `prefs.list` parameters. */
 export interface prefs_list_params {
-  prefix?: string;
+  /** Only keys starting with this prefix. */
+  prefix?: string | null;
 }
 
-export type prefs_list_result = ({
+/** One preference as `prefs.list` reports it (01 §12.2). */
+export interface prefs_list_PrefEntry {
+  /** Key (`<category>.<group>.<name>`). */
   key: string;
+  /** `bool`, `int`, `number`, `string`, `enum`, `colour`, `path` or `object`. */
   type: string;
-  /** a preference value of the key's type (01 §7) */
-  default: boolean | number | bigint | string;
-  /** a preference value of the key's type (01 §7) */
-  value: boolean | number | bigint | string;
-  min?: number;
-  max?: number;
-  values?: number[];
-  applies: 'live' | 'nextLaunch' | 'restart';
+  /** Default value. */
+  default: unknown;
+  /** Current value. */
+  value: unknown;
+  /** Minimum (numbers). */
+  min?: number | null;
+  /** Maximum (numbers). */
+  max?: number | null;
+  /** Allowed values (enums; `interface.theme` includes installed user themes). */
+  values?: string[] | null;
+  /** When a change takes effect. */
+  applies: string;
+  /** What the preference does. */
   description: string;
-})[];
-
-export interface prefs_reset_params {
-  keys?: string[];
-  prefix?: string;
 }
 
+export type prefs_list_result = prefs_list_PrefEntry[];
+
+/** `prefs.reset` parameters. */
+export interface prefs_reset_params {
+  /** Keys to reset. */
+  keys?: string[] | null;
+  /** Reset every key with this prefix (`""` = all). */
+  prefix?: string | null;
+}
+
+/** `prefs.reset` result. */
 export interface prefs_reset_result {
+  /** Keys reset to their defaults. */
   reset: string[];
 }
 
+/** `prefs.set` parameters. */
 export interface prefs_set_params {
-  /** preference key → value (01 §7) */
-  values: Record<string, boolean | number | bigint | string>;
+  /** Key → value (01 §7.2). Every value must be valid, or nothing changes. */
+  values: Record<string, unknown>;
 }
 
+/** `prefs.set` result. */
 export interface prefs_set_result {
+  /** Keys set. */
   applied: string[];
+  /** Keys that take effect only after a restart. */
   restartRequired: string[];
 }
 
@@ -99300,12 +103515,14 @@ export interface render_range_run_Manifest {
   range: unknown;
   /** The document revision rendered. */
   documentRevision: number | bigint;
-  /** One entry per frame file. */
-  files: render_range_run_ManifestFile[];
+  /** One entry per frame file. The companion file always lists every frame; the job's answer lists them only up to [`OUTPUTS_INLINE`] frames (ruling D-51 as corrected by D-56, SI-181: a range's answer stays small), `outputs` summarising them always. */
+  files?: render_range_run_ManifestFile[] | null;
   /** The companion manifest file written with the frames (this manifest without itself). */
   manifestPath: string;
   /** Objects not drawn and why. */
   warnings: unknown[];
+  /** The frames written, summarised (D-51): in the job's answer, never in the companion file. */
+  outputs?: render_range_run_Outputs | null;
 }
 
 /** One file of a manifest (09 §11.4). */
@@ -99324,6 +103541,22 @@ export interface render_range_run_ManifestFile {
   height: number;
   /** Scene frame. */
   frame: number;
+}
+
+/** A job's outputs, summarised (ruling D-51, SI-163): the count, where they are and how they are named, the first and the last in full, and whether the list itself was left out. */
+export interface render_range_run_Outputs {
+  /** How many outputs. */
+  count: number;
+  /** Where they are: the output directory. */
+  location: string;
+  /** How they are named (the name pattern with the scene's name, `{frame}` or `{frame:N}` for the frame). */
+  pattern: string;
+  /** The first output. */
+  first?: render_range_run_ManifestFile | null;
+  /** The last output. */
+  last?: render_range_run_ManifestFile | null;
+  /** The list itself is not in this answer (the companion manifest file at `manifestPath` has every entry). */
+  truncated: boolean;
 }
 
 export interface render_range_run_result {
@@ -100829,335 +105062,407 @@ export interface timeline_view_set_result {
   lastFrame: number;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type tool_active_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `tool.active.changed` payload. */
 export interface tool_active_changed_result {
+  /** The active tool. */
   toolId: string;
+  /** A temporary override. */
   temporary: boolean;
 }
 
+/** No parameters. */
 export type tool_active_get_params = Record<string, unknown>;
 
+/** `tool.active.get` result. */
 export interface tool_active_get_result {
+  /** The active tool. */
   toolId: string;
-  temporaryToolId: string | null;
+  /** A temporary override in force (`null`: none; overrides are held by the GUI while a key is held). */
+  temporaryToolId?: string | null;
+  /** Its group. */
   group: string;
 }
 
+/** `tool.active.set` parameters. */
 export interface tool_active_set_params {
+  /** The tool. */
   toolId: 'select' | 'contourEditor' | 'perspective' | 'repositionAll' | 'brush' | 'pencil' | 'rectangle' | 'ellipse' | 'polyline' | 'line' | 'paint' | 'unpaint' | 'paintUnpainted' | 'dropper' | 'closeGap' | 'stroke' | 'editTexture' | 'eraser' | 'cutter' | 'scissor' | 'zoom' | 'grabber' | 'text';
 }
 
+/** `{toolId}`. */
 export interface tool_active_set_result {
+  /** The active tool. */
   toolId: string;
 }
 
+/** `penId`. */
 export interface tool_brush_options_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
 }
 
+/** `{options}`. */
 export interface tool_brush_options_set_result {
-  options: {
-    /** object ID or path reference (10 §3) */
-    penId: string;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** `{enabled}`. */
 export interface tool_drawTopLayer_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface tool_drawTopLayer_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** `penId`. */
 export interface tool_eraser_options_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
 }
 
+/** `{options}`. */
 export interface tool_eraser_options_set_result {
-  options: {
-    /** object ID or path reference (10 §3) */
-    penId: string;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** A tool group (02 §5.1). */
+export type tool_group_select_Group = 'select' | 'brush' | 'paint' | 'eraser' | 'navigate' | 'text';
+
+/** `tool.group.select` parameters. */
 export interface tool_group_select_params {
-  group: 'select' | 'brush' | 'paint' | 'eraser' | 'navigate' | 'text';
+  /** The group. */
+  group: tool_group_select_Group;
+  /** Advance within the group if it is already active (group cycling). */
   advance?: boolean;
 }
 
+/** `{toolId}`. */
 export interface tool_group_select_result {
-  /** object ID or path reference (10 §3) */
+  /** The active tool. */
   toolId: string;
 }
 
+/** No parameters. */
 export type tool_list_params = Record<string, unknown>;
 
+/** One tool. */
+export interface tool_list_ToolEntry {
+  /** Tool id. */
+  toolId: string;
+  /** Its group. */
+  group: string;
+  /** Current options (empty: the tool has none). */
+  options: Record<string, unknown>;
+  /** The options' schema. */
+  optionSchema: unknown;
+}
+
+/** `tool.list` result. */
 export interface tool_list_result {
-  tools: ({
-    /** object ID or path reference (10 §3) */
-    toolId: string;
-    group: string;
-    /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-    options: Record<string, unknown>;
-    /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-    optionSchema: Record<string, unknown>;
-  })[];
-  /** object ID or path reference (10 §3) */
+  /** Every tool in palette order. */
+  tools: tool_list_ToolEntry[];
+  /** The active tool. */
   activeToolId: string;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type tool_options_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `tool.options.changed` payload. */
 export interface tool_options_changed_result {
-  toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** The tool (`null` for a global drawing setting). */
+  toolId?: string | null;
+  /** The options or settings now. */
   options: Record<string, unknown>;
 }
 
+/** `toolId`. */
 export interface tool_options_get_params {
+  /** The tool. */
   toolId: string;
 }
 
+/** `{toolId, options}`. */
 export interface tool_options_get_result {
+  /** The tool. */
   toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** Its options. */
   options: Record<string, unknown>;
 }
 
+/** `tool.options.set` parameters. */
 export interface tool_options_set_params {
+  /** The tool. */
   toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** Options to set. */
   options: Record<string, unknown>;
 }
 
+/** `{toolId, options}`. */
 export interface tool_options_set_result {
+  /** The tool. */
   toolId: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
+  /** Its options. */
   options: Record<string, unknown>;
 }
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type tool_pen_changed_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** A pen change. */
+export type tool_pen_changed_PenChange = 'created' | 'modified' | 'deleted' | 'selected';
+
+/** `tool.pen.changed` payload. */
 export interface tool_pen_changed_result {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
-  change: 'created' | 'modified' | 'deleted' | 'selected';
+  /** What changed. */
+  change: tool_pen_changed_PenChange;
 }
 
+/** `tool.pen.create` parameters. */
 export interface tool_pen_create_params {
+  /** Family. */
   type?: 'brush' | 'eraser';
-  /** object ID or path reference (10 §3) Default: current. */
-  fromPenId?: string;
-  name?: string;
-  /** shape not defined by the owning section (spec issue); only {} is accepted until it is */
-  settings?: Record<string, unknown>;
+  /** The pen to copy (default: the family's current pen). */
+  fromPenId?: string | null;
+  /** Name (default: the next free "Pen n" or "Eraser n"). */
+  name?: string | null;
+  /** Settings over the copied ones (`tipShape`, `minSize`, `maxSize`, `smoothness`, `tipAngle`). */
+  settings?: Record<string, unknown> | null;
 }
 
+/** `{penId, name}`. */
 export interface tool_pen_create_result {
-  /** object ID or path reference (10 §3) */
+  /** Pen id. */
   penId: string;
+  /** Name. */
   name: string;
 }
 
+/** `penId`. */
 export interface tool_pen_delete_params {
-  /** object ID or path reference (10 §3) */
+  /** The pen. */
   penId: string;
 }
 
+/** `tool.pen.delete` result. */
 export interface tool_pen_delete_result {
-  /** object ID or path reference (10 §3) */
+  /** The removed pen. */
   removedPenId: string;
-  /** object ID or path reference (10 §3) */
-  currentPenId: string;
+  /** The family's current pen now. */
+  currentPenId?: string | null;
 }
 
+/** `tool.pen.list` parameters. */
 export interface tool_pen_list_params {
-  type?: 'brush' | 'eraser';
+  /** Only pens of this family. */
+  type?: 'brush' | 'eraser' | null;
 }
 
-export interface tool_pen_list_result {
-  pens: ({
-    /** object ID or path reference (10 §3) */
-    penId: string;
-    name: string;
-    type: string;
-    tipShape: string;
-    minSize: number;
-    maxSize: number;
-    smoothness: number;
-    tipAngle: number;
-  })[];
-  /** object ID or path reference (10 §3) */
-  currentBrushPenId: string;
-  /** object ID or path reference (10 §3) */
-  currentEraserPenId: string;
-}
-
-export interface tool_pen_rename_params {
-  /** object ID or path reference (10 §3) */
+/** One pen. */
+export interface tool_pen_list_PenEntry {
+  /** Pen id. */
   penId: string;
+  /** Name. */
   name: string;
-}
-
-export interface tool_pen_rename_result {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-  name: string;
-}
-
-export interface tool_pen_select_params {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-}
-
-export interface tool_pen_select_result {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-  type: string;
-}
-
-export interface tool_pen_set_params {
-  /** object ID or path reference (10 §3) */
-  penId: string;
-  tipShape?: 'round' | 'oval' | 'square' | 'flat';
-  minSize?: number;
-  maxSize?: number;
-  smoothness?: number;
-  tipAngle?: number;
-}
-
-/** Extension data keyed by reverse-DNS namespace; unknown namespaces are preserved verbatim. */
-export type tool_pen_set_Ext = Record<string, unknown>;
-
-export type tool_pen_set_Id = string;
-
-/** A pen preset (10 §4.2). Unique name in the project. */
-export interface tool_pen_set_Pen {
-  /** Immutable ID. */
-  id: tool_pen_set_Id;
-  /** Always `pen`. */
-  type: 'pen';
-  /** Revision of the last change (10 REV-02). */
-  rev: number | bigint;
-  /** Unique in the project; default `Pen <n>`. */
-  name: string;
-  /** Brush or eraser pen (02 §6.1; SI-004). */
-  kind: tool_pen_set_PenKind;
-  /** Width at lowest pressure, 0–100 du; `minSize ≤ maxSize`. */
-  minSize: number;
-  /** Width at full pressure, 0–100 du. */
-  maxSize: number;
-  /** Curve-fitting tolerance and pressure smoothing, 0–10 (10 §4.2: int). */
-  smoothness: number;
+  /** Family. */
+  type: 'brush' | 'eraser';
   /** Tip shape. */
-  tip: tool_pen_set_Tip;
-  /** Orientation of non-round tips, 0–360 degrees (02 §6.1; SI-004). */
+  tipShape: string;
+  /** Minimum size (du). */
+  minSize: number;
+  /** Maximum size (du). */
+  maxSize: number;
+  /** Smoothness 0-10. */
+  smoothness: number;
+  /** Tip angle (degrees). */
   tipAngle: number;
-  /** Colour bound to the pen; `null` = use the current colour. */
-  colourId: tool_pen_set_Id | null;
-  /** Free-form metadata. */
-  meta?: Record<string, unknown>;
-  /** Extension data. */
-  ext?: tool_pen_set_Ext;
-  /** Canonical path (10 §2.4). */
-  path?: string;
 }
 
-/** A `tool_pen_set_Pen` reduced to its stub (10 §2.2). */
-export interface tool_pen_set_PenStub {
-  id: tool_pen_set_Id;
-  type: 'pen';
-  name?: string;
+/** `tool.pen.list` result. */
+export interface tool_pen_list_result {
+  /** Pens in project order. */
+  pens: tool_pen_list_PenEntry[];
+  /** The current brush pen. */
+  currentBrushPenId?: string | null;
+  /** The current eraser pen. */
+  currentEraserPenId?: string | null;
 }
 
-/** Tool family of a pen (02 §6.1 "Type"). Persisted as `kind` because `type` is the envelope field (SI-004). */
-export type tool_pen_set_PenKind = 'brush' | 'eraser';
+/** `tool.pen.rename` parameters. */
+export interface tool_pen_rename_params {
+  /** The pen. */
+  penId: string;
+  /** The new name. */
+  name: string;
+}
 
-/** Tip shape (02 §6.1). */
-export type tool_pen_set_Tip = 'round' | 'oval' | 'square' | 'flat';
+/** `{penId, name}`. */
+export interface tool_pen_rename_result {
+  /** Pen id. */
+  penId: string;
+  /** Name. */
+  name: string;
+}
 
+/** `penId`. */
+export interface tool_pen_select_params {
+  /** The pen. */
+  penId: string;
+}
+
+/** `{penId, type}`. */
+export interface tool_pen_select_result {
+  /** The pen. */
+  penId: string;
+  /** Its family. */
+  type: 'brush' | 'eraser';
+}
+
+/** `tool.pen.set` parameters. */
+export interface tool_pen_set_params {
+  /** The pen. */
+  penId: string;
+  /** Tip shape. */
+  tipShape?: 'round' | 'oval' | 'square' | 'flat' | null;
+  /** Minimum size (du). */
+  minSize?: number | null;
+  /** Maximum size (du). */
+  maxSize?: number | null;
+  /** Smoothness. */
+  smoothness?: number | null;
+  /** Tip angle (degrees). */
+  tipAngle?: number | null;
+}
+
+/** `{pen}`. */
 export interface tool_pen_set_result {
-  pen: tool_pen_set_Pen | tool_pen_set_PenStub;
+  /** The pen now. */
+  pen: unknown;
 }
 
+/** Pencil and shape-tool line thickness. */
 export interface tool_pencil_options_set_params {
+  /** `penMax` (the current brush pen's maximum size) or `fixed`. */
   thicknessSource?: 'penMax' | 'fixed';
-  thickness?: number;
+  /** The fixed thickness (du). */
+  thickness?: number | null;
 }
 
+/** `{options}`. */
 export interface tool_pencil_options_set_result {
-  options: {
-    thicknessSource: 'penMax' | 'fixed';
-    thickness: number;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** `{enabled}`. */
 export interface tool_placeBehind_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface tool_placeBehind_set_result {
+  /** On. */
   enabled: boolean;
 }
 
+/** Polyline snapping. */
 export interface tool_polyline_options_set_params {
+  /** Snap to existing anchors. */
   snap?: boolean;
+  /** Snap radius in view pixels. */
   snapRadius?: number;
 }
 
+/** `{options}`. */
 export interface tool_polyline_options_set_result {
-  options: {
-    snap: boolean;
-    snapRadius: number;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** Select tool options. */
 export interface tool_select_options_set_params {
+  /** `inside` (objects wholly inside) or `intersect`. */
   rectRule?: 'inside' | 'intersect';
 }
 
+/** `{options}`. */
 export interface tool_select_options_set_result {
-  options: {
-    rectRule: 'inside' | 'intersect';
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** No parameters. */
 export type tool_settings_get_params = Record<string, unknown>;
 
+/** Symmetry (02 §6.2). */
+export interface tool_settings_get_SymmetrySetting {
+  /** `none`, `mirror` or `kaleidoscope`. */
+  mode?: string;
+  /** Angle, 0-360°. */
+  angle?: number;
+  /** Mirrors, 2-16. */
+  mirrors?: number | bigint;
+}
+
+/** Tablet input settings (02 §6.3). */
+export interface tool_settings_get_TabletSetting {
+  /** The tablet acts as a mouse. */
+  ignoreTablet?: boolean;
+  /** Portrait-mode correction. */
+  portraitCorrection?: boolean;
+  /** Compatibility handling. */
+  compatibilityMode?: boolean;
+  /** The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`). */
+  inputInterface?: string | null;
+}
+
+/** The automatic gap-closing mode (03 §8.8). */
+export type tool_settings_get_GapMode = 'off' | 'small' | 'medium' | 'large';
+
+/** `tool.settings.get` result (spec A: `{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}`). */
 export interface tool_settings_get_result {
+  /** Draw Behind. */
   placeBehind: boolean;
+  /** Draw on Top Layer. */
   drawTopLayer: boolean;
+  /** Snap to Contour. */
   snapToContour: boolean;
-  symmetry: boolean;
-  tablet: boolean;
-  gapClosing: string;
+  /** Symmetry. */
+  symmetry: tool_settings_get_SymmetrySetting;
+  /** Tablet input settings. */
+  tablet: tool_settings_get_TabletSetting;
+  /** The automatic gap-closing mode (03 §8.8). */
+  gapClosing: tool_settings_get_GapMode;
 }
 
+/** `{enabled}`. */
 export interface tool_snapToContour_set_params {
+  /** On. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface tool_snapToContour_set_result {
+  /** On. */
   enabled: boolean;
 }
-
-/** Symmetry mode. */
-export type tool_symmetry_set_Mode = 'none' | 'mirror' | 'kaleidoscope';
 
 /** `tool.symmetry.set` parameters. */
 export interface tool_symmetry_set_params {
-  /** Mode. */
-  mode?: tool_symmetry_set_Mode;
+  /** Mode (spec A: `= "none"`). */
+  mode?: 'none' | 'mirror' | 'kaleidoscope';
   /** Axis angle from +y, counter-clockwise, degrees (0–360). */
   angle?: number;
   /** Mirror lines of a kaleidoscope (2–16). */
@@ -101167,314 +105472,504 @@ export interface tool_symmetry_set_params {
 /** `{mode, angle, mirrors}`. */
 export interface tool_symmetry_set_result {
   /** Mode. */
-  mode: tool_symmetry_set_Mode;
+  mode: 'none' | 'mirror' | 'kaleidoscope';
   /** Axis angle (degrees). */
   angle: number;
   /** Mirror lines. */
   mirrors: number | bigint;
 }
 
+/** `tool.tablet.set` parameters. */
 export interface tool_tablet_set_params {
-  ignoreTablet?: boolean;
-  portraitCorrection?: boolean;
-  compatibilityMode?: boolean;
-  inputInterface?: string;
+  /** The tablet acts as a mouse (absent: unchanged; a new user's value is false). */
+  ignoreTablet?: boolean | null;
+  /** Portrait-mode correction. */
+  portraitCorrection?: boolean | null;
+  /** Compatibility handling. */
+  compatibilityMode?: boolean | null;
+  /** The input interface. */
+  inputInterface?: string | null;
 }
 
+/** Tablet input settings (02 §6.3). */
+export interface tool_tablet_set_TabletSetting {
+  /** The tablet acts as a mouse. */
+  ignoreTablet?: boolean;
+  /** Portrait-mode correction. */
+  portraitCorrection?: boolean;
+  /** Compatibility handling. */
+  compatibilityMode?: boolean;
+  /** The input interface: `alternative`, or `null` for the platform default (01 §7.3 `tablet.alternativeInput`). */
+  inputInterface?: string | null;
+}
+
+/** `{settings, restartRequired}`. */
 export interface tool_tablet_set_result {
-  settings: string[];
+  /** The tablet settings now. */
+  settings: tool_tablet_set_TabletSetting;
+  /** A change applies after a restart (the input interface). */
   restartRequired: boolean;
 }
 
+/** Text defaults for new text (02 §7.6.1). */
 export interface tool_text_options_set_params {
-  font?: string;
-  size?: number;
-  bold?: boolean;
-  italic?: boolean;
-  baseline?: 'normal' | 'subscript' | 'superscript';
-  kerning?: number;
-  autoKern?: boolean;
-  align?: 'left' | 'centre' | 'right' | 'justify';
-  leftMargin?: number;
-  rightMargin?: number;
-  indent?: number;
-  lineSpacing?: number;
+  /** Font family. */
+  font?: string | null;
+  /** Size. */
+  size?: number | null;
+  /** Bold. */
+  bold?: boolean | null;
+  /** Italic. */
+  italic?: boolean | null;
+  /** Baseline. */
+  baseline?: 'normal' | 'subscript' | 'superscript' | null;
+  /** Kerning. */
+  kerning?: number | null;
+  /** Automatic kerning. */
+  autoKern?: boolean | null;
+  /** Alignment. */
+  align?: 'left' | 'centre' | 'right' | 'justify' | null;
+  /** Left margin (du). */
+  leftMargin?: number | null;
+  /** Right margin (du). */
+  rightMargin?: number | null;
+  /** First-line indent (du). */
+  indent?: number | null;
+  /** Extra line spacing (du). */
+  lineSpacing?: number | null;
+  /** Outline colour of new text (`null`: none). Absent leaves it; `null` clears it (ruling D-7e). */
   outlineColourId?: string | null;
 }
 
+/** `{options}`. */
 export interface tool_text_options_set_result {
-  options: {
-    font: string;
-    size: number;
-    bold: boolean;
-    italic: boolean;
-    baseline: 'normal' | 'subscript' | 'superscript';
-    kerning: number;
-    autoKern: boolean;
-    align: 'left' | 'centre' | 'right' | 'justify';
-    leftMargin: number;
-    rightMargin: number;
-    indent: number;
-    lineSpacing: number;
-    outlineColourId: string | null;
-  };
+  /** The tool's options now. */
+  options: Record<string, unknown>;
 }
 
+/** `{enabled}`. */
 export interface ui_contextHelpMode_set_params {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `{enabled}`. */
 export interface ui_contextHelpMode_set_result {
+  /** On or off. */
   enabled: boolean;
 }
 
+/** `ui.help.get` parameters (exactly one target). No schema length bound: an id longer than any catalogue id is unknown and answers its typed error (`command.unknown`, `window.panelNotFound`, `prefs.unknownKey`, `ui.unknownMessage`), which a schema bound would pre-empt (C41-R2-21 audit); the frame limit bounds the input. */
 export interface ui_help_get_params {
-  commandId?: string;
-  panelId?: string;
-  preferenceKey?: string;
-  messageId?: string;
+  /** A command. */
+  commandId?: string | null;
+  /** A panel (01 §5.2) or tool palette. */
+  panelId?: string | null;
+  /** A preference. */
+  preferenceKey?: string | null;
+  /** A message. */
+  messageId?: string | null;
 }
 
+/** `{title, text}`. */
 export interface ui_help_get_result {
+  /** Title. */
   title: string;
-  /** Markdown */
+  /** Help content (Markdown). */
   text: string;
 }
 
+/** `ui.help.open` parameters. */
 export interface ui_help_open_params {
-  topic?: string;
+  /** A documentation topic (a `get_docs` topic, a command id, a panel id or a preference key). */
+  topic?: string | null;
 }
 
+/** `{}`. */
 export type ui_help_open_result = Record<string, unknown>;
 
-/** Events take no parameters; subscribe to them (11 §9). */
+/** No parameters. */
 export type ui_message_shown_params = Record<string, unknown>;
 
-/** Event payload (delivered to subscribers). */
+/** `ui.message.shown` payload (01 §12.2). */
 export interface ui_message_shown_result {
-  /** object ID or path reference (10 §3) */
+  /** Message id (`area.reason`). */
   messageId: string;
-  severity: 'info' | 'warning' | 'error' | 'question';
+  /** `info`, `warning`, `error` or `question`. */
+  severity: string;
+  /** Text. */
   text: string;
-  /** type not stated by the owning section (spec issue); a scalar */
-  details?: string | number | boolean | null;
-  source: 'user' | 'agent';
+  /** Structured details. */
+  details?: unknown;
+  /** `user` or `agent`. */
+  source: string;
+  /** The GUI suppressed it ("don't show again"). */
   suppressed: boolean;
 }
 
+/** `ui.preferences.open` parameters. */
 export interface ui_preferences_open_params {
-  category?: string;
+  /** The category to show (a Preferences category id such as `interface`, or `keyboard`, `tips`). */
+  category?: string | null;
 }
 
+/** `{}`. */
 export type ui_preferences_open_result = Record<string, unknown>;
 
+/** `{visible}`. */
 export interface ui_startScreen_set_params {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface ui_startScreen_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
+/** No parameters. */
 export type ui_statusBar_get_params = Record<string, unknown>;
 
+/** `ui.statusBar.get` result: the segment texts of 01 §9.1. */
 export interface ui_statusBar_get_result {
+  /** The status bar is shown. */
   visible: boolean;
+  /** Long description of the item under the pointer (empty when none). */
   description: string;
+  /** Current scene and frame. */
   context: string;
-  /** type not stated by the owning section (spec issue); a scalar */
-  pointer: string | number | boolean | null;
-  playback: boolean;
-  agentIndicator: boolean;
+  /** Pointer coordinates in the current view and the selection summary. */
+  pointer: string;
+  /** Achieved frame rate and played range during playback (empty otherwise). */
+  playback: string;
+  /** The agent-session indicator (empty when no agent is connected). */
+  agentIndicator: string;
 }
 
+/** `{visible}`. */
 export interface ui_statusBar_set_params {
+  /** Shown. */
   visible: boolean;
 }
 
+/** `{visible}`. */
 export interface ui_statusBar_set_result {
+  /** Shown. */
   visible: boolean;
 }
 
+/** No parameters. */
 export type ui_theme_list_params = Record<string, unknown>;
 
-export type ui_theme_list_result = ({
-  /** object ID or path reference (10 §3) */
+/** One theme. */
+export interface ui_theme_list_Theme {
+  /** Theme id (a value of `interface.theme`). */
   themeId: string;
+  /** Display name. */
   name: string;
+  /** Shipped with the application. */
   builtIn: boolean;
+  /** A dark theme. */
   dark: boolean;
-})[];
+  /** The colour tokens of a user theme (`--tt-<token>`); built-in themes carry their colours in the front end (additive member, SI-115). */
+  colours?: Record<string, unknown> | null;
+}
 
+export type ui_theme_list_result = ui_theme_list_Theme[];
+
+/** No parameters. */
 export type ui_tips_list_params = Record<string, unknown>;
 
-export type ui_tips_list_result = ({
+/** One suppressible message. */
+export interface ui_tips_list_Tip {
+  /** Message id. */
   messageId: string;
+  /** What it conveys. */
   description: string;
+  /** Suppressed ("don't show again" was checked). */
   suppressed: boolean;
-})[];
+}
 
+export type ui_tips_list_result = ui_tips_list_Tip[];
+
+/** No parameters. */
 export type ui_tips_reset_params = Record<string, unknown>;
 
+/** `ui.tips.reset` result. */
 export interface ui_tips_reset_result {
+  /** Messages shown again. */
   reenabled: number | bigint;
 }
 
+/** `ui.tips.set` parameters and result. */
 export interface ui_tips_set_params {
+  /** Message id. */
   messageId: string;
+  /** Suppress (true) or show again (false). */
   suppressed: boolean;
 }
 
+/** `ui.tips.set` parameters and result. */
 export interface ui_tips_set_result {
+  /** Message id. */
   messageId: string;
+  /** Suppress (true) or show again (false). */
   suppressed: boolean;
 }
 
+/** `view.active.set` parameters. */
 export interface view_active_set_params {
-  /** object ID or path reference (10 §3) */
+  /** The view window to activate. */
   viewId: string;
 }
 
+/** `{viewId}`. */
 export interface view_active_set_result {
-  /** object ID or path reference (10 §3) */
+  /** View id. */
   viewId: string;
 }
 
+/** A point in document or view coordinates. */
+export interface view_coordinates_convert_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A space a view converts between. */
+export type view_coordinates_convert_Space = 'view' | 'drawing' | 'scene';
+
+/** `view.coordinates.convert` parameters. */
 export interface view_coordinates_convert_params {
-  /** object ID or path reference (10 §3) */
+  /** View window. */
   viewId: string;
-  point: {
-    x: number;
-    y: number;
-  };
-  from: 'view' | 'drawing' | 'scene';
-  to: 'view' | 'drawing' | 'scene';
+  /** The point. */
+  point: view_coordinates_convert_Point;
+  /** Its space. */
+  from: view_coordinates_convert_Space;
+  /** The space wanted. */
+  to: view_coordinates_convert_Space;
 }
 
+/** `{point}`. */
 export interface view_coordinates_convert_result {
-  point: {
-    x: number;
-    y: number;
-  };
+  /** The converted point. */
+  point: view_coordinates_convert_Point;
 }
 
+/** No parameters. */
 export type view_list_params = Record<string, unknown>;
 
-export type view_list_result = ({
-  /** object ID or path reference (10 §3) */
+/** A view window entry. */
+export interface view_list_ViewEntry {
+  /** View id (= its panel id, SI-112). */
   viewId: string;
-  /** object ID or path reference (10 §3) */
+  /** Panel id. */
   panelId: string;
-  type: string;
+  /** Current type. */
+  type: view_list_ViewType;
+  /** The active view window. */
   focused: boolean;
-  size: {
-    width: number;
-    height: number;
-  };
-  /** type not stated by the owning section (spec issue); a scalar */
-  transform: string | number | boolean | null;
-})[];
+  /** Canvas size in logical pixels. */
+  size: view_list_Size;
+  /** The current type's transform. */
+  transform: view_list_ViewTransform;
+}
 
+/** A view window's type (01 §4, §5.3). */
+export type view_list_ViewType = 'drawing' | 'camera' | 'top' | 'side';
+
+/** A size in logical pixels. */
+export interface view_list_Size {
+  /** Width. */
+  width: number;
+  /** Height. */
+  height: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
+export interface view_list_ViewTransform {
+  /** Zoom factor (1 = 100 %). */
+  zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
+  rotationDegrees: number;
+  /** Document point at the view centre. */
+  centre: view_list_Point;
+}
+
+/** A point in document or view coordinates. */
+export interface view_list_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+export type view_list_result = view_list_ViewEntry[];
+
+/** A point in document or view coordinates. */
+export interface view_pan_set_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `view.pan.set` parameters. */
 export interface view_pan_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  centre?: {
-    x: number;
-    y: number;
-  };
-  /** (view pixels) */
-  by?: {
-    x: number;
-    y: number;
-  };
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** The document point to centre on. */
+  centre?: view_pan_set_Point | null;
+  /** A pan by view pixels (the content moves by this offset). */
+  by?: view_pan_set_Point | null;
+  /** Centre on the pointer. */
   atPointer?: boolean;
 }
 
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_pan_set_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_pan_set_Point;
 }
 
+/** `view.rotation.set` parameters. */
 export interface view_rotation_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  degrees?: number;
-  steps?: number | bigint;
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** Absolute rotation in degrees (clockwise positive in the view). */
+  degrees?: number | null;
+  /** 30° steps (clockwise = +1). */
+  steps?: number | null;
 }
 
+/** A point in document or view coordinates. */
+export interface view_rotation_set_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_rotation_set_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_rotation_set_Point;
 }
 
+/** `viewId?`. */
 export interface view_transform_get_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
+  /** View window (default: the active one). */
+  viewId?: string | null;
 }
 
+/** A point in document or view coordinates. */
+export interface view_transform_get_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_transform_get_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_transform_get_Point;
 }
 
+/** A part of a view transform. */
+export type view_transform_reset_Part = 'zoom' | 'rotation' | 'pan';
+
+/** `view.transform.reset` parameters. */
 export interface view_transform_reset_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  parts?: ('zoom' | 'rotation' | 'pan')[];
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** Parts to reset. */
+  parts?: view_transform_reset_Part[];
 }
 
+/** A point in document or view coordinates. */
+export interface view_transform_reset_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_transform_reset_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_transform_reset_Point;
 }
 
+/** A view type, or `previous` (switch active view, 01 §4). */
+export type view_type_set_TypeParam = 'drawing' | 'camera' | 'top' | 'side' | 'previous';
+
+/** `view.type.set` parameters. */
 export interface view_type_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  type: 'drawing' | 'camera' | 'top' | 'side' | 'previous';
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** The type. */
+  type: view_type_set_TypeParam;
 }
 
+/** A view window's type (01 §4, §5.3). */
+export type view_type_set_ViewType = 'drawing' | 'camera' | 'top' | 'side';
+
+/** `{viewId, type}`. */
 export interface view_type_set_result {
-  /** object ID or path reference (10 §3) */
+  /** View id. */
   viewId: string;
-  type: string;
+  /** Its type now. */
+  type: view_type_set_ViewType;
 }
 
+/** A point in document or view coordinates. */
+export interface view_zoom_set_Point {
+  /** x. */
+  x: number;
+  /** y. */
+  y: number;
+}
+
+/** `view.zoom.set` parameters. */
 export interface view_zoom_set_params {
-  /** object ID or path reference (10 §3) */
-  viewId?: string;
-  zoom?: number;
-  steps?: number | bigint;
-  /** (view pixels) */
-  anchor?: {
-    x: number;
-    y: number;
-  };
+  /** View window (default: the active one). */
+  viewId?: string | null;
+  /** Absolute zoom factor. */
+  zoom?: number | null;
+  /** Table steps (zoom in = +1, zoom out = −1). */
+  steps?: number | null;
+  /** The view point that stays fixed (view pixels; default the view centre). */
+  anchor?: view_zoom_set_Point | null;
 }
 
+/** A view transform (01 §6.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document point at the centre of the view (drawing space for a Drawing view, scene space for staging views). */
 export interface view_zoom_set_result {
+  /** Zoom factor (1 = 100 %). */
   zoom: number;
+  /** View rotation in degrees, in (−180, 180]. */
   rotationDegrees: number;
-  centre: {
-    x: number;
-    y: number;
-  };
+  /** Document point at the view centre. */
+  centre: view_zoom_set_Point;
 }
 
 /** `{visible}` parameters and result. */
@@ -101504,9 +105999,9 @@ export interface window_fullScreen_set_result {
 /** No parameters. */
 export type window_geometry_get_params = Record<string, unknown>;
 
-/** A screen. */
+/** A screen (01 §12.2 `window.geometry.get`). */
 export interface window_geometry_get_Screen {
-  /** Left. */
+  /** Left, logical pixels. */
   x: number;
   /** Top. */
   y: number;
@@ -101514,11 +106009,11 @@ export interface window_geometry_get_Screen {
   width: number;
   /** Height. */
   height: number;
-  /** Scale factor. */
+  /** Scale factor (device pixels per logical pixel). */
   scale: number;
 }
 
-/** Window geometry. */
+/** Window geometry (01 §12.2 `window.geometry.get`). */
 export interface window_geometry_get_result {
   /** Left. */
   x: number;
@@ -101550,9 +106045,9 @@ export interface window_geometry_set_params {
   maximized?: boolean | null;
 }
 
-/** A screen. */
+/** A screen (01 §12.2 `window.geometry.get`). */
 export interface window_geometry_set_Screen {
-  /** Left. */
+  /** Left, logical pixels. */
   x: number;
   /** Top. */
   y: number;
@@ -101560,11 +106055,11 @@ export interface window_geometry_set_Screen {
   width: number;
   /** Height. */
   height: number;
-  /** Scale factor. */
+  /** Scale factor (device pixels per logical pixel). */
   scale: number;
 }
 
-/** Window geometry. */
+/** Window geometry (01 §12.2 `window.geometry.get`). */
 export interface window_geometry_set_result {
   /** Left. */
   x: number;
@@ -102083,7 +106578,7 @@ export type workspace_export_OnExists = 'fail' | 'overwrite';
 
 /** `workspace.export` parameters. */
 export interface workspace_export_params {
-  /** Workspace name. */
+  /** Workspace name (empty, unknown or longer than any name: `workspace.notFound`; C41-R1-13, C41-R2-21 audits). */
   name: string;
   /** Absolute target path. */
   path: string;

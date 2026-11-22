@@ -1,0 +1,6 @@
+{
+  "name": "one-drag-gate",
+  "exit": 0,
+  "builderExit": 1,
+  "assertion": "D-33 workstation gate must reject fewer than 30 samples per scene"
+}

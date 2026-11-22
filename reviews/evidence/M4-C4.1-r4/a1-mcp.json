@@ -1,0 +1,27 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-mcp",
+    "--test",
+    "c41_r1_review",
+    "--test",
+    "c41_r2_review",
+    "--test",
+    "c41_r3_review",
+    "--locked"
+  ],
+  "exit": 0,
+  "seconds": 48.119659899995895,
+  "results": [
+    "     Running tests\\c41_r1_review.rs (target\\debug\\deps\\c41_r1_review-90f7ced3c9b77e10.exe)",
+    "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.02s",
+    "     Running tests\\c41_r2_review.rs (target\\debug\\deps\\c41_r2_review-9e77013eb975c3c7.exe)",
+    "test part_c1_keys::modal_key_is_typed_error ... ok",
+    "test part_c1_keys::disabled_key_is_typed_error ... ok",
+    "test result: ok. 14 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.01s",
+    "     Running tests\\c41_r3_review.rs (target\\debug\\deps\\c41_r3_review-aaebe5a760a26009.exe)",
+    "test result: ok. 8 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.87s"
+  ]
+}

@@ -1,0 +1,72 @@
+{
+ "kind": "toontown.c44b.r4.reviewer-probes",
+ "note": "tests/adversarial/c44b-r3-live.py run unchanged, one process per step, on the release builds named; the probes' files were copied out of the reviewer's evidence folder and the folder restored. n1 2 and 3 failed on da7546e3 only on the six \"D-83 <kind> text reason\" checks (a text session ended by an agent's lock told the person nothing); fixed in 0144b71e and rerun there: every check passes.",
+ "regenerate": "python tests/adversarial/c44b-r3-live.py <n1|n2> <step>",
+ "static": {
+  "command": "python tests/adversarial/c44b-r3s-static.py",
+  "exit": 0,
+  "output": [
+   "S1 helper proof has no aside: True",
+   "S1 rounds can repeat: True",
+   "S2 named schedule: True",
+   "S3 MCP cannot set person: True",
+   "S4 acting snapshot missing: True",
+   "S5 extended segmentation: True",
+   "S6 M1 reviewer unchanged: True",
+   "S6 oversized receipts: []",
+   "S7 deferred owners: [...]",
+   "report ASCII and LF: True"
+  ]
+ },
+ "steps": [
+  {
+   "case": "n1",
+   "step": 2,
+   "checks": 43,
+   "failures": [],
+   "build": "0144b71e"
+  },
+  {
+   "case": "n1",
+   "step": 3,
+   "checks": 48,
+   "failures": [],
+   "build": "0144b71e"
+  },
+  {
+   "case": "n1",
+   "step": 4,
+   "checks": 27,
+   "failures": [],
+   "build": "da7546e3"
+  },
+  {
+   "case": "n2",
+   "step": 5,
+   "checks": 7,
+   "failures": [],
+   "build": "da7546e3"
+  },
+  {
+   "case": "n2",
+   "step": 6,
+   "checks": 7,
+   "failures": [],
+   "build": "da7546e3"
+  },
+  {
+   "case": "n2",
+   "step": 7,
+   "checks": 8,
+   "failures": [],
+   "build": "da7546e3"
+  },
+  {
+   "case": "n2",
+   "step": 8,
+   "checks": 18,
+   "failures": [],
+   "build": "da7546e3"
+  }
+ ]
+}

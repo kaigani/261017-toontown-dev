@@ -1,0 +1,48 @@
+[
+  {
+    "case": 1,
+    "verdict": "Pass",
+    "observed": {
+      "response": {},
+      "comparison": {
+        "verdict": "Pass"
+      }
+    }
+  },
+  {
+    "case": 2,
+    "verdict": "Pass",
+    "observed": {}
+  },
+  {
+    "case": 3,
+    "verdict": "Pass",
+    "observed": {
+      "response": {}
+    }
+  },
+  {
+    "case": 4,
+    "verdict": "Pass",
+    "observed": {}
+  },
+  {
+    "case": 5,
+    "verdict": "Pass",
+    "observed": {
+      "response": {},
+      "comparison": {
+        "verdict": "Pass"
+      }
+    }
+  },
+  {
+    "case": 6,
+    "verdict": "Pass",
+    "observed": {
+      "comparison": {
+        "verdict": "Pass"
+      }
+    }
+  }
+]

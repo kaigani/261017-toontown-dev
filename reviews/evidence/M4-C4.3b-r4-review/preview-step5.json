@@ -1,0 +1,32 @@
+[
+ {
+  "name": "undo D-32",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok",
+    "ok"
+   ]
+  }
+ },
+ {
+  "name": "(d) a second gesture before the first settles: the second press came before the first answer, both committed, nothing left drawn",
+  "ok": true,
+  "detail": {
+   "secondPressAfterFirstRelease": 0.568,
+   "firstAnsweredAt": 2.5947571999859065,
+   "secondAnsweredAt": 3.927677199942991,
+   "pending": false
+  }
+ },
+ {
+  "name": "(d) a second gesture before the first settles: the drawing equals both gestures' direct commands (D-32)",
+  "ok": true,
+  "detail": {
+   "statuses": [
+    "ok",
+    "ok"
+   ]
+  }
+ }
+]

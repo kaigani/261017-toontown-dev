@@ -1,0 +1,21 @@
+{
+  "tests_passed": 2,
+  "busy": {
+    "baseline": 7,
+    "measured": 28,
+    "harness": 1,
+    "session_delta": 20,
+    "running_jobs": 8,
+    "typed_refusals": [
+      "concurrentJobWaits",
+      "serverWork",
+      "maxJobs"
+    ]
+  },
+  "idle": {
+    "baseline": 8,
+    "measured": 178,
+    "ceiling": 659,
+    "cleanup": "returns to baseline"
+  }
+}

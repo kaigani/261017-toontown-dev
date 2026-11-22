@@ -11,12 +11,6 @@ use tt_model::{Id, ObjectType};
 
 use crate::ui::UiState;
 
-/// The mode a view type implies (01 §4): a drawing view is drawing mode; camera, top and side views are staging.
-#[must_use]
-pub fn mode_of_view(panel: &str) -> Mode {
-    if panel == "drawingView" { Mode::Drawing } else { Mode::Staging }
-}
-
 /// The working mode (01 §4.4).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
@@ -56,8 +50,39 @@ pub(crate) struct AppContext {
     /// The Contour Editor's anchor selection (02 §7.1.2; `draw.pointSelection.set`): compound stroke keys
     /// (`<drawingId>/<strokeId>`) with anchor indices, in selection order.
     pub points: Vec<(String, u32)>,
+    /// The drawings `points` holds anchors of (every `<drawingId>` prefix of its keys), kept with it by
+    /// [`AppContext::set_points`] and repair: a precheck asks whether a drawing has selected anchors with one lookup
+    /// (ruling O-24).
+    pub point_drawings: std::collections::BTreeSet<String>,
     /// Tool memory of the session that is not document content (the Line tool's last end per drawing: `x,y`).
     pub tool_memory: std::collections::BTreeMap<String, String>,
+    /// The current brush pen and eraser pen (02 §6.1; project scope, 02 §12.3: saved in the project's `session.json`).
+    pub pens: CurrentPens,
+    /// The current colour and its palette (03 §2.4; `colour.current.set`, ruling D-11; saved in `session.json`).
+    pub colour: Option<(Id, Id)>,
+    /// The Text tool's edit session (M4 C4.4b, design note 5 §2): transient, one per application.
+    pub text_edit: Option<crate::text_edit::TextEdit>,
+}
+
+/// The current pen of each tool family (02 §6.1: Brush and Eraser each remember their own).
+#[derive(Debug, Clone, Default, PartialEq, Eq)]
+pub struct CurrentPens {
+    /// Current brush pen.
+    pub brush: Option<Id>,
+    /// Current eraser pen.
+    pub eraser: Option<Id>,
+}
+
+/// Every prefix of the keys that ends before a `/` (`<drawingId>` of `<drawingId>/<localId>`, whatever the IDs
+/// contain).
+pub(crate) fn prefixes<'a>(keys: impl Iterator<Item = &'a str>) -> std::collections::BTreeSet<String> {
+    let mut out = std::collections::BTreeSet::new();
+    for k in keys {
+        for (i, _) in k.match_indices('/') {
+            out.insert(k[..i].to_owned());
+        }
+    }
+    out
 }
 
 impl Default for AppContext {
@@ -70,7 +95,11 @@ impl Default for AppContext {
             selection: Selection { context: "staging".to_owned(), ids: Ids::default() },
             selections: std::collections::BTreeMap::new(),
             points: Vec::new(),
+            point_drawings: std::collections::BTreeSet::new(),
             tool_memory: std::collections::BTreeMap::new(),
+            pens: CurrentPens::default(),
+            colour: None,
+            text_edit: None,
         }
     }
 }
@@ -186,7 +215,7 @@ pub struct ActiveTool {
     pub tool_id: String,
 }
 
-/// A modal GUI state (never set by the kernel: 11 P5).
+/// A modal GUI state (reported by the desktop host, never set by a command: 11 P5).
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, JsonSchema)]
 pub struct Modal {
     /// `dialog`, `gesture` or `progress`.
@@ -225,7 +254,7 @@ pub struct AppState {
     pub playback: PlaybackState,
     /// Start screen shown (no project).
     pub start_screen_visible: bool,
-    /// Modal state (always `null` in the kernel).
+    /// Modal state (reported by the desktop host; `null` headless).
     pub modal: Option<Modal>,
     /// Connected agent sessions.
     pub agent_sessions: Vec<AgentSessionState>,
@@ -317,7 +346,11 @@ impl AppContext {
             selection: Selection { context: self.selection.context.clone(), ids: Ids::default() },
             selections: std::collections::BTreeMap::new(),
             points: self.points.clone(),
+            point_drawings: self.point_drawings.clone(),
             tool_memory: self.tool_memory.clone(),
+            pens: self.pens.clone(),
+            colour: self.colour.clone(),
+            text_edit: self.text_edit.clone(),
         }
     }
 
@@ -330,6 +363,48 @@ impl AppContext {
     /// The selection of a context, borrowed (no copy of a large list).
     pub(crate) fn selection_list(&self, context: &str) -> &[String] {
         self.selections.get(context).map_or(&[], |v| v.as_slice())
+    }
+
+    /// The shared selection list of a context (its identity changes whenever its content does: lists are replaced,
+    /// and repair's in-place edit reallocates a list that is also referenced elsewhere).
+    pub(crate) fn selection_shared(&self, context: &str) -> Option<&Ids> {
+        self.selections.get(context)
+    }
+
+    /// Replaces the anchor selection and its drawing index.
+    pub(crate) fn set_points(&mut self, points: Vec<(String, u32)>) {
+        self.points = points;
+        self.point_drawings = prefixes(self.points.iter().map(|(k, _)| k.as_str()));
+    }
+
+    /// An anchor was inserted at index `anchor` of the stroke `key` (`<drawingId>/<strokeId>`): the selected anchors of
+    /// that stroke at or after it move up by one, so the selection keeps naming the same anchors (C4.4b design note 3
+    /// §3).
+    pub(crate) fn points_inserted(&mut self, key: &str, anchor: u32) {
+        for (k, a) in &mut self.points {
+            if k == key && *a >= anchor {
+                *a += 1;
+            }
+        }
+    }
+
+    /// The anchors `removed` of the stroke `key` were deleted: they leave the selection and the stroke's later selected
+    /// anchors move down, so the selection never names the anchors that took the deleted ones' places (C4.4b design
+    /// note 3 §3).
+    pub(crate) fn points_removed(&mut self, key: &str, removed: &std::collections::BTreeSet<usize>) {
+        self.points.retain(|(k, a)| !(k == key && removed.contains(&(*a as usize))));
+        for (k, a) in &mut self.points {
+            if k == key {
+                let below = removed.iter().filter(|r| **r < *a as usize).count();
+                *a -= u32::try_from(below).unwrap_or(*a);
+            }
+        }
+        self.point_drawings = prefixes(self.points.iter().map(|(k, _)| k.as_str()));
+    }
+
+    /// Whether the anchor selection holds anchors of `drawing` (one lookup).
+    pub(crate) fn has_points_in(&self, drawing: &str) -> bool {
+        self.point_drawings.contains(drawing)
     }
 
     /// Sets the selection of a context and makes it the reported one.
@@ -430,6 +505,9 @@ impl AppContext {
             }
         }
         self.points.retain(|(k, anchor)| anchor_exists(doc, k, *anchor));
+        if self.points.len() != before.points.len() {
+            self.point_drawings = prefixes(self.points.iter().map(|(k, _)| k.as_str()));
+        }
         *self != before
     }
 
@@ -480,21 +558,23 @@ impl AppContext {
             selection: SelectionState { context: self.selection.context.clone(), ids: Vec::new(), kinds: Vec::new() },
             workspace: WorkspaceState { name: workspace, modified },
             playback: PlaybackState { playing: false },
-            start_screen_visible: project.is_none(),
-            modal: None,
+            start_screen_visible: ui.shell().start_screen_visible(project.as_ref().map(|(_, info)| info.id.as_str())),
+            // The modal state the desktop host reports (M4 C4.1; never set by a command, 11 P5).
+            modal: ui.shell().sensors.modal.as_ref().map(|m| Modal { kind: m.kind.clone(), title: m.title.clone() }),
             agent_sessions: Vec::new(),
             agent: None,
             full_screen: ui.full_screen(),
         };
         let Some((doc, info)) = project else { return st };
         st.project = Some(info);
-        // 01 §4: the mode is derived from the type of the active view (the central view of the arrangement in use).
-        st.mode = Some(mode_of_view(ui.central_panel()));
-        let central = ui.central_panel().to_owned();
+        // 01 §4: the mode is derived from the type of the active view window (M4 C4.1: the one focused last while
+        // shown, else the central view of the arrangement in use).
+        st.mode = Some(ui.mode());
+        let active = ui.active_view().to_owned();
         st.active_view = Some(ActiveView {
-            view_id: central.clone(),
-            ty: central.trim_end_matches("View").to_owned(),
-            panel_id: central,
+            view_id: active.clone(),
+            ty: ui.active_view_type().as_str().to_owned(),
+            panel_id: active,
         });
         if let Some(s) = self.scene.as_ref().and_then(|s| doc.scene(s)) {
             st.scene = Some(SceneRef {

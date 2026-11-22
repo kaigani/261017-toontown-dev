@@ -1,0 +1,18 @@
+{
+  "onionCapture": 4823,
+  "onionFinal": 0,
+  "gridCapture": 15493,
+  "gridFinal": 0,
+  "heldOverlay": 1132,
+  "heldFinal": 0,
+  "committedStroke": 1136,
+  "dialog": 517517,
+  "region": {
+    "size": [
+      100,
+      80
+    ],
+    "exact": true
+  },
+  "scale": 1
+}

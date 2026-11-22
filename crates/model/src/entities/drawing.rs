@@ -460,6 +460,44 @@ model_struct! {
 impl_object!(Drawing, Drawing, name);
 
 impl Drawing {
+    /// The drawing without its nodes (every other field as it is), for the change-record fast path of appended nodes
+    /// (C42B-R1-04): its JSON with the nodes' stubs is the drawing's own view.
+    pub(crate) fn without_nodes(&self) -> Drawing {
+        Drawing {
+            id: self.id.clone(),
+            ty: self.ty,
+            rev: self.rev,
+            name: self.name.clone(),
+            locked: self.locked,
+            pivot: self.pivot,
+            mouth_shape: self.mouth_shape,
+            nodes: Vec::new(),
+            colour_recovery: self.colour_recovery.clone(),
+            created_at: self.created_at,
+            meta: self.meta.clone(),
+            ext: self.ext.clone(),
+        }
+    }
+
+    /// The top-level nodes, for the document's append fast path (C42B-R1-04).
+    pub(crate) fn nodes_mut(&mut self) -> &mut Vec<DrawingNode> {
+        &mut self.nodes
+    }
+
+    /// The strokes of the layer at node indices `path` (`[i]`: `nodes[i]`; `[i, j, ..]`: then `children[j]` ..), for
+    /// the document's append fast path (C42B-R1-04); `None` when the path names no layer.
+    pub(crate) fn layer_strokes_mut(&mut self, path: &[usize]) -> Option<&mut Vec<Stroke>> {
+        let (first, rest) = path.split_first()?;
+        let mut node = self.nodes.get_mut(*first)?;
+        for i in rest {
+            node = node.children.as_mut()?.get_mut(*i)?;
+        }
+        if node.kind != NodeKind::Layer {
+            return None;
+        }
+        node.strokes.as_mut()
+    }
+
     /// An empty drawing.
     #[must_use]
     pub fn empty(id: Id, name: String, created_at: Timestamp) -> Self {

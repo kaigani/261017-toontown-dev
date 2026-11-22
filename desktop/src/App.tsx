@@ -1,12 +1,44 @@
-import { DockviewReact, themeDark, type DockviewApi, type DockviewReadyEvent } from 'dockview-react';
+// The desktop shell (M4 C4.1; ADR-0021). The window renders executor state and sends every user action back as a
+// command: the mirror store follows the engine's numbered events; menus, shortcuts, toolbars, docking gestures and
+// dialogs go through the action router; facts only the shell knows (modal state, text focus, view sizes, the rendered
+// UI tree with the last event it reflects) are reported to the executor.
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { handleMenuCommand, type FrontendContext } from './commands';
 import { maybeRunIpcBench } from './diagnostics/ipcBench';
-import { useHost, type SpikeMode } from './ipc';
-import { applyDefaultLayout } from './layout/defaultLayout';
-import { panelComponents } from './panels';
-import { StatusBar, type StatusMessage } from './status/StatusBar';
+import { DockArea } from './dock/DockArea';
+import { useHost, type Envelope, type SpikeMode } from './ipc';
+import { isMac } from './keys/sequence';
+import { LoadReportWindow } from './shell/LoadReportWindow';
+import { ConfirmationSheet } from './shell/ConfirmationSheet';
+import { panelInfo } from './panels/catalogue';
+import { PanelBody } from './panels/PanelBody';
+import { PreferencesDialog } from './prefs/PreferencesDialog';
+import { ActionsProvider } from './shell/actions';
+import { useActions } from './shell/actionsApi';
+import { Dialog, DialogHost } from './shell/dialogs';
+import { useDialogs } from './shell/dialogsApi';
+import { MessageHost } from './shell/messages';
+import { useMessages } from './shell/messagesApi';
+import { StatusBar } from './shell/StatusBar';
+import { MainToolbar, ToolPaletteRail } from './shell/Toolbars';
+import {
+  useEngineMirror,
+  useNoBrowserMenus,
+  usePageReady,
+  useShortcuts,
+  useTextFocusReport,
+  useTreeReporter,
+} from './shell/windowHooks';
+import { toolbarRefs } from './shell/toolbarItems';
+import type { UiNode } from './shell/uiTree';
+import { StartScreen } from './start/StartScreen';
+import { useShell, useSlice, useStoreState, type ShellServices } from './state/context';
+import { ShellProvider } from './state/react';
+import { createStore } from './state/store';
+import type { AppState, Binding, Layout, PrefEntry, Theme, Tip } from './state/types';
+import { applyTheme, useAppliedTheme } from './theme/theme';
+import { CadenceProbe } from './canvas/CadenceProbe';
+import { setCanvasLaunch } from './canvas/launch';
 
 // M0 spike pages (C0.2 tablet, C0.3 canvas), loaded only when the host was started with --spike. They exist only in
 // the diagnostics build (src/m0Diagnostics.d.ts): the default bundle contains neither page nor its chunk (C0.4).
@@ -17,65 +49,35 @@ const CanvasSpike = __TT_M0_DIAGNOSTICS__
   ? lazy(() => import('./spikes/canvas/CanvasSpike').then((m) => ({ default: m.CanvasSpike })))
   : null;
 
-export function App() {
-  const host = useHost();
-  const dockApi = useRef<DockviewApi | null>(null);
-  const [message, setMessage] = useState<StatusMessage | null>(null);
-  const [spike, setSpike] = useState<SpikeMode | null>(null);
+/** Start-up runs once per application, even when React mounts the shell twice (development). */
+const startupDone = { value: false };
 
+export function App({ floatPanel }: { floatPanel?: string } = {}) {
+  const host = useHost();
+  const [spike, setSpike] = useState<SpikeMode | null>(null);
   useEffect(() => {
     host.spike.mode().then(setSpike, () => {
       setSpike(null);
     });
   }, [host]);
-
-  const ctx = useMemo<FrontendContext>(
-    () => ({
-      resetWorkspace: () => {
-        if (dockApi.current) applyDefaultLayout(dockApi.current);
-      },
-    }),
-    [],
-  );
-
-  useEffect(() => {
-    let unlisten: (() => void) | null = null;
-    let disposed = false;
-    host
-      .onMenuCommand((event) => {
-        setMessage(handleMenuCommand(ctx, event));
-      })
-      .then(
-        (u) => {
-          if (disposed) u();
-          else unlisten = u;
-        },
-        (e: unknown) => {
-          setMessage({ kind: 'error', text: `Cannot listen for menu commands: ${String(e)}` });
-        },
-      );
-    return () => {
-      disposed = true;
-      unlisten?.();
-    };
-  }, [host, ctx]);
-
+  // M0 diagnostics (C0.4): `--ipc-bench` runs the IPC benchmark at start-up; the host writes the report and exits
+  // (or exits with status 2 when no report arrives). Absent from the default build.
   useEffect(() => {
     if (!__TT_M0_DIAGNOSTICS__) return;
     maybeRunIpcBench(host).then(
-      (ran) => {
-        if (ran) setMessage({ kind: 'info', text: 'IPC benchmark reported' });
-      },
-      (e: unknown) => {
-        setMessage({ kind: 'error', text: `IPC benchmark failed: ${String(e)}` });
-      },
+      () => undefined,
+      () => undefined,
     );
   }, [host]);
 
-  const onReady = useCallback((event: DockviewReadyEvent) => {
-    dockApi.current = event.api;
-    applyDefaultLayout(event.api);
-  }, []);
+  const services = useMemo<ShellServices>(() => {
+    const store = createStore(host.engine);
+    return {
+      engine: host.engine,
+      store,
+      run: (command, params, options) => host.engine.run(command, params, options).done,
+    };
+  }, [host]);
 
   if (spike && TabletSpike && CanvasSpike) {
     return (
@@ -84,13 +86,441 @@ export function App() {
       </Suspense>
     );
   }
-
   return (
-    <div className="app">
-      <main className="dock-host">
-        <DockviewReact components={panelComponents} onReady={onReady} theme={themeDark} />
-      </main>
-      <StatusBar message={message} />
+    <ShellProvider services={services}>
+      <Shell floatPanel={floatPanel} />
+    </ShellProvider>
+  );
+}
+
+function Shell({ floatPanel }: { floatPanel?: string | undefined }) {
+  const services = useShell();
+  const tips = useSlice('tips') as readonly Tip[] | undefined;
+  const suppressed = useMemo(
+    () => new Set((tips ?? []).filter((t) => t.suppressed).map((t) => t.messageId)),
+    [tips],
+  );
+  return (
+    <MessageHost engine={services.engine} suppressed={suppressed}>
+      <DialogHost>
+        <ShellWithActions floatPanel={floatPanel} />
+      </DialogHost>
+    </MessageHost>
+  );
+}
+
+function ShellWithActions({ floatPanel }: { floatPanel?: string | undefined }) {
+  const services = useShell();
+  return (
+    <ActionsProvider services={services}>
+      {floatPanel ? <FloatWindow panelId={floatPanel} /> : <Window />}
+    </ActionsProvider>
+  );
+}
+
+/**
+ * A floating panel's own window (01 §5.4; ruling O-2): the panel, a title strip (double-click docks it), the shared
+ * mirror store, shortcuts, sensors and UI tree. Its OS gestures (move, resize, close, focus) are the host's to turn
+ * into `window.panel.set`; nothing here owns state.
+ */
+function FloatWindow({ panelId }: { panelId: string }) {
+  const services = useShell();
+  const actions = useActions();
+  const state = useStoreState();
+  const prefs = (state.slices.prefs as readonly PrefEntry[] | undefined) ?? [];
+  const themes = useMemo(
+    () => (state.slices.themes as readonly Theme[] | undefined) ?? [],
+    [state.slices.themes],
+  );
+  const keymap = useMemo(
+    () => (state.slices.keymap as readonly Binding[] | undefined) ?? [],
+    [state.slices.keymap],
+  );
+  const title = panelInfo(panelId)?.title ?? panelId;
+  useEngineMirror(services, false);
+  useShortcuts(services, actions, keymap, isMac());
+  useTextFocusReport(services);
+  usePageReady(services);
+  useNoBrowserMenus();
+  const node = useCallback(
+    (): UiNode => ({ role: 'window', id: `float-${panelId}`, label: title }),
+    [panelId, title],
+  );
+  useTreeReporter(services, node);
+  const themeId = prefs.find((p) => p.key === 'interface.theme')?.value;
+  useEffect(() => {
+    applyTheme(typeof themeId === 'string' ? themeId : 'system', themes);
+  }, [themeId, themes]);
+  useEffect(() => {
+    document.title = title;
+  }, [title]);
+  return (
+    <div className="float-window" data-tt-role="group" data-tt-id={`float.${panelId}`}>
+      <div
+        className="float-title"
+        data-tt-role="text"
+        data-tt-id={`float.${panelId}.title`}
+        title="Double-click to dock"
+        onDoubleClick={() => {
+          void actions.run('window.panel.set', { panelId, floating: false });
+        }}
+      >
+        {title}
+      </div>
+      <div className="float-body">
+        <PanelBody panelId={panelId} />
+      </div>
     </div>
   );
 }
+
+function Window() {
+  const services = useShell();
+  const host = useHost();
+  // `--canvas-metrics`: the cadence control of ruling D-33 runs.
+  const [measuring, setMeasuring] = useState(false);
+  const actions = useActions();
+  const dialogs = useDialogs();
+  const messages = useMessages();
+  const state = useStoreState();
+  const appState = state.slices.appState as AppState | undefined;
+  const layout = state.slices.layout as Layout | undefined;
+  const prefs = (state.slices.prefs as readonly PrefEntry[] | undefined) ?? [];
+  const themes = useMemo(
+    () => (state.slices.themes as readonly Theme[] | undefined) ?? [],
+    [state.slices.themes],
+  );
+  const keymap = useMemo(
+    () => (state.slices.keymap as readonly Binding[] | undefined) ?? [],
+    [state.slices.keymap],
+  );
+  const root = useRef<HTMLDivElement | null>(null);
+  const mac = isMac();
+
+  useEngineMirror(services, true);
+
+  // Start-up (01 §1.1 rules 7-8): documents requested before the window existed take precedence over the start-up
+  // behaviour preference. Runs once per application (React may mount twice in development).
+  useEffect(() => {
+    if (startupDone.value) return;
+    startupDone.value = true;
+    void (async () => {
+      const { open, canvas } = await host.startup();
+      if (canvas) {
+        setCanvasLaunch(canvas);
+        setMeasuring(canvas.metrics);
+      }
+      if (open.length > 0) {
+        for (const path of open) await actions.perform('project.open', { path });
+        return;
+      }
+      const env = await services.engine.run('prefs.get', { keys: ['general.startup.behaviour'] }).done;
+      const values = (env.result as { values?: Record<string, unknown> } | undefined)?.values ?? {};
+      switch (values['general.startup.behaviour']) {
+        case 'lastProject': {
+          const recent = await services.engine.run('project.recent.list', {}).done;
+          const first = Array.isArray(recent.result)
+            ? (recent.result[0] as { path?: unknown } | undefined)
+            : undefined;
+          if (typeof first?.path === 'string') await actions.perform('project.open', { path: first.path });
+          break;
+        }
+        case 'openDialog':
+          await actions.perform('project.open');
+          break;
+        case 'newDialog':
+          await actions.perform('project.create');
+          break;
+        case 'newDefaultProject':
+          await actions.perform('project.create', { name: 'Untitled' });
+          break;
+        default:
+          break;
+      }
+    })();
+  }, [actions, host, services]);
+
+  // Host notices: open the preferences window or the help viewer when a command asks for them.
+  const openPreferences = useCallback(
+    async (category?: string) => {
+      const s = services.store.getState().slices;
+      await dialogs.open<boolean>('Preferences', (close) => (
+        <PreferencesDialog
+          services={services}
+          prefs={(s.prefs as readonly PrefEntry[] | undefined) ?? []}
+          keymap={(s.keymap as readonly Binding[] | undefined) ?? []}
+          tips={(s.tips as readonly Tip[] | undefined) ?? []}
+          themes={(s.themes as readonly Theme[] | undefined) ?? []}
+          {...(category ? { initialCategory: category } : {})}
+          close={close}
+        />
+      ));
+    },
+    [dialogs, services],
+  );
+  const openHelp = useCallback(
+    async (topic?: string) => {
+      const env = await services.engine.run(
+        'ui.help.get',
+        topic?.includes('.') ? { commandId: topic } : { panelId: 'history' },
+      ).done;
+      const r = (env.result ?? { title: 'Documentation', text: '' }) as { title: string; text: string };
+      await dialogs.open<null>('Help', (close) => (
+        <Dialog
+          id="help"
+          title={r.title}
+          onCancel={() => {
+            close(null);
+          }}
+        >
+          <pre className="help-text" data-tt-role="text" data-tt-id="help.text">
+            {r.text}
+          </pre>
+        </Dialog>
+      ));
+    },
+    [dialogs, services],
+  );
+  useEffect(
+    () =>
+      services.store.onEvent((e) => {
+        const p = (e.payload ?? {}) as Record<string, unknown>;
+        if (e.name === 'shell.preferences')
+          void openPreferences(typeof p['category'] === 'string' ? p['category'] : undefined);
+        if (e.name === 'shell.help') void openHelp(typeof p['topic'] === 'string' ? p['topic'] : undefined);
+        if (e.name === 'ui.message.shown' && p['source'] === 'agent') {
+          // Agent-originated messages are non-modal (01 §12.1 rule 6).
+          messages.notify({
+            severity: p['severity'] === 'warning' || p['severity'] === 'error' ? p['severity'] : 'info',
+            messageId: typeof p['messageId'] === 'string' ? p['messageId'] : 'agent',
+            text: typeof p['text'] === 'string' ? p['text'] : '',
+          });
+        }
+      }),
+    [messages, openHelp, openPreferences, services],
+  );
+
+  // Notices of the host (for example the agent server could not start): shown, non-modal.
+  useEffect(() => {
+    let unlisten: (() => void) | null = null;
+    let disposed = false;
+    void host
+      .onHostNotice((n) => {
+        messages.notify({ severity: n.severity, messageId: n.messageId, text: n.text });
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      });
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [host, messages]);
+
+  // A native menu item's hint (Open Recent's full path, 01 §3.3 line 190): shown on the status bar's left line while
+  // the item is highlighted (StatusBar's `tt-menu-hint`).
+  useEffect(() => {
+    let unlisten: (() => void) | null = null;
+    let disposed = false;
+    void host
+      .onMenuHint((text) => {
+        window.dispatchEvent(new CustomEvent<string | null>('tt-menu-hint', { detail: text }));
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      });
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [host]);
+
+  // Menu items forwarded by the host: one action each.
+  useEffect(() => {
+    let unlisten: (() => void) | null = null;
+    let disposed = false;
+    void host
+      .onMenuCommand((event) => {
+        void actions.perform(event.command, event.params);
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      });
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [actions, host]);
+
+  // The theme follows `interface.theme` (01 §5.8).
+  const themeId = prefs.find((p) => p.key === 'interface.theme')?.value;
+  useEffect(() => {
+    applyTheme(typeof themeId === 'string' ? themeId : 'system', themes);
+  }, [themeId, themes]);
+
+  useShortcuts(services, actions, keymap, mac);
+  useTextFocusReport(services);
+  usePageReady(services);
+  useNoBrowserMenus();
+  const mainNode = useCallback((): UiNode => {
+    const app = services.store.getState().slices.appState as AppState | undefined;
+    return {
+      role: 'window',
+      id: 'main',
+      label: app?.project ? `Toontown — ${app.project.name}` : 'Toontown',
+    };
+  }, [services]);
+  useTreeReporter(services, mainNode);
+
+  // The window title (01 §5.1): project, modified, read-only, scene, frame.
+  useEffect(() => {
+    const p = appState?.project;
+    if (!p) {
+      document.title = 'Toontown';
+      return;
+    }
+    const parts = [`${p.name}${p.dirty ? ' *' : ''}${p.readOnly ? ' [read-only]' : ''}`];
+    if (appState.scene) parts.push(appState.scene.name);
+    if (appState.frame !== null) parts.push(`frame ${String(appState.frame)}`);
+    document.title = `${parts.join(' — ')} — Toontown`;
+  }, [appState]);
+
+  const fullScreen = appState?.fullScreen === true;
+  // The toolbar's command references: their availability is read from the kernel with every refresh (ruling O-10).
+  const items = (fullScreen ? layout?.fullScreen : layout)?.mainToolbar.items;
+  const itemsKey = (items ?? []).join('|');
+  useEffect(() => {
+    services.store.watch(toolbarRefs(itemsKey ? itemsKey.split('|') : []));
+  }, [itemsKey, services]);
+  // The applied theme is part of the reported tree (the app group's value), so an agent sees what the user sees.
+  const appliedTheme = useAppliedTheme();
+  return (
+    <div className="app" ref={root} data-tt-role="group" data-tt-id="app" data-tt-value={appliedTheme}>
+      <MainToolbar layout={layout} fullScreen={fullScreen} />
+      <div className="workspace-row">
+        <ToolPaletteRail layout={layout} fullScreen={fullScreen} />
+        <main className="dock-main">
+          <DockArea layout={layout} fullScreen={fullScreen} />
+        </main>
+      </div>
+      <StatusBar />
+      {appState?.startScreenVisible && <StartScreen />}
+      <EngineBanner />
+      <LoadReportWindow />
+      <ConfirmationSheet />
+      <RefreshErrors errors={state.errors} />
+      <CadenceProbe enabled={measuring} />
+    </div>
+  );
+}
+
+/** The engine stopped answering (reviews/M4-design-engine-restart.md): Wait or Restart, the user's choice. */
+/** "12:34:56" in local time, from an ISO timestamp. */
+function clockTime(iso: string): string {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime()) ? iso : d.toLocaleTimeString();
+}
+
+function EngineBanner() {
+  const host = useHost();
+  const { store, engine } = useShell();
+  const messages = useMessages();
+  const [stuck, setStuck] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
+  // The last autosave the window saw (the confirmation names it: work after it is lost; ruling O-14).
+  const [autosaved, setAutosaved] = useState<string | null>(null);
+  useEffect(
+    () =>
+      store.onEvent((e) => {
+        const p = (e.payload ?? {}) as Record<string, unknown>;
+        if (e.name === 'project.autosaved' && typeof p['savedAt'] === 'string') setAutosaved(p['savedAt']);
+        if (e.name === 'project.closed' || e.name === 'project.opened') setAutosaved(null);
+      }),
+    [store],
+  );
+  useEffect(() => {
+    let unlisten: (() => void) | null = null;
+    let disposed = false;
+    void host
+      .onEngineStatus((s) => {
+        setStuck(s.notResponding);
+        if (!s.notResponding) setDismissed(false);
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      });
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [host]);
+  if (!stuck || dismissed) return null;
+  return (
+    <div className="engine-banner" role="alert" data-tt-role="dialog" data-tt-id="engineNotResponding">
+      <strong>The engine is not responding.</strong> A command may still be running. Work since the last
+      autosave{autosaved ? ` (${clockTime(autosaved)})` : ''} is only in the engine; restarting offers the
+      autosave as recoverable work.
+      <button
+        type="button"
+        data-tt-role="button"
+        data-tt-id="engine.wait"
+        onClick={() => {
+          setDismissed(true);
+        }}
+      >
+        Wait
+      </button>
+      <button
+        type="button"
+        data-tt-role="button"
+        data-tt-id="engine.restart"
+        onClick={() => {
+          void (async () => {
+            const since = autosaved
+              ? `Work after the last autosave (${clockTime(autosaved)}) will be lost; the autosave is offered as recoverable work.`
+              : 'No autosave was made in this session: unsaved work will be lost.';
+            const answer = await messages.show({
+              severity: 'warning',
+              messageId: 'engine.restartConfirm',
+              title: 'Restart the engine?',
+              text: `The engine is not responding. ${since}`,
+              buttons: [
+                // D-49 item 2: a destructive question defaults to Cancel (unsaved work since the autosave is lost).
+                { id: 'restart', label: 'Restart', role: 'destructive' },
+                { id: 'cancel', label: 'Cancel', role: 'cancel' },
+              ],
+            });
+            if (answer.button !== 'restart') return;
+            const { generation } = await host.restartEngine();
+            engine.setGeneration(generation);
+            setStuck(false);
+            await store.resync();
+          })();
+        }}
+      >
+        Restart the engine
+      </button>
+    </div>
+  );
+}
+
+/** A slice that cannot be read is shown, not hidden. */
+function RefreshErrors({ errors }: { errors: Partial<Record<string, string>> }) {
+  const entries = Object.entries(errors);
+  if (entries.length === 0) return null;
+  return (
+    <div className="refresh-errors" role="alert" data-tt-role="text" data-tt-id="refreshErrors">
+      {entries.map(([k, v]) => (
+        <div key={k}>
+          {k}: {v}
+        </div>
+      ))}
+    </div>
+  );
+}
+
+export type { Envelope };

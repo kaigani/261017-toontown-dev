@@ -1,0 +1,139 @@
+{
+ "receipt": "reviews/evidence/M4-C4.4b/measure-webgl2",
+ "verdict": "pass",
+ "regenerate": "python scripts/c44b-measure.py target/release/toontown.exe <out> --backend webgl2",
+ "manifest": {
+  "kind": "toontown.c44b.measure",
+  "platform": "win32",
+  "backend": "webgl2",
+  "seconds": 630.2,
+  "bounds": {
+   "inkMs": 16.7,
+   "commitSmallMs": 50.0,
+   "gestureWorkMs": 8.0,
+   "keyToGlyphFrames": 2
+  },
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the control: 300 frames of the start screen's cadence (D-33)",
+   "detail": {
+    "frameMs": {
+     "n": 300,
+     "p50": 17.6,
+     "p95": 18.1,
+     "max": 18.5
+    },
+    "canvases": 1,
+    "startScreen": true
+   }
+  },
+  {
+   "ok": true,
+   "check": "the Drawing view's canvas is located (OS input)",
+   "detail": [
+    116,
+    138,
+    834,
+    633
+   ]
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: a complete measurement (30 drags)"
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: drag feedback 0.6 ms p95 <= 16.7 ms"
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: release to committed 34.7 ms p95 <= 50.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Contour Editor anchor drag: work per frame during the drags 0.2 ms p95 <= 8.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: a complete measurement (30 drags)"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: drag feedback 0.4 ms p95 <= 16.7 ms"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: release to committed 32 ms p95 <= 50.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Perspective corner drag: work per frame during the drags 0.2 ms p95 <= 8.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: a complete measurement (30 drags)"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: drag feedback 0.3 ms p95 <= 16.7 ms"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: release to committed 33.6 ms p95 <= 50.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "Reposition All offset: work per frame during the drags 0.2 ms p95 <= 8.0 ms"
+  },
+  {
+   "ok": true,
+   "check": "keystroke to glyph 35.1 ms p95 <= two control frames (35.2 ms; 30 keys)",
+   "detail": {
+    "n": 30,
+    "p50": 27.9,
+    "p95": 35.1,
+    "max": 35.1,
+    "frames": 2,
+    "controlMedianMs": 17.6,
+    "boundMs": 35.2,
+    "marginMs": 0.1
+   }
+  },
+  {
+   "ok": true,
+   "check": "the 50,000-point stroke is added (straight segments, no fitting)"
+  },
+  {
+   "ok": true,
+   "check": "the 50,000-point case is reported, not asserted (D-75 items 2 and 6; M11 C11.1)"
+  }
+ ],
+ "kept": [
+  "measure.json"
+ ],
+ "raw": [
+  {
+   "file": "discovery.json",
+   "bytes": 4096,
+   "sha256": "26f14e2f152ec76ce60770e4eab9ef081c5eae1568578a458d463ba42fd24109"
+  },
+  {
+   "file": "discovery.log",
+   "bytes": 53,
+   "sha256": "e5aefbe51e37e31bb87f55976bb097c2ed2fd428f17c8c208f760278927fccb3"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 250,
+   "sha256": "48ca61a17412af6e87625bf08e53960b3cf71448fef125c5c977a106fd810c7f"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 17171,
+   "sha256": "619841709e477065c52f0a324ccf979540856db6c7760d6caf2dcf226e684229"
+  }
+ ]
+}

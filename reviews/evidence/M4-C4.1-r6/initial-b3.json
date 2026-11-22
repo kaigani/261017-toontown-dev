@@ -1,0 +1,2149 @@
+[
+  {
+    "check": "none edit.undo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "none edit.undo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.undo",
+        "label": "Undo",
+        "command": {
+          "commandId": "edit.undo",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "project.none",
+          "message": "no project is open",
+          "details": {},
+          "hint": "open or create a project first (project.open, project.create)"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.undo disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.undo` is not enabled: no project is open",
+        "details": {
+          "commandId": "edit.undo",
+          "reason": "no project is open",
+          "keys": "F13"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.redo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "none edit.redo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.redo",
+        "label": "Redo",
+        "command": {
+          "commandId": "edit.redo",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "project.none",
+          "message": "no project is open",
+          "details": {},
+          "hint": "open or create a project first (project.open, project.create)"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.redo disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.redo` is not enabled: no project is open",
+        "details": {
+          "commandId": "edit.redo",
+          "reason": "no project is open",
+          "keys": "F14"
+        }
+      }
+    }
+  },
+  {
+    "check": "none project.save present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "none project.save parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.project.save",
+        "label": "Save",
+        "command": {
+          "commandId": "project.save",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "project.none",
+          "message": "no project is open",
+          "details": {},
+          "hint": "open or create a project first (project.open, project.create)"
+        }
+      }
+    }
+  },
+  {
+    "check": "none project.save disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`project.save` is not enabled: no project is open",
+        "details": {
+          "commandId": "project.save",
+          "reason": "no project is open",
+          "keys": "F15"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.copy present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "none edit.copy parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "project.none",
+          "message": "no project is open",
+          "details": {},
+          "hint": "open or create a project first (project.open, project.create)"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.copy disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.copy` is not enabled: no project is open",
+        "details": {
+          "commandId": "edit.copy",
+          "reason": "no project is open",
+          "keys": "F16"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.cut present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "none edit.cut parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "project.none",
+          "message": "no project is open",
+          "details": {},
+          "hint": "open or create a project first (project.open, project.create)"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.cut disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.cut` is not enabled: no project is open",
+        "details": {
+          "commandId": "edit.cut",
+          "reason": "no project is open",
+          "keys": "F17"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.paste present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "none edit.paste parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "project.none",
+          "message": "no project is open",
+          "details": {},
+          "hint": "open or create a project first (project.open, project.create)"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.paste disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.paste` is not enabled: no project is open",
+        "details": {
+          "commandId": "edit.paste",
+          "reason": "no project is open",
+          "keys": "F18"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.delete present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "none edit.delete parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.delete",
+        "label": "Delete",
+        "command": {
+          "commandId": "edit.delete",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": null,
+        "error": {
+          "code": "project.none",
+          "message": "no project is open",
+          "details": {},
+          "hint": "open or create a project first (project.open, project.create)"
+        }
+      }
+    }
+  },
+  {
+    "check": "none edit.delete disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.delete` is not enabled: no project is open",
+        "details": {
+          "commandId": "edit.delete",
+          "reason": "no project is open",
+          "keys": "F19"
+        }
+      }
+    }
+  },
+  {
+    "check": "create project",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new edit.undo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new edit.undo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.undo",
+        "label": "Undo",
+        "command": {
+          "commandId": "edit.undo",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "edit.nothingToUndo",
+          "message": "`edit.undo` is not enabled: there is nothing to undo",
+          "details": {
+            "commandId": "edit.undo",
+            "reason": "there is nothing to undo"
+          }
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.undo disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.undo` is not enabled: there is nothing to undo",
+        "details": {
+          "commandId": "edit.undo",
+          "reason": "there is nothing to undo",
+          "keys": "F13"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.redo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new edit.redo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.redo",
+        "label": "Redo",
+        "command": {
+          "commandId": "edit.redo",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "edit.nothingToRedo",
+          "message": "`edit.redo` is not enabled: there is nothing to redo",
+          "details": {
+            "commandId": "edit.redo",
+            "reason": "there is nothing to redo"
+          }
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.redo disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.redo` is not enabled: there is nothing to redo",
+        "details": {
+          "commandId": "edit.redo",
+          "reason": "there is nothing to redo",
+          "keys": "F14"
+        }
+      }
+    }
+  },
+  {
+    "check": "new project.save present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new project.save parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.project.save",
+        "label": "Save",
+        "command": {
+          "commandId": "project.save",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "project.pathRequired",
+          "message": "the project has no location yet",
+          "details": {
+            "projectId": "pr_01M7CH4ASXV64A0YNT2FCS2RMM"
+          },
+          "hint": "save with project.saveAs {path}"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.copy present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new edit.copy parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "command.disabled",
+          "message": "nothing is selected in the staging context",
+          "details": {
+            "context": "staging",
+            "reason": "noSelection"
+          },
+          "hint": "select objects (edit.selection.set) or pass objectIds"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.copy disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.copy` is not enabled: nothing is selected in the staging context",
+        "details": {
+          "commandId": "edit.copy",
+          "reason": "nothing is selected in the staging context",
+          "keys": "F16"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.cut present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new edit.cut parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "command.disabled",
+          "message": "nothing is selected in the staging context",
+          "details": {
+            "context": "staging",
+            "reason": "noSelection"
+          },
+          "hint": "select objects (edit.selection.set) or pass objectIds"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.cut disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.cut` is not enabled: nothing is selected in the staging context",
+        "details": {
+          "commandId": "edit.cut",
+          "reason": "nothing is selected in the staging context",
+          "keys": "F17"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.paste present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new edit.paste parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "edit.clipboardEmpty",
+          "message": "the clipboard is empty",
+          "details": {}
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.paste disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.paste` is not enabled: the clipboard is empty",
+        "details": {
+          "commandId": "edit.paste",
+          "reason": "the clipboard is empty",
+          "keys": "F18"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.delete present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "new edit.delete parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.delete",
+        "label": "Delete",
+        "command": {
+          "commandId": "edit.delete",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 1,
+        "error": {
+          "code": "command.disabled",
+          "message": "nothing is selected in the staging context",
+          "details": {
+            "context": "staging",
+            "reason": "noSelection"
+          },
+          "hint": "select objects (edit.selection.set) or pass objectIds"
+        }
+      }
+    }
+  },
+  {
+    "check": "new edit.delete disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.delete` is not enabled: nothing is selected in the staging context",
+        "details": {
+          "commandId": "edit.delete",
+          "reason": "nothing is selected in the staging context",
+          "keys": "F19"
+        }
+      }
+    }
+  },
+  {
+    "check": "edit fixture",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "elementIds": [
+          "el_01K7JJN8004NYDFV11Q6XVEEGW"
+        ],
+        "names": [
+          "Peg"
+        ],
+        "warnings": []
+      },
+      "changes": [
+        {
+          "id": "sc_01M7CH4ASXV64A0YNT2FCS2RRR",
+          "type": "scene",
+          "op": "modified",
+          "rev": 2,
+          "patch": [
+            {
+              "op": "add",
+              "path": "/tree/0",
+              "value": {
+                "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                "children": []
+              }
+            },
+            {
+              "op": "add",
+              "path": "/elements/3",
+              "value": {
+                "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                "type": "element"
+              }
+            }
+          ]
+        },
+        {
+          "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+          "type": "element",
+          "op": "created",
+          "rev": 2,
+          "parentId": "sc_01M7CH4ASXV64A0YNT2FCS2RRR",
+          "index": 3
+        }
+      ],
+      "undo": {
+        "stepId": "u-1",
+        "label": "New Elements"
+      },
+      "warnings": [],
+      "documentRev": 2
+    }
+  },
+  {
+    "check": "edit edit.undo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "edit edit.undo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.undo",
+        "label": "Undo New Elements \u2014 agent: mcp",
+        "command": {
+          "commandId": "edit.undo",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "ok",
+        "result": {
+          "undone": [
+            "New Elements"
+          ],
+          "position": 0
+        },
+        "changes": [
+          {
+            "id": "sc_01M7CH4ASXV64A0YNT2FCS2RRR",
+            "type": "scene",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/tree/0",
+                "oldValue": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "children": []
+                }
+              },
+              {
+                "op": "remove",
+                "path": "/elements/3",
+                "oldValue": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+            "type": "element",
+            "op": "deleted",
+            "rev": 3,
+            "parentId": "sc_01M7CH4ASXV64A0YNT2FCS2RRR"
+          }
+        ],
+        "warnings": [],
+        "documentRev": 2,
+        "dryRun": true
+      }
+    }
+  },
+  {
+    "check": "edit edit.redo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "edit edit.redo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.redo",
+        "label": "Redo",
+        "command": {
+          "commandId": "edit.redo",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2,
+        "error": {
+          "code": "edit.nothingToRedo",
+          "message": "`edit.redo` is not enabled: there is nothing to redo",
+          "details": {
+            "commandId": "edit.redo",
+            "reason": "there is nothing to redo"
+          }
+        }
+      }
+    }
+  },
+  {
+    "check": "edit edit.redo disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.redo` is not enabled: there is nothing to redo",
+        "details": {
+          "commandId": "edit.redo",
+          "reason": "there is nothing to redo",
+          "keys": "F14"
+        }
+      }
+    }
+  },
+  {
+    "check": "edit project.save present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "edit project.save parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.project.save",
+        "label": "Save",
+        "command": {
+          "commandId": "project.save",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2,
+        "error": {
+          "code": "project.pathRequired",
+          "message": "the project has no location yet",
+          "details": {
+            "projectId": "pr_01M7CH4ASXV64A0YNT2FCS2RMM"
+          },
+          "hint": "save with project.saveAs {path}"
+        }
+      }
+    }
+  },
+  {
+    "check": "edit edit.copy present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "edit edit.copy parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "ok",
+        "result": {
+          "clipboard": {
+            "kind": "elements",
+            "itemCount": 1
+          }
+        },
+        "targets": {
+          "context": "staging",
+          "ids": [
+            "el_01K7JJN8004NYDFV11Q6XVEEGW"
+          ]
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2,
+        "dryRun": true
+      }
+    }
+  },
+  {
+    "check": "edit edit.cut present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "edit edit.cut parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "ok",
+        "result": {
+          "clipboard": {
+            "kind": "elements",
+            "itemCount": 1
+          }
+        },
+        "targets": {
+          "context": "staging",
+          "ids": [
+            "el_01K7JJN8004NYDFV11Q6XVEEGW"
+          ]
+        },
+        "changes": [
+          {
+            "id": "sc_01M7CH4ASXV64A0YNT2FCS2RRR",
+            "type": "scene",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/tree/0",
+                "oldValue": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "children": []
+                }
+              },
+              {
+                "op": "remove",
+                "path": "/elements/3",
+                "oldValue": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+            "type": "element",
+            "op": "deleted",
+            "rev": 3,
+            "parentId": "sc_01M7CH4ASXV64A0YNT2FCS2RRR"
+          }
+        ],
+        "warnings": [],
+        "documentRev": 2,
+        "dryRun": true
+      }
+    }
+  },
+  {
+    "check": "edit edit.paste present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "edit edit.paste parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 2,
+        "error": {
+          "code": "edit.clipboardEmpty",
+          "message": "the clipboard is empty",
+          "details": {}
+        }
+      }
+    }
+  },
+  {
+    "check": "edit edit.paste disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.paste` is not enabled: the clipboard is empty",
+        "details": {
+          "commandId": "edit.paste",
+          "reason": "the clipboard is empty",
+          "keys": "F18"
+        }
+      }
+    }
+  },
+  {
+    "check": "edit edit.delete present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "edit edit.delete parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.delete",
+        "label": "Delete",
+        "command": {
+          "commandId": "edit.delete",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "ok",
+        "result": {
+          "deletedIds": [
+            "el_01K7JJN8004NYDFV11Q6XVEEGW"
+          ]
+        },
+        "targets": {
+          "context": "staging",
+          "ids": [
+            "el_01K7JJN8004NYDFV11Q6XVEEGW"
+          ]
+        },
+        "changes": [
+          {
+            "id": "sc_01M7CH4ASXV64A0YNT2FCS2RRR",
+            "type": "scene",
+            "op": "modified",
+            "rev": 3,
+            "patch": [
+              {
+                "op": "remove",
+                "path": "/tree/0",
+                "oldValue": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "children": []
+                }
+              },
+              {
+                "op": "remove",
+                "path": "/elements/3",
+                "oldValue": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+            "type": "element",
+            "op": "deleted",
+            "rev": 3,
+            "parentId": "sc_01M7CH4ASXV64A0YNT2FCS2RRR"
+          }
+        ],
+        "warnings": [],
+        "documentRev": 2,
+        "dryRun": true
+      }
+    }
+  },
+  {
+    "check": "undo fixture",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo edit.undo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo edit.undo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.undo",
+        "label": "Undo",
+        "command": {
+          "commandId": "edit.undo",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3,
+        "error": {
+          "code": "edit.nothingToUndo",
+          "message": "`edit.undo` is not enabled: there is nothing to undo",
+          "details": {
+            "commandId": "edit.undo",
+            "reason": "there is nothing to undo"
+          }
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.undo disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.undo` is not enabled: there is nothing to undo",
+        "details": {
+          "commandId": "edit.undo",
+          "reason": "there is nothing to undo",
+          "keys": "F13"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.redo present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo edit.redo parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.redo",
+        "label": "Redo New Elements \u2014 agent: mcp",
+        "command": {
+          "commandId": "edit.redo",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "ok",
+        "result": {
+          "redone": [
+            "New Elements"
+          ],
+          "position": 1
+        },
+        "changes": [
+          {
+            "id": "sc_01M7CH4ASXV64A0YNT2FCS2RRR",
+            "type": "scene",
+            "op": "modified",
+            "rev": 4,
+            "patch": [
+              {
+                "op": "add",
+                "path": "/tree/0",
+                "value": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "children": []
+                }
+              },
+              {
+                "op": "add",
+                "path": "/elements/3",
+                "value": {
+                  "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+                  "type": "element"
+                }
+              }
+            ]
+          },
+          {
+            "id": "el_01K7JJN8004NYDFV11Q6XVEEGW",
+            "type": "element",
+            "op": "created",
+            "rev": 4,
+            "parentId": "sc_01M7CH4ASXV64A0YNT2FCS2RRR",
+            "index": 3
+          }
+        ],
+        "warnings": [],
+        "documentRev": 3,
+        "dryRun": true
+      }
+    }
+  },
+  {
+    "check": "undo project.save present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo project.save parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.project.save",
+        "label": "Save",
+        "command": {
+          "commandId": "project.save",
+          "params": {}
+        }
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3,
+        "error": {
+          "code": "project.pathRequired",
+          "message": "the project has no location yet",
+          "details": {
+            "projectId": "pr_01M7CH4ASXV64A0YNT2FCS2RMM"
+          },
+          "hint": "save with project.saveAs {path}"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.copy present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo edit.copy parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3,
+        "error": {
+          "code": "command.disabled",
+          "message": "nothing is selected in the staging context",
+          "details": {
+            "context": "staging",
+            "reason": "noSelection"
+          },
+          "hint": "select objects (edit.selection.set) or pass objectIds"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.copy disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.copy` is not enabled: nothing is selected in the staging context",
+        "details": {
+          "commandId": "edit.copy",
+          "reason": "nothing is selected in the staging context",
+          "keys": "F16"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.cut present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo edit.cut parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3,
+        "error": {
+          "code": "command.disabled",
+          "message": "nothing is selected in the staging context",
+          "details": {
+            "context": "staging",
+            "reason": "noSelection"
+          },
+          "hint": "select objects (edit.selection.set) or pass objectIds"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.cut disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.cut` is not enabled: nothing is selected in the staging context",
+        "details": {
+          "commandId": "edit.cut",
+          "reason": "nothing is selected in the staging context",
+          "keys": "F17"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.paste present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo edit.paste parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3,
+        "error": {
+          "code": "edit.clipboardEmpty",
+          "message": "the clipboard is empty",
+          "details": {}
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.paste disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.paste` is not enabled: the clipboard is empty",
+        "details": {
+          "commandId": "edit.paste",
+          "reason": "the clipboard is empty",
+          "keys": "F18"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.delete present",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "undo edit.delete parity",
+    "ok": true,
+    "detail": {
+      "node": {
+        "role": "button",
+        "id": "mainToolbar.edit.delete",
+        "label": "Delete",
+        "command": {
+          "commandId": "edit.delete",
+          "params": {}
+        },
+        "enabled": false
+      },
+      "dry": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 3,
+        "error": {
+          "code": "command.disabled",
+          "message": "nothing is selected in the staging context",
+          "details": {
+            "context": "staging",
+            "reason": "noSelection"
+          },
+          "hint": "select objects (edit.selection.set) or pass objectIds"
+        }
+      }
+    }
+  },
+  {
+    "check": "undo edit.delete disabled key",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.delete` is not enabled: nothing is selected in the staging context",
+        "details": {
+          "commandId": "edit.delete",
+          "reason": "nothing is selected in the staging context",
+          "keys": "F19"
+        }
+      }
+    }
+  },
+  {
+    "check": "empty latency",
+    "ok": true,
+    "detail": {
+      "app.state.get": {
+        "medianMs": 2.5691500050015748,
+        "worstMs": 3.8989999738987535,
+        "samples": [
+          3.3426999871153384,
+          2.684799983398989,
+          2.4508000060450286,
+          2.3686999920755625,
+          3.2808999822009355,
+          2.800799993565306,
+          2.581400010967627,
+          3.0732000013813376,
+          2.4317000061273575,
+          2.7574000123422593,
+          2.3665000044275075,
+          2.432400011457503,
+          2.8707999736070633,
+          2.367500012042001,
+          2.317599981324747,
+          2.2304000158328563,
+          3.029000014066696,
+          2.2452999837696552,
+          2.3729999957140535,
+          2.5542000075802207,
+          2.3003999958746135,
+          2.2940999770071357,
+          2.3151000204961747,
+          2.223500021500513,
+          3.065900004003197,
+          2.3898000072222203,
+          2.4637999886181206,
+          3.024400008143857,
+          2.788100013276562,
+          2.414699993096292,
+          2.5722999998833984,
+          2.425199985736981,
+          2.8267999878153205,
+          2.4827000161167234,
+          2.5726000021677464,
+          2.9380999912973493,
+          2.9159999976400286,
+          2.501400012988597,
+          3.8989999738987535,
+          3.031500003999099,
+          2.881099993828684,
+          2.566000010119751,
+          2.835100021911785,
+          2.8697000234387815,
+          2.533999999286607,
+          2.7525000041350722,
+          3.1848999788053334,
+          2.8257000085432082,
+          2.370400005020201,
+          2.4625000078231096
+        ]
+      },
+      "app.frame.set": {
+        "medianMs": 2.8828500071540475,
+        "worstMs": 3.7832999951206148,
+        "samples": [
+          3.2869999995455146,
+          2.5892999838106334,
+          2.4779000086709857,
+          3.3337000058963895,
+          2.9445000109262764,
+          2.5297000247519463,
+          2.453000022796914,
+          3.252000024076551,
+          3.236300020944327,
+          2.5080000050365925,
+          2.606399997603148,
+          3.7832999951206148,
+          3.2635999959893525,
+          2.753999986452982,
+          2.559200016548857,
+          3.4358000266365707,
+          3.3916000102180988,
+          2.9479000077117234,
+          2.5645999994594604,
+          2.8212000033818185
+        ]
+      }
+    }
+  },
+  {
+    "check": "2376 elements created in four batches",
+    "ok": true,
+    "detail": [
+      "ok",
+      "ok",
+      "ok",
+      "ok"
+    ]
+  },
+  {
+    "check": "large latency",
+    "ok": true,
+    "detail": {
+      "app.state.get": {
+        "medianMs": 4.786199991940521,
+        "worstMs": 6.769499974325299,
+        "samples": [
+          6.557300017448142,
+          5.18259999807924,
+          5.127600015839562,
+          3.686100011691451,
+          4.18699998408556,
+          5.106700002215803,
+          4.383899999083951,
+          5.1367999985814095,
+          5.989299999782816,
+          5.334400018909946,
+          4.611399985151365,
+          3.588299994589761,
+          4.731900000479072,
+          5.355499975848943,
+          5.424600007245317,
+          4.523399984464049,
+          5.202600004849955,
+          6.153199996333569,
+          6.769499974325299,
+          4.081699997186661,
+          4.714200011221692,
+          4.822199989575893,
+          3.3884999866131693,
+          3.243499988457188,
+          4.724400001578033,
+          4.6138000034261495,
+          5.000499979360029,
+          4.6419000136666,
+          4.737499984912574,
+          5.298400006722659,
+          5.202400003327057,
+          4.648000001907349,
+          4.613400000380352,
+          5.200699990382418,
+          4.736799979582429,
+          5.761300009908155,
+          3.2694999827072024,
+          4.864399990765378,
+          4.750199994305149,
+          4.670299997087568,
+          4.875000013271347,
+          5.881000019144267,
+          5.7029999734368175,
+          4.931400006171316,
+          4.893999983323738,
+          4.613900004187599,
+          4.622699983883649,
+          4.713100002845749,
+          5.964999989373609,
+          3.28619999345392
+        ]
+      },
+      "app.frame.set": {
+        "medianMs": 5.13824999507051,
+        "worstMs": 9.633000008761883,
+        "samples": [
+          5.0150999741163105,
+          5.4539999982807785,
+          5.571499990765005,
+          5.1401999953668565,
+          9.328399988589808,
+          4.995800001779571,
+          5.003700003726408,
+          8.416299999225885,
+          5.012800014810637,
+          4.9122000054921955,
+          9.633000008761883,
+          4.9455999978818,
+          5.136299994774163,
+          8.659499988425523,
+          5.082299991045147,
+          3.3161999890580773,
+          3.7583000084850937,
+          8.626299997558817,
+          7.1983999805524945,
+          5.924299999605864
+        ]
+      }
+    }
+  },
+  {
+    "check": "ADR-0021 decision 9 responsiveness",
+    "ok": true,
+    "detail": {
+      "empty": {
+        "app.state.get": {
+          "medianMs": 2.5691500050015748,
+          "worstMs": 3.8989999738987535,
+          "samples": [
+            3.3426999871153384,
+            2.684799983398989,
+            2.4508000060450286,
+            2.3686999920755625,
+            3.2808999822009355,
+            2.800799993565306,
+            2.581400010967627,
+            3.0732000013813376,
+            2.4317000061273575,
+            2.7574000123422593,
+            2.3665000044275075,
+            2.432400011457503,
+            2.8707999736070633,
+            2.367500012042001,
+            2.317599981324747,
+            2.2304000158328563,
+            3.029000014066696,
+            2.2452999837696552,
+            2.3729999957140535,
+            2.5542000075802207,
+            2.3003999958746135,
+            2.2940999770071357,
+            2.3151000204961747,
+            2.223500021500513,
+            3.065900004003197,
+            2.3898000072222203,
+            2.4637999886181206,
+            3.024400008143857,
+            2.788100013276562,
+            2.414699993096292,
+            2.5722999998833984,
+            2.425199985736981,
+            2.8267999878153205,
+            2.4827000161167234,
+            2.5726000021677464,
+            2.9380999912973493,
+            2.9159999976400286,
+            2.501400012988597,
+            3.8989999738987535,
+            3.031500003999099,
+            2.881099993828684,
+            2.566000010119751,
+            2.835100021911785,
+            2.8697000234387815,
+            2.533999999286607,
+            2.7525000041350722,
+            3.1848999788053334,
+            2.8257000085432082,
+            2.370400005020201,
+            2.4625000078231096
+          ]
+        },
+        "app.frame.set": {
+          "medianMs": 2.8828500071540475,
+          "worstMs": 3.7832999951206148,
+          "samples": [
+            3.2869999995455146,
+            2.5892999838106334,
+            2.4779000086709857,
+            3.3337000058963895,
+            2.9445000109262764,
+            2.5297000247519463,
+            2.453000022796914,
+            3.252000024076551,
+            3.236300020944327,
+            2.5080000050365925,
+            2.606399997603148,
+            3.7832999951206148,
+            3.2635999959893525,
+            2.753999986452982,
+            2.559200016548857,
+            3.4358000266365707,
+            3.3916000102180988,
+            2.9479000077117234,
+            2.5645999994594604,
+            2.8212000033818185
+          ]
+        }
+      },
+      "large": {
+        "app.state.get": {
+          "medianMs": 4.786199991940521,
+          "worstMs": 6.769499974325299,
+          "samples": [
+            6.557300017448142,
+            5.18259999807924,
+            5.127600015839562,
+            3.686100011691451,
+            4.18699998408556,
+            5.106700002215803,
+            4.383899999083951,
+            5.1367999985814095,
+            5.989299999782816,
+            5.334400018909946,
+            4.611399985151365,
+            3.588299994589761,
+            4.731900000479072,
+            5.355499975848943,
+            5.424600007245317,
+            4.523399984464049,
+            5.202600004849955,
+            6.153199996333569,
+            6.769499974325299,
+            4.081699997186661,
+            4.714200011221692,
+            4.822199989575893,
+            3.3884999866131693,
+            3.243499988457188,
+            4.724400001578033,
+            4.6138000034261495,
+            5.000499979360029,
+            4.6419000136666,
+            4.737499984912574,
+            5.298400006722659,
+            5.202400003327057,
+            4.648000001907349,
+            4.613400000380352,
+            5.200699990382418,
+            4.736799979582429,
+            5.761300009908155,
+            3.2694999827072024,
+            4.864399990765378,
+            4.750199994305149,
+            4.670299997087568,
+            4.875000013271347,
+            5.881000019144267,
+            5.7029999734368175,
+            4.931400006171316,
+            4.893999983323738,
+            4.613900004187599,
+            4.622699983883649,
+            4.713100002845749,
+            5.964999989373609,
+            3.28619999345392
+          ]
+        },
+        "app.frame.set": {
+          "medianMs": 5.13824999507051,
+          "worstMs": 9.633000008761883,
+          "samples": [
+            5.0150999741163105,
+            5.4539999982807785,
+            5.571499990765005,
+            5.1401999953668565,
+            9.328399988589808,
+            4.995800001779571,
+            5.003700003726408,
+            8.416299999225885,
+            5.012800014810637,
+            4.9122000054921955,
+            9.633000008761883,
+            4.9455999978818,
+            5.136299994774163,
+            8.659499988425523,
+            5.082299991045147,
+            3.3161999890580773,
+            3.7583000084850937,
+            8.626299997558817,
+            7.1983999805524945,
+            5.924299999605864
+          ]
+        }
+      }
+    }
+  },
+  {
+    "check": "toggle 0 False",
+    "ok": false,
+    "detail": null
+  },
+  {
+    "check": "toggle 0 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 1 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 1 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 2 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 2 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 3 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 3 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 4 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 4 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 5 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 5 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 6 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 6 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 7 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 7 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 8 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 8 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 9 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 9 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 10 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 10 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 11 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 11 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 12 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 12 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 13 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 13 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 14 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 14 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 15 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 15 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 16 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 16 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 17 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 17 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 18 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 18 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 19 False",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "toggle 19 True",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "discovery always complete",
+    "ok": true,
+    "detail": {
+      "reads": 997636,
+      "endpointReads": 397925,
+      "errors": []
+    }
+  },
+  {
+    "check": "same bearer after twenty toggles",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "enabled": true,
+        "endpoint": null,
+        "sessions": [
+          {
+            "sessionId": "s2-22bc72",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-14T08:01:07.637Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": 8
+    }
+  }
+]

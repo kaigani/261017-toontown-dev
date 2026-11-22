@@ -8,6 +8,8 @@
 
 use std::fs;
 use std::path::{Path, PathBuf};
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Mutex, PoisonError};
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
@@ -46,7 +48,10 @@ pub struct RecoveryInfo {
 }
 
 impl RecoveryInfo {
-    /// Whether the owner is gone (heartbeat stale, or its process known dead on this host).
+    /// Whether the owner is gone (heartbeat stale, or its process known dead on this host). A released copy
+    /// ([`RELEASED`], the epoch) is stale. The reviewer's M1 persistence tests require a stale heartbeat to count as
+    /// orphaned whether or not its process still runs; a live engine's skipped heartbeat is retried at its next
+    /// maintenance pass, so its copy goes stale only if the ownership lock is held for the whole stale age.
     #[must_use]
     pub fn orphaned(&self) -> bool {
         let beat = if self.heartbeat_at.is_empty() { &self.saved_at } else { &self.heartbeat_at };
@@ -59,6 +64,9 @@ impl RecoveryInfo {
         same_host && host::process_alive(self.process_id) == Some(false)
     }
 }
+
+/// The `heartbeatAt` a release writes ([`release_process`], [`release_engine`]): the copy is offered as orphaned.
+const RELEASED: &str = "1970-01-01T00:00:00Z";
 
 /// A valid recovery ID: `rc_` and 4–64 lower-case hex digits (folder names under our control).
 #[must_use]
@@ -87,6 +95,56 @@ pub fn write(root: &Path, info: &RecoveryInfo, input: &SaveInput<'_>) -> Result<
     Ok(saved)
 }
 
+/// Recovery ownership in this process (ruling O-18): an engine's fenced write or heartbeat and the release of an
+/// abandoned engine's entries each hold it from their check to their last write, so a release never interleaves with a
+/// write: a write that passed its fence check finishes before the release, and a write after the release sees the
+/// fence set (the fence is set before the release is asked). It is held only by these file writes, never across a
+/// call into another engine.
+static OWNERSHIP: Mutex<()> = Mutex::new(());
+
+fn ownership() -> std::sync::MutexGuard<'static, ()> {
+    OWNERSHIP.lock().unwrap_or_else(PoisonError::into_inner)
+}
+
+/// Writes a recovery copy as engine `engine` (ruling O-18): under the ownership lock, nothing is written once `fence`
+/// is set (the engine was abandoned); otherwise the owner is named first ([`set_engine`], so whoever sees the entry
+/// also sees its owner) and the copy written, as one step with respect to [`release_engine`]. `Ok(None)`: fenced,
+/// nothing written.
+///
+/// # Errors
+/// As [`write`] and [`set_engine`].
+pub fn write_owned(
+    root: &Path,
+    info: &RecoveryInfo,
+    input: &SaveInput<'_>,
+    engine: &str,
+    fence: &AtomicBool,
+) -> Result<Option<Saved>, ModelError> {
+    let _owner = ownership();
+    if fence.load(Ordering::Acquire) {
+        return Ok(None);
+    }
+    lock::boundary(lock::Boundary::RecoveryWriteChecked, &root.join(&info.recovery_id));
+    set_engine(root, &info.recovery_id, engine)?;
+    write(root, info, input).map(Some)
+}
+
+/// [`heartbeat`] of an engine, under the ownership lock and its `fence` (ruling O-18). It runs on the document
+/// thread, so it never waits for the lock: while any engine of the process is writing a recovery copy or a release
+/// runs, this heartbeat is skipped and `false` is returned; the caller retries at its next maintenance pass (a second
+/// later), not at the next heartbeat interval (closure round 5). `true` when it ran (or the engine is fenced).
+pub fn heartbeat_owned(root: &Path, recovery_id: &str, fence: &AtomicBool) -> bool {
+    let _owner = match OWNERSHIP.try_lock() {
+        Ok(g) => g,
+        Err(std::sync::TryLockError::Poisoned(p)) => p.into_inner(),
+        Err(std::sync::TryLockError::WouldBlock) => return false,
+    };
+    if !fence.load(Ordering::Acquire) {
+        heartbeat(root, recovery_id);
+    }
+    true
+}
+
 /// Refreshes a recovery copy's heartbeat.
 pub fn heartbeat(root: &Path, recovery_id: &str) {
     if !valid_id(recovery_id) {
@@ -98,6 +156,126 @@ pub fn heartbeat(root: &Path, recovery_id: &str) {
     if let Ok(text) = serde_json::to_vec_pretty(&info) {
         let _ = fsx::write_atomic(&p, &text, fsx::fs_error);
     }
+}
+
+/// Releases the recovery data of an executor of this process that stopped answering (M4 C4.1,
+/// reviews/M4-design-engine-restart.md): every entry of `process_id` on this host, except `keep`, gets a heartbeat
+/// time so old that the entry counts as orphaned, so the restarted executor offers it as recoverable work. Returns the
+/// number of entries released.
+pub fn release_process(root: &Path, process_id: u32, keep: Option<&str>) -> usize {
+    let Ok(rd) = fs::read_dir(root) else { return 0 };
+    let mut released = 0;
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        if !valid_id(&name) || keep == Some(name.as_str()) {
+            continue;
+        }
+        let p = e.path().join("recovery.json");
+        let Some(mut info) = read_info(&p) else { continue };
+        if info.process_id != process_id || (!info.host.is_empty() && info.host != host::host()) {
+            continue;
+        }
+        RELEASED.clone_into(&mut info.heartbeat_at);
+        if let Ok(text) = serde_json::to_vec_pretty(&info)
+            && fsx::write_atomic(&p, &text, fsx::fs_error).is_ok()
+        {
+            released += 1;
+        }
+    }
+    released
+}
+
+/// Records which engine owns a recovery entry: the sidecar `<root>/<id>/engine` holds the engine's ownership token,
+/// then its process id and host, one per line (M4 C4.1 round 1, C41-R1-15; the process and host since round 2, for
+/// [`scavenge`]). `recovery.json` keeps its format.
+///
+/// # Errors
+/// An invalid id, or the write error.
+pub fn set_engine(root: &Path, recovery_id: &str, engine: &str) -> Result<(), ModelError> {
+    if !valid_id(recovery_id) {
+        return Err(ModelError::new(codes::INTERNAL, "invalid recovery id"));
+    }
+    let text = format!(
+        "{engine}
+{}
+{}",
+        host::pid(),
+        host::host()
+    );
+    fsx::write_atomic(&root.join(recovery_id).join("engine"), text.as_bytes(), fsx::fs_error)
+}
+
+/// The owner sidecar of an entry: engine token, process id, host (`None` when absent or unreadable).
+fn owner_of(folder: &Path) -> Option<(String, Option<u32>, String)> {
+    let b = fsx::read_limited(&folder.join("engine"), 512).ok()?;
+    let text = String::from_utf8(b).ok()?;
+    let mut lines = text.lines();
+    let engine = lines.next()?.to_owned();
+    let pid = lines.next().and_then(|l| l.parse().ok());
+    Some((engine, pid, lines.next().unwrap_or_default().to_owned()))
+}
+
+/// Removes owner records left without a completed recovery (ruling O-18): an entry whose owner sidecar exists, whose
+/// `recovery.json` does not (the process died between naming itself the owner and completing its first copy), and
+/// whose owner is gone by the lock liveness rule (its process known dead on this host, or the record older than the
+/// stale time). A completed recovery (`recovery.json` present) is never removed here: it is offered. Returns the number
+/// of entries removed.
+pub fn scavenge(root: &Path) -> usize {
+    let Ok(rd) = fs::read_dir(root) else { return 0 };
+    let mut removed = 0;
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        let folder = e.path();
+        if !valid_id(&name) || folder.join("recovery.json").exists() {
+            continue;
+        }
+        let Some((_, pid, owner_host)) = owner_of(&folder) else { continue };
+        let same_host = owner_host.is_empty() || owner_host == host::host();
+        let dead = same_host && pid.is_some_and(|p| p != host::pid() && host::process_alive(p) == Some(false));
+        let age =
+            fs::metadata(folder.join("engine")).ok().and_then(|m| m.modified().ok()).and_then(|t| t.elapsed().ok());
+        let alive = same_host && pid.is_some_and(|p| p == host::pid() || host::process_alive(p) == Some(true));
+        let stale = !alive && age.is_some_and(|a| a.as_secs() > lock::STALE_SECS);
+        // Checked again right before removing: a completed copy that appeared meanwhile is kept.
+        if (dead || stale) && !folder.join("recovery.json").exists() && fs::remove_dir_all(&folder).is_ok() {
+            removed += 1;
+        }
+    }
+    removed
+}
+
+/// Releases the recovery data of one abandoned engine, named by its ownership token: only entries of this process on
+/// this host whose sidecar names `engine` (except `keep`) get a heartbeat time so old that they count as orphaned. The
+/// entries of any other engine, live or not, are left alone. Returns the number of entries released.
+pub fn release_engine(root: &Path, engine: &str, keep: Option<&str>) -> usize {
+    if engine.is_empty() {
+        return 0;
+    }
+    // One step with respect to the engine's own writes (ruling O-18).
+    let _owner = ownership();
+    let Ok(rd) = fs::read_dir(root) else { return 0 };
+    let mut released = 0;
+    for e in rd.flatten() {
+        let name = e.file_name().to_string_lossy().into_owned();
+        if !valid_id(&name) || keep == Some(name.as_str()) {
+            continue;
+        }
+        if owner_of(&e.path()).is_none_or(|(owner, _, _)| owner != engine) {
+            continue;
+        }
+        let p = e.path().join("recovery.json");
+        let Some(mut info) = read_info(&p) else { continue };
+        if info.process_id != host::pid() || (!info.host.is_empty() && info.host != host::host()) {
+            continue;
+        }
+        RELEASED.clone_into(&mut info.heartbeat_at);
+        if let Ok(text) = serde_json::to_vec_pretty(&info)
+            && fsx::write_atomic(&p, &text, fsx::fs_error).is_ok()
+        {
+            released += 1;
+        }
+    }
+    released
 }
 
 fn read_info(p: &Path) -> Option<RecoveryInfo> {

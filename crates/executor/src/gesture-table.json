@@ -1,0 +1,380 @@
+{
+  "$comment": "The gesture driver's table (M4 C4.3b; parity note \u00a72, ruling D-25): for each view type and tool, every command its gestures can end in (gesture.rs, scene_gesture.rs). Data, not prose: crates/executor/tests/c43/parity.rs verifies it against the driver both ways, and the parity manifest (desktop/src/ui-bindings/parity.json) copies it as the canvas surface.",
+  "rows": [
+    {
+      "view": "drawing",
+      "tool": "select",
+      "commands": [
+        "draw.selection.set",
+        "draw.transform.apply",
+        "draw.pivot.set"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "brush",
+      "commands": [
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "pencil",
+      "commands": [
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "rectangle",
+      "commands": [
+        "draw.rectangle.add"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "ellipse",
+      "commands": [
+        "draw.ellipse.add"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "polyline",
+      "commands": [
+        "draw.polyline.add"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "line",
+      "commands": [
+        "draw.line.add"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "stroke",
+      "commands": [
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "eraser",
+      "commands": [
+        "draw.erase.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "cutter",
+      "commands": [
+        "draw.cut.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "scissor",
+      "commands": [
+        "draw.cut.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "paint",
+      "commands": [
+        "colour.paint.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "unpaint",
+      "commands": [
+        "colour.paint.remove"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "paintUnpainted",
+      "commands": [
+        "colour.paintUnpainted.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "dropper",
+      "commands": [
+        "colour.pick",
+        "colour.current.set"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "closeGap",
+      "commands": [
+        "colour.gap.close"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "zoom",
+      "commands": [
+        "view.zoom.set",
+        "view.pan.set"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "grabber",
+      "commands": [
+        "view.pan.set"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "contourEditor",
+      "commands": [
+        "draw.selection.set",
+        "draw.pointSelection.set",
+        "draw.point.move",
+        "draw.segment.move",
+        "draw.point.add",
+        "draw.point.set",
+        "draw.point.delete"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "perspective",
+      "commands": [
+        "draw.selection.set",
+        "draw.envelope.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "repositionAll",
+      "commands": [
+        "draw.repositionAll.apply"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "text",
+      "commands": [
+        "draw.text.add",
+        "draw.text.set",
+        "draw.object.delete"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "select",
+      "commands": [
+        "draw.selection.set",
+        "draw.transform.apply",
+        "draw.pivot.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "brush",
+      "commands": [
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "pencil",
+      "commands": [
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "rectangle",
+      "commands": [
+        "draw.rectangle.add"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "ellipse",
+      "commands": [
+        "draw.ellipse.add"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "polyline",
+      "commands": [
+        "draw.polyline.add"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "line",
+      "commands": [
+        "draw.line.add"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "stroke",
+      "commands": [
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "eraser",
+      "commands": [
+        "draw.erase.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "cutter",
+      "commands": [
+        "draw.cut.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "scissor",
+      "commands": [
+        "draw.cut.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "paint",
+      "commands": [
+        "colour.paint.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "unpaint",
+      "commands": [
+        "colour.paint.remove"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "paintUnpainted",
+      "commands": [
+        "colour.paintUnpainted.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "dropper",
+      "commands": [
+        "colour.pick",
+        "colour.current.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "closeGap",
+      "commands": [
+        "colour.gap.close"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "zoom",
+      "commands": [
+        "view.zoom.set",
+        "view.pan.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "grabber",
+      "commands": [
+        "view.pan.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "contourEditor",
+      "commands": [
+        "draw.selection.set",
+        "draw.pointSelection.set",
+        "draw.point.move",
+        "draw.segment.move",
+        "draw.point.add",
+        "draw.point.set",
+        "draw.point.delete"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "perspective",
+      "commands": [
+        "draw.selection.set",
+        "draw.envelope.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "repositionAll",
+      "commands": [
+        "draw.repositionAll.apply"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "text",
+      "commands": [
+        "draw.text.add",
+        "draw.text.set",
+        "draw.object.delete"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "scene:select",
+      "commands": [
+        "edit.selection.set",
+        "anim.transform.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "scene:transform",
+      "commands": [
+        "edit.selection.set",
+        "anim.transform.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "scene:skew",
+      "commands": [
+        "edit.selection.set",
+        "anim.transform.set"
+      ]
+    },
+    {
+      "view": "drawing",
+      "tool": "*",
+      "commands": [
+        "tool.active.set",
+        "view.zoom.set"
+      ]
+    },
+    {
+      "view": "camera",
+      "tool": "*",
+      "commands": [
+        "tool.active.set",
+        "anim.tool.set",
+        "view.zoom.set"
+      ]
+    }
+  ]
+}

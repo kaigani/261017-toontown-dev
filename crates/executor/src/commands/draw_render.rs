@@ -181,6 +181,23 @@ pub(crate) struct Builder<'a> {
     pub(crate) warnings: Vec<Value>,
     textures: BTreeMap<String, Option<Texture>>,
     work: u64,
+    /// The interactive canvas's walk (M4 C4.2b, design note 1 §8): what each item's paint came from, beside `items`.
+    pub(crate) tags: Option<Vec<Tag>>,
+    /// The interactive canvas's selection parts (M4 C4.3b, preview note §3): only the objects whose id is in the set
+    /// (`true`) or not in it (`false`); every object when `None`. A selected group or layer selects everything in it
+    /// (C43B-R1-03).
+    pub(crate) only: Option<(std::collections::BTreeSet<String>, bool)>,
+    /// Whether the walk is inside a selected group or layer: its descendants are selected objects (C43B-R1-03).
+    in_selected: bool,
+}
+
+/// What an item's paint came from, for the interactive canvas's colour slots (06 §6.3).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub(crate) enum Tag {
+    /// A colour id.
+    Colour(String),
+    /// A bitmap node's image entry.
+    Bitmap(String),
 }
 
 fn els(path: &Path, m: &Affine) -> Vec<El> {
@@ -233,6 +250,28 @@ impl<'a> Builder<'a> {
             warnings: Vec::new(),
             textures: BTreeMap::new(),
             work,
+            tags: None,
+            only: None,
+            in_selected: false,
+        }
+    }
+
+    /// Whether the object `id` is drawn by this walk (its selection part, preview note §3): selected when its id is in
+    /// the selection or a group or layer containing it is (C43B-R1-03).
+    fn keeps(&self, id: &str) -> bool {
+        self.only.as_ref().is_none_or(|(set, inside)| (self.in_selected || set.contains(id)) == *inside)
+    }
+
+    /// Whether the node `id` (a group or layer) is selected itself: the walk of its descendants inherits it.
+    fn selects(&self, id: &str) -> bool {
+        self.only.as_ref().is_some_and(|(set, _)| set.contains(id))
+    }
+
+    /// Pushes an item and, in the canvas walk, its tag.
+    fn push(&mut self, item: Item, tag: Tag) {
+        self.items.push(item);
+        if let Some(t) = &mut self.tags {
+            t.push(tag);
         }
     }
 
@@ -336,26 +375,38 @@ impl<'a> Builder<'a> {
         let to_px = self.d2p.then_after(m);
         if let Some(lz) = zones {
             for (z, zone) in lz.map.zones.iter().enumerate() {
+                if !self.keeps(&zone.id) {
+                    continue;
+                }
                 let Some(fill) = lz.fills.get(z).and_then(Option::as_ref).filter(|f| f.painted()) else { continue };
                 let Some(colour) = fill.colour_id.clone() else { continue };
                 let rings = lz.map.zone_rings(z);
                 self.spend(rings.iter().map(Vec::len).sum())?;
                 let b = Some(zone.bounds);
                 if let Some(paint) = self.paint(&zone.id, &colour, fill.matrix, b) {
-                    self.items.push(Item::Fill { path: ring_els(&rings, &to_px), rule: Rule::EvenOdd, paint });
+                    self.push(
+                        Item::Fill { path: ring_els(&rings, &to_px), rule: Rule::EvenOdd, paint },
+                        Tag::Colour(colour),
+                    );
                 }
             }
         }
         let strokes = n.strokes().as_deref().unwrap_or_default();
         for s in strokes.iter().filter(|s| *s.kind() == StrokeKind::Brush) {
+            if !self.keeps(s.id().as_str()) {
+                continue;
+            }
             let Some(colour) = s.colour_id().as_ref().map(|c| c.as_str().to_owned()) else { continue };
             let path = Path::from_points(s.points(), true);
             self.spend(path.anchors.len())?;
             if let Some(paint) = self.paint(s.id().as_str(), &colour, *s.fill_matrix(), vd::stroke_bounds(s)) {
-                self.items.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint });
+                self.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint }, Tag::Colour(colour));
             }
         }
         for s in strokes.iter().filter(|s| *s.kind() == StrokeKind::Pencil) {
+            if !self.keeps(s.id().as_str()) {
+                continue;
+            }
             let Some(colour) = s.colour_id().as_ref().map(|c| c.as_str().to_owned()) else { continue };
             let width = s.line_style().as_ref().map_or(0.0, |l| l.thickness) * self.scale;
             if width <= 0.0 {
@@ -364,13 +415,16 @@ impl<'a> Builder<'a> {
             let path = Path::from_points(s.points(), *s.closed());
             self.spend(path.anchors.len())?;
             if let Some(paint) = self.paint(s.id().as_str(), &colour, *s.fill_matrix(), vd::stroke_bounds(s)) {
-                self.items.push(Item::Stroke { path: els(&path, &to_px), width, paint });
+                self.push(Item::Stroke { path: els(&path, &to_px), width, paint }, Tag::Colour(colour));
             }
         }
         Ok(())
     }
 
     fn text(&mut self, n: &DrawingNode) -> Result<(), CommandError> {
+        if !self.keeps(n.id().as_str()) {
+            return Ok(());
+        }
         let Some(content) = vd::text_content(n) else { return Ok(()) };
         let fixed = (n.width_mode().as_ref().map(|w| format!("{w:?}").to_lowercase()).as_deref() == Some("fixed"))
             .then(|| n.width().unwrap_or(0.0));
@@ -382,7 +436,7 @@ impl<'a> Builder<'a> {
             let Some(colour) = g.colour_id.clone() else { continue };
             let b = vd::node_bounds(n, true);
             if let Some(paint) = self.paint(n.id().as_str(), &colour, None, b) {
-                self.items.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint });
+                self.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint }, Tag::Colour(colour));
             }
         }
         Ok(())
@@ -392,6 +446,9 @@ impl<'a> Builder<'a> {
     /// `transform`; the image covers its quad, sampled through the unit square (row 0 at unit y = 0, SI-074), clipped
     /// to the quad. A node whose pixels cannot be read is reported (`render.bitmapMissing`) and not drawn.
     fn bitmap(&mut self, n: &DrawingNode) -> Result<(), CommandError> {
+        if !self.keeps(n.id().as_str()) {
+            return Ok(());
+        }
         let (Some(w), Some(h), Some(image)) = (*n.width(), *n.height(), n.image().as_ref()) else {
             self.warn("render.bitmapMissing", n.id().as_str(), None);
             return Ok(());
@@ -427,7 +484,7 @@ impl<'a> Builder<'a> {
         path.push(El::Close);
         let unit_to_pixel = to_px.then_after(&Affine([w, 0.0, 0.0, h, 0.0, 0.0])).0;
         let paint = Paint::Image { rgba, width: bw, height: bh, unit_to_pixel, repeat: false };
-        self.items.push(Item::Fill { path, rule: Rule::NonZero, paint });
+        self.push(Item::Fill { path, rule: Rule::NonZero, paint }, Tag::Bitmap(entry));
         Ok(())
     }
 
@@ -438,9 +495,20 @@ impl<'a> Builder<'a> {
         zones: &BTreeMap<String, crate::planar::LayerZones>,
     ) -> Result<(), CommandError> {
         for n in list {
+            let outer = self.in_selected;
             match n.kind() {
-                NodeKind::Layer => self.layer(n, zones.get(n.id().as_str()), &Affine::IDENTITY)?,
-                NodeKind::Group => self.nodes(n.children().as_deref().unwrap_or_default(), zones)?,
+                NodeKind::Layer => {
+                    self.in_selected = outer || self.selects(n.id().as_str());
+                    let r = self.layer(n, zones.get(n.id().as_str()), &Affine::IDENTITY);
+                    self.in_selected = outer;
+                    r?;
+                }
+                NodeKind::Group => {
+                    self.in_selected = outer || self.selects(n.id().as_str());
+                    let r = self.nodes(n.children().as_deref().unwrap_or_default(), zones);
+                    self.in_selected = outer;
+                    r?;
+                }
                 NodeKind::Text => self.text(n)?,
                 NodeKind::Bitmap => self.bitmap(n)?,
             }
@@ -480,6 +548,7 @@ fn region_rect(cx: &Cx, d: &Drawing, r: RegionIn) -> Result<Rect, CommandError> 
 
 #[command(
     id = "draw.drawing.render",
+    precheck = super::draw::precheck_drawing,
     kind = query,
     label = "Render drawing",
     scopes = [read],
@@ -535,72 +604,22 @@ pub(crate) fn draw_drawing_render(cx: &mut Cx, p: RenderParams) -> Result<Render
     let s = (f64::from(width) / rw).min(f64::from(height) / rh);
     let (cxm, cym) = ((r.min_x + r.max_x) / 2.0, (r.min_y + r.max_y) / 2.0);
     let d2p = Affine([s, 0.0, 0.0, -s, f64::from(width) / 2.0 - s * cxm, f64::from(height) / 2.0 + s * cym]);
-    let zones: BTreeMap<String, crate::planar::LayerZones> =
-        crate::planar::drawing_zones(&cx.planar_cache(), &d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
-    let project = cx.project().ok();
-    let mut b = Builder {
-        doc: &doc,
-        blobs: project.map(|p| &p.store.blobs),
+    let (pixels, warnings) = rasterise(
+        cx,
+        &doc,
+        &d,
         style,
-        scene_styles: None,
-        d2p,
-        scale: s,
-        items: Vec::new(),
-        warnings: Vec::new(),
-        textures: BTreeMap::new(),
-        work: u64::from(width) * u64::from(height) / 1024,
-    };
-    b.nodes(d.nodes(), &zones)?;
-    if p.show_strokes {
-        let magenta = Paint::Solid([255, 0, 255, 255]);
-        for o in vd::objects(&d).iter().filter(|o| o.kind == vd::ObjectKind::Stroke) {
-            let Some(st) = vd::stroke_at(&d, &o.pointer) else { continue };
-            let closed = *st.closed() || *st.kind() == StrokeKind::Brush;
-            let path = Path::from_points(st.points(), closed);
-            b.spend(path.anchors.len())?;
-            b.items.push(Item::Stroke { path: els(&path, &d2p), width: 1.0, paint: magenta.clone() });
-            if !closed {
-                for a in [path.anchors.first(), path.anchors.last()].into_iter().flatten() {
-                    let q = d2p.apply(a.p);
-                    let sq = vec![
-                        El::MoveTo(q.x - 2.0, q.y - 2.0),
-                        El::LineTo(q.x + 2.0, q.y - 2.0),
-                        El::LineTo(q.x + 2.0, q.y + 2.0),
-                        El::LineTo(q.x - 2.0, q.y + 2.0),
-                        El::Close,
-                    ];
-                    b.items.push(Item::Fill { path: sq, rule: Rule::NonZero, paint: magenta.clone() });
-                }
-            }
-        }
-    }
-    if p.show_selection {
-        let ids = super::draw::selection_ids(cx, &d);
-        if let Some(sb) = super::draw_select::selection_bounds(cx, &d, &ids)? {
-            let (a, c) = (d2p.apply(P::new(sb.min_x, sb.min_y)), d2p.apply(P::new(sb.max_x, sb.max_y)));
-            let rect =
-                vec![El::MoveTo(a.x, a.y), El::LineTo(c.x, a.y), El::LineTo(c.x, c.y), El::LineTo(a.x, c.y), El::Close];
-            b.items.push(Item::Stroke { path: rect, width: 1.0, paint: Paint::Solid([32, 128, 255, 255]) });
-        }
-    }
-    let scene = Scene { width, height, background, items: std::mem::take(&mut b.items) };
-    let warnings = std::mem::take(&mut b.warnings);
-    drop(b);
-    let mut keep_going = |_: usize| {
-        if tt_vector::work::cancel_requested() {
-            Err("the call overran its watchdog budget and was cancelled".to_owned())
-        } else if started.elapsed() > RENDER_TIME_LIMIT {
-            Err(format!("the render took longer than {} s", RENDER_TIME_LIMIT.as_secs()))
-        } else {
-            Ok(())
-        }
-    };
-    let pixels = tt_render::render(&scene, &mut keep_going).map_err(|e| match e {
-        tt_render::RenderError::Stopped(m) => {
-            err("limit.exceeded", m, json!({ "limitSeconds": RENDER_TIME_LIMIT.as_secs() }))
-        }
-        other => err("render.failed", other.to_string(), json!({})),
-    })?;
+        Raster {
+            d2p,
+            scale: s,
+            width,
+            height,
+            background,
+            show_strokes: p.show_strokes,
+            show_selection: p.show_selection,
+        },
+        started,
+    )?;
     let png =
         tt_render::encode_png(&pixels, width, height).map_err(|e| err("render.failed", e.to_string(), json!({})))?;
     let pixels_sha256 = {
@@ -633,4 +652,173 @@ pub(crate) fn draw_drawing_render(cx: &mut Cx, p: RenderParams) -> Result<Render
         pixels_sha256,
         warnings,
     })
+}
+
+/// What [`rasterise`] draws besides the drawing.
+#[derive(Debug, Clone, Copy)]
+pub(crate) struct Raster {
+    /// Drawing space to pixels.
+    pub d2p: Affine,
+    /// Its linear scale (line widths).
+    pub scale: f64,
+    /// Image width (px).
+    pub width: u32,
+    /// Image height (px).
+    pub height: u32,
+    /// Background RGBA.
+    pub background: [u8; 4],
+    /// Every stroke's centre path and open ends.
+    pub show_strokes: bool,
+    /// The selection's bounds.
+    pub show_selection: bool,
+}
+
+/// Rasterises a drawing through `d2p` (drawing space to pixels, `scale` its linear factor) with the final software
+/// rasteriser: the one path `draw.drawing.render` and the headless `inspect.screenshot` share (design note 5, S4).
+/// Returns the RGBA pixels and the render warnings.
+///
+/// # Errors
+/// `limit.exceeded` past the time limit, `render.failed`, planar-map errors.
+pub(crate) fn rasterise(
+    cx: &Cx,
+    doc: &Document,
+    d: &Drawing,
+    style: Option<(Id, Id)>,
+    o: Raster,
+    started: std::time::Instant,
+) -> Result<(Vec<u8>, Vec<Value>), CommandError> {
+    let selection = if o.show_selection {
+        let ids = super::draw::selection_ids(cx, d);
+        super::draw_select::selection_bounds(cx, d, &ids)?
+    } else {
+        None
+    };
+    let cache = cx.planar_cache();
+    let project = cx.project().ok();
+    let never = || false;
+    let src = Sources { cache: &cache, blobs: project.map(|p| &p.store.blobs), selection, stop: &never };
+    rasterise_with(&src, doc, d, style, o, started)
+}
+
+/// What [`rasterise_with`] reads besides the document: owned or shared handles, so the work can run off the document
+/// thread (C42A-R1-02).
+pub(crate) struct Sources<'a> {
+    /// The planar-map cache (shared).
+    pub cache: &'a crate::planar::SharedCache,
+    /// The project's blob store (bitmaps, textures).
+    pub blobs: Option<&'a tt_persist::container::Blobs>,
+    /// The selection's bounds, when drawn.
+    pub selection: Option<Rect>,
+    /// A stop request checked between work slices (a job's cancellation).
+    pub stop: &'a dyn Fn() -> bool,
+}
+
+/// [`rasterise`] from [`Sources`]: needs no session, so it runs on a job thread.
+///
+/// # Errors
+/// As [`rasterise`]; `job.cancelled` when `stop` holds.
+pub(crate) fn rasterise_with(
+    src: &Sources<'_>,
+    doc: &Document,
+    d: &Drawing,
+    style: Option<(Id, Id)>,
+    o: Raster,
+    started: std::time::Instant,
+) -> Result<(Vec<u8>, Vec<Value>), CommandError> {
+    let Raster { d2p, scale: s, width, height, background, .. } = o;
+    let zones: BTreeMap<String, crate::planar::LayerZones> =
+        crate::planar::drawing_zones(src.cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
+    let mut b = Builder {
+        doc,
+        blobs: src.blobs,
+        style,
+        scene_styles: None,
+        d2p,
+        scale: s,
+        items: Vec::new(),
+        warnings: Vec::new(),
+        textures: BTreeMap::new(),
+        work: u64::from(width) * u64::from(height) / 1024,
+        tags: None,
+        only: None,
+        in_selected: false,
+    };
+    b.nodes(d.nodes(), &zones)?;
+    if o.show_strokes {
+        let magenta = Paint::Solid([255, 0, 255, 255]);
+        for o in vd::objects(d).iter().filter(|o| o.kind == vd::ObjectKind::Stroke) {
+            let Some(st) = vd::stroke_at(d, &o.pointer) else { continue };
+            let closed = *st.closed() || *st.kind() == StrokeKind::Brush;
+            let path = Path::from_points(st.points(), closed);
+            b.spend(path.anchors.len())?;
+            b.items.push(Item::Stroke { path: els(&path, &d2p), width: 1.0, paint: magenta.clone() });
+            if !closed {
+                for a in [path.anchors.first(), path.anchors.last()].into_iter().flatten() {
+                    let q = d2p.apply(a.p);
+                    let sq = vec![
+                        El::MoveTo(q.x - 2.0, q.y - 2.0),
+                        El::LineTo(q.x + 2.0, q.y - 2.0),
+                        El::LineTo(q.x + 2.0, q.y + 2.0),
+                        El::LineTo(q.x - 2.0, q.y + 2.0),
+                        El::Close,
+                    ];
+                    b.items.push(Item::Fill { path: sq, rule: Rule::NonZero, paint: magenta.clone() });
+                }
+            }
+        }
+    }
+    if o.show_selection
+        && let Some(sb) = src.selection
+    {
+        let (a, c) = (d2p.apply(P::new(sb.min_x, sb.min_y)), d2p.apply(P::new(sb.max_x, sb.max_y)));
+        let rect =
+            vec![El::MoveTo(a.x, a.y), El::LineTo(c.x, a.y), El::LineTo(c.x, c.y), El::LineTo(a.x, c.y), El::Close];
+        b.items.push(Item::Stroke { path: rect, width: 1.0, paint: Paint::Solid([32, 128, 255, 255]) });
+    }
+    let scene = Scene { width, height, background, items: std::mem::take(&mut b.items) };
+    let warnings = std::mem::take(&mut b.warnings);
+    drop(b);
+    let mut keep_going = |_: usize| {
+        if tt_vector::work::cancel_requested() || (src.stop)() {
+            Err("the call overran its watchdog budget and was cancelled".to_owned())
+        } else if started.elapsed() > RENDER_TIME_LIMIT {
+            Err(format!("the render took longer than {} s", RENDER_TIME_LIMIT.as_secs()))
+        } else {
+            Ok(())
+        }
+    };
+    let pixels = tt_render::render(&scene, &mut keep_going).map_err(|e| match e {
+        tt_render::RenderError::Stopped(m) => {
+            err("limit.exceeded", m, json!({ "limitSeconds": RENDER_TIME_LIMIT.as_secs() }))
+        }
+        other => err("render.failed", other.to_string(), json!({})),
+    })?;
+    Ok((pixels, warnings))
+}
+
+/// The canvas walk's items, their tags and the render warnings.
+pub(crate) type CanvasWalk = (Vec<Item>, Vec<Tag>, Vec<Value>);
+
+/// The interactive canvas's walk of a drawing (M4 C4.2b; design note 1 §8): the same items, in drawing units, as the
+/// final renderer's walk (06 §6.1: one render list), each with the colour id or image its paint came from. Returns the
+/// items, their tags and the render warnings.
+///
+/// # Errors
+/// `limit.exceeded` past the work limit; planar-map errors.
+pub(crate) fn canvas_items(
+    src: &Sources<'_>,
+    doc: &Document,
+    d: &Drawing,
+    style: Option<(Id, Id)>,
+    only: Option<(std::collections::BTreeSet<String>, bool)>,
+) -> Result<CanvasWalk, CommandError> {
+    let zones: BTreeMap<String, crate::planar::LayerZones> =
+        crate::planar::drawing_zones(src.cache, d)?.into_iter().map(|lz| (lz.layer.id.clone(), lz)).collect();
+    let mut b = Builder::in_drawing_units(doc, src.blobs, None, 0);
+    b.style = style;
+    b.tags = Some(Vec::new());
+    b.only = only;
+    b.nodes(d.nodes(), &zones)?;
+    let tags = b.tags.take().unwrap_or_default();
+    Ok((std::mem::take(&mut b.items), tags, std::mem::take(&mut b.warnings)))
 }

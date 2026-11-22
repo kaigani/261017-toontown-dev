@@ -1,0 +1,712 @@
+{
+  "$comment": "The queries each rendered surface reads (rulings D-35, D-48). Each key is a collected surface (parity.json `surfaces`, or `menu` for the native menu built from menu.json), and declares exactly the queries that surface sends while it opens and settles (parity.json `surfaceReads`, observed by the parity collector; C43B-R3S-01), each with the product files that call it. The gate (crates/executor/tests/common/parity_gate.rs) checks both directions per surface and against the call sites: a surface declaring a read it does not send fails, as does a query a surface sends without declaring it. Plumbing calls bind nothing.",
+  "surfaces": {
+    "main": {
+      "description": "the main window with a project as it opens: title, dock, toolbars, palettes, status bar, history, view chrome and canvas, and the store's slices (01 §5, 02 §4)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx", "desktop/src/shell/toolbarGroups.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "job.list": ["desktop/src/shell/StatusBar.tsx"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
+        ],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "view.list": ["desktop/src/panels/PanelBody.tsx"],
+        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "startScreen": {
+      "description": "the start screen window as it opens: the start screen with the shell beneath it (the store loads every slice at launch; 01 §1.1, §2, §3.7)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.tool.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "draw.viewMapping.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx", "desktop/src/shell/toolbarGroups.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "edit.selection.get": ["desktop/src/canvas/CanvasView.tsx"],
+        "job.list": ["desktop/src/shell/StatusBar.tsx"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
+        ],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "view.list": ["desktop/src/panels/PanelBody.tsx"],
+        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "menu": {
+      "description": "the native menu: accelerators, Open Recent, the workspace list (01 §5.1, §3.3, §5.5)",
+      "reads": {
+        "keymap.list": ["desktop/src-tauri/src/menu.rs"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs"]
+      }
+    },
+    "float:history": {
+      "description": "a floating History window as it opens: its own store with every slice (01 §5.4, §10)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "dialog:Project Properties": {
+      "description": "the Project Properties dialog (01 §3.8)",
+      "reads": {
+        "project.properties.get": ["desktop/src/shell/projectForms.tsx"]
+      }
+    },
+    "dialog:About Toontown": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
+      "reads": {
+        "app.info.get": ["desktop/src/shell/infoDialogs.tsx"]
+      }
+    },
+    "dialog:Project Info": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
+      "reads": {
+        "project.info.get": ["desktop/src/shell/infoDialogs.tsx"]
+      }
+    },
+    "dialog:Check Project": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
+      "reads": {
+        "doc.validate": ["desktop/src/shell/infoDialogs.tsx"]
+      }
+    },
+    "dialog:Open Backup": {
+      "description": "About, Project Info, Check Project and Open Backup (01 §3.6, §3.7, §6.7)",
+      "reads": {
+        "project.backup.list": ["desktop/src/shell/infoDialogs.tsx"]
+      }
+    },
+    "dialog:Help": {
+      "description": "the Help window (01 §9.3)",
+      "reads": {
+        "ui.help.get": ["desktop/src/App.tsx"]
+      }
+    },
+    "agentPopover": {
+      "description": "the agent sessions popover: the recent activity it reads when opened (11 §6.4)",
+      "reads": {
+        "agent.activity.list": ["desktop/src/panels/ActivityPanel.tsx", "desktop/src/shell/StatusBar.tsx"]
+      }
+    },
+    "jobsWindow": {
+      "description": "the progress window: the running jobs of every session (01 §9.5)",
+      "reads": {
+        "job.list": ["desktop/src/shell/StatusBar.tsx"]
+      }
+    },
+    "float:pen": {
+      "description": "the Pen panel in a floating window: its pens, the active tool and the drawing settings, and the store's slices (02 §6.1, 01 §5.4)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:properties:brush": {
+      "description": "the Properties panel in a floating window, its Tool options page for the brush tool (02 §7.7, §8.8-§8.11)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:properties:paint": {
+      "description": "the Properties panel in a floating window, its Tool options page for the paint tool (02 §7.7, §8.8-§8.11)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:properties:pencil": {
+      "description": "the Properties panel in a floating window, its Tool options page for the pencil tool (02 §7.7, §8.8-§8.11)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:properties:polyline": {
+      "description": "the Properties panel in a floating window, its Tool options page for the polyline tool (02 §7.7, §8.8-§8.11)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:properties:select": {
+      "description": "the Properties panel in a floating window, its Tool options page for the select tool (02 §7.7, §8.8-§8.11)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:properties:eraser": {
+      "description": "the Properties panel in a floating window, its Tool options page for the eraser tool (02 §7.7, §8.8-§8.11)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:text": {
+      "description": "the Text panel in a floating window: the defaults for new text, and the store's slices (02 §7.6.1, 01 §5.4)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:properties:drawing": {
+      "description": "the Properties panel's Drawing page, the drawing inspector: the current element's drawings, the preview preference and the thumbnail (02 §9)",
+      "reads": {
+        "draw.drawing.render": ["desktop/src/panels/DrawingInspectorPage.tsx"],
+        "element.drawing.list": ["desktop/src/panels/DrawingInspectorPage.tsx"],
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
+        ]
+      }
+    },
+    "dialog:Customize Toolbar": {
+      "description": "dialog:Customize Toolbar",
+      "reads": {
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"]
+      }
+    },
+    "viewContextMenu:drawing": {
+      "description": "viewContextMenu:drawing",
+      "reads": {
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"]
+      }
+    },
+    "loadReport": {
+      "description": "loadReport",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "anim.camera.current.get": ["desktop/src/shell/Toolbars.tsx"],
+        "anim.camera.list": ["desktop/src/shell/Toolbars.tsx"],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "doc.loadReport.get": ["desktop/src/shell/LoadReportWindow.tsx"],
+        "drawAid.state.get": ["desktop/src/panels/ViewChrome.tsx", "desktop/src/shell/toolbarGroups.tsx"],
+        "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.list": ["desktop/src/shell/Toolbars.tsx"],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "view.list": ["desktop/src/panels/PanelBody.tsx"],
+        "view.transform.get": ["desktop/src/panels/ViewChrome.tsx"]
+      }
+    },
+    "preferences:agent": {
+      "description": "preferences:agent",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "prefs.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/DrawingInspectorPage.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx"
+        ]
+      }
+    },
+    "float:activity": {
+      "description": "float:activity",
+      "reads": {
+        "agent.activity.list": ["desktop/src/panels/ActivityPanel.tsx", "desktop/src/shell/StatusBar.tsx"],
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "confirmSheet": {
+      "description": "confirmSheet",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ]
+      }
+    },
+    "float:properties:contourEditor": {
+      "description": "the Properties panel in a floating window, its Tool options page for the Contour Editor with one pencil line selected: its line properties (02 §7.7, §8; SI-196)",
+      "reads": {
+        "agent.server.status": [
+          "desktop/src/panels/ActivityPanel.tsx",
+          "desktop/src/prefs/AgentAccessPage.tsx",
+          "desktop/src/shell/ConfirmationSheet.tsx",
+          "desktop/src/state/store.ts"
+        ],
+        "app.state.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/state/store.ts"],
+        "colour.gapClosing.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "draw.drawing.get": ["desktop/src/canvas/CanvasView.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "draw.selection.get": ["desktop/src/panels/ToolOptionsPage.tsx"],
+        "edit.history.get": ["desktop/src/state/store.ts"],
+        "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "prefs.list": ["desktop/src/state/store.ts"],
+        "project.presets.list": ["desktop/src/state/store.ts"],
+        "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "project.recovery.list": ["desktop/src/state/store.ts"],
+        "tool.active.get": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.options.get": ["desktop/src/panels/TextPanel.tsx", "desktop/src/panels/ToolOptionsPage.tsx"],
+        "tool.pen.list": [
+          "desktop/src/canvas/CanvasView.tsx",
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx"
+        ],
+        "tool.settings.get": [
+          "desktop/src/panels/PenPanel.tsx",
+          "desktop/src/panels/ToolOptionsPage.tsx",
+          "desktop/src/panels/ViewChrome.tsx"
+        ],
+        "ui.statusBar.get": ["desktop/src/state/store.ts"],
+        "ui.theme.list": ["desktop/src/state/store.ts"],
+        "ui.tips.list": ["desktop/src/state/store.ts"],
+        "window.panel.list": ["desktop/src/state/store.ts"],
+        "window.toolbar.list": ["desktop/src/shell/toolbarSheet.tsx", "desktop/src/state/store.ts"],
+        "workspace.get": ["desktop/src/state/store.ts"],
+        "workspace.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"]
+      }
+    },
+    "float:text:selection": {
+      "description": "the Text panel in a floating window formatting the text the Text tool highlights (02 §7.6.1; design note 5 §6)",
+      "reads": {}
+    }
+  },
+  "plumbing": {
+    "app.state.get": {
+      "files": ["desktop/src-tauri/src/watchdog.rs"],
+      "reason": "the host's engine watchdog probes the document thread"
+    },
+    "prefs.get": {
+      "files": ["desktop/src-tauri/src/host.rs", "desktop/src-tauri/src/shell.rs", "desktop/src/App.tsx"],
+      "reason": "the host reads the agent server's port and switch; the window reads the start-up behaviour at launch"
+    },
+    "project.recent.list": {
+      "files": ["desktop/src/App.tsx"],
+      "reason": "the start-up behaviour 'open the last project' (01 §1.1) reads the most recent project"
+    },
+    "window.geometry.get": {
+      "files": ["desktop/src-tauri/src/shell.rs"],
+      "reason": "the host applies the stored main-window geometry to the native window"
+    },
+    "window.panel.list": {
+      "files": ["desktop/src-tauri/src/floats.rs"],
+      "reason": "the host opens and closes the native float windows the kernel's panel list names"
+    },
+    "job.wait": {
+      "files": ["desktop/src/shell/projectForms.tsx"],
+      "reason": "the New Project form waits for its own creation job; the progress it shows is job.list's"
+    }
+  }
+}

@@ -1,0 +1,208 @@
+[
+  {
+    "case": "l1b",
+    "step": 4,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/step4.json",
+        "checks": 56,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-si07odoh"
+  },
+  {
+    "case": "l1b",
+    "step": 5,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/step5.json",
+        "checks": 116,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-7bqc5wt2"
+  },
+  {
+    "case": "l1b",
+    "step": 6,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/step6.json",
+        "checks": 46,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-r5a9f_rr"
+  },
+  {
+    "case": "l1b",
+    "step": 7,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/step7.json",
+        "checks": 230,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-xy68hqi4"
+  },
+  {
+    "case": "l1b",
+    "step": 8,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/step8.json",
+        "checks": 58,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-th10dyba"
+  },
+  {
+    "case": "l2a",
+    "step": 1,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2a-step1.json",
+        "checks": 40,
+        "failures": []
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/stepl2-1.json",
+        "checks": 40,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-3ux1zn33"
+  },
+  {
+    "case": "l2a",
+    "step": 2,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2-l2-2-supplemental.json",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2a-step2.json",
+        "checks": 44,
+        "failures": []
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/stepl2-2.json",
+        "checks": 44,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-wv3tb40b"
+  },
+  {
+    "case": "l2a",
+    "step": 3,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2-l2-3-supplemental.json",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2a-step3.json",
+        "checks": 12,
+        "failures": []
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/stepl2-3.json",
+        "checks": 12,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-5pyn7fd6"
+  },
+  {
+    "case": "l2a",
+    "step": 4,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2a-step4.json",
+        "checks": 18,
+        "failures": []
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/stepl2-4.json",
+        "checks": 18,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-56e_90v0"
+  },
+  {
+    "case": "l2b",
+    "step": 5,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2b-step5.json",
+        "checks": 48,
+        "failures": []
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/stepl2-5.json",
+        "checks": 48,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-s1_f8bww"
+  },
+  {
+    "case": "l2b",
+    "step": 6,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2b-step6.json",
+        "checks": 111,
+        "failures": []
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/stepl2-6.json",
+        "checks": 111,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-9x6nky89"
+  },
+  {
+    "case": "l2b",
+    "step": 7,
+    "exit": 0,
+    "summaries": [
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2-l2-7-supplemental.json",
+        "checks": null,
+        "failures": null
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/l2b-step7.json",
+        "checks": 134,
+        "failures": []
+      },
+      {
+        "file": "reviews/evidence/M4-C4.4b-r1-review/stepl2-7.json",
+        "checks": 134,
+        "failures": []
+      }
+    ],
+    "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-r2-regression-4cncm7bl"
+  }
+]

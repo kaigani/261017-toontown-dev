@@ -1,0 +1,80 @@
+{
+ "kind": "toontown.c44b.r3.reviewer-probes",
+ "note": "tests/adversarial/c44b-r2-live.py run unchanged, one process per step, on the round 3 head's release build; m1 1 runs the round 1 probe's steps (l1b 4-8, l2a 1-4, l2b 5-7). The probes' files were copied out of the reviewers' evidence folders and the folders restored. m1 4's one failure is the Perspective row: its press is 9.1 view px from the box corner at the Camera view's 1.6 scale (handoff r3 section 7).",
+ "regenerate": "python tests/adversarial/c44b-r2-live.py <m1|m2> <step>",
+ "static": {
+  "command": "python tests/adversarial/c44b-r2s-static.py",
+  "exit": 0,
+  "output": [
+   "S1: open then flock; identity check absent=False",
+   "S2: conditional live-owner assertion=False",
+   "S3: Delete rewrite present=True; host interactive_target call=False",
+   "S4: {'other': ['Primary+Z', 'Primary+Y', 'Primary+Shift+Z'], 'mac': ['Primary+Z', 'Primary+Shift+Z']}",
+   "S5: analytic witness only: kernel x=-1000000000000.0; f32 x=1000000003995.8029",
+   "S6: uses=sourceUses=True",
+   "S7: oversize receipts=[]; c13 changed=False"
+  ]
+ },
+ "steps": [
+  {
+   "case": "m1",
+   "step": 1,
+   "checks": 12,
+   "failures": [],
+   "failLines": []
+  },
+  {
+   "case": "m1",
+   "step": 2,
+   "checks": 25,
+   "failures": [],
+   "failLines": []
+  },
+  {
+   "case": "m1",
+   "step": 3,
+   "checks": 35,
+   "failures": [],
+   "failLines": []
+  },
+  {
+   "case": "m1",
+   "step": 4,
+   "checks": 22,
+   "failures": [
+    "02 10.7 keepSelectionVisible perspective edit policy"
+   ],
+   "failLines": [
+    "02 10.7 keepSelectionVisible perspective edit policy"
+   ]
+  },
+  {
+   "case": "m1",
+   "step": 5,
+   "checks": 15,
+   "failures": [],
+   "failLines": []
+  },
+  {
+   "case": "m2",
+   "step": 6,
+   "checks": 8,
+   "failures": [],
+   "failLines": []
+  },
+  {
+   "case": "m2",
+   "step": 7,
+   "checks": 10,
+   "failures": [],
+   "failLines": []
+  },
+  {
+   "case": "m2",
+   "step": 8,
+   "checks": 9,
+   "failures": [],
+   "failLines": []
+  }
+ ]
+}

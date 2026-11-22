@@ -1,0 +1,7 @@
+{
+ "rows": 66,
+ "failed": [],
+ "sha256": "af0d392f9acbc0dca0bd858cc539979723cbbe9dcbb19ade40401a2078a0ee6f",
+ "kind": "toontown.c44a.d44.summary",
+ "run": "the whole flow table (main, quit-discard, quit-save, token groups), workstation, release build"
+}

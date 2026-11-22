@@ -54,6 +54,9 @@ pub(crate) struct Txn {
     pub structural: bool,
     pub changes: Vec<ChangeRecord>,
     pub label: String,
+    /// The text object a keystroke of the Text tool's input path types into (design note 5 §3): the commit extends the
+    /// open typing run on it instead of pushing a step when the run allows.
+    pub typing: Option<String>,
 }
 
 /// Changes staged by the handlers of the current transaction.
@@ -103,6 +106,12 @@ pub(crate) enum SettingsChange {
     NewProject { last_used: Value, recent: Option<(std::path::PathBuf, String)> },
     /// `project.recent.remove`: one path (normalised comparison), or every entry.
     RemoveRecent(Option<String>),
+    /// `keymap.*` (M4 C4.1): the complete new overrides (01 §8.1).
+    Keymap(crate::keymap::Overrides),
+    /// `ui.tips.*` (M4 C4.1): the complete new set of suppressed message ids (01 §9.4).
+    Suppressed(std::collections::BTreeSet<String>),
+    /// `window.geometry.set` and friends (M4 C4.1): the main window geometry to restore at launch (01 §11).
+    Window(Value),
 }
 
 /// A staged file write (see [`Effect::WriteFile`]).
@@ -133,7 +142,7 @@ pub(crate) struct Savepoint {
     ids_drawn: u64,
     app: AppContext,
     ui: UiState,
-    clipboard: Option<Value>,
+    clipboard: Option<std::sync::Arc<Value>>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     checkpoints: Option<Vec<Checkpoint>>,
     /// Timeline/Exposure Sheet view state (C31-R1-02).
@@ -173,6 +182,9 @@ pub struct Cx {
     lineage: BTreeMap<String, Vec<String>>,
     /// Drawings an import created: taken as they are (no noding), as on load.
     verbatim: BTreeSet<Id>,
+    /// The element and frame the running command's scene and Camera-view points address (SI-146), resolved from its
+    /// own target before any conversion; `None` for other commands (the current element applies).
+    addressed: Option<(Id, u32)>,
 }
 
 /// Millisecond base of the ULID time part of transaction IDs (2025-10-15T00:00:00Z); the time part is a logical
@@ -229,6 +241,7 @@ impl Cx {
             settled_doc: None,
             lineage: BTreeMap::new(),
             verbatim: BTreeSet::new(),
+            addressed: None,
         }
     }
 
@@ -289,6 +302,8 @@ impl Cx {
                 category,
                 decision: None,
                 binding,
+                in_app: false,
+                expired: None,
             },
         );
         Err(CommandError::with_details(
@@ -356,6 +371,43 @@ impl Cx {
         staged.or_else(|| {
             self.session.project.as_ref().and_then(|p| p.store.blobs.read(name, 1 << 32).ok()).map(std::sync::Arc::new)
         })
+    }
+
+    /// A preference as this call sees it (M4 C4.1): a value it set (pending `Effect::Prefs`), else the stored value,
+    /// else the default. `None` for a key the catalogue does not know.
+    pub(crate) fn pref(&self, key: &str) -> Option<Value> {
+        let staged = self.effects.iter().rev().find_map(|e| match e {
+            Effect::Prefs(m) => m.get(key).cloned(),
+            _ => None,
+        });
+        match staged {
+            Some(v) => crate::prefs::effective(key, Some(&v), &self.session.env.settings.theme_ids()),
+            None => self.session.env.pref(key),
+        }
+    }
+
+    /// The keymap overrides as this call sees them (pending `keymap.*` changes first; M4 C4.1).
+    pub(crate) fn keymap_overrides(&self) -> crate::keymap::Overrides {
+        self.effects
+            .iter()
+            .rev()
+            .find_map(|e| match e {
+                Effect::Settings(SettingsChange::Keymap(o)) => Some(o.clone()),
+                _ => None,
+            })
+            .unwrap_or_else(|| self.session.env.settings.keymap.clone())
+    }
+
+    /// The suppressed message ids as this call sees them (pending `ui.tips.*` changes first; M4 C4.1).
+    pub(crate) fn suppressed(&self) -> std::collections::BTreeSet<String> {
+        self.effects
+            .iter()
+            .rev()
+            .find_map(|e| match e {
+                Effect::Settings(SettingsChange::Suppressed(s)) => Some(s.clone()),
+                _ => None,
+            })
+            .unwrap_or_else(|| self.session.env.settings.suppressed.clone())
     }
 
     pub(crate) fn take_effects(&mut self) -> Vec<Effect> {
@@ -535,6 +587,16 @@ impl Cx {
 
     pub(crate) fn label(&self) -> Option<&str> {
         self.label.as_deref()
+    }
+
+    /// Sets the element and frame the running command's points address (SI-146; `None`: the current element).
+    pub(crate) fn set_addressed(&mut self, target: Option<(Id, u32)>) {
+        self.addressed = target;
+    }
+
+    /// The element and frame the running command's points address, when it named one.
+    pub(crate) fn addressed(&self) -> Option<&(Id, u32)> {
+        self.addressed.as_ref()
     }
 
     // ----- references ------------------------------------------------------------------------------------------
@@ -895,6 +957,7 @@ impl Cx {
             structural: staged.structural,
             changes,
             label,
+            typing: None,
         }))
     }
 
@@ -1024,6 +1087,7 @@ impl Cx {
             structural,
             changes,
             label: label.to_owned(),
+            typing: None,
         });
         Ok(())
     }
@@ -1049,6 +1113,7 @@ impl Cx {
             structural: true,
             changes,
             label: label.to_owned(),
+            typing: None,
         });
         Ok(())
     }

@@ -1,0 +1,1 @@
+C42A-R1-26: wheel and Zoom route to table steps rather than the required powers-of-two ladder

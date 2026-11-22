@@ -1,0 +1,21 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-6ge4esly",
+  "checks": [
+    {
+      "check": "02 12.1 Text one Typing step",
+      "ok": true,
+      "detail": [
+        [
+          "Typing",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "D-32 Text exact headless document",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": []
+}

@@ -264,6 +264,18 @@ pub(crate) struct CutParams {
     /// What happens to the inside.
     #[serde(default)]
     then: Then,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{insideIds, removedIds, rev}`.
@@ -299,6 +311,7 @@ fn check_finite(v: &[P], pointer: &str) -> Result<(), CommandError> {
 
 #[command(
     id = "draw.cut.apply",
+    precheck = super::draw::precheck_cut,
     kind = action,
     label = "Cut",
     scopes = [edit],
@@ -310,7 +323,14 @@ fn check_finite(v: &[P], pointer: &str) -> Result<(), CommandError> {
     gui = "Drawing view: Cutter tool (M4 C4.2)",
 )]
 pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let given = [p.polygon.is_some(), p.rect.is_some(), p.segment.is_some()].iter().filter(|b| **b).count();
+    // 02 §13.5 ("Cutter Tool"/"Scissor Tool"): a rectangular cut is the Scissor's (02 §7.4.3), any other the Cutter's
+    // (the command's declared label; C42B-R2-04).
+    if p.rect.is_some() {
+        cx.set_label("Scissor Tool");
+    }
     if given != 1 {
         return Err(err(
             "arg.invalid",
@@ -341,7 +361,7 @@ pub(crate) fn draw_cut_apply(cx: &mut Cx, p: CutParams) -> Result<CutResult, Com
         return Err(err("arg.invalid", "a segment cut has no inside to delete", json!({ "pointer": "/then" })));
     }
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -422,7 +442,7 @@ pub(crate) struct EraseParams {
     /// The eraser's path (swept with the eraser pen).
     #[serde(default)]
     path: Option<Vec<ErasePoint>>,
-    /// The eraser pen (default: the project's first eraser pen, "Eraser 1").
+    /// The eraser pen (default: the current eraser pen, 02 §6.1; "Eraser 2", else the first eraser pen, 02 §7.7).
     #[serde(default)]
     pen_id: Option<String>,
     /// An explicit eraser (SI-072).
@@ -434,6 +454,18 @@ pub(crate) struct EraseParams {
     /// Layers to erase.
     #[serde(default)]
     layers: LayersIn,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{removedIds, createdIds, rev}`.
@@ -478,7 +510,7 @@ fn eraser(cx: &Cx, pen_id: Option<&str>, pen: Option<EraserPen>) -> Result<Brush
             }
             Some(p)
         }
-        None => pens.iter().find(|p| *p.kind() == PenKind::Eraser),
+        None => super::tool::current_pen(cx, PenKind::Eraser).and_then(|id| pens.iter().find(|p| *p.id() == id)),
     };
     Ok(match chosen {
         Some(p) => {
@@ -515,6 +547,7 @@ fn swept(path: &[ErasePoint], pen: &BrushPen) -> Result<Vec<P>, CommandError> {
 
 #[command(
     id = "draw.erase.apply",
+    precheck = super::draw::precheck_erase,
     kind = action,
     label = "Erase",
     scopes = [edit],
@@ -525,6 +558,8 @@ fn swept(path: &[ErasePoint], pen: &BrushPen) -> Result<Vec<P>, CommandError> {
     gui = "Drawing and Camera views: Eraser tool (M4 C4.2)",
 )]
 pub(crate) fn draw_erase_apply(cx: &mut Cx, p: EraseParams) -> Result<EraseResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let area = match (&p.path, &p.region) {
         (Some(path), None) if !path.is_empty() => swept(path, &eraser(cx, p.pen_id.as_deref(), p.pen)?)?,
         (None, Some(r)) => {
@@ -537,7 +572,7 @@ pub(crate) fn draw_erase_apply(cx: &mut Cx, p: EraseParams) -> Result<EraseResul
         _ => return Err(err("arg.invalid", "give exactly one of `path` and `region`", json!({ "pointer": "/path" }))),
     };
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;

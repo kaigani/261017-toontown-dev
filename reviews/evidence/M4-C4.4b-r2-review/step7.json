@@ -1,0 +1,202 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-tukown4y",
+  "checks": [
+    {
+      "check": "D-78 current colour drawingView",
+      "ok": true,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800QNJK25NHEPB8BZ7K",
+          "text": "hello worldX",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.078125,
+            79.5
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 11,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807ENJ0ACKWV4NDC8CPQA4W",
+              "outlineColourId": null
+            },
+            {
+              "start": 11,
+              "length": 1,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807ENJ0ACKWV4NDC8CPQA4Y",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 12,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.078125,
+            "y": 38.103515625,
+            "width": 196.1015625,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "D-81 exact word no undo drawingView",
+      "ok": true,
+      "detail": {
+        "anchor": 0,
+        "caret": 5,
+        "textId": "dr_01K7JJN800PJZSX2F5DP74JYVQ/nd_01K7JJN800QNJK25NHEPB8BZ7K"
+      }
+    },
+    {
+      "check": "D-81 MCP exact word no undo drawingView",
+      "ok": true,
+      "detail": {
+        "anchor": 0,
+        "caret": 5,
+        "textId": "dr_01K7JJN800PJZSX2F5DP74JYVQ/nd_01K7JJN800QNJK25NHEPB8BZ7K"
+      }
+    },
+    {
+      "check": "D-81 lock ends session drawingView",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-81 locked click refused and told drawingView",
+      "ok": true,
+      "detail": {
+        "editor": null,
+        "status": "the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    },
+    {
+      "check": "D-78 current colour cameraView",
+      "ok": true,
+      "detail": [
+        {
+          "type": "text",
+          "id": "nd_01K7JJN800F1F1JGHFM0X6ZDS8",
+          "text": "hello worldX",
+          "transform": [
+            1.0,
+            0.0,
+            0.0,
+            1.0,
+            -100.048828125,
+            80.3125
+          ],
+          "widthMode": "auto",
+          "width": null,
+          "runs": [
+            {
+              "start": 0,
+              "length": 11,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807EWKEWZF3495R2XKFRFRC",
+              "outlineColourId": null
+            },
+            {
+              "start": 11,
+              "length": 1,
+              "font": "sans-serif",
+              "size": 36.0,
+              "bold": false,
+              "italic": false,
+              "baseline": "normal",
+              "kerning": 0.0,
+              "autoKern": true,
+              "colourId": "col_01M807EWKEWZF3495R2XKFRFRE",
+              "outlineColourId": null
+            }
+          ],
+          "paragraphs": [
+            {
+              "start": 0,
+              "length": 12,
+              "align": "left",
+              "leftMargin": 0.0,
+              "rightMargin": 0.0,
+              "indent": 0.0,
+              "lineSpacing": 0.0
+            }
+          ],
+          "bounds": {
+            "x": -100.048828125,
+            "y": 38.916015625,
+            "width": 196.1015625,
+            "height": 41.396484375
+          },
+          "parentId": null
+        }
+      ]
+    },
+    {
+      "check": "D-81 exact word no undo cameraView",
+      "ok": true,
+      "detail": {
+        "anchor": 0,
+        "caret": 5,
+        "textId": "dr_01K7JJN8003FFK90M066ER754Y/nd_01K7JJN800F1F1JGHFM0X6ZDS8"
+      }
+    },
+    {
+      "check": "D-81 MCP exact word no undo cameraView",
+      "ok": true,
+      "detail": {
+        "anchor": 0,
+        "caret": 5,
+        "textId": "dr_01K7JJN8003FFK90M066ER754Y/nd_01K7JJN800F1F1JGHFM0X6ZDS8"
+      }
+    },
+    {
+      "check": "D-81 lock ends session cameraView",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-81 locked click refused and told cameraView",
+      "ok": true,
+      "detail": {
+        "editor": null,
+        "status": "the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+      }
+    }
+  ],
+  "failures": []
+}

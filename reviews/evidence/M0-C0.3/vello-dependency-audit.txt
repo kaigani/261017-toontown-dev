@@ -21,6 +21,7 @@ foldhash v0.2.0 | Zlib | 10 | 1128
 guillotiere v0.7.0 | MIT/Apache-2.0 | 0 | 2340
 hashbrown v0.17.1 | MIT OR Apache-2.0 | 450 | 23720
 kurbo v0.13.1 | Apache-2.0 OR MIT | 0 | 18310
+libm v0.2.16 | MIT | 56 | 19676
 linebender_resource_handle v0.1.1 | Apache-2.0 OR MIT | 0 | 252
 log v0.4.34 | MIT OR Apache-2.0 | 6 | 5754
 num-traits v0.2.19 | MIT OR Apache-2.0 | 1 | 7815
@@ -39,7 +40,7 @@ thread_local v1.1.10 | MIT OR Apache-2.0 | 27 | 1191
 unicode-ident v1.0.27 | (MIT OR Apache-2.0) AND Unicode-3.0 | 2 | 976
 vello_common v0.3.0 | Apache-2.0 OR MIT | 0 | 15763
 vello_cpu v0.3.0 | Apache-2.0 OR MIT | 0 | 13954
-# TOTAL: 37 crates (vello_cpu included), 347202 source lines, 1941 unsafe-word lines
+# TOTAL: 38 crates (vello_cpu included), 366878 source lines, 1997 unsafe-word lines
 # These are lexical exposure indicators, not counts of unsafe blocks and not a safety proof. vello_cpu and
 # vello_common contain no `unsafe` themselves.
 

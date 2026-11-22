@@ -1,0 +1,1156 @@
+{
+ "kind": "toontown.c43b.d39-bindings (OS form), summary",
+ "regenerate": "python scripts/c43-d39-bindings.py <absolute path of target/release/toontown.exe> <out> --mode os (Windows workstation; the app built by pnpm --dir desktop tauri build --no-bundle -- --locked on ca978fe3)",
+ "verdict": "pass",
+ "manifest": {
+  "kind": "toontown.c43b.d39-bindings",
+  "mode": "os",
+  "seconds": 1239.7,
+  "rows": 275,
+  "failed": [],
+  "failures": []
+ },
+ "counts": {
+  "rows": 275,
+  "ok": 275,
+  "named (not run here, with reason)": 0,
+  "failed": 0,
+  "checks": 389,
+  "checks failed": 0
+ },
+ "rows": [
+  {
+   "name": "Drawing \u203a Flatten",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Flatten",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Optimize",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Optimize",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Smooth",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Smooth",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Convert Lines to Brush",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Convert Lines to Brush",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Break Text Apart",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Break Text Apart",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Extract Centre Line",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Extract Centre Line",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Bring to Front",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Bring to Front",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Bring Forward",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Bring Forward",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Send Backward",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Send Backward",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Send to Back",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Send to Back",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Flip Horizontal",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Flip Horizontal",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Flip Vertical",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Flip Vertical",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Rotate 90\u00b0 CW",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Rotate 90\u00b0 CW",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Rotate 90\u00b0 CCW",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Rotate 90\u00b0 CCW",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Rotate 180\u00b0",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Rotate 180\u00b0",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Group",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Group",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Ungroup",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Ungroup",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Delete Objects",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Lock Drawing",
+   "ok": true
+  },
+  {
+   "name": "Drawing \u203a Unlock Drawing",
+   "ok": true
+  },
+  {
+   "name": "Edit \u203a Cut Special",
+   "ok": true
+  },
+  {
+   "name": "File \u203a Project Info",
+   "ok": true
+  },
+  {
+   "name": "File \u203a Check Project",
+   "ok": true
+  },
+  {
+   "name": "Help \u203a About Toontown",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a drawAid.grid.set",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a gridOverlay",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a drawAid.onionSkin.set",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a drawAid.autoLightTable.set",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Grid type \u203a field12",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Grid type \u203a field16",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Grid type \u203a normal",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Previous drawings \u203a 2",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Previous drawings \u203a 3",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Previous drawings \u203a 0",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Previous drawings \u203a 1",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Next drawings \u203a 1",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Next drawings \u203a 2",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Next drawings \u203a 3",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a Next drawings \u203a 0",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a grid",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a onionSkin",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a onionOutline",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a autoLightTable",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a strokes",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a currentOnTop",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a boxHighlighting",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a outlineOnSelection",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a keepSelectionVisible",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a sceneBackground",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a lightTableShade",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a onionPrevious",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a onionNext",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a staticLightTablePanel",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a staticLightTableAdd",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a staticLightTableShowAll",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a staticLightTableClear",
+   "ok": true
+  },
+  {
+   "name": "drawingView chrome \u203a symmetry",
+   "ok": true
+  },
+  {
+   "name": "drawingView toolbar \u203a type camera",
+   "ok": true
+  },
+  {
+   "name": "drawingView toolbar \u203a type drawing",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a grid",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a onionSkin",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a onionOutline",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a autoLightTable",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a strokes",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a currentOnTop",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a boxHighlighting",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a outlineOnSelection",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a keepSelectionVisible",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a sceneBackground",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a lightTableShade",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a onionPrevious",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a onionNext",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a staticLightTablePanel",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a staticLightTableAdd",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a staticLightTableShowAll",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a staticLightTableClear",
+   "ok": true
+  },
+  {
+   "name": "cameraView chrome \u203a symmetry",
+   "ok": true
+  },
+  {
+   "name": "cameraView toolbar \u203a type drawing",
+   "ok": true
+  },
+  {
+   "name": "cameraView toolbar \u203a type camera",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a select",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a contourEditor",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a perspective",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a repositionAll",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a brush",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a pencil",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a rectangle",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a ellipse",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a polyline",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a line",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a paint",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a unpaint",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a paintUnpainted",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a dropper",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a closeGap",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a stroke",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a editTexture",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a eraser",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a cutter",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a scissor",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a zoom",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a grabber",
+   "ok": true
+  },
+  {
+   "name": "tools palette \u203a text",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Export",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Import",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Tablet \u203a tablet.ignore",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Tablet \u203a tablet.portraitCorrection",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Tablet \u203a tablet.compatibilityMode",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Tablet \u203a tablet.alternativeInput",
+   "ok": true
+  },
+  {
+   "name": "File \u203a Open Backup \u203a Open",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a select a pen",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a New",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a tip shape",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Draw Behind",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Maximum size (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Minimum size (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Smoothness (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Tip angle (slider)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Minimum size (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Maximum size (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Smoothness (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Tip angle (typed)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Minimum size (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Minimum size (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Maximum size (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Maximum size (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Smoothness (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Smoothness (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Tip angle (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Tip angle (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a rename",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Maximum size (text-editing keys)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a rename (text-editing keys)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a search (text-editing keys)",
+   "ok": true
+  },
+  {
+   "name": "Pen panel \u203a Delete",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Select: rectangle rule",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Brush: pen",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Eraser: pen",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Pencil: line thickness source",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Polyline: snapping",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Paint: automatic gap closing",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a drawTopLayer",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a placeBehind",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a snapToContour",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Pencil: fixed thickness",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Pencil: fixed thickness (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Pencil: fixed thickness (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Polyline: snap radius (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Polyline: snap radius (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Tool options \u203a Polyline: snap radius",
+   "ok": true
+  },
+  {
+   "name": "Colour \u203a Auto Close Gap \u203a Small",
+   "ok": true
+  },
+  {
+   "name": "Colour \u203a Auto Close Gap \u203a Large",
+   "ok": true
+  },
+  {
+   "name": "Colour \u203a Auto Close Gap \u203a Off",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a bold",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a italic",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a autoKern",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a align",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a baseline",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a Remove outline",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a size (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a font (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a kerning (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a leftMargin (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a rightMargin (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a indent (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a lineSpacing (typed)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a size (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a size (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a kerning (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a kerning (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a leftMargin (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a leftMargin (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a rightMargin (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a rightMargin (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a indent (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a indent (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a lineSpacing (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Text panel \u203a lineSpacing (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Drawing inspector \u203a Show preview",
+   "ok": true
+  },
+  {
+   "name": "Drawing inspector \u203a rename",
+   "ok": true
+  },
+  {
+   "name": "main toolbar \u203a camera list",
+   "ok": true
+  },
+  {
+   "name": "Window \u203a Customize Toolbar",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Cut",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Copy",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Paste",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Select All",
+   "ok": true
+  },
+  {
+   "name": "Drawing view context menu \u203a Deselect All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) \u203a Cut",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) \u203a Copy",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) \u203a Paste",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) \u203a Select All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (drawing tool) \u203a Deselect All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) \u203a Copy",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) \u203a Select All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) \u203a Deselect All",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) \u203a Paste",
+   "ok": true
+  },
+  {
+   "name": "Camera view context menu (scene tool) \u203a Cut",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a activity",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a capture",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a cells",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a colour",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a drawingView",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a effectPreview",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a functionEditor",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a history",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a library",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a lipSync",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a motionRecording",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a pen",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a properties",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a sceneManager",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a sideView",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a soundEditor",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a storyline",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a text",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a timeline",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a topView",
+   "ok": true
+  },
+  {
+   "name": "dock tab menu \u203a xsheet",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a port",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a policy",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxJobs",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxBatchSteps",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxInlineImagePx",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxInlineBytes",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a askInApp",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a letAgentMoveView",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a highlightAgentChanges",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a typedTools",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a persist",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a port (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a port (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxJobs (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxJobs (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxBatchSteps (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxBatchSteps (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxInlineImagePx (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxInlineImagePx (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxInlineBytes (invalid)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a maxInlineBytes (out of range)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a token Copy",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a token Show",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Agent access \u203a namespace",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a session policy",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a session scopes",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a session pause",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a session resume",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a Undo back to before an entry",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a Export",
+   "ok": true
+  },
+  {
+   "name": "agent indicator \u203a Activity\u2026",
+   "ok": true
+  },
+  {
+   "name": "Window \u203a Activity",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a session disconnect",
+   "ok": true
+  },
+  {
+   "name": "agent indicator \u203a Pause",
+   "ok": true
+  },
+  {
+   "name": "agent indicator \u203a Resume",
+   "ok": true
+  },
+  {
+   "name": "agent indicator \u203a Stop",
+   "ok": true
+  },
+  {
+   "name": "context menus \u203a inside the client area at 1280 by 800 and at the minimum window size",
+   "ok": true
+  },
+  {
+   "name": "browser chrome \u203a no native menu, no reload",
+   "ok": true
+  },
+  {
+   "name": "status bar \u203a jobs",
+   "ok": true
+  },
+  {
+   "name": "File \u203a Open Recent \u203a an entry's full path",
+   "ok": true
+  },
+  {
+   "name": "load report window",
+   "ok": true
+  }
+ ],
+ "failedChecks": [],
+ "raw": [
+  {
+   "path": "manifest.json",
+   "bytes": 135,
+   "sha256": "3590396fbadf14d576b194b20278b1a24400c22548771038a95a7576b02e9038"
+  },
+  {
+   "path": "rows.json",
+   "bytes": 1747059,
+   "sha256": "477cfbde000be733ac59dc4ee0071f3ed06f554e53d5be88e10b13a2983a2541"
+  },
+  {
+   "path": "text-keys-pen.maxSize.field.json",
+   "bytes": 674,
+   "sha256": "8f3b1e9316fc59b4551a47401f139cb35321f67e1e2e38a4969eb04fbf706b8a"
+  },
+  {
+   "path": "text-keys-pen.rename.json",
+   "bytes": 702,
+   "sha256": "77e0efac71b3bc8d5877b5ff0a18a088fa90ff6efcab727a2a9fc53530e92acc"
+  },
+  {
+   "path": "text-keys-preferences.search.json",
+   "bytes": 713,
+   "sha256": "ec40a8239fc276f7218c8d9fa1fad01b97c2b8831ff50fd45b055724de49a31d"
+  },
+  {
+   "path": "transcript.json",
+   "bytes": 269563,
+   "sha256": "cb4a74e36bb307cb4dee6125dcfbb84cb0f2088fd68139f7c51e755990862ce1"
+  }
+ ]
+}

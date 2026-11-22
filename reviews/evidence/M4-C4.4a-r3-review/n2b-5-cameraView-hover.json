@@ -1,0 +1,826 @@
+{
+  "top": {
+    "menu": {
+      "x": 326,
+      "y": 4,
+      "width": 309.140625,
+      "height": 492,
+      "top": 4,
+      "right": 635.140625,
+      "bottom": 496,
+      "left": 326
+    },
+    "list": {
+      "x": 331,
+      "y": 21.90625,
+      "width": 299.140625,
+      "height": 456.1875,
+      "top": 21.90625,
+      "right": 630.140625,
+      "bottom": 478.09375,
+      "left": 331
+    },
+    "arrows": [
+      {
+        "box": {
+          "x": 331,
+          "y": 9,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 9,
+          "right": 630.140625,
+          "bottom": 21.90625,
+          "left": 331
+        }
+      },
+      {
+        "box": {
+          "x": 331,
+          "y": 478.09375,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 478.09375,
+          "right": 630.140625,
+          "bottom": 491,
+          "left": 331
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "cameraView.drawingMenu.cut",
+        "box": {
+          "x": 331,
+          "y": 21.90625,
+          "width": 52.8125,
+          "height": 23,
+          "top": 21.90625,
+          "right": 383.8125,
+          "bottom": 44.90625,
+          "left": 331
+        },
+        "command": "edit.cut",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.copy",
+        "box": {
+          "x": 331,
+          "y": 44.90625,
+          "width": 62.609375,
+          "height": 23,
+          "top": 44.90625,
+          "right": 393.609375,
+          "bottom": 67.90625,
+          "left": 331
+        },
+        "command": "edit.copy",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.paste",
+        "box": {
+          "x": 331,
+          "y": 67.90625,
+          "width": 190.171875,
+          "height": 23,
+          "top": 67.90625,
+          "right": 521.171875,
+          "bottom": 90.90625,
+          "left": 331
+        },
+        "command": "edit.paste",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.selectAll",
+        "box": {
+          "x": 331,
+          "y": 90.90625,
+          "width": 85.3125,
+          "height": 23,
+          "top": 90.90625,
+          "right": 416.3125,
+          "bottom": 113.90625,
+          "left": 331
+        },
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.deselectAll",
+        "box": {
+          "x": 331,
+          "y": 113.90625,
+          "width": 99.828125,
+          "height": 23,
+          "top": 113.90625,
+          "right": 430.828125,
+          "bottom": 136.90625,
+          "left": 331
+        },
+        "command": "edit.deselectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.front",
+        "box": {
+          "x": 331,
+          "y": 165.90625,
+          "width": 112.53125,
+          "height": 23,
+          "top": 165.90625,
+          "right": 443.53125,
+          "bottom": 188.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "front"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.forward",
+        "box": {
+          "x": 331,
+          "y": 188.90625,
+          "width": 113.375,
+          "height": 23,
+          "top": 188.90625,
+          "right": 444.375,
+          "bottom": 211.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "forward"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.backward",
+        "box": {
+          "x": 331,
+          "y": 211.90625,
+          "width": 120,
+          "height": 23,
+          "top": 211.90625,
+          "right": 451,
+          "bottom": 234.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "backward"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.back",
+        "box": {
+          "x": 331,
+          "y": 234.90625,
+          "width": 107.40625,
+          "height": 23,
+          "top": 234.90625,
+          "right": 438.40625,
+          "bottom": 257.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "back"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.horizontal",
+        "box": {
+          "x": 331,
+          "y": 286.90625,
+          "width": 116.390625,
+          "height": 23,
+          "top": 286.90625,
+          "right": 447.390625,
+          "bottom": 309.90625,
+          "left": 331
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "horizontal"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.vertical",
+        "box": {
+          "x": 331,
+          "y": 309.90625,
+          "width": 98.75,
+          "height": 23,
+          "top": 309.90625,
+          "right": 429.75,
+          "bottom": 332.90625,
+          "left": 331
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "vertical"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90cw",
+        "box": {
+          "x": 331,
+          "y": 332.90625,
+          "width": 116.46875,
+          "height": 23,
+          "top": 332.90625,
+          "right": 447.46875,
+          "bottom": 355.90625,
+          "left": 331
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90cw"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90ccw",
+        "box": {
+          "x": 331,
+          "y": 355.90625,
+          "width": 124.171875,
+          "height": 23,
+          "top": 355.90625,
+          "right": 455.171875,
+          "bottom": 378.90625,
+          "left": 331
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90ccw"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.180",
+        "box": {
+          "x": 331,
+          "y": 378.90625,
+          "width": 99.734375,
+          "height": 23,
+          "top": 378.90625,
+          "right": 430.734375,
+          "bottom": 401.90625,
+          "left": 331
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "180"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.group",
+        "box": {
+          "x": 331,
+          "y": 410.90625,
+          "width": 69.0625,
+          "height": 23,
+          "top": 410.90625,
+          "right": 400.0625,
+          "bottom": 433.90625,
+          "left": 331
+        },
+        "command": "draw.group.create",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.ungroup",
+        "box": {
+          "x": 331,
+          "y": 433.90625,
+          "width": 84.09375,
+          "height": 23,
+          "top": 433.90625,
+          "right": 415.09375,
+          "bottom": 456.90625,
+          "left": 331
+        },
+        "command": "draw.group.delete",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.flatten",
+        "box": {
+          "x": 331,
+          "y": 465.90625,
+          "width": 72.078125,
+          "height": 23,
+          "top": 465.90625,
+          "right": 403.078125,
+          "bottom": 488.90625,
+          "left": 331
+        },
+        "command": "draw.flatten.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.optimize",
+        "box": {
+          "x": 331,
+          "y": 488.90625,
+          "width": 85.03125,
+          "height": 23,
+          "top": 488.90625,
+          "right": 416.03125,
+          "bottom": 511.90625,
+          "left": 331
+        },
+        "command": "draw.optimize.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.smooth",
+        "box": {
+          "x": 331,
+          "y": 511.90625,
+          "width": 78.109375,
+          "height": 23,
+          "top": 511.90625,
+          "right": 409.109375,
+          "bottom": 534.90625,
+          "left": 331
+        },
+        "command": "draw.smooth.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.centreLine",
+        "box": {
+          "x": 331,
+          "y": 534.90625,
+          "width": 284.140625,
+          "height": 23,
+          "top": 534.90625,
+          "right": 615.140625,
+          "bottom": 557.90625,
+          "left": 331
+        },
+        "command": "draw.centreLine.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.linesToBrush",
+        "box": {
+          "x": 331,
+          "y": 557.90625,
+          "width": 161.828125,
+          "height": 23,
+          "top": 557.90625,
+          "right": 492.828125,
+          "bottom": 580.90625,
+          "left": 331
+        },
+        "command": "draw.linesToBrush.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.breakApart",
+        "box": {
+          "x": 331,
+          "y": 589.90625,
+          "width": 126.25,
+          "height": 23,
+          "top": 589.90625,
+          "right": 457.25,
+          "bottom": 612.90625,
+          "left": 331
+        },
+        "command": "draw.breakApart.apply",
+        "params": {}
+      }
+    ],
+    "area": {
+      "w": 785,
+      "h": 500
+    }
+  },
+  "bottom": {
+    "menu": {
+      "x": 326,
+      "y": 4,
+      "width": 309.140625,
+      "height": 492,
+      "top": 4,
+      "right": 635.140625,
+      "bottom": 496,
+      "left": 326
+    },
+    "list": {
+      "x": 331,
+      "y": 21.90625,
+      "width": 299.140625,
+      "height": 456.1875,
+      "top": 21.90625,
+      "right": 630.140625,
+      "bottom": 478.09375,
+      "left": 331
+    },
+    "arrows": [
+      {
+        "box": {
+          "x": 331,
+          "y": 9,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 9,
+          "right": 630.140625,
+          "bottom": 21.90625,
+          "left": 331
+        }
+      },
+      {
+        "box": {
+          "x": 331,
+          "y": 478.09375,
+          "width": 299.140625,
+          "height": 12.90625,
+          "top": 478.09375,
+          "right": 630.140625,
+          "bottom": 491,
+          "left": 331
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "cameraView.drawingMenu.cut",
+        "box": {
+          "x": 331,
+          "y": -113.09375,
+          "width": 52.8125,
+          "height": 23,
+          "top": -113.09375,
+          "right": 383.8125,
+          "bottom": -90.09375,
+          "left": 331
+        },
+        "command": "edit.cut",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.copy",
+        "box": {
+          "x": 331,
+          "y": -90.09375,
+          "width": 62.609375,
+          "height": 23,
+          "top": -90.09375,
+          "right": 393.609375,
+          "bottom": -67.09375,
+          "left": 331
+        },
+        "command": "edit.copy",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.paste",
+        "box": {
+          "x": 331,
+          "y": -67.09375,
+          "width": 190.171875,
+          "height": 23,
+          "top": -67.09375,
+          "right": 521.171875,
+          "bottom": -44.09375,
+          "left": 331
+        },
+        "command": "edit.paste",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.selectAll",
+        "box": {
+          "x": 331,
+          "y": -44.09375,
+          "width": 85.3125,
+          "height": 23,
+          "top": -44.09375,
+          "right": 416.3125,
+          "bottom": -21.09375,
+          "left": 331
+        },
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.deselectAll",
+        "box": {
+          "x": 331,
+          "y": -21.09375,
+          "width": 99.828125,
+          "height": 23,
+          "top": -21.09375,
+          "right": 430.828125,
+          "bottom": 1.90625,
+          "left": 331
+        },
+        "command": "edit.deselectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.front",
+        "box": {
+          "x": 331,
+          "y": 30.90625,
+          "width": 112.53125,
+          "height": 23,
+          "top": 30.90625,
+          "right": 443.53125,
+          "bottom": 53.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "front"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.forward",
+        "box": {
+          "x": 331,
+          "y": 53.90625,
+          "width": 113.375,
+          "height": 23,
+          "top": 53.90625,
+          "right": 444.375,
+          "bottom": 76.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "forward"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.backward",
+        "box": {
+          "x": 331,
+          "y": 76.90625,
+          "width": 120,
+          "height": 23,
+          "top": 76.90625,
+          "right": 451,
+          "bottom": 99.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "backward"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.back",
+        "box": {
+          "x": 331,
+          "y": 99.90625,
+          "width": 107.40625,
+          "height": 23,
+          "top": 99.90625,
+          "right": 438.40625,
+          "bottom": 122.90625,
+          "left": 331
+        },
+        "command": "draw.arrange.apply",
+        "params": {
+          "to": "back"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.horizontal",
+        "box": {
+          "x": 331,
+          "y": 151.90625,
+          "width": 116.390625,
+          "height": 23,
+          "top": 151.90625,
+          "right": 447.390625,
+          "bottom": 174.90625,
+          "left": 331
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "horizontal"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.vertical",
+        "box": {
+          "x": 331,
+          "y": 174.90625,
+          "width": 98.75,
+          "height": 23,
+          "top": 174.90625,
+          "right": 429.75,
+          "bottom": 197.90625,
+          "left": 331
+        },
+        "command": "draw.flip.apply",
+        "params": {
+          "axis": "vertical"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90cw",
+        "box": {
+          "x": 331,
+          "y": 197.90625,
+          "width": 116.46875,
+          "height": 23,
+          "top": 197.90625,
+          "right": 447.46875,
+          "bottom": 220.90625,
+          "left": 331
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90cw"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90ccw",
+        "box": {
+          "x": 331,
+          "y": 220.90625,
+          "width": 124.171875,
+          "height": 23,
+          "top": 220.90625,
+          "right": 455.171875,
+          "bottom": 243.90625,
+          "left": 331
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "90ccw"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.180",
+        "box": {
+          "x": 331,
+          "y": 243.90625,
+          "width": 99.734375,
+          "height": 23,
+          "top": 243.90625,
+          "right": 430.734375,
+          "bottom": 266.90625,
+          "left": 331
+        },
+        "command": "draw.rotate.apply",
+        "params": {
+          "by": "180"
+        }
+      },
+      {
+        "id": "cameraView.drawingMenu.group",
+        "box": {
+          "x": 331,
+          "y": 275.90625,
+          "width": 69.0625,
+          "height": 23,
+          "top": 275.90625,
+          "right": 400.0625,
+          "bottom": 298.90625,
+          "left": 331
+        },
+        "command": "draw.group.create",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.ungroup",
+        "box": {
+          "x": 331,
+          "y": 298.90625,
+          "width": 84.09375,
+          "height": 23,
+          "top": 298.90625,
+          "right": 415.09375,
+          "bottom": 321.90625,
+          "left": 331
+        },
+        "command": "draw.group.delete",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.flatten",
+        "box": {
+          "x": 331,
+          "y": 330.90625,
+          "width": 72.078125,
+          "height": 23,
+          "top": 330.90625,
+          "right": 403.078125,
+          "bottom": 353.90625,
+          "left": 331
+        },
+        "command": "draw.flatten.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.optimize",
+        "box": {
+          "x": 331,
+          "y": 353.90625,
+          "width": 85.03125,
+          "height": 23,
+          "top": 353.90625,
+          "right": 416.03125,
+          "bottom": 376.90625,
+          "left": 331
+        },
+        "command": "draw.optimize.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.smooth",
+        "box": {
+          "x": 331,
+          "y": 376.90625,
+          "width": 78.109375,
+          "height": 23,
+          "top": 376.90625,
+          "right": 409.109375,
+          "bottom": 399.90625,
+          "left": 331
+        },
+        "command": "draw.smooth.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.centreLine",
+        "box": {
+          "x": 331,
+          "y": 399.90625,
+          "width": 284.140625,
+          "height": 23,
+          "top": 399.90625,
+          "right": 615.140625,
+          "bottom": 422.90625,
+          "left": 331
+        },
+        "command": "draw.centreLine.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.linesToBrush",
+        "box": {
+          "x": 331,
+          "y": 422.90625,
+          "width": 161.828125,
+          "height": 23,
+          "top": 422.90625,
+          "right": 492.828125,
+          "bottom": 445.90625,
+          "left": 331
+        },
+        "command": "draw.linesToBrush.apply",
+        "params": {}
+      },
+      {
+        "id": "cameraView.drawingMenu.breakApart",
+        "box": {
+          "x": 331,
+          "y": 454.90625,
+          "width": 126.25,
+          "height": 23,
+          "top": 454.90625,
+          "right": 457.25,
+          "bottom": 477.90625,
+          "left": 331
+        },
+        "command": "draw.breakApart.apply",
+        "params": {}
+      }
+    ],
+    "area": {
+      "w": 785,
+      "h": 500
+    }
+  }
+}

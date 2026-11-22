@@ -333,11 +333,9 @@ pub fn generic() -> Vec<ToolDef> {
             "pointer",
             "Pointer input",
             "Simulated pointer gesture in a view; returns the envelope of the command it produced (gesture equivalence, 11 §7.6).",
-            obj(
-                json!({ "view": { "type": "string" }, "events": { "type": "array", "items": { "type": "object" } }, "space": { "type": "string" },
-            "pointerType": { "type": "string" }, "tool": { "type": "string" } }),
-                &["view", "events"],
-            ),
+            // The deserialiser's own schema (C42A-R1-21): event kinds, coordinates, pressure 0-1 (default 1), tilt,
+            // buttons, modifiers, simulated `dt`, spaces and pointer kinds.
+            tt_registry::schema_of::<tt_executor::gesture::PointerRequest>(),
             false,
             false,
             false,
@@ -354,7 +352,7 @@ pub fn generic() -> Vec<ToolDef> {
         t(
             "type_text",
             "Type text",
-            "Simulated typing into a widget from inspect_ui.",
+            "Simulated typing: without `target`, into the text this session is editing with the Text tool (click with `pointer` first).",
             obj(json!({ "text": { "type": "string" }, "target": { "type": "string" } }), &["text"]),
             false,
             false,
@@ -656,18 +654,12 @@ pub fn plan(name: &str, args: &Map<String, Value>) -> Result<Plan, String> {
             ),
         ),
         "inspect_ui" => command("inspect.ui.tree", pick(args, &[("target", "target"), ("depth", "depth")])),
-        "pointer" => Plan::Unavailable {
-            milestone: "M2 C2.3",
-            reason: "pointer gestures produce the structured commands of the drawing tools (gesture equivalence, 11 §7.6), which arrive with M2",
-        },
-        "key" => Plan::Unavailable {
-            milestone: "M4 C4.2",
-            reason: "key input reaches commands through the keymap of the desktop shell (M4)",
-        },
-        "type_text" => Plan::Unavailable {
-            milestone: "M4 C4.2",
-            reason: "typing targets widgets of the UI tree (inspect_ui), which arrives with the desktop shell (M4)",
-        },
+        // The gestures of the drawing tools (11 §7.6; M4 C4.2), answered by the server (`ExecutorHandle::pointer`).
+        "pointer" => Plan::Server,
+        // The keymap dispatch of the desktop shell (M4 C4.1), answered by the server (`key_tool`).
+        "key" => Plan::Server,
+        // The Text tool's input path (M4 C4.4b, design note 5 §4), answered by the server (`type_text_tool`).
+        "type_text" => Plan::Server,
         "undo" => command("edit.undo", pick(args, &[("steps", "steps"), ("ifTop", "ifTop")])),
         "redo" => command("edit.redo", pick(args, &[("steps", "steps")])),
         "history" => command("edit.history.get", pick(args, &[("limit", "limit")])),

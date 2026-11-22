@@ -69,6 +69,13 @@ const BYPASSES: Record<string, string> = {
   'computed window global': `export const t = (window as unknown as Record<string, unknown>)['${INTERNALS}'];\n`,
   'bare global': `declare const ${INTERNALS}: unknown;\nexport const t = ${INTERNALS};\n`,
   'in operator': `export const has = '${INTERNALS}' in window;\n`,
+  // C43B-R2-08: the browser's dialogs instead of the application's message box.
+  'window.confirm': `export const f = () => window.confirm('Replace?');\n`,
+  'bare confirm': `export const f = () => confirm('Replace?');\n`,
+  'window.alert': `export const f = () => { window.alert('x'); };\n`,
+  'globalThis.prompt': `export const f = () => globalThis.prompt('Name');\n`,
+  'aliased window.confirm': `const w = window;\nexport const f = () => w.confirm('Replace?');\n`,
+  'computed alias prompt': `const w: Window = window;\nexport const f = () => w['prompt']('Name');\n`,
   eval: `export const f = () => eval('1');\n`,
   'new Function': `export const f = new Function('return 1');\n`,
   'raw transport (static)': `import { createTauriTransport } from '../ipc/tauriTransport';\nexport const f = () => createTauriTransport().invoke('app_info');\n`,

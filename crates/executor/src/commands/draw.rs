@@ -381,13 +381,14 @@ pub(crate) const MAX_READBACK_BYTES: usize = 32 * 1024 * 1024;
 
 #[command(
     id = "draw.drawing.get",
+    precheck = super::draw::precheck_target,
     kind = query,
     label = "Get drawing content",
     scopes = [read],
     needs_project,
     example(title = "The drawing exposed by Bob at frame 1", params = r#"{"elementId": "scene:#1/element:\"Bob\"", "frame": 1}"#),
     example(title = "Strokes only, flat, without outlines", params = r#"{"drawingId": "drawingBank:#1/drawing:#1", "flatten": true, "include": ["pressure", "bounds"]}"#),
-    agent_only = "the primary read model for agents (02 §13.6); the GUI renders drawings directly",
+    gui = "Properties, Tool options of the Contour Editor: the selected line's properties; the Text tool's editor: Copy and Cut (M4 C4.4b)",
 )]
 pub(crate) fn draw_drawing_get(cx: &mut Cx, p: DrawingGetParams) -> Result<DrawingReadback, CommandError> {
     let mut none = Vec::new();
@@ -560,6 +561,12 @@ pub(crate) struct PivotParams {
     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 /// `{drawingId, pivot, rev}` and the changed IDs.
@@ -579,6 +586,7 @@ pub(crate) struct PivotResult {
 
 #[command(
     id = "draw.pivot.set",
+    precheck = super::draw::precheck_pivot_set,
     kind = action,
     label = "Change drawing pivot",
     scopes = [edit],
@@ -588,6 +596,8 @@ pub(crate) struct PivotResult {
     gui = "Drawing view: Select tool pivot handle (M4 C4.2)",
 )]
 pub(crate) fn draw_pivot_set(cx: &mut Cx, p: PivotParams) -> Result<PivotResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     for (v, k) in [(p.point.x, "x"), (p.point.y, "y")] {
         tt_vector::path::check_coord(v, &format!("/point/{k}")).map_err(|e| invalid_geometry(&e))?;
     }
@@ -685,6 +695,7 @@ pub(crate) fn removal_ops(d: &Drawing, targets: &[Located]) -> (Vec<PatchOp>, Ve
 
 #[command(
     id = "draw.object.delete",
+    precheck = super::draw::precheck_object_delete,
     kind = action,
     label = "Delete drawing objects",
     scopes = [edit],
@@ -704,6 +715,14 @@ pub(crate) fn draw_object_delete(cx: &mut Cx, p: DeleteParams) -> Result<DeleteR
         return Err(nothing_to_do("delete"));
     }
     let found = locate_all(&d, &ids, "/ids")?;
+    // "Delete Text Object" when every removed object is an empty text object (02 line 681; SI-194).
+    let empty_text = |l: &Located| {
+        l.kind == ObjectKind::Text
+            && vd::node_at(&d, &l.pointer).and_then(|n| n.text().as_ref().map(String::is_empty)).unwrap_or(false)
+    };
+    if !found.is_empty() && found.iter().all(empty_text) {
+        cx.set_label("Delete Text Object");
+    }
     let (ops, removed) = removal_ops(&d, &found);
     let mut parents: Vec<String> = Vec::new();
     for o in vd::objects(&d) {
@@ -764,6 +783,7 @@ pub(crate) struct GroupCreateResult {
 
 #[command(
     id = "draw.group.create",
+    precheck = super::draw::precheck_group_create,
     kind = action,
     label = "Group drawing objects",
     scopes = [edit],
@@ -928,6 +948,7 @@ pub(crate) struct GroupDeleteResult {
 
 #[command(
     id = "draw.group.delete",
+    precheck = super::draw::precheck_group_delete,
     kind = action,
     label = "Ungroup drawing objects",
     scopes = [edit],
@@ -1033,4 +1054,567 @@ pub(crate) fn draw_drawing_changed(
     _p: super::common::NoParams,
 ) -> Result<DrawingChangedEvent, CommandError> {
     Err(super::common::event_not_invocable("draw.drawing.changed"))
+}
+
+// ----- prechecks (rulings O-23, O-24; reviews/M4-design-availability.md) -------------------------------------------
+
+/// [`target`] without its side effects, for prechecks: the same refusals in the same order; `Ok(None)` when the
+/// handler would create the drawing (an empty addressed cell with `createDrawing`), which is then new, unlocked and
+/// empty.
+///
+/// # Errors
+/// The refusals of [`target`].
+pub(crate) fn target_existing(
+    cx: &Cx,
+    drawing_id: Option<&str>,
+    element_id: Option<&str>,
+    frame: Option<u32>,
+    create: bool,
+) -> Result<Option<Id>, CommandError> {
+    if let Some(d) = drawing_id {
+        return Ok(Some(Id::parse(&cx.resolve_as(d, ObjectType::Drawing)?)?));
+    }
+    let doc = cx.document()?;
+    if element_id.is_none() && frame.is_none() {
+        if let Some(d) = cx.app().current_drawing(doc) {
+            return Ok(Some(d));
+        }
+        if !create || cx.app().element.is_none() {
+            return Err(no_target());
+        }
+    }
+    let Some(element) = element_of(cx, element_id)? else { return Err(no_target()) };
+    let frame = frame.unwrap_or(cx.app().frame).max(1);
+    let e = doc.element(&element).ok_or_else(|| {
+        err(tt_model::codes::REF_NOT_FOUND, "no such element", json!({ "elementId": element.as_str() }))
+    })?;
+    if !matches!(
+        e.element_type(),
+        tt_model::entities::element::ElementType::Drawing | tt_model::entities::element::ElementType::Annotation
+    ) {
+        return Err(err(
+            "drawing.notVectorElement",
+            format!("element `{}` is not a drawing or annotation element", e.name()),
+            json!({ "elementId": element.as_str() }),
+        ));
+    }
+    if let Some(d) = AppContext::exposed_drawing(doc, &element, frame) {
+        return Ok(Some(d));
+    }
+    if !create {
+        return Err(no_target());
+    }
+    if e.drawing_bank_id().is_none() {
+        return Err(err(
+            "drawing.notVectorElement",
+            "the element has no drawing bank",
+            json!({ "elementId": element.as_str() }),
+        ));
+    }
+    Ok(None)
+}
+
+/// Whether the drawing selection holds objects of `drawing`: a lookup in the index of the drawings the selection
+/// touches (every `<drawingId>` prefix of its keys), built once per selection list (`memo`, ruling O-24).
+pub(crate) fn has_selected_objects(cx: &Cx, drawing: &Id) -> bool {
+    let Some(list) = cx.app().selection_shared("drawing") else { return false };
+    if list.is_empty() {
+        return false;
+    }
+    let index = crate::memo::memo("drawing-selection", list, 0, || {
+        std::sync::Arc::new(crate::app::prefixes(list.iter().map(String::as_str)))
+    });
+    index.contains(drawing.as_str())
+}
+
+/// What a drawing command checks before its work, in its handler's order (ruling O-24): the target drawing
+/// ([`target`]), its lock and revision ([`check_editable`]), the current colour, then the objects it acts on.
+#[derive(Debug, Clone, Copy, Default)]
+pub(crate) struct Steps {
+    /// The handler addresses the drawing by `elementId` and `frame` too, not only by `drawingId`.
+    pub address: bool,
+    /// The handler creates the drawing of an empty addressed cell when `createDrawing` is set (default `create`).
+    pub create: Option<bool>,
+    /// The handler refuses a locked drawing; `Some(true)`: it also compares `expectRev`.
+    pub edit: Option<bool>,
+    /// The handler resolves the paint colour (`colourId`, else the current colour) after the drawing checks.
+    pub colour: bool,
+    /// The handler acts on the drawing selection unless one of these parameters is given, and refuses with
+    /// `drawing.nothingToDo` ("there is nothing to <verb>") when nothing is left: (parameters, verb).
+    pub objects: Option<(&'static [&'static str], &'static str)>,
+    /// An empty object selection falls back to the anchor selection (`points`), as the transform commands do.
+    pub anchors: bool,
+    /// The objects are anchors only: the anchor selection, not the object selection (the point commands).
+    pub anchors_only: bool,
+}
+
+/// The precheck of a drawing command from its [`Steps`]. Reads the drawing by ID, never its content; the selection
+/// through [`has_selected_objects`]; the anchor selection through its index.
+///
+/// # Errors
+/// The refusal the handler gives for the same state, in its order.
+pub(crate) fn precheck_steps(cx: &Cx, v: &Value, steps: Steps) -> Result<(), CommandError> {
+    let text = |k: &str| v.get(k).and_then(Value::as_str);
+    // The target as the handler resolves it (02 §13.1 item 4): `drawingId`, else `elementId` + `frame` where the
+    // command declares them (a member it does not declare is never present), else the current drawing (C42A-R3-01).
+    let _ = steps.address;
+    let (element, frame) =
+        (text("elementId"), v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()));
+    let create = steps.create.is_some_and(|default| v.get("createDrawing").and_then(Value::as_bool).unwrap_or(default));
+    let Some(id) = target_existing(cx, text("drawingId"), element, frame, create)? else { return Ok(()) };
+    let doc = cx.document()?;
+    let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
+    if let Some(rev) = steps.edit {
+        check_editable(d, if rev { v.get("expectRev").and_then(Value::as_u64) } else { None })?;
+    }
+    if steps.colour {
+        super::colour::resolve_colour(cx, text("colourId"))?;
+    }
+    if let Some((given, verb)) = steps.objects {
+        let named = given.iter().find_map(|k| v.get(*k).filter(|x| !x.is_null()));
+        let any = match named {
+            Some(x) => x.as_array().is_none_or(|a| !a.is_empty()),
+            None if steps.anchors_only => cx.app().has_points_in(id.as_str()),
+            None => has_selected_objects(cx, &id) || (steps.anchors && cx.app().has_points_in(id.as_str())),
+        };
+        if !any {
+            return Err(nothing_to_do(verb));
+        }
+    }
+    Ok(())
+}
+
+/// A drawing precheck that only resolves the target (`drawingId`, else `elementId`/`frame`, else the current drawing).
+pub(crate) fn precheck_target(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { address: true, ..Steps::default() })
+}
+
+/// A drawing precheck that resolves `drawingId` (else the current drawing) only.
+pub(crate) fn precheck_drawing(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps::default())
+}
+
+/// `draw.pointSelection.set`: the drawing, then the named anchors exist (the handler's check; design note 3 §7).
+pub(crate) fn precheck_point_selection(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps::default())?;
+    named_anchors(cx, v, true)
+}
+
+/// A drawing precheck for a command that edits `drawingId` (else the current drawing).
+pub(crate) fn precheck_edit(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { edit: Some(false), ..Steps::default() })
+}
+
+pub(crate) fn precheck_pivot_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { address: true, edit: Some(true), ..Steps::default() })
+}
+
+pub(crate) fn precheck_object_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(
+        cx,
+        v,
+        Steps { address: true, edit: Some(true), objects: Some((&["ids"], "delete")), ..Steps::default() },
+    )
+}
+
+pub(crate) fn precheck_group_create(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(
+        cx,
+        v,
+        Steps { address: true, edit: Some(true), objects: Some((&["ids"], "group")), ..Steps::default() },
+    )
+}
+
+/// `draw.group.delete`: the selection must hold objects (whether any is a group is the handler's: reading each selected
+/// object's kind is not constant cost).
+pub(crate) fn precheck_group_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(
+        cx,
+        v,
+        Steps { address: true, edit: Some(true), objects: Some((&["groupIds"], "ungroup")), ..Steps::default() },
+    )
+}
+
+const EDIT: Steps = Steps {
+    address: false,
+    create: None,
+    edit: Some(false),
+    colour: false,
+    objects: None,
+    anchors: false,
+    anchors_only: false,
+};
+
+/// An editing drawing command on `drawingId` (else the current drawing) that acts on `ids` (else the selection).
+fn edit_objects(cx: &Cx, v: &Value, verb: &'static str) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { objects: Some((&["ids"], verb)), ..EDIT })
+}
+
+pub(crate) fn precheck_arrange(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "arrange")
+}
+
+/// `draw.flatten.apply`: the selection must hold objects (whether they cover two layers is the handler's).
+pub(crate) fn precheck_flatten(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "flatten")
+}
+
+pub(crate) fn precheck_optimize(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "optimize")
+}
+
+pub(crate) fn precheck_flip(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "flip")
+}
+
+pub(crate) fn precheck_rotate(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "rotate")
+}
+
+pub(crate) fn precheck_envelope(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "distort")
+}
+
+/// `draw.linesToBrush.apply`: the selection must hold objects (whether any is a line stroke is the handler's).
+pub(crate) fn precheck_lines_to_brush(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "convert")
+}
+
+/// `draw.breakApart.apply`: `textIds`, else the selection, must hold objects (whether any is a text is the handler's).
+pub(crate) fn precheck_break_apart(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { objects: Some((&["textIds"], "break apart")), ..EDIT })
+}
+
+/// `draw.centreLine.apply`: the drawing and its lock, then the handler's own resolution of the strokes
+/// ([`super::draw_strokeops::centre_line_sources`]: brush strokes, painted zones), once per selection and document
+/// revision when they come from the selection (`memo`).
+pub(crate) fn precheck_centre_line(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    edit_objects(cx, v, "extract")?;
+    let Some(id) = target_existing(cx, v.get("drawingId").and_then(Value::as_str), None, None, false)? else {
+        return Ok(());
+    };
+    let check = |list: Vec<String>| -> Result<(), CommandError> {
+        let doc = cx.document()?;
+        let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
+        super::draw_strokeops::centre_line_sources(cx, d, &list).map(|_| ())
+    };
+    if let Some(ids) = v.get("ids").filter(|x| !x.is_null()) {
+        let Ok(list) = serde_json::from_value::<Vec<String>>(ids.clone()) else { return Ok(()) };
+        return check(list);
+    }
+    let Some(selection) = cx.app().selection_shared("drawing") else { return Ok(()) };
+    let (project, rev) = crate::memo::document_version(cx);
+    crate::memo::memo(&format!("centre-line:{project}:{id}"), selection, rev, || {
+        let doc = cx.document()?;
+        let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
+        check(selection_ids(cx, d))
+    })
+}
+
+/// `draw.transform.apply`: `points` or `ids`, else the object selection, else the anchor selection.
+pub(crate) fn precheck_transform(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(
+        cx,
+        v,
+        Steps { edit: Some(true), objects: Some((&["points", "ids"], "transform")), anchors: true, ..EDIT },
+    )
+}
+
+/// `draw.smooth.apply`: `points` or `ids`, else the object selection, else the anchor selection.
+pub(crate) fn precheck_smooth(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { objects: Some((&["points", "ids"], "smooth")), anchors: true, ..EDIT })
+}
+
+pub(crate) fn precheck_point_move(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { objects: Some((&["points"], "move")), anchors_only: true, ..EDIT })?;
+    named_anchors(cx, v, true)
+}
+
+pub(crate) fn precheck_point_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { objects: Some((&["points"], "delete")), anchors_only: true, ..EDIT })?;
+    named_anchors(cx, v, false)
+}
+
+fn frame_of(v: &Value) -> Option<u32> {
+    v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok())
+}
+
+/// The named anchors of `draw.point.move` and `draw.point.delete` exist, as their handlers check before any work
+/// (`drawing.objectNotFound` at `/points/<i>`; design note 3 §7, prechecks equal handlers). `element`: the command
+/// takes `elementId` + `frame`.
+fn named_anchors(cx: &Cx, v: &Value, element: bool) -> Result<(), CommandError> {
+    let Some(points) = v.get("points").and_then(Value::as_array) else { return Ok(()) };
+    let text = |k: &str| v.get(k).and_then(Value::as_str);
+    let (el, frame) = if element { (text("elementId"), frame_of(v)) } else { (None, None) };
+    let Some(id) = target_existing(cx, text("drawingId"), el, frame, false)? else { return Ok(()) };
+    let doc = cx.document()?;
+    let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
+    for (i, a) in points.iter().enumerate() {
+        let (Some(sid), Some(k)) = (a.get("strokeId").and_then(Value::as_str), a.get("anchor").and_then(Value::as_u64))
+        else {
+            continue;
+        };
+        let ok = vd::locate(d, sid)
+            .and_then(|l| vd::stroke_at(d, &l.pointer))
+            .is_some_and(|s| usize::try_from(k).is_ok_and(|k| k < s.points().len()));
+        if !ok {
+            return Err(err(
+                "drawing.objectNotFound",
+                format!("stroke `{sid}` has no anchor {k}"),
+                json!({ "pointer": format!("/points/{i}") }),
+            ));
+        }
+    }
+    Ok(())
+}
+
+/// `colour.selection.apply`: the drawing, the paint colour, then `objectIds` or the selection.
+pub(crate) fn precheck_colour_selection(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { colour: true, objects: Some((&["objectIds"], "recolour")), ..EDIT })
+}
+
+/// `colour.fillMapping.set`: the drawing, then a non-empty `objectIds`; the mapping `clipboard` needs a copied mapping.
+pub(crate) fn precheck_fill_mapping_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { objects: Some((&["objectIds"], "map")), ..EDIT })?;
+    super::colour_edit::precheck_mapping_clipboard(cx, v)
+}
+
+/// A paint call names what it paints (`colour.noTarget` otherwise: the handler resolves nothing to paint).
+fn paint_targets(v: &Value, keys: &[&str]) -> Result<(), CommandError> {
+    if keys.iter().any(|k| v.get(*k).is_some_and(|x| !x.is_null())) {
+        Ok(())
+    } else {
+        Err(err("colour.noTarget", "nothing to paint: give objectIds, points, path, lasso or rect", json!({})))
+    }
+}
+
+/// `colour.paint.apply`: the paint colour, the drawing (`drawingId`, else `elementId`, else the current drawing) and
+/// its lock, then a target.
+pub(crate) fn precheck_paint(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    super::colour::resolve_colour(cx, v.get("colourId").and_then(Value::as_str))?;
+    precheck_steps(cx, v, Steps { address: true, ..EDIT })?;
+    paint_targets(v, &["objectIds", "points", "path", "lasso", "rect"])
+}
+
+/// `colour.paintUnpainted.apply`: as [`precheck_paint`]; `all: true` paints every unpainted zone.
+pub(crate) fn precheck_paint_unpainted(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    super::colour::resolve_colour(cx, v.get("colourId").and_then(Value::as_str))?;
+    precheck_steps(cx, v, Steps { address: true, ..EDIT })?;
+    if v.get("all").and_then(Value::as_bool) == Some(true) {
+        return Ok(());
+    }
+    paint_targets(v, &["objectIds", "points", "lasso"])
+}
+
+/// `colour.paint.remove`: the drawing and its lock, then a target.
+pub(crate) fn precheck_unpaint(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { address: true, ..EDIT })?;
+    paint_targets(v, &["objectIds", "points"])
+}
+
+/// `draw.selection.set`: the drawing, then the parameter its `by` needs (`ids` by default).
+pub(crate) fn precheck_selection_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_drawing(cx, v)?;
+    let need = match v.get("by").and_then(Value::as_str).unwrap_or("ids") {
+        "ids" => "ids",
+        "point" => "point",
+        "rect" => "rect",
+        "lasso" => "polygon",
+        _ => return Ok(()),
+    };
+    if v.get(need).is_some_and(|x| !x.is_null()) {
+        Ok(())
+    } else {
+        let by = v.get("by").and_then(Value::as_str).unwrap_or("ids");
+        Err(err("arg.invalid", format!("`by: {by}` needs `{need}`"), json!({ "pointer": format!("/{need}") })))
+    }
+}
+
+/// `draw.stroke.add` (and the shapes, which add a stroke): the drawing (created in an empty addressed cell unless
+/// `createDrawing` is false), its lock and revision.
+pub(crate) fn precheck_stroke_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    crate::prechecks::draw_stroke_add(cx, v)?;
+    precheck_steps(cx, v, Steps { address: true, create: Some(true), edit: Some(true), ..EDIT })
+}
+
+/// The shape commands: a stroke added to the drawing (created in an empty addressed cell unless `createDrawing` is
+/// false); its lock.
+pub(crate) fn precheck_shape(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { address: true, create: Some(true), ..EDIT })
+}
+
+/// `draw.line.add`: `from`, or `continuePrevious` with a previous line in the target drawing (the Line tool's memory),
+/// then the stroke it adds ([`precheck_shape`]).
+pub(crate) fn precheck_line(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let text = |k: &str| v.get(k).and_then(Value::as_str);
+    if v.get("continuePrevious").and_then(Value::as_bool) == Some(true) {
+        let frame = v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok());
+        if let Some(id) = target_existing(cx, text("drawingId"), text("elementId"), frame, false)?
+            && !cx.app().tool_memory.contains_key(&format!("line.end:{}", id.as_str()))
+        {
+            return Err(err(
+                "drawing.nothingToDo",
+                "there is no previous line to continue",
+                json!({ "pointer": "/continuePrevious" }),
+            ));
+        }
+    } else if v.get("from").is_none_or(Value::is_null) {
+        return Err(err("arg.invalid", "`from` is required unless `continuePrevious`", json!({ "pointer": "/from" })));
+    }
+    precheck_shape(cx, v)
+}
+
+/// `draw.content.add` and `draw.text.add`: the drawing (created in an empty addressed cell unless `createDrawing` is
+/// false) and its lock.
+pub(crate) fn precheck_add_content(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    precheck_steps(cx, v, Steps { address: true, create: Some(true), ..EDIT })
+}
+
+/// `draw.cut.apply`: its parameter rule, then the drawing and its lock.
+pub(crate) fn precheck_cut(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    crate::prechecks::draw_cut_apply(cx, v)?;
+    precheck_edit(cx, v)
+}
+
+/// `draw.erase.apply`: its parameter rule, then the drawing and its lock.
+pub(crate) fn precheck_erase(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    crate::prechecks::draw_erase_apply(cx, v)?;
+    precheck_edit(cx, v)
+}
+
+/// The drawing of an object addressed by ID (`<drawingId>/<localId>`, or a local ID in the addressed or current
+/// drawing; [`super::draw_stroke::stroke_target`]) and its lock; `rev`: also `expectRev`. Whether the object exists
+/// is the handler's (an explicit ID is a parameter).
+fn object_drawing(cx: &Cx, v: &Value, key: &str, rev: bool) -> Result<(), CommandError> {
+    let text = |k: &str| v.get(k).and_then(Value::as_str);
+    let Some(object) = text(key) else { return Ok(()) };
+    let frame = v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok());
+    let addressed = if text("drawingId").is_some() || text("elementId").is_some() || frame.is_some() {
+        target_existing(cx, text("drawingId"), text("elementId"), frame, false)?
+    } else {
+        None
+    };
+    let doc = cx.document()?;
+    let drawing = match (object.split_once('/'), addressed) {
+        (Some((d, _)), a) => {
+            let d = Id::parse(d)?;
+            if let Some(a) = a
+                && a != d
+            {
+                return Err(err(
+                    codes::ARG_INVALID,
+                    format!("`{object}` belongs to drawing `{d}`, not to the addressed drawing `{a}`"),
+                    json!({ "pointer": "/drawingId", "drawingId": a.as_str() }),
+                ));
+            }
+            Some(d)
+        }
+        (None, Some(a)) => Some(a),
+        (None, None) => cx.app().current_drawing(doc),
+    };
+    let Some(id) = drawing else {
+        return Err(err(
+            "drawing.noTarget",
+            "a local object ID needs drawingId, elementId and frame, or a current drawing",
+            json!({ "id": object }),
+        ));
+    };
+    let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
+    check_editable(d, if rev { v.get("expectRev").and_then(Value::as_u64) } else { None })
+}
+
+/// `draw.stroke.set`: the stroke's drawing, its lock and revision.
+pub(crate) fn precheck_stroke_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    object_drawing(cx, v, "strokeId", true)
+}
+
+/// `draw.text.set` and `draw.textFormat.set`: the text's drawing, its lock and revision.
+pub(crate) fn precheck_text_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    object_drawing(cx, v, "textId", true)
+}
+
+/// The contour commands (`draw.point.add`, `draw.point.set`, `draw.segment.move`): the stroke's drawing
+/// (`dr_.../<strokeId>`, else the current drawing), its lock, and the stroke itself; its anchors as the handlers read
+/// them (`None`: nothing to check, the parameters are left to the handler).
+fn contour_stroke(cx: &Cx, v: &Value) -> Result<Option<tt_vector::path::Path>, CommandError> {
+    let Some(stroke) = v.get("strokeId").and_then(Value::as_str) else { return Ok(None) };
+    // As the handler resolves it (02 §13.1 item 4): a stroke id qualified with its drawing names it; else `drawingId`,
+    // else `elementId` + `frame`, else the current drawing.
+    let text = |k: &str| v.get(k).and_then(Value::as_str);
+    let (drawing, local, element, frame) = match stroke.split_once('/') {
+        Some((d, s)) if d.starts_with("dr_") => (Some(d), s, None, None),
+        _ => match text("drawingId") {
+            Some(d) => (Some(d), stroke, None, None),
+            None => (None, stroke, text("elementId"), frame_of(v)),
+        },
+    };
+    let Some(id) = target_existing(cx, drawing, element, frame, false)? else { return Ok(None) };
+    let doc = cx.document()?;
+    let d = doc.drawing(&id).ok_or_else(|| not_found(id.as_str()))?;
+    check_editable(d, None)?;
+    // The handlers' `stroke_json` (design note 3 §7).
+    let s = vd::locate(d, local)
+        .filter(|l| l.kind == ObjectKind::Stroke)
+        .and_then(|l| vd::stroke_at(d, &l.pointer))
+        .ok_or_else(|| {
+            err("drawing.objectNotFound", format!("`{local}` is not a stroke"), json!({ "pointer": "/strokeId" }))
+        })?;
+    Ok(Some(tt_vector::path::Path::from_points(s.points(), *s.closed())))
+}
+
+/// `draw.point.set`: [`contour_stroke`], then the anchor exists (`drawing.objectNotFound` at `/anchor`).
+pub(crate) fn precheck_point_set(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let Some(path) = contour_stroke(cx, v)? else { return Ok(()) };
+    let Some(k) = v.get("anchor").and_then(Value::as_u64) else { return Ok(()) };
+    if usize::try_from(k).is_ok_and(|k| k < path.anchors.len()) {
+        Ok(())
+    } else {
+        Err(err("drawing.objectNotFound", format!("the stroke has no anchor {k}"), json!({ "pointer": "/anchor" })))
+    }
+}
+
+fn segment_in_range(path: &tt_vector::path::Path, seg: u64) -> Result<(), CommandError> {
+    let n = path.segments().len();
+    if usize::try_from(seg).is_ok_and(|s| s < n) {
+        Ok(())
+    } else {
+        Err(err("arg.invalid", format!("the stroke has {n} segments"), json!({ "pointer": "/segment" })))
+    }
+}
+
+/// `draw.point.add`: [`contour_stroke`], then the location as the handler takes it: `at` on a stroke with a segment,
+/// or `segment` in range with `t` (default 0.5) strictly inside (0, 1).
+pub(crate) fn precheck_point_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let Some(path) = contour_stroke(cx, v)? else { return Ok(()) };
+    let given = |k: &str| v.get(k).filter(|x| !x.is_null());
+    if given("at").is_some() {
+        if path.segments().is_empty() {
+            return Err(err("drawing.invalidGeometry", "the stroke has no segment", json!({ "pointer": "/strokeId" })));
+        }
+        return Ok(());
+    }
+    let Some(seg) = given("segment").and_then(Value::as_u64) else {
+        if given("segment").is_some() {
+            return Ok(());
+        }
+        return Err(err("arg.invalid", "give `at`, or `segment` and `t`", json!({ "pointer": "/at" })));
+    };
+    segment_in_range(&path, seg)?;
+    let t = given("t").and_then(Value::as_f64).unwrap_or(0.5);
+    if t <= 0.0 || t >= 1.0 {
+        return Err(err("arg.invalid", "the location is an existing anchor", json!({ "pointer": "/t" })));
+    }
+    Ok(())
+}
+
+/// `draw.segment.move`: `t` (default 0.5) strictly inside (0, 1) first, as the handler checks it; then
+/// [`contour_stroke`] and the segment in range.
+pub(crate) fn precheck_segment_move(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let t = v.get("t").and_then(Value::as_f64).unwrap_or(0.5);
+    if t <= 0.0 || t >= 1.0 {
+        return Err(err("arg.invalid", "`t` must be strictly between 0 and 1", json!({ "pointer": "/t" })));
+    }
+    let Some(path) = contour_stroke(cx, v)? else { return Ok(()) };
+    let Some(seg) = v.get("segment").and_then(Value::as_u64) else { return Ok(()) };
+    segment_in_range(&path, seg)
 }

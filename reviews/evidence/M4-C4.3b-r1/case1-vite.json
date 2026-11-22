@@ -1,0 +1,14 @@
+[
+  {
+    "fixture": "baseline",
+    "exit": 0
+  },
+  {
+    "fixture": "missing-rendered",
+    "exit": 1
+  },
+  {
+    "fixture": "stale-element",
+    "exit": 1
+  }
+]

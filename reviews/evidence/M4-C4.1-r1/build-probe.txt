@@ -1,0 +1,42 @@
+running 4 tests
+test remote_bind_is_refused ... FAILED
+test ambiguous_transfer_framing_is_refused ... FAILED
+test duplicate_foreign_host_is_refused ... FAILED
+test duplicate_authorization_is_refused ... FAILED
+
+failures:
+
+---- remote_bind_is_refused stdout ----
+
+thread 'remote_bind_is_refused' (25720) panicked at crates\mcp\tests\c41_r1_review.rs:20:5:
+ADR-0022 requires remote binding to be refused
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- ambiguous_transfer_framing_is_refused stdout ----
+
+thread 'ambiguous_transfer_framing_is_refused' (35468) panicked at crates\mcp\tests\c41_r1_review.rs:68:5:
+ambiguous framing reached session lookup: HTTP/1.1 404 Not Found
+
+
+---- duplicate_foreign_host_is_refused stdout ----
+
+thread 'duplicate_foreign_host_is_refused' (35828) panicked at crates\mcp\tests\c41_r1_review.rs:54:5:
+foreign duplicate Host reached session lookup: HTTP/1.1 404 Not Found
+
+
+---- duplicate_authorization_is_refused stdout ----
+
+thread 'duplicate_authorization_is_refused' (35720) panicked at crates\mcp\tests\c41_r1_review.rs:40:5:
+duplicate credentials reached session lookup: HTTP/1.1 404 Not Found
+
+
+
+failures:
+    ambiguous_transfer_framing_is_refused
+    duplicate_authorization_is_refused
+    duplicate_foreign_host_is_refused
+    remote_bind_is_refused
+
+test result: FAILED. 0 passed; 4 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.01s
+
+error: test failed, to rerun pass `-p tt-mcp --test c41_r1_review`

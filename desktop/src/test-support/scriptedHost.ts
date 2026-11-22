@@ -1,0 +1,369 @@
+// A scripted host for front-end tests (M4 C4.1): it records every command the GUI sends — the command stream an
+// agent would send for the same gesture — and answers from per-command handlers, with defaults that describe an
+// application with no project open. Engine events can be emitted as the host would.
+import type { HostTransport, Unlisten } from '../ipc';
+import { parseWireJson } from '../ipc/wireJson';
+
+export interface Sent {
+  readonly command: string;
+  readonly params: Record<string, unknown>;
+  readonly dryRun: boolean;
+  readonly token: string | null;
+}
+
+export type Handler = (params: Record<string, unknown>, sent: Sent) => unknown;
+
+/** An ok envelope with a result. */
+export function ok(result: unknown): unknown {
+  return { status: 'ok', result, changes: [], warnings: [], documentRev: null };
+}
+
+/** An error envelope. */
+export function fail(code: string, message: string, details?: unknown): unknown {
+  return {
+    status: 'error',
+    error: { code, message, details: details ?? {} },
+    changes: [],
+    warnings: [],
+    documentRev: null,
+  };
+}
+
+export const NO_PROJECT_STATE = {
+  project: null,
+  scene: null,
+  frame: null,
+  element: null,
+  drawing: null,
+  mode: null,
+  activeView: null,
+  focusedPanel: 'cameraView',
+  activeTool: null,
+  selection: { context: 'drawing', ids: [], kinds: [] },
+  workspace: { name: 'Default', modified: false },
+  playback: { playing: false },
+  startScreenVisible: true,
+  modal: null,
+  agentSessions: [],
+  fullScreen: false,
+};
+
+export const DEFAULT_LAYOUT = {
+  centralPanel: 'cameraView',
+  corners: 'sides',
+  docks: {
+    left: [],
+    right: [
+      { tabs: ['colour', 'properties', 'library'], current: 'colour', size: 330 },
+      { tabs: ['history'], current: 'history' },
+    ],
+    top: [],
+    bottom: [{ tabs: ['timeline', 'xsheet'], current: 'timeline', size: 190 }],
+  },
+  floating: [],
+  toolPalettes: [{ id: 'drawingTools', visible: true, floating: false }],
+  mainToolbar: { visible: true, items: ['edit.undo', 'edit.redo', 'separator', 'workspaceList'] },
+};
+
+export const DEFAULT_PRESETS = [
+  { id: 'default', name: 'Default', kind: 'default', frameRate: 24, width: 1920, height: 1080 },
+  { id: 'web-small', name: 'Web small 4:3', kind: 'bundled', frameRate: 12, width: 480, height: 360 },
+];
+
+export interface ScriptedHost extends HostTransport {
+  readonly sent: Sent[];
+  handlers: Record<string, Handler>;
+  /** Emits an engine event (numbered like the host). */
+  event(name: string, payload: unknown): void;
+  /** Skips an event number (a lost event). */
+  skip(): void;
+  /** Emits a menu command. */
+  menu(command: string, params?: Record<string, unknown>): void;
+  /** Emits any host event (for example `engine-status`). */
+  emit(event: string, payload: unknown): void;
+  /** The engine generation; `restart_engine` replaces the engine (ruling O-14) and numbers events from 1 again. */
+  generation: number;
+  /** How many restarts were asked. */
+  restarts: number;
+  /** Answers to `dispatch_key` (`{error}`: the host's refusal). */
+  keys: Record<string, unknown>;
+  /** Answers to `availability` (ruling O-10): the kernel's facts for one reference. */
+  available: (ref: { commandId: string; params: Record<string, unknown> }) => {
+    enabled: boolean;
+    checked?: boolean;
+    label?: string;
+    reason?: string;
+    /** The reference as the kernel completes it (a toggle's next state); the reference's own when absent. */
+    params?: Record<string, unknown>;
+  };
+  /** Answers to `pick_path` (null: cancelled). */
+  picked: string | null;
+  /** `canvas_scene` answers by view id (a missing view refuses, as a host without that canvas would). */
+  scenes: Record<string, unknown>;
+  /** `agent_acting`'s answer (D-86 item 2): the agents' running requests and the notice number they reflect. */
+  acting: { seq: number; acting: unknown[] };
+  /** D-62 item 2, D-65 item 2: the agent token `agent_token` delivers, each delivery numbered when the host handles the
+   *  call, as the desktop host does. While `capturing` nothing is delivered. With `holdToken` each answer is held in
+   *  transit until `releaseToken()` (the oldest first), so a test can order a late answer after other events. */
+  token: string;
+  capturing: boolean;
+  holdToken: boolean;
+  /** Every delivery made, in order. */
+  readonly tokenDeliveries: number[];
+  /** The deliveries the window has not yet acknowledged hidden (`token_hidden`). */
+  readonly tokenOutstanding: Set<number>;
+  /** The `token_hidden` acknowledgements, in order. */
+  readonly tokenHiddenAcks: number[];
+  /** Answers the oldest held `agent_token` call; false when none is held. */
+  releaseToken(): boolean;
+  /** D-69 item 1: the next `tokenHiddenFailures` `token_hidden` calls are lost (rejected), as a dropped message. */
+  tokenHiddenFailures: number;
+  /** `page_ready` calls; the `token_field` reports in order; the `token_rect` answers in order. */
+  pageReadyCalls: number;
+  /** D-72 item 1: the first `pageReadyRefusals` reports are not accepted (the load had not finished). */
+  pageReadyRefusals: number;
+  readonly tokenFieldReports: boolean[];
+  readonly tokenRectAnswers: { request: number; rect: unknown }[];
+  readonly reports: Record<string, unknown>[];
+  /** The exact JSON text of each `report_shell` call, as the host receives it. */
+  readonly rawReports: string[];
+  readonly cancelled: string[];
+  /** Commands sent, in order, without the queries the store makes. */
+  actions(): Sent[];
+}
+
+const QUERY = /\.(get|list|status)$/;
+
+export function createScriptedHost(overrides: Record<string, Handler> = {}): ScriptedHost {
+  const listeners = new Map<string, Set<(p: unknown) => void>>();
+  let seq = 0;
+  let deliveries = 0;
+  const heldTokens: (() => void)[] = [];
+  const host: ScriptedHost = {
+    kind: 'mock',
+    sent: [],
+    reports: [],
+    rawReports: [],
+    cancelled: [],
+    keys: {},
+    available: (ref) =>
+      ref.commandId === 'edit.undo' || ref.commandId === 'edit.redo'
+        ? { enabled: false, reason: 'there is nothing to undo' }
+        : { enabled: true },
+    picked: null,
+    scenes: {},
+    acting: { seq: 0, acting: [] },
+    token: '0123456789abcdef0123456789abcdef0123456789abcdef',
+    capturing: false,
+    holdToken: false,
+    tokenDeliveries: [],
+    tokenOutstanding: new Set<number>(),
+    tokenHiddenAcks: [],
+    tokenHiddenFailures: 0,
+    pageReadyCalls: 0,
+    pageReadyRefusals: 0,
+    tokenFieldReports: [],
+    tokenRectAnswers: [],
+    releaseToken() {
+      const next = heldTokens.shift();
+      if (!next) return false;
+      next();
+      return true;
+    },
+    handlers: {
+      'app.state.get': () => ok(NO_PROJECT_STATE),
+      'workspace.get': () => ok({ ...DEFAULT_LAYOUT, fullScreen: DEFAULT_LAYOUT }),
+      'workspace.list': () =>
+        ok([{ name: 'Default', builtIn: true, modified: false, position: 1, current: true }]),
+      'window.panel.list': () => ok([]),
+      'window.toolbar.list': () => ok([]),
+      'prefs.list': () =>
+        ok([
+          {
+            key: 'interface.theme',
+            type: 'enum',
+            default: 'system',
+            value: 'system',
+            values: ['system', 'light', 'dark'],
+            applies: 'live',
+            description: 'Interface theme.',
+          },
+          {
+            key: 'general.startup.behaviour',
+            type: 'enum',
+            default: 'startScreen',
+            value: 'startScreen',
+            values: ['startScreen', 'lastProject', 'openDialog', 'newDialog', 'newDefaultProject'],
+            applies: 'nextLaunch',
+            description: 'What happens at launch.',
+          },
+          {
+            key: 'files.backups.count',
+            type: 'int',
+            default: 3,
+            value: 3,
+            min: 0,
+            max: 20,
+            applies: 'live',
+            description: 'Previous versions kept per project.',
+          },
+        ]),
+      'keymap.list': () =>
+        ok([
+          { commandId: 'project.save', keys: 'Primary+S', context: 'global', isDefault: true },
+          { commandId: 'edit.undo', keys: 'Primary+Z', context: 'global', isDefault: true },
+        ]),
+      'edit.history.get': () => fail('project.none', 'no project is open'),
+      'ui.statusBar.get': () =>
+        ok({ visible: true, description: '', context: '', pointer: '', playback: '', agentIndicator: '' }),
+      'ui.theme.list': () =>
+        ok([
+          { themeId: 'system', name: 'Follow system', builtIn: true, dark: false },
+          { themeId: 'light', name: 'Light', builtIn: true, dark: false },
+          { themeId: 'dark', name: 'Dark', builtIn: true, dark: true },
+        ]),
+      'ui.tips.list': () =>
+        ok([{ messageId: 'drawing.strokeHidden', description: 'A stroke is hidden.', suppressed: false }]),
+      'project.recent.list': () =>
+        ok([{ path: '/p/Walk.animpkg', name: 'Walk', lastOpened: '2026-11-01T10:00:00Z', exists: true }]),
+      'project.recovery.list': () => ok([]),
+      'project.presets.list': () => ok(DEFAULT_PRESETS),
+      'agent.server.status': () => ok({ enabled: false, endpoint: null, sessions: [] }),
+      ...overrides,
+    },
+    async invoke(command, args) {
+      const json =
+        args && typeof args['json'] === 'string'
+          ? (parseWireJson(args['json']) as Record<string, unknown>)
+          : {};
+      switch (command) {
+        case 'run_command': {
+          const sent: Sent = {
+            command: String(json['command']),
+            params: (json['params'] ?? {}) as Record<string, unknown>,
+            dryRun: (json['options'] as { dryRun?: boolean } | undefined)?.dryRun === true,
+            token: typeof json['requestToken'] === 'string' ? json['requestToken'] : null,
+          };
+          host.sent.push(sent);
+          const h = host.handlers[sent.command];
+          return Promise.resolve(h ? h(sent.params, sent) : ok({}));
+        }
+        case 'cancel_request':
+          host.cancelled.push(String(json['token']));
+          return Promise.resolve({});
+        case 'report_shell':
+          host.reports.push(json);
+          host.rawReports.push(String(args?.['json']));
+          return Promise.resolve({});
+        case 'dispatch_key': {
+          const answer = host.keys[String(json['keys'])] ?? { outcome: 'unbound', keys: json['keys'] };
+          // `{error: {...}}`: the host refuses (a key bound to a disabled command answers `command.disabled`).
+          const refusal = (answer as { error?: unknown }).error;
+          return refusal ? Promise.reject(new Error(JSON.stringify(refusal))) : Promise.resolve(answer);
+        }
+        case 'availability': {
+          const refs = (json['refs'] ?? []) as { commandId: string; params?: Record<string, unknown> }[];
+          return Promise.resolve(
+            refs.map((r) => ({
+              commandId: r.commandId,
+              params: r.params ?? {},
+              dialog: false,
+              ...host.available({ commandId: r.commandId, params: r.params ?? {} }),
+            })),
+          );
+        }
+        case 'canvas_scene': {
+          const scene = host.scenes[String(json['viewId'])];
+          return scene === undefined ? Promise.reject(new Error('no scene')) : Promise.resolve(scene);
+        }
+        case 'pick_path':
+          return Promise.resolve({ path: host.picked });
+        // D-62 item 2, D-65 item 2: the agent token (a fixed test value), delivered numbered, and the window's
+        // acknowledgements of each delivery hidden.
+        case 'agent_acting':
+          return Promise.resolve({ generation: host.generation, ...host.acting });
+        case 'agent_token': {
+          if (host.capturing) return Promise.resolve({ token: null, delivery: null });
+          deliveries += 1;
+          const delivery = deliveries;
+          host.tokenDeliveries.push(delivery);
+          host.tokenOutstanding.add(delivery);
+          const answer = { token: host.token, delivery };
+          if (!host.holdToken) return Promise.resolve(answer);
+          return new Promise((resolve) =>
+            heldTokens.push(() => {
+              resolve(answer);
+            }),
+          );
+        }
+        case 'token_hidden': {
+          if (host.tokenHiddenFailures > 0) {
+            host.tokenHiddenFailures -= 1;
+            return Promise.reject(new Error('the message was lost'));
+          }
+          const delivery = Number(json['delivery']);
+          host.tokenHiddenAcks.push(delivery);
+          host.tokenOutstanding.delete(delivery);
+          return Promise.resolve({});
+        }
+        case 'page_ready':
+          host.pageReadyCalls += 1;
+          return Promise.resolve({ accepted: host.pageReadyCalls > host.pageReadyRefusals });
+        case 'token_field':
+          host.tokenFieldReports.push(json['present'] === true);
+          return Promise.resolve({});
+        case 'token_rect':
+          host.tokenRectAnswers.push({ request: Number(json['request']), rect: json['rect'] ?? null });
+          return Promise.resolve({});
+        case 'restart_engine':
+          host.restarts += 1;
+          host.generation += 1;
+          seq = 0;
+          return Promise.resolve({ generation: host.generation });
+        case 'startup':
+          return Promise.resolve({ open: [] });
+        case 'app_info':
+          return Promise.resolve({
+            name: 'Toontown',
+            version: '0.0.1',
+            platform: 'browser',
+            arch: 'mock',
+            formatVersion: '1.0',
+            registryVersion: '0.1.0',
+            runMode: 'attached',
+          });
+        default:
+          return Promise.reject(new Error(`no such command: ${command}`));
+      }
+    },
+    listen(event, handler): Promise<Unlisten> {
+      const set = listeners.get(event) ?? new Set();
+      set.add(handler);
+      listeners.set(event, set);
+      return Promise.resolve(() => {
+        set.delete(handler);
+      });
+    },
+    event(name, payload) {
+      seq += 1;
+      for (const h of listeners.get('engine-event') ?? [])
+        h({ seq, generation: host.generation, name, payload });
+    },
+    emit(event, payload) {
+      for (const h of listeners.get(event) ?? []) h(payload);
+    },
+    generation: 0,
+    restarts: 0,
+    skip() {
+      seq += 1;
+    },
+    menu(command, params = {}) {
+      for (const h of listeners.get('menu-command') ?? [])
+        h({ command, params, handler: 'frontend', milestone: null });
+    },
+    actions() {
+      return host.sent.filter((s) => !QUERY.test(s.command) && s.command !== 'app.state.get');
+    },
+  };
+  return host;
+}

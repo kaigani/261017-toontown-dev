@@ -1,0 +1,44 @@
+PASS token length and encoding
+PASS wrong token rejected
+PASS right token reaches session lookup
+PASS session admission 0
+PASS session admission 1
+PASS session admission 2
+PASS session admission 3
+PASS session admission 4
+PASS session admission 5
+PASS session admission 6
+PASS session admission 7
+PASS session admission 8
+PASS session admission 9
+PASS session admission 10
+PASS session admission 11
+PASS session admission 12
+PASS session admission 13
+PASS session admission 14
+PASS session admission 15
+PASS session admission 16
+PASS session admission 17
+PASS session admission 18
+PASS session admission 19
+PASS session admission 20
+PASS session admission 21
+PASS session admission 22
+PASS session admission 23
+PASS session admission 24
+PASS session admission 25
+PASS session admission 26
+PASS session admission 27
+PASS session admission 28
+PASS session admission 29
+PASS session admission 30
+PASS session admission 31
+PASS session ids unique and 128-bit hex
+PASS 33rd session refused
+PASS post requires session
+PASS delete succeeds
+PASS deleted session dead
+PASS delete releases session capacity
+PASS token absent from HTTP bodies
+PASS token absent from process output
+PASS discovery remains after abrupt exit

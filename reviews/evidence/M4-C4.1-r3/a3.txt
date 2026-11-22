@@ -1,0 +1,12 @@
+Candidate product code unchanged from 64970ec4f77b9b45c51b9e8c1b8a8f01d1d21170.
+Final cargo test -p tt-mcp --test c41_r3_review --locked -- --test-threads=1 --nocapture: exit 101 (shell timeout wrapper reported 1), 5 pass, 2 fail, tests 5.28 s.
+PASS delete_during_body_does_not_resurrect_request_routes
+PASS executing_command_holds_session_past_idle_bound
+PASS in_flight_sessions_still_count_against_session_cap
+PASS many_guards_release_and_expire_after_last_disconnect
+PASS trickling_oldest_is_evicted_without_answer
+FAIL saturated_pools_obey_thread_formula_and_unread_refusals_do_not_stall: baseline 10, actual 179, permitted 53. Service 13.9036 ms, stats workers7 pending1 lingering6 sessions32. Cleanup completed before assertion.
+FAIL stop_releases_authenticated_body_workers: state timeout after 3 s, workers1 pending0 lingering0 sessions0. Request deadline15s/write timeout100ms.
+Builder cargo test -p tt-mcp --test c41 --locked transport:: -- --test-threads=1: exit0, 7/7 pass.
+cargo fmt --check: exit0.
+cargo clippy -p tt-mcp --all-targets --locked --features tt-persist/test-hooks -- -D warnings -A clippy::empty_line_after_doc_comments: exit0. Initial clippy identified needless range loop in new test, corrected to iterator; final pass 0.51s.

@@ -1,0 +1,83 @@
+{
+ "ruling": "D-54: the authorised edit of tests/adversarial/c43b-r3-live.py b3 step 6 (its check only)",
+ "command": "B3_STEP=6 REVIEW_RAW=<fresh TEMP folder> python tests/adversarial/c43b-r3-live.py <hooks toontown.exe> b3",
+ "exit": 0,
+ "checks": [
+  {
+   "ok": true,
+   "check": "the Drawing view's canvas is located in the window",
+   "detail": [
+    49,
+    138
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-50 (e) a refusal clears at once: refused, and nothing is drawn from just after the answer",
+   "detail": {
+    "answeredAt": 2.5945879000937566,
+    "status": "error",
+    "code": "drawing.locked",
+    "drawnAfterAnswer": []
+   }
+  },
+  {
+   "ok": true,
+   "check": "D-50 (e) a refusal clears at once: the drawing is unchanged",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-50 Camera and back while pending: none in the Camera view, drawn again on return before the answer, none after the committed frame (D-54)",
+   "detail": {
+    "states": [
+     {
+      "view": "camera",
+      "afterRelease": 1.037,
+      "viewType": "camera",
+      "overlay": false,
+      "preview": false
+     },
+     {
+      "view": "drawing",
+      "afterRelease": 2.067,
+      "viewType": "drawing",
+      "overlay": true,
+      "preview": false
+     }
+    ],
+    "after": {
+     "viewType": "drawing",
+     "overlay": false,
+     "preview": false
+    }
+   }
+  },
+  {
+   "ok": true,
+   "check": "D-50 view switch D-32",
+   "detail": {
+    "statuses": [
+     "ok"
+    ]
+   }
+  }
+ ],
+ "raw": [
+  {
+   "file": "transcript.json",
+   "bytes": 8843,
+   "sha256": "15d807288b7bc02625778bf7799a1d1db3ab819019e258d9b7f32ce22f73e902"
+  },
+  {
+   "file": "switch-camera.png",
+   "bytes": 44746,
+   "sha256": "80e9ee4c5d63c0e09f1c4c46e23c8a70267158c10d75d2ac19bb48d69b4bf5a4"
+  },
+  {
+   "file": "switch-drawing.png",
+   "bytes": 44630,
+   "sha256": "368ef1134115ab1757603e713f09e104c2d08b561926a7a1a33e4f1de0bf6af5"
+  }
+ ]
+}

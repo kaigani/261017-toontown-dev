@@ -148,6 +148,7 @@ fn an_unrelated_caller_waits_at_most_the_bound_plus_its_own_work() {
         (caller.join().unwrap(), waited)
     });
     eprintln!("unrelated query waited {waited:?} (bound {bound:?})");
+    crate::common::timing::record("c34_round3.rs:151", waited, bound + Duration::from_millis(400));
     assert!(waited < bound + Duration::from_millis(400), "{waited:?}");
     assert!(silent.is_ok(), "a silent caller is not cancelled: {:?}", silent.error);
     assert_eq!(rev(&h), before + 1);

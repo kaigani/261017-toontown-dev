@@ -1,0 +1,30 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-executor",
+    "--test",
+    "c41_r1_review",
+    "--test",
+    "c41_r2_review",
+    "--test",
+    "c41_r3_review",
+    "--locked",
+    "--features",
+    "tt-persist/test-hooks"
+  ],
+  "exit": 0,
+  "seconds": 38.31093460001284,
+  "results": [
+    "     Running tests\\c41_r1_review.rs (target\\debug\\deps\\c41_r1_review-f29fc8ad7bdf407a.exe)",
+    "test part_e_keymap::empty_sequence_has_keymap_error ... ok",
+    "test part_e_keymap::import_preserves_typed_binding_errors ... ok",
+    "test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s",
+    "     Running tests\\c41_r2_review.rs (target\\debug\\deps\\c41_r2_review-fe1404ffca07da89.exe)",
+    "test part_b_preferences::import_errors_are_indexed_atomic_and_identical_import_is_silent ... ok",
+    "test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.04s",
+    "     Running tests\\c41_r3_review.rs (target\\debug\\deps\\c41_r3_review-46ba4b1a8c9f932d.exe)",
+    "test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.30s"
+  ]
+}

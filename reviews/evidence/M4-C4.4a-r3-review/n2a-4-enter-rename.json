@@ -1,0 +1,60 @@
+{
+  "after": null,
+  "commands": [
+    {
+      "command": "tool.pen.rename",
+      "params": {
+        "penId": "pen_01M7WGTQNPCGWQK1KA3K32KW1Z",
+        "name": "Review name"
+      }
+    },
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "edit.history.get",
+      "params": {
+        "limit": 1000
+      }
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "tool.pen.list",
+      "params": {}
+    },
+    {
+      "command": "tool.active.get",
+      "params": {}
+    },
+    {
+      "command": "tool.settings.get",
+      "params": {}
+    },
+    {
+      "command": "tool.active.get",
+      "params": {}
+    },
+    {
+      "command": "tool.pen.list",
+      "params": {}
+    },
+    {
+      "command": "edit.history.get",
+      "params": {
+        "limit": 1000
+      }
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    }
+  ]
+}

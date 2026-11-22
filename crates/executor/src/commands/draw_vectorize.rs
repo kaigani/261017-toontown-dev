@@ -307,6 +307,7 @@ fn runs(doc: &Document, element: &Id) -> Runs {
 
 #[command(
     id = "draw.vectorize.preview",
+    precheck = crate::prechecks::draw_vectorize_preview,
     kind = query,
     label = "Preview vectorization",
     scopes = [read, files_read],
@@ -432,6 +433,7 @@ struct Plan {
 
 #[command(
     id = "draw.vectorize.run",
+    precheck = crate::prechecks::draw_vectorize_run,
     kind = job,
     label = "Import and Vectorize",
     scopes = [edit, files_read],

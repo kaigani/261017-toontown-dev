@@ -1,0 +1,103 @@
+{
+  "probe": "tests/adversarial/c44a-r2-live.py m2a 3 (unchanged), 10 runs of 30 attempts, each on a fresh application",
+  "build": "ca978fe3",
+  "rule": "D-67: no revealed capture; a render.failed refusal (tokenShown) allowed",
+  "totals": {
+    "attempts": 300,
+    "masked": 300,
+    "revealed": 0,
+    "refused": 0
+  },
+  "runs": [
+    {
+      "run": "m2a-3-01",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-02",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-03",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-04",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-05",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-06",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-07",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-08",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-09",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    },
+    {
+      "run": "m2a-3-10",
+      "checks": 37,
+      "failed": [],
+      "attempts": 30,
+      "masked": 30,
+      "revealed": 0,
+      "refused": 0
+    }
+  ]
+}

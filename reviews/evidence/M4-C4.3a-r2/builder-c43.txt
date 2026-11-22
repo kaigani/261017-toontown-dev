@@ -1,0 +1,40 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c43a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.03s
+     Running tests\c43.rs (target\debug\deps\c43-96f11fa1d5fd5a34.exe)
+
+running 27 tests
+test budgets::probe_the_camera_view_on_many_elements ... ignored, probe: run with --ignored --nocapture (figures for the handoff)
+test mapping::a_camera_view_pans_to_a_scene_point_and_recentres_on_the_frame ... ok
+test camera::the_kernels_scene_answers_have_the_corpus_members ... ok
+test camera::cv4_the_selection_overlay_never_reaches_a_render ... ok
+test mapping::v6_v7_the_camera_view_chain_round_trips_and_agrees_with_the_occurrences ... ok
+test scene_tools::a_camera_view_move_keeps_the_element_under_the_pointer ... ok
+test spec_values::the_temporary_skew_acts_only_from_a_side ... ok
+test camera::m3_8_3_the_camera_view_agrees_with_the_renderer_on_roll_fov_and_hidden_ancestors ... ok
+test camera::cv2_each_drawing_appears_once_among_the_loads ... ok
+test camera::cv3_every_occurrence_carries_its_element_and_matrix ... ok
+test scene_tools::g7_selection_by_click_extend_and_rubber_band ... ok
+test scene_tools::an_unreleased_scene_drag_commits_nothing ... ok
+test renders::an_active_view_render_of_the_camera_view_is_the_camera_composition ... ok
+test mapping::anim_view_coords_get_maps_scene_points_and_view_pixels ... ok
+test mapping::v8_scene_and_camera_view_points_in_every_declared_use ... ok
+test camera::a_fill_bounded_by_invisible_strokes_is_hit_outside_the_visible_strokes_box ... ok
+test mapping::c43a_r1_01_draw_view_mapping_get_publishes_the_camera_views_mapping ... ok
+test camera::cv1_equal_depth_follows_the_timeline_and_depth_overrides_it ... ok
+test camera::cv1_the_occurrences_are_the_renderers_elements_and_plane_matrices ... ok
+test scene_tools::g11_the_scene_tool_and_the_drawing_tool_are_independent ... ok
+test renders::the_headless_capture_of_the_camera_view_draws_the_camera_composition_through_the_view ... ok
+test labels::every_operation_and_node_kind_names_its_label ... ok
+test scene_tools::g7_g8_g9_every_scene_drag_ends_in_its_command_target_keys_and_label ... ok
+test mapping::v6_round_trips_over_a_seeded_table_of_cameras_elements_and_views ... ok
+test spec_values::every_scene_drag_has_the_spec_value_keys_and_label ... ok
+test scene_tools::g10_drawing_tools_in_the_camera_view_equal_the_drawing_view ... ok
+200 elements: scene answer: median 1.4897ms, max 2.9562ms
+200 elements: pick (select press): median 5.0043ms, max 5.6311ms
+200 elements: edit.selection.set alone: median 459.2Âµs, max 536.1Âµs
+200 elements: inspect.hitTest: median 1.99ms, max 2.1072ms
+200 elements: anim.view.coords.get: median 642.8Âµs, max 737Âµs
+test budgets::the_camera_views_requests_hold_the_document_thread_within_budget ... ok
+
+test result: ok. 26 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 2.04s
+

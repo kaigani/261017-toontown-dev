@@ -1,0 +1,55 @@
+[
+  {
+    "check": "the application saves the fixture project",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the canvas is located in the window (OS input)",
+    "ok": true,
+    "detail": [
+      49,
+      126
+    ]
+  },
+  {
+    "check": "three-way scissor (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Scissor Tool"
+        ],
+        [
+          "Scissor Tool"
+        ],
+        [
+          "Cutter Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "specified label and undo/redo scissor",
+    "ok": true,
+    "detail": [
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Scissor Tool"
+      ],
+      [
+        "Cutter Tool"
+      ]
+    ]
+  }
+]

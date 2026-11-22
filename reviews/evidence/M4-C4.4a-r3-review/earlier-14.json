@@ -1,0 +1,313 @@
+{
+  "case": "m2b",
+  "step": 6,
+  "exit": 0,
+  "failLines": [],
+  "results": [
+    {
+      "check": "D-63 one held read mutation second call",
+      "ok": true,
+      "detail": {
+        "read": "ok",
+        "mutation": {
+          "status": "ok",
+          "result": {
+            "toolId": "brush"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "queue": " 1 of 2"
+      }
+    },
+    {
+      "check": "D-63 A B A queue",
+      "ok": true,
+      "detail": " 1 of 3"
+    },
+    {
+      "check": "D-63 fifth held call leaves read answered",
+      "ok": true,
+      "detail": {
+        "read": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7WDXMYFCN6Z1ZFBNAJ67CK3",
+              "name": "Round 2 live 2",
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\base.animpkg",
+              "dirty": false,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7WDXMYFCN6Z1ZFBNAJ67CQ7",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN800R4AFGC3HFDM56Z0X",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800ZR8345XQZ9HXYRM0",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN800R4AFGC3HFDM56Z0X"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-0bac58",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-da6fc4",
+                "name": "round2-A",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-5c1399",
+                "name": "round2-B",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s2-da6fc4",
+              "client": "round2-A",
+              "policy": "assist",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "assist",
+                "maxJobs": 2,
+                "maxBatchSteps": 1000,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": true,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "queue": " 1 of 4",
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:59822/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-0bac58",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T12:11:55.048Z",
+                "lastActivity": "2026-11-20T12:11:55.357Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-da6fc4",
+                "client": "round2-A",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T12:12:01.691Z",
+                "lastActivity": "2026-11-20T12:12:14.578Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-5c1399",
+                "client": "round2-B",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T12:12:01.694Z",
+                "lastActivity": "2026-11-20T12:12:09.273Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_428e857bb7f211ece999eb7b",
+                "sessionId": "s2-da6fc4",
+                "commandId": "project.saveAs",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-6.animpkg`",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-6.animpkg",
+                    "bytes": 8
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": true,
+                "expiresInMs": 296364
+              },
+              {
+                "confirmationId": "cf_68e6a4c628c4fa5941bfe410",
+                "sessionId": "s2-da6fc4",
+                "commandId": "project.saveAs",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-8.animpkg`",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-8.animpkg",
+                    "bytes": 8
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": true,
+                "expiresInMs": 297162
+              },
+              {
+                "confirmationId": "cf_95b20972d268f3645779c2db",
+                "sessionId": "s2-da6fc4",
+                "commandId": "project.saveAs",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-7.animpkg`",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-7.animpkg",
+                    "bytes": 8
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": true,
+                "expiresInMs": 296757
+              },
+              {
+                "confirmationId": "cf_b03665bf08688beca98472f4",
+                "sessionId": "s2-da6fc4",
+                "commandId": "project.saveAs",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-5.animpkg`",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-1kzlftdm\\sentinel-5.animpkg",
+                    "bytes": 8
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": true,
+                "expiresInMs": 295947
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        }
+      }
+    },
+    {
+      "check": "D-65 fifth refused immediately, retired, four shown and read answered",
+      "ok": true,
+      "detail": {
+        "fifth": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "limit.exceeded",
+            "message": "this session already waits on 4 held confirmations or jobs at once; this call was not run",
+            "details": {
+              "limit": "concurrentJobWaits",
+              "value": 4
+            },
+            "hint": "wait for an earlier held call or job to end, then call again"
+          }
+        },
+        "readStatus": "ok",
+        "queue": " 1 of 4"
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r3-batch-_y52ub53\\14-m2b6"
+}

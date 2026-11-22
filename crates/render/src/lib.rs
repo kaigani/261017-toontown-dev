@@ -16,6 +16,8 @@
 //! - Colours are straight-alpha sRGB RGBA8; the rendered buffer is premultiplied RGBA8, and [`encode_png`] converts
 //!   it to straight alpha with `round(c × 255 / a)`.
 
+pub mod canvas;
+
 use std::sync::Arc;
 
 use vello_cpu::color::{AlphaColor, Srgb};

@@ -1,0 +1,17 @@
+{
+  "candidate": "308bf346",
+  "platform": "Windows",
+  "round1": {"render": 2, "executor": 5, "python_probes": 3, "typescript": 15, "failed": 0},
+  "round2": {"render_debug": 2, "model_debug": 1, "model_release": 1, "executor_debug": 12, "executor_release": 12, "failed": 0},
+  "seed": "0xc42b0201",
+  "script_iterations": 320,
+  "canonical_sha256": "96d1e8f598bb10d5d1660f9340171ffd33e817f8cd48f6b82f5e7b833f6a9946",
+  "event_sha256": "9f9162163ee5229b84f3c1e23ea3d9ad1e849b374e22b363dd52103762aeddff",
+  "cargo_fmt_check": "passed",
+  "clippy_all_targets": "passed: tt-render, tt-model, tt-executor together, locked, tt-persist/test-hooks, -D warnings -A clippy::empty_line_after_doc_comments",
+  "ownership_diffs": "both empty",
+  "new_findings": {"P0": 0, "P1": 0, "P2": 0},
+  "partial_cases": ["A2.7 executor-level whole-drawing failure injection not exercised", "A2.8 pre-fix E1 byte comparison not executed"],
+  "process_limits": ["builder expected-value tests read before A3 expectation derivation", "one fmt invocation overlapped clippy; all cargo processes awaited"],
+  "macos_run": false
+}

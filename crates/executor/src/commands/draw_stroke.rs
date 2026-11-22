@@ -167,6 +167,12 @@ pub(crate) struct StrokeAddParams {
     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn yes() -> bool {
@@ -230,10 +236,7 @@ pub(crate) fn pen_choice(cx: &Cx, pen_id: Option<&str>, explicit: Option<PenIn>)
             }
             Some(p)
         }
-        None => pens
-            .iter()
-            .find(|p| *p.kind() == PenKind::Brush && p.name() == "Pen 3")
-            .or_else(|| pens.iter().find(|p| *p.kind() == PenKind::Brush)),
+        None => super::tool::current_pen(cx, PenKind::Brush).and_then(|id| pens.iter().find(|p| *p.id() == id)),
     };
     let mut c = match chosen {
         Some(p) => PenChoice {
@@ -290,9 +293,14 @@ pub(crate) fn swatch_colour(cx: &Cx, given: &str) -> String {
     cx.resolve_as(given, ObjectType::Swatch).unwrap_or_else(|_| given.to_owned())
 }
 
-/// The current colour (03 §2.4): the session has no `colour.current.set` before M7 C7.1, so it is the first swatch
-/// of the first visible palette.
-pub(crate) fn current_colour(doc: &Document) -> Option<String> {
+/// The current colour (03 §2.4): the one `colour.current.set` chose (ruling D-11) while a swatch still has it, else
+/// the first swatch of the first visible palette.
+pub(crate) fn current_colour(app: &crate::app::AppContext, doc: &Document) -> Option<String> {
+    if let Some((c, _)) = &app.colour
+        && doc.palettes().any(|p| p.swatches().iter().any(|s| s.colour_id() == c))
+    {
+        return Some(c.as_str().to_owned());
+    }
     doc.palettes()
         .filter(|p| !*p.hidden())
         .find_map(|p| p.swatches().first().map(|s| s.colour_id().as_str().to_owned()))
@@ -323,7 +331,7 @@ pub(crate) fn colour_of(
             if let Some(p) = pen.filter(|p| colour_exists(&doc, p)) {
                 return Ok(Some(p.to_owned()));
             }
-            let c = current_colour(&doc);
+            let c = current_colour(cx.app(), &doc);
             if c.is_none() {
                 cx.warn("colour.noCurrentColour", "there is no current colour; the stroke is unpainted", Vec::new());
             }
@@ -400,6 +408,7 @@ fn transform_geometry(g: &Geometry, m: &tt_vector::geom::Affine) -> Geometry {
 
 #[command(
     id = "draw.stroke.add",
+    precheck = super::draw::precheck_stroke_add,
     kind = action,
     label = "Add stroke",
     scopes = [edit],
@@ -411,6 +420,8 @@ fn transform_geometry(g: &Geometry, m: &tt_vector::geom::Affine) -> Geometry {
     gui = "Drawing view: Brush, Pencil and Stroke tools (M4 C4.2)",
 )]
 pub(crate) fn draw_stroke_add(cx: &mut Cx, p: StrokeAddParams) -> Result<StrokeAddResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let kind = kind_of(p.kind);
     let geom = geometry(p.points.as_deref(), p.bezier.as_deref(), p.fit, p.closed)?;
     let mut changes = Vec::new();
@@ -566,6 +577,12 @@ pub(crate) struct StrokeSetParams {
     /// The drawing revision the caller read (02 §3.12; `drawing.staleRevision` when it changed).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 /// `{strokeIds, removedIds, rev}`.
@@ -649,6 +666,7 @@ pub(crate) fn drawing_in<'a>(doc: &'a Document, id: &tt_model::Id) -> Result<&'a
 
 #[command(
     id = "draw.stroke.set",
+    precheck = super::draw::precheck_stroke_set,
     kind = action,
     label = "Edit stroke",
     scopes = [edit],
@@ -658,6 +676,8 @@ pub(crate) fn drawing_in<'a>(doc: &'a Document, id: &tt_model::Id) -> Result<&'a
     gui = "Drawing view: Contour Editor and line properties (M4 C4.2)",
 )]
 pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeSetResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     if p.bezier.is_none() && p.pressure.is_none() && p.thickness.is_none() && p.kind.is_none() && p.closed.is_none() {
         return Err(err(
             codes::ARG_MISSING,
@@ -698,7 +718,7 @@ pub(crate) fn draw_stroke_set(cx: &mut Cx, p: StrokeSetParams) -> Result<StrokeS
     })?;
     // An invisible stroke made visible takes the current colour (03 §2.4).
     let colour = if p.kind == Some(LineKind::Pencil) && *s.kind() == StrokeKind::Invisible {
-        Some(current_colour(cx.document()?))
+        Some(current_colour(cx.app(), cx.document()?))
     } else {
         None
     };
@@ -766,6 +786,12 @@ pub(crate) struct ContentAddParams {
     /// Make the inserted objects the drawing selection.
     #[serde(default = "yes")]
     select: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 /// `{idMap, rev}`.
@@ -787,15 +813,18 @@ pub(crate) struct ContentAddResult {
 
 #[command(
     id = "draw.content.add",
+    precheck = super::draw::precheck_add_content,
     kind = action,
     label = "Insert drawing content",
     scopes = [edit],
     undo = "Paste",
     needs_project,
     example(title = "Insert a pencil line and a text object", params = r#"{"elementId": "scene:#1/element:\"Bob\"", "frame": 1, "content": {"nodes": [{"type": "layer", "id": "l_1", "layerKind": "pencil", "strokes": [{"id": "s_1", "kind": "pencil", "closed": false, "bezier": [{"x": 0, "y": 0}, {"x": 10, "y": 5}, {"x": 20, "y": 5}, {"x": 30, "y": 0}], "colourId": null, "lineStyle": {"thickness": 2, "lineType": "solid"}}]}, {"type": "text", "id": "t_1", "text": "Hi", "transform": [1, 0, 0, 1, -50, 120], "widthMode": "auto", "width": null, "runs": [{"start": 0, "length": 2, "font": "sans-serif", "size": 36, "bold": false, "italic": false, "baseline": "normal", "kerning": 0, "autoKern": true, "colourId": null, "outlineColourId": null}], "paragraphs": [{"start": 0, "length": 2, "align": "left", "leftMargin": 0, "rightMargin": 0, "indent": 0, "lineSpacing": 0}]}]}, "offset": {"x": 10, "y": -10}}"#),
-    gui = "Drawing view: Edit › Paste (M4 C4.2)",
+    agent_only = "the GUI pastes with Edit › Paste (edit.paste); this command takes explicit content for agents",
 )]
 pub(crate) fn draw_content_add(cx: &mut Cx, p: ContentAddParams) -> Result<ContentAddResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let mut changes = Vec::new();
     let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, p.create_drawing, &mut changes)?;
     let doc = cx.document()?.clone();

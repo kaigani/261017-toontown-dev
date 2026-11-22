@@ -1,0 +1,76 @@
+{
+  "at": "2026-11-15T17:50:31.820387+00:00",
+  "branchHead": "b9d57ff23fa836f70aad504d1fa67fc974492e69",
+  "runs": [
+    {
+      "conclusion": "",
+      "databaseId": 43742323343,
+      "headSha": "b9d57ff23fa836f70aad504d1fa67fc974492e69",
+      "status": "queued"
+    },
+    {
+      "conclusion": "failure",
+      "databaseId": 43728082844,
+      "headSha": "3fb27030ca3372d9e686df0db2e3d90771f31393",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 43718960532,
+      "headSha": "50d6d17fc97f7f87a97cf1d7d4b542c220d2a512",
+      "status": "completed"
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 43718202134,
+      "headSha": "fb4e2d4b97c154dc5bab4c56ffe56db1c3e44487",
+      "status": "completed"
+    },
+    {
+      "conclusion": "cancelled",
+      "databaseId": 43718170931,
+      "headSha": "e89dc7c47eede90143c1c172294a24bf63d46c6f",
+      "status": "completed"
+    },
+    {
+      "conclusion": "success",
+      "databaseId": 43713024395,
+      "headSha": "1165bbafad1511f2a1a390b00f998bcac6a83bce",
+      "status": "completed"
+    }
+  ],
+  "baselineRun": {
+    "id": 43728082844,
+    "jobCount": 36,
+    "notSuccessful": [
+      {
+        "name": "check (windows-latest)",
+        "conclusion": "failure",
+        "failedSteps": [
+          "Run cargo test --workspace --locked"
+        ]
+      },
+      {
+        "name": "check (macos-latest)",
+        "conclusion": "failure",
+        "failedSteps": [
+          "Run cargo test --workspace --locked"
+        ]
+      },
+      {
+        "name": "drawing byte gate (macos-latest)",
+        "conclusion": "failure",
+        "failedSteps": [
+          "Attached versus headless frames"
+        ]
+      }
+    ]
+  },
+  "handoffExists": false,
+  "counts": {
+    "c43Tests": 27,
+    "reviewerRustTests": 30,
+    "corruptCorpus": 28,
+    "validCorpus": 4
+  }
+}

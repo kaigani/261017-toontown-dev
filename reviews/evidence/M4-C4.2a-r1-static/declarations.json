@@ -1,0 +1,3679 @@
+{
+  "commands": 53,
+  "differences": [
+    "tool.active.set: toolId: enum not declared",
+    "tool.pen.create: type: default 'brush' != '<absent>'",
+    "tool.pen.set: tipShape: enum not declared",
+    "tool.pencil.options.set: thicknessSource: default 'penMax' != '<absent>'",
+    "tool.select.options.set: rectRule: default 'inside' != '<absent>'",
+    "tool.settings.get: result: named shape absent",
+    "tool.tablet.set: ignoreTablet: default False != None",
+    "tool.tablet.set: portraitCorrection: default False != None",
+    "tool.tablet.set: compatibilityMode: default False != None",
+    "tool.text.options.set: size: default 36 != '<absent>'",
+    "tool.text.options.set: bold: default False != '<absent>'",
+    "tool.text.options.set: italic: default False != '<absent>'",
+    "tool.text.options.set: baseline: default 'normal' != '<absent>'",
+    "tool.text.options.set: kerning: default 0 != '<absent>'",
+    "tool.text.options.set: autoKern: default True != '<absent>'",
+    "tool.text.options.set: align: default 'left' != '<absent>'",
+    "tool.text.options.set: leftMargin: default 0 != '<absent>'",
+    "tool.text.options.set: rightMargin: default 0 != '<absent>'",
+    "tool.text.options.set: indent: default 0 != '<absent>'",
+    "tool.text.options.set: lineSpacing: default 0 != '<absent>'",
+    "drawAid.background.set: result: named shape absent",
+    "drawAid.grid.set: result: named shape absent",
+    "drawAid.lightTableShade.set: result: named shape absent",
+    "drawAid.onionSkin.set: result: named shape absent",
+    "drawAid.staticLightTable.add: placement: default 'underlay' != '<absent>'",
+    "inspect.screenshot: target: default 'window' != None",
+    "inspect.screenshot: result: named shape absent"
+  ],
+  "rows": [
+    {
+      "command": "view.active.set",
+      "specLine": 125,
+      "specParams": "viewId: id",
+      "specResult": "{viewId}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "ActiveParams",
+        "description": "`view.active.set` parameters.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "The view window to activate.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "viewId"
+        ]
+      },
+      "schemaResult": {
+        "title": "ViewIdResult",
+        "description": "`{viewId}`.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View id.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "viewId"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.coordinates.convert",
+      "specLine": 126,
+      "specParams": "viewId: id; point: point; from: enum \"view\"|\"drawing\"|\"scene\"; to: enum \"view\"|\"drawing\"|\"scene\"",
+      "specResult": "{point}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "ConvertParams",
+        "description": "`view.coordinates.convert` parameters.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View window.",
+            "type": "string"
+          },
+          "point": {
+            "description": "A point in document or view coordinates.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "x.",
+                "type": "number"
+              },
+              "y": {
+                "description": "y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          },
+          "from": {
+            "description": "A space a view converts between.",
+            "oneOf": [
+              {
+                "description": "View pixels (y down).",
+                "type": "string",
+                "const": "view"
+              },
+              {
+                "description": "Drawing space of the view's drawing (du, y up).",
+                "type": "string",
+                "const": "drawing"
+              },
+              {
+                "description": "Scene space (fields) under the current element's transform at the current frame.",
+                "type": "string",
+                "const": "scene"
+              }
+            ]
+          },
+          "to": {
+            "description": "A space a view converts between.",
+            "oneOf": [
+              {
+                "description": "View pixels (y down).",
+                "type": "string",
+                "const": "view"
+              },
+              {
+                "description": "Drawing space of the view's drawing (du, y up).",
+                "type": "string",
+                "const": "drawing"
+              },
+              {
+                "description": "Scene space (fields) under the current element's transform at the current frame.",
+                "type": "string",
+                "const": "scene"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "viewId",
+          "point",
+          "from",
+          "to"
+        ]
+      },
+      "schemaResult": {
+        "title": "PointResult",
+        "description": "`{point}`.",
+        "type": "object",
+        "properties": {
+          "point": {
+            "description": "A point in document or view coordinates.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "x.",
+                "type": "number"
+              },
+              "y": {
+                "description": "y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        "required": [
+          "point"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.list",
+      "specLine": 127,
+      "specParams": "\u2014",
+      "specResult": "[{viewId, panelId, type, focused, size: {width, height}, transform}]",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "Array_of_ViewEntry",
+        "type": "array",
+        "items": {
+          "description": "A view window entry.",
+          "type": "object",
+          "properties": {
+            "viewId": {
+              "description": "View id (= its panel id, SI-112).",
+              "type": "string"
+            },
+            "panelId": {
+              "description": "Panel id.",
+              "type": "string"
+            },
+            "type": {
+              "description": "A view window's type (01 \u00a74, \u00a75.3).",
+              "oneOf": [
+                {
+                  "description": "Drawing view.",
+                  "type": "string",
+                  "const": "drawing"
+                },
+                {
+                  "description": "Camera view.",
+                  "type": "string",
+                  "const": "camera"
+                },
+                {
+                  "description": "Top view.",
+                  "type": "string",
+                  "const": "top"
+                },
+                {
+                  "description": "Side view.",
+                  "type": "string",
+                  "const": "side"
+                }
+              ]
+            },
+            "focused": {
+              "description": "The active view window.",
+              "type": "boolean"
+            },
+            "size": {
+              "description": "A size in logical pixels.",
+              "type": "object",
+              "properties": {
+                "width": {
+                  "description": "Width.",
+                  "type": "number"
+                },
+                "height": {
+                  "description": "Height.",
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "width",
+                "height"
+              ]
+            },
+            "transform": {
+              "description": "A view transform (01 \u00a76.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+              "type": "object",
+              "properties": {
+                "zoom": {
+                  "description": "Zoom factor (1 = 100 %).",
+                  "type": "number"
+                },
+                "rotationDegrees": {
+                  "description": "View rotation in degrees, in (\u2212180, 180].",
+                  "type": "number"
+                },
+                "centre": {
+                  "description": "A point in document or view coordinates.",
+                  "type": "object",
+                  "properties": {
+                    "x": {
+                      "description": "x.",
+                      "type": "number"
+                    },
+                    "y": {
+                      "description": "y.",
+                      "type": "number"
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "x",
+                    "y"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "zoom",
+                "rotationDegrees",
+                "centre"
+              ]
+            }
+          },
+          "required": [
+            "viewId",
+            "panelId",
+            "type",
+            "focused",
+            "size",
+            "transform"
+          ]
+        }
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.pan.set",
+      "specLine": 128,
+      "specParams": "viewId?: id; centre?: point; by?: point (view pixels); atPointer: bool = false",
+      "specResult": "{zoom, rotationDegrees, centre}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "PanParams",
+        "description": "`view.pan.set` parameters.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View window (default: the active one).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "centre": {
+            "description": "The document point to centre on.",
+            "anyOf": [
+              {
+                "description": "A point in document or view coordinates.",
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "description": "x.",
+                    "type": "number"
+                  },
+                  "y": {
+                    "description": "y.",
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "x",
+                  "y"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "by": {
+            "description": "A pan by view pixels (the content moves by this offset).",
+            "anyOf": [
+              {
+                "description": "A point in document or view coordinates.",
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "description": "x.",
+                    "type": "number"
+                  },
+                  "y": {
+                    "description": "y.",
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "x",
+                  "y"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "atPointer": {
+            "description": "Centre on the pointer.",
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ViewTransform",
+        "description": "A view transform (01 \u00a76.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+        "type": "object",
+        "properties": {
+          "zoom": {
+            "description": "Zoom factor (1 = 100 %).",
+            "type": "number"
+          },
+          "rotationDegrees": {
+            "description": "View rotation in degrees, in (\u2212180, 180].",
+            "type": "number"
+          },
+          "centre": {
+            "description": "A point in document or view coordinates.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "x.",
+                "type": "number"
+              },
+              "y": {
+                "description": "y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "zoom",
+          "rotationDegrees",
+          "centre"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.rotation.set",
+      "specLine": 129,
+      "specParams": "viewId?: id; degrees?: number (\u2212360\u2013360); steps?: int",
+      "specResult": "{zoom, rotationDegrees, centre}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "RotationParams",
+        "description": "`view.rotation.set` parameters.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View window (default: the active one).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "degrees": {
+            "description": "Absolute rotation in degrees (clockwise positive in the view).",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null,
+            "minimum": -360,
+            "maximum": 360
+          },
+          "steps": {
+            "description": "30\u00b0 steps (clockwise = +1).",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": -12,
+            "maximum": 12
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ViewTransform",
+        "description": "A view transform (01 \u00a76.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+        "type": "object",
+        "properties": {
+          "zoom": {
+            "description": "Zoom factor (1 = 100 %).",
+            "type": "number"
+          },
+          "rotationDegrees": {
+            "description": "View rotation in degrees, in (\u2212180, 180].",
+            "type": "number"
+          },
+          "centre": {
+            "description": "A point in document or view coordinates.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "x.",
+                "type": "number"
+              },
+              "y": {
+                "description": "y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "zoom",
+          "rotationDegrees",
+          "centre"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.transform.get",
+      "specLine": 130,
+      "specParams": "viewId?: id",
+      "specResult": "{zoom, rotationDegrees, centre: point}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "ViewParams",
+        "description": "`viewId?`.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View window (default: the active one).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ViewTransform",
+        "description": "A view transform (01 \u00a76.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+        "type": "object",
+        "properties": {
+          "zoom": {
+            "description": "Zoom factor (1 = 100 %).",
+            "type": "number"
+          },
+          "rotationDegrees": {
+            "description": "View rotation in degrees, in (\u2212180, 180].",
+            "type": "number"
+          },
+          "centre": {
+            "description": "A point in document or view coordinates.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "x.",
+                "type": "number"
+              },
+              "y": {
+                "description": "y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "zoom",
+          "rotationDegrees",
+          "centre"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.transform.reset",
+      "specLine": 131,
+      "specParams": "viewId?: id; parts: [enum \"zoom\"|\"rotation\"|\"pan\"] = [\"zoom\",\"rotation\",\"pan\"]",
+      "specResult": "{zoom, rotationDegrees, centre}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "ResetParams",
+        "description": "`view.transform.reset` parameters.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View window (default: the active one).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "parts": {
+            "description": "Parts to reset.",
+            "type": "array",
+            "items": {
+              "description": "A part of a view transform.",
+              "oneOf": [
+                {
+                  "description": "Zoom back to 100 %.",
+                  "type": "string",
+                  "const": "zoom"
+                },
+                {
+                  "description": "Rotation back to 0\u00b0.",
+                  "type": "string",
+                  "const": "rotation"
+                },
+                {
+                  "description": "Recentre on the drawing centre.",
+                  "type": "string",
+                  "const": "pan"
+                }
+              ]
+            }
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ViewTransform",
+        "description": "A view transform (01 \u00a76.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+        "type": "object",
+        "properties": {
+          "zoom": {
+            "description": "Zoom factor (1 = 100 %).",
+            "type": "number"
+          },
+          "rotationDegrees": {
+            "description": "View rotation in degrees, in (\u2212180, 180].",
+            "type": "number"
+          },
+          "centre": {
+            "description": "A point in document or view coordinates.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "x.",
+                "type": "number"
+              },
+              "y": {
+                "description": "y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "zoom",
+          "rotationDegrees",
+          "centre"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.type.set",
+      "specLine": 132,
+      "specParams": "viewId?: id; type: enum \"drawing\"|\"camera\"|\"top\"|\"side\"|\"previous\"",
+      "specResult": "{viewId, type}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "TypeParams",
+        "description": "`view.type.set` parameters.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View window (default: the active one).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "type": {
+            "description": "A view type, or `previous` (switch active view, 01 \u00a74).",
+            "oneOf": [
+              {
+                "description": "Drawing view.",
+                "type": "string",
+                "const": "drawing"
+              },
+              {
+                "description": "Camera view.",
+                "type": "string",
+                "const": "camera"
+              },
+              {
+                "description": "Top view.",
+                "type": "string",
+                "const": "top"
+              },
+              {
+                "description": "Side view.",
+                "type": "string",
+                "const": "side"
+              },
+              {
+                "description": "The type before the last switch.",
+                "type": "string",
+                "const": "previous"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "type"
+        ]
+      },
+      "schemaResult": {
+        "title": "TypeResult",
+        "description": "`{viewId, type}`.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View id.",
+            "type": "string"
+          },
+          "type": {
+            "description": "A view window's type (01 \u00a74, \u00a75.3).",
+            "oneOf": [
+              {
+                "description": "Drawing view.",
+                "type": "string",
+                "const": "drawing"
+              },
+              {
+                "description": "Camera view.",
+                "type": "string",
+                "const": "camera"
+              },
+              {
+                "description": "Top view.",
+                "type": "string",
+                "const": "top"
+              },
+              {
+                "description": "Side view.",
+                "type": "string",
+                "const": "side"
+              }
+            ]
+          }
+        },
+        "required": [
+          "viewId",
+          "type"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "view.zoom.set",
+      "specLine": 133,
+      "specParams": "viewId?: id; zoom?: number (0.0625\u201364); steps?: int; anchor?: point (view pixels)",
+      "specResult": "{zoom, rotationDegrees, centre}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "ZoomParams",
+        "description": "`view.zoom.set` parameters.",
+        "type": "object",
+        "properties": {
+          "viewId": {
+            "description": "View window (default: the active one).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "zoom": {
+            "description": "Absolute zoom factor.",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0.0625,
+            "maximum": 64
+          },
+          "steps": {
+            "description": "Table steps (zoom in = +1, zoom out = \u22121).",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": -64,
+            "maximum": 64
+          },
+          "anchor": {
+            "description": "The view point that stays fixed (view pixels; default the view centre).",
+            "anyOf": [
+              {
+                "description": "A point in document or view coordinates.",
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "description": "x.",
+                    "type": "number"
+                  },
+                  "y": {
+                    "description": "y.",
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "x",
+                  "y"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ViewTransform",
+        "description": "A view transform (01 \u00a76.5): zoom factor, rotation of the view in degrees (clockwise positive), and the document\npoint at the centre of the view (drawing space for a Drawing view, scene space for staging views).",
+        "type": "object",
+        "properties": {
+          "zoom": {
+            "description": "Zoom factor (1 = 100 %).",
+            "type": "number"
+          },
+          "rotationDegrees": {
+            "description": "View rotation in degrees, in (\u2212180, 180].",
+            "type": "number"
+          },
+          "centre": {
+            "description": "A point in document or view coordinates.",
+            "type": "object",
+            "properties": {
+              "x": {
+                "description": "x.",
+                "type": "number"
+              },
+              "y": {
+                "description": "y.",
+                "type": "number"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "zoom",
+          "rotationDegrees",
+          "centre"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.active.changed",
+      "specLine": 285,
+      "specParams": "\u2014",
+      "specResult": "{toolId, temporary: bool}",
+      "specKind": "event",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ActiveChanged",
+        "description": "`tool.active.changed` payload.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The active tool.",
+            "type": "string"
+          },
+          "temporary": {
+            "description": "A temporary override.",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "toolId",
+          "temporary"
+        ]
+      },
+      "differences": [],
+      "examplePresent": false
+    },
+    {
+      "command": "tool.active.get",
+      "specLine": 286,
+      "specParams": "\u2014",
+      "specResult": "{toolId, temporaryToolId|null, group}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ActiveResult",
+        "description": "`tool.active.get` result.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The active tool.",
+            "type": "string"
+          },
+          "temporaryToolId": {
+            "description": "A temporary override in force (`null`: none; overrides are held by the GUI while a key is held).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "group": {
+            "description": "Its group.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "toolId",
+          "group"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.active.set",
+      "specLine": 287,
+      "specParams": "toolId: enum \"select\"|\"contourEditor\"|\"perspective\"|\"repositionAll\"|\"brush\"|\"pencil\"|\"rectangle\"|\"ellipse\"|\"polyline\"|\"line\"|\"paint\"|\"unpaint\"|\"paintUnpainted\"|\"dropper\"|\"closeGap\"|\"stroke\"|\"editTexture\"|\"eraser\"|\"cutter\"|\"scissor\"|\"zoom\"|\"grabber\"|\"text\"",
+      "specResult": "{toolId}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "ActiveParams",
+        "description": "`tool.active.set` parameters.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The tool.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "toolId"
+        ]
+      },
+      "schemaResult": {
+        "title": "ToolIdResult",
+        "description": "`{toolId}`.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The active tool.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "toolId"
+        ]
+      },
+      "differences": [
+        "toolId: enum not declared"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.brush.options.set",
+      "specLine": 288,
+      "specParams": "penId: id",
+      "specResult": "{options}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "PenParams",
+        "description": "`penId`.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "penId"
+        ]
+      },
+      "schemaResult": {
+        "title": "OptionsResult",
+        "description": "`{options}`.",
+        "type": "object",
+        "properties": {
+          "options": {
+            "description": "The tool's options now.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "options"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.drawTopLayer.set",
+      "specLine": 289,
+      "specParams": "enabled: bool",
+      "specResult": "{enabled}",
+      "specKind": "toggle",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "schemaResult": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.eraser.options.set",
+      "specLine": 290,
+      "specParams": "penId: id",
+      "specResult": "{options}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "PenParams",
+        "description": "`penId`.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "penId"
+        ]
+      },
+      "schemaResult": {
+        "title": "OptionsResult",
+        "description": "`{options}`.",
+        "type": "object",
+        "properties": {
+          "options": {
+            "description": "The tool's options now.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "options"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.group.select",
+      "specLine": 291,
+      "specParams": "group: enum \"select\"|\"brush\"|\"paint\"|\"eraser\"|\"navigate\"|\"text\"; advance: bool = true",
+      "specResult": "{toolId}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "GroupParams",
+        "description": "`tool.group.select` parameters.",
+        "type": "object",
+        "properties": {
+          "group": {
+            "description": "A tool group (02 \u00a75.1).",
+            "oneOf": [
+              {
+                "description": "Select group.",
+                "type": "string",
+                "const": "select"
+              },
+              {
+                "description": "Brush group.",
+                "type": "string",
+                "const": "brush"
+              },
+              {
+                "description": "Paint group.",
+                "type": "string",
+                "const": "paint"
+              },
+              {
+                "description": "Eraser group.",
+                "type": "string",
+                "const": "eraser"
+              },
+              {
+                "description": "Navigate group.",
+                "type": "string",
+                "const": "navigate"
+              },
+              {
+                "description": "Text group.",
+                "type": "string",
+                "const": "text"
+              }
+            ]
+          },
+          "advance": {
+            "description": "Advance within the group if it is already active (group cycling).",
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "group"
+        ]
+      },
+      "schemaResult": {
+        "title": "ToolIdResult",
+        "description": "`{toolId}`.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The active tool.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "toolId"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.list",
+      "specLine": 292,
+      "specParams": "\u2014",
+      "specResult": "{tools: [{toolId, group, options: object, optionSchema: object}], activeToolId}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "ToolList",
+        "description": "`tool.list` result.",
+        "type": "object",
+        "properties": {
+          "tools": {
+            "description": "Every tool in palette order.",
+            "type": "array",
+            "items": {
+              "description": "One tool.",
+              "type": "object",
+              "properties": {
+                "toolId": {
+                  "description": "Tool id.",
+                  "type": "string"
+                },
+                "group": {
+                  "description": "Its group.",
+                  "type": "string"
+                },
+                "options": {
+                  "description": "Current options (empty: the tool has none).",
+                  "type": "object",
+                  "additionalProperties": true
+                },
+                "optionSchema": {
+                  "description": "The options' schema."
+                }
+              },
+              "required": [
+                "toolId",
+                "group",
+                "options",
+                "optionSchema"
+              ]
+            }
+          },
+          "activeToolId": {
+            "description": "The active tool.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "tools",
+          "activeToolId"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.options.changed",
+      "specLine": 293,
+      "specParams": "\u2014",
+      "specResult": "{toolId|null, options}",
+      "specKind": "event",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "OptionsChanged",
+        "description": "`tool.options.changed` payload.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The tool (`null` for a global drawing setting).",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "options": {
+            "description": "The options or settings now.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "options"
+        ]
+      },
+      "differences": [],
+      "examplePresent": false
+    },
+    {
+      "command": "tool.options.get",
+      "specLine": 294,
+      "specParams": "toolId: string",
+      "specResult": "{toolId, options: object}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "ToolParams",
+        "description": "`toolId`.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The tool.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "toolId"
+        ]
+      },
+      "schemaResult": {
+        "title": "ToolOptions",
+        "description": "`{toolId, options}`.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The tool.",
+            "type": "string"
+          },
+          "options": {
+            "description": "Its options.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "toolId",
+          "options"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.options.set",
+      "specLine": 295,
+      "specParams": "toolId: string; options: object",
+      "specResult": "{toolId, options}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "OptionsParams",
+        "description": "`tool.options.set` parameters.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The tool.",
+            "type": "string"
+          },
+          "options": {
+            "description": "Options to set.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "toolId",
+          "options"
+        ]
+      },
+      "schemaResult": {
+        "title": "ToolOptions",
+        "description": "`{toolId, options}`.",
+        "type": "object",
+        "properties": {
+          "toolId": {
+            "description": "The tool.",
+            "type": "string"
+          },
+          "options": {
+            "description": "Its options.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "toolId",
+          "options"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.pen.changed",
+      "specLine": 296,
+      "specParams": "\u2014",
+      "specResult": "{penId, change: enum \"created\"|\"modified\"|\"deleted\"|\"selected\"}",
+      "specKind": "event",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "PenChanged",
+        "description": "`tool.pen.changed` payload.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          },
+          "change": {
+            "description": "A pen change.",
+            "oneOf": [
+              {
+                "description": "Created.",
+                "type": "string",
+                "const": "created"
+              },
+              {
+                "description": "Settings changed or renamed.",
+                "type": "string",
+                "const": "modified"
+              },
+              {
+                "description": "Deleted.",
+                "type": "string",
+                "const": "deleted"
+              },
+              {
+                "description": "Made current.",
+                "type": "string",
+                "const": "selected"
+              }
+            ]
+          }
+        },
+        "required": [
+          "penId",
+          "change"
+        ]
+      },
+      "differences": [],
+      "examplePresent": false
+    },
+    {
+      "command": "tool.pen.create",
+      "specLine": 297,
+      "specParams": "type: enum \"brush\"|\"eraser\" = \"brush\"; fromPenId?: id = current; name?: string; settings?: object",
+      "specResult": "{penId, name}",
+      "specKind": "action",
+      "specUndo": "yes",
+      "schemaParams": {
+        "title": "PenCreateParams",
+        "description": "`tool.pen.create` parameters.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "A pen family.",
+            "oneOf": [
+              {
+                "description": "Brush pens.",
+                "type": "string",
+                "const": "brush"
+              },
+              {
+                "description": "Eraser pens.",
+                "type": "string",
+                "const": "eraser"
+              }
+            ]
+          },
+          "fromPenId": {
+            "description": "The pen to copy (default: the family's current pen).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "name": {
+            "description": "Name (default: the next free \"Pen n\" or \"Eraser n\").",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "settings": {
+            "description": "Settings over the copied ones (`tipShape`, `minSize`, `maxSize`, `smoothness`, `tipAngle`).",
+            "type": [
+              "object",
+              "null"
+            ],
+            "additionalProperties": true,
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "PenIdName",
+        "description": "`{penId, name}`.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "Pen id.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "penId",
+          "name"
+        ]
+      },
+      "differences": [
+        "type: default 'brush' != '<absent>'"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.pen.delete",
+      "specLine": 298,
+      "specParams": "penId: id",
+      "specResult": "{removedPenId, currentPenId}",
+      "specKind": "action",
+      "specUndo": "yes",
+      "schemaParams": {
+        "title": "PenParams",
+        "description": "`penId`.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "penId"
+        ]
+      },
+      "schemaResult": {
+        "title": "PenDeleted",
+        "description": "`tool.pen.delete` result.",
+        "type": "object",
+        "properties": {
+          "removedPenId": {
+            "description": "The removed pen.",
+            "type": "string"
+          },
+          "currentPenId": {
+            "description": "The family's current pen now.",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "removedPenId"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.pen.list",
+      "specLine": 299,
+      "specParams": "type?: enum \"brush\"|\"eraser\"",
+      "specResult": "{pens: [{penId, name, type, tipShape, minSize, maxSize, smoothness, tipAngle}], currentBrushPenId, currentEraserPenId}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "PenListParams",
+        "description": "`tool.pen.list` parameters.",
+        "type": "object",
+        "properties": {
+          "type": {
+            "description": "Only pens of this family.",
+            "anyOf": [
+              {
+                "description": "A pen family.",
+                "oneOf": [
+                  {
+                    "description": "Brush pens.",
+                    "type": "string",
+                    "const": "brush"
+                  },
+                  {
+                    "description": "Eraser pens.",
+                    "type": "string",
+                    "const": "eraser"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "PenList",
+        "description": "`tool.pen.list` result.",
+        "type": "object",
+        "properties": {
+          "pens": {
+            "description": "Pens in project order.",
+            "type": "array",
+            "items": {
+              "description": "One pen.",
+              "type": "object",
+              "properties": {
+                "penId": {
+                  "description": "Pen id.",
+                  "type": "string"
+                },
+                "name": {
+                  "description": "Name.",
+                  "type": "string"
+                },
+                "type": {
+                  "description": "A pen family.",
+                  "oneOf": [
+                    {
+                      "description": "Brush pens.",
+                      "type": "string",
+                      "const": "brush"
+                    },
+                    {
+                      "description": "Eraser pens.",
+                      "type": "string",
+                      "const": "eraser"
+                    }
+                  ]
+                },
+                "tipShape": {
+                  "description": "Tip shape.",
+                  "type": "string"
+                },
+                "minSize": {
+                  "description": "Minimum size (du).",
+                  "type": "number"
+                },
+                "maxSize": {
+                  "description": "Maximum size (du).",
+                  "type": "number"
+                },
+                "smoothness": {
+                  "description": "Smoothness 0-10.",
+                  "type": "integer",
+                  "maximum": 255,
+                  "minimum": 0
+                },
+                "tipAngle": {
+                  "description": "Tip angle (degrees).",
+                  "type": "number"
+                }
+              },
+              "required": [
+                "penId",
+                "name",
+                "type",
+                "tipShape",
+                "minSize",
+                "maxSize",
+                "smoothness",
+                "tipAngle"
+              ]
+            }
+          },
+          "currentBrushPenId": {
+            "description": "The current brush pen.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "currentEraserPenId": {
+            "description": "The current eraser pen.",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "pens"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.pen.rename",
+      "specLine": 300,
+      "specParams": "penId: id; name: string",
+      "specResult": "{penId, name}",
+      "specKind": "action",
+      "specUndo": "yes",
+      "schemaParams": {
+        "title": "PenRenameParams",
+        "description": "`tool.pen.rename` parameters.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          },
+          "name": {
+            "description": "The new name.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "penId",
+          "name"
+        ]
+      },
+      "schemaResult": {
+        "title": "PenIdName",
+        "description": "`{penId, name}`.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "Pen id.",
+            "type": "string"
+          },
+          "name": {
+            "description": "Name.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "penId",
+          "name"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.pen.select",
+      "specLine": 301,
+      "specParams": "penId: id",
+      "specResult": "{penId, type}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "PenParams",
+        "description": "`penId`.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "penId"
+        ]
+      },
+      "schemaResult": {
+        "title": "PenSelected",
+        "description": "`{penId, type}`.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          },
+          "type": {
+            "description": "A pen family.",
+            "oneOf": [
+              {
+                "description": "Brush pens.",
+                "type": "string",
+                "const": "brush"
+              },
+              {
+                "description": "Eraser pens.",
+                "type": "string",
+                "const": "eraser"
+              }
+            ]
+          }
+        },
+        "required": [
+          "penId",
+          "type"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.pen.set",
+      "specLine": 302,
+      "specParams": "penId: id; tipShape?: enum \"round\"|\"oval\"|\"square\"|\"flat\"; minSize?: number (0\u2013100); maxSize?: number (0\u2013100); smoothness?: number (0\u201310); tipAngle?: number (0\u2013360)",
+      "specResult": "{pen}",
+      "specKind": "action",
+      "specUndo": "yes",
+      "schemaParams": {
+        "title": "PenSetParams",
+        "description": "`tool.pen.set` parameters.",
+        "type": "object",
+        "properties": {
+          "penId": {
+            "description": "The pen.",
+            "type": "string"
+          },
+          "tipShape": {
+            "description": "Tip shape.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "minSize": {
+            "description": "Minimum size (du).",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "maxSize": {
+            "description": "Maximum size (du).",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0,
+            "maximum": 100
+          },
+          "smoothness": {
+            "description": "Smoothness.",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0,
+            "maximum": 10
+          },
+          "tipAngle": {
+            "description": "Tip angle (degrees).",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0,
+            "maximum": 360
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "penId"
+        ]
+      },
+      "schemaResult": {
+        "title": "PenResult",
+        "description": "`{pen}`.",
+        "type": "object",
+        "properties": {
+          "pen": {
+            "description": "The pen now."
+          }
+        },
+        "required": [
+          "pen"
+        ]
+      },
+      "differences": [
+        "tipShape: enum not declared"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.pencil.options.set",
+      "specLine": 303,
+      "specParams": "thicknessSource: enum \"penMax\"|\"fixed\" = \"penMax\"; thickness?: number (0\u2013100)",
+      "specResult": "{options}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "PencilOptions",
+        "description": "Pencil and shape-tool line thickness.",
+        "type": "object",
+        "properties": {
+          "thicknessSource": {
+            "description": "Where the line thickness comes from.",
+            "oneOf": [
+              {
+                "description": "The current brush pen's maximum size.",
+                "type": "string",
+                "const": "penMax"
+              },
+              {
+                "description": "A fixed thickness.",
+                "type": "string",
+                "const": "fixed"
+              }
+            ]
+          },
+          "thickness": {
+            "description": "The fixed thickness (du).",
+            "type": [
+              "number",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0,
+            "maximum": 100
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "OptionsResult",
+        "description": "`{options}`.",
+        "type": "object",
+        "properties": {
+          "options": {
+            "description": "The tool's options now.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "options"
+        ]
+      },
+      "differences": [
+        "thicknessSource: default 'penMax' != '<absent>'"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.placeBehind.set",
+      "specLine": 304,
+      "specParams": "enabled: bool",
+      "specResult": "{enabled}",
+      "specKind": "toggle",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "schemaResult": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.polyline.options.set",
+      "specLine": 305,
+      "specParams": "snap: bool = true; snapRadius: number = 8 (1\u201350 view px)",
+      "specResult": "{options}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "PolylineOptions",
+        "description": "Polyline snapping.",
+        "type": "object",
+        "properties": {
+          "snap": {
+            "description": "Snap to existing anchors.",
+            "type": "boolean",
+            "default": true
+          },
+          "snapRadius": {
+            "description": "Snap radius in view pixels.",
+            "type": "number",
+            "default": 8,
+            "minimum": 1,
+            "maximum": 50
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "OptionsResult",
+        "description": "`{options}`.",
+        "type": "object",
+        "properties": {
+          "options": {
+            "description": "The tool's options now.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "options"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.select.options.set",
+      "specLine": 306,
+      "specParams": "rectRule: enum \"inside\"|\"intersect\" = \"inside\"",
+      "specResult": "{options}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "SelectOptions",
+        "description": "Select tool options.",
+        "type": "object",
+        "properties": {
+          "rectRule": {
+            "description": "Marquee and lasso rule.",
+            "oneOf": [
+              {
+                "description": "Wholly inside.",
+                "type": "string",
+                "const": "inside"
+              },
+              {
+                "description": "Intersecting.",
+                "type": "string",
+                "const": "intersect"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "OptionsResult",
+        "description": "`{options}`.",
+        "type": "object",
+        "properties": {
+          "options": {
+            "description": "The tool's options now.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "options"
+        ]
+      },
+      "differences": [
+        "rectRule: default 'inside' != '<absent>'"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.settings.get",
+      "specLine": 307,
+      "specParams": "\u2014",
+      "specResult": "{placeBehind, drawTopLayer, snapToContour, symmetry, tablet, gapClosing}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "differences": [
+        "result: named shape absent"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.snapToContour.set",
+      "specLine": 308,
+      "specParams": "enabled: bool",
+      "specResult": "{enabled}",
+      "specKind": "toggle",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "schemaResult": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.tablet.set",
+      "specLine": 310,
+      "specParams": "ignoreTablet?: bool = false; portraitCorrection?: bool = false; compatibilityMode?: bool = false; inputInterface?: string",
+      "specResult": "{settings, restartRequired: bool}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "TabletParams",
+        "description": "`tool.tablet.set` parameters.",
+        "type": "object",
+        "properties": {
+          "ignoreTablet": {
+            "description": "The tablet acts as a mouse.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "portraitCorrection": {
+            "description": "Portrait-mode correction.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "compatibilityMode": {
+            "description": "Compatibility handling.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "inputInterface": {
+            "description": "The input interface.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "TabletResult",
+        "description": "`{settings, restartRequired}`.",
+        "type": "object",
+        "properties": {
+          "settings": {
+            "description": "Tablet input settings (02 \u00a76.3).",
+            "type": "object",
+            "properties": {
+              "ignoreTablet": {
+                "description": "The tablet acts as a mouse.",
+                "type": "boolean",
+                "default": false
+              },
+              "portraitCorrection": {
+                "description": "Portrait-mode correction.",
+                "type": "boolean",
+                "default": false
+              },
+              "compatibilityMode": {
+                "description": "Compatibility handling.",
+                "type": "boolean",
+                "default": false
+              },
+              "inputInterface": {
+                "description": "The input interface (`null`: the platform default).",
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "default": null
+              }
+            }
+          },
+          "restartRequired": {
+            "description": "A change applies after a restart (the input interface).",
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "settings",
+          "restartRequired"
+        ]
+      },
+      "differences": [
+        "ignoreTablet: default False != None",
+        "portraitCorrection: default False != None",
+        "compatibilityMode: default False != None"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "tool.text.options.set",
+      "specLine": 311,
+      "specParams": "font?: string; size?: number (1\u2013512) = 36; bold?: bool = false; italic?: bool = false; baseline?: enum \"normal\"|\"subscript\"|\"superscript\" = \"normal\"; kerning?: int (\u221260\u201360) = 0; autoKern?: bool = true; align?: enum \"left\"|\"centre\"|\"right\"|\"justify\" = \"left\"; leftMargin?: number = 0; rightMargin?: number = 0; indent?: number = 0; lineSpacing?: number = 0; outlineColourId?: id|null",
+      "specResult": "{options}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "TextOptions",
+        "description": "Text defaults for new text (02 \u00a77.6.1).",
+        "type": "object",
+        "properties": {
+          "font": {
+            "description": "Font family.",
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "size": {
+            "description": "Size.",
+            "type": [
+              "number",
+              "null"
+            ],
+            "maximum": 512,
+            "minimum": 1
+          },
+          "bold": {
+            "description": "Bold.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "italic": {
+            "description": "Italic.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "baseline": {
+            "description": "Baseline.",
+            "anyOf": [
+              {
+                "description": "Baseline.",
+                "oneOf": [
+                  {
+                    "description": "Normal.",
+                    "type": "string",
+                    "const": "normal"
+                  },
+                  {
+                    "description": "Subscript.",
+                    "type": "string",
+                    "const": "subscript"
+                  },
+                  {
+                    "description": "Superscript.",
+                    "type": "string",
+                    "const": "superscript"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "kerning": {
+            "description": "Kerning.",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "maximum": 60,
+            "minimum": -60
+          },
+          "autoKern": {
+            "description": "Automatic kerning.",
+            "type": [
+              "boolean",
+              "null"
+            ]
+          },
+          "align": {
+            "description": "Alignment.",
+            "anyOf": [
+              {
+                "description": "Alignment.",
+                "oneOf": [
+                  {
+                    "description": "Left.",
+                    "type": "string",
+                    "const": "left"
+                  },
+                  {
+                    "description": "Centre.",
+                    "type": "string",
+                    "const": "centre"
+                  },
+                  {
+                    "description": "Right.",
+                    "type": "string",
+                    "const": "right"
+                  },
+                  {
+                    "description": "Justified.",
+                    "type": "string",
+                    "const": "justify"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "leftMargin": {
+            "description": "Left margin (du).",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "rightMargin": {
+            "description": "Right margin (du).",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "indent": {
+            "description": "First-line indent (du).",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "lineSpacing": {
+            "description": "Extra line spacing (du).",
+            "type": [
+              "number",
+              "null"
+            ]
+          },
+          "outlineColourId": {
+            "description": "Outline colour of new text (`null`: none). Absent leaves it; `null` clears it (ruling D-7e).",
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "OptionsResult",
+        "description": "`{options}`.",
+        "type": "object",
+        "properties": {
+          "options": {
+            "description": "The tool's options now.",
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "required": [
+          "options"
+        ]
+      },
+      "differences": [
+        "size: default 36 != '<absent>'",
+        "bold: default False != '<absent>'",
+        "italic: default False != '<absent>'",
+        "baseline: default 'normal' != '<absent>'",
+        "kerning: default 0 != '<absent>'",
+        "autoKern: default True != '<absent>'",
+        "align: default 'left' != '<absent>'",
+        "leftMargin: default 0 != '<absent>'",
+        "rightMargin: default 0 != '<absent>'",
+        "indent: default 0 != '<absent>'",
+        "lineSpacing: default 0 != '<absent>'"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.autoLightTable.set",
+      "specLine": 319,
+      "specParams": "enabled: bool",
+      "specResult": "{enabled}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "schemaResult": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.background.set",
+      "specLine": 320,
+      "specParams": "colour?: colour; useSceneColour?: bool",
+      "specResult": "{colour, useSceneColour}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "BackgroundParams",
+        "description": "`drawAid.background.set` parameters.",
+        "type": "object",
+        "properties": {
+          "colour": {
+            "description": "Colour (`#RRGGBB` or `#RRGGBBAA`).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "useSceneColour": {
+            "description": "Use the scene's background colour.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "AnyValue"
+      },
+      "differences": [
+        "result: named shape absent"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.changed",
+      "specLine": 321,
+      "specParams": "\u2014",
+      "specResult": "{aid, state: object}",
+      "specKind": "event",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "AidChanged",
+        "description": "`drawAid.changed` payload.",
+        "type": "object",
+        "properties": {
+          "aid": {
+            "description": "The aid (`grid`, `onionSkin`, `onionSkinStyle`, `autoLightTable`, `staticLightTable`, `lightTableShade`,\n`staticLightTablePanel`, `strokes`, `currentOnTop`, `selectionDisplay`, `background`).",
+            "type": "string"
+          },
+          "state": {
+            "description": "Its state now."
+          }
+        },
+        "required": [
+          "aid",
+          "state"
+        ]
+      },
+      "differences": [],
+      "examplePresent": false
+    },
+    {
+      "command": "drawAid.currentOnTop.set",
+      "specLine": 322,
+      "specParams": "enabled: bool",
+      "specResult": "{enabled}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "schemaResult": {
+        "title": "Enabled",
+        "description": "`{enabled}`.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "On.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "enabled"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.grid.set",
+      "specLine": 323,
+      "specParams": "visible?: bool; type?: enum \"normal\"|\"field12\"|\"field16\"; overlay?: bool",
+      "specResult": "{visible, type, overlay}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "GridParams",
+        "description": "`drawAid.grid.set` parameters.",
+        "type": "object",
+        "properties": {
+          "visible": {
+            "description": "Shown.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "type": {
+            "description": "The grid type.",
+            "anyOf": [
+              {
+                "description": "Grid type (02 \u00a710.1).",
+                "oneOf": [
+                  {
+                    "description": "Square grid.",
+                    "type": "string",
+                    "const": "normal"
+                  },
+                  {
+                    "description": "12-field.",
+                    "type": "string",
+                    "const": "field12"
+                  },
+                  {
+                    "description": "16-field.",
+                    "type": "string",
+                    "const": "field16"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "overlay": {
+            "description": "Drawn over the drawings.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "AnyValue"
+      },
+      "differences": [
+        "result: named shape absent"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.lightTableShade.set",
+      "specLine": 324,
+      "specParams": "auto?: bool; static?: bool",
+      "specResult": "{auto, static}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "ShadeParams",
+        "description": "`drawAid.lightTableShade.set` parameters.",
+        "type": "object",
+        "properties": {
+          "auto": {
+            "description": "Shade the auto light table.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "static": {
+            "description": "Shade static light-table entries.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "AnyValue"
+      },
+      "differences": [
+        "result: named shape absent"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.onionSkin.set",
+      "specLine": 325,
+      "specParams": "enabled?: bool; previous?: int (0\u20133); next?: int (0\u20133)",
+      "specResult": "{enabled, previous, next}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "OnionParams",
+        "description": "`drawAid.onionSkin.set` parameters.",
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "description": "Master switch.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "previous": {
+            "description": "Previous drawings shown (0-3).",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0,
+            "maximum": 3
+          },
+          "next": {
+            "description": "Next drawings shown (0-3).",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "default": null,
+            "minimum": 0,
+            "maximum": 3
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "AnyValue"
+      },
+      "differences": [
+        "result: named shape absent"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.onionSkinCycle.run",
+      "specLine": 326,
+      "specParams": "direction: enum \"previous\"|\"next\"",
+      "specResult": "{previous, next}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "CycleParams",
+        "description": "`drawAid.onionSkinCycle.run` parameters.",
+        "type": "object",
+        "properties": {
+          "direction": {
+            "description": "Onion-skin direction.",
+            "oneOf": [
+              {
+                "description": "Previous drawings.",
+                "type": "string",
+                "const": "previous"
+              },
+              {
+                "description": "Next drawings.",
+                "type": "string",
+                "const": "next"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "direction"
+        ]
+      },
+      "schemaResult": {
+        "title": "Counts",
+        "description": "`{previous, next}`.",
+        "type": "object",
+        "properties": {
+          "previous": {
+            "description": "Previous drawings shown.",
+            "type": "integer",
+            "maximum": 9223372036854775807,
+            "minimum": -9223372036854775808
+          },
+          "next": {
+            "description": "Next drawings shown.",
+            "type": "integer",
+            "maximum": 9223372036854775807,
+            "minimum": -9223372036854775808
+          }
+        },
+        "required": [
+          "previous",
+          "next"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.onionSkinStyle.set",
+      "specLine": 327,
+      "specParams": "outline?: bool; transparency?: bool; colourShading?: bool; previousColour?: colour; nextColour?: colour",
+      "specResult": "{style}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "StyleParams",
+        "description": "`drawAid.onionSkinStyle.set` parameters.",
+        "type": "object",
+        "properties": {
+          "outline": {
+            "description": "Outlines only.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "transparency": {
+            "description": "Semi-transparent.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "colourShading": {
+            "description": "Tinted.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "previousColour": {
+            "description": "Tint of previous drawings (`#RRGGBB` or `#RRGGBBAA`).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "nextColour": {
+            "description": "Tint of next drawings.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "StyleResult",
+        "description": "`{style}`.",
+        "type": "object",
+        "properties": {
+          "style": {
+            "description": "The appearance now."
+          }
+        },
+        "required": [
+          "style"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.selectionDisplay.set",
+      "specLine": 328,
+      "specParams": "outlineOnSelection?: bool; boxHighlighting?: bool; keepSelectionVisible?: bool",
+      "specResult": "{settings}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "SelectionDisplayParams",
+        "description": "`drawAid.selectionDisplay.set` parameters.",
+        "type": "object",
+        "properties": {
+          "outlineOnSelection": {
+            "description": "Outline on selection.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "boxHighlighting": {
+            "description": "Box highlighting.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "keepSelectionVisible": {
+            "description": "Keep the selection visible.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "SettingsResult",
+        "description": "`{settings}`.",
+        "type": "object",
+        "properties": {
+          "settings": {
+            "description": "The selection display now."
+          }
+        },
+        "required": [
+          "settings"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.state.get",
+      "specLine": 329,
+      "specParams": "\u2014",
+      "specResult": "{grid, onionSkin, onionSkinStyle, autoLightTable, staticLightTable, lightTableShade, strokes, currentOnTop, selectionDisplay, background}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "NoParams",
+        "description": "No parameters.",
+        "type": "object",
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "AidState",
+        "description": "`drawAid.state.get` result.",
+        "type": "object",
+        "properties": {
+          "grid": {
+            "description": "The grid (02 \u00a710.1).",
+            "type": "object",
+            "properties": {
+              "visible": {
+                "description": "Shown.",
+                "type": "boolean",
+                "default": false
+              },
+              "type": {
+                "description": "`normal`, `field12` or `field16`.",
+                "type": "string",
+                "default": "normal"
+              },
+              "overlay": {
+                "description": "Drawn over the drawings.",
+                "type": "boolean",
+                "default": false
+              }
+            }
+          },
+          "onionSkin": {
+            "description": "Onion skin (02 \u00a710.2).",
+            "type": "object",
+            "properties": {
+              "enabled": {
+                "description": "Master switch.",
+                "type": "boolean",
+                "default": false
+              },
+              "previous": {
+                "description": "Previous drawings, 0-3.",
+                "type": "integer",
+                "maximum": 9223372036854775807,
+                "default": 1,
+                "minimum": -9223372036854775808
+              },
+              "next": {
+                "description": "Next drawings, 0-3.",
+                "type": "integer",
+                "maximum": 9223372036854775807,
+                "default": 0,
+                "minimum": -9223372036854775808
+              }
+            }
+          },
+          "onionSkinStyle": {
+            "description": "Onion-skin appearance (02 \u00a710.2).",
+            "type": "object",
+            "properties": {
+              "outline": {
+                "description": "Outlines only.",
+                "type": "boolean",
+                "default": false
+              },
+              "transparency": {
+                "description": "Semi-transparent.",
+                "type": "boolean",
+                "default": true
+              },
+              "colourShading": {
+                "description": "Tinted.",
+                "type": "boolean",
+                "default": true
+              },
+              "previousColour": {
+                "description": "Tint of previous drawings.",
+                "type": "string",
+                "default": "#FF0000FF"
+              },
+              "nextColour": {
+                "description": "Tint of next drawings.",
+                "type": "string",
+                "default": "#00C000FF"
+              }
+            }
+          },
+          "autoLightTable": {
+            "description": "Auto light table.",
+            "type": "boolean"
+          },
+          "staticLightTable": {
+            "description": "The current scene's static light table.",
+            "type": "array",
+            "items": {
+              "description": "One static light-table entry.",
+              "type": "object",
+              "properties": {
+                "entryId": {
+                  "description": "Entry id.",
+                  "type": "string"
+                },
+                "sourceId": {
+                  "description": "The source drawing.",
+                  "type": "string"
+                },
+                "sourceKind": {
+                  "description": "`drawing` or `image` (by the source element's type).",
+                  "type": "string"
+                },
+                "visible": {
+                  "description": "Shown.",
+                  "type": "boolean"
+                },
+                "placement": {
+                  "description": "Overlay or underlay.",
+                  "oneOf": [
+                    {
+                      "description": "Over the current drawing.",
+                      "type": "string",
+                      "const": "overlay"
+                    },
+                    {
+                      "description": "Under it.",
+                      "type": "string",
+                      "const": "underlay"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "entryId",
+                "sourceId",
+                "sourceKind",
+                "visible",
+                "placement"
+              ]
+            }
+          },
+          "lightTableShade": {
+            "description": "Light-table shading (02 \u00a710.3-10.4).",
+            "type": "object",
+            "properties": {
+              "auto": {
+                "description": "The auto light table is washed out.",
+                "type": "boolean",
+                "default": true
+              },
+              "static": {
+                "description": "Static light-table entries are washed out.",
+                "type": "boolean",
+                "default": true
+              }
+            }
+          },
+          "strokes": {
+            "description": "Show Strokes.",
+            "type": "boolean"
+          },
+          "currentOnTop": {
+            "description": "Current drawing on top.",
+            "type": "boolean"
+          },
+          "selectionDisplay": {
+            "description": "Camera-view selection display (02 \u00a710.7).",
+            "type": "object",
+            "properties": {
+              "outlineOnSelection": {
+                "description": "Outline on selection.",
+                "type": "boolean",
+                "default": false
+              },
+              "boxHighlighting": {
+                "description": "Box highlighting.",
+                "type": "boolean",
+                "default": true
+              },
+              "keepSelectionVisible": {
+                "description": "Selection always visible (SI-117: 02 \u00a710.7's default off is kept).",
+                "type": "boolean",
+                "default": false
+              }
+            }
+          },
+          "background": {
+            "description": "Drawing View background (02 \u00a710.7).",
+            "type": "object",
+            "properties": {
+              "colour": {
+                "description": "Colour.",
+                "type": "string",
+                "default": "#F0F0F0FF"
+              },
+              "useSceneColour": {
+                "description": "Use the scene's background colour instead.",
+                "type": "boolean",
+                "default": false
+              }
+            }
+          }
+        },
+        "required": [
+          "grid",
+          "onionSkin",
+          "onionSkinStyle",
+          "autoLightTable",
+          "staticLightTable",
+          "lightTableShade",
+          "strokes",
+          "currentOnTop",
+          "selectionDisplay",
+          "background"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.staticLightTable.add",
+      "specLine": 330,
+      "specParams": "drawingId?: id; elementId?: id; frame?: int; placement: enum \"overlay\"|\"underlay\" = \"underlay\"; visible: bool = true",
+      "specResult": "{entryId}",
+      "specKind": "action",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "AddParams",
+        "description": "`drawAid.staticLightTable.add` parameters.",
+        "type": "object",
+        "properties": {
+          "drawingId": {
+            "description": "The drawing (default: the drawing at `elementId` and `frame`, else the current drawing).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "elementId": {
+            "description": "The element whose cell is sent (default: the current element).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "frame": {
+            "description": "The frame of that cell (default: the current frame).",
+            "type": [
+              "integer",
+              "null"
+            ],
+            "maximum": 2147483647,
+            "minimum": 0,
+            "default": null
+          },
+          "placement": {
+            "description": "Overlay or underlay.",
+            "oneOf": [
+              {
+                "description": "Over the current drawing.",
+                "type": "string",
+                "const": "overlay"
+              },
+              {
+                "description": "Under it.",
+                "type": "string",
+                "const": "underlay"
+              }
+            ]
+          },
+          "visible": {
+            "description": "Shown.",
+            "type": "boolean",
+            "default": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "EntryIdResult",
+        "description": "`{entryId}`.",
+        "type": "object",
+        "properties": {
+          "entryId": {
+            "description": "The new entry.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "entryId"
+        ]
+      },
+      "differences": [
+        "placement: default 'underlay' != '<absent>'"
+      ],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.staticLightTable.list",
+      "specLine": 331,
+      "specParams": "sceneId?: id",
+      "specResult": "{entries: [{entryId, sourceId, sourceKind, visible, placement}]}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "ListParams",
+        "description": "`drawAid.staticLightTable.list` parameters.",
+        "type": "object",
+        "properties": {
+          "sceneId": {
+            "description": "The scene (default: the current scene).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "EntriesResult",
+        "description": "`{entries}`.",
+        "type": "object",
+        "properties": {
+          "entries": {
+            "description": "The scene's entries now.",
+            "type": "array",
+            "items": {
+              "description": "One static light-table entry.",
+              "type": "object",
+              "properties": {
+                "entryId": {
+                  "description": "Entry id.",
+                  "type": "string"
+                },
+                "sourceId": {
+                  "description": "The source drawing.",
+                  "type": "string"
+                },
+                "sourceKind": {
+                  "description": "`drawing` or `image` (by the source element's type).",
+                  "type": "string"
+                },
+                "visible": {
+                  "description": "Shown.",
+                  "type": "boolean"
+                },
+                "placement": {
+                  "description": "Overlay or underlay.",
+                  "oneOf": [
+                    {
+                      "description": "Over the current drawing.",
+                      "type": "string",
+                      "const": "overlay"
+                    },
+                    {
+                      "description": "Under it.",
+                      "type": "string",
+                      "const": "underlay"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "entryId",
+                "sourceId",
+                "sourceKind",
+                "visible",
+                "placement"
+              ]
+            }
+          }
+        },
+        "required": [
+          "entries"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.staticLightTable.remove",
+      "specLine": 332,
+      "specParams": "entryIds?: [id]; all: bool = false",
+      "specResult": "{removedEntryIds: [id]}",
+      "specKind": "action",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "RemoveParams",
+        "description": "`drawAid.staticLightTable.remove` parameters.",
+        "type": "object",
+        "properties": {
+          "entryIds": {
+            "description": "Entries to delete.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 256,
+            "default": null
+          },
+          "all": {
+            "description": "Delete every entry.",
+            "type": "boolean",
+            "default": false
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "Removed",
+        "description": "`{removedEntryIds}`.",
+        "type": "object",
+        "properties": {
+          "removedEntryIds": {
+            "description": "The entries removed (sources untouched).",
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "removedEntryIds"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.staticLightTable.set",
+      "specLine": 333,
+      "specParams": "entryIds?: [id]; all: bool = false; visible?: bool; placement?: enum \"overlay\"|\"underlay\"; onlyVisibleEntryId?: id",
+      "specResult": "{entries: [object]}",
+      "specKind": "action",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "SetParams",
+        "description": "`drawAid.staticLightTable.set` parameters.",
+        "type": "object",
+        "properties": {
+          "entryIds": {
+            "description": "Entries to change.",
+            "type": [
+              "array",
+              "null"
+            ],
+            "items": {
+              "type": "string"
+            },
+            "maxItems": 256,
+            "default": null
+          },
+          "all": {
+            "description": "Change every entry.",
+            "type": "boolean",
+            "default": false
+          },
+          "visible": {
+            "description": "Show or hide them.",
+            "type": [
+              "boolean",
+              "null"
+            ],
+            "default": null
+          },
+          "placement": {
+            "description": "Overlay or underlay them.",
+            "anyOf": [
+              {
+                "description": "Overlay or underlay.",
+                "oneOf": [
+                  {
+                    "description": "Over the current drawing.",
+                    "type": "string",
+                    "const": "overlay"
+                  },
+                  {
+                    "description": "Under it.",
+                    "type": "string",
+                    "const": "underlay"
+                  }
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "onlyVisibleEntryId": {
+            "description": "Show only this entry (hide all others).",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "EntriesResult",
+        "description": "`{entries}`.",
+        "type": "object",
+        "properties": {
+          "entries": {
+            "description": "The scene's entries now.",
+            "type": "array",
+            "items": {
+              "description": "One static light-table entry.",
+              "type": "object",
+              "properties": {
+                "entryId": {
+                  "description": "Entry id.",
+                  "type": "string"
+                },
+                "sourceId": {
+                  "description": "The source drawing.",
+                  "type": "string"
+                },
+                "sourceKind": {
+                  "description": "`drawing` or `image` (by the source element's type).",
+                  "type": "string"
+                },
+                "visible": {
+                  "description": "Shown.",
+                  "type": "boolean"
+                },
+                "placement": {
+                  "description": "Overlay or underlay.",
+                  "oneOf": [
+                    {
+                      "description": "Over the current drawing.",
+                      "type": "string",
+                      "const": "overlay"
+                    },
+                    {
+                      "description": "Under it.",
+                      "type": "string",
+                      "const": "underlay"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "entryId",
+                "sourceId",
+                "sourceKind",
+                "visible",
+                "placement"
+              ]
+            }
+          }
+        },
+        "required": [
+          "entries"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.staticLightTablePanel.set",
+      "specLine": 334,
+      "specParams": "visible: bool",
+      "specResult": "{visible}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "Visible",
+        "description": "`{visible}`.",
+        "type": "object",
+        "properties": {
+          "visible": {
+            "description": "Shown.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "visible"
+        ]
+      },
+      "schemaResult": {
+        "title": "Visible",
+        "description": "`{visible}`.",
+        "type": "object",
+        "properties": {
+          "visible": {
+            "description": "Shown.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "visible"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "drawAid.strokes.set",
+      "specLine": 335,
+      "specParams": "visible: bool",
+      "specResult": "{visible}",
+      "specKind": "ui",
+      "specUndo": "no",
+      "schemaParams": {
+        "title": "Visible",
+        "description": "`{visible}`.",
+        "type": "object",
+        "properties": {
+          "visible": {
+            "description": "Shown.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "visible"
+        ]
+      },
+      "schemaResult": {
+        "title": "Visible",
+        "description": "`{visible}`.",
+        "type": "object",
+        "properties": {
+          "visible": {
+            "description": "Shown.",
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "visible"
+        ]
+      },
+      "differences": [],
+      "examplePresent": true
+    },
+    {
+      "command": "inspect.screenshot",
+      "specLine": 1062,
+      "specParams": "target?: string = \"window\"; region?: {x,y,w,h}",
+      "specResult": "{png, width, height, sha256}",
+      "specKind": "query",
+      "specUndo": "n/a",
+      "schemaParams": {
+        "title": "ScreenshotParams",
+        "description": "`inspect.screenshot` parameters.",
+        "type": "object",
+        "properties": {
+          "target": {
+            "description": "Window, view, panel or dialog.",
+            "type": [
+              "string",
+              "null"
+            ],
+            "default": null
+          },
+          "region": {
+            "description": "Region.",
+            "anyOf": [
+              {
+                "description": "A rectangle.",
+                "type": "object",
+                "properties": {
+                  "x": {
+                    "description": "Left.",
+                    "type": "number"
+                  },
+                  "y": {
+                    "description": "Top.",
+                    "type": "number"
+                  },
+                  "w": {
+                    "description": "Width.",
+                    "type": "number"
+                  },
+                  "h": {
+                    "description": "Height.",
+                    "type": "number"
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "x",
+                  "y",
+                  "w",
+                  "h"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "additionalProperties": false
+      },
+      "schemaResult": {
+        "title": "Map_of_AnyValue",
+        "type": "object",
+        "additionalProperties": true
+      },
+      "differences": [
+        "target: default 'window' != None",
+        "result: named shape absent"
+      ],
+      "examplePresent": true
+    }
+  ]
+}

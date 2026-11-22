@@ -1,0 +1,26 @@
+PASS one additional OS float
+PASS combined float tree
+PASS initial geometry matches logical OS within 2px
+PASS command moves and resizes OS float
+PASS OS move written back
+PASS move activity settles
+PASS far geometry clamped
+PASS float lifecycle {'floating': False}
+PASS float lifecycle {'floating': True, 'visible': True}
+PASS float lifecycle {'visible': False}
+PASS float lifecycle {'visible': True}
+PASS WM_CLOSE hides float and app lives
+PASS float history
+PASS float colour
+PASS float properties
+PASS window.minimized.set True
+PASS window.minimized.set False
+PASS window.floatingPanels.set False
+PASS window.floatingPanels.set True
+PASS raise all
+PASS workspace switch closes old floats
+PASS three saved floats restore
+PASS restored float geometry
+PASS main modal refuses agent with float
+PASS agent accepted after modal
+PASS main close with floats exits process

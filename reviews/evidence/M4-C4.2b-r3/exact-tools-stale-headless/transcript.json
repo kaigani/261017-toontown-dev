@@ -1,0 +1,220 @@
+[
+  {
+    "check": "the application saves the fixture project",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the canvas is located in the window (OS input)",
+    "ok": true,
+    "detail": [
+      49,
+      126
+    ]
+  },
+  {
+    "check": "three-way brush (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Brush Tool"
+        ],
+        [
+          "Brush Tool"
+        ],
+        [
+          "Brush Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way pencil (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Pencil Tool"
+        ],
+        [
+          "Pencil Tool"
+        ],
+        [
+          "Pencil Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way rectangle (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": false,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Rectangle Tool"
+        ],
+        [
+          "Pencil Tool"
+        ],
+        [
+          "Pencil Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way ellipse (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": false,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Ellipse Tool"
+        ],
+        [
+          "Pencil Tool"
+        ],
+        [
+          "Pencil Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way line (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": false,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Line Tool"
+        ],
+        [
+          "Pencil Tool"
+        ],
+        [
+          "Pencil Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "Polyline double-click ends the gesture (02 7.2.5:535)",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "three-way polyline (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": false,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": false,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Polyline Tool"
+        ],
+        [
+          "Pencil Tool"
+        ],
+        [
+          "Pencil Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way eraser (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Eraser Tool"
+        ],
+        [
+          "Eraser Tool"
+        ],
+        [
+          "Eraser Tool"
+        ]
+      ]
+    }
+  },
+  {
+    "check": "three-way paint (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step",
+    "ok": true,
+    "detail": {
+      "sameCommands": true,
+      "sameContent": true,
+      "sameLabels": true,
+      "statuses": [
+        "ok",
+        "ok",
+        "ok"
+      ],
+      "labels": [
+        [
+          "Paint"
+        ],
+        [
+          "Paint"
+        ],
+        [
+          "Paint"
+        ]
+      ]
+    }
+  }
+]

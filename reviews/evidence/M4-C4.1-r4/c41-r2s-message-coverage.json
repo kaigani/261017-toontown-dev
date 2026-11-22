@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python",
+    "tests\\adversarial\\c41-r2s-message-coverage.py"
+  ],
+  "exit": 0,
+  "seconds": 0.06457369998679496,
+  "results": []
+}

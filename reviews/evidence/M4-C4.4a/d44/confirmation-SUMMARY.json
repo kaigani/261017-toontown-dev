@@ -1,0 +1,104 @@
+{
+ "kind": "toontown.c44a.d44.confirmation.summary",
+ "run": "the confirmation group of scripts/c43-d44-flows.py (workstation, release build, real input; each request raised by a test-only MCP client held on its call)",
+ "rows": [
+  {
+   "name": "Confirmation sheet › Accept",
+   "ok": true,
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_e7e7e2a618ca9bfce185595a",
+      "accept": true
+     }
+    }
+   ],
+   "input": "a test-only agent's overwrite asked in the sheet (focus not taken: None), a real click on Accept"
+  },
+  {
+   "name": "Confirmation sheet › Decline",
+   "ok": true,
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_cb27c8c6a2b6c213d8dd98d9",
+      "accept": false
+     }
+    }
+   ],
+   "input": "a test-only agent's overwrite asked in the sheet (focus not taken: None), a real click on Decline"
+  },
+  {
+   "name": "Confirmation sheet › Return (default Decline)",
+   "ok": true,
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_55aa4d67fde5c0fda7e28a02",
+      "accept": false
+     }
+    }
+   ],
+   "input": "the focus moved into the sheet, then a real Return (Decline is the default)"
+  },
+  {
+   "name": "Confirmation sheet › document changed",
+   "ok": true,
+   "sent": [],
+   "input": "a request open in the sheet, then the person's own edit of the document"
+  },
+  {
+   "name": "Confirmation sheet › decided in another window",
+   "ok": true,
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_92eea7312b20b91e66260999",
+      "accept": true
+     }
+    }
+   ],
+   "input": "a request open in the sheet, answered by another window (no click in the sheet)"
+  },
+  {
+   "name": "Confirmation sheet › three queued",
+   "ok": true,
+   "sent": [
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_471ee05a0d80db4010662eb1",
+      "accept": false
+     }
+    },
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_4b9a8466259ed6ffc8dae176",
+      "accept": true
+     }
+    },
+    {
+     "command": "agent.confirmation.respond",
+     "params": {
+      "confirmationId": "cf_6f5100ce15999607e17f1231",
+      "accept": false
+     }
+    }
+   ],
+   "input": "three test-only agents' requests queued in the sheet: Decline, Accept, Decline in turn"
+  },
+  {
+   "name": "Confirmation sheet › expiry",
+   "ok": true,
+   "sent": [],
+   "input": "a request left unanswered for the token's five minutes"
+  }
+ ],
+ "failed": [],
+ "sha256": "35d724cc6035a44fbe0232c6a6216b0cea1b2e4187d88521b3b7c5733f862773"
+}

@@ -1,0 +1,727 @@
+{
+  "before": {
+    "backend": "webgpu",
+    "generation": 0,
+    "drawings": [
+      {
+        "id": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+        "rev": 104,
+        "bucket": 0
+      }
+    ],
+    "failures": [],
+    "gesture": null,
+    "selection": {
+      "objects": 0,
+      "handles": 0,
+      "points": 0,
+      "pivot": true
+    },
+    "drawn": 1,
+    "residentDrawings": 1,
+    "residentBytes": 24116776,
+    "lastError": null,
+    "metrics": {
+      "frameMs": {
+        "n": 184,
+        "p50": 16.7,
+        "p95": 16.8,
+        "max": 16.8
+      },
+      "gestureFrameMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "workMs": {
+        "n": 185,
+        "p50": 0.4,
+        "p95": 1,
+        "max": 1.8
+      },
+      "inkMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "commitMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "sceneMs": {
+        "n": 136,
+        "p50": 2.4,
+        "p95": 11.6,
+        "max": 13.5
+      },
+      "commits": [],
+      "commitParts": [],
+      "loads": [
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 319684,
+          "ms": 33
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 336916,
+          "ms": 33
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 354148,
+          "ms": 16.4
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 362764,
+          "ms": 31
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 379996,
+          "ms": 16.2
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 414460,
+          "ms": 33.3
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 431692,
+          "ms": 32.9
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 448924,
+          "ms": 33.1
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 466156,
+          "ms": 33.2
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 483388,
+          "ms": 33
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 500620,
+          "ms": 33.1
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 517852,
+          "ms": 33
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 535084,
+          "ms": 33.2
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 560932,
+          "ms": 33
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 578164,
+          "ms": 33.2
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 595396,
+          "ms": 33
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 629860,
+          "ms": 33.2
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 647092,
+          "ms": 33
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 724636,
+          "ms": 48.5
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 871108,
+          "ms": 33.6
+        }
+      ]
+    }
+  },
+  "after": {
+    "backend": "webgpu",
+    "generation": 0,
+    "drawings": [
+      {
+        "id": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+        "rev": 134,
+        "bucket": 0
+      }
+    ],
+    "failures": [],
+    "gesture": {
+      "status": "ok"
+    },
+    "selection": {
+      "objects": 0,
+      "handles": 0,
+      "points": 0,
+      "pivot": false
+    },
+    "drawn": 1,
+    "residentDrawings": 1,
+    "residentBytes": 24134056,
+    "lastError": null,
+    "metrics": {
+      "frameMs": {
+        "n": 300,
+        "p50": 16.7,
+        "p95": 16.9,
+        "max": 50
+      },
+      "gestureFrameMs": {
+        "n": 300,
+        "p50": 16.7,
+        "p95": 33.4,
+        "max": 33.7
+      },
+      "workMs": {
+        "n": 300,
+        "p50": 0.4,
+        "p95": 23.9,
+        "max": 40.8
+      },
+      "inkMs": {
+        "n": 0,
+        "p50": null,
+        "p95": null,
+        "max": null
+      },
+      "commitMs": {
+        "n": 30,
+        "p50": 146.8,
+        "p95": 211,
+        "max": 213.4
+      },
+      "sceneMs": {
+        "n": 300,
+        "p50": 1.8,
+        "p95": 4.5,
+        "max": 24.9
+      },
+      "commits": [
+        134.3,
+        131.9,
+        139.6,
+        155.3,
+        142.1,
+        129.9,
+        130.9,
+        157.1,
+        156.6,
+        146.8,
+        153.5,
+        154.3,
+        211,
+        170.6,
+        163.8,
+        173.6,
+        155,
+        162.4,
+        152.4,
+        156.9,
+        153.8,
+        142.8,
+        213.4,
+        139.2,
+        142.5,
+        145.5,
+        146.5,
+        133,
+        138.9,
+        144.3
+      ],
+      "commitParts": [
+        {
+          "answerMs": 123.3,
+          "drawMs": 11
+        },
+        {
+          "answerMs": 125,
+          "drawMs": 6.9
+        },
+        {
+          "answerMs": 122.5,
+          "drawMs": 17.1
+        },
+        {
+          "answerMs": 132.6,
+          "drawMs": 22.7
+        },
+        {
+          "answerMs": 121.7,
+          "drawMs": 20.4
+        },
+        {
+          "answerMs": 118.2,
+          "drawMs": 11.7
+        },
+        {
+          "answerMs": 121.4,
+          "drawMs": 9.5
+        },
+        {
+          "answerMs": 140.2,
+          "drawMs": 16.9
+        },
+        {
+          "answerMs": 135.4,
+          "drawMs": 21.2
+        },
+        {
+          "answerMs": 123.1,
+          "drawMs": 23.7
+        },
+        {
+          "answerMs": 131.4,
+          "drawMs": 22.1
+        },
+        {
+          "answerMs": 131.5,
+          "drawMs": 22.8
+        },
+        {
+          "answerMs": 195.5,
+          "drawMs": 15.5
+        },
+        {
+          "answerMs": 159.3,
+          "drawMs": 11.3
+        },
+        {
+          "answerMs": 142.5,
+          "drawMs": 21.3
+        },
+        {
+          "answerMs": 169.1,
+          "drawMs": 4.5
+        },
+        {
+          "answerMs": 133.3,
+          "drawMs": 21.7
+        },
+        {
+          "answerMs": 144.9,
+          "drawMs": 17.5
+        },
+        {
+          "answerMs": 134.7,
+          "drawMs": 17.7
+        },
+        {
+          "answerMs": 135,
+          "drawMs": 21.9
+        },
+        {
+          "answerMs": 126.1,
+          "drawMs": 27.7
+        },
+        {
+          "answerMs": 127.7,
+          "drawMs": 15.1
+        },
+        {
+          "answerMs": 187.3,
+          "drawMs": 26.1
+        },
+        {
+          "answerMs": 128,
+          "drawMs": 11.2
+        },
+        {
+          "answerMs": 127.5,
+          "drawMs": 15
+        },
+        {
+          "answerMs": 123.1,
+          "drawMs": 22.4
+        },
+        {
+          "answerMs": 124.3,
+          "drawMs": 22.2
+        },
+        {
+          "answerMs": 122.2,
+          "drawMs": 10.8
+        },
+        {
+          "answerMs": 123,
+          "drawMs": 15.9
+        },
+        {
+          "answerMs": 133.4,
+          "drawMs": 10.9
+        }
+      ],
+      "loads": [
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 877444,
+          "ms": 46.2
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 878020,
+          "ms": 52.6
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 878596,
+          "ms": 54.1
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 879172,
+          "ms": 53.3
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 879748,
+          "ms": 48.1
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 880324,
+          "ms": 48.2
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 880900,
+          "ms": 47.7
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 881476,
+          "ms": 45.1
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 882052,
+          "ms": 47.8
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 882628,
+          "ms": 45.6
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 883204,
+          "ms": 55
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 883780,
+          "ms": 41.4
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 884356,
+          "ms": 51.8
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 884932,
+          "ms": 39
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 885508,
+          "ms": 43.3
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 886084,
+          "ms": 47.3
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 886660,
+          "ms": 47
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 887236,
+          "ms": 36.1
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 887812,
+          "ms": 40.5
+        },
+        {
+          "key": "dr_01K7JJN800PVZ186NFS1R3J5BQ",
+          "bytes": 888388,
+          "ms": 36
+        }
+      ]
+    },
+    "lastGesture": {
+      "origin": "agent",
+      "tool": "brush",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        450.5,
+        322.5
+      ],
+      "events": [],
+      "eventCount": 9998,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "tool.active.set",
+          "params": null
+        },
+        {
+          "commandId": "draw.stroke.add",
+          "params": null
+        }
+      ]
+    }
+  },
+  "responseSummary": [
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    },
+    {
+      "status": "ok",
+      "commandIds": [
+        "tool.active.set",
+        "draw.stroke.add"
+      ]
+    }
+  ],
+  "receiptNote": "Repeated 9998-point command parameters omitted; before/after metrics and lastGesture retained."
+}

@@ -81,6 +81,25 @@ pub struct Cli {
     /// Per-user folder (settings, recovery, backups) instead of the platform's (01 §11).
     #[arg(long = "user-dir", value_name = "DIR", conflicts_with_all = ["version", "selftest"])]
     pub user_dir: Option<PathBuf>,
+
+    /// A virtual view's size in view pixels, `VIEW=WIDTHxHEIGHT` (repeatable), instead of its headless default
+    /// (SI-069): what a desktop window reports for its view, so a headless engine can replay a window's view pixels
+    /// through the same view geometry (ruling D-32, SI-158).
+    #[arg(long = "view-size", value_name = "VIEW=WxH", conflicts_with_all = ["version", "selftest"])]
+    pub view_size: Vec<String>,
+}
+
+/// `--view-size VIEW=WIDTHxHEIGHT`: the view id and its size (finite, at least 1 x 1).
+fn view_size(text: &str) -> Result<(String, tt_executor::shell::Size), CliError> {
+    let bad =
+        || CliError::Usage(format!("--view-size `{text}`: expected VIEW=WIDTHxHEIGHT, for example cameraView=914x406"));
+    let (view, size) = text.split_once('=').ok_or_else(bad)?;
+    let (w, h) = size.split_once('x').ok_or_else(bad)?;
+    let (width, height) = (w.trim().parse::<f64>().map_err(|_| bad())?, h.trim().parse::<f64>().map_err(|_| bad())?);
+    if view.trim().is_empty() || !(width.is_finite() && height.is_finite() && width >= 1.0 && height >= 1.0) {
+        return Err(bad());
+    }
+    Ok((view.trim().to_owned(), tt_executor::shell::Size { width, height }))
 }
 
 /// Successful outcomes.
@@ -238,6 +257,10 @@ fn start(cli: &Cli) -> Result<ExecutorHandle, CliError> {
         ..ExecutorOptions::default()
     };
     let handle = ExecutorHandle::spawn_with_options(options).map_err(|e| CliError::Failed(e.message))?;
+    if !cli.view_size.is_empty() {
+        let sizes = cli.view_size.iter().map(|t| view_size(t)).collect::<Result<_, _>>()?;
+        handle.report_shell(tt_executor::host::ShellReport { view_sizes: Some(sizes), ..Default::default() });
+    }
     let user = |command: &str, params: serde_json::Value| {
         handle.invoke(Invocation {
             command: command.into(),
@@ -302,6 +325,24 @@ mod tests {
 
     fn parse(args: &[&str]) -> Result<Cli, clap::Error> {
         Cli::try_parse_from(std::iter::once("toontown-headless").chain(args.iter().copied()))
+    }
+
+    #[test]
+    fn view_size_reads_a_view_and_its_size_and_refuses_malformed_ones() {
+        let (v, s) = view_size("cameraView=914x406").unwrap();
+        assert_eq!((v.as_str(), s.width, s.height), ("cameraView", 914.0, 406.0));
+        for bad in
+            ["cameraView", "cameraView=914", "=914x406", "cameraView=0x406", "cameraView=axb", "cameraView=NaNx2"]
+        {
+            assert!(view_size(bad).is_err(), "{bad}");
+        }
+        assert_eq!(
+            parse(&["--mcp-stdio", "--view-size", "cameraView=914x406", "--view-size", "drawingView=10x10"])
+                .unwrap()
+                .view_size
+                .len(),
+            2
+        );
     }
 
     fn run_to_string(args: &[&str]) -> (Result<Outcome, CliError>, String) {

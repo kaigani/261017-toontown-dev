@@ -1,0 +1,36 @@
+{
+  "field": "preferences.search",
+  "opened": "File \u203a Preferences, then a real click on its search field",
+  "initial": "",
+  "afterSelectAll": {
+    "value": "qrs",
+    "start": 0,
+    "end": 3,
+    "focused": true
+  },
+  "afterTyping": {
+    "value": "x",
+    "start": 1,
+    "end": 1,
+    "focused": true
+  },
+  "afterToolLetter": {
+    "value": "xb",
+    "start": 2,
+    "end": 2,
+    "focused": true
+  },
+  "afterUndo": {
+    "value": "qrs",
+    "start": 0,
+    "end": 3,
+    "focused": true
+  },
+  "selectAllSelects": true,
+  "typingReplaces": true,
+  "toolLetterTypes": true,
+  "undoLeavesDocument": true,
+  "historyBefore": 24,
+  "historyAfter": 24,
+  "ok": true
+}

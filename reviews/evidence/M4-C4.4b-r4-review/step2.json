@@ -1,0 +1,203 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-_a7fph7y",
+  "checks": [
+    {
+      "check": "element anchorDelete label and reason",
+      "ok": true,
+      "detail": "Delete points: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "element anchorDelete no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "element anchorDelete no successful edit sent",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "element selectDelete label and reason",
+      "ok": true,
+      "detail": "Delete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "element selectDelete no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "element selectDelete no successful edit sent",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "element nativeDelete label and reason",
+      "ok": true,
+      "detail": "Delete: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "element nativeDelete no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "element nativeDelete no successful edit sent",
+      "ok": true,
+      "detail": [
+        {
+          "command": "edit.delete",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "element nativeCut label and reason",
+      "ok": true,
+      "detail": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "element nativeCut no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "element nativeCut no successful edit sent",
+      "ok": true,
+      "detail": [
+        {
+          "command": "edit.cut",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "element contextCut label and reason",
+      "ok": true,
+      "detail": "Cut: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "element contextCut no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "element contextCut no successful edit sent",
+      "ok": true,
+      "detail": [
+        {
+          "command": "edit.cut",
+          "params": {
+            "context": "drawing"
+          }
+        }
+      ]
+    },
+    {
+      "check": "element brush label and reason",
+      "ok": true,
+      "detail": "Add stroke: the element is locked: a scene view does not edit it (05 \u00a76.6); unlock it, or address it by id"
+    },
+    {
+      "check": "element brush no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "element brush no successful edit sent",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawing anchorDelete label and reason",
+      "ok": true,
+      "detail": "Delete points: drawing `1` is locked"
+    },
+    {
+      "check": "drawing anchorDelete no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "drawing anchorDelete no successful edit sent",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "drawing brush label and reason",
+      "ok": true,
+      "detail": "Add stroke: the drawing is locked: a gesture does not edit it (02 line 414); unlock it first"
+    },
+    {
+      "check": "drawing brush no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "drawing brush no successful edit sent",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "hidden anchorDelete label and reason",
+      "ok": true,
+      "detail": "Delete points: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "hidden anchorDelete no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "hidden anchorDelete no successful edit sent",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "hidden brush label and reason",
+      "ok": true,
+      "detail": "Add stroke: the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "hidden brush no dialog/document/undo change",
+      "ok": true,
+      "detail": {
+        "dialogs": [],
+        "history": []
+      }
+    },
+    {
+      "check": "hidden brush no successful edit sent",
+      "ok": true,
+      "detail": []
+    }
+  ],
+  "failures": []
+}

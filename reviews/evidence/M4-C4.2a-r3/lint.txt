@@ -1,0 +1,33 @@
+['cargo', 'fmt', '--check']
+exit 0
+['cargo', 'clippy', '-p', 'tt-executor', '--all-targets', '--locked', '--features', 'tt-persist/test-hooks', '--', '-D', 'warnings', '-A', 'clippy::empty_line_after_doc_comments']
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\registry-macros)
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\model)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\anim)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\vector)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\colour)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\registry)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\fx)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 25.41s
+exit 0
+['cargo', 'clippy', '-p', 'tt-mcp', '--all-targets', '--locked', '--features', 'tt-persist/test-hooks', '--', '-D', 'warnings', '-A', 'clippy::empty_line_after_doc_comments']
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\model)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\anim)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\colour)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\vector)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\persist)
+    Checking tt-audio v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\audio)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\registry)
+    Checking tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\lipsync)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\fx)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\executor)
+    Checking tt-engine v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\engine)
+    Checking tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\mcp)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 22.42s
+exit 0

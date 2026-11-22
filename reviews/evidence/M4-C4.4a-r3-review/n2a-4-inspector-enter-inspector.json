@@ -1,0 +1,206 @@
+{
+  "after": "Review name",
+  "commands": [
+    {
+      "command": "draw.drawing.rename",
+      "params": {
+        "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+        "name": "Review name"
+      }
+    },
+    {
+      "command": "prefs.get",
+      "params": {
+        "keys": [
+          "drawing.inspectorPreview"
+        ]
+      }
+    },
+    {
+      "command": "element.drawing.list",
+      "params": {
+        "elementId": "el_01K7JJN8006AJE9M298EGNF45H"
+      }
+    },
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "edit.history.get",
+      "params": {
+        "limit": 1000
+      }
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "prefs.get",
+      "params": {
+        "keys": [
+          "drawing.inspectorPreview"
+        ]
+      }
+    },
+    {
+      "command": "element.drawing.list",
+      "params": {
+        "elementId": "el_01K7JJN8006AJE9M298EGNF45H"
+      }
+    },
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "prefs.get",
+      "params": {
+        "keys": [
+          "drawing.inspectorPreview"
+        ]
+      }
+    },
+    {
+      "command": "element.drawing.list",
+      "params": {
+        "elementId": "el_01K7JJN8006AJE9M298EGNF45H"
+      }
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+        "width": 160,
+        "region": "bounds",
+        "background": "#FFFFFFFF"
+      }
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+        "width": 160,
+        "region": "bounds",
+        "background": "#FFFFFFFF"
+      }
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+        "width": 160,
+        "region": "bounds",
+        "background": "#FFFFFFFF"
+      }
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "window.panel.list",
+      "params": {}
+    },
+    {
+      "command": "workspace.get",
+      "params": {}
+    },
+    {
+      "command": "workspace.list",
+      "params": {}
+    },
+    {
+      "command": "prefs.get",
+      "params": {
+        "keys": [
+          "drawing.inspectorPreview"
+        ]
+      }
+    },
+    {
+      "command": "element.drawing.list",
+      "params": {
+        "elementId": "el_01K7JJN8006AJE9M298EGNF45H"
+      }
+    },
+    {
+      "command": "prefs.get",
+      "params": {
+        "keys": [
+          "drawing.inspectorPreview"
+        ]
+      }
+    },
+    {
+      "command": "element.drawing.list",
+      "params": {
+        "elementId": "el_01K7JJN8006AJE9M298EGNF45H"
+      }
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+        "width": 160,
+        "region": "bounds",
+        "background": "#FFFFFFFF"
+      }
+    },
+    {
+      "command": "edit.history.get",
+      "params": {
+        "limit": 1000
+      }
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+        "width": 160,
+        "region": "bounds",
+        "background": "#FFFFFFFF"
+      }
+    },
+    {
+      "command": "prefs.get",
+      "params": {
+        "keys": [
+          "drawing.inspectorPreview"
+        ]
+      }
+    },
+    {
+      "command": "element.drawing.list",
+      "params": {
+        "elementId": "el_01K7JJN8006AJE9M298EGNF45H"
+      }
+    },
+    {
+      "command": "draw.drawing.render",
+      "params": {
+        "drawingId": "dr_01K7JJN8004QP4RMP4A5CKZV0G",
+        "width": 160,
+        "region": "bounds",
+        "background": "#FFFFFFFF"
+      }
+    }
+  ]
+}

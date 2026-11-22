@@ -1,0 +1,101 @@
+crates/executor/src/canvas.rs:44:     let n = (rgba.len() / 4).max(1) as u64;
+crates/executor/src/canvas.rs:51:     sum.map(|s| u8::try_from((s + n / 2) / n).unwrap_or(u8::MAX))
+crates/executor/src/canvas.rs:214: /// The Camera view's overlays in camera output pixels (scene answer form 1.1, §11.4): never in a render (05 lines
+crates/executor/src/canvas.rs:280:     /// Camera view: the overlays; absent in the Drawing view.
+crates/executor/src/canvas.rs:282:     pub overlays: Option<SceneOverlays>,
+crates/executor/src/canvas.rs:310: pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene, CommandError> {
+crates/executor/src/canvas.rs:363:         fn walk(nodes: &[tt_model::entities::scene::TreeNode], out: &mut Vec<Id>) {
+crates/executor/src/canvas.rs:455:         overlays: None,
+crates/executor/src/canvas.rs:490: /// of the frame: the view shows the table around it), in the walk's order; and the overlays.
+crates/executor/src/canvas.rs:494: pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, CommandError> {
+crates/executor/src/canvas.rs:524:         overlays: None,
+crates/executor/src/canvas.rs:530:             out.overlays = Some(SceneOverlays {
+crates/executor/src/canvas.rs:554:     let list = render_list::build(doc, &req, &mut ev)?;
+crates/executor/src/canvas.rs:557:         let (Some(m), Some(d)) = (en.to_pixel, en.drawing.as_ref().and_then(|d| doc.drawing(d))) else { continue };
+crates/executor/src/canvas.rs:573:     // The overlays: the selected elements' boxes and pivots, and the selected non-current cameras' frames.
+crates/executor/src/canvas.rs:604:     out.overlays = Some(SceneOverlays {
+crates/executor/src/canvas.rs:632:         pivot: g.bounds.map(|b| [(b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0]),
+crates/executor/src/camera_view.rs:7: //! (`render_list::plane_to_pixel`, SI-145), so the view and a render cannot disagree.
+crates/executor/src/camera_view.rs:15: use crate::commands::render_list::{DU_PER_FIELD, plane_to_pixel};
+crates/executor/src/camera_view.rs:45:     let (ia, ib, ic, id) = (d / det, -b / det, -c / det, a / det);
+crates/executor/src/camera_view.rs:56: pub(crate) fn no_camera(scene: &Id) -> CommandError {
+crates/executor/src/camera_view.rs:99: pub(crate) fn current_scene(cx: &Cx) -> Result<Id, CommandError> {
+crates/executor/src/camera_view.rs:110: /// of view `fov`, at output size `w × h`; and the output pixels per field (`1 / s`). A camera at or below the table
+crates/executor/src/camera_view.rs:113: pub(crate) fn image_to_camera(view: &CameraView, w: u32, h: u32) -> (Matrix, f64) {
+crates/executor/src/camera_view.rs:115:     let half = tt_anim::num::tan_deg(view.fov / 2.0);
+crates/executor/src/camera_view.rs:117:     let s = if depth > 0.0 && half.is_finite() && half > 0.0 { 2.0 * depth * half / wf } else { 12.0 / wf };
+crates/executor/src/camera_view.rs:118:     ([s, 0.0, 0.0, -s, -wf / 2.0 * s, hf / 2.0 * s], 1.0 / s)
+crates/executor/src/camera_view.rs:142: /// camera's (width / 12) when the chain cannot be built (no camera yet).
+crates/executor/src/camera_view.rs:167:     Ok(plane_to_pixel(&chain.view, &world).map(|a| a.0))
+crates/executor/src/camera_view.rs:183: pub(crate) fn scene_to_drawing(cx: &Cx, element: &Id, frame: u32, p: Point) -> Result<Point, CommandError> {
+crates/executor/src/camera_view.rs:199: pub(crate) fn drawing_to_scene(cx: &Cx, element: &Id, frame: u32, p: Point) -> Result<Point, CommandError> {
+crates/executor/src/camera_view.rs:209:     let u = w.apply([1.0 / DU_PER_FIELD, 0.0, 0.0]);
+crates/executor/src/camera_view.rs:210:     let v = w.apply([0.0, 1.0 / DU_PER_FIELD, 0.0]);
+crates/executor/src/camera_view.rs:216: pub(crate) fn scene_to_output(chain: &Chain, p: [f64; 3]) -> Option<Point> {
+crates/executor/src/camera_view.rs:222: pub(crate) fn output_to_scene(chain: &Chain, p: Point, depth: f64) -> Option<[f64; 3]> {
+crates/executor/src/scene_gesture.rs:76:     let list = render_list::build(doc, &req, &mut ev)?;
+crates/executor/src/scene_gesture.rs:82:             let (m, b) = (en.to_pixel?, en.bounds?);
+crates/executor/src/scene_gesture.rs:113:     let list = render_list::build(doc, &req, &mut ev)?;
+crates/executor/src/scene_gesture.rs:149:     let (cx, cy) = ((b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0);
+crates/executor/src/scene_gesture.rs:191:     if den.abs() < 1e-9 { 1.0 } else { (release - pivot) / den }
+crates/executor/src/scene_gesture.rs:299:     let centre = Point { x: (b[0] + b[2]) / 2.0, y: (b[1] + b[3]) / 2.0 };
+crates/executor/src/scene_gesture.rs:313:             let p = json!({ "x": old.0 + (z.x - a.x) / du, "y": old.1 + (z.y - a.y) / du });
+crates/executor/src/scene_gesture.rs:327:                 deg = (deg / 15.0).round() * 15.0;
+crates/executor/src/scene_gesture.rs:351:                 ((b[3] - b[1]) / 2.0, if i == 0 { pn.v.x - p0.v.x } else { p0.v.x - pn.v.x })
+crates/executor/src/scene_gesture.rs:353:                 ((b[2] - b[0]) / 2.0, if i == 1 { p0.v.y - pn.v.y } else { pn.v.y - p0.v.y })
+crates/executor/src/scene_gesture.rs:355:             let deg = if half > 1e-9 { (d / half).atan().to_degrees().clamp(-89.0, 89.0) } else { 0.0 };
+crates/executor/src/commands/inspect.rs:184:     let list = render_list::build(&doc, &req, &mut ev)?;
+crates/executor/src/commands/inspect.rs:251:                     x: tidy(px.min_x / w),
+crates/executor/src/commands/inspect.rs:252:                     y: tidy(px.min_y / h),
+crates/executor/src/commands/inspect.rs:253:                     width: tidy((px.max_x - px.min_x) / w),
+crates/executor/src/commands/inspect.rs:254:                     height: tidy((px.max_y - px.min_y) / h),
+crates/executor/src/commands/inspect.rs:264:             drawing_to_image: if full { en.to_pixel.map(|m| m.0.map(tidy)) } else { None },
+crates/executor/src/commands/inspect.rs:382:     let ix = ((q.x / w) * f64::from(bw)).floor() as usize;
+crates/executor/src/commands/inspect.rs:383:     let iy = ((q.y / h) * f64::from(bh)).floor() as usize;
+crates/executor/src/commands/inspect.rs:441: pub(crate) fn camera_window(
+crates/executor/src/commands/inspect.rs:497:         let (Some(m), Some(did)) = (en.to_pixel, en.drawing.as_ref()) else { continue };
+crates/executor/src/commands/inspect.rs:649: fn behind_camera(indexes: &[usize]) -> CommandError {
+crates/executor/src/commands/inspect.rs:795:             CSpace::Drawing => world.map_or([0.0; 3], |m| m.apply([q.x / DU_PER_FIELD, q.y / DU_PER_FIELD, 0.0])),
+crates/executor/src/commands/inspect.rs:840:                     CSpace::CameraNormalized => Point3 { x: tidy(px[0] / w), y: tidy(px[1] / h), z: None },
+crates/executor/src/commands/inspect.rs:1007:     let ch = ((f64::from(cw) * camh / camw).round() as u32).max(1);
+crates/executor/src/commands/inspect.rs:1029:         let (col, row) = (i % cols, i / cols);
+crates/executor/src/commands/inspect.rs:1441:         let list = render_list::build(docr, &req, &mut ev)?;
+crates/executor/src/commands/inspect.rs:1475:             "headless: the camera composition through the Camera view's transform on the scene's background; overlays \
+crates/executor/src/commands/inspect.rs:1533:             let work = u64::from(r.width) * u64::from(r.height) / 1024;
+crates/executor/src/commands/render.rs:12: //! - **Never block**: the render charges a work account (path elements and pixels / 1024) and observes the caller's
+crates/executor/src/commands/render.rs:36: /// Work units one frame may spend (path elements and pixels / 1024), as a drawing render.
+crates/executor/src/commands/render.rs:119: fn scene_default() -> String {
+crates/executor/src/commands/render.rs:256:         (Some(w), None) => (f64::from(w), (f64::from(w) * ch / cw).round()),
+crates/executor/src/commands/render.rs:257:         (None, Some(h)) => ((f64::from(h) * cw / ch).round(), f64::from(h)),
+crates/executor/src/commands/render.rs:275: pub(crate) fn background(doc: &Document, scene: &Id, given: &str) -> Result<[u8; 4], CommandError> {
+crates/executor/src/commands/render.rs:291: pub(crate) fn scene_param(cx: &Cx, given: Option<&str>) -> Result<Id, CommandError> {
+crates/executor/src/commands/render.rs:317: pub(crate) fn rasterise(scene: &Scene, cancelled: &dyn Fn() -> bool) -> Result<Vec<u8>, CommandError> {
+crates/executor/src/commands/render.rs:345: /// As [`render_list::build`], [`render_list::items`] and [`rasterise`].
+crates/executor/src/commands/render.rs:355:     let list = render_list::build(doc, req, &mut ev)?;
+crates/executor/src/commands/render.rs:356:     let pixels_work = u64::from(req.width) * u64::from(req.height) / 1024;
+crates/executor/src/commands/render.rs:371: pub(crate) fn image_to_camera(list: &RenderList) -> [f64; 6] {
+crates/executor/src/commands/render.rs:373:     let half = tt_anim::num::tan_deg(list.view.fov / 2.0);
+crates/executor/src/commands/render.rs:374:     let s = if depth > 0.0 && list.width > 0 { 2.0 * depth * half / f64::from(list.width) } else { 0.0 };
+crates/executor/src/commands/render.rs:375:     [s, 0.0, 0.0, -s, -f64::from(list.width) / 2.0 * s, f64::from(list.height) / 2.0 * s]
+crates/executor/src/commands/render.rs:675: /// window's mapping (design note 6), at the view's size times `scale` (or `width` / `height`), colours through the
+crates/executor/src/commands/render.rs:684:     let h = p.height.map_or_else(|| (vh * w / vw).round(), f64::from);
+crates/executor/src/commands/render.rs:711:     let (sx, sy) = (w / vw, h / vh);
+crates/executor/src/commands/render.rs:751: fn excluded_in(nodes: &[tt_model::entities::scene::TreeNode], id: &Id, exclude: &BTreeSet<Id>) -> bool {
+crates/executor/src/commands/render.rs:789:         Some(w) => f64::from(w) / bw,
+crates/executor/src/commands/render.rs:790:         None => f64::from(*doc.project().camera_width()) / 1200.0 * p.scale,
+crates/executor/src/commands/render.rs:812:         super::draw_render::Builder::in_drawing_units(doc, blobs, styles, u64::from(w) * u64::from(h) / 1024);
+crates/executor/src/commands/render.rs:839:     let (ia, ib, ic, id) = (d / det, -b / det, -c / det, a / det);
+crates/executor/src/commands/render.rs:1117:             progress.report(i as f64 / total, &format!("Rendering frame {f}"));
+crates/executor/src/commands/render.rs:1156:             duration_sec: if fps > 0.0 { files.len() as f64 / fps } else { 0.0 },
+crates/executor/src/commands/render_list.rs:91:     pub to_pixel: Option<Affine>,
+crates/executor/src/commands/render_list.rs:166: pub(crate) fn shown_drawing(doc: &Document, e: &Element, frame: u32, scene_length: u64) -> Option<Id> {
+crates/executor/src/commands/render_list.rs:213: pub(crate) fn plane_to_pixel(view: &CameraView, world: &Mat4) -> Option<Affine> {
+crates/executor/src/commands/render_list.rs:217:         (a[0] - o[0]) / DU_PER_FIELD,
+crates/executor/src/commands/render_list.rs:218:         (a[1] - o[1]) / DU_PER_FIELD,
+crates/executor/src/commands/render_list.rs:219:         (b[0] - o[0]) / DU_PER_FIELD,
+crates/executor/src/commands/render_list.rs:220:         (b[1] - o[1]) / DU_PER_FIELD,
+crates/executor/src/commands/render_list.rs:282:         let to_pixel = plane_to_pixel(&view, &world);
+crates/executor/src/commands/render_list.rs:283:         let pixel_box = match (&to_pixel, &bounds) {
+crates/executor/src/commands/render_list.rs:298:         } else if to_pixel.is_none() {
+crates/executor/src/commands/render_list.rs:319:             to_pixel,
+crates/executor/src/commands/render_list.rs:354:         let (Some(d), Some(m)) = (en.drawing.as_ref().and_then(|d| doc.drawing(d)), en.to_pixel) else { continue };

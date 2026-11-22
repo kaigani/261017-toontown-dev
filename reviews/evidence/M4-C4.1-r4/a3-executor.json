@@ -1,0 +1,39 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-executor",
+    "--test",
+    "c41_r4_review",
+    "--locked",
+    "--features",
+    "tt-persist/test-hooks",
+    "--",
+    "--nocapture"
+  ],
+  "exit": 0,
+  "seconds": 26.278764899994712,
+  "results": [
+    "     Running tests\\c41_r4_review.rs (target\\debug\\deps\\c41_r4_review-bb0311e36a284f97.exe)",
+    "no project: 269 references in 9.5896ms",
+    "no project: user command contention latency 6.527ms",
+    "empty project: 269 references in 156.4698ms",
+    "empty project: user command contention latency 129.3811ms",
+    "nothing selected, empty clipboard: 269 references in 123.4041ms",
+    "nothing selected, empty clipboard: user command contention latency 93.2874ms",
+    "a staging selection: 269 references in 127.4622ms",
+    "a staging selection: user command contention latency 99.3103ms",
+    "a filled clipboard: 269 references in 130.7768ms",
+    "a filled clipboard: user command contention latency 104.5502ms",
+    "an undoable step: 269 references in 121.7168ms",
+    "an undoable step: user command contention latency 93.1826ms",
+    "a redoable step: 269 references in 121.2923ms",
+    "a redoable step: user command contention latency 93.1797ms",
+    "a cell selection: 269 references in 134.2931ms",
+    "a cell selection: user command contention latency 104.786ms",
+    "990 command-created pegs: 269 references in 3.1533105s",
+    "990 command-created pegs: user command contention latency 3.0286004s",
+    "test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 24.32s"
+  ]
+}

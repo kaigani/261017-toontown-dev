@@ -1,0 +1,464 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-vzj5stj1",
+  "checks": [
+    {
+      "check": "contourEditor options controls present",
+      "ok": true,
+      "detail": [
+        {
+          "id": "toolOptions.selectedLine.thickness",
+          "disabled": true,
+          "reason": "Select one pencil line or invisible stroke to edit its line."
+        },
+        {
+          "id": "toolOptions.selectedLine.invisible",
+          "disabled": true,
+          "reason": "Select one pencil line or invisible stroke to edit its line."
+        },
+        {
+          "id": "toolOptions.drawTopLayer",
+          "disabled": false,
+          "reason": "Draw on Top Layer"
+        },
+        {
+          "id": "toolOptions.placeBehind",
+          "disabled": false,
+          "reason": "Draw Behind"
+        },
+        {
+          "id": "toolOptions.snapToContour",
+          "disabled": false,
+          "reason": "Snap to Contour"
+        }
+      ]
+    },
+    {
+      "check": "D-79 no line controls disabled with reason",
+      "ok": true,
+      "detail": [
+        {
+          "id": "toolOptions.selectedLine.thickness",
+          "disabled": true,
+          "reason": "Select one pencil line or invisible stroke to edit its line."
+        },
+        {
+          "id": "toolOptions.selectedLine.invisible",
+          "disabled": true,
+          "reason": "Select one pencil line or invisible stroke to edit its line."
+        },
+        {
+          "id": "toolOptions.drawTopLayer",
+          "disabled": false,
+          "reason": "Draw on Top Layer"
+        },
+        {
+          "id": "toolOptions.placeBehind",
+          "disabled": false,
+          "reason": "Draw Behind"
+        },
+        {
+          "id": "toolOptions.snapToContour",
+          "disabled": false,
+          "reason": "Snap to Contour"
+        }
+      ]
+    },
+    {
+      "check": "contourEditor enabled toolOptions.snapToContour acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "contourEditor enabled toolOptions.placeBehind acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "perspective options controls present",
+      "ok": true,
+      "detail": [
+        {
+          "id": "toolOptions.drawTopLayer",
+          "disabled": true,
+          "reason": "Draw Behind is on: it takes precedence (02 \u00a78.10)"
+        },
+        {
+          "id": "toolOptions.placeBehind",
+          "disabled": false,
+          "reason": "Draw Behind"
+        },
+        {
+          "id": "toolOptions.snapToContour",
+          "disabled": false,
+          "reason": "Snap to Contour"
+        }
+      ]
+    },
+    {
+      "check": "perspective enabled toolOptions.snapToContour acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "perspective enabled toolOptions.placeBehind acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "repositionAll options controls present",
+      "ok": true,
+      "detail": [
+        {
+          "id": "toolOptions.drawTopLayer",
+          "disabled": false,
+          "reason": "Draw on Top Layer"
+        },
+        {
+          "id": "toolOptions.placeBehind",
+          "disabled": false,
+          "reason": "Draw Behind"
+        },
+        {
+          "id": "toolOptions.snapToContour",
+          "disabled": false,
+          "reason": "Snap to Contour"
+        }
+      ]
+    },
+    {
+      "check": "repositionAll enabled toolOptions.snapToContour acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "repositionAll enabled toolOptions.placeBehind acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "text options controls present",
+      "ok": true,
+      "detail": [
+        {
+          "id": "toolOptions.drawTopLayer",
+          "disabled": true,
+          "reason": "Draw Behind is on: it takes precedence (02 \u00a78.10)"
+        },
+        {
+          "id": "toolOptions.placeBehind",
+          "disabled": false,
+          "reason": "Draw Behind"
+        },
+        {
+          "id": "toolOptions.snapToContour",
+          "disabled": false,
+          "reason": "Snap to Contour"
+        }
+      ]
+    },
+    {
+      "check": "text enabled toolOptions.snapToContour acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": true,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "text enabled toolOptions.placeBehind acts",
+      "ok": true,
+      "detail": {
+        "before": {
+          "placeBehind": true,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        },
+        "after": {
+          "placeBehind": false,
+          "drawTopLayer": false,
+          "snapToContour": false,
+          "symmetry": {
+            "mode": "none",
+            "angle": 0.0,
+            "mirrors": 6
+          },
+          "tablet": {
+            "ignoreTablet": false,
+            "portraitCorrection": false,
+            "compatibilityMode": false,
+            "inputInterface": null
+          },
+          "gapClosing": "off"
+        }
+      }
+    },
+    {
+      "check": "D-79 Browse present disabled reason",
+      "ok": true,
+      "detail": {
+        "disabled": true,
+        "reason": "The element has one drawing: nothing to browse."
+      }
+    },
+    {
+      "check": "Browse with two drawings navigates",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": []
+}

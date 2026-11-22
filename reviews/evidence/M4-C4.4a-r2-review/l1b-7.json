@@ -1,0 +1,12 @@
+{
+  "exit": 1,
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r2-l1b7-rerun",
+  "checks": 53,
+  "failures": [
+    {
+      "check": "probe completed",
+      "ok": false,
+      "detail": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [TypeError(\"'NoneType' object is not subscriptable\")])])"
+    }
+  ]
+}

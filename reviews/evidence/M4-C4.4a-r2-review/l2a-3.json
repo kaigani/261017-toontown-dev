@@ -1,0 +1,125 @@
+{
+  "case": "l2a",
+  "step": 3,
+  "exit": 0,
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44r2-regression-u2huk91l\\l2a3",
+  "results": [
+    {
+      "check": "agent pen setting reflected",
+      "ok": true,
+      "detail": "53"
+    },
+    {
+      "check": "agent creation reflected",
+      "ok": true,
+      "detail": {
+        "penId": "pen_01K7JJN8001JT6HVKSK8XWMMET",
+        "name": "Pen 6"
+      }
+    },
+    {
+      "check": "agent deletion reflected",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39D",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39E",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39F",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 53.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39G",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39H",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39J",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39K",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39M",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M7VSDX2P7A76QSYQCGFHH39H",
+        "currentEraserPenId": "pen_01M7VSDX2P7A76QSYQCGFHH39K"
+      }
+    },
+    {
+      "check": "concurrent distinct settings retained",
+      "ok": true,
+      "detail": {
+        "penId": "pen_01M7VSDX2P7A76QSYQCGFHH39H",
+        "name": "Pen 5",
+        "type": "brush",
+        "tipShape": "round",
+        "minSize": 8.0,
+        "maxSize": 37.0,
+        "smoothness": 7,
+        "tipAngle": 0.0
+      }
+    }
+  ]
+}

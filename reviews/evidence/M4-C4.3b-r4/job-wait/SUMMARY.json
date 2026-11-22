@@ -1,0 +1,123 @@
+{
+ "ruling": "D-49 item 4",
+ "job": "render.range.run {from 1, to 12000, scale 0.05}",
+ "client": "mcp 2.0.0, httpx2 2.12.0 (Python 3.13)",
+ "stdioAndHttp": [
+  {
+   "transport": "stdio",
+   "variant": "wait-while-running",
+   "start": "ok",
+   "jobId": "job-1",
+   "answered": true,
+   "status": "ok",
+   "state": "succeeded",
+   "timedOut": null,
+   "bytes": 4119797,
+   "contentBytes": 51,
+   "isError": false,
+   "resultKeys": [
+    "cancellable",
+    "commandId",
+    "jobId",
+    "message",
+    "progress",
+    "result",
+    "session",
+    "startedAt",
+    "state"
+   ],
+   "waitSeconds": 19.65,
+   "totalSeconds": 19.75,
+   "progressNotifications": 0
+  },
+  {
+   "transport": "stdio",
+   "variant": "wait-after-completion",
+   "start": "ok",
+   "jobId": "job-2",
+   "polledState": "succeeded",
+   "answered": true,
+   "status": "ok",
+   "state": "succeeded",
+   "timedOut": null,
+   "bytes": 4155803,
+   "contentBytes": 51,
+   "isError": false,
+   "resultKeys": [
+    "cancellable",
+    "commandId",
+    "jobId",
+    "message",
+    "progress",
+    "result",
+    "session",
+    "startedAt",
+    "state"
+   ],
+   "waitSeconds": 0.31,
+   "totalSeconds": 23.09,
+   "progressNotifications": 0
+  },
+  {
+   "transport": "stdio",
+   "variant": "wait-with-progress",
+   "start": "ok",
+   "jobId": "job-3",
+   "answered": true,
+   "status": "ok",
+   "state": "succeeded",
+   "timedOut": null,
+   "bytes": 4119797,
+   "contentBytes": 51,
+   "isError": false,
+   "resultKeys": [
+    "cancellable",
+    "commandId",
+    "jobId",
+    "message",
+    "progress",
+    "result",
+    "session",
+    "startedAt",
+    "state"
+   ],
+   "waitSeconds": 22.2,
+   "totalSeconds": 22.49,
+   "progressNotifications": 12004
+  },
+  {
+   "transport": "http",
+   "variant": "wait-while-running",
+   "start": "ok",
+   "jobId": "job-1",
+   "answered": false,
+   "error": "MCPError(-32000, 'SSE stream ended without a response', None)",
+   "waitSeconds": 22.0,
+   "totalSeconds": 22.11,
+   "progressNotifications": 0
+  },
+  {
+   "fatal": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [MCPError(-32000, 'SSE stream ended without a response', None)])])"
+  }
+ ],
+ "httpWithDebugLog": [
+  {
+   "transport": "http",
+   "variant": "wait-while-running",
+   "start": "ok",
+   "jobId": "job-1",
+   "answered": false,
+   "error": "MCPError(-32000, 'SSE stream ended without a response', None)",
+   "waitSeconds": 21.22,
+   "totalSeconds": 21.33,
+   "progressNotifications": 0
+  },
+  {
+   "fatal": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [MCPError(-32000, 'SSE stream ended without a response', None)])])"
+  }
+ ],
+ "sdkDebug": [
+  "    raise SSEError(f\"Server-sent event exceeded the {self._max_event_size} byte limit.\")"
+ ],
+ "cause": "httpx2 EventSource refuses one SSE event over DEFAULT_MAX_EVENT_SIZE_BYTES = 1 MiB; the job_wait answer is one 4.1 MB event (the job's per-frame result); mcp.client.streamable_http catches the SSEError and resolves the request as 'SSE stream ended without a response'. The server wrote the whole answer."
+}

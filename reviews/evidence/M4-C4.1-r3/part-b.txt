@@ -1,0 +1,28 @@
+Part B receipts, candidate product 64970ec, Windows, 2026-11-13.
+Commands ran sequentially through timeout 530 cargo; no build was killed.
+
+tt-executor c41_r2_review part_b_preferences: 6 passed.
+tt-executor c41_r3_review part_b_preferences: 1 passed (five composites).
+tt-executor c41_r2_review part_c1_availability: 3 passed.
+tt-mcp c41_r2_review part_c1_keys: 3 passed, 2.01 s.
+tt-mcp c41_r3_review part_b_keys: 1 passed.
+tt-executor c41_r3_review part_b_availability: 1 failed permanently.
+Final mismatch list contains only edit.paste in states 1 and 2:
+availability enabled=true, dialog=false; dry-run edit.clipboardEmpty.
+
+tt-desktop c41_r2_review part_c1_freshness: 2 passed.
+tt-executor c41_r2_review part_c1_freshness: 2 passed, 2.04 s.
+tt-executor c41_r2_review part_c1_restart: 1 passed.
+tt-executor c41_isolated with tt-persist/test-hooks: 1 passed, 0.73 s.
+tt-executor c41 restart: 4 passed (includes startup scavenging).
+tt-executor c41_r3_review part_b_recovery with test-hooks: 2 passed, 0.32 s.
+tt-desktop c41_r3_review: 1 failed permanently, 0.19 s.
+Failure: main reload after floats close still passes await_rendered(ZERO).
+Earlier assertions for opened floats, pending wait/close and generations pass.
+
+cargo fmt --check: exit 0.
+cargo clippy -p tt-executor -p tt-mcp -p tt-desktop --all-targets --locked
+  --features tt-persist/test-hooks -- -D warnings
+  -A clippy::empty_line_after_doc_comments: exit 0.
+
+No native GUI automation claimed. No product sources changed.

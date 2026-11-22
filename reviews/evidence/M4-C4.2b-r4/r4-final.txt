@@ -1,0 +1,11 @@
+
+running 3 tests
+test user_window_and_agent_headless_have_identical_commands_and_canonical_content ... ok
+test cutter_free_form_and_rectangular_paths_keep_cutter_label ... ok
+test user_commit_bypasses_priority_and_agent_tool_request_waits_before_routing ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.15s
+
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.45s
+     Running tests\c42b_r4_review.rs (target\debug\deps\c42b_r4_review-81bc2ec3ba215b79.exe)

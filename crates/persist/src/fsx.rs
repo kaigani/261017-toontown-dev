@@ -65,6 +65,24 @@ pub fn random_token(bytes: usize) -> String {
     hex(&buf)
 }
 
+/// A credential (bearer token, session id): `bytes` from the operating system's random source as lower-case hex.
+/// Unlike [`random_token`] there is no fallback: credentials fail closed (C4.1 ruling O-6).
+///
+/// # Errors
+/// The random source failed.
+pub fn secret_token(bytes: usize) -> io::Result<String> {
+    let mut buf = vec![0u8; bytes];
+    getrandom::fill(&mut buf)
+        .map_err(|e| io::Error::other(format!("the operating system's random source failed: {e}")))?;
+    Ok(hex(&buf))
+}
+
+/// Whether `text` has the form [`secret_token`] produces for `bytes` (length and alphabet).
+#[must_use]
+pub fn is_secret_token(text: &str, bytes: usize) -> bool {
+    text.len() == bytes * 2 && text.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+}
+
 /// Why an I/O operation failed, as the `details.reason` of 10 SAVE-05.
 #[must_use]
 pub fn reason(e: &io::Error) -> &'static str {

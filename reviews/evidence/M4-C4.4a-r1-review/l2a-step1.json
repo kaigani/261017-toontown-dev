@@ -1,0 +1,407 @@
+{
+  "checks": 11,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-8v1hegt2",
+  "results": [
+    {
+      "check": "new pen command and selection",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.create",
+          "params": {
+            "type": "brush",
+            "fromPenId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4S"
+          }
+        }
+      ]
+    },
+    {
+      "check": "New Pen undo restores pens",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4Q",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4R",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4S",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4T",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4V",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4W",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4X",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4Y",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4S",
+        "currentEraserPenId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4X"
+      }
+    },
+    {
+      "check": "select pen command has no undo step",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.select",
+          "params": {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4S"
+          }
+        }
+      ]
+    },
+    {
+      "check": "rename opens selected",
+      "ok": true,
+      "detail": {
+        "value": "Pen 6",
+        "start": 0,
+        "end": 5
+      }
+    },
+    {
+      "check": "typing replaces rename",
+      "ok": true,
+      "detail": {
+        "pen": {
+          "penId": "pen_01K7JJN80026SZSGB0P531XCHD",
+          "name": "Live2 pen",
+          "type": "brush",
+          "tipShape": "round",
+          "minSize": 2.0,
+          "maxSize": 8.0,
+          "smoothness": 3,
+          "tipAngle": 0.0
+        },
+        "sent": [
+          {
+            "command": "tool.pen.rename",
+            "params": {
+              "penId": "pen_01K7JJN80026SZSGB0P531XCHD",
+              "name": "Live2 pen"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "Escape cancels rename",
+      "ok": true,
+      "detail": {
+        "penId": "pen_01K7JJN80026SZSGB0P531XCHD",
+        "name": "Live2 pen",
+        "type": "brush",
+        "tipShape": "round",
+        "minSize": 2.0,
+        "maxSize": 8.0,
+        "smoothness": 3,
+        "tipAngle": 0.0
+      }
+    },
+    {
+      "check": "Rename Pen undo restores old name",
+      "ok": true,
+      "detail": {
+        "penId": "pen_01K7JJN80026SZSGB0P531XCHD",
+        "name": "Pen 6",
+        "type": "brush",
+        "tipShape": "round",
+        "minSize": 2.0,
+        "maxSize": 8.0,
+        "smoothness": 3,
+        "tipAngle": 0.0
+      }
+    },
+    {
+      "check": "delete removes pen",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.delete",
+          "params": {
+            "penId": "pen_01K7JJN80026SZSGB0P531XCHD"
+          }
+        }
+      ]
+    },
+    {
+      "check": "delete selects next else previous",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4Q",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4R",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4S",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4T",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4V",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4W",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4X",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4Y",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4V",
+        "currentEraserPenId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4X"
+      }
+    },
+    {
+      "check": "Delete Pen undo restores pen list (selection is UI state)",
+      "ok": true,
+      "detail": {
+        "pens": [
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4Q",
+            "name": "Pen 1",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 0.5,
+            "maxSize": 2.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4R",
+            "name": "Pen 2",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 1.0,
+            "maxSize": 4.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4S",
+            "name": "Pen 3",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4T",
+            "name": "Pen 4",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 4.0,
+            "maxSize": 16.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4V",
+            "name": "Pen 5",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 8.0,
+            "maxSize": 32.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4W",
+            "name": "Eraser 1",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 10.0,
+            "maxSize": 10.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4X",
+            "name": "Eraser 2",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 20.0,
+            "maxSize": 20.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4Y",
+            "name": "Eraser 3",
+            "type": "eraser",
+            "tipShape": "round",
+            "minSize": 40.0,
+            "maxSize": 40.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          },
+          {
+            "penId": "pen_01K7JJN80026SZSGB0P531XCHD",
+            "name": "Live2 pen",
+            "type": "brush",
+            "tipShape": "round",
+            "minSize": 2.0,
+            "maxSize": 8.0,
+            "smoothness": 3,
+            "tipAngle": 0.0
+          }
+        ],
+        "currentBrushPenId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4V",
+        "currentEraserPenId": "pen_01M7TV29H6Z6H2JT8HNWFECJ4X"
+      }
+    },
+    {
+      "check": "last pen disabled with reason",
+      "ok": true,
+      "detail": {
+        "disabled": true,
+        "title": "`Pen 5` is the last brush pen"
+      }
+    }
+  ],
+  "rawFiles": [
+    {
+      "name": "live2-commands.json",
+      "bytes": 11697,
+      "sha256": "70546f6be245ed2d2a8cc58b73dc836d41578d9a36bea84a2c61fc16da10562c"
+    },
+    {
+      "name": "transcript.json",
+      "bytes": 9973,
+      "sha256": "3ed4c84d295e280743130bf06ddf574ab1e298cb84ed98cf7f78f0e16f405838"
+    }
+  ],
+  "regenerate": "python tests/adversarial/c44a-r1-live.py l2a 1"
+}

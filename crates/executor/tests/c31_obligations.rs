@@ -178,6 +178,7 @@ fn item7_running_and_queued_cancellation_are_request_owned_and_commit_nothing() 
     assert_eq!(running.error.as_ref().map(|e| e.code.as_str()), Some("command.timeout"), "{running:?}");
     // The queued call either completed in its own window or timed out on its own deadline — never because of the
     // first caller's timeout, and never late.
+    crate::common::timing::record("c31_obligations.rs:181", t.elapsed(), budget * 2);
     assert!(t.elapsed() < budget * 2, "queued call answered within its own budget: {:?}", t.elapsed());
     let read = run(&h, "doc.state.get", json!({}));
     assert!(read.is_ok());
@@ -417,5 +418,6 @@ fn r14_cancelled_selection_changes_nothing_and_frees_the_worker() {
     std::thread::sleep(Duration::from_millis(300));
     let t = Instant::now();
     assert_eq!(ok(&h, "cell.selection.get", json!({})), before, "no late session mutation");
+    crate::common::timing::record("c31_obligations.rs:420", t.elapsed(), budget);
     assert!(t.elapsed() < budget, "the next caller is answered at once: {:?}", t.elapsed());
 }

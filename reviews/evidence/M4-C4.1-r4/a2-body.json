@@ -1,0 +1,21 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-mcp",
+    "--test",
+    "c41_r4_review",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "exit": 0,
+  "seconds": 2.3362559000088368,
+  "results": [
+    "     Running tests\\c41_r4_review.rs (target\\debug\\deps\\c41_r4_review-279615a25be96eeb.exe)",
+    "1 MiB authenticated body in 3.9386ms",
+    "absolute 300ms body deadline in 305.4191ms",
+    "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.32s"
+  ]
+}

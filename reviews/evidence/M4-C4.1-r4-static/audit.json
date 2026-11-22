@@ -1,0 +1,140 @@
+{
+  "pngs": [
+    {
+      "path": "reviews/evidence/M4-C4.1-r3-response/local-windows/01-start-screen.png",
+      "bytes": 126714,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1-r3-response/local-windows/02-project.png",
+      "bytes": 132808,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1-r3-response/local-windows/03-preferences.png",
+      "bytes": 64643,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1-r3-response/local-windows/04-restart.png",
+      "bytes": 46008,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1-r3/builder/01-start-screen.png",
+      "bytes": 142635,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1-r3/builder/02-project.png",
+      "bytes": 148733,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1-r3/builder/03-preferences.png",
+      "bytes": 65875,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    },
+    {
+      "path": "reviews/evidence/M4-C4.1-r3/builder/04-restart.png",
+      "bytes": 47739,
+      "chunks": [
+        "IHDR",
+        "IDAT",
+        "IEND"
+      ],
+      "ok": true
+    }
+  ],
+  "listed_paths": [
+    {
+      "path": "crates/executor/tests/c21_example_results.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/executor/tests/c41_r1_review.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/executor/tests/c41_r2_review.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/executor/tests/c41_r3_review.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/mcp/tests/c41/transport.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/mcp/tests/c41_isolated.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/mcp/tests/c41_r1_review.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/mcp/tests/c41_r2_review.rs",
+      "exists": true
+    },
+    {
+      "path": "crates/mcp/tests/c41_r3_review.rs",
+      "exists": true
+    }
+  ],
+  "vitest_files": [
+    "desktop/src/test/c01-r2-node.test.ts",
+    "desktop/src/test/c41-r1s-references.test.ts",
+    "desktop/src/test/c41-r1s-toolbar.test.tsx"
+  ],
+  "token_scan": {
+    "reviews/evidence/M4-C4.1-r3-response": [],
+    "reviews/evidence/M4-C4.1-r3": []
+  },
+  "gui_check_calls": 51
+}

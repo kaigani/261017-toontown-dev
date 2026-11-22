@@ -1,0 +1,1 @@
+{"error": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [AssertionError({'backend': 'webgl2', 'generation': 0, 'drawings': [], 'failures': [], 'gesture': None, 'selection': {'objects': 0, 'handles': 0, 'points': 0, 'pivot': False}, 'drawn': 0, 'residentDrawings': 0, 'residentBytes': 23245800, 'lastError': None})])])"}

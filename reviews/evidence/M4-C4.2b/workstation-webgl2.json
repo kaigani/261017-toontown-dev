@@ -1,0 +1,175 @@
+{
+  "kind": "toontown.c42.canvas-measure",
+  "platform": "win32",
+  "machine": "Windows 11 workstation, discrete desktop GPU (machine class; model strings removed, C42B-R1 observation)",
+  "boundsKind": "workstation",
+  "bounds": {
+    "frameMs": 17.5,
+    "gestureFrameMs": 17.5,
+    "inkMs": 16.7,
+    "commitSmallMs": 50.0,
+    "commitLargeMs": 150.0
+  },
+  "requestedBackend": "webgl2",
+  "experiments": true,
+  "ruleSet": false,
+  "backend": "webgl2",
+  "fallback": null,
+  "small": {
+    "idle": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.9,
+      "max": 17.1
+    },
+    "gesture": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.9,
+      "max": 17
+    },
+    "ink": {
+      "n": 300,
+      "p50": 0.8,
+      "p95": 1.7,
+      "max": 3.1
+    },
+    "commit": {
+      "n": 5,
+      "p50": 21.8,
+      "p95": 31.9,
+      "max": 31.9,
+      "samples": [
+        25,
+        18,
+        31.9,
+        21.8,
+        19.8
+      ]
+    }
+  },
+  "longStroke": {
+    "samples": 10000,
+    "status": "ok",
+    "commitMs": [
+      145.6
+    ],
+    "parts": [
+      {
+        "answerMs": 145.6,
+        "drawMs": 0
+      }
+    ]
+  },
+  "largeBuildS": 37.9,
+  "large": {
+    "idle": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 17.1
+    },
+    "load": {
+      "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+      "bytes": 861736,
+      "ms": 33.5
+    },
+    "residentBytes": 35730304,
+    "gesture": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 17
+    },
+    "commit": {
+      "n": 5,
+      "p50": 127.5,
+      "p95": 135.2,
+      "max": 135.2,
+      "samples": [
+        132.5,
+        127.5,
+        135.2,
+        115.7,
+        122.6
+      ]
+    }
+  },
+  "E-C2": {
+    "frameMs": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.9,
+      "max": 17.1
+    },
+    "reloads": [
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 937912,
+        "ms": 31.3
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 943048,
+        "ms": 44.9
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 948184,
+        "ms": 35.5
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 953320,
+        "ms": 30.5
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 958456,
+        "ms": 40.7
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 963592,
+        "ms": 37.3
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 968728,
+        "ms": 42.4
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 973864,
+        "ms": 32.4
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 979000,
+        "ms": 37.3
+      },
+      {
+        "key": "dr_01K7JJN800N4MQ9A11F9ABA9B2",
+        "bytes": 984136,
+        "ms": 36
+      }
+    ]
+  },
+  "E-C1": {
+    "resident": 1001,
+    "steps": 731,
+    "frameMs": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 16.9
+    },
+    "sceneMs": {
+      "n": 300,
+      "p50": 8.1,
+      "p95": 8.8,
+      "max": 11.1
+    }
+  },
+  "failures": []
+}

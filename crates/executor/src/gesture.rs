@@ -1,0 +1,1476 @@
+//! Gestures and the headless `pointer` input path (02 §5.2, §13.3; 11 §7.6; M4 C4.2, reviews/M4-design-gestures.md and
+//! reviews/M4-design-pointer.md). One input model: a sample is a view point with pressure, tilt, pointer kind,
+//! modifiers and a simulated time. A gesture is press, samples as given, release. [`to_command`] builds the equivalent
+//! command of 02 §13.3's table with every current setting explicit; the same function serves the headless `pointer`
+//! tool here and the webview (C4.2b, through IPC). The view mapping is captured at the press and used for every
+//! sample of the gesture.
+
+use schemars::JsonSchema;
+use serde::{Deserialize, Serialize};
+use serde_json::{Map, Value, json};
+use tt_model::entities::pen::PenKind;
+use tt_registry::{CommandError, codes};
+
+use crate::commands::view::to_drawing;
+use crate::cx::Cx;
+use crate::shell::{Point, ViewType, ViewWindow};
+use crate::types::{Envelope, Invocation, InvokeOptions, Origin};
+
+/// At most this many events per `pointer` call (SI-130).
+pub const MAX_EVENTS: usize = 10_000;
+/// Event coordinates are within this many view pixels of the origin (design note 4 §3).
+pub const MAX_COORD: f64 = 10_000_000.0;
+/// A press and release no farther apart than this (view pixels) is a click (SI-131).
+pub const CLICK_SLOP_PX: f64 = 3.0;
+/// The 02 §4.3 navigation ladder (SI-122, ruling D-10): powers of two from 1/16 to 16. The wheel and the Zoom tool step
+/// along it; `view.zoom.set` itself accepts the wider declared range and its table steps.
+pub const LADDER: (f64, f64) = (0.0625, 16.0);
+
+/// The next ladder zoom from `z` in direction `dir` (+1 in, -1 out): the nearest power of two strictly beyond `z`,
+/// clamped to the ladder; a zoom off the ladder snaps to the next ladder value in that direction.
+#[must_use]
+pub fn ladder_step(z: f64, dir: i32) -> f64 {
+    let z = if z.is_finite() && z > 0.0 { z } else { 1.0 };
+    let e = z.log2();
+    let next = if dir >= 0 { (e + 1e-9).floor() + 1.0 } else { (e - 1e-9).ceil() - 1.0 };
+    next.exp2().clamp(LADDER.0, LADDER.1)
+}
+
+/// The Select tool's drawing-pivot handle radius in view pixels (SI-131).
+pub const PIVOT_HANDLE_PX: f64 = 6.0;
+
+/// The hit radius of the Select tool's bounding-box handles in view pixels: the pivot's (frame-loop note §7.3).
+pub const HANDLE_PX: f64 = PIVOT_HANDLE_PX;
+
+/// How far outside a corner the rotation zone reaches, in view pixels (frame-loop note §7.3; SI-141).
+pub const ROTATE_PX: f64 = 3.0 * HANDLE_PX;
+
+/// The smallest scale factor magnitude a handle drag may produce (frame-loop note §7.3; SI-141).
+pub const MIN_SCALE: f64 = 0.001;
+
+// ----- the request ----------------------------------------------------------------------------------------------------
+
+/// The space of `pointer` coordinates (11 §7.6; SI-125).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum InputSpace {
+    /// View pixels.
+    #[default]
+    View,
+    /// Drawing units (converted to view pixels at the press).
+    Drawing,
+    /// Scene units (refused in the Drawing view).
+    Scene,
+    /// Camera units (refused in the Drawing view).
+    Camera,
+}
+
+/// The pointer kind (02 §13.3).
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum PointerKind {
+    /// Mouse.
+    #[default]
+    Mouse,
+    /// Pen tip.
+    Pen,
+    /// The pen's eraser end (a temporary Eraser for the gesture, 02 §5.2).
+    PenEraser,
+}
+
+/// An event type.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum EventType {
+    /// Press.
+    Down,
+    /// Move (a sample while pressed).
+    Move,
+    /// Release.
+    Up,
+    /// Move without a press.
+    Hover,
+    /// Wheel.
+    Wheel,
+    /// Double click (ends a polyline).
+    DoubleClick,
+}
+
+/// A mouse button.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum Button {
+    /// Left.
+    #[default]
+    Left,
+    /// Right.
+    Right,
+    /// Middle.
+    Middle,
+}
+
+/// A modifier.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub enum Modifier {
+    /// Shift (the constrain modifier).
+    Shift,
+    /// Alt / Option (the alternate modifier).
+    Alt,
+    /// Ctrl.
+    Ctrl,
+    /// Meta / Command.
+    Meta,
+}
+
+/// One event.
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct PointerEvent {
+    /// Event type.
+    #[serde(rename = "type")]
+    pub ty: EventType,
+    /// X.
+    pub x: f64,
+    /// Y.
+    pub y: f64,
+    /// Pressure 0..1 (absent or `null`: 1).
+    #[serde(default)]
+    #[schemars(range(min = 0.0, max = 1.0))]
+    pub pressure: Option<f64>,
+    /// Tilt X in degrees (carried by the sample; no tool reads it, SI-125).
+    #[serde(default)]
+    #[schemars(range(min = -90.0, max = 90.0))]
+    pub tilt_x: Option<f64>,
+    /// Tilt Y in degrees.
+    #[serde(default)]
+    #[schemars(range(min = -90.0, max = 90.0))]
+    pub tilt_y: Option<f64>,
+    /// Button.
+    #[serde(default)]
+    pub button: Option<Button>,
+    /// Modifiers held.
+    #[serde(default)]
+    pub modifiers: Vec<Modifier>,
+    /// Simulated milliseconds since the previous event (never the wall clock; absent: 0).
+    #[serde(default)]
+    #[schemars(range(min = 0.0))]
+    pub dt: Option<f64>,
+    /// Wheel delta (DOM convention: negative zooms in).
+    #[serde(default)]
+    pub wheel_delta: Option<f64>,
+}
+
+/// The `pointer` request (11 §7.6, line 354).
+#[derive(Debug, Clone, Deserialize, Serialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub struct PointerRequest {
+    /// View id (or `drawing` for the Drawing view).
+    pub view: String,
+    /// Coordinate space.
+    #[serde(default)]
+    pub space: InputSpace,
+    /// Pointer kind.
+    #[serde(default)]
+    pub pointer_type: PointerKind,
+    /// Events, at most 10,000 (SI-130).
+    #[schemars(length(max = 10_000))]
+    pub events: Vec<PointerEvent>,
+    /// Tool to activate first.
+    #[serde(default)]
+    pub tool: Option<String>,
+}
+
+// ----- gestures -------------------------------------------------------------------------------------------------------
+
+/// One sample, in view pixels and in drawing units through the mapping captured at the press.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct Sample {
+    /// View point.
+    pub v: Point,
+    /// Drawing point.
+    pub d: Point,
+    /// Pressure 0..1.
+    pub pressure: f64,
+    /// Tilt X and Y in degrees (0 without a pen; carried, read by no tool: SI-125, ruling D-9).
+    pub tilt: (f64, f64),
+    /// Simulated time (ms).
+    pub t_ms: f64,
+}
+
+/// Modifiers at the press.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub struct Mods {
+    /// Constrain (Shift).
+    pub constrain: bool,
+    /// Alternate (Alt / Option).
+    pub alternate: bool,
+    /// Temporary Select (Ctrl or Meta, 02 §5.2).
+    pub temp_select: bool,
+}
+
+impl Mods {
+    fn of(m: &[Modifier]) -> Self {
+        Self {
+            constrain: m.contains(&Modifier::Shift),
+            alternate: m.contains(&Modifier::Alt),
+            temp_select: m.contains(&Modifier::Ctrl) || m.contains(&Modifier::Meta),
+        }
+    }
+}
+
+/// One press-to-release stroke of input.
+#[derive(Debug, Clone, PartialEq)]
+pub struct Stroke {
+    /// Samples from the press to the release, as given.
+    pub samples: Vec<Sample>,
+    /// Modifiers at the press.
+    pub mods: Mods,
+}
+
+impl Stroke {
+    fn first(&self) -> Option<&Sample> {
+        self.samples.first()
+    }
+
+    fn last(&self) -> Option<&Sample> {
+        self.samples.last()
+    }
+
+    /// Whether every sample stays within [`CLICK_SLOP_PX`] of the press.
+    #[must_use]
+    pub fn is_click(&self) -> bool {
+        let Some(a) = self.first() else { return true };
+        self.samples.iter().all(|s| (s.v.x - a.v.x).hypot(s.v.y - a.v.y) <= CLICK_SLOP_PX)
+    }
+}
+
+/// A gesture: one stroke for most tools, several clicks or click-drags for the Polyline (02 §13.3).
+#[derive(Debug, Clone, PartialEq)]
+pub struct Gesture {
+    /// The tool the gesture is made with (after temporary overrides).
+    pub tool: String,
+    /// The view.
+    pub view_id: String,
+    /// Strokes (Polyline: one per click).
+    pub strokes: Vec<Stroke>,
+    /// Ended by a double click (Polyline).
+    pub double_click: bool,
+    /// The mapping taken at the first press, view pixel -> drawing unit (02 §13.3; a Camera view's is the current
+    /// element's plane through the camera, 02 line 61). The Select tool places its handles with its inverse.
+    pub press: [f64; 6],
+}
+
+/// The tools whose gestures C4.2 builds (design note 3 §2); the others answer `command.notImplemented` (SI-129).
+pub const COVERED: &[&str] = &[
+    "select",
+    "brush",
+    "pencil",
+    "rectangle",
+    "ellipse",
+    "polyline",
+    "line",
+    "paint",
+    "unpaint",
+    "paintUnpainted",
+    "dropper",
+    "closeGap",
+    "stroke",
+    "eraser",
+    "cutter",
+    "scissor",
+    "zoom",
+    "grabber",
+    crate::contour_gesture::TOOL,
+    crate::envelope_gesture::PERSPECTIVE,
+    crate::envelope_gesture::REPOSITION,
+    crate::text_edit::TOOL,
+];
+
+/// The tool a gesture uses after the temporary overrides of 02 §5.2 held at the press.
+#[must_use]
+pub fn effective_tool(active: &str, kind: PointerKind, mods: Mods) -> String {
+    const TEMP_SELECT: &[&str] = &[
+        "zoom",
+        "grabber",
+        "polyline",
+        "line",
+        "rectangle",
+        "ellipse",
+        "brush",
+        "pencil",
+        "eraser",
+        "stroke",
+        "closeGap",
+        "paint",
+        "paintUnpainted",
+        "unpaint",
+        "dropper",
+        "editTexture",
+    ];
+    if kind == PointerKind::PenEraser {
+        return "eraser".into();
+    }
+    if mods.temp_select && TEMP_SELECT.contains(&active) {
+        return "select".into();
+    }
+    if mods.alternate && matches!(active, "paint" | "brush" | "pencil") {
+        return "dropper".into();
+    }
+    active.to_owned()
+}
+
+// ----- the equivalent command -----------------------------------------------------------------------------------------
+
+fn pt(p: Point) -> Value {
+    json!({ "x": p.x, "y": p.y })
+}
+
+/// A tool whose gestures are not built (SI-129; C4.3 plan answer 5): Edit Texture's are M7 C7.1's (its row names the
+/// edit-texture tool); no milestone row names the Contour Editor, Perspective, Reposition All Drawings or Text tools,
+/// so they have no owner and M4's merge note lists them for the spec owner to assign.
+fn not_built(tool: &str) -> CommandError {
+    let owner = if tool == "editTexture" { Some("M7 C7.1") } else { None };
+    let why = owner.map_or_else(
+        || "no milestone names them yet: listed in M4's merge note for the spec owner".to_owned(),
+        |o| format!("owner {o}"),
+    );
+    CommandError::with_details(
+        codes::COMMAND_NOT_IMPLEMENTED,
+        format!("gestures of the {tool} tool are not built ({why}; SI-129); use its structured command"),
+        json!({ "toolId": tool, "owner": owner }),
+    )
+}
+
+fn empty() -> CommandError {
+    CommandError::with_details(codes::ARG_INVALID, "the gesture has no samples", json!({ "pointer": "/events" }))
+}
+
+/// The current settings made explicit (02 §13.3 "current settings are made explicit").
+struct Settings {
+    brush_pen: Option<String>,
+    brush_max: Option<f64>,
+    eraser_pen: Option<String>,
+    colour: Option<String>,
+    layer: &'static str,
+    gap: Value,
+}
+
+fn settings(cx: &Cx) -> Settings {
+    let doc = cx.document().ok();
+    let brush = crate::commands::tool::current_pen(cx, PenKind::Brush);
+    let brush_max = brush
+        .as_ref()
+        .and_then(|id| doc.and_then(|d| d.project().pens().iter().find(|p| p.id() == id).map(|p| *p.max_size())));
+    let d = cx.ui().drawing();
+    // Draw on Top Layer takes precedence over Draw Behind when both are on (SI-131).
+    let layer = if d.draw_top_layer {
+        "top"
+    } else if d.place_behind {
+        "behind"
+    } else {
+        "auto"
+    };
+    let gap = json!(crate::commands::colour::GapMode::of(cx.pref(crate::commands::colour::GAP_PREF).as_ref()));
+    Settings {
+        brush_pen: brush.map(|i| i.as_str().to_owned()),
+        brush_max,
+        eraser_pen: crate::commands::tool::current_pen(cx, PenKind::Eraser).map(|i| i.as_str().to_owned()),
+        colour: doc.and_then(|d| crate::commands::draw_stroke::current_colour(cx.app(), d)),
+        layer,
+        gap,
+    }
+}
+
+/// The line thickness of the Pencil and the shape tools (02 §13.2): the current brush pen's maximum size, or the
+/// tool's fixed thickness.
+fn thickness(cx: &Cx, tool: &str, s: &Settings) -> Option<f64> {
+    let o = cx.ui().drawing().options_of(tool);
+    if o.get("thicknessSource").and_then(Value::as_str) == Some("fixed")
+        && let Some(t) = o.get("thickness").and_then(Value::as_f64)
+    {
+        return Some(t);
+    }
+    s.brush_max
+}
+
+fn styled(m: &mut Map<String, Value>, cx: &Cx, tool: &str, s: &Settings) {
+    if let Some(c) = &s.colour {
+        m.insert("colourId".into(), json!(c));
+    }
+    if let Some(t) = thickness(cx, tool, s) {
+        m.insert("thickness".into(), json!(t));
+    }
+    if let Some(p) = &s.brush_pen {
+        m.insert("penId".into(), json!(p));
+    }
+    m.insert("layer".into(), json!(s.layer));
+    m.insert("symmetry".into(), json!(true));
+}
+
+fn obj(v: Value) -> Map<String, Value> {
+    v.as_object().cloned().unwrap_or_default()
+}
+
+fn rect(a: Point, b: Point) -> Value {
+    json!({ "x": a.x.min(b.x), "y": a.y.min(b.y), "width": (a.x - b.x).abs(), "height": (a.y - b.y).abs() })
+}
+
+/// The equivalent commands of a gesture (02 §13.3), in order: one command for every tool, except a Zoom-tool marquee,
+/// which fits its rectangle with `view.zoom.set` then `view.pan.set` (02 §7.5 line 658; 02 §13.3 gives Zoom "`view.*`
+/// commands"). The fitted zoom is exact (clamped to 6.25 %-6400 %), not a ladder value: the ladder applies to steps.
+///
+/// # Errors
+/// As [`to_command`].
+pub fn to_commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
+    let commands = commands_of(cx, g)?;
+    // Ruling D-79 (findings C44B-R1-02, -03): a gesture never produces an editing command for an element or drawing
+    // the person cannot edit interactively in this view. The scene tools pick and transform scene nodes by their own
+    // rules (gestures note §7) and are not drawing tools.
+    let scene_tool =
+        [crate::scene_gesture::SCENE_SELECT, crate::scene_gesture::SCENE_TRANSFORM, crate::scene_gesture::SCENE_SKEW]
+            .contains(&g.tool.as_str());
+    let edit = commands.iter().any(|(c, _)| edits(c));
+    if !scene_tool
+        && (edit || commands.iter().any(|(c, _)| picks(c)))
+        && let Err(mut e) = interactive_target(cx, &g.view_id, &g.tool, edit)
+    {
+        // The refusal names the command the gesture would have sent (as a command's own refusal does).
+        if let Some((c, _)) = commands.iter().find(|(c, _)| edits(c) || picks(c))
+            && let Some(m) = e.details.as_object_mut()
+        {
+            m.insert("refusedCommandId".into(), json!(c));
+        }
+        return Err(e);
+    }
+    Ok(commands)
+}
+
+/// Whether `command` picks the element's content (a selection of its objects or anchors): a locked element "cannot be
+/// picked" in a scene view (05 §6.6, ruling D-80), and a hidden one offers no hit target there (D-79).
+pub(crate) fn picks(command: &str) -> bool {
+    matches!(command, "draw.selection.set" | "draw.pointSelection.set")
+}
+
+/// Whether `command` changes the document (an `action`: an undoable edit), as opposed to a selection, view or tool
+/// change, which a gesture may still make on a locked or hidden element.
+pub(crate) fn edits(command: &str) -> bool {
+    crate::registry().ok().and_then(|r| r.get(command)).is_some_and(|e| e.spec.kind == tt_registry::Kind::Action)
+}
+
+/// Whether the current element and drawing may be edited (`edit`) or picked interactively in view `view_id` (rulings
+/// D-79, D-80): the ONE rule of the gesture path for every drawing tool, read by the Text tool's session too.
+///
+/// - **A locked drawing** (02 line 414): refused in every view (`drawing.locked`). Reposition All is the exception
+///   SI-189 states: it moves every unlocked drawing of the element and reports the locked ones, so its own precheck
+///   decides.
+/// - **A locked element** (05 §6.6, 04 §10.4: it "cannot be picked or edited interactively" in the Camera, Top and
+///   Side views; 04 line 572: "Locked elements can still be edited in the Drawing View"; ruling D-80): refused in the
+///   scene views (`element.locked`), edited in the Drawing view. An agent addressing it by id still edits it.
+/// - **An element the Camera view does not show** (02 §1.2, 04 §10.1: scene visibility governs the Camera view):
+///   refused there (`element.hidden`), with 02 §10.7's exceptions as the view applies them: "Selection always visible"
+///   shows a selected hidden element (editable); "Show outline on selection" draws only its outline (not editable).
+///   The test is the view's own composition: the current element is editable when the view draws its ink.
+///
+/// # Errors
+/// `drawing.locked`, `element.locked`, `element.hidden`.
+pub(crate) fn interactive_target(cx: &Cx, view_id: &str, tool: &str, edit: bool) -> Result<(), CommandError> {
+    use crate::shell::ViewType;
+    let doc = cx.document()?;
+    let element = cx.app().element.clone();
+    // The drawing lock refuses edits (selecting a locked drawing's objects is not an edit).
+    if edit
+        && tool != crate::envelope_gesture::REPOSITION
+        && let Some(id) = cx.app().current_drawing(doc)
+        && doc.drawing(&id).is_some_and(|d| *d.locked())
+    {
+        return Err(CommandError::with_details(
+            "drawing.locked",
+            "the drawing is locked: a gesture does not edit it (02 line 414); unlock it first",
+            json!({ "drawingId": id.as_str() }),
+        ));
+    }
+    // The element lock is a scene-planning aid (ruling D-80): it holds in the scene views (Camera, Top, Side), and
+    // "Locked elements can still be edited in the Drawing View" (04 line 572).
+    let ty = cx.ui().shell().view(view_id).ok().map(|w| w.ty);
+    let scene_view = matches!(ty, Some(ViewType::Camera | ViewType::Top | ViewType::Side));
+    if !scene_view {
+        return Ok(());
+    }
+    let Some(el) = element else { return Ok(()) };
+    if doc.element(&el).is_some_and(|e| *e.locked()) {
+        return Err(CommandError::with_details(
+            "element.locked",
+            "the element is locked: a scene view does not edit it (05 §6.6); unlock it, or address it by id",
+            json!({ "elementId": el.as_str() }),
+        ));
+    }
+    if ty == Some(ViewType::Camera) && !crate::canvas::camera_shows_current(cx, view_id)? {
+        return Err(CommandError::with_details(
+            "element.hidden",
+            "the element is hidden in the scene, so the Camera view does not edit it (02 §1.2, §10.7)",
+            json!({ "elementId": el.as_str() }),
+        ));
+    }
+    Ok(())
+}
+
+/// The commands of a gesture before the interactive-target rule ([`to_commands`]).
+fn commands_of(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
+    if g.tool == crate::contour_gesture::TOOL {
+        return crate::contour_gesture::commands(cx, g);
+    }
+    if g.tool == crate::text_edit::TOOL {
+        return crate::text_edit::commands(cx, g);
+    }
+    if g.tool == "zoom"
+        && let Some(st) = g.strokes.first()
+        && !st.is_click()
+        && let (Some(p0), Some(pn)) = (st.first(), st.last())
+    {
+        let w = cx.ui().shell().view(&g.view_id)?;
+        let (rw, rh) = ((pn.v.x - p0.v.x).abs(), (pn.v.y - p0.v.y).abs());
+        if rw > 0.0 && rh > 0.0 {
+            let z = w.transform().zoom;
+            let fit =
+                (z * (w.size.width / rw).min(w.size.height / rh)).clamp(crate::shell::ZOOM_MIN, crate::shell::ZOOM_MAX);
+            let centre = Point { x: (p0.d.x + pn.d.x) / 2.0, y: (p0.d.y + pn.d.y) / 2.0 };
+            return Ok(vec![
+                ("view.zoom.set".into(), json!({ "viewId": g.view_id, "zoom": fit })),
+                ("view.pan.set".into(), json!({ "viewId": g.view_id, "centre": pt(centre) })),
+            ]);
+        }
+    }
+    Ok(to_command(cx, g)?.into_iter().collect())
+}
+
+/// The equivalent command of a gesture (02 §13.3), with every current setting explicit. `None`: the gesture does
+/// nothing (a Polyline of one click).
+///
+/// # Errors
+/// `command.notImplemented` for the tools of SI-129; `arg.invalid` for a gesture without samples.
+pub fn to_command(cx: &Cx, g: &Gesture) -> Result<Option<(String, Value)>, CommandError> {
+    let tool = g.tool.as_str();
+    // The scene tools in a Camera view (gestures note §7).
+    if [crate::scene_gesture::SCENE_SELECT, crate::scene_gesture::SCENE_TRANSFORM, crate::scene_gesture::SCENE_SKEW]
+        .contains(&tool)
+    {
+        return crate::scene_gesture::commands(cx, g);
+    }
+    if !COVERED.contains(&tool) {
+        return Err(not_built(tool));
+    }
+    if tool == "polyline" {
+        return Ok(polyline(cx, g));
+    }
+    let Some(st) = g.strokes.first() else { return Err(empty()) };
+    let (Some(p0), Some(pn)) = (st.first().copied(), st.last().copied()) else { return Err(empty()) };
+    let s = settings(cx);
+    let mapped: Vec<Value> = st.samples.iter().map(|x| pt(x.d)).collect();
+    let pressured: Vec<Value> =
+        st.samples.iter().map(|x| json!({ "x": x.d.x, "y": x.d.y, "pressure": x.pressure })).collect();
+    let space = |m: &mut Map<String, Value>| {
+        m.insert("space".into(), json!("drawing"));
+        m.insert("view".into(), json!(g.view_id));
+    };
+    let out = match tool {
+        "brush" | "pencil" | "stroke" => {
+            let kind = if tool == "stroke" { "invisible" } else { tool };
+            let mut m = obj(json!({ "kind": kind, "points": pressured, "fit": true }));
+            if let Some(p) = &s.brush_pen {
+                m.insert("penId".into(), json!(p));
+            }
+            if let Some(c) = &s.colour {
+                m.insert("colourId".into(), json!(c));
+            }
+            if tool == "pencil"
+                && let Some(t) = thickness(cx, "pencil", &s)
+            {
+                m.insert("thickness".into(), json!(t));
+            }
+            m.insert("layer".into(), json!(s.layer));
+            m.insert("symmetry".into(), json!(true));
+            ("draw.stroke.add", m)
+        }
+        "rectangle" | "ellipse" => {
+            let constrain = if tool == "rectangle" { "square" } else { "circle" };
+            let mut m = obj(json!({ "from": pt(p0.d), "to": pt(pn.d), constrain: st.mods.constrain,
+                                   "fromCentre": st.mods.alternate }));
+            styled(&mut m, cx, tool, &s);
+            (if tool == "rectangle" { "draw.rectangle.add" } else { "draw.ellipse.add" }, m)
+        }
+        "line" => {
+            let mut m = obj(json!({ "to": pt(pn.d), "constrainAngle": st.mods.constrain,
+                                   "continuePrevious": st.mods.alternate }));
+            if !st.mods.alternate {
+                m.insert("from".into(), pt(p0.d));
+            }
+            styled(&mut m, cx, tool, &s);
+            ("draw.line.add", m)
+        }
+        "eraser" => {
+            let mut m = obj(json!({ "path": pressured }));
+            if let Some(p) = &s.eraser_pen {
+                m.insert("penId".into(), json!(p));
+            }
+            ("draw.erase.apply", m)
+        }
+        "cutter" => ("draw.cut.apply", obj(json!({ "polygon": mapped }))),
+        // The Scissor cuts a rectangle, or with the alternate modifier a free-form section like the Cutter (02 §7.4.3);
+        // either way the step is the Scissor's ("Scissor Tool", [`acting_label`]).
+        "scissor" => {
+            let section =
+                if st.mods.alternate { json!({ "polygon": mapped }) } else { json!({ "rect": rect(p0.d, pn.d) }) };
+            ("draw.cut.apply", obj(section))
+        }
+        "paint" | "unpaint" | "paintUnpainted" => {
+            let click = st.is_click();
+            let mut m = Map::new();
+            // A gradient or texture colour: a drag defines the fill mapping axis, a click fits the default mapping
+            // (02 §7.3.1 lines 557-561; §13.3 line 1214); a solid colour's drag paints what it crosses.
+            let graded = tool == "paint"
+                && s.colour
+                    .as_deref()
+                    .and_then(|c| cx.document().ok().and_then(|d| crate::commands::colour::swatch_info(d, c)))
+                    .is_some_and(|(k, _)| !matches!(k, tt_model::entities::palette::SwatchKind::Solid));
+            match (tool, click) {
+                (_, true) => {
+                    m.insert("points".into(), json!([pt(p0.d)]));
+                }
+                ("paint", false) if graded => {
+                    m.insert("points".into(), json!([pt(p0.d)]));
+                    m.insert("mapping".into(), json!({ "from": pt(p0.d), "to": pt(pn.d) }));
+                }
+                ("paint", false) => {
+                    m.insert("path".into(), json!(mapped));
+                }
+                ("paintUnpainted", false) => {
+                    m.insert("lasso".into(), json!(mapped));
+                }
+                _ => {
+                    m.insert("points".into(), json!([pt(p0.d)]));
+                }
+            }
+            space(&mut m);
+            if tool != "unpaint"
+                && let Some(c) = &s.colour
+            {
+                m.insert("colourId".into(), json!(c));
+            }
+            m.insert("gapClosing".into(), s.gap.clone());
+            let id = match tool {
+                "paint" => "colour.paint.apply",
+                "unpaint" => "colour.paint.remove",
+                _ => "colour.paintUnpainted.apply",
+            };
+            (id, m)
+        }
+        "dropper" => {
+            let mut m = obj(json!({ "point": pt(p0.d) }));
+            space(&mut m);
+            ("colour.pick", m)
+        }
+        "closeGap" => {
+            let mut m = obj(json!({ "from": pt(p0.d), "to": pt(pn.d) }));
+            space(&mut m);
+            ("colour.gap.close", m)
+        }
+        "zoom" => {
+            // A click steps the zoom about the click (in, or out with the alternate modifier); a marquee fits its
+            // rectangle ([`to_commands`]).
+            let steps = if st.mods.alternate { -1 } else { 1 };
+            ("view.zoom.set", obj(json!({ "viewId": g.view_id, "steps": steps, "anchor": pt(p0.v) })))
+        }
+        "grabber" => {
+            let by = Point { x: pn.v.x - p0.v.x, y: pn.v.y - p0.v.y };
+            ("view.pan.set", obj(json!({ "viewId": g.view_id, "by": pt(by) })))
+        }
+        "select" => return select(cx, g, st, p0, pn),
+        crate::envelope_gesture::PERSPECTIVE => return crate::envelope_gesture::perspective(cx, g, st, p0, pn),
+        crate::envelope_gesture::REPOSITION => return crate::envelope_gesture::reposition_all(cx, g, st, p0, pn),
+        _ => return Err(not_built(tool)),
+    };
+    Ok(Some((out.0.to_owned(), Value::Object(out.1))))
+}
+
+fn select(cx: &Cx, g: &Gesture, st: &Stroke, p0: Sample, pn: Sample) -> Result<Option<(String, Value)>, CommandError> {
+    let w = cx.ui().shell().view(&g.view_id)?;
+    // Drawing units -> view pixels where the view shows them: a Camera view through the gesture's press mapping (the
+    // element's plane through the camera, 02 line 61), a Drawing view through its own transform. The handles are where
+    // the view draws them (SI-156).
+    let camera = w.ty == crate::shell::ViewType::Camera;
+    let inv = crate::camera_view::invert(&g.press);
+    let view = move |p: Point| match inv {
+        Some(m) if camera => crate::shell::apply(&m, p),
+        _ => crate::commands::view::to_view(w, p),
+    };
+    // The drawing pivot handle (02 §7.1 "drag drawing pivot").
+    if let Some(d) = current_drawing(cx) {
+        let pv = view(Point { x: d.1.x, y: d.1.y });
+        if !st.is_click() && (pv.x - p0.v.x).hypot(pv.y - p0.v.y) <= PIVOT_HANDLE_PX {
+            return Ok(Some(("draw.pivot.set".into(), json!({ "point": pt(pn.d) }))));
+        }
+        // A drag that starts on a bounding-box handle scales; just outside a corner, rotates (02 §7.1.1).
+        if !st.is_click()
+            && let Some(b) = selection_box(cx, &d.0)
+            && let Some(h) = handle_at(&view, &b, p0, true)
+        {
+            return handle_drag(h, &b, p0, pn, st.mods.constrain).map(Some);
+        }
+        // A drag that starts on the selection moves it (alternate: a copy).
+        if !st.is_click() && inside_selection(cx, &d.0, p0.d) {
+            let by = Point { x: pn.d.x - p0.d.x, y: pn.d.y - p0.d.y };
+            return Ok(Some((
+                "draw.transform.apply".into(),
+                json!({ "translate": pt(by), "copy": st.mods.alternate }),
+            )));
+        }
+    }
+    select_by_area(cx, g, st, p0, pn)
+}
+
+/// The Select tool's selection by a click, a marquee or (alternate) a lasso (02 §7.1.1); the Perspective tool selects
+/// the same way off its handles (design note 4 §3).
+///
+/// # Errors
+/// The view's refusal.
+pub(crate) fn select_by_area(
+    cx: &Cx,
+    g: &Gesture,
+    st: &Stroke,
+    p0: Sample,
+    pn: Sample,
+) -> Result<Option<(String, Value)>, CommandError> {
+    let w = cx.ui().shell().view(&g.view_id)?;
+    let mode = if st.mods.constrain { "add" } else { "replace" };
+    let rule = cx.ui().drawing().options_of("select").get("rectRule").cloned().unwrap_or(json!("inside"));
+    let v = if st.is_click() {
+        // The click's hit tolerance is in view pixels: the view is stated whenever the zoom is not exactly 100 %
+        // (ruling D-16; 02 §13.1 item 5, §13.3); at 100 % an absent view means the same tolerance by definition.
+        let mut v = json!({ "by": "point", "point": pt(p0.d), "mode": mode });
+        if (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12 {
+            v["view"] = json!(g.view_id);
+        }
+        v
+    } else if st.mods.alternate {
+        let poly: Vec<Value> = st.samples.iter().map(|x| pt(x.d)).collect();
+        json!({ "by": "lasso", "polygon": poly, "rectRule": rule, "mode": mode })
+    } else {
+        json!({ "by": "rect", "rect": rect(p0.d, pn.d), "rectRule": rule, "mode": mode })
+    };
+    Ok(Some(("draw.selection.set".into(), v)))
+}
+
+/// The current drawing and its pivot.
+fn current_drawing(cx: &Cx) -> Option<(tt_model::entities::drawing::Drawing, Point)> {
+    let doc = cx.document().ok()?;
+    let id = cx.app().current_drawing(doc)?;
+    let d = doc.drawing(&id)?.clone();
+    let p = Point { x: d.pivot().x, y: d.pivot().y };
+    Some((d, p))
+}
+
+/// The selection's bounding box in drawing units, when something is selected.
+fn selection_box(cx: &Cx, d: &tt_model::entities::drawing::Drawing) -> Option<tt_vector::geom::Rect> {
+    let ids = crate::commands::draw::selection_ids(cx, d);
+    if ids.is_empty() {
+        return None;
+    }
+    crate::commands::draw_select::selection_bounds(cx, d, &ids).ok().flatten()
+}
+
+/// A Select-tool handle (frame-loop note §7.3). Corners and sides count counter-clockwise from the bottom-left corner
+/// and the bottom side in drawing space (y up).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub(crate) enum Handle {
+    Corner(usize),
+    Side(usize),
+    Rotate,
+}
+
+/// The box's corners, bottom-left first, counter-clockwise (drawing space).
+fn box_corners(b: &tt_vector::geom::Rect) -> [Point; 4] {
+    [
+        Point { x: b.min_x, y: b.min_y },
+        Point { x: b.max_x, y: b.min_y },
+        Point { x: b.max_x, y: b.max_y },
+        Point { x: b.min_x, y: b.max_y },
+    ]
+}
+
+/// The handle a drag starting at `p0` takes, tested in order: corners, sides (within [`HANDLE_PX`] of the handle's
+/// centre), then, with `rotate`, the rotation zone (outside the box, within [`ROTATE_PX`] of a corner).
+pub(crate) fn handle_at(
+    view: &dyn Fn(Point) -> Point,
+    b: &tt_vector::geom::Rect,
+    p0: Sample,
+    rotate: bool,
+) -> Option<Handle> {
+    let c = box_corners(b);
+    let dist = |p: Point| {
+        let q = view(p);
+        (q.x - p0.v.x).hypot(q.y - p0.v.y)
+    };
+    if let Some(i) = (0..4).find(|&i| dist(c[i]) <= HANDLE_PX) {
+        return Some(Handle::Corner(i));
+    }
+    let mid = |i: usize| {
+        let (a, z) = (c[i], c[(i + 1) % 4]);
+        Point { x: (a.x + z.x) / 2.0, y: (a.y + z.y) / 2.0 }
+    };
+    if let Some(i) = (0..4).find(|&i| dist(mid(i)) <= HANDLE_PX) {
+        return Some(Handle::Side(i));
+    }
+    let inside = p0.d.x >= b.min_x && p0.d.x <= b.max_x && p0.d.y >= b.min_y && p0.d.y <= b.max_y;
+    (rotate && !inside && c.iter().any(|&q| dist(q) <= ROTATE_PX)).then_some(Handle::Rotate)
+}
+
+/// The command of a handle drag from `p0` to `pn` on the box `b` (frame-loop note §7.3); Reposition All takes the same
+/// operation for all drawings (design note 4 §4).
+pub(crate) fn handle_drag(
+    h: Handle,
+    b: &tt_vector::geom::Rect,
+    p0: Sample,
+    pn: Sample,
+    constrain: bool,
+) -> Result<(String, Value), CommandError> {
+    let c = box_corners(b);
+    // The factor along one axis about `pivot`: 1 when the press is on the pivot's line (a box without extent there).
+    let factor = |press: f64, release: f64, pivot: f64| {
+        let den = press - pivot;
+        if den.abs() < 1e-9 { 1.0 } else { (release - pivot) / den }
+    };
+    let (scale, pivot) = match h {
+        Handle::Rotate => {
+            let o = Point { x: (b.min_x + b.max_x) / 2.0, y: (b.min_y + b.max_y) / 2.0 };
+            let a0 = (p0.d.y - o.y).atan2(p0.d.x - o.x);
+            let a1 = (pn.d.y - o.y).atan2(pn.d.x - o.x);
+            let mut deg = (a1 - a0).to_degrees();
+            if deg > 180.0 {
+                deg -= 360.0;
+            } else if deg <= -180.0 {
+                deg += 360.0;
+            }
+            return Ok(("draw.transform.apply".into(), json!({ "rotate": deg, "pivot": pt(o) })));
+        }
+        Handle::Corner(i) => {
+            let o = c[(i + 2) % 4];
+            let (mut sx, mut sy) = (factor(p0.d.x, pn.d.x, o.x), factor(p0.d.y, pn.d.y, o.y));
+            if constrain {
+                let s = if sx.abs() >= sy.abs() { sx } else { sy };
+                (sx, sy) = (s, s);
+            }
+            ((sx, sy), o)
+        }
+        Handle::Side(i) => {
+            // Sides 0 and 2 (bottom, top) scale y about the opposite side; 1 and 3 (right, left) scale x.
+            let mid_x = (b.min_x + b.max_x) / 2.0;
+            let mid_y = (b.min_y + b.max_y) / 2.0;
+            match i {
+                0 => ((1.0, factor(p0.d.y, pn.d.y, b.max_y)), Point { x: mid_x, y: b.max_y }),
+                2 => ((1.0, factor(p0.d.y, pn.d.y, b.min_y)), Point { x: mid_x, y: b.min_y }),
+                1 => ((factor(p0.d.x, pn.d.x, b.min_x), 1.0), Point { x: b.min_x, y: mid_y }),
+                _ => ((factor(p0.d.x, pn.d.x, b.max_x), 1.0), Point { x: b.max_x, y: mid_y }),
+            }
+        }
+    };
+    if !(scale.0.abs() >= MIN_SCALE && scale.1.abs() >= MIN_SCALE && scale.0.is_finite() && scale.1.is_finite()) {
+        return Err(CommandError::with_details(
+            "arg.invalid",
+            format!(
+                "the handle drag would scale by {} x {}, below {MIN_SCALE}; nothing was committed",
+                scale.0, scale.1
+            ),
+            json!({ "pointer": "/events", "scale": { "x": scale.0, "y": scale.1 } }),
+        ));
+    }
+    Ok(("draw.transform.apply".into(), json!({ "scale": { "x": scale.0, "y": scale.1 }, "pivot": pt(pivot) })))
+}
+
+fn inside_selection(cx: &Cx, d: &tt_model::entities::drawing::Drawing, p: Point) -> bool {
+    let ids = crate::commands::draw::selection_ids(cx, d);
+    if ids.is_empty() {
+        return false;
+    }
+    crate::commands::draw_select::selection_bounds(cx, d, &ids)
+        .ok()
+        .flatten()
+        .is_some_and(|b| p.x >= b.min_x && p.x <= b.max_x && p.y >= b.min_y && p.y <= b.max_y)
+}
+
+/// The Polyline (02 §7.3.5): one anchor per click; a click-drag gives the anchor an out-handle (and the mirrored
+/// in-handle unless the alternate modifier breaks the symmetry); closed by clicking within the snap radius of the first
+/// anchor, ended by a double click.
+fn polyline(cx: &Cx, g: &Gesture) -> Option<(String, Value)> {
+    let s = settings(cx);
+    let o = cx.ui().drawing().options_of("polyline");
+    let snap = o.get("snap").and_then(Value::as_bool).unwrap_or(true);
+    let radius = o.get("snapRadius").and_then(Value::as_f64).unwrap_or(8.0);
+    let mut points: Vec<Value> = Vec::new();
+    let mut anchors_v: Vec<Point> = Vec::new();
+    let mut first_v: Option<Point> = None;
+    let mut closed = false;
+    for (i, st) in g.strokes.iter().enumerate() {
+        let (Some(a), Some(b)) = (st.first(), st.last()) else { continue };
+        if i > 0
+            && let Some(f) = first_v
+            && (a.v.x - f.x).hypot(a.v.y - f.y) <= radius
+            && points.len() >= 2
+        {
+            closed = true;
+            break;
+        }
+        if i == 0 {
+            first_v = Some(a.v);
+        }
+        // Constrain + click on an anchor of the path being drawn removes it (02 §7.2.5).
+        if st.is_click()
+            && st.mods.constrain
+            && let Some(k) = anchors_v.iter().position(|q: &Point| (q.x - a.v.x).hypot(q.y - a.v.y) <= radius)
+        {
+            anchors_v.remove(k);
+            points.remove(k);
+            continue;
+        }
+        anchors_v.push(a.v);
+        let mut p = obj(json!({ "x": a.d.x, "y": a.d.y }));
+        if !st.is_click() {
+            let mut out = Point { x: b.d.x - a.d.x, y: b.d.y - a.d.y };
+            // Constrain while dragging handles: the handle angle in 15° increments, its length kept (02 §7.2.5).
+            if st.mods.constrain {
+                let len = out.x.hypot(out.y);
+                let step = 15f64.to_radians();
+                let angle = (out.y.atan2(out.x) / step).round() * step;
+                out = Point { x: len * angle.cos(), y: len * angle.sin() };
+            }
+            p.insert("outHandle".into(), pt(out));
+            if !st.mods.alternate {
+                p.insert("inHandle".into(), pt(Point { x: -out.x, y: -out.y }));
+            }
+        }
+        points.push(Value::Object(p));
+    }
+    if points.len() < 2 {
+        return None;
+    }
+    let mut m = obj(json!({ "points": points, "closed": closed, "snap": snap, "snapRadius": radius }));
+    // The snap radius is in view pixels: the view is stated whenever the zoom is not exactly 100 % (ruling D-16;
+    // 02 §13.1 item 5, §13.3 line 1203); at 100 % an absent view means the same tolerance by definition.
+    if cx.ui().shell().view(&g.view_id).is_ok_and(|w| (crate::commands::view::pixels_per_du(w) - 1.0).abs() > 1e-12) {
+        m.insert("view".into(), json!(g.view_id));
+    }
+    styled(&mut m, cx, "polyline", &s);
+    Some(("draw.polyline.add".into(), Value::Object(m)))
+}
+
+// ----- the headless runner ----------------------------------------------------------------------------------------------
+
+fn invalid(pointer: &str, message: impl Into<String>) -> CommandError {
+    CommandError::with_details(codes::ARG_INVALID, message, json!({ "pointer": pointer }))
+}
+
+/// Checks a request before anything runs (limits, finite coordinates, the view and space).
+fn check(req: &PointerRequest) -> Result<(), CommandError> {
+    if req.events.len() > MAX_EVENTS {
+        return Err(CommandError::with_details(
+            codes::LIMIT_EXCEEDED,
+            format!("a pointer call has at most {MAX_EVENTS} events"),
+            json!({ "limit": "pointerEvents", "max": MAX_EVENTS, "actual": req.events.len() }),
+        ));
+    }
+    for (i, e) in req.events.iter().enumerate() {
+        for (k, v) in
+            [("x", Some(e.x)), ("y", Some(e.y)), ("pressure", e.pressure), ("dt", e.dt), ("wheelDelta", e.wheel_delta)]
+        {
+            if let Some(v) = v
+                && !(v.is_finite() && v.abs() <= MAX_COORD)
+            {
+                return Err(invalid(&format!("/events/{i}/{k}"), format!("`{k}` must be a finite number")));
+            }
+        }
+        for (k, t) in [("tiltX", e.tilt_x), ("tiltY", e.tilt_y)] {
+            if t.is_some_and(|t| !(-90.0..=90.0).contains(&t)) {
+                return Err(invalid(&format!("/events/{i}/{k}"), "tilt is -90 to 90 degrees"));
+            }
+        }
+        if e.pressure.is_some_and(|p| !(0.0..=1.0).contains(&p)) {
+            return Err(invalid(&format!("/events/{i}/pressure"), "pressure is 0-1"));
+        }
+        if e.dt.is_some_and(|d| d < 0.0) {
+            return Err(invalid(&format!("/events/{i}/dt"), "dt is not negative"));
+        }
+    }
+    Ok(())
+}
+
+/// The view window a request names (11 §7.6 `viewName | viewId`): a view id, or a view type name (`drawing`,
+/// `camera`, `top`, `side`) naming the active view window when it has that type, else the first window of that type.
+/// The command a `pointer` request's `tool` runs first: in a Camera view a scene tool id selects the scene tool
+/// (`anim.tool.set`, SI-148); otherwise the drawing tool (`tool.active.set`). The gesture driver and the desktop host
+/// (before it routes an agent's gesture to a window) both use it.
+pub(crate) fn tool_choice(camera: bool, tool: &str) -> (&'static str, Value) {
+    if camera && crate::commands::anim_tool::SCENE_TOOLS.contains(&tool) {
+        ("anim.tool.set", json!({ "tool": tool }))
+    } else {
+        ("tool.active.set", json!({ "toolId": tool }))
+    }
+}
+
+/// [`tool_choice`] for a named view of the session: whether it shows the Camera view.
+pub(crate) fn tool_choice_in(ui: &crate::ui::UiState, view: &str, tool: &str) -> (&'static str, Value) {
+    let camera = ui.shell().view(&view_of(ui, view)).is_ok_and(|w| w.ty == ViewType::Camera);
+    tool_choice(camera, tool)
+}
+
+fn view_of(ui: &crate::ui::UiState, name: &str) -> String {
+    let views = &ui.shell().views;
+    if views.iter().any(|v| v.view_id == name) {
+        return name.to_owned();
+    }
+    let active = ui.active_view();
+    views
+        .iter()
+        .filter(|v| v.ty.as_str() == name)
+        .min_by_key(|v| v.view_id != active)
+        .map_or_else(|| name.to_owned(), |v| v.view_id.clone())
+}
+
+/// A view point of an event (drawing-space events are converted with the mapping in force).
+fn view_point(w: &ViewWindow, space: InputSpace, e: &PointerEvent) -> Point {
+    let p = Point { x: e.x, y: e.y };
+    if space == InputSpace::Drawing { crate::commands::view::to_view(w, p) } else { p }
+}
+
+/// One answered command of a `pointer` call.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct Answered {
+    /// The command the gesture produced.
+    pub command_id: String,
+    /// Its parameters as invoked.
+    pub params: Value,
+    /// Its envelope.
+    pub envelope: Envelope,
+}
+
+/// The outcome of a `pointer` call: the commands the gestures produced, in order, and the final hover information.
+#[derive(Debug, Clone, Serialize)]
+#[serde(rename_all = "camelCase")]
+pub struct PointerOutcome {
+    /// The commands invoked, in order (a refused one is the last).
+    pub commands: Vec<Answered>,
+    /// The final pointer position: view and drawing point.
+    pub hover: Option<Value>,
+}
+
+impl PointerOutcome {
+    /// One command's receipt: its id, its parameters and its complete envelope (status, result, changes, undo,
+    /// warnings, document revision), as the command would answer alone (11 line 354; P5; C42A-R1-22).
+    fn receipt(a: &Answered) -> Value {
+        json!({ "commandId": a.command_id, "params": a.params, "envelope": a.envelope })
+    }
+
+    /// The envelope the `pointer` tool answers. Success: `{commands: [{commandId, params, envelope}], hover}` with every
+    /// command's complete envelope in order. A refusal: the refused command's envelope, whose details name the gesture
+    /// and carry the receipts of the commands that succeeded before it (`completed`) and the hover.
+    #[must_use]
+    pub fn envelope(&self, rev: Option<u64>) -> Envelope {
+        if let Some((i, a)) = self.commands.iter().enumerate().find(|(_, a)| !a.envelope.is_ok()) {
+            let mut env = a.envelope.clone();
+            let completed: Vec<Value> = self.commands[..i].iter().map(Self::receipt).collect();
+            if let Some(e) = env.error.as_mut() {
+                let mut details = (*e.details).clone();
+                if !details.is_object() {
+                    details = json!({});
+                }
+                if let Value::Object(m) = &mut details {
+                    m.insert("gesture".into(), json!(i));
+                    m.insert("gestureCommandId".into(), json!(a.command_id));
+                    m.insert("completed".into(), Value::Array(completed));
+                    m.insert("hover".into(), self.hover.clone().unwrap_or(Value::Null));
+                }
+                e.details = details.into();
+            }
+            return env;
+        }
+        let commands: Vec<Value> = self
+            .commands
+            .iter()
+            .map(|a| json!({ "commandId": a.command_id, "params": a.params, "envelope": a.envelope }))
+            .collect();
+        Envelope::ok(json!({ "commands": commands, "hover": self.hover }), rev)
+    }
+}
+
+/// Runs a `pointer` request on the document thread as one request (design note 4 §1-2: gestures of different calls
+/// never interleave). Gestures run in order; the first refused gesture ends the call. `hover_objects`: whether the
+/// final hover names the objects under the pointer (a hit test of the drawing); the user's own gestures committed by
+/// a window skip it, because the window draws its own hover feedback and reads only the commands.
+pub(crate) fn run(
+    core: &mut crate::run::Core,
+    origin: &Origin,
+    req: &PointerRequest,
+    hover_objects: bool,
+) -> Result<PointerOutcome, CommandError> {
+    check(req)?;
+    let view_id = {
+        let s = core.session().ok_or_else(|| CommandError::internal("the session is unavailable"))?;
+        let id = view_of(&s.ui, &req.view);
+        let w = s.ui.shell().view(&id)?;
+        match w.ty {
+            ViewType::Drawing if matches!(req.space, InputSpace::Scene | InputSpace::Camera) => {
+                // SI-125: scene and camera coordinates are the Camera view's.
+                return Err(CommandError::with_details(
+                    codes::ARG_INVALID,
+                    "`pointer` in the Drawing view takes view or drawing coordinates",
+                    json!({ "pointer": "/space", "space": req.space }),
+                ));
+            }
+            ViewType::Drawing | ViewType::Camera => {}
+            _ => return Err(crate::camera_view::staging_owner(w, "`pointer` gestures")),
+        }
+        id
+    };
+    let camera =
+        core.session().and_then(|s| s.ui.shell().view(&view_id).ok()).is_some_and(|w| w.ty == ViewType::Camera);
+    let invoke = |core: &mut crate::run::Core, command: &str, params: Value| -> Envelope {
+        core.invoke(&Invocation {
+            command: command.to_owned(),
+            params,
+            options: InvokeOptions::default(),
+            origin: origin.clone(),
+        })
+    };
+    let mut out = PointerOutcome { commands: Vec::new(), hover: None };
+    if let Some(t) = &req.tool {
+        let (command, params) = tool_choice(camera, t);
+        let env = invoke(core, command, params.clone());
+        let ok = env.is_ok();
+        out.commands.push(Answered { command_id: command.into(), params, envelope: env });
+        if !ok {
+            return Ok(out);
+        }
+    }
+    let mut clock = 0.0f64;
+    let mut pending: Option<(Gesture, Option<Stroke>, Option<[f64; 6]>)> = None;
+    for (i, e) in req.events.iter().enumerate() {
+        clock += e.dt.unwrap_or(0.0);
+        let w = core
+            .session()
+            .and_then(|s| s.ui.shell().view(&view_id).ok().cloned())
+            .ok_or_else(|| CommandError::internal("the view is gone"))?;
+        let vp = if camera {
+            let p = Point { x: e.x, y: e.y };
+            core.with_lent_session(|cx| crate::scene_gesture::view_point(cx, &w, req.space, p))
+                .unwrap_or_else(|| Err(CommandError::internal("the session is unavailable")))?
+        } else {
+            view_point(&w, req.space, e)
+        };
+        let in_stroke = pending.as_ref().is_some_and(|p| p.1.is_some());
+        match e.ty {
+            EventType::Hover => {
+                if let Some(s) = core.session_mut()
+                    && let Ok(v) = s.ui.shell_mut().view_mut(&view_id)
+                {
+                    v.pointer = Some(vp);
+                }
+            }
+            EventType::Wheel => {
+                if in_stroke {
+                    return Err(invalid(&format!("/events/{i}"), "view navigation is not allowed during a gesture"));
+                }
+                let delta = e.wheel_delta.unwrap_or(0.0);
+                if delta != 0.0 {
+                    let next = ladder_step(w.transform().zoom, if delta < 0.0 { 1 } else { -1 });
+                    let params = json!({ "viewId": view_id, "zoom": next, "anchor": pt(vp) });
+                    let env = invoke(core, "view.zoom.set", params.clone());
+                    let ok = env.is_ok();
+                    out.commands.push(Answered { command_id: "view.zoom.set".into(), params, envelope: env });
+                    if !ok {
+                        return Ok(out);
+                    }
+                }
+            }
+            EventType::Down => {
+                if in_stroke {
+                    return Err(invalid(&format!("/events/{i}"), "a press while pressed (release first)"));
+                }
+                let mods = Mods::of(&e.modifiers);
+                // The mapping is taken at the press (02 §13.3) and kept for the gesture; a Camera view's is the current
+                // element's plane through the camera (02 line 61).
+                // A drawing tool needs it: on an element whose plane the camera cannot project (at or behind the near
+                // plane) the press is refused and nothing is created (C43A-R1-03; SI-145). The scene tools and the
+                // navigation tools work in view pixels and never use it.
+                let press = if camera {
+                    core.with_lent_session(|cx| crate::scene_gesture::press_matrix(cx, &w))
+                        .unwrap_or_else(|| Err(CommandError::internal("the session is unavailable")))
+                } else {
+                    Ok(crate::commands::view::view_to_drawing(&w))
+                };
+                let unmapped = [1.0, 0.0, 0.0, 1.0, 0.0, 0.0];
+                let tool_now = match pending.as_ref() {
+                    Some(p) if p.0.tool == "polyline" => p.0.tool.clone(),
+                    _ => String::new(),
+                };
+                let new_tool = if tool_now.is_empty() {
+                    let active = core.session().map(|s| s.ui.drawing().active_tool.clone()).unwrap_or_default();
+                    let scene = core
+                        .session()
+                        .filter(|s| camera && s.ui.shell().scene_family && req.pointer_type != PointerKind::PenEraser)
+                        .map(|s| s.ui.shell().scene_tool.clone());
+                    let tool = match scene.as_deref() {
+                        // 05 §5.0 line 393: the temporary-select modifier makes the Transform tool the Select tool
+                        // (it also overrides the temporary Skew, which line 393 lists).
+                        Some("transform") if mods.temp_select => crate::scene_gesture::SCENE_SELECT.to_owned(),
+                        // 05 §5.0 line 394: the alternate modifier makes it the Skew tool for this gesture; the
+                        // stored scene tool stays Transform (SI-151).
+                        Some("transform") if mods.alternate => crate::scene_gesture::SCENE_SKEW.to_owned(),
+                        Some("transform") => crate::scene_gesture::SCENE_TRANSFORM.to_owned(),
+                        Some(_) => crate::scene_gesture::SCENE_SELECT.to_owned(),
+                        None => effective_tool(&active, req.pointer_type, mods),
+                    };
+                    Some(tool)
+                } else {
+                    None
+                };
+                let acting = new_tool.as_deref().unwrap_or(&tool_now);
+                let matrix = if acting.starts_with("scene:") || matches!(acting, "zoom" | "grabber") {
+                    press.unwrap_or(unmapped)
+                } else {
+                    press?
+                };
+                let sample = Sample {
+                    v: vp,
+                    d: crate::shell::apply(&matrix, vp),
+                    pressure: e.pressure.unwrap_or(1.0),
+                    tilt: (e.tilt_x.unwrap_or(0.0), e.tilt_y.unwrap_or(0.0)),
+                    t_ms: clock,
+                };
+                let stroke = Stroke { samples: vec![sample], mods };
+                match pending.as_mut() {
+                    // A further click of a Polyline in progress.
+                    Some(p) if p.0.tool == "polyline" => {
+                        p.1 = Some(stroke);
+                        p.2 = Some(matrix);
+                    }
+                    _ => {
+                        let tool = new_tool.unwrap_or_default();
+                        let g = Gesture {
+                            tool,
+                            view_id: view_id.clone(),
+                            strokes: Vec::new(),
+                            double_click: false,
+                            press: matrix,
+                        };
+                        pending = Some((g, Some(stroke), Some(matrix)));
+                    }
+                }
+            }
+            EventType::Move | EventType::Up => {
+                let Some(p) = pending.as_mut() else {
+                    if e.ty == EventType::Move {
+                        if let Some(s) = core.session_mut()
+                            && let Ok(v) = s.ui.shell_mut().view_mut(&view_id)
+                        {
+                            v.pointer = Some(vp);
+                        }
+                        continue;
+                    }
+                    return Err(invalid(&format!("/events/{i}"), "a release without a press"));
+                };
+                let Some(stroke) = p.1.as_mut() else {
+                    if e.ty == EventType::Up {
+                        return Err(invalid(&format!("/events/{i}"), "a release without a press"));
+                    }
+                    continue;
+                };
+                let m = p.2.unwrap_or([1.0, 0.0, 0.0, 1.0, 0.0, 0.0]);
+                let d = Point { x: m[0] * vp.x + m[2] * vp.y + m[4], y: m[1] * vp.x + m[3] * vp.y + m[5] };
+                stroke.samples.push(Sample {
+                    v: vp,
+                    d,
+                    pressure: e.pressure.unwrap_or(1.0),
+                    tilt: (e.tilt_x.unwrap_or(0.0), e.tilt_y.unwrap_or(0.0)),
+                    t_ms: clock,
+                });
+                if e.ty == EventType::Up {
+                    if let Some(s) = p.1.take() {
+                        p.0.strokes.push(s);
+                    }
+                    if p.0.tool != "polyline"
+                        && let Some((g, _, _)) = pending.take()
+                        && !finish(core, origin, &g, &mut out)
+                    {
+                        return Ok(out);
+                    }
+                }
+            }
+            EventType::DoubleClick => {
+                if let Some(p) = pending.as_mut()
+                    && p.0.tool == "polyline"
+                    && p.1.is_none()
+                {
+                    p.0.double_click = true;
+                    if let Some((g, _, _)) = pending.take()
+                        && !finish(core, origin, &g, &mut out)
+                    {
+                        return Ok(out);
+                    }
+                } else if pending.is_none()
+                    && core.session().is_some_and(|s| s.ui.drawing().active_tool == crate::text_edit::TOOL)
+                {
+                    // The Text tool's double click selects the word under it (02 §7.6; finding C44B-R1-41): a click
+                    // gesture at the double click's place, marked double, which places the session's anchor and
+                    // caret at the word's ends (no command, no undo step). The window sends it after the second
+                    // click's own gesture, as an agent's `pointer` does after its two clicks.
+                    let press = if camera {
+                        core.with_lent_session(|cx| crate::scene_gesture::press_matrix(cx, &w))
+                            .unwrap_or_else(|| Err(CommandError::internal("the session is unavailable")))?
+                    } else {
+                        crate::commands::view::view_to_drawing(&w)
+                    };
+                    let sample = Sample {
+                        v: vp,
+                        d: crate::shell::apply(&press, vp),
+                        pressure: 1.0,
+                        tilt: (0.0, 0.0),
+                        t_ms: clock,
+                    };
+                    let g = Gesture {
+                        tool: crate::text_edit::TOOL.to_owned(),
+                        view_id: view_id.clone(),
+                        strokes: vec![Stroke { samples: vec![sample], mods: Mods::of(&e.modifiers) }],
+                        double_click: true,
+                        press,
+                    };
+                    if !finish(core, origin, &g, &mut out) {
+                        return Ok(out);
+                    }
+                }
+            }
+        }
+        // A Polyline closes when a click lands on its first anchor.
+        if let Some(p) = pending.as_ref()
+            && p.0.tool == "polyline"
+            && p.1.is_none()
+            && polyline_closed(core, &p.0)
+            && let Some((g, _, _)) = pending.take()
+            && !finish(core, origin, &g, &mut out)
+        {
+            return Ok(out);
+        }
+        // In a Camera view the pointer's drawing point is on the current element's plane; none when that plane cannot
+        // be projected (C43A-R1-03).
+        let hover_drawing = if camera {
+            core.with_lent_session(|cx| crate::scene_gesture::press_matrix(cx, &w).ok())
+                .flatten()
+                .map_or(Value::Null, |m| pt(crate::shell::apply(&m, vp)))
+        } else {
+            pt(to_drawing(&w, vp))
+        };
+        out.hover = Some(json!({ "viewId": view_id, "view": pt(vp), "drawing": hover_drawing }));
+    }
+    // The final hover names the objects under the pointer as `inspect.hitTest` reports them (pointer note §1.3).
+    if hover_objects
+        && let Some(Value::Object(m)) = out.hover.as_mut()
+        && let Some(v) = m.get("view").and_then(|v| serde_json::from_value::<Point>(v.clone()).ok())
+    {
+        let objects = core
+            .with_lent_session(|cx| crate::commands::inspect::view_hit_list(cx, Some(&view_id), v))
+            .and_then(Result::ok)
+            .unwrap_or_default();
+        m.insert("objects".into(), serde_json::to_value(objects).unwrap_or(Value::Null));
+    }
+    // A gesture still pressed at the end of the events is cancelled: nothing is committed (D-7c). An open Polyline
+    // stays open across calls only in the GUI; headless, the call's clicks are its gesture and are committed.
+    if let Some((g, None, _)) = pending.take()
+        && g.tool == "polyline"
+    {
+        finish(core, origin, &g, &mut out);
+    }
+    Ok(out)
+}
+
+fn polyline_closed(core: &mut crate::run::Core, g: &Gesture) -> bool {
+    let n = g.strokes.len();
+    if n < 3 {
+        return false;
+    }
+    let radius = core
+        .session()
+        .and_then(|s| s.ui.drawing().options_of("polyline").get("snapRadius").and_then(Value::as_f64))
+        .unwrap_or(8.0);
+    let (Some(f), Some(l)) = (g.strokes[0].first(), g.strokes[n - 1].first()) else { return false };
+    (f.v.x - l.v.x).hypot(f.v.y - l.v.y) <= radius
+}
+
+/// The undo label of a gesture whose tool reuses another tool's command: the acting tool's (02 §5.2, §7). The
+/// alternate Scissor runs the Cutter's polygon cut and commits as "Scissor Tool" (02 §7.4.3 line 654). The other
+/// reuses already carry the acting tool's label: the temporary Select is the Select tool (its drags' labels, 02
+/// §7.1.1), the pen's eraser end is the Eraser ("Eraser Tool"), and the temporary Dropper commits no step
+/// (`colour.pick` is a query, `colour.current.set` is not undoable).
+fn acting_label(g: &Gesture, command: &str) -> Option<&'static str> {
+    (g.tool == "scissor" && command == "draw.cut.apply").then_some("Scissor Tool")
+}
+
+/// Builds and invokes a finished gesture's command; `false` when it was refused (the call ends).
+fn finish(core: &mut crate::run::Core, origin: &Origin, g: &Gesture, out: &mut PointerOutcome) -> bool {
+    let built =
+        core.with_lent_session(|cx| to_commands(cx, g)).unwrap_or_else(|| Err(CommandError::internal("no session")));
+    match built {
+        Ok(commands) => {
+            let mut done: Vec<(String, Envelope)> = Vec::new();
+            for (command, params) in commands {
+                core.set_label_override(acting_label(g, &command));
+                let env = core.invoke(&Invocation {
+                    command: command.clone(),
+                    params: params.clone(),
+                    options: InvokeOptions::default(),
+                    origin: origin.clone(),
+                });
+                core.set_label_override(None);
+                let ok = env.is_ok();
+                let picked = (command == "colour.pick")
+                    .then(|| {
+                        env.result.as_ref().and_then(|r| r.get("colourId")).and_then(Value::as_str).map(str::to_owned)
+                    })
+                    .flatten();
+                done.push((command.clone(), env.clone()));
+                out.commands.push(Answered { command_id: command, params, envelope: env });
+                if !ok {
+                    crate::text_edit::after_gesture(core, origin, g, &done);
+                    return false;
+                }
+                // The Dropper's second command (02 §13.3 line 1217): the picked colour becomes current (D-11).
+                if let Some(c) = picked {
+                    let params = json!({ "colourId": c });
+                    let env = core.invoke(&Invocation {
+                        command: "colour.current.set".into(),
+                        params: params.clone(),
+                        options: InvokeOptions::default(),
+                        origin: origin.clone(),
+                    });
+                    let ok = env.is_ok();
+                    out.commands.push(Answered { command_id: "colour.current.set".into(), params, envelope: env });
+                    if !ok {
+                        return false;
+                    }
+                }
+            }
+            // The Text tool's session after its gesture (design note 5 §2).
+            crate::text_edit::after_gesture(core, origin, g, &done);
+            true
+        }
+        Err(e) => {
+            let rev = core.session().and_then(|s| s.project.as_ref()).map(|p| p.doc.document_rev());
+            // A gesture refused by the interactive-target rule names the command it would have sent (D-79).
+            let refused = e.details.get("refusedCommandId").and_then(Value::as_str).map(str::to_owned);
+            out.commands.push(Answered {
+                command_id: refused.unwrap_or_else(|| format!("tool:{}", g.tool)),
+                params: Value::Null,
+                envelope: Envelope::error(e, rev),
+            });
+            false
+        }
+    }
+}

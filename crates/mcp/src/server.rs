@@ -21,7 +21,7 @@ use std::io::{BufRead, Write};
 use std::path::PathBuf;
 use std::sync::atomic::{AtomicBool, AtomicU64, AtomicUsize, Ordering};
 use std::sync::mpsc::{self, RecvTimeoutError, Sender, SyncSender, TrySendError};
-use std::sync::{Arc, Mutex, MutexGuard, PoisonError};
+use std::sync::{Arc, Condvar, Mutex, MutexGuard, PoisonError};
 use std::time::{Duration, Instant};
 
 use serde_json::{Map, Value, json};
@@ -56,6 +56,25 @@ const SERVER_WORK_BUDGET: Duration = Duration::from_secs(5);
 /// How long closing waits for the running request and for the writer.
 const SHUTDOWN_GRACE: Duration = Duration::from_secs(1);
 
+/// Threads a session keeps for its whole life: the protocol loop itself (the caller of [`serve`]), `mcp-writer`,
+/// `mcp-reader`, `mcp-events` and `mcp-calls` (ruling O-20).
+pub const PERSISTENT_THREADS: usize = 5;
+/// `job_wait` calls of one session waiting at once, each on its own `mcp-wait` thread (it blocks on the caller's side,
+/// 11 P5); one more is refused with `limit.exceeded` (`limit: "concurrentJobWaits"`) (ruling O-20). A call held for an
+/// in-app confirmation waits on one of these threads too (D-63 item 1), so the session's other calls go on.
+pub const MAX_JOB_WAITS: usize = 4;
+/// Server-side work threads (`mcp-server-work`: `list_commands`, `describe_command`, `get_docs`) of one session alive
+/// at once: such a thread outlives its call when the work passes its budget; one more is refused with
+/// `limit.exceeded` (`limit: "serverWork"`) (ruling O-20).
+pub const MAX_SERVER_WORK: usize = 2;
+/// Root refreshes (`mcp-roots`) of one session at once: requests made while one runs are coalesced into it.
+pub const ROOTS_THREADS: usize = 1;
+/// Job threads the executor runs for one agent session at most: its `maxJobs` limit, whose domain is 1..8 (11 §15;
+/// `agent.policy.defaults`); the executor refuses one more with `limit.exceeded` (`limit: "maxJobs"`).
+pub const JOB_THREADS: usize = 8;
+/// K: the most threads one session can own at once, persistent and transient (ruling O-20): 5 + 4 + 2 + 1 + 8 = 20.
+pub const SESSION_THREADS: usize = PERSISTENT_THREADS + MAX_JOB_WAITS + MAX_SERVER_WORK + ROOTS_THREADS + JOB_THREADS;
+
 /// How the server runs.
 #[derive(Debug, Clone)]
 pub struct ServerOptions {
@@ -71,6 +90,9 @@ pub struct ServerOptions {
     pub preauthorized: BTreeSet<Category>,
     /// How long a call waits while the session is paused before failing with `agent.paused` (11 §6.4).
     pub pause_wait: Duration,
+    /// Request ids whose answers the transport could not deliver (Streamable HTTP: the client went away or stopped
+    /// reading); each is recorded in the activity log as `transport.answerDropped` (D-59 item 4). `None` for stdio.
+    pub undelivered: Option<Arc<Mutex<Vec<String>>>>,
 }
 
 impl Default for ServerOptions {
@@ -82,6 +104,7 @@ impl Default for ServerOptions {
             roots: Vec::new(),
             preauthorized: BTreeSet::new(),
             pause_wait: Duration::from_secs(10),
+            undelivered: None,
         }
     }
 }
@@ -125,6 +148,19 @@ struct Shared {
     /// ignored (C14-R3-03). Guarded by the `cancelled` lock's discipline: both sets change only under `cancelled`.
     committed: Mutex<HashSet<String>>,
     closing: Arc<AtomicBool>,
+    /// `mcp-wait` threads alive ([`MAX_JOB_WAITS`]): `job_wait` calls and calls held for an in-app confirmation.
+    waits: Arc<AtomicUsize>,
+    /// Calls whose answer a held-call thread sends (D-63 item 1): the protocol loop's `answer` leaves them alone.
+    deferred: Mutex<HashSet<String>>,
+    /// `mcp-server-work` threads alive ([`MAX_SERVER_WORK`]).
+    server_work: Arc<AtomicUsize>,
+    /// A roots refresh is running; another was asked meanwhile ([`ROOTS_THREADS`]).
+    roots_busy: AtomicBool,
+    roots_again: AtomicBool,
+    /// Ruling D-68 item 4: `roots_busy` is cleared under this lock and `roots_done` is signalled, so a call that needs
+    /// the roots can wait for the refresh in progress ([`wait_for_roots`]).
+    roots_lock: Mutex<()>,
+    roots_done: Condvar,
 }
 
 fn lock<T>(m: &Mutex<T>) -> MutexGuard<'_, T> {
@@ -394,6 +430,13 @@ where
         cancelled: Mutex::new(HashSet::new()),
         committed: Mutex::new(HashSet::new()),
         closing: closing.clone(),
+        waits: Arc::new(AtomicUsize::new(0)),
+        deferred: Mutex::new(HashSet::new()),
+        server_work: Arc::new(AtomicUsize::new(0)),
+        roots_busy: AtomicBool::new(false),
+        roots_again: AtomicBool::new(false),
+        roots_lock: Mutex::new(()),
+        roots_done: Condvar::new(),
     });
     // Reader: frames no longer than the session's maxInlineBytes.
     let max = handle
@@ -496,13 +539,55 @@ where
                 // `job_wait` blocks on the caller's side (11 P5) and gets its own thread; everything else runs in
                 // arrival order.
                 if method == "tools/call" && params.get("name").and_then(Value::as_str) == Some("job_wait") {
+                    // At most MAX_JOB_WAITS waiting threads per session (ruling O-20).
+                    if !take_slot(&shared.waits, MAX_JOB_WAITS) {
+                        let env = envelope_error(
+                            "limit.exceeded",
+                            format!("this session already waits on {MAX_JOB_WAITS} jobs at once"),
+                            json!({ "limit": "concurrentJobWaits", "value": MAX_JOB_WAITS }),
+                            Some("wait for one job at a time, or read its state with job.get"),
+                        );
+                        shared.send(&jsonrpc::result(&id, tool_result("job_wait", "job.wait", &env)));
+                        release(&shared, &id);
+                        continue;
+                    }
                     let s = shared.clone();
-                    let spawned = std::thread::Builder::new()
-                        .name("mcp-wait".into())
-                        .spawn(move || answer(&s, &id, &method, &params));
+                    let slots = shared.waits.clone();
+                    let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
+                        answer(&s, &id, &method, &params);
+                        slots.fetch_sub(1, Ordering::AcqRel);
+                    });
                     match spawned {
                         Ok(h) => waits.push(h),
-                        Err(e) => return Err(e.to_string()),
+                        Err(e) => {
+                            shared.waits.fetch_sub(1, Ordering::AcqRel);
+                            return Err(e.to_string());
+                        }
+                    }
+                    waits.retain(|h| !h.is_finished());
+                } else if method == "tools/call"
+                    && shared.roots_busy.load(Ordering::Acquire)
+                    && params.get("arguments").is_some_and(mentions_absolute_path)
+                    && take_slot(&shared.waits, MAX_JOB_WAITS)
+                {
+                    // D-73 item 1 (C44A-R4-01): a call that needs the roots while the client's answer to the roots request
+                    // is outstanding waits for it on a waiting thread of its own (one of the session's MAX_JOB_WAITS,
+                    // shared with `job_wait` and held calls), never on the request path: the session's other calls go
+                    // on. With every waiting thread taken it goes to the request path and does not wait (the roots
+                    // granted so far apply, as before D-68).
+                    let s = shared.clone();
+                    let slots = shared.waits.clone();
+                    let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
+                        ROOTS_WAIT_ALLOWED.with(|c| c.set(true));
+                        answer(&s, &id, &method, &params);
+                        slots.fetch_sub(1, Ordering::AcqRel);
+                    });
+                    match spawned {
+                        Ok(h) => waits.push(h),
+                        Err(e) => {
+                            shared.waits.fetch_sub(1, Ordering::AcqRel);
+                            return Err(e.to_string());
+                        }
                     }
                     waits.retain(|h| !h.is_finished());
                 } else if work_tx.send((id, method, params)).is_err() {
@@ -544,6 +629,15 @@ fn answer(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) {
     {
         shared.send(&r);
     }
+    // A call held for an in-app confirmation is answered and released by its own thread (D-63 item 1).
+    if lock(&shared.deferred).remove(&id.to_string()) {
+        return;
+    }
+    release(shared, id);
+}
+
+/// The bookkeeping of an admitted request that has been answered or refused.
+fn release(shared: &Shared, id: &Value) {
     let key = id.to_string();
     {
         let mut cancelled = lock(&shared.cancelled);
@@ -554,12 +648,36 @@ fn answer(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) {
     lock(&shared.st).inflight -= 1;
 }
 
+/// Takes one of `cap` slots; `false` when all are taken.
+fn take_slot(counter: &AtomicUsize, cap: usize) -> bool {
+    counter.fetch_update(Ordering::AcqRel, Ordering::Acquire, |n| (n < cap).then_some(n + 1)).is_ok()
+}
+
 fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
     match method {
         "notifications/initialized" | "notifications/roots/list_changed" => {
             if shared.client_can("roots") {
+                // One refresh at a time (ruling O-20): a request made while one runs makes it read the roots again.
+                shared.roots_again.store(true, Ordering::Release);
+                if shared.roots_busy.swap(true, Ordering::AcqRel) {
+                    return;
+                }
                 let s = shared.clone();
-                let _ = std::thread::Builder::new().name("mcp-roots".into()).spawn(move || refresh_roots(&s));
+                let spawned = std::thread::Builder::new().name("mcp-roots".into()).spawn(move || {
+                    loop {
+                        while s.roots_again.swap(false, Ordering::AcqRel) {
+                            refresh_roots(&s);
+                        }
+                        roots_idle(&s);
+                        // A request that came after the last check and found the refresh busy is served here.
+                        if !s.roots_again.load(Ordering::Acquire) || s.roots_busy.swap(true, Ordering::AcqRel) {
+                            break;
+                        }
+                    }
+                });
+                if spawned.is_err() {
+                    roots_idle(shared);
+                }
             }
         }
         // Only a request in progress can be cancelled; an unknown or finished id is ignored (C14-R1-17).
@@ -577,6 +695,55 @@ fn notification(shared: &Arc<Shared>, method: &str, params: &Value) {
             }
         }
         _ => {}
+    }
+}
+
+/// No roots refresh runs now: the calls waiting for one go on (D-68 item 4).
+fn roots_idle(shared: &Shared) {
+    {
+        let _g = lock(&shared.roots_lock);
+        shared.roots_busy.store(false, Ordering::Release);
+    }
+    shared.roots_done.notify_all();
+}
+
+/// The longest a call waits for the client's roots (D-68 item 4): the call's budget, and at most this.
+const ROOTS_WAIT_MAX: Duration = Duration::from_secs(2);
+
+thread_local! {
+    /// D-73 item 1: set on a waiting thread the reader started for a call that needs the roots; a call waits for the
+    /// roots only there, so the session's request path never waits for them.
+    static ROOTS_WAIT_ALLOWED: std::cell::Cell<bool> = const { std::cell::Cell::new(false) };
+}
+
+/// Ruling D-68 item 4: a call that needs the file roots and arrives while the server's roots request to the client is
+/// unanswered (just after `notifications/initialized`, or after `roots/list_changed`) waits for the answer, on the MCP
+/// call's thread (never the executor's), bounded by `bound`. At the bound it goes on with the roots granted so far,
+/// so a client that never answers gets today's `fs.outsideRoots`.
+fn wait_for_roots(shared: &Shared, bound: Duration) {
+    if !shared.roots_busy.load(Ordering::Acquire) {
+        return;
+    }
+    let deadline = Instant::now() + bound;
+    let mut g = lock(&shared.roots_lock);
+    while shared.roots_busy.load(Ordering::Acquire) {
+        let now = Instant::now();
+        if now >= deadline {
+            return;
+        }
+        g = shared.roots_done.wait_timeout(g, deadline - now).unwrap_or_else(PoisonError::into_inner).0;
+    }
+}
+
+/// Whether a call's arguments carry an absolute path anywhere (a batch's steps included): every path parameter is
+/// absolute (01 §12.1 rule 2) and is checked against the session's roots, so such a call needs them. The test is the
+/// file layer's own (`fsx::absolute`, D-72 item 2), so the root `/` counts as it does there.
+fn mentions_absolute_path(v: &Value) -> bool {
+    match v {
+        Value::String(s) => tt_persist::fsx::absolute(s, "").is_ok(),
+        Value::Array(a) => a.iter().any(mentions_absolute_path),
+        Value::Object(m) => m.values().any(mentions_absolute_path),
+        _ => false,
     }
 }
 
@@ -639,7 +806,7 @@ fn request(shared: &Arc<Shared>, id: &Value, method: &str, params: &Value) -> Op
             match call_tool(shared, id, name, &args, token) {
                 ToolOutcome::Result(v) => jsonrpc::result(id, v),
                 ToolOutcome::UnknownTool => invalid_params(id, &format!("unknown tool `{name}`")),
-                ToolOutcome::Cancelled => return None,
+                ToolOutcome::Cancelled | ToolOutcome::Deferred => return None,
             }
         }
         "resources/list" => jsonrpc::result(id, json!({ "resources": resources::listing() })),
@@ -721,7 +888,8 @@ fn initialize(shared: &Arc<Shared>, id: &Value, params: &Value) -> Value {
             scopes: o.scopes.clone(),
             roots: o.roots.clone(),
             preauthorized: o.preauthorized.clone(),
-            transport: "stdio".to_owned(),
+            // Attached mode serves Streamable HTTP (M4 C4.1, ADR-0022); headless serves stdio.
+            transport: if o.run_mode == "attached" { "http" } else { "stdio" }.to_owned(),
         };
         match shared.handle.connect_agent(connect) {
             Ok(s) => st.session = Some(s),
@@ -786,6 +954,8 @@ enum ToolOutcome {
     Result(Value),
     UnknownTool,
     Cancelled,
+    /// Held for an in-app confirmation on its own thread, which sends the answer (D-63 item 1).
+    Deferred,
 }
 
 fn envelope_error(code: &str, message: String, details: Value, hint: Option<&str>) -> Envelope {
@@ -908,6 +1078,11 @@ fn call_tool(
         shared.handle.audit_call(&origin, name, name, &Value::Object(args.clone()), &env, started.elapsed());
         return ToolOutcome::Result(tool_result(name, name, &env));
     }
+    // D-68 item 4, D-73 item 1: a call that needs the roots waits (bounded) for the client's answer to a roots request in
+    // progress, on the waiting thread the reader gave it (never on the request path).
+    if ROOTS_WAIT_ALLOWED.with(std::cell::Cell::get) && mentions_absolute_path(&Value::Object(args.clone())) {
+        wait_for_roots(shared, shared.handle.budget().min(ROOTS_WAIT_MAX));
+    }
     let plan = match typed_id {
         Some(id) => Plan::Command {
             id,
@@ -957,31 +1132,89 @@ fn call_tool(
                     }
                 }
             }
-            let options = InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm };
+            // An agent's call is never the person's (ruling D-83 item 3).
+            let options =
+                InvokeOptions { dry_run, expect_rev: expect, request_id, confirm_token, confirm, person: false };
             let inv = Invocation { command: id.clone(), params: params.clone(), options, origin: origin.clone() };
+            // `inspect_ui` describes the GUI after the commands before it (M4 C4.1): wait, bounded, until the front
+            // end has rendered every event broadcast so far; a tree that did not catch up is marked stale.
+            let fresh = name != "inspect_ui" || shared.handle.await_rendered(INSPECT_UI_FRESHNESS);
             let (mut env, mut cached) = shared.handle.invoke_served_until(inv.clone(), &|| shared.is_cancelled(rid));
             if name == "get_state" {
                 env = project_state(env, args);
             }
+            if !fresh && let Some(Value::Object(m)) = env.result.as_mut() {
+                m.insert("stale".into(), Value::Bool(true));
+            }
             // A confirmation the client can ask its user for (11 §6.3 rule 1). The answer settles the same logical
             // call: it is re-invoked with its token and its requestId, so the executor remembers the final outcome
             // under that id (C14-R1-04). Anything but an explicit `accept` with `confirm: true` declines (C14-R1-02).
-            if env.status == Status::NeedsConfirmation
-                && let Some(token) =
+            let token = (env.status == Status::NeedsConfirmation)
+                .then(|| {
                     env.result.as_ref().and_then(|r| r.get("confirmToken")).and_then(Value::as_str).map(str::to_owned)
-                && let Some(accepted) = elicit(shared, &env, rid)
-                // A request cancelled before acting on the answer does nothing: the token stays pending, unused.
-                && shared.begin_effect(rid)
-            {
-                if !accepted {
-                    let _ = shared.handle.invoke(Invocation::user(
-                        "agent.confirmation.respond",
-                        json!({ "confirmationId": token, "accept": false }),
-                    ));
+                })
+                .flatten();
+            if let Some(token) = token {
+                // Ruling D-58 (R-a): the person at the window answers; the call is held until the answer, the token's
+                // expiry or a document change (11 §6.3 step 2, "instead"), then settled with the token, so the agent
+                // receives the outcome: the command's result, `confirmation.declined` or `confirmation.expired`. A
+                // request cancelled meanwhile does nothing.
+                // D-63 item 1 (C44A-R1-60): the held call waits on its own thread, so the session's other calls go on
+                // (reads are answered, a second confirmable call joins the sheet's queue at once).
+                // D-65 item 1: a held call never waits on the session's request path. With every waiting thread taken
+                // it is refused at once with the job waits' limit error (11 §6.5), and its confirmation is retired
+                // without being shown to the app, so the sheet never shows a request nobody waits on.
+                let in_app = in_app_applies(shared, &origin);
+                let slot = in_app && take_slot(&shared.waits, MAX_JOB_WAITS);
+                let marked = slot && shared.handle.hold_in_app(&token).unwrap_or(false);
+                if slot && !marked {
+                    shared.waits.fetch_sub(1, Ordering::AcqRel);
                 }
-                let mut again = inv;
-                again.options.confirm_token = Some(token);
-                (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(rid));
+                if marked {
+                    let held = Held {
+                        rid: rid.clone(),
+                        inv: inv.clone(),
+                        token: token.clone(),
+                        origin: origin.clone(),
+                        tool: name.to_owned(),
+                        command: id.clone(),
+                        params: params.clone(),
+                        first: env.clone(),
+                        cached,
+                        started,
+                    };
+                    lock(&shared.deferred).insert(rid.to_string());
+                    let s = shared.clone();
+                    let slots = shared.waits.clone();
+                    let spawned = std::thread::Builder::new().name("mcp-wait".into()).spawn(move || {
+                        finish_held(&s, held);
+                        slots.fetch_sub(1, Ordering::AcqRel);
+                    });
+                    if spawned.is_ok() {
+                        return ToolOutcome::Deferred;
+                    }
+                    // No thread could start: the request was marked, so retiring it also takes it off the sheet.
+                    lock(&shared.deferred).remove(&rid.to_string());
+                    shared.waits.fetch_sub(1, Ordering::AcqRel);
+                    env = refuse_unheld(shared, &token, inv.clone());
+                    cached = false;
+                } else if in_app && !slot {
+                    env = refuse_unheld(shared, &token, inv.clone());
+                    cached = false;
+                } else if let Some(accepted) = elicit(shared, &env, rid)
+                    // A request cancelled before acting on the answer does nothing: the token stays pending, unused.
+                    && shared.begin_effect(rid)
+                {
+                    if !accepted {
+                        let _ = shared.handle.invoke(Invocation::user(
+                            "agent.confirmation.respond",
+                            json!({ "confirmationId": token, "accept": false }),
+                        ));
+                    }
+                    let mut again = inv;
+                    again.options.confirm_token = Some(token);
+                    (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(rid));
+                }
             }
             // One activity entry for the logical call, with its final status and whole duration (C14-R1-12).
             // A requestId retry answered from the cache is recorded as such: it executed nothing (C14-R2-03).
@@ -994,12 +1227,12 @@ fn call_tool(
         Plan::Server => match name {
             "list_commands" => {
                 let (h, o, a) = (shared.handle.clone(), origin.clone(), args.clone());
-                ("list_commands".to_owned(), bounded("list_commands", move || list_commands(&h, &o, &a)), false)
+                ("list_commands".to_owned(), bounded(shared, "list_commands", move || list_commands(&h, &o, &a)), false)
             }
             "describe_command" => {
                 let cid = args.get("id").and_then(Value::as_str).unwrap_or_default().to_owned();
                 let h = shared.handle.clone();
-                let env = bounded("describe_command", move || match h.describe_command(&cid) {
+                let env = bounded(shared, "describe_command", move || match h.describe_command(&cid) {
                     Some(d) => Envelope::ok(d, None),
                     None => envelope_error(
                         "command.unknown",
@@ -1012,7 +1245,7 @@ fn call_tool(
             }
             "get_docs" => {
                 let topic = args.get("topic").and_then(Value::as_str).unwrap_or("agent-guide").to_owned();
-                let env = bounded("get_docs", move || match docs::topic(reg, &topic) {
+                let env = bounded(shared, "get_docs", move || match docs::topic(reg, &topic) {
                     Some(md) => Envelope::ok(json!({ "topic": topic, "markdown": md }), None),
                     None => envelope_error(
                         "arg.invalid",
@@ -1038,6 +1271,36 @@ fn call_tool(
                 };
                 ("batch".to_owned(), env, false)
             }
+            "key" => {
+                let (command, env) = key_tool(shared, rid, &origin, args, started);
+                return ToolOutcome::Result(tool_result(name, &command, &env));
+            }
+            "type_text" => {
+                let (command, env) = type_text_tool(shared, &origin, args, started);
+                return ToolOutcome::Result(tool_result(name, &command, &env));
+            }
+            "pointer" => {
+                // One document-thread request for the whole call (design note 4 §2): the gestures' commands run with
+                // this session's origin and scopes; the call is audited once, under the last command it produced.
+                let params = Value::Object(args.clone());
+                let env = shared.handle.pointer(origin.clone(), params.clone());
+                let command = env
+                    .result
+                    .as_ref()
+                    .and_then(|r| r.get("commands"))
+                    .and_then(Value::as_array)
+                    .and_then(|a| a.last())
+                    .and_then(|c| c.get("commandId"))
+                    .and_then(Value::as_str)
+                    .or_else(|| {
+                        env.error.as_ref().and_then(|e| e.details.get("gestureCommandId")).and_then(Value::as_str)
+                    })
+                    .unwrap_or("pointer")
+                    .to_owned();
+                shared.handle.audit_call(&origin, "pointer", &command, &params, &env, started.elapsed());
+                mark(shared, "app://activity");
+                return ToolOutcome::Result(tool_result(name, &command, &env));
+            }
             "job_wait" => match job_wait(shared, rid, &origin, args, progress) {
                 Some(env) => ("job.wait".to_owned(), env, false),
                 None => return ToolOutcome::Cancelled,
@@ -1052,14 +1315,220 @@ fn call_tool(
     ToolOutcome::Result(tool_result(name, &command, &env))
 }
 
+/// The `type_text` tool (11 §7.6; M4 C4.4b, design note 5 §4; SI-193): without `target`, the text goes into the edit
+/// session this session opened with the Text tool (`pointer`), through the input path a person's typing takes: one
+/// `draw.text.set` extending the typing run. With a `target` naming the window's text editor (`inspect_ui`'s
+/// `textEditor` node) the same; other widget targets are not typed into by the server (`command.notImplemented`).
+fn type_text_tool(
+    shared: &Arc<Shared>,
+    origin: &tt_executor::Origin,
+    args: &Map<String, Value>,
+    started: Instant,
+) -> (String, Envelope) {
+    let params = Value::Object(args.clone());
+    let text = args.get("text").and_then(Value::as_str).unwrap_or_default().to_owned();
+    let env = if !origin.has_scope(tt_registry::Scope::Input) {
+        envelope_error(
+            "permission.denied",
+            "simulated typing needs the scope input".into(),
+            json!({ "tool": "type_text", "missingScopes": ["input"] }),
+            None,
+        )
+    } else if let Some(t) = args.get("target").and_then(Value::as_str).filter(|t| !t.contains("textEditor")) {
+        envelope_error(
+            "command.notImplemented",
+            format!("typing into `{t}` is not built: type_text types into the Text tool's editor (no target)"),
+            json!({ "tool": "type_text", "target": t, "pointer": "/target" }),
+            None,
+        )
+    } else {
+        shared.handle.text_input(origin.clone(), tt_executor::text_edit::Input::Text(text))
+    };
+    let command = env
+        .result
+        .as_ref()
+        .and_then(|r| r.get("commands"))
+        .and_then(Value::as_array)
+        .and_then(|a| a.last())
+        .and_then(|c| c.get("commandId"))
+        .and_then(Value::as_str)
+        .unwrap_or("type_text")
+        .to_owned();
+    shared.handle.audit_call(origin, "type_text", &command, &params, &env, started.elapsed());
+    mark(shared, "app://activity");
+    (command, env)
+}
+
+/// How long `inspect_ui` waits for the front end to render the events before it (M4 C4.1).
+const INSPECT_UI_FRESHNESS: Duration = Duration::from_secs(2);
+
+/// The `key` tool (11 §7.6; M4 C4.1): the key goes through the one keymap dispatch real key presses use
+/// (`ExecutorHandle::resolve_key`), then the bound command runs as this session's call, audited once as the logical
+/// call. 11 §7.6: the result is the envelope of the command the key invoked, or `{handled: false}` for a key bound to
+/// nothing. A key bound to a command that cannot run now answers that command's `command.disabled` (with the reason);
+/// while the user's dialog has the keyboard the call fails with `ui.modalOpen`, and while the user is editing a text
+/// field with `ui.busy` (11 §6.4; C41-R2-09).
+fn key_tool(
+    shared: &Arc<Shared>,
+    rid: &Value,
+    origin: &tt_executor::Origin,
+    args: &Map<String, Value>,
+    started: Instant,
+) -> (String, Envelope) {
+    let keys = args.get("keys").and_then(Value::as_str).unwrap_or_default();
+    let params = Value::Object(args.clone());
+    // Simulated key presses are raw input (11 §6.1: the `input` scope; C42A-R1-06), checked before the key is resolved.
+    if !origin.has_scope(tt_registry::Scope::Input) {
+        let env = envelope_error(
+            "permission.denied",
+            "simulated key input needs the scope input".into(),
+            json!({ "tool": "key", "missingScopes": ["input"] }),
+            None,
+        );
+        shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+        return ("key".to_owned(), env);
+    }
+    // `view` (M4 C4.2): the view the key is aimed at. It must exist; a bound `view.*` command without its own `viewId`
+    // acts on that view instead of the active one. The user's active view is not changed.
+    let view = match args.get("view") {
+        None => None,
+        Some(v) => {
+            let name = v.as_str().unwrap_or_default().to_owned();
+            let list = shared.handle.invoke(Invocation::user("view.list", json!({})));
+            let found = list.result.as_ref().and_then(Value::as_array).and_then(|views| {
+                views
+                    .iter()
+                    .find(|w| w["viewId"] == name.as_str())
+                    .or_else(|| views.iter().find(|w| w["type"] == name.as_str()))
+                    .and_then(|w| w["viewId"].as_str().map(str::to_owned))
+            });
+            match found {
+                Some(id) => Some(id),
+                None => {
+                    let env = envelope_error(
+                        "view.notFound",
+                        format!("view `{name}` does not exist"),
+                        json!({ "view": name, "pointer": "/view" }),
+                        None,
+                    );
+                    shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+                    return ("key".to_owned(), env);
+                }
+            }
+        }
+    };
+    // An open Text tool session of this caller takes its editing keys before the keymap (design note 5 §4; SI-193).
+    if let Ok(canonical) = tt_executor::ExecutorHandle::canonical_keys(keys)
+        && tt_executor::text_edit::is_editing_key(&canonical)
+        && shared
+            .handle
+            .text_session()
+            .ok()
+            .flatten()
+            .is_some_and(|s| s["origin"].as_str() == Some(origin.label().as_str()))
+    {
+        let env = shared.handle.text_input(origin.clone(), tt_executor::text_edit::Input::Key(canonical));
+        let command = env
+            .result
+            .as_ref()
+            .and_then(|r| r.get("commands"))
+            .and_then(Value::as_array)
+            .and_then(|a| a.last())
+            .and_then(|c| c.get("commandId"))
+            .and_then(Value::as_str)
+            .unwrap_or("key")
+            .to_owned();
+        shared.handle.audit_call(origin, "key", &command, &params, &env, started.elapsed());
+        return (command, env);
+    }
+    let resolved = match shared.handle.resolve_key(keys) {
+        Ok(r) => r,
+        Err(e) => {
+            // A refused bound command is recorded under its own id, as a run would be (the activity log says which
+            // command the key reached).
+            let command = e.details.get("commandId").and_then(Value::as_str).unwrap_or("key").to_owned();
+            let env = Envelope::error(e, None);
+            shared.handle.audit_call(origin, "key", &command, &params, &env, started.elapsed());
+            return (command, env);
+        }
+    };
+    match resolved {
+        tt_executor::host::KeyResolution::Suspended { keys, reason } => {
+            let details = json!({ "keys": keys, "reason": reason });
+            let env = if reason == "modal" {
+                let why = "a dialog the user opened has the keyboard; keys reach it, not the application";
+                envelope_error("ui.modalOpen", why.into(), details, None)
+            } else {
+                envelope_error(
+                    "ui.busy",
+                    "the user is editing a text field; unmodified keys belong to it".into(),
+                    details,
+                    None,
+                )
+            };
+            shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+            ("key".to_owned(), env)
+        }
+        tt_executor::host::KeyResolution::Command { command_id, params: mut cparams, .. } => {
+            if let (Some(v), Some(m)) = (&view, cparams.as_object_mut())
+                && command_id.starts_with("view.")
+                && !m.contains_key("viewId")
+            {
+                m.insert("viewId".into(), Value::String(v.clone()));
+            }
+            let inv = Invocation {
+                command: command_id.clone(),
+                params: cparams.clone(),
+                options: InvokeOptions::default(),
+                origin: origin.clone(),
+            };
+            let (env, cached) = shared.handle.invoke_served_until(inv, &|| shared.is_cancelled(rid));
+            shared.handle.audit_logical_call(
+                origin,
+                &AuditCall {
+                    tool: "key",
+                    command: &command_id,
+                    params: &cparams,
+                    env: &env,
+                    took: started.elapsed(),
+                    cached,
+                },
+            );
+            (command_id, env)
+        }
+        other => {
+            let mut v = serde_json::to_value(&other).unwrap_or(Value::Null);
+            if let Some(m) = v.as_object_mut() {
+                m.insert("handled".into(), Value::Bool(false));
+            }
+            let env = Envelope::ok(v, None);
+            shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+            ("key".to_owned(), env)
+        }
+    }
+}
+
 /// Runs work the server does itself under [`SERVER_WORK_BUDGET`] (C14-R1-05): the call thread is free again when
-/// the budget passes, whatever the work does.
-fn bounded(what: &str, work: impl FnOnce() -> Envelope + Send + 'static) -> Envelope {
+/// the budget passes, whatever the work does. A work thread that outlives its budget still counts against the
+/// session's [`MAX_SERVER_WORK`] until it ends (ruling O-20).
+fn bounded(shared: &Shared, what: &str, work: impl FnOnce() -> Envelope + Send + 'static) -> Envelope {
+    if !take_slot(&shared.server_work, MAX_SERVER_WORK) {
+        return envelope_error(
+            "limit.exceeded",
+            format!("{MAX_SERVER_WORK} earlier server-side requests of this session are still running"),
+            json!({ "limit": "serverWork", "value": MAX_SERVER_WORK, "tool": what }),
+            Some("call again when they have finished"),
+        );
+    }
     let (tx, rx) = mpsc::channel();
+    let slots = shared.server_work.clone();
     let spawned = std::thread::Builder::new().name("mcp-server-work".into()).spawn(move || {
+        tt_persist::lock::boundary(tt_persist::lock::Boundary::ServerWork, std::path::Path::new(""));
         let _ = tx.send(work());
+        slots.fetch_sub(1, Ordering::AcqRel);
     });
     if let Err(e) = spawned {
+        shared.server_work.fetch_sub(1, Ordering::AcqRel);
         return Envelope::error(CommandError::internal(format!("cannot start `{what}`: {e}")), None);
     }
     rx.recv_timeout(SERVER_WORK_BUDGET).unwrap_or_else(|_| {
@@ -1097,6 +1566,96 @@ fn project_state(mut env: Envelope, args: &Map<String, Value>) -> Envelope {
         m.retain(|k, _| keys.contains(k.as_str()));
     }
     env
+}
+
+/// Ruling D-58 (R-a): attached, a window present and the session's `askInApp` on, a confirmation goes to the app only
+/// (no elicitation). The caller then marks the request in-app (`hold_in_app`), which makes its token unusable before
+/// the person accepts, once a waiting thread is free for the held call (D-65 item 1).
+fn in_app_applies(shared: &Shared, origin: &Origin) -> bool {
+    let Origin::Agent { session, .. } = origin else { return false };
+    shared.handle.attached() && shared.handle.agent_status(session).is_ok_and(|s| s.limits.ask_in_app)
+}
+
+/// D-65 item 1: an in-app confirmation with no waiting thread for its held call. The confirmation is retired: declined,
+/// then settled with its token as a declined elicitation is (the re-invocation answers `confirmation.declined` and runs
+/// nothing), so it leaves the pending list, the sheet never shows it and its token can never be used. The call is
+/// refused at once with the job waits' limit error (11 §6.5): nothing was run.
+fn refuse_unheld(shared: &Shared, token: &str, mut inv: Invocation) -> Envelope {
+    let _ = shared
+        .handle
+        .invoke(Invocation::user("agent.confirmation.respond", json!({ "confirmationId": token, "accept": false })));
+    inv.options.confirm_token = Some(token.to_owned());
+    let _ = shared.handle.invoke(inv);
+    envelope_error(
+        "limit.exceeded",
+        format!(
+            "this session already waits on {MAX_JOB_WAITS} held confirmations or jobs at once; this call was not run"
+        ),
+        json!({ "limit": "concurrentJobWaits", "value": MAX_JOB_WAITS }),
+        Some("wait for an earlier held call or job to end, then call again"),
+    )
+}
+
+/// A call held for an in-app confirmation, finished on its own `mcp-wait` thread (D-63 item 1).
+struct Held {
+    rid: Value,
+    inv: Invocation,
+    token: String,
+    origin: Origin,
+    tool: String,
+    command: String,
+    params: Value,
+    /// The first answer (`needs_confirmation`), kept when the request is cancelled while held.
+    first: Envelope,
+    cached: bool,
+    started: Instant,
+}
+
+/// Holds the call until the person answers (D-58), settles it with the token, records the logical call, answers the
+/// client and releases the request: what [`call_tool`] does for a held call, off the session's call thread.
+fn finish_held(shared: &Arc<Shared>, h: Held) {
+    let (mut env, mut cached) = (h.first, h.cached);
+    if held_until_answered(shared, &h.token, &h.rid) && shared.begin_effect(&h.rid) {
+        let mut again = h.inv;
+        again.options.confirm_token = Some(h.token);
+        (env, cached) = shared.handle.invoke_served_until(again, &|| shared.is_cancelled(&h.rid));
+    }
+    shared.handle.audit_logical_call(
+        &h.origin,
+        &AuditCall {
+            tool: &h.tool,
+            command: &h.command,
+            params: &h.params,
+            env: &env,
+            took: h.started.elapsed(),
+            cached,
+        },
+    );
+    mark(shared, "app://activity");
+    if !shared.is_cancelled(&h.rid) && !shared.closing() {
+        shared.send(&jsonrpc::result(&h.rid, tool_result(&h.tool, &h.command, &env)));
+    }
+    release(shared, &h.rid);
+}
+
+/// How often a held call looks at its in-app confirmation.
+const IN_APP_POLL: Duration = Duration::from_millis(100);
+
+/// Waits while the in-app confirmation is unanswered (D-58), at most the token's lifetime and a margin; `false` when the
+/// request was cancelled meanwhile (nothing is done; the token stays pending, unused).
+fn held_until_answered(shared: &Shared, token: &str, rid: &Value) -> bool {
+    let deadline = Instant::now() + ELICIT_TIMEOUT + Duration::from_secs(5);
+    while Instant::now() < deadline {
+        // A session closing waits for no answer: its held calls end with it.
+        if shared.is_cancelled(rid) || shared.closing() {
+            return false;
+        }
+        if !shared.handle.confirmation_waiting(token).unwrap_or(false) {
+            return true;
+        }
+        std::thread::sleep(IN_APP_POLL);
+    }
+    true
 }
 
 /// Asks the user through the client (MCP elicitation) when the client offers it (11 §6.3 rule 1). `None`: no
@@ -1380,11 +1939,14 @@ fn pump_events(shared: &Shared, rx: &mpsc::Receiver<tt_executor::Event>) {
     let mut last_poll = Instant::now();
     loop {
         match rx.recv_timeout(Duration::from_millis(20)) {
+            // `shell.*` notices are for the desktop host alone (native window, agent indicator; ADR-0021).
+            Ok(ev) if ev.name.starts_with("shell.") => {}
             Ok(ev) => on_event(shared, &ev),
             Err(RecvTimeoutError::Timeout) => {}
             Err(RecvTimeoutError::Disconnected) => break,
         }
         flush_updates(shared);
+        record_undelivered(shared);
         if last_poll.elapsed() >= Duration::from_millis(250) {
             last_poll = Instant::now();
             if lock(&shared.st).session.is_some() {
@@ -1414,6 +1976,42 @@ fn pump_events(shared: &Shared, rx: &mpsc::Receiver<tt_executor::Event>) {
         if shared.closing.load(Ordering::Relaxed) {
             break;
         }
+    }
+    // A drop reported while the session was closing is still recorded.
+    record_undelivered(shared);
+}
+
+/// Records each answer the transport could not deliver in the activity log (D-59 item 4): the command ran and its
+/// own entry stands; this one says its answer never reached the client, which can still read the activity log, the
+/// document state and the job record (design note §11).
+fn record_undelivered(shared: &Shared) {
+    let Some(list) = &shared.opts.undelivered else { return };
+    let ids: Vec<String> = std::mem::take(&mut *list.lock().unwrap_or_else(PoisonError::into_inner));
+    if ids.is_empty() {
+        return;
+    }
+    let Some(origin) = shared.origin() else { return };
+    for id in ids {
+        // The id is the request's JSON text (a number, or a quoted string).
+        let request_id = serde_json::from_str::<Value>(&id).unwrap_or(Value::String(id));
+        let params = json!({ "requestId": request_id });
+        let env = envelope_error(
+            "transport.answerDropped",
+            "the answer to this request could not be delivered: the client went away or stopped reading".to_owned(),
+            json!({ "requestId": request_id, "reason": "client not reading" }),
+            None,
+        );
+        shared.handle.audit_logical_call(
+            &origin,
+            &AuditCall {
+                tool: "transport",
+                command: "answer.undelivered",
+                params: &params,
+                env: &env,
+                took: Duration::ZERO,
+                cached: false,
+            },
+        );
     }
 }
 
@@ -1491,5 +2089,44 @@ fn flush_updates(shared: &Shared) {
     };
     for uri in due {
         shared.send(&jsonrpc::notification("notifications/resources/updated", json!({ "uri": uri })));
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// D-72 item 2: a call needs the roots exactly when the file layer would take one of its strings as an absolute
+    /// path, the root `/` included.
+    #[test]
+    fn a_call_needs_the_roots_when_the_file_layer_sees_an_absolute_path() {
+        let cases =
+            ["/", "/a", "/a/b.animpkg", "C:\\", "C:\\x", "C:/x", "\\\\srv\\share\\x", "rel", "a/b", "", "/a/../b"];
+        for c in cases {
+            assert_eq!(mentions_absolute_path(&json!(c)), tt_persist::fsx::absolute(c, "").is_ok(), "{c}");
+            assert_eq!(
+                mentions_absolute_path(&json!({ "steps": [{ "params": { "path": c } }] })),
+                mentions_absolute_path(&json!(c))
+            );
+        }
+        if cfg!(windows) {
+            assert!(mentions_absolute_path(&json!("C:\\")));
+        } else {
+            assert!(mentions_absolute_path(&json!("/")), "the root is an absolute path");
+        }
+        assert!(!mentions_absolute_path(&json!("rel")));
+    }
+
+    /// Ruling O-20: the per-session thread caps take a slot below the cap and refuse at it; K is their sum.
+    #[test]
+    fn session_thread_caps_refuse_at_the_cap() {
+        let n = AtomicUsize::new(0);
+        for _ in 0..MAX_JOB_WAITS {
+            assert!(take_slot(&n, MAX_JOB_WAITS));
+        }
+        assert!(!take_slot(&n, MAX_JOB_WAITS), "one more wait is refused");
+        n.fetch_sub(1, Ordering::AcqRel);
+        assert!(take_slot(&n, MAX_JOB_WAITS), "a released slot is taken again");
+        assert_eq!(SESSION_THREADS, 20);
     }
 }

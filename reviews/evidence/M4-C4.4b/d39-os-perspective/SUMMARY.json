@@ -1,0 +1,281 @@
+{
+ "receipt": "reviews/evidence/M4-C4.4b/d39-os-perspective",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-d39-bindings.py target/release/toontown.exe <out> --mode os --only Perspective",
+ "manifest": {
+  "kind": "toontown.c43b.d39-bindings",
+  "mode": "os",
+  "seconds": 50.7,
+  "rows": 6,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the IPC recorder sees the page's commands"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › corner drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473 (SI-188))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › alternate side drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 §7.1.3 line 470 (SI-188: symmetric about the side's middle))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › a missed press, then a marquee and a corner drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473; SI-188 (a drag off the handles selects); D-76 item 3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › locked drawing: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 line 414; design note 4 §7 (grey handles, the kernel's refusal))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 File › Open Recent › an entry's full path: the status bar shows the highlighted entry's full path, then its line again; no command (01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\"))"
+  }
+ ],
+ "rows": [
+  {
+   "name": "Perspective › corner drag",
+   "spec": "spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473 (SI-188)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.corner_pts.<locals>.pts at 0x00000247BE898A40>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.envelope.apply",
+      "params": "the top-right corner 20 du left, the others kept, mapping auto"
+     },
+     "sent": [
+      {
+       "command": "draw.envelope.apply",
+       "params": {
+        "corners": [
+         {
+          "x": -64,
+          "y": -44
+         },
+         {
+          "x": 64,
+          "y": -44
+         },
+         {
+          "x": 44,
+          "y": 44
+         },
+         {
+          "x": -64,
+          "y": 44
+         }
+        ],
+        "mapping": "auto"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Perspective Tool",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Perspective › alternate side drag",
+   "spec": "spec/02_drawing.md:1335; 02 §7.1.3 line 470 (SI-188: symmetric about the side's middle)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.side_pts.<locals>.pts at 0x00000247BE898D60>",
+    [
+     "alt"
+    ]
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points with alt held",
+     "expected": {
+      "command": "draw.envelope.apply",
+      "params": "the top corners spread 15 du each way and rise 4 du"
+     },
+     "sent": [
+      {
+       "command": "draw.envelope.apply",
+       "params": {
+        "corners": [
+         {
+          "x": -64,
+          "y": -44
+         },
+         {
+          "x": 64,
+          "y": -44
+         },
+         {
+          "x": 79,
+          "y": 48
+         },
+         {
+          "x": -79,
+          "y": 48
+         }
+        ],
+        "mapping": "auto"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Perspective Tool",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Perspective › a missed press, then a marquee and a corner drag",
+   "spec": "spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473; SI-188 (a drag off the handles selects); D-76 item 3",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.corner_pts.<locals>.pts at 0x00000247BE899120>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.envelope.apply",
+      "params": "after the miss emptied the selection and the marquee selected the square again: the corner drag"
+     },
+     "sent": [
+      {
+       "command": "draw.envelope.apply",
+       "params": {
+        "corners": [
+         {
+          "x": -77.28179901616303,
+          "y": -44.582704585026114
+         },
+         {
+          "x": 77.28179901616303,
+          "y": -44.582704585026114
+         },
+         {
+          "x": 57.281799016163035,
+          "y": 46.89248067463106
+         },
+         {
+          "x": -77.28179901616303,
+          "y": 46.89248067463106
+         }
+        ],
+        "mapping": "auto"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Perspective Tool",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Perspective › locked drawing",
+   "spec": "spec/02_drawing.md:1335; 02 line 414; design note 4 §7 (grey handles, the kernel's refusal)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.corner_pts.<locals>.pts at 0x00000247BE8993A0>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "status bar › jobs",
+   "spec": "spec/11_agent_interface_mcp.md:636; 01 §9.1 (status bar: running jobs)",
+   "runningPerKernel": [
+    1,
+    1
+   ],
+   "jobId": "job-2",
+   "shownWhileRunning": [
+    "1 job running"
+   ],
+   "afterEnd": "",
+   "ok": true
+  },
+  {
+   "name": "File › Open Recent › an entry's full path",
+   "spec": "01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\")",
+   "form": "os",
+   "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-5ha4t89y\\D39-recent.animpkg",
+   "shownWhileHighlighted": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-5ha4t89y\\D39-recent.animpkg",
+   "before": "",
+   "afterClose": "",
+   "sent": [],
+   "ok": true
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 131,
+   "sha256": "38535692f4fadd47e3e18b4aa281375e39d671ab6f8f02b48e1c73eb281f189f"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 95834,
+   "sha256": "fd0231e4fa8e83fbc096b37136491a93adec10b77a3f216ffb53ad0fe589f0a0"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 6051,
+   "sha256": "ad55d592eddb7afd1d72ee6bb90aa33d55ec6fba9319bace80ee7fd45da8d7c8"
+  }
+ ]
+}

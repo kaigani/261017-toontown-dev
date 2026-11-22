@@ -1,0 +1,32 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r1\crates\executor)
+At line:91 char:1
++ cargo test -p tt-executor --test c41_r1_review part_d_preferences --l ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.57s
+     Running tests\c41_r1_review.rs (target\debug\deps\c41_r1_review-f29fc8ad7bdf407a.exe)
+
+running 3 tests
+test part_d_preferences::accepted_calls_emit_only_actual_changed_keys ... FAILED
+test part_d_preferences::atomic_disk_defaults_reload_access_and_reset ... ok
+test part_d_preferences::catalogue_types_ranges_and_nonfinite_wire_values ... ok
+
+failures:
+
+---- part_d_preferences::accepted_calls_emit_only_actual_changed_keys stdout ----
+
+thread 'part_d_preferences::accepted_calls_emit_only_actual_changed_keys' (16788) panicked at crates\executor\tests\c41_r1_review.rs:242:9:
+assertion `left == right` failed: unchanged defaults are not changes
+  left: Array [String("interface.theme"), String("files.backups.count")]
+ right: Array [String("interface.theme")]
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    part_d_preferences::accepted_calls_emit_only_actual_changed_keys
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 6 filtered out; finished in 0.05s
+
+error: test failed, to rerun pass `-p tt-executor --test c41_r1_review`

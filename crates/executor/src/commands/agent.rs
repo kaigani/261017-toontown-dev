@@ -95,7 +95,16 @@ pub(crate) fn agent_server_set(cx: &mut Cx, p: ServerSetParams) -> Result<Server
         // Remote binding needs the MCP authorization flow (11 §4); it is stored as asked and applies with HTTP (M4).
         prefs.insert("agent.server.allowRemote".into(), json!(remote));
     }
-    cx.defer(Effect::Prefs(prefs));
+    // SI-173: written as `prefs.set` writes them (validated, staged, announced by `prefs.changed`), so the Agent access
+    // category and every other reader follow a change made by either route.
+    for (k, v) in &mut prefs {
+        *v = crate::prefs::validate(k, v, &[])?;
+    }
+    super::prefs::stage_stored(cx, prefs)?;
+    // The desktop host starts or stops the server as the command says, whatever started it (ruling O-21): a
+    // host-only notice, sent even when the stored preference already had this value (a run started with
+    // `--mcp-http` serves while the preference may be off).
+    cx.emit("shell.agentServer", json!({ "enabled": p.enabled }));
     if p.http.unwrap_or(true) && p.enabled {
         // Streamable HTTP is the attached-mode transport of the desktop host (11 §4; ADR-0015 §2): M4.
         cx.warn(
@@ -120,8 +129,17 @@ pub(crate) fn agent_server_status(cx: &mut Cx, _p: NoParams) -> Result<Map<Strin
     let sessions = hub.summary();
     let stdio = hub.sessions.values().any(|s| s.transport == "stdio");
     let mut m = Map::new();
-    m.insert("enabled".into(), json!(hub.server_enabled || !sessions.is_empty()));
-    m.insert("endpoint".into(), if stdio { json!("stdio") } else { Value::Null });
+    // D-62 item 1 (C44A-R1-40; 11 §15.1): the endpoint is the one the HTTP server serves on (the discovery file's),
+    // however it was started; `stdio` for a headless server's session; none when nothing serves.
+    m.insert("enabled".into(), json!(hub.serving.is_some() || hub.server_enabled || !sessions.is_empty()));
+    m.insert(
+        "endpoint".into(),
+        match &hub.serving {
+            Some(url) => json!(url),
+            None if stdio => json!("stdio"),
+            None => Value::Null,
+        },
+    );
     m.insert("sessions".into(), Value::Array(sessions));
     m.insert("pendingConfirmations".into(), Value::Array(hub.pending_summary()));
     Ok(m)
@@ -196,6 +214,9 @@ pub(crate) fn agent_session_grant(cx: &mut Cx, p: GrantParams) -> Result<Map<Str
     m.insert("policy".into(), json!(a.policy.as_str()));
     m.insert("scopes".into(), json!(a.scopes.iter().map(|x| scope_name(*x)).collect::<Vec<_>>()));
     m.insert("roots".into(), json!(a.roots));
+    // The Activity panel's sessions strip and the indicator re-read the sessions (host-only; SI-176). Pause and resume
+    // have their own events (`agent.paused`, `agent.resumed`).
+    cx.emit("shell.agentSession", json!({ "sessionId": a.session_id }));
     Ok(m)
 }
 
@@ -345,7 +366,10 @@ pub(crate) fn agent_policy_defaults_set(
     cx: &mut Cx,
     p: PolicyDefaultsParams,
 ) -> Result<Map<String, Value>, CommandError> {
-    let l = &mut cx.session_mut().agents.limits;
+    // The session's present defaults with the given members, validated by the one validator `prefs.set` uses
+    // (C41-R1-11) and staged like any preference (the session follows through the staged consequences).
+    let mut limits = cx.session().agents.limits.clone();
+    let l = &mut limits;
     if let Some(v) = p.policy {
         l.policy = v;
     }
@@ -370,10 +394,11 @@ pub(crate) fn agent_policy_defaults_set(
     if let Some(v) = p.highlight_agent_changes {
         l.highlight_agent_changes = v;
     }
-    let v = serde_json::to_value(&*l).map_err(|e| CommandError::internal(e.to_string()))?;
+    let v = serde_json::to_value(&limits).map_err(|e| CommandError::internal(e.to_string()))?;
+    let v = crate::prefs::validate("agent.policy.defaults", &v, &[])?;
     let mut prefs = Map::new();
     prefs.insert("agent.policy.defaults".into(), v.clone());
-    cx.defer(Effect::Prefs(prefs));
+    super::prefs::stage(cx, prefs)?;
     Ok(v.as_object().cloned().unwrap_or_default())
 }
 
@@ -384,6 +409,9 @@ pub(crate) struct Discovery {
     /// Discovery file path.
     discovery_file: String,
 }
+
+/// Bytes of the per-installation bearer token (48 hex characters; `tt_persist::fsx::is_secret_token` checks the form).
+pub const TOKEN_BYTES: usize = 24;
 
 #[command(
     id = "agent.token.regenerate",
@@ -398,15 +426,27 @@ pub(crate) fn agent_token_regenerate(cx: &mut Cx, _p: NoParams) -> Result<Discov
     // folder. HTTP sessions arrive with attached mode (M4); stdio sessions are not affected.
     let dir = cx.session().env.dirs.settings.clone();
     let path = dir.join("agent-discovery.json");
+    // Credentials fail closed (ruling O-6): no fallback when the operating system's random source fails.
+    let token = fsx::secret_token(TOKEN_BYTES).map_err(|e| {
+        CommandError::with_details(
+            tt_registry::codes::INTERNAL,
+            format!("cannot create the agent token: {e}"),
+            json!({ "reason": "randomUnavailable" }),
+        )
+    })?;
     let text = serde_json::to_vec_pretty(&json!({
         "format": "toontown-agent-discovery", "formatVersion": "1.0",
-        "endpoint": Value::Null, "token": fsx::random_token(24), "processId": std::process::id(),
+        "endpoint": Value::Null, "token": token, "processId": Value::Null,
     }))
     .map_err(|e| CommandError::internal(e.to_string()))?;
     // Published only when the call commits (C14-R2-05): a failing batch keeps the previous discovery file.
     let mut write = crate::cx::FileWrite::new(path.clone(), text);
     write.private = true;
     cx.defer(Effect::WriteFile(Box::new(write)));
+    // 11 §15.1: connected HTTP clients are disconnected. The desktop host restarts its server on this host-only notice
+    // (after the commit, so it reads the new token), which ends the HTTP sessions and rewrites the discovery file with
+    // the endpoint as well as the token (SI-178).
+    cx.emit("shell.agentToken", json!({}));
     Ok(Discovery { discovery_file: path.to_string_lossy().into_owned() })
 }
 
@@ -440,9 +480,14 @@ pub(crate) struct ToolCount {
 pub(crate) fn agent_typed_tools_set(cx: &mut Cx, p: TypedToolsParams) -> Result<ToolCount, CommandError> {
     let namespaces = p.namespaces.unwrap_or_default();
     let count = typed_tool_count(p.enabled, &namespaces);
-    let hub = &mut cx.session_mut().agents;
-    hub.typed_tools = p.enabled.then_some(namespaces);
-    hub.typed_tools_version += 1;
+    // SI-179: staged as the `agent.typedTools` preference (its consequence sets the hub), so it survives a restart.
+    let mut prefs = Map::new();
+    let value = json!({ "enabled": p.enabled, "namespaces": namespaces });
+    prefs.insert(
+        crate::agents::TYPED_TOOLS_PREF.into(),
+        crate::prefs::validate(crate::agents::TYPED_TOOLS_PREF, &value, &[])?,
+    );
+    super::prefs::stage(cx, prefs)?;
     Ok(ToolCount { tool_count: count })
 }
 
@@ -499,7 +544,34 @@ pub(crate) fn agent_confirmation_respond(cx: &mut Cx, p: ConfirmParams) -> Resul
             json!({ "confirmationId": p.confirmation_id }),
         )
     })?;
+    // Ruling D-59 (C44A-R1S-01): the first decision settles the request. A later answer, from a second window whose
+    // sheet has not caught up, is refused and changes nothing (a Decline is never turned into an Accept, nor the
+    // reverse).
+    if pending.decision.is_some() {
+        let decided = pending.decision == Some(true);
+        return Err(CommandError::with_details(
+            "confirmation.expired",
+            format!(
+                "confirmation `{}` was already {}",
+                p.confirmation_id,
+                if decided { "accepted" } else { "declined" }
+            ),
+            json!({ "confirmationId": p.confirmation_id, "reason": "already decided", "decision": decided }),
+        ));
+    }
+    if let Some(why) = pending.expired.clone() {
+        return Err(CommandError::with_details(
+            "confirmation.expired",
+            format!("confirmation `{}` has expired: {why}", p.confirmation_id),
+            json!({ "confirmationId": p.confirmation_id, "reason": why }),
+        ));
+    }
     pending.decision = Some(p.accept);
+    // The sheet in every window drops the request (host-only, D-57/D-58; `agent.server.status` gives the same).
+    cx.emit(
+        "shell.agentConfirmation",
+        json!({ "confirmationId": p.confirmation_id, "outcome": if p.accept { "accepted" } else { "declined" } }),
+    );
     Ok(Confirmed { confirmation_id: p.confirmation_id, accepted: p.accept })
 }
 
@@ -827,7 +899,11 @@ pub(crate) struct Enabled {
     gui = "Preferences › Agent access (M4)",
 )]
 pub(crate) fn agent_activity_persist_set(cx: &mut Cx, p: Enabled) -> Result<Enabled, CommandError> {
-    cx.session_mut().agents.persist = p.enabled;
+    // SI-179: staged as the `agent.activity.persist` preference (its consequence sets the hub), so it survives a
+    // restart and `prefs.changed` announces it.
+    let mut prefs = Map::new();
+    prefs.insert(crate::agents::PERSIST_PREF.into(), json!(p.enabled));
+    super::prefs::stage(cx, prefs)?;
     Ok(Enabled { enabled: p.enabled })
 }
 

@@ -21,18 +21,11 @@ pub(crate) fn start(s: &mut Session) {
     if let Some(w) = s.env.stored_workspaces() {
         s.ui.restore(&w);
     }
-    for f in s.env.settings.corrupt.clone() {
-        s.emit(
-            "ui.message.shown",
-            json!({
-                "messageId": "prefs.corrupt",
-                "severity": "warning",
-                "text": "A settings file was damaged; it was kept aside and its defaults are used.",
-                "details": { "path": f },
-                "source": "user",
-                "suppressed": false,
-            }),
-        );
+    if let Some(d) = s.env.stored_drawing() {
+        *s.ui.drawing_mut() = crate::drawing::DrawingSettings::from_stored(&d);
+    }
+    for n in s.env.take_notices() {
+        s.emit("ui.message.shown", n);
     }
 }
 
@@ -58,6 +51,11 @@ pub(crate) fn tick(core: &mut Core, force_autosave: bool) -> Timings {
         heartbeat(s);
         t.heartbeat = Some(start.elapsed());
         s.env.last_heartbeat = Some(now);
+    } else if s.env.recovery_beat_pending {
+        // A recovery heartbeat skipped while another engine held the ownership lock: retried at the next pass.
+        let start = Instant::now();
+        recovery_heartbeat(s);
+        t.heartbeat = Some(start.elapsed());
     }
     if force_autosave || s.env.last_watch.is_none_or(|t| now.duration_since(t) >= m.watch) {
         let start = Instant::now();
@@ -72,8 +70,14 @@ pub(crate) fn tick(core: &mut Core, force_autosave: bool) -> Timings {
     t
 }
 
+fn fenced(s: &Session) -> bool {
+    s.env.fence.load(std::sync::atomic::Ordering::Acquire)
+}
+
 fn heartbeat(s: &mut Session) {
-    let root = s.env.dirs.recovery.clone();
+    if fenced(s) {
+        return;
+    }
     let Some(p) = s.project.as_mut() else { return };
     if let Some(l) = &p.store.lock
         && let Err(e) = l.refresh()
@@ -83,9 +87,20 @@ fn heartbeat(s: &mut Session) {
         p.store.locked_by = e.details().get("lock").cloned();
         p.store.lock = None;
     }
-    if p.store.autosaved_rev.is_some() {
-        recovery::heartbeat(&root, &p.store.recovery_id);
-    }
+    recovery_heartbeat(s);
+}
+
+/// The recovery copy's heartbeat (when there is one); a skip (the ownership lock was held) leaves it pending for the
+/// next maintenance pass.
+fn recovery_heartbeat(s: &mut Session) {
+    let root = s.env.dirs.recovery.clone();
+    let ran = match s.project.as_ref() {
+        Some(p) if p.store.autosaved_rev.is_some() => {
+            recovery::heartbeat_owned(&root, &p.store.recovery_id, &s.env.fence)
+        }
+        _ => true,
+    };
+    s.env.recovery_beat_pending = !ran;
 }
 
 fn watch(s: &mut Session) {
@@ -142,7 +157,7 @@ fn watch(s: &mut Session) {
 
 /// Starts an autosave when one is due; `true` when it took a snapshot.
 fn autosave(s: &mut Session, force: bool) -> bool {
-    if !s.env.pref_bool("files.autosave.enabled") && !force {
+    if fenced(s) || (!s.env.pref_bool("files.autosave.enabled") && !force) {
         return false;
     }
     let interval = s.env.maintenance.autosave.unwrap_or_else(|| {
@@ -176,6 +191,7 @@ fn autosave(s: &mut Session, force: bool) -> bool {
     let preserved = p.store.preserved.clone();
     let blobs = p.store.blobs.clone();
     let session = crate::persistence::session_json(&doc, &s.app);
+    let (engine, fence) = (s.env.engine.clone(), s.env.fence.clone());
     let spawned = std::thread::Builder::new().name("tt-autosave".to_owned()).spawn(move || {
         let input = tt_persist::SaveInput {
             doc: &doc,
@@ -184,7 +200,14 @@ fn autosave(s: &mut Session, force: bool) -> bool {
             session: Some(&session),
             saved_at: saved_at.clone(),
         };
-        let outcome = recovery::write(&root, &info, &input);
+        // The fence check, the owner record and the write are one step with respect to a release of this engine's
+        // entries (ruling O-18): an engine abandoned while the snapshot waited, or before the write began, writes
+        // nothing; a write already past its check finishes before the release (C41-R1-15).
+        let outcome = match recovery::write_owned(&root, &info, &input, &engine, &fence) {
+            Ok(None) => return,
+            Ok(Some(saved)) => Ok(saved),
+            Err(e) => Err(e),
+        };
         let id = info.recovery_id.clone();
         let _ = poster.run(std::time::Duration::from_secs(600), move |core| {
             let Some(s) = core.session_mut() else { return };

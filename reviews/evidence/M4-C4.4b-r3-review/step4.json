@@ -1,0 +1,380 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-vzpy19k_",
+  "checks": [
+    {
+      "check": "D-83 independent explicit element",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN80043B3QHA39ZRC94H8",
+          "strokeIds": [
+            "st_01K7JJN800MRSQ5R0E62YVFQCN"
+          ],
+          "createdIds": [
+            "st_01K7JJN800MRSQ5R0E62YVFQCN"
+          ],
+          "modifiedIds": [
+            "st_01K7JJN800MRSQ5R0E62YVFQCN"
+          ],
+          "removedIds": [],
+          "rev": 6
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN80043B3QHA39ZRC94H8/st_01K7JJN800MRSQ5R0E62YVFQCN",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/lineStyle/thickness",
+                "value": 13.0,
+                "oldValue": 8.0
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN80043B3QHA39ZRC94H8",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 6,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-5",
+          "label": "Edit Stroke"
+        },
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "check": "D-83 independent explicit hidden",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "drawingId": "dr_01K7JJN800C6GJ1EDJN5789YFX",
+          "strokeIds": [
+            "st_01K7JJN8000CVTEXF8641ZGJHE"
+          ],
+          "createdIds": [
+            "st_01K7JJN8000CVTEXF8641ZGJHE"
+          ],
+          "modifiedIds": [
+            "st_01K7JJN8000CVTEXF8641ZGJHE"
+          ],
+          "removedIds": [],
+          "rev": 6
+        },
+        "changes": [
+          {
+            "id": "dr_01K7JJN800C6GJ1EDJN5789YFX/st_01K7JJN8000CVTEXF8641ZGJHE",
+            "type": "stroke",
+            "op": "modified",
+            "rev": 6,
+            "patch": [
+              {
+                "op": "replace",
+                "path": "/lineStyle/thickness",
+                "value": 13.0,
+                "oldValue": 8.0
+              }
+            ]
+          },
+          {
+            "id": "dr_01K7JJN800C6GJ1EDJN5789YFX",
+            "type": "drawing",
+            "op": "modified",
+            "rev": 6,
+            "patch": []
+          }
+        ],
+        "undo": {
+          "stepId": "u-5",
+          "label": "Edit Stroke"
+        },
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "check": "D-83 independent explicit drawing",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "drawing.locked",
+          "message": "drawing `1` is locked",
+          "details": {
+            "drawingId": "dr_01K7JJN800BBCSBBQ4R6JEAAC8"
+          },
+          "hint": "unlock it first (element.drawingLock.set)"
+        }
+      }
+    },
+    {
+      "check": "D-85 timeline keepSelectionVisible contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800KRH43BYGM1G8F9Q4",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline keepSelectionVisible perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800WF0A688VGDJS3A3S",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": {
+          "tool": "perspective",
+          "locked": false,
+          "handles": 8
+        }
+      }
+    },
+    {
+      "check": "D-85 timeline keepSelectionVisible repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800PFQ6N59ZX7W4HB48",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": {
+          "tool": "repositionAll",
+          "locked": false,
+          "handles": 8
+        }
+      }
+    },
+    {
+      "check": "D-85 timeline keepSelectionVisible text",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800GGB319PJH11YCVGS",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline off contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline off perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline off repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline off text",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 timeline outlineOnSelection text",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet keepSelectionVisible contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN8006ZDJMVZ08VZ32HWS",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet keepSelectionVisible perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN80022Q9FP8F5HCCPXGV",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": {
+          "tool": "perspective",
+          "locked": false,
+          "handles": 8
+        }
+      }
+    },
+    {
+      "check": "D-85 xsheet keepSelectionVisible repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800H9ZF9CEPDWCJY1YZ",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": {
+          "tool": "repositionAll",
+          "locked": false,
+          "handles": 8
+        }
+      }
+    },
+    {
+      "check": "D-85 xsheet keepSelectionVisible text",
+      "ok": true,
+      "detail": {
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800H8JGFC12MATACD4J",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet off contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet off perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet off repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet off text",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    },
+    {
+      "check": "D-85 xsheet outlineOnSelection text",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null
+      }
+    }
+  ],
+  "failures": []
+}

@@ -1,0 +1,9 @@
+{
+  "command": [
+    "python",
+    "tests\\adversarial\\c41-r1s-prefs.py"
+  ],
+  "exit": 0,
+  "seconds": 0.05158929998287931,
+  "results": []
+}

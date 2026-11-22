@@ -1,0 +1,85 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\vector)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\registry)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 40.19s
+     Running tests\c41_r1_review.rs (target\debug\deps\c41_r1_review-f29fc8ad7bdf407a.exe)
+
+running 17 tests
+test unknown_settings_version_is_quarantined ... ok
+test part_d_settings::abandoned_settings_temporary_is_cleaned_on_load ... ok
+test part_e_keymap::empty_sequence_has_keymap_error ... ok
+test closing_dialog_over_json_clears_modal_and_shortcuts ... ok
+test part_d_preferences::accepted_calls_emit_only_actual_changed_keys ... ok
+test part_d_agent_policy::generic_preferences_enforce_agent_policy_limits ... ok
+test part_e_freshness::future_acknowledgement_cannot_make_tree_fresh ... ok
+test part_e_freshness::older_tree_cannot_inherit_newer_acknowledgement ... ok
+test part_d_settings::malformed_shapes_are_quarantined_independently ... ok
+test part_e_keymap::import_preserves_typed_binding_errors ... ok
+test part_c_priority::user_command_passes_waiting_agent_and_new_modal_is_observed ... ok
+test part_e_keymap::canonical_conflicts_override_reset_and_defaults ... ok
+test part_d_preferences::atomic_disk_defaults_reload_access_and_reset ... ok
+test part_d_preferences::catalogue_types_ranges_and_nonfinite_wire_values ... ok
+test part_e_restart::release_does_not_steal_another_live_engines_recovery ... ok
+test part_c_priority::silent_busy_report_has_bounded_calls_and_user_remains_free ... ok
+test part_e_freshness::bounded_concurrent_waits_leave_document_thread_free ... ok
+
+test result: ok. 17 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.02s
+
+     Running tests\c41_r2_review.rs (target\debug\deps\c41_r2_review-fe1404ffca07da89.exe)
+
+running 18 tests
+test part_c1_availability::disabled_key_has_typed_refusal ... ok
+test part_c1_freshness::tree_exposes_its_vouching_sequence ... ok
+test part_b_preferences::stale_policy_member_does_not_poison_other_members ... ok
+test part_b_settings::cleanup_lock_is_nonblocking_and_released ... ok
+test part_b_splitter::self_relative_special_panels_remain_refused ... ok
+test part_b_settings::failed_write_retries_after_folder_repair ... ok
+test part_b_preferences::partial_policy_preserves_stored_members ... ok
+test part_b_preferences::prefs_noops_write_nothing_and_agent_source ... ok
+test part_b_splitter::second_group_resize_and_saved_restore ... ok
+test part_b_preferences::import_errors_are_indexed_atomic_and_identical_import_is_silent ... ok
+test part_b_preferences::policy_bounds_both_paths ... ok
+test part_b_settings::versions_and_once_notices ... ok
+test part_c1_availability::undo_redo_labels_and_toggle_follow_state ... ok
+test part_b_preferences::empty_arguments_never_panic_or_create_empty_bindings ... ok
+test part_c1_restart::released_engine_cannot_refresh_and_third_cannot_steal ... ok
+test part_b_splitter::all_builtin_tabs_resize_only_area_and_noop_is_silent ... ok
+test part_c1_availability::availability_matches_dry_run_in_three_states ... ok
+test part_c1_freshness::report_order_and_wait_bounds ... ok
+
+test result: ok. 18 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 2.04s
+
+     Running tests\c41_r3_review.rs (target\debug\deps\c41_r3_review-46ba4b1a8c9f932d.exe)
+
+running 4 tests
+test part_b_availability::selection_and_empty_state_parity ... ok
+test part_b_preferences::composites_atomic_roundtrip_and_stale_members ... ok
+test part_b_recovery::release_before_write_begins_preserves_both_owners ... ok
+test part_b_recovery::unrelated_live_pid_is_conservatively_kept ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.36s
+
+     Running tests\c41_r4_review.rs (target\debug\deps\c41_r4_review-bb0311e36a284f97.exe)
+
+running 2 tests
+test settings_bytes_and_times_survive_all_references ... ok
+test availability_preserves_observable_state_and_measures_contention ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.71s
+
+     Running tests\c41_r5_review.rs (target\debug\deps\c41_r5_review-1b0c7c9cc27b9014.exe)
+
+running 3 tests
+test current_drawing_empty_selection_parity ... ok
+test locked_current_drawing_parity ... ok
+test independent_large_state_budgets ... ok
+
+test result: ok. 3 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 19.63s
+

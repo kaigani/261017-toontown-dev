@@ -1,0 +1,10 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "fmt",
+    "--check"
+  ],
+  "exit": 0,
+  "seconds": 2.558832500013523,
+  "results": []
+}

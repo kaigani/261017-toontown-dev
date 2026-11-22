@@ -1,0 +1,140 @@
+{
+  "kind": "toontown.c42.canvas-measure",
+  "platform": "win32",
+  "machine": "Windows",
+  "architecture": "64bit",
+  "boundsKind": "workstation",
+  "bounds": {
+    "frameMs": 17.5,
+    "gestureFrameMs": 17.5,
+    "inkMs": 16.7,
+    "commitSmallMs": 50.0,
+    "commitLargeMs": 150.0
+  },
+  "requestedBackend": "webgpu",
+  "experiments": false,
+  "ruleSet": false,
+  "longSamples": 30,
+  "backend": "webgpu",
+  "fallback": null,
+  "small": {
+    "idle": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 17
+    },
+    "gesture": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.9,
+      "max": 17
+    },
+    "ink": {
+      "n": 300,
+      "p50": 0.5,
+      "p95": 1.8,
+      "max": 2.5
+    },
+    "commit": {
+      "n": 5,
+      "p50": 24.9,
+      "p95": 33.6,
+      "max": 33.6,
+      "samples": [
+        29.9,
+        24.9,
+        33.6,
+        16.8,
+        17.9
+      ]
+    }
+  },
+  "longStroke": {
+    "samples": 10000,
+    "status": "ok",
+    "commitMs": [
+      129.3
+    ],
+    "parts": [
+      {
+        "answerMs": 129.3,
+        "drawMs": 0
+      }
+    ]
+  },
+  "largeBuildS": 36.0,
+  "large": {
+    "idle": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 17.1
+    },
+    "load": {
+      "key": "dr_01K7JJN800346511TB3ST6FPXZ",
+      "bytes": 861736,
+      "ms": 48.5
+    },
+    "residentBytes": 24107404,
+    "gesture": {
+      "n": 300,
+      "p50": 16.7,
+      "p95": 16.8,
+      "max": 17
+    },
+    "commit": {
+      "n": 5,
+      "p50": 74.2,
+      "p95": 77.2,
+      "max": 77.2,
+      "samples": [
+        77.2,
+        74.3,
+        66.7,
+        71.3,
+        74.2
+      ]
+    }
+  },
+  "largeLongStroke": {
+    "events": 9998,
+    "samples": 30,
+    "commitMs": [
+      141.8,
+      133.3,
+      149.1,
+      138.3,
+      144.6,
+      138.2,
+      139.5,
+      136.2,
+      136.3,
+      138.4,
+      138.1,
+      131.8,
+      140.4,
+      135,
+      138.4,
+      142.5,
+      140.6,
+      127.7,
+      145.6,
+      138.5,
+      137,
+      134.2,
+      143.5,
+      130.2,
+      130.6,
+      133.1,
+      145.8,
+      141.1,
+      142.8,
+      138.6
+    ],
+    "p50": 138.4,
+    "p95": 145.8,
+    "max": 149.1
+  },
+  "failures": []
+}

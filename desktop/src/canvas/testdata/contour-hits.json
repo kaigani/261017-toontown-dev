@@ -1,0 +1,7821 @@
+{
+  "configs": [
+    {
+      "name": "drawing-zoom-0.5",
+      "view": "drawingView",
+      "drawingToView": [
+        0.5,
+        0.0,
+        0.0,
+        -0.5,
+        960.0,
+        540.0
+      ],
+      "contours": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "locked": false,
+        "strokes": [
+          {
+            "strokeId": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "layer": "/nodes/3/strokes",
+            "closed": true,
+            "partner": false,
+            "anchors": [
+              [
+                300.0,
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                400.0,
+                300.0,
+                -18.0,
+                6.0,
+                14.0,
+                22.0
+              ],
+              [
+                400.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                300.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "selected": [
+              1
+            ]
+          }
+        ]
+      },
+      "presses": [
+        {
+          "p": [
+            1110.0,
+            390.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1113.0,
+            390.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            386.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1114.5,
+            394.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1104.5,
+            390.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            396.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1103.0,
+            392.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1160.0,
+            390.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1163.0,
+            390.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            386.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1164.5,
+            394.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1154.5,
+            390.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            396.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1153.0,
+            392.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.8341995324007883
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1163.0,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            336.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1164.5,
+            344.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.7776933535933495
+          }
+        },
+        {
+          "p": [
+            1154.5,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            346.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.7479977887123823
+          }
+        },
+        {
+          "p": [
+            1153.0,
+            342.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.23526017973199487
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1113.0,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            336.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1114.5,
+            344.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1104.5,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            346.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.22586500998301062
+          }
+        },
+        {
+          "p": [
+            1103.0,
+            342.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1151.0,
+            387.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1154.0,
+            387.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1151.0,
+            383.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1155.5,
+            391.5
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1145.5,
+            387.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7038694756047619
+          }
+        },
+        {
+          "p": [
+            1151.0,
+            393.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1144.0,
+            389.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.6812075805496249
+          }
+        },
+        {
+          "p": [
+            1167.0,
+            379.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1170.0,
+            379.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1167.0,
+            375.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1171.5,
+            383.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1161.5,
+            379.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.2244796072554891
+          }
+        },
+        {
+          "p": [
+            1167.0,
+            385.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1160.0,
+            381.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.18683168292045593
+          }
+        },
+        {
+          "p": [
+            1114.0,
+            390.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1117.0,
+            390.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.25882342096883804
+          }
+        },
+        {
+          "p": [
+            1114.0,
+            386.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1118.5,
+            394.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1108.5,
+            390.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1114.0,
+            396.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1107.0,
+            392.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1125.0,
+            390.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.39925403892993927
+          }
+        },
+        {
+          "p": [
+            1128.0,
+            390.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.44554330955725163
+          }
+        },
+        {
+          "p": [
+            1125.0,
+            386.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4021054697205386
+          }
+        },
+        {
+          "p": [
+            1129.5,
+            394.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1119.5,
+            390.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.30677547203958966
+          }
+        },
+        {
+          "p": [
+            1125.0,
+            396.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1118.0,
+            392.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.27645378559827805
+          }
+        },
+        {
+          "p": [
+            1135.0,
+            390.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.548651890822839
+          }
+        },
+        {
+          "p": [
+            1138.0,
+            390.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.592237202450633
+          }
+        },
+        {
+          "p": [
+            1135.0,
+            386.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.550107732415654
+          }
+        },
+        {
+          "p": [
+            1139.5,
+            394.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1129.5,
+            390.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4680534359081321
+          }
+        },
+        {
+          "p": [
+            1135.0,
+            396.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1128.0,
+            392.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.44432144609163515
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            386.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1163.0,
+            386.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            382.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.16840935498476028
+          }
+        },
+        {
+          "p": [
+            1164.5,
+            390.5
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1154.5,
+            386.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            392.5
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1153.0,
+            388.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            375.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.2885259595377647
+          }
+        },
+        {
+          "p": [
+            1163.0,
+            375.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.28996252169599757
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            371.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.35098170488436153
+          }
+        },
+        {
+          "p": [
+            1164.5,
+            379.5
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1154.5,
+            375.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1160.0,
+            381.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.17768768593691675
+          }
+        },
+        {
+          "p": [
+            1153.0,
+            377.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1160.0,
+            365.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.44127317890524864
+          }
+        },
+        {
+          "p": [
+            1163.0,
+            365.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.43881725892242684
+          }
+        },
+        {
+          "p": [
+            1160.0,
+            361.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.5012301653623581
+          }
+        },
+        {
+          "p": [
+            1164.5,
+            369.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.3722445852185956
+          }
+        },
+        {
+          "p": [
+            1154.5,
+            365.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1160.0,
+            371.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.3433187333866954
+          }
+        },
+        {
+          "p": [
+            1153.0,
+            367.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1156.0,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1159.0,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1156.0,
+            336.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1160.5,
+            344.5
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1150.5,
+            340.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.27892731371169077
+          }
+        },
+        {
+          "p": [
+            1156.0,
+            346.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1149.0,
+            342.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3031651120355008
+          }
+        },
+        {
+          "p": [
+            1145.0,
+            340.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1148.0,
+            340.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.31872414047437303
+          }
+        },
+        {
+          "p": [
+            1145.0,
+            336.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.36325749003854924
+          }
+        },
+        {
+          "p": [
+            1149.5,
+            344.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1139.5,
+            340.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4397077713791617
+          }
+        },
+        {
+          "p": [
+            1145.0,
+            346.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1138.0,
+            342.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4599141153371278
+          }
+        },
+        {
+          "p": [
+            1135.0,
+            340.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1138.0,
+            340.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4599141158269333
+          }
+        },
+        {
+          "p": [
+            1135.0,
+            336.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.49999999902667014
+          }
+        },
+        {
+          "p": [
+            1139.5,
+            344.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1129.5,
+            340.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5738708070962417
+          }
+        },
+        {
+          "p": [
+            1135.0,
+            346.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1128.0,
+            342.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5944570093771375
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            344.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1113.0,
+            344.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            340.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1114.5,
+            348.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1104.5,
+            344.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1110.0,
+            350.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.2952161257895227
+          }
+        },
+        {
+          "p": [
+            1103.0,
+            346.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1110.0,
+            355.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1113.0,
+            355.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.36325749066108415
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            351.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3031651126114241
+          }
+        },
+        {
+          "p": [
+            1114.5,
+            359.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1104.5,
+            355.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1110.0,
+            361.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4531966328557928
+          }
+        },
+        {
+          "p": [
+            1103.0,
+            357.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1110.0,
+            365.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1113.0,
+            365.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4999999996026361
+          }
+        },
+        {
+          "p": [
+            1110.0,
+            361.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4464620581287022
+          }
+        },
+        {
+          "p": [
+            1114.5,
+            369.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1104.5,
+            365.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1110.0,
+            371.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5875617894725167
+          }
+        },
+        {
+          "p": [
+            1103.0,
+            367.0
+          ],
+          "target": null
+        }
+      ]
+    },
+    {
+      "name": "drawing-zoom-1",
+      "view": "drawingView",
+      "drawingToView": [
+        1.0,
+        0.0,
+        0.0,
+        -1.0,
+        960.0,
+        540.0
+      ],
+      "contours": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "locked": false,
+        "strokes": [
+          {
+            "strokeId": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "layer": "/nodes/3/strokes",
+            "closed": true,
+            "partner": false,
+            "anchors": [
+              [
+                300.0,
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                400.0,
+                300.0,
+                -18.0,
+                6.0,
+                14.0,
+                22.0
+              ],
+              [
+                400.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                300.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "selected": [
+              1
+            ]
+          }
+        ]
+      },
+      "presses": [
+        {
+          "p": [
+            1260.0,
+            240.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1263.0,
+            240.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            236.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1264.5,
+            244.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1254.5,
+            240.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            246.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1253.0,
+            242.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1360.0,
+            240.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1363.0,
+            240.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            236.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1364.5,
+            244.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1354.5,
+            240.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            246.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1353.0,
+            242.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.907333441049559
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            140.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1363.0,
+            140.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            136.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1364.5,
+            144.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.8456660354859196
+          }
+        },
+        {
+          "p": [
+            1354.5,
+            140.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            146.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.8266008562786737
+          }
+        },
+        {
+          "p": [
+            1353.0,
+            142.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.16171873733401299
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            140.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1263.0,
+            140.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            136.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1264.5,
+            144.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1254.5,
+            140.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            146.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.15547373627371996
+          }
+        },
+        {
+          "p": [
+            1253.0,
+            142.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1342.0,
+            234.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1345.0,
+            234.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1342.0,
+            230.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1346.5,
+            238.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.8352125387901168
+          }
+        },
+        {
+          "p": [
+            1336.5,
+            234.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7469705030080149
+          }
+        },
+        {
+          "p": [
+            1342.0,
+            240.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7951546591357328
+          }
+        },
+        {
+          "p": [
+            1335.0,
+            236.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7353609056447112
+          }
+        },
+        {
+          "p": [
+            1374.0,
+            218.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1377.0,
+            218.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1374.0,
+            214.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1378.5,
+            222.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1368.5,
+            218.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.2283349917288433
+          }
+        },
+        {
+          "p": [
+            1374.0,
+            224.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1367.0,
+            220.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.2110397398718078
+          }
+        },
+        {
+          "p": [
+            1268.0,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.19112219943053788
+          }
+        },
+        {
+          "p": [
+            1271.0,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.22686885035363957
+          }
+        },
+        {
+          "p": [
+            1268.0,
+            236.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.1943034459836781
+          }
+        },
+        {
+          "p": [
+            1272.5,
+            244.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1262.5,
+            240.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1268.0,
+            246.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1261.0,
+            242.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1290.0,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3992540407925844
+          }
+        },
+        {
+          "p": [
+            1293.0,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4226458020784776
+          }
+        },
+        {
+          "p": [
+            1290.0,
+            236.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4006857015187961
+          }
+        },
+        {
+          "p": [
+            1294.5,
+            244.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1284.5,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3546366580121685
+          }
+        },
+        {
+          "p": [
+            1290.0,
+            246.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1283.0,
+            242.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.34109069244004786
+          }
+        },
+        {
+          "p": [
+            1310.0,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5486518860851675
+          }
+        },
+        {
+          "p": [
+            1313.0,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.570425539946882
+          }
+        },
+        {
+          "p": [
+            1310.0,
+            236.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5493834256778882
+          }
+        },
+        {
+          "p": [
+            1314.5,
+            244.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1304.5,
+            240.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5086121258937055
+          }
+        },
+        {
+          "p": [
+            1310.0,
+            246.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1303.0,
+            242.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1360.0,
+            232.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.08848050248343498
+          }
+        },
+        {
+          "p": [
+            1363.0,
+            232.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.09747450426219473
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            228.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1364.5,
+            236.5
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1354.5,
+            232.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1360.0,
+            238.5
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1353.0,
+            234.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1360.0,
+            210.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1363.0,
+            210.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.2892572875132373
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            206.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1364.5,
+            214.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.2540621096268296
+          }
+        },
+        {
+          "p": [
+            1354.5,
+            210.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1360.0,
+            216.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1353.0,
+            212.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1360.0,
+            190.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1363.0,
+            190.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.4400335578538943
+          }
+        },
+        {
+          "p": [
+            1360.0,
+            186.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1364.5,
+            194.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.4062939288560301
+          }
+        },
+        {
+          "p": [
+            1354.5,
+            190.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1360.0,
+            196.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1353.0,
+            192.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1352.0,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            1355.0,
+            140.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1352.0,
+            136.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.17366118158588506
+          }
+        },
+        {
+          "p": [
+            1356.5,
+            144.5
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1346.5,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.23059610837984224
+          }
+        },
+        {
+          "p": [
+            1352.0,
+            146.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1345.0,
+            142.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.24440235457927884
+          }
+        },
+        {
+          "p": [
+            1330.0,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1333.0,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3413415604841674
+          }
+        },
+        {
+          "p": [
+            1330.0,
+            136.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.36325749196112156
+          }
+        },
+        {
+          "p": [
+            1334.5,
+            144.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1324.5,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4020815405217206
+          }
+        },
+        {
+          "p": [
+            1330.0,
+            146.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1323.0,
+            142.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.41243821196255226
+          }
+        },
+        {
+          "p": [
+            1310.0,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1313.0,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.47998931623017427
+          }
+        },
+        {
+          "p": [
+            1310.0,
+            136.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.49999999951333507
+          }
+        },
+        {
+          "p": [
+            1314.5,
+            144.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1304.5,
+            140.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5367327510899713
+          }
+        },
+        {
+          "p": [
+            1310.0,
+            146.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1303.0,
+            142.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5468033669053511
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            148.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            1263.0,
+            148.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.1736611828703758
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            144.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1264.5,
+            152.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1254.5,
+            148.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1260.0,
+            154.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.23986108359842717
+          }
+        },
+        {
+          "p": [
+            1253.0,
+            150.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1260.0,
+            170.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1263.0,
+            170.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574908758244
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            166.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.33388865785677524
+          }
+        },
+        {
+          "p": [
+            1264.5,
+            174.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1254.5,
+            170.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1260.0,
+            176.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4089950755400338
+          }
+        },
+        {
+          "p": [
+            1253.0,
+            172.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1260.0,
+            190.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1263.0,
+            190.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.49999999980131804
+          }
+        },
+        {
+          "p": [
+            1260.0,
+            186.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4733079771899753
+          }
+        },
+        {
+          "p": [
+            1264.5,
+            194.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1254.5,
+            190.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1260.0,
+            196.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5434426503256731
+          }
+        },
+        {
+          "p": [
+            1253.0,
+            192.0
+          ],
+          "target": null
+        }
+      ]
+    },
+    {
+      "name": "drawing-zoom-2",
+      "view": "drawingView",
+      "drawingToView": [
+        2.0,
+        0.0,
+        0.0,
+        -2.0,
+        960.0,
+        540.0
+      ],
+      "contours": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "locked": false,
+        "strokes": [
+          {
+            "strokeId": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "layer": "/nodes/3/strokes",
+            "closed": true,
+            "partner": false,
+            "anchors": [
+              [
+                300.0,
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                400.0,
+                300.0,
+                -18.0,
+                6.0,
+                14.0,
+                22.0
+              ],
+              [
+                400.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                300.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "selected": [
+              1
+            ]
+          }
+        ]
+      },
+      "presses": [
+        {
+          "p": [
+            1560.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1563.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -64.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1564.5,
+            -55.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1554.5,
+            -60.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -53.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1553.0,
+            -58.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1763.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1760.0,
+            -64.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1764.5,
+            -55.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1754.5,
+            -60.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1760.0,
+            -53.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1753.0,
+            -58.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.9503781125531532
+          }
+        },
+        {
+          "p": [
+            1760.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1763.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1760.0,
+            -264.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1764.5,
+            -255.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.8922111397259869
+          }
+        },
+        {
+          "p": [
+            1754.5,
+            -260.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1760.0,
+            -253.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.8795242214109749
+          }
+        },
+        {
+          "p": [
+            1753.0,
+            -258.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.11229770327872757
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1563.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -264.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1564.5,
+            -255.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1554.5,
+            -260.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -253.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.1080474358976744
+          }
+        },
+        {
+          "p": [
+            1553.0,
+            -258.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1724.0,
+            -72.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1727.0,
+            -72.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1724.0,
+            -76.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1728.5,
+            -67.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.8131668656133115
+          }
+        },
+        {
+          "p": [
+            1718.5,
+            -72.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1724.0,
+            -65.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7937891407345887
+          }
+        },
+        {
+          "p": [
+            1717.0,
+            -70.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1788.0,
+            -104.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1791.0,
+            -104.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1788.0,
+            -108.0
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1792.5,
+            -99.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1782.5,
+            -104.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1788.0,
+            -97.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1781.0,
+            -102.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1576.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.19112219940143405
+          }
+        },
+        {
+          "p": [
+            1579.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.20958258957216458
+          }
+        },
+        {
+          "p": [
+            1576.0,
+            -64.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.19272063160315156
+          }
+        },
+        {
+          "p": [
+            1580.5,
+            -55.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1570.5,
+            -60.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.15286211614127865
+          }
+        },
+        {
+          "p": [
+            1576.0,
+            -53.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1569.0,
+            -58.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.13988345116376877
+          }
+        },
+        {
+          "p": [
+            1620.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3992540407925844
+          }
+        },
+        {
+          "p": [
+            1623.0,
+            -60.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4110191418430986
+          }
+        },
+        {
+          "p": [
+            1620.0,
+            -64.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3999713689545388
+          }
+        },
+        {
+          "p": [
+            1624.5,
+            -55.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1614.5,
+            -60.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3772679678804707
+          }
+        },
+        {
+          "p": [
+            1620.0,
+            -53.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1613.0,
+            -58.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1660.0,
+            -60.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1663.0,
+            -60.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1660.0,
+            -64.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5490185650539843
+          }
+        },
+        {
+          "p": [
+            1664.5,
+            -55.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1654.5,
+            -60.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1660.0,
+            -53.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1653.0,
+            -58.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -76.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1763.0,
+            -76.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.09315270557999611
+          }
+        },
+        {
+          "p": [
+            1760.0,
+            -80.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1764.5,
+            -71.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.07255512473057024
+          }
+        },
+        {
+          "p": [
+            1754.5,
+            -76.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -69.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1753.0,
+            -74.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -120.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1763.0,
+            -120.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -124.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1764.5,
+            -115.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1754.5,
+            -120.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -113.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1753.0,
+            -118.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -160.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1763.0,
+            -160.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -164.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1764.5,
+            -155.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1754.5,
+            -160.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1760.0,
+            -153.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1753.0,
+            -158.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1744.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            1747.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.15547373627371996
+          }
+        },
+        {
+          "p": [
+            1744.0,
+            -264.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.1736611817031104
+          }
+        },
+        {
+          "p": [
+            1748.5,
+            -255.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1738.5,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.20362134328394177
+          }
+        },
+        {
+          "p": [
+            1744.0,
+            -253.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1737.0,
+            -258.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.2112250267600757
+          }
+        },
+        {
+          "p": [
+            1700.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1703.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3523772459345338
+          }
+        },
+        {
+          "p": [
+            1700.0,
+            -264.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.36325749196112156
+          }
+        },
+        {
+          "p": [
+            1704.5,
+            -255.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1694.5,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3828566575191701
+          }
+        },
+        {
+          "p": [
+            1700.0,
+            -253.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1693.0,
+            -258.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.38813344951083195
+          }
+        },
+        {
+          "p": [
+            1660.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1663.0,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4899986661330473
+          }
+        },
+        {
+          "p": [
+            1660.0,
+            -264.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.49999999975666753
+          }
+        },
+        {
+          "p": [
+            1664.5,
+            -255.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1654.5,
+            -260.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5183415604485759
+          }
+        },
+        {
+          "p": [
+            1660.0,
+            -253.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1653.0,
+            -258.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5233503077179193
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -244.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            1563.0,
+            -244.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.1736611840315163
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -248.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.149016952545324
+          }
+        },
+        {
+          "p": [
+            1564.5,
+            -239.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1554.5,
+            -244.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1560.0,
+            -237.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.20871319522875353
+          }
+        },
+        {
+          "p": [
+            1553.0,
+            -242.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1560.0,
+            -200.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1563.0,
+            -200.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574909832016
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -204.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3487168600523347
+          }
+        },
+        {
+          "p": [
+            1564.5,
+            -195.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1554.5,
+            -200.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1560.0,
+            -193.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.38637750040302876
+          }
+        },
+        {
+          "p": [
+            1553.0,
+            -198.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1560.0,
+            -160.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1563.0,
+            -160.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4999999999006661
+          }
+        },
+        {
+          "p": [
+            1560.0,
+            -164.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4866635039232392
+          }
+        },
+        {
+          "p": [
+            1564.5,
+            -155.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1554.5,
+            -160.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1560.0,
+            -153.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.521680253924913
+          }
+        },
+        {
+          "p": [
+            1553.0,
+            -158.0
+          ],
+          "target": null
+        }
+      ]
+    },
+    {
+      "name": "drawing-rotated",
+      "view": "drawingView",
+      "drawingToView": [
+        1.299038105676658,
+        0.7499999999999999,
+        0.7499999999999999,
+        -1.299038105676658,
+        960.0,
+        540.0
+      ],
+      "contours": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "locked": false,
+        "strokes": [
+          {
+            "strokeId": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "layer": "/nodes/3/strokes",
+            "closed": true,
+            "partner": false,
+            "anchors": [
+              [
+                300.0,
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                400.0,
+                300.0,
+                -18.0,
+                6.0,
+                14.0,
+                22.0
+              ],
+              [
+                400.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                300.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "selected": [
+              1
+            ]
+          }
+        ]
+      },
+      "presses": [
+        {
+          "p": [
+            1574.7114317029973,
+            375.2885682970026
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1577.7114317029973,
+            375.2885682970026
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1574.7114317029973,
+            371.2885682970026
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1579.2114317029973,
+            379.7885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.1329787476497586
+          }
+        },
+        {
+          "p": [
+            1569.2114317029973,
+            375.2885682970026
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            1574.7114317029973,
+            381.7885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1567.7114317029973,
+            377.2885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1704.6152422706632,
+            450.28856829700254
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1707.6152422706632,
+            450.28856829700254
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1704.6152422706632,
+            446.28856829700254
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1709.1152422706632,
+            454.78856829700254
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1699.1152422706632,
+            450.28856829700254
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            1704.6152422706632,
+            456.78856829700254
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1697.6152422706632,
+            452.28856829700254
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1779.6152422706632,
+            320.38475772933674
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1782.6152422706632,
+            320.38475772933674
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1779.6152422706632,
+            316.38475772933674
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1784.1152422706632,
+            324.88475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1774.1152422706632,
+            320.38475772933674
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            1779.6152422706632,
+            326.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.863935973482512
+          }
+        },
+        {
+          "p": [
+            1772.6152422706632,
+            322.38475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1649.7114317029973,
+            245.3847577293368
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1652.7114317029973,
+            245.3847577293368
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1649.7114317029973,
+            241.3847577293368
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1654.2114317029973,
+            249.8847577293368
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.8780615383294048
+          }
+        },
+        {
+          "p": [
+            1644.2114317029973,
+            245.3847577293368
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            1649.7114317029973,
+            251.8847577293368
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.11645684386348876
+          }
+        },
+        {
+          "p": [
+            1642.7114317029973,
+            247.3847577293368
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1685.7325563684833,
+            428.9943396629426
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1688.7325563684833,
+            428.9943396629426
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1685.7325563684833,
+            424.9943396629426
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            1690.2325563684833,
+            433.4943396629426
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1680.2325563684833,
+            428.9943396629426
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7663721898570657
+          }
+        },
+        {
+          "p": [
+            1685.7325563684833,
+            435.4943396629426
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.8132046649552649
+          }
+        },
+        {
+          "p": [
+            1678.7325563684833,
+            430.9943396629426
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7651864668150665
+          }
+        },
+        {
+          "p": [
+            1739.3017757501364,
+            432.20972997211607
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1742.3017757501364,
+            432.20972997211607
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1739.3017757501364,
+            428.20972997211607
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            1743.8017757501364,
+            436.70972997211607
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1733.8017757501364,
+            432.20972997211607
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1739.3017757501364,
+            438.70972997211607
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1732.3017757501364,
+            434.20972997211607
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1585.1037365484108,
+            381.2885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.191122203192009
+          }
+        },
+        {
+          "p": [
+            1588.1037365484108,
+            381.2885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.21304826753475936
+          }
+        },
+        {
+          "p": [
+            1585.1037365484108,
+            377.2885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.1754637501144316
+          }
+        },
+        {
+          "p": [
+            1589.6037365484108,
+            385.7885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.23821603076066822
+          }
+        },
+        {
+          "p": [
+            1579.6037365484108,
+            381.2885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.14428748935461044
+          }
+        },
+        {
+          "p": [
+            1585.1037365484108,
+            387.7885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1578.1037365484108,
+            383.2885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1613.6825748732972,
+            397.7885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.39925404079261284
+          }
+        },
+        {
+          "p": [
+            1616.6825748732972,
+            397.7885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4131688512424603
+          }
+        },
+        {
+          "p": [
+            1613.6825748732972,
+            393.7885682970026
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3895251792855561
+          }
+        },
+        {
+          "p": [
+            1618.1825748732972,
+            402.2885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1608.1825748732972,
+            397.7885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1613.6825748732972,
+            404.2885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1606.6825748732972,
+            399.7885682970026
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1639.6633369868302,
+            412.78856829700254
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5486518881543816
+          }
+        },
+        {
+          "p": [
+            1642.6633369868302,
+            412.78856829700254
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5613897375296801
+          }
+        },
+        {
+          "p": [
+            1639.6633369868302,
+            408.78856829700254
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5394204268231988
+          }
+        },
+        {
+          "p": [
+            1644.1633369868302,
+            417.28856829700254
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1634.1633369868302,
+            412.78856829700254
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1639.6633369868302,
+            419.28856829700254
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1632.6633369868302,
+            414.78856829700254
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1710.6152422706632,
+            439.8962634515893
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1713.6152422706632,
+            439.8962634515893
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.10393961568388477
+          }
+        },
+        {
+          "p": [
+            1710.6152422706632,
+            435.8962634515893
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1715.1152422706632,
+            444.3962634515893
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.08989607146941125
+          }
+        },
+        {
+          "p": [
+            1705.1152422706632,
+            439.8962634515893
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1710.6152422706632,
+            446.3962634515893
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.05678322040347439
+          }
+        },
+        {
+          "p": [
+            1703.6152422706632,
+            441.8962634515893
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1727.1152422706632,
+            411.3174251267028
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1730.1152422706632,
+            411.3174251267028
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1727.1152422706632,
+            407.3174251267028
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1731.6152422706632,
+            415.8174251267028
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.28092038515023887
+          }
+        },
+        {
+          "p": [
+            1721.6152422706632,
+            411.3174251267028
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1727.1152422706632,
+            417.8174251267028
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1720.1152422706632,
+            413.3174251267028
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1742.1152422706632,
+            385.33666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1745.1152422706632,
+            385.33666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1742.1152422706632,
+            381.33666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1746.6152422706632,
+            389.83666301316964
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.43149493586680876
+          }
+        },
+        {
+          "p": [
+            1736.6152422706632,
+            385.33666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1742.1152422706632,
+            391.83666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1735.1152422706632,
+            387.33666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1769.22293742525,
+            314.38475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            1772.22293742525,
+            314.38475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.15250502526714627
+          }
+        },
+        {
+          "p": [
+            1769.22293742525,
+            310.38475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.1886440385133028
+          }
+        },
+        {
+          "p": [
+            1773.72293742525,
+            318.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.11885136740244207
+          }
+        },
+        {
+          "p": [
+            1763.72293742525,
+            314.38475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.2079596184203183
+          }
+        },
+        {
+          "p": [
+            1769.22293742525,
+            320.88475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1762.22293742525,
+            316.38475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1740.6440991003633,
+            297.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1743.6440991003633,
+            297.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3506806418879478
+          }
+        },
+        {
+          "p": [
+            1740.6440991003633,
+            293.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.37281225067272317
+          }
+        },
+        {
+          "p": [
+            1745.1440991003633,
+            302.38475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.33315329178003594
+          }
+        },
+        {
+          "p": [
+            1735.1440991003633,
+            297.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3858531424921239
+          }
+        },
+        {
+          "p": [
+            1740.6440991003633,
+            304.38475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1733.6440991003633,
+            299.88475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1714.6633369868302,
+            282.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1717.6633369868302,
+            282.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4884509404946584
+          }
+        },
+        {
+          "p": [
+            1714.6633369868302,
+            278.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5088898240355775
+          }
+        },
+        {
+          "p": [
+            1719.1633369868302,
+            287.38475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.47265222109948013
+          }
+        },
+        {
+          "p": [
+            1709.1633369868302,
+            282.88475772933674
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5211821841076016
+          }
+        },
+        {
+          "p": [
+            1714.6633369868302,
+            289.38475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1707.6633369868302,
+            284.88475772933674
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1643.7114317029973,
+            255.77706257475006
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            1646.7114317029973,
+            255.77706257475006
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.1617187299998477
+          }
+        },
+        {
+          "p": [
+            1643.7114317029973,
+            251.77706257475006
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.14490349689731374
+          }
+        },
+        {
+          "p": [
+            1648.2114317029973,
+            260.27706257475006
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1638.2114317029973,
+            255.77706257475006
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1643.7114317029973,
+            262.27706257475006
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.2137427152993041
+          }
+        },
+        {
+          "p": [
+            1636.7114317029973,
+            257.77706257475006
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1627.2114317029973,
+            284.3559008996365
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            1630.2114317029973,
+            284.3559008996365
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.35602037695934996
+          }
+        },
+        {
+          "p": [
+            1627.2114317029973,
+            280.3559008996365
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.34644286602292595
+          }
+        },
+        {
+          "p": [
+            1631.7114317029973,
+            288.8559008996365
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1621.7114317029973,
+            284.3559008996365
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1627.2114317029973,
+            290.8559008996365
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3899059551768005
+          }
+        },
+        {
+          "p": [
+            1620.2114317029973,
+            286.3559008996365
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1612.2114317029973,
+            310.33666301316964
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            1615.2114317029973,
+            310.33666301316964
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4933329387586127
+          }
+        },
+        {
+          "p": [
+            1612.2114317029973,
+            306.33666301316964
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.48459912370162783
+          }
+        },
+        {
+          "p": [
+            1616.7114317029973,
+            314.83666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1606.7114317029973,
+            310.33666301316964
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            1612.2114317029973,
+            316.83666301316964
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5250394409231944
+          }
+        },
+        {
+          "p": [
+            1605.2114317029973,
+            312.33666301316964
+          ],
+          "target": null
+        }
+      ]
+    },
+    {
+      "name": "camera",
+      "view": "cameraView",
+      "drawingToView": [
+        1.5999999999999992,
+        0.0,
+        0.0,
+        -1.5999999999999999,
+        -160.0,
+        270.0
+      ],
+      "contours": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "locked": false,
+        "strokes": [
+          {
+            "strokeId": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "layer": "/nodes/3/strokes",
+            "closed": true,
+            "partner": false,
+            "anchors": [
+              [
+                300.0,
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                400.0,
+                300.0,
+                -18.0,
+                6.0,
+                14.0,
+                22.0
+              ],
+              [
+                400.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                300.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "selected": [
+              1
+            ]
+          }
+        ]
+      },
+      "presses": [
+        {
+          "p": [
+            319.9999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            322.9999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -213.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            324.4999999999998,
+            -205.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            314.4999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -203.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            312.9999999999998,
+            -207.99999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            482.99999999999966,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -213.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            484.49999999999966,
+            -205.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            474.49999999999966,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -203.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            472.99999999999966,
+            -207.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.9390591382979778
+          }
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -370.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            482.99999999999966,
+            -370.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -374.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            484.49999999999966,
+            -365.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.8790688943117857
+          }
+        },
+        {
+          "p": [
+            474.49999999999966,
+            -370.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -363.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.8646450564265251
+          }
+        },
+        {
+          "p": [
+            472.99999999999966,
+            -368.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.12618566106404216
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -370.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            322.9999999999998,
+            -370.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -374.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            324.4999999999998,
+            -365.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            314.4999999999998,
+            -370.0
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -363.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.12138358690690154
+          }
+        },
+        {
+          "p": [
+            312.9999999999998,
+            -368.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            451.1999999999997,
+            -219.59999999999997
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            454.1999999999997,
+            -219.59999999999997
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            451.1999999999997,
+            -223.59999999999997
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            455.6999999999997,
+            -215.09999999999997
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.8185374672902981
+          }
+        },
+        {
+          "p": [
+            445.6999999999997,
+            -219.59999999999997
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            451.1999999999997,
+            -213.09999999999997
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7941264356531974
+          }
+        },
+        {
+          "p": [
+            444.1999999999997,
+            -217.59999999999997
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.7563574624655018
+          }
+        },
+        {
+          "p": [
+            502.39999999999964,
+            -245.19999999999993
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            505.39999999999964,
+            -245.19999999999993
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            502.39999999999964,
+            -249.19999999999993
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            506.89999999999964,
+            -240.69999999999993
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            496.89999999999964,
+            -245.19999999999993
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            502.39999999999964,
+            -238.69999999999993
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            495.39999999999964,
+            -243.19999999999993
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            332.7999999999997,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.19112219940143405
+          }
+        },
+        {
+          "p": [
+            335.7999999999997,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.2140031290459774
+          }
+        },
+        {
+          "p": [
+            332.7999999999997,
+            -213.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.19311778340397723
+          }
+        },
+        {
+          "p": [
+            337.2999999999997,
+            -205.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            327.2999999999997,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.14199458598159254
+          }
+        },
+        {
+          "p": [
+            332.7999999999997,
+            -203.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            325.7999999999997,
+            -207.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.12438433611521305
+          }
+        },
+        {
+          "p": [
+            367.9999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3992540407925844
+          }
+        },
+        {
+          "p": [
+            370.9999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4139381674940523
+          }
+        },
+        {
+          "p": [
+            367.9999999999998,
+            -213.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.40015023306477815
+          }
+        },
+        {
+          "p": [
+            372.4999999999998,
+            -205.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            362.4999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3716760070756209
+          }
+        },
+        {
+          "p": [
+            367.9999999999998,
+            -203.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            360.9999999999998,
+            -207.99999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            399.9999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5486518868997337
+          }
+        },
+        {
+          "p": [
+            402.9999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5622595213353634
+          }
+        },
+        {
+          "p": [
+            399.9999999999998,
+            -213.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5491099503124133
+          }
+        },
+        {
+          "p": [
+            404.4999999999998,
+            -205.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            394.4999999999998,
+            -209.99999999999994
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.5236643473635922
+          }
+        },
+        {
+          "p": [
+            399.9999999999998,
+            -203.49999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            392.9999999999998,
+            -207.99999999999994
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -222.79999999999995
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            482.99999999999966,
+            -222.79999999999995
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.09426371147856116
+          }
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -226.79999999999995
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            484.49999999999966,
+            -218.29999999999995
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.06884354157955386
+          }
+        },
+        {
+          "p": [
+            474.49999999999966,
+            -222.79999999999995
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -216.29999999999995
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.04381962946331441
+          }
+        },
+        {
+          "p": [
+            472.99999999999966,
+            -220.79999999999995
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -258.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            482.99999999999966,
+            -258.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -262.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            484.49999999999966,
+            -253.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            474.49999999999966,
+            -258.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -251.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            472.99999999999966,
+            -256.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -290.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            482.99999999999966,
+            -290.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -294.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            484.49999999999966,
+            -285.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            474.49999999999966,
+            -290.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            479.99999999999966,
+            -283.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            472.99999999999966,
+            -288.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            467.1999999999997,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            470.1999999999997,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.15065242701608383
+          }
+        },
+        {
+          "p": [
+            467.1999999999997,
+            -374.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.1736611817031104
+          }
+        },
+        {
+          "p": [
+            471.6999999999997,
+            -365.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            461.6999999999997,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.2105991318480136
+          }
+        },
+        {
+          "p": [
+            467.1999999999997,
+            -363.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            460.1999999999997,
+            -368.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.21985039060002975
+          }
+        },
+        {
+          "p": [
+            431.99999999999966,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            434.99999999999966,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.34963361105117485
+          }
+        },
+        {
+          "p": [
+            431.99999999999966,
+            -374.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.36325749196112156
+          }
+        },
+        {
+          "p": [
+            436.49999999999966,
+            -365.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            426.49999999999966,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.38769473735668214
+          }
+        },
+        {
+          "p": [
+            431.99999999999966,
+            -363.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            424.99999999999966,
+            -368.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.39425682672376183
+          }
+        },
+        {
+          "p": [
+            399.9999999999998,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            402.9999999999998,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4874973942043681
+          }
+        },
+        {
+          "p": [
+            399.9999999999998,
+            -374.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4999999996958451
+          }
+        },
+        {
+          "p": [
+            404.4999999999998,
+            -365.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            394.4999999999998,
+            -370.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5229327474426242
+          }
+        },
+        {
+          "p": [
+            399.9999999999998,
+            -363.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            392.9999999999998,
+            -368.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5291998621618177
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -357.19999999999993
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            322.9999999999998,
+            -357.19999999999993
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.17366118542844333
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -361.19999999999993
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.1423205884699854
+          }
+        },
+        {
+          "p": [
+            324.4999999999998,
+            -352.69999999999993
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            314.4999999999998,
+            -357.19999999999993
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -350.69999999999993
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.21679847981904743
+          }
+        },
+        {
+          "p": [
+            312.9999999999998,
+            -355.19999999999993
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -322.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            322.9999999999998,
+            -322.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.36325749102974214
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -326.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.34503853569279386
+          }
+        },
+        {
+          "p": [
+            324.4999999999998,
+            -317.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            314.4999999999998,
+            -322.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -315.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3920738260753893
+          }
+        },
+        {
+          "p": [
+            312.9999999999998,
+            -320.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -290.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            322.9999999999998,
+            -290.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.49999999987582555
+          }
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -294.0
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.4833271536249413
+          }
+        },
+        {
+          "p": [
+            324.4999999999998,
+            -285.5
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            314.4999999999998,
+            -290.0
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            319.9999999999998,
+            -283.5
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.527109899105298
+          }
+        },
+        {
+          "p": [
+            312.9999999999998,
+            -288.0
+          ],
+          "target": null
+        }
+      ]
+    },
+    {
+      "name": "camera-zoom-rotated",
+      "view": "cameraView",
+      "drawingToView": [
+        2.771281292110203,
+        -1.599999999999999,
+        -1.5999999999999996,
+        -2.771281292110204,
+        -628.5125168440813,
+        909.9999999999999
+      ],
+      "contours": {
+        "drawingId": "dr_01K742SG0KKMCAP9X1E6Z5P4SW",
+        "locked": false,
+        "strokes": [
+          {
+            "strokeId": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "layer": "/nodes/3/strokes",
+            "closed": true,
+            "partner": false,
+            "anchors": [
+              [
+                300.0,
+                300.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                400.0,
+                300.0,
+                -18.0,
+                6.0,
+                14.0,
+                22.0
+              ],
+              [
+                400.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                300.0,
+                400.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0
+              ]
+            ],
+            "selected": [
+              1
+            ]
+          }
+        ]
+      },
+      "presses": [
+        {
+          "p": [
+            -277.12812921102034,
+            -401.384387633061
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            -274.12812921102034,
+            -401.384387633061
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            -277.12812921102034,
+            -405.384387633061
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            -272.62812921102034,
+            -396.884387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -282.62812921102034,
+            -401.384387633061
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 0
+          }
+        },
+        {
+          "p": [
+            -277.12812921102034,
+            -394.884387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -284.12812921102034,
+            -399.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -1.1368683772161603e-13,
+            -561.3843876330608
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            2.9999999999998863,
+            -561.3843876330608
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            -1.1368683772161603e-13,
+            -565.3843876330608
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            4.499999999999886,
+            -556.8843876330608
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -5.500000000000114,
+            -561.3843876330608
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1
+          }
+        },
+        {
+          "p": [
+            -1.1368683772161603e-13,
+            -554.8843876330608
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -7.000000000000114,
+            -559.3843876330608
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.9638660652562692
+          }
+        },
+        {
+          "p": [
+            -160.0000000000001,
+            -838.5125168440812
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            -157.0000000000001,
+            -838.5125168440812
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            -160.0000000000001,
+            -842.5125168440812
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            -155.5000000000001,
+            -834.0125168440812
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 1,
+            "t": 0.9061302412301302
+          }
+        },
+        {
+          "p": [
+            -165.5000000000001,
+            -838.5125168440812
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 2
+          }
+        },
+        {
+          "p": [
+            -160.0000000000001,
+            -832.0125168440812
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -167.0000000000001,
+            -836.5125168440812
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.08841497299732737
+          }
+        },
+        {
+          "p": [
+            -437.12812921102034,
+            -678.5125168440815
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            -434.12812921102034,
+            -678.5125168440815
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            -437.12812921102034,
+            -682.5125168440815
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            -432.62812921102034,
+            -674.0125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.08231047284766646
+          }
+        },
+        {
+          "p": [
+            -442.62812921102034,
+            -678.5125168440815
+          ],
+          "target": {
+            "kind": "anchor",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 3
+          }
+        },
+        {
+          "p": [
+            -437.12812921102034,
+            -672.0125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.07866541296243668
+          }
+        },
+        {
+          "p": [
+            -444.12812921102034,
+            -676.5125168440815
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -59.48306325798376,
+            -549.2120753857222
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            -56.48306325798376,
+            -549.2120753857222
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            -59.48306325798376,
+            -553.2120753857222
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": false
+          }
+        },
+        {
+          "p": [
+            -54.98306325798376,
+            -544.7120753857222
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -64.98306325798376,
+            -549.2120753857222
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -59.48306325798376,
+            -542.7120753857222
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -66.48306325798376,
+            -547.2120753857222
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            3.5979380895427084,
+            -644.7525760594855
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            6.597938089542708,
+            -644.7525760594855
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            3.5979380895427084,
+            -648.7525760594855
+          ],
+          "target": {
+            "kind": "handle",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "anchor": 1,
+            "out": true
+          }
+        },
+        {
+          "p": [
+            8.097938089542708,
+            -640.2525760594855
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -1.9020619104572916,
+            -644.7525760594855
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            3.5979380895427084,
+            -638.2525760594855
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -3.4020619104572916,
+            -642.7525760594855
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -254.95787887413883,
+            -414.18438763306096
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.1911221993941581
+          }
+        },
+        {
+          "p": [
+            -251.95787887413883,
+            -414.18438763306096
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.20092032666434534
+          }
+        },
+        {
+          "p": [
+            -254.95787887413883,
+            -418.18438763306096
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.199809898622334
+          }
+        },
+        {
+          "p": [
+            -250.45787887413883,
+            -409.68438763306096
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -260.4578788741388,
+            -414.18438763306096
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.17204993311315775
+          }
+        },
+        {
+          "p": [
+            -254.95787887413883,
+            -407.68438763306096
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -261.9578788741388,
+            -412.18438763306096
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.16153093893126425
+          }
+        },
+        {
+          "p": [
+            -193.98969044771434,
+            -449.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -190.98969044771434,
+            -449.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -193.98969044771434,
+            -453.384387633061
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.4045560813683551
+          }
+        },
+        {
+          "p": [
+            -189.48969044771434,
+            -444.884387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -199.48969044771434,
+            -449.384387633061
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.387747279364703
+          }
+        },
+        {
+          "p": [
+            -193.98969044771434,
+            -442.884387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -200.98969044771434,
+            -447.384387633061
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 0,
+            "t": 0.3818674860494866
+          }
+        },
+        {
+          "p": [
+            -138.56406460551023,
+            -481.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -135.56406460551023,
+            -481.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -138.56406460551023,
+            -485.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -134.06406460551023,
+            -476.884387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -144.06406460551023,
+            -481.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -138.56406460551023,
+            -474.884387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -145.56406460551023,
+            -479.384387633061
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -12.800000000000182,
+            -583.5546379699425
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -9.800000000000182,
+            -583.5546379699425
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -12.800000000000182,
+            -587.5546379699425
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -8.300000000000182,
+            -579.0546379699425
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -18.300000000000182,
+            -583.5546379699425
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -12.800000000000182,
+            -577.0546379699425
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -19.800000000000182,
+            -581.5546379699425
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -48.000000000000114,
+            -644.5228263963669
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -45.000000000000114,
+            -644.5228263963669
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -48.000000000000114,
+            -648.5228263963669
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -43.500000000000114,
+            -640.0228263963669
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -53.500000000000114,
+            -644.5228263963669
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -48.000000000000114,
+            -638.0228263963669
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -55.000000000000114,
+            -642.5228263963669
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -80.00000000000011,
+            -699.9484522385711
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -77.00000000000011,
+            -699.9484522385711
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -80.00000000000011,
+            -703.9484522385711
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -75.50000000000011,
+            -695.4484522385711
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -85.50000000000011,
+            -699.9484522385711
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -80.00000000000011,
+            -693.4484522385711
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -87.00000000000011,
+            -697.9484522385711
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -182.17025033688185,
+            -825.7125168440813
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            -179.17025033688185,
+            -825.7125168440813
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.16401811165178515
+          }
+        },
+        {
+          "p": [
+            -182.17025033688185,
+            -829.7125168440813
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.16627741417323705
+          }
+        },
+        {
+          "p": [
+            -177.67025033688185,
+            -821.2125168440813
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -187.67025033688185,
+            -825.7125168440813
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.19032771466299891
+          }
+        },
+        {
+          "p": [
+            -182.17025033688185,
+            -819.2125168440813
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -189.17025033688185,
+            -823.7125168440813
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.19798119925019364
+          }
+        },
+        {
+          "p": [
+            -243.13843876330623,
+            -790.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            -240.13843876330623,
+            -790.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3573866026708856
+          }
+        },
+        {
+          "p": [
+            -243.13843876330623,
+            -794.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.35874180228211117
+          }
+        },
+        {
+          "p": [
+            -238.63843876330623,
+            -786.0125168440815
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -248.63843876330623,
+            -790.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.37391746090725064
+          }
+        },
+        {
+          "p": [
+            -243.13843876330623,
+            -784.0125168440815
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -250.13843876330623,
+            -788.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.3790185411926359
+          }
+        },
+        {
+          "p": [
+            -298.5640646055102,
+            -758.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            -295.5640646055102,
+            -758.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.49458713085914496
+          }
+        },
+        {
+          "p": [
+            -298.5640646055102,
+            -762.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.4958332372193581
+          }
+        },
+        {
+          "p": [
+            -294.0640646055102,
+            -754.0125168440815
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -304.0640646055102,
+            -758.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5099245104938745
+          }
+        },
+        {
+          "p": [
+            -298.5640646055102,
+            -752.0125168440815
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -305.5640646055102,
+            -756.5125168440815
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 2,
+            "t": 0.5147171216231641
+          }
+        },
+        {
+          "p": [
+            -424.32812921102027,
+            -656.3422665072
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.17366118321649537
+          }
+        },
+        {
+          "p": [
+            -421.32812921102027,
+            -656.3422665072
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.17903989298838496
+          }
+        },
+        {
+          "p": [
+            -424.32812921102027,
+            -660.3422665072
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.16070148627477465
+          }
+        },
+        {
+          "p": [
+            -419.82812921102027,
+            -651.8422665072
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.19496228476054966
+          }
+        },
+        {
+          "p": [
+            -429.82812921102027,
+            -656.3422665072
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -424.32812921102027,
+            -649.8422665072
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.19323771726325845
+          }
+        },
+        {
+          "p": [
+            -431.32812921102027,
+            -654.3422665072
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -389.12812921102034,
+            -595.3740780807753
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3632574910905646
+          }
+        },
+        {
+          "p": [
+            -386.12812921102034,
+            -595.3740780807753
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.36662845686032597
+          }
+        },
+        {
+          "p": [
+            -389.12812921102034,
+            -599.3740780807753
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.3554201903180001
+          }
+        },
+        {
+          "p": [
+            -384.62812921102034,
+            -590.8740780807753
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.37699148411047645
+          }
+        },
+        {
+          "p": [
+            -394.62812921102034,
+            -595.3740780807753
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -389.12812921102034,
+            -588.8740780807753
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.37584221363067627
+          }
+        },
+        {
+          "p": [
+            -396.12812921102034,
+            -593.3740780807753
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -357.12812921102034,
+            -539.9484522385713
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5
+          }
+        },
+        {
+          "p": [
+            -354.12812921102034,
+            -539.9484522385713
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5031250417232513
+          }
+        },
+        {
+          "p": [
+            -357.12812921102034,
+            -543.9484522385713
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.49278262065487866
+          }
+        },
+        {
+          "p": [
+            -352.62812921102034,
+            -535.4484522385713
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5128092907252721
+          }
+        },
+        {
+          "p": [
+            -362.62812921102034,
+            -539.9484522385713
+          ],
+          "target": null
+        },
+        {
+          "p": [
+            -357.12812921102034,
+            -533.4484522385713
+          ],
+          "target": {
+            "kind": "segment",
+            "stroke": "st_01K7JJN800J6GZ68MHS01HNTDM",
+            "segment": 3,
+            "t": 0.5117295791860954
+          }
+        },
+        {
+          "p": [
+            -364.12812921102034,
+            -537.9484522385713
+          ],
+          "target": null
+        }
+      ]
+    }
+  ]
+}

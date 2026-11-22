@@ -1,0 +1,22 @@
+
+running 1 test
+test pointer_requires_input_scope_even_when_command_scopes_are_granted ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.05s
+
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\lipsync)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 38.34s
+     Running tests\c42a_r1_review.rs (target\debug\deps\c42a_r1_review-7569fe9a0ca88d52.exe)

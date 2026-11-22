@@ -1,0 +1,82 @@
+[
+  {
+    "id": "text.font",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.size",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.kerning",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.leftMargin",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.rightMargin",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.indent",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.lineSpacing",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "text.bold",
+    "type": "checkbox",
+    "disabled": false
+  },
+  {
+    "id": "text.italic",
+    "type": "checkbox",
+    "disabled": false
+  },
+  {
+    "id": "text.autoKern",
+    "type": "checkbox",
+    "disabled": false
+  },
+  {
+    "id": "preferences.search",
+    "type": "search",
+    "disabled": false
+  },
+  {
+    "id": "pref.user.name",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pref.user.copyright",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pref.library.globalPath",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pref.general.recentProjects.maxCount",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pref.general.workspace.autoSave",
+    "type": "checkbox",
+    "disabled": false
+  }
+]

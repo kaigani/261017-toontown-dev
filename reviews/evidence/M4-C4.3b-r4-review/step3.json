@@ -1,0 +1,628 @@
+[
+ {
+  "check": "Default unsaved 13",
+  "ok": true,
+  "detail": {
+   "focused": "message.save",
+   "expected": "message.save",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "job.wait",
+     "params": {
+      "jobId": "job-2",
+      "timeoutMs": 20000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "project.recent.list",
+     "params": {}
+    },
+    {
+     "command": "project.recovery.list",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ },
+ {
+  "check": "Default unsaved 32",
+  "ok": true,
+  "detail": {
+   "focused": "message.save",
+   "expected": "message.save",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "project.save",
+     "params": {}
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "job.wait",
+     "params": {
+      "jobId": "job-2",
+      "timeoutMs": 20000
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "job.list",
+     "params": {
+      "all": true
+     }
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "edit.history.get",
+     "params": {
+      "limit": 1000
+     }
+    },
+    {
+     "command": "project.recent.list",
+     "params": {}
+    },
+    {
+     "command": "project.recovery.list",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ },
+ {
+  "check": "Default import 13",
+  "ok": true,
+  "detail": {
+   "focused": "message.merge",
+   "expected": "message.merge",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ },
+ {
+  "check": "Default import 32",
+  "ok": true,
+  "detail": {
+   "focused": "message.merge",
+   "expected": "message.merge",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ },
+ {
+  "check": "Default reset 13",
+  "ok": true,
+  "detail": {
+   "focused": "message.cancel",
+   "expected": "message.cancel",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ },
+ {
+  "check": "Default reset 32",
+  "ok": true,
+  "detail": {
+   "focused": "message.cancel",
+   "expected": "message.cancel",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ },
+ {
+  "check": "Default conflict 13",
+  "ok": true,
+  "detail": {
+   "focused": "keymap.conflict.cancel",
+   "expected": "keymap.conflict.cancel",
+   "stillOpen": false,
+   "sent": []
+  }
+ },
+ {
+  "check": "Default conflict 32",
+  "ok": true,
+  "detail": {
+   "focused": "keymap.conflict.cancel",
+   "expected": "keymap.conflict.cancel",
+   "stillOpen": false,
+   "sent": []
+  }
+ },
+ {
+  "check": "Default error 13",
+  "ok": true,
+  "detail": {
+   "focused": "message.ok",
+   "expected": "message.ok",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ },
+ {
+  "check": "Default error 32",
+  "ok": true,
+  "detail": {
+   "focused": "message.ok",
+   "expected": "message.ok",
+   "stillOpen": false,
+   "sent": [
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    },
+    {
+     "command": "app.state.get",
+     "params": {}
+    },
+    {
+     "command": "ui.statusBar.get",
+     "params": {}
+    },
+    {
+     "command": "window.panel.list",
+     "params": {}
+    },
+    {
+     "command": "workspace.get",
+     "params": {}
+    },
+    {
+     "command": "workspace.list",
+     "params": {}
+    }
+   ]
+  }
+ }
+]

@@ -1,0 +1,14 @@
+{
+  "crates\\registry\\src\\declared.json": {
+    "exact": true,
+    "whitespace_normalized": true
+  },
+  "plan\\spec-issues.md": {
+    "exact": true,
+    "whitespace_normalized": true
+  },
+  "crates\\registry\\src\\declared.rs": {
+    "exact": false,
+    "whitespace_normalized": false
+  }
+}

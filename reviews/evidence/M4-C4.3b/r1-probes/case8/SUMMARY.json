@@ -1,0 +1,2357 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/r1-probes/case8",
+ "verdict": "pass",
+ "regenerate": "python tests/adversarial/c43b-r1-live.py <toontown release binary> case8   (the reviewer's probe, unchanged; case 8 on a direct cargo release build)",
+ "rawAt": "e04565e9",
+ "manifest": {
+  "kind": "toontown.c43b.r1.parity",
+  "platform": "win32",
+  "input": "os (SendInput)",
+  "waitForUserMs": 10000,
+  "seconds": 122.2,
+  "failures": [],
+  "checks": 148
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "project.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's mapping of Bob's drawing",
+   "detail": [
+    1.5999999999999999,
+    0.0,
+    0.0,
+    -1.5999999999999999,
+    457.0,
+    231.5
+   ]
+  },
+  {
+   "ok": true,
+   "check": "the Camera view's canvas is found in the window capture",
+   "detail": [
+    49,
+    138,
+    914,
+    463
+   ]
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.flatten.apply",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected draw.flatten.apply from Flatten; spec/02_drawing.md section 13.5 Command table line 1347",
+   "detail": [
+    "draw.flatten.apply"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Flatten; spec/02_drawing.md section 13.5 Command table line 1347",
+   "detail": [
+    {
+     "command": "draw.flatten.apply",
+     "params": {},
+     "requestToken": "r1"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "document effect Flatten",
+   "detail": true
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected undo label Flatten Drawing; spec/02_drawing.md section 13.5 Command table line 1347",
+   "detail": "Flatten Drawing"
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.arrange.apply",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected draw.arrange.apply from Arrange; spec/02_drawing.md section 13.5 Command table line 1346",
+   "detail": [
+    "draw.arrange.apply"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {\"to\": \"back\"} for Arrange; spec/02_drawing.md section 13.5 Command table line 1346",
+   "detail": [
+    {
+     "command": "draw.arrange.apply",
+     "params": {
+      "to": "back"
+     },
+     "requestToken": "r2"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "document effect Arrange",
+   "detail": true
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected undo label Send to Back; spec/02_drawing.md section 13.5 Command table line 1346",
+   "detail": "Send to Back"
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.flip.apply",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected draw.flip.apply from Flip; spec/02_drawing.md section 13.5 Command table line 1333",
+   "detail": [
+    "draw.flip.apply"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {\"axis\": \"horizontal\"} for Flip; spec/02_drawing.md section 13.5 Command table line 1333",
+   "detail": [
+    {
+     "command": "draw.flip.apply",
+     "params": {
+      "axis": "horizontal"
+     },
+     "requestToken": "r3"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "document effect Flip",
+   "detail": true
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected undo label Flip Horizontal; spec/02_drawing.md section 13.5 Command table line 1333",
+   "detail": "Flip Horizontal"
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command draw.group.create",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected draw.group.create from Group; spec/02_drawing.md section 13.5 Command table line 1344",
+   "detail": [
+    "draw.group.create"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Group; spec/02_drawing.md section 13.5 Command table line 1344",
+   "detail": [
+    {
+     "command": "draw.group.create",
+     "params": {},
+     "requestToken": "r4"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "document effect Group",
+   "detail": true
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected undo label Group Selection; spec/02_drawing.md section 13.5 Command table line 1344",
+   "detail": "Group Selection"
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command edit.cutSpecial",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected edit.cutSpecial from Cut Special; spec/01_application_shell.md section 12.2 Command table line 1099",
+   "detail": [
+    "edit.cutSpecial"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Cut Special; spec/01_application_shell.md section 12.2 Command table line 1099",
+   "detail": [
+    {
+     "command": "edit.cutSpecial",
+     "params": {},
+     "requestToken": "r5"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "document effect Cut Special",
+   "detail": true
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected undo label Cut Special; spec/01_application_shell.md section 12.2 Command table line 1099",
+   "detail": "Cut Special"
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command project.info.get",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected project.info.get from Project Info; spec/01_application_shell.md section 12.2 Command table line 1074",
+   "detail": [
+    "project.info.get"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Project Info; spec/01_application_shell.md section 12.2 Command table line 1074",
+   "detail": [
+    {
+     "command": "project.info.get",
+     "params": {}
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "query leaves document unchanged; spec/01_application_shell.md section 12.2 Command table line 1074",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "expected Project Info dialog projectInfo; spec/01_application_shell.md section 12.2 Command table line 1074",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command doc.validate",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected doc.validate from Check Project; spec/10_data_model_project_format.md section 10.2 Command table line 1135",
+   "detail": [
+    "doc.validate"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Check Project; spec/10_data_model_project_format.md section 10.2 Command table line 1135",
+   "detail": [
+    {
+     "command": "doc.validate",
+     "params": {}
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "query leaves document unchanged; spec/10_data_model_project_format.md section 10.2 Command table line 1135",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "expected Check Project dialog checkProject; spec/10_data_model_project_format.md section 10.2 Command table line 1135",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25; spec/01_application_shell.md section 12.2 lines 1083-1084: nonempty backup list offers project.backup.open",
+   "detail": {
+    "available": [
+     {
+      "backupId": "bk_e449dd711048e9ea",
+      "savedAt": "2026-11-16T07:04:42.945Z",
+      "sizeBytes": 8879,
+      "documentRev": 8
+     },
+     {
+      "backupId": "bk_95f9d0912cc2ceca",
+      "savedAt": "2026-11-16T07:04:42.872Z",
+      "sizeBytes": 8802,
+      "documentRev": 6
+     }
+    ],
+    "buttonPresent": true
+   }
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command project.backup.open",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected project.backup.open from Open Backup; spec/01_application_shell.md section 12.2 Command table line 1084",
+   "detail": [
+    "project.backup.list",
+    "project.backup.open"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Open Backup; spec/01_application_shell.md section 12.2 Command table line 1084",
+   "detail": [
+    {
+     "command": "project.backup.list",
+     "params": {}
+    },
+    {
+     "command": "project.backup.open",
+     "params": {
+      "backupId": "bk_e449dd711048e9ea"
+     }
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "document effect Open Backup",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/11_agent_interface_mcp.md section 7.5 line 339: open menu widget exposes command app.info.get",
+   "detail": true
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected app.info.get from About; spec/01_application_shell.md section 12.2 Command table line 1060",
+   "detail": [
+    "app.info.get"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for About; spec/01_application_shell.md section 12.2 Command table line 1060",
+   "detail": [
+    {
+     "command": "app.info.get",
+     "params": {}
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "query leaves document unchanged; spec/01_application_shell.md section 12.2 Command table line 1060",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "expected About dialog about; spec/01_application_shell.md section 12.2 Command table line 1060",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 Grid toolbar action toggles visibility; spec/02_drawing.md section 13.5 line 1388",
+   "detail": {
+    "before": false,
+    "after": true
+   }
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected drawAid.grid.set from Grid; spec/02_drawing.md section 13.5 Command table line 1388",
+   "detail": [
+    "drawAid.grid.set"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {\"visible\": true} for Grid; spec/02_drawing.md section 13.5 Command table line 1388",
+   "detail": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "visible": true
+     },
+     "requestToken": "r6"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "session UI effect makes no document undo step; spec/02_drawing.md section 13.5 Command table line 1388",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "expected Symmetry changes its declared checked state; spec/02_drawing.md section 13.5 Command table line 1378",
+   "detail": {
+    "before": "false",
+    "after": "true"
+   }
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected tool.symmetry.set from Symmetry; spec/02_drawing.md section 13.5 Command table line 1378",
+   "detail": [
+    "tool.symmetry.set"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {\"mode\": \"mirror\"} for Symmetry; spec/02_drawing.md section 13.5 Command table line 1378",
+   "detail": [
+    {
+     "command": "tool.symmetry.set",
+     "params": {
+      "mode": "mirror"
+     },
+     "requestToken": "r7"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "session UI effect makes no document undo step; spec/02_drawing.md section 13.5 Command table line 1378",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "expected Brush changes its declared checked state; spec/02_drawing.md section 13.5 Command table line 1361",
+   "detail": {
+    "before": "false",
+    "after": "true"
+   }
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected tool.active.set from Brush; spec/02_drawing.md section 13.5 Command table line 1361",
+   "detail": [
+    "tool.active.set"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {\"toolId\": \"brush\"} for Brush; spec/02_drawing.md section 13.5 Command table line 1361",
+   "detail": [
+    {
+     "command": "tool.active.set",
+     "params": {
+      "toolId": "brush"
+     },
+     "requestToken": "r8"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "session UI effect makes no document undo step; spec/02_drawing.md section 13.5 Command table line 1361",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected edit.selectAll from Select All; spec/01_application_shell.md section 12.2 Command table line 1105",
+   "detail": [
+    "edit.selectAll"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Select All; spec/01_application_shell.md section 12.2 Command table line 1105",
+   "detail": [
+    {
+     "command": "edit.selectAll",
+     "params": {},
+     "requestToken": "r9"
+    }
+   ]
+  },
+  {
+   "ok": true,
+   "check": "02:1329 Select All selects previously empty selection"
+  },
+  {
+   "ok": true,
+   "check": "session UI effect makes no document undo step; spec/01_application_shell.md section 12.2 Command table line 1105",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "D-25 expected draw.stroke.add from Brush gesture; spec/02_drawing.md section 13.5 Command table line 1318",
+   "detail": [
+    "draw.stroke.add"
+   ]
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected parameters {} for Brush gesture; spec/02_drawing.md section 13.5 Command table line 1318",
+   "detail": []
+  },
+  {
+   "ok": true,
+   "check": "02:1207,1318 Brush gesture sends kind brush"
+  },
+  {
+   "ok": true,
+   "check": "document effect Brush gesture",
+   "detail": true
+  },
+  {
+   "ok": true,
+   "check": "D-23 expected undo label Brush Tool; spec/02_drawing.md section 13.5 Command table line 1318",
+   "detail": "Brush Tool"
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: draw.flatten.apply",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: draw.flatten.apply refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document draw.flatten.apply",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: draw.arrange.apply",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: draw.arrange.apply refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document draw.arrange.apply",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: draw.flip.apply",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: draw.flip.apply refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document draw.flip.apply",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: draw.group.create",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: draw.group.create refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document draw.group.create",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: edit.cutSpecial",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: edit.cutSpecial refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document edit.cutSpecial",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: project.info.get",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: project.info.get refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document project.info.get",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: doc.validate",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: doc.validate refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document doc.validate",
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": null,
+   "check": null,
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: drawAid.grid.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: drawAid.grid.set refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document drawAid.grid.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: tool.symmetry.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: tool.symmetry.set refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document tool.symmetry.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: tool.active.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: tool.active.set refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document tool.active.set",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: edit.selectAll",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: edit.selectAll refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document edit.selectAll",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "disabled window invocation changes no document; spec/01_application_shell.md section 1.3 lines 71-75: draw.stroke.add",
+   "detail": null
+  },
+  {
+   "ok": true,
+   "check": "spec/01_application_shell.md section 1.3 lines 71-75: draw.stroke.add refuses project.none without project",
+   "detail": {
+    "code": "project.none",
+    "message": "no project is open",
+    "details": {},
+    "hint": "open or create a project first (project.open, project.create)"
+   }
+  },
+  {
+   "ok": true,
+   "check": "refused command changes no document draw.stroke.add",
+   "detail": null
+  }
+ ],
+ "rows": [
+  {
+   "action": "Flatten",
+   "expectedCommand": "draw.flatten.apply",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1347; D-25; D-30",
+   "focusInput": {
+    "press": 430223.3374247,
+    "release": 430223.4380737
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"draw.flatten.apply\",\"params\":{},\"requestToken\":\"r1\"}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "observed": [
+    "draw.flatten.apply"
+   ],
+   "expectedParams": {},
+   "documentChanged": true,
+   "expectedLabel": "Flatten Drawing",
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Flatten",
+    "flags": 2,
+    "enabled": false
+   },
+   "noProjectAvailability": {
+    "id": 166,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "draw.flatten.apply",
+        "params": {},
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Arrange",
+   "expectedCommand": "draw.arrange.apply",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1346; D-25; D-30",
+   "focusInput": {
+    "press": 430228.2877746,
+    "release": 430228.3884009
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800Y8YH87WCXVH4052Y"
+    ],
+    "bounds": {
+     "x": -94.0,
+     "y": -69.0,
+     "width": 158.0,
+     "height": 113.0
+    },
+    "selectedPoints": []
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"draw.arrange.apply\",\"params\":{\"to\":\"back\"},\"requestToken\":\"r2\"}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800Y8YH87WCXVH4052Y"
+    ],
+    "bounds": {
+     "x": -94.0,
+     "y": -69.0,
+     "width": 158.0,
+     "height": 113.0
+    },
+    "selectedPoints": []
+   },
+   "observed": [
+    "draw.arrange.apply"
+   ],
+   "expectedParams": {
+    "to": "back"
+   },
+   "documentChanged": true,
+   "expectedLabel": "Send to Back",
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Send to Back",
+    "flags": 2,
+    "enabled": false
+   },
+   "noProjectAvailability": {
+    "id": 169,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "draw.arrange.apply",
+        "params": {
+         "to": "back"
+        },
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Flip",
+   "expectedCommand": "draw.flip.apply",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1333; D-25; D-30",
+   "focusInput": {
+    "press": 430234.3543391,
+    "release": 430234.4549298
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800Y8YH87WCXVH4052Y",
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69",
+     "st_01K7JJN800CV8V44WNHB7K3Y8J"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"draw.flip.apply\",\"params\":{\"axis\":\"horizontal\"},\"requestToken\":\"r3\"}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800Y8YH87WCXVH4052Y",
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69",
+     "st_01K7JJN800CV8V44WNHB7K3Y8J"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "observed": [
+    "draw.flip.apply"
+   ],
+   "expectedParams": {
+    "axis": "horizontal"
+   },
+   "documentChanged": true,
+   "expectedLabel": "Flip Horizontal",
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Flip Horizontal",
+    "flags": 2,
+    "enabled": false
+   },
+   "noProjectAvailability": {
+    "id": 172,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "draw.flip.apply",
+        "params": {
+         "axis": "horizontal"
+        },
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Group",
+   "expectedCommand": "draw.group.create",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1344; D-25; D-30",
+   "focusInput": {
+    "press": 430238.9890125,
+    "release": 430239.0891238
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"draw.group.create\",\"params\":{},\"requestToken\":\"r4\"}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "observed": [
+    "draw.group.create"
+   ],
+   "expectedParams": {},
+   "documentChanged": true,
+   "expectedLabel": "Group Selection",
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Group",
+    "flags": 2,
+    "enabled": false
+   },
+   "noProjectAvailability": {
+    "id": 175,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "draw.group.create",
+        "params": {},
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Cut Special",
+   "expectedCommand": "edit.cutSpecial",
+   "spec": "spec/01_application_shell.md section 12.2 Command table line 1099; D-25; D-30",
+   "focusInput": {
+    "press": 430244.2212914,
+    "release": 430244.3218717
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"edit.cutSpecial\",\"params\":{},\"requestToken\":\"r5\"}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "afterSelection": {
+    "selectedIds": [],
+    "bounds": null,
+    "selectedPoints": []
+   },
+   "observed": [
+    "edit.cutSpecial"
+   ],
+   "expectedParams": {},
+   "documentChanged": true,
+   "expectedLabel": "Cut Special",
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Cut Special",
+    "flags": 2,
+    "enabled": false
+   },
+   "noProjectAvailability": {
+    "id": 178,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "edit.cutSpecial",
+        "params": {},
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Project Info",
+   "expectedCommand": "project.info.get",
+   "spec": "spec/01_application_shell.md section 12.2 Command table line 1074; D-25; D-30",
+   "focusInput": {
+    "press": 430249.4887715,
+    "release": 430249.589746
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800SYXF107GZPDY8GNC"
+    ],
+    "bounds": {
+     "x": -94.0,
+     "y": -69.0,
+     "width": 158.0,
+     "height": 113.0
+    },
+    "selectedPoints": []
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"project.info.get\",\"params\":{}}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800SYXF107GZPDY8GNC"
+    ],
+    "bounds": {
+     "x": -94.0,
+     "y": -69.0,
+     "width": 158.0,
+     "height": 113.0
+    },
+    "selectedPoints": []
+   },
+   "observed": [
+    "project.info.get"
+   ],
+   "expectedParams": {},
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Project Info",
+    "flags": 2,
+    "enabled": false
+   },
+   "noProjectAvailability": {
+    "id": 181,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "project.info.get",
+        "params": {},
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Check Project",
+   "expectedCommand": "doc.validate",
+   "spec": "spec/10_data_model_project_format.md section 10.2 Command table line 1135; D-25; D-30",
+   "focusInput": {
+    "press": 430254.3213285,
+    "release": 430254.4218644
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800SYXF107GZPDY8GNC",
+     "st_01K7JJN800QPW4H5JH65Z0C0FZ"
+    ],
+    "bounds": {
+     "x": -94.0,
+     "y": -69.0,
+     "width": 158.0,
+     "height": 113.0
+    },
+    "selectedPoints": []
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"doc.validate\",\"params\":{}}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800SYXF107GZPDY8GNC",
+     "st_01K7JJN800QPW4H5JH65Z0C0FZ"
+    ],
+    "bounds": {
+     "x": -94.0,
+     "y": -69.0,
+     "width": 158.0,
+     "height": 113.0
+    },
+    "selectedPoints": []
+   },
+   "observed": [
+    "doc.validate"
+   ],
+   "expectedParams": {},
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Check Project",
+    "flags": 2,
+    "enabled": false
+   },
+   "noProjectAvailability": {
+    "id": 184,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "doc.validate",
+        "params": {},
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Open Backup",
+   "expectedCommand": "project.backup.open",
+   "spec": "spec/01_application_shell.md section 12.2 Command table line 1084; D-25; D-30",
+   "focusInput": {
+    "press": 430259.0884922,
+    "release": 430259.188724
+   },
+   "availableBackups": [
+    {
+     "backupId": "bk_e449dd711048e9ea",
+     "savedAt": "2026-11-16T07:04:42.945Z",
+     "sizeBytes": 8879,
+     "documentRev": 8
+    },
+    {
+     "backupId": "bk_95f9d0912cc2ceca",
+     "savedAt": "2026-11-16T07:04:42.872Z",
+     "sizeBytes": 8802,
+     "documentRev": 6
+    }
+   ],
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800SYXF107GZPDY8GNC",
+     "st_01K7JJN800QPW4H5JH65Z0C0FZ",
+     "st_01K7JJN800BV89RW833GR36K8H"
+    ],
+    "bounds": {
+     "x": -94.0,
+     "y": -69.0,
+     "width": 158.0,
+     "height": 113.0
+    },
+    "selectedPoints": []
+   },
+   "backupOpenButtonPresent": true,
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"project.backup.list\",\"params\":{}}"
+     }
+    },
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"project.backup.open\",\"params\":{\"backupId\":\"bk_e449dd711048e9ea\"}}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "history": {
+    "entries": [],
+    "position": 0,
+    "cleanPosition": 0,
+    "total": 0
+   },
+   "afterSelection": {
+    "selectedIds": [],
+    "bounds": null,
+    "selectedPoints": []
+   },
+   "observed": [
+    "project.backup.list",
+    "project.backup.open"
+   ],
+   "expectedParams": {},
+   "documentChanged": true,
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "Open Backup",
+    "flags": 0,
+    "enabled": true
+   },
+   "disabledState": "Not applicable: globally available under spec/01_application_shell.md section 1.3 lines 71-75"
+  },
+  {
+   "action": "About",
+   "expectedCommand": "app.info.get",
+   "spec": "spec/01_application_shell.md section 12.2 Command table line 1060; D-25; D-30",
+   "focusInput": {
+    "press": 430266.0381364,
+    "release": 430266.138712
+   },
+   "historyBefore": {
+    "entries": [
+     {
+      "index": 1,
+      "stepId": "u-1",
+      "label": "Rectangle Tool",
+      "source": "agent",
+      "agentSessionId": "s1-75d154",
+      "agentName": "mcp",
+      "time": "2026-11-16T07:05:26.419Z",
+      "objectCount": 3
+     }
+    ],
+    "position": 1,
+    "cleanPosition": 0,
+    "total": 1
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"app.info.get\",\"params\":{}}"
+     }
+    }
+   ],
+   "inspectExposesMenuItem": true,
+   "history": {
+    "entries": [
+     {
+      "index": 1,
+      "stepId": "u-1",
+      "label": "Rectangle Tool",
+      "source": "agent",
+      "agentSessionId": "s1-75d154",
+      "agentName": "mcp",
+      "time": "2026-11-16T07:05:26.419Z",
+      "objectCount": 3
+     }
+    ],
+    "position": 1,
+    "cleanPosition": 0,
+    "total": 1
+   },
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "observed": [
+    "app.info.get"
+   ],
+   "expectedParams": {},
+   "verdict": "PASS",
+   "nativeNoProject": {
+    "label": "About Toontown",
+    "flags": 0,
+    "enabled": true
+   },
+   "disabledState": "Not applicable: globally available under spec/01_application_shell.md section 1.3 lines 71-75"
+  },
+  {
+   "action": "Grid",
+   "expectedCommand": "drawAid.grid.set",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1388; D-25; D-30",
+   "focusInput": {
+    "press": 430270.7048547,
+    "release": 430270.805127
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69",
+     "st_01K7JJN800NVGH89EYM5VBS4MB"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "pressedBefore": "false",
+   "input": "real OS click",
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"drawAid.grid.set\",\"params\":{\"visible\":true},\"requestToken\":\"r6\"}"
+     }
+    }
+   ],
+   "nativeMenuTrace": [],
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69",
+     "st_01K7JJN800NVGH89EYM5VBS4MB"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "pressedAfter": "true",
+   "observed": [
+    "drawAid.grid.set"
+   ],
+   "expectedParams": {
+    "visible": true
+   },
+   "verdict": "PASS",
+   "noProjectAvailability": {
+    "id": 187,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "drawAid.grid.set",
+        "params": {
+         "visible": true
+        },
+        "enabled": false,
+        "reason": "no project is open",
+        "checked": true,
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledInput": "control not reached with real Tab keys: drawAid.grid.set",
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Symmetry",
+   "expectedCommand": "tool.symmetry.set",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1378; D-25; D-30",
+   "focusInput": {
+    "press": 430273.9549186,
+    "release": 430274.0552958
+   },
+   "beforeSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69",
+     "st_01K7JJN800NVGH89EYM5VBS4MB",
+     "st_01K7JJN800Y8YH87WCXVH4052Y"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "pressedBefore": "false",
+   "input": "real Tab then Space",
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"tool.symmetry.set\",\"params\":{\"mode\":\"mirror\"},\"requestToken\":\"r7\"}"
+     }
+    }
+   ],
+   "nativeMenuTrace": [],
+   "afterSelection": {
+    "selectedIds": [
+     "st_01K7JJN800BPC6WAZHN3JTM4VY",
+     "st_01K7JJN800JFA87NP10BE05540",
+     "st_01K7JJN800PMMQ9EV8TQ6F4Q69",
+     "st_01K7JJN800NVGH89EYM5VBS4MB",
+     "st_01K7JJN800Y8YH87WCXVH4052Y"
+    ],
+    "bounds": {
+     "x": -124.0,
+     "y": -94.0,
+     "width": 248.0,
+     "height": 188.0
+    },
+    "selectedPoints": []
+   },
+   "pressedAfter": "true",
+   "observed": [
+    "tool.symmetry.set"
+   ],
+   "expectedParams": {
+    "mode": "mirror"
+   },
+   "verdict": "PASS",
+   "noProjectAvailability": {
+    "id": 292,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "tool.symmetry.set",
+        "params": {
+         "mode": "mirror"
+        },
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledInput": "control not reached with real Tab keys: tool.symmetry.set",
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Brush",
+   "expectedCommand": "tool.active.set",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1361; D-25; D-30",
+   "focusInput": {
+    "press": 430281.121652,
+    "release": 430281.2222757
+   },
+   "pressedBefore": "false",
+   "input": "real OS click",
+   "ipc": [
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"tool.active.set\",\"params\":{\"toolId\":\"brush\"},\"requestToken\":\"r8\"}"
+     }
+    }
+   ],
+   "nativeMenuTrace": [],
+   "pressedAfter": "true",
+   "observed": [
+    "tool.active.set"
+   ],
+   "expectedParams": {
+    "toolId": "brush"
+   },
+   "verdict": "PASS",
+   "noProjectAvailability": {
+    "id": 397,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "tool.active.set",
+        "params": {
+         "toolId": "brush"
+        },
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledInput": "rendered control absent: tool.active.set",
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Select All",
+   "expectedCommand": "edit.selectAll",
+   "spec": "spec/01_application_shell.md section 12.2 Command table line 1105; D-25; D-30",
+   "focusInput": {
+    "press": 430284.3557786,
+    "release": 430284.4563873
+   },
+   "beforeSelection": {
+    "selectedIds": [],
+    "bounds": null,
+    "selectedPoints": []
+   },
+   "ipc": [
+    {
+     "command": "dispatch_key",
+     "args": {
+      "json": "{\"keys\":\"Primary+A\"}"
+     }
+    },
+    {
+     "command": "run_command",
+     "args": {
+      "json": "{\"command\":\"edit.selectAll\",\"params\":{},\"requestToken\":\"r9\"}"
+     }
+    }
+   ],
+   "nativeMenuTrace": [],
+   "observed": [
+    "edit.selectAll"
+   ],
+   "expectedParams": {},
+   "verdict": "PASS",
+   "noProjectAvailability": {
+    "id": 401,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "edit.selectAll",
+        "params": {},
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledIPC": [
+    {
+     "command": "dispatch_key",
+     "args": {
+      "json": "{\"keys\":\"Primary+A\"}"
+     }
+    }
+   ],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  },
+  {
+   "action": "Brush gesture",
+   "expectedCommand": "draw.stroke.add",
+   "spec": "spec/02_drawing.md section 13.5 Command table line 1318; D-25; D-30",
+   "focusInput": {
+    "press": 430287.1216906,
+    "release": 430287.222172
+   },
+   "osTimes": {
+    "press": 430287.893131,
+    "release": 430288.4946954
+   },
+   "ipc": [],
+   "nativeMenuTrace": [],
+   "observed": [
+    "draw.stroke.add"
+   ],
+   "expectedParams": {},
+   "documentChanged": true,
+   "expectedLabel": "Brush Tool",
+   "verdict": "PASS",
+   "noProjectAvailability": {
+    "id": 406,
+    "result": {
+     "result": {
+      "type": "object",
+      "value": [
+       {
+        "commandId": "draw.stroke.add",
+        "params": {
+         "kind": "brush",
+         "points": [
+          {
+           "x": 0,
+           "y": 0
+          },
+          {
+           "x": 10,
+           "y": 5
+          }
+         ]
+        },
+        "enabled": false,
+        "reason": "no project is open",
+        "dialog": false
+       }
+      ]
+     }
+    }
+   },
+   "disabledInput": "No drawing gesture: no project is open; tool command tested directly below",
+   "disabledIPC": [],
+   "disabledUIUnchanged": true,
+   "noProjectInvocation": {
+    "response": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "project.none",
+      "message": "no project is open",
+      "details": {},
+      "hint": "open or create a project first (project.open, project.create)"
+     }
+    },
+    "unchanged": true
+   }
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "about.png",
+   "bytes": 61186,
+   "sha256": "cdd8417d586512376df0b72f0ab012b442ee8ab8e0546cd32ad9ea65572155d4"
+  },
+  {
+   "file": "arrange.png",
+   "bytes": 48400,
+   "sha256": "1cd7ba336bd1a7dd197c01297012345540e1d868180fb864640bd6afd0598e61"
+  },
+  {
+   "file": "brush-gesture.png",
+   "bytes": 72481,
+   "sha256": "bb7e3028cd756c0f8a5d9e69082fe33eb668ef13961603b8960aba00187b76fb"
+  },
+  {
+   "file": "brush.png",
+   "bytes": 72252,
+   "sha256": "9f3bb3a20883662e0cac22651dae13795f92d37621af643f9c7824c41f98f2b9"
+  },
+  {
+   "file": "check-project.png",
+   "bytes": 175713,
+   "sha256": "ac4eec6a0029e75b4c41b438c79ccd8be3e58c47298b2b0b873d42dc402ac201"
+  },
+  {
+   "file": "closed.json",
+   "bytes": 1325,
+   "sha256": "f4e60ae2b3c914ddbdd055706fae6b56bd20ddbbb7ed126de0fc11e4f2cfe310"
+  },
+  {
+   "file": "cut-special.png",
+   "bytes": 47356,
+   "sha256": "0cbc3c38b443d1ad4af650f5d005ef304e919f310f5994c44c524b6c84717817"
+  },
+  {
+   "file": "discovery.json",
+   "bytes": 4096,
+   "sha256": "60bca62e079d38ffac80337ad44c2711b32ae93397050aabc2e05ea4bc0bd839"
+  },
+  {
+   "file": "discovery.log",
+   "bytes": 530,
+   "sha256": "c1edd52650463ef772425cfbcb125d6e04a9b7a0f277319cd73482792f568711"
+  },
+  {
+   "file": "flatten.png",
+   "bytes": 50581,
+   "sha256": "f757dfbd53e6a0e2ac799d118113cb4aa046c6d6af1fb4969316d9383f6f96fd"
+  },
+  {
+   "file": "flip.png",
+   "bytes": 50387,
+   "sha256": "cd3fccb8fb943cb166d789c7aa531398d6ff28856ad539bf494f64c741ac4633"
+  },
+  {
+   "file": "grid.png",
+   "bytes": 77227,
+   "sha256": "32093abcf81d6b10de18b2ee25d4c1691a32b965afc45627a18f9ecff10a877f"
+  },
+  {
+   "file": "group.png",
+   "bytes": 50482,
+   "sha256": "2dbce4f92dbb6abb251e0b62f971a7e9696f731cac1cc494f83f876217dede77"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 180,
+   "sha256": "256be2cea5fc65768901d37c0f3322843d6fa44795737594a8c064732aa35835"
+  },
+  {
+   "file": "native-disabled-about-help.png",
+   "bytes": 37837,
+   "sha256": "64ee66aac4fcd81b35c03063c1992c17d33564ef319ca0a925a839f3dc5dd3aa"
+  },
+  {
+   "file": "native-disabled-arrange-arrange.png",
+   "bytes": 43737,
+   "sha256": "9ded555506583ad0ffb1a1e0310b13b8cf197ed41586709d366b7fb2efb6887e"
+  },
+  {
+   "file": "native-disabled-arrange-drawing.png",
+   "bytes": 40979,
+   "sha256": "4ee173da3edb33a2b7cd94890a91cda63583f909f6059075903559a8cb76487c"
+  },
+  {
+   "file": "native-disabled-check-project-file.png",
+   "bytes": 37597,
+   "sha256": "42443c85e94dbbe9deb75dc496f851ba4d6c321afae23283db92d18e4bc0e274"
+  },
+  {
+   "file": "native-disabled-cut-special-edit.png",
+   "bytes": 36832,
+   "sha256": "1031f3268113d5f6159ebaf0a6b500757da68e4ee997a7b31de7c2e568bfb8e5"
+  },
+  {
+   "file": "native-disabled-flatten-drawing.png",
+   "bytes": 40979,
+   "sha256": "4ee173da3edb33a2b7cd94890a91cda63583f909f6059075903559a8cb76487c"
+  },
+  {
+   "file": "native-disabled-flip-drawing.png",
+   "bytes": 40979,
+   "sha256": "4ee173da3edb33a2b7cd94890a91cda63583f909f6059075903559a8cb76487c"
+  },
+  {
+   "file": "native-disabled-group-drawing.png",
+   "bytes": 40979,
+   "sha256": "4ee173da3edb33a2b7cd94890a91cda63583f909f6059075903559a8cb76487c"
+  },
+  {
+   "file": "native-disabled-open-backup-file.png",
+   "bytes": 37597,
+   "sha256": "42443c85e94dbbe9deb75dc496f851ba4d6c321afae23283db92d18e4bc0e274"
+  },
+  {
+   "file": "native-disabled-project-info-file.png",
+   "bytes": 37597,
+   "sha256": "42443c85e94dbbe9deb75dc496f851ba4d6c321afae23283db92d18e4bc0e274"
+  },
+  {
+   "file": "native-enabled-about-help.png",
+   "bytes": 53116,
+   "sha256": "7b2c4bbf90c8c9262ef07d9a886f38392fd88a6633eb6c5e31b6baf458a1bfa8"
+  },
+  {
+   "file": "native-enabled-arrange-arrange.png",
+   "bytes": 58354,
+   "sha256": "16b554374f7bcf9efabdd07117ba9bfe94422e6d723a8ba8447f9def713ac8f1"
+  },
+  {
+   "file": "native-enabled-arrange-drawing.png",
+   "bytes": 55866,
+   "sha256": "d2de8af110aa161316d9b708bdde5fcf38e89a9ec3cd8ee6d174862cdeee31dc"
+  },
+  {
+   "file": "native-enabled-check-project-file.png",
+   "bytes": 49723,
+   "sha256": "bdd716f2226f559bb4eaae4553a06e67b74d5161c55ce66bb1b9713f3c25d128"
+  },
+  {
+   "file": "native-enabled-cut-special-edit.png",
+   "bytes": 54561,
+   "sha256": "ef0e94f77120c9c9f70b03cb26b47b2afb904fa40e488db878593562c15b0aa1"
+  },
+  {
+   "file": "native-enabled-flatten-drawing.png",
+   "bytes": 57663,
+   "sha256": "4ffbfe886562c0ccc35f6be5eba5b6a569a86ecd12f910f40a00309264f8019d"
+  },
+  {
+   "file": "native-enabled-flip-drawing.png",
+   "bytes": 57658,
+   "sha256": "7770d020a5f0116578949f649eea22e05459e0cf6ff9494d1d415c8b81248860"
+  },
+  {
+   "file": "native-enabled-group-drawing.png",
+   "bytes": 57563,
+   "sha256": "63cea3d7933d7e3d7fc597851c0b52440db5dc35d16617dd58004a06aa4f5dc4"
+  },
+  {
+   "file": "native-enabled-open-backup-file.png",
+   "bytes": 49722,
+   "sha256": "b1632a2e904127f9839bf8dfb76e7d4f221f6865355d09aa5e1b590f6f13e85e"
+  },
+  {
+   "file": "native-enabled-project-info-file.png",
+   "bytes": 49710,
+   "sha256": "cb2b2f68540fd6176358dd97ca4c5405040297f8cc26ef81ed90a500b92380ff"
+  },
+  {
+   "file": "open-backup-dialog-with-valid-backups.png",
+   "bytes": 57058,
+   "sha256": "dec6585b6781fb850a66bfe97ee6a6459a018ca3f9e138771dd8ea539ae11a05"
+  },
+  {
+   "file": "open-backup.png",
+   "bytes": 47356,
+   "sha256": "0cbc3c38b443d1ad4af650f5d005ef304e919f310f5994c44c524b6c84717817"
+  },
+  {
+   "file": "place.json",
+   "bytes": 142,
+   "sha256": "cb88841844250e92ad0bbdc8d0124a88d9c61452a96708608d040c57edbf46f0"
+  },
+  {
+   "file": "project-info.png",
+   "bytes": 73648,
+   "sha256": "95818d2e8dbc7c08266c1da92699cde50798d697ceb3a2e0ccdeba2deeb932bc"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 7724630,
+   "sha256": "707d582ed5f20dfdff4e744863121bae859617d29208520227c4403c0194a965"
+  },
+  {
+   "file": "select-all.png",
+   "bytes": 77955,
+   "sha256": "6c10750417f9f897ad805ec304b33050b61e2aa7d64be452b0d94b08e88c2ce7"
+  },
+  {
+   "file": "setup-audit.json",
+   "bytes": 2583645,
+   "sha256": "a113231f6ed4665096bae5c2c7a2d61290eeecd6ace895744fcffdfdbaf9cb2d"
+  },
+  {
+   "file": "symmetry.png",
+   "bytes": 77293,
+   "sha256": "3f71a92066639d394d08da1280d17f7529bc2ac69533971d90d31ac716f1d96a"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 25585,
+   "sha256": "a95f1f625d2bf9035db0ac0761bf92a550b0c48b53060204a0886819aab2b720"
+  },
+  {
+   "file": "tree-start.json",
+   "bytes": 94242,
+   "sha256": "15b79b0884ea322dda47c8ee30a90b1844f0dfef80893cbccecd01f2e8e64e3e"
+  }
+ ]
+}

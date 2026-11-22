@@ -1,0 +1,4 @@
+Candidate c745a550b870636cda42de4a20595ed5621015d2
+Disk: df -h /c: 465G available
+Windows: cargo test -p tt-executor --locked --features tt-persist/test-hooks --test c42a_r1_review
+2 passed, 0 failed; cold compile 1m18s; execution 0.11s

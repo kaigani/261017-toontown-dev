@@ -1,0 +1,12 @@
+{
+  "product": "0401212a",
+  "method": "read-only source inspection and Python lexical/count probe",
+  "counts": {"total": 347, "action": 122, "read": 32, "bound": 154, "agentOnly": 61, "deferred": 132},
+  "probeExit": 1,
+  "lexicalMatches": {"commentedCall": ["tool.settings.get"], "stringContent": ["tool.settings.get"]},
+  "caseVerdicts": ["FAIL", "FAIL", "PASS", "FAIL", "FAIL", "FAIL"],
+  "closed": 8,
+  "notClosed": 1,
+  "findings": {"P1": 0, "P2": 4, "P3": 0},
+  "productFilesChanged": 0
+}

@@ -1,0 +1,24 @@
+{
+  "productHead": "ac2e9ff8fbb0255b213b8b503e225c73a7828dfe",
+  "probe": "unauthenticated_large_body_is_refused_before_reading_payload",
+  "result": "fails",
+  "declaredBodyBytes": 67108864,
+  "bodyBytesSent": 0,
+  "observedSeconds": 2.0079251,
+  "observed": "socket read timed out; no HTTP response",
+  "freeDisk": "df -h /c: 547G available",
+  "scope": "one real loopback connection; not an exhaustion load test",
+  "staticObservations": [
+    "read_request allocates vec![0u8; len] then read_exact before serve_connection checks Host, Origin or bearer",
+    "accept loop spawns one thread per connection without a connection cap",
+    "READ_TIMEOUT is 30 seconds per socket read, not an absolute request deadline",
+    "GET stream and session input use unbounded channels; exhaustion not dynamically measured",
+    "Session ids call random_token(16); bearer creation calls random_token(24); getrandom failure falls back to time/counter",
+    "Host token() trusts token string from existing discovery; stop_http does not remove discovery",
+    "Host and Origin checks precede method dispatch; absent Host refused; shell events filtered in MCP event pump",
+    "Token comparison checks length then XOR-folds equal-length bytes; compiled constant-time guarantee not established",
+    "No launch-rotation finding: spec recommends per-installation token; charter requests per-launch check",
+    "Windows private writer inherits ACL; unrelated-account access not exercised"
+  ],
+  "uncompleted": "Remaining item 10 clauses and later charter items remain pending; observations are not certifications"
+}

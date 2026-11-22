@@ -1,0 +1,344 @@
+{
+ "kind": "toontown.c43b.d44-flows, summary",
+ "regenerate": "python scripts/c43-d44-flows.py <absolute path of target/release/toontown.exe> <out> (Windows workstation; the app built by pnpm --dir desktop tauri build --no-bundle -- --locked on 66abd1d3)",
+ "verdict": "pass",
+ "manifest": {
+  "kind": "toontown.c43b.d44-flows",
+  "seconds": 898.6,
+  "rows": 73,
+  "named": [
+   "recovery open \u203a Save",
+   "recovery open \u203a Don't Save",
+   "recovery open \u203a Cancel",
+   "engine restart \u203a Restart",
+   "engine restart \u203a Cancel"
+  ],
+  "failed": [],
+  "failures": []
+ },
+ "counts": {
+  "rows": 73,
+  "ok": 73,
+  "named (not run here, with reason)": 5,
+  "failed": 0,
+  "checks": 74,
+  "checks failed": 0
+ },
+ "rows": [
+  {
+   "name": "New \u203a Save",
+   "ok": true
+  },
+  {
+   "name": "New \u203a Don't Save",
+   "ok": true
+  },
+  {
+   "name": "New \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Open \u203a Save",
+   "ok": true
+  },
+  {
+   "name": "Open \u203a Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Open \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Open Recent \u203a Save",
+   "ok": true
+  },
+  {
+   "name": "Open Recent \u203a Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Open Recent \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Open Backup \u203a Save",
+   "ok": true
+  },
+  {
+   "name": "Open Backup \u203a Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Open Backup \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Close \u203a Save",
+   "ok": true
+  },
+  {
+   "name": "Close \u203a Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Close \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Quit \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Save As (existing file) \u203a native Yes",
+   "ok": true
+  },
+  {
+   "name": "Save As (existing file) \u203a native No",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Import \u203a Merge",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Import \u203a Replace",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Import \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Reset all \u203a Reset All",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Reset all \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a conflict \u203a Override",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a conflict \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "New Workspace \u203a Create",
+   "ok": true
+  },
+  {
+   "name": "New Workspace \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Rename Workspace \u203a Rename",
+   "ok": true
+  },
+  {
+   "name": "Rename Workspace \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Customize Toolbar \u203a Apply",
+   "ok": true
+  },
+  {
+   "name": "Customize Toolbar \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Customize Toolbar \u203a Restore Default",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a Undo back \u203a Undo",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a Undo back \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Activity \u203a Undo back \u203a Enter (default Cancel)",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a OK",
+   "ok": true
+  },
+  {
+   "name": "Preferences \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Project Properties \u203a OK (set as default)",
+   "ok": true
+  },
+  {
+   "name": "Project Properties \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "New Project \u203a Create",
+   "ok": true
+  },
+  {
+   "name": "New Project \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "backup chooser \u203a Open",
+   "ok": true
+  },
+  {
+   "name": "backup chooser \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Check Project \u203a Repair",
+   "ok": true
+  },
+  {
+   "name": "Check Project \u203a Close",
+   "ok": true
+  },
+  {
+   "name": "About \u203a Close",
+   "ok": true
+  },
+  {
+   "name": "Project Info \u203a Close",
+   "ok": true
+  },
+  {
+   "name": "Help \u203a Close",
+   "ok": true
+  },
+  {
+   "name": "error box \u203a OK",
+   "ok": true
+  },
+  {
+   "name": "native picker \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "unsaved changes \u203a Enter (default Save)",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Reset all \u203a Enter (default Cancel)",
+   "ok": true
+  },
+  {
+   "name": "shortcut editor \u203a Import \u203a Enter (default Merge)",
+   "ok": true
+  },
+  {
+   "name": "modal (message box) \u203a Tab past the last control, Escape",
+   "ok": true
+  },
+  {
+   "name": "modal (form) \u203a Tab past the last control, Escape",
+   "ok": true
+  },
+  {
+   "name": "progress window \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "recovery open \u203a Save",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "recovery open \u203a Don't Save",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "recovery open \u203a Cancel",
+   "ok": true,
+   "notRun": "its only entry, the start screen, shows only without a project, so the unsaved-changes question never comes up in the window; shell/unsavedFlows.test.tsx covers the three choices"
+  },
+  {
+   "name": "engine restart \u203a Restart",
+   "ok": true,
+   "notRun": "it needs an engine that stops answering; App.test.tsx covers the question and its choices"
+  },
+  {
+   "name": "engine restart \u203a Cancel",
+   "ok": true,
+   "notRun": "it needs an engine that stops answering; App.test.tsx covers the question and its choices"
+  },
+  {
+   "name": "Quit \u203a Don't Save",
+   "ok": true
+  },
+  {
+   "name": "Quit \u203a Save",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet \u203a Accept",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet \u203a Decline",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet \u203a Return (default Decline)",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet \u203a document changed",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet \u203a decided in another window",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet \u203a three queued",
+   "ok": true
+  },
+  {
+   "name": "Confirmation sheet \u203a expiry",
+   "ok": true
+  },
+  {
+   "name": "Agent access \u203a Regenerate token \u203a Cancel",
+   "ok": true
+  },
+  {
+   "name": "Agent access \u203a Regenerate token \u203a Enter (default Cancel)",
+   "ok": true
+  },
+  {
+   "name": "Agent access \u203a Regenerate token \u203a Regenerate",
+   "ok": true
+  }
+ ],
+ "failedChecks": [],
+ "raw": [
+  {
+   "path": "manifest.json",
+   "bytes": 317,
+   "sha256": "6efb07cd41b71a6e51610a9409d16646b8a4a5977d346442d5eeae33981c1b71"
+  },
+  {
+   "path": "rows.json",
+   "bytes": 80997,
+   "sha256": "b3767e0c2035eb32744d2056a48cfa87d5bfa06667c4945a77ffd2ac37bc3db1"
+  },
+  {
+   "path": "transcript.json",
+   "bytes": 39931,
+   "sha256": "4998c9ddd14454188c5df07032112ff188010c78872f095f602997dad1d6f135"
+  }
+ ]
+}

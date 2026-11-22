@@ -1,0 +1,17 @@
+Candidate b9d57ff2, Windows static audit, 2026-11-15.
+No Cargo invoked.
+pnpm install --frozen-lockfile: exit 0.
+Requested Vitest wildcard: no test files found (literal filter on this runner).
+Explicit sole matching suite src/test/c43a-r1s-scene.test.ts: 12 passed, 0 failed.
+pnpm --dir desktop exec tsc --noEmit: exit 0.
+Python c43a-r1s-side-scale.py: exit 0.
+Python c43a-r1s-temporary-skew.py: exit 0.
+Python c43a-r1s-declarations.py: exit 0.
+check-product-allows.py: 95 lints / 39 files; zero added/removed; exit 0.
+check-availability-inventory.py: 279 commands / 1198 pairs; exit 0.
+check-addressing-params.py: 27 commands / zero missing; exit 0.
+check-message-help.py: 128/128; exit 0.
+Added product-line engineering-token scan: zero matches.
+CI workflow diff 3fb27030..b9d57ff2: empty.
+Earlier reviewer-file diff: no modifications; round-1 imported Rust reviewer file has only four ruled ignore additions.
+CI failing logs were read and filtered in memory; no logs committed.

@@ -147,6 +147,18 @@ pub(crate) struct SelectionSetParams {
     /// How to combine with the current selection.
     #[serde(default)]
     mode: Mode,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{selectedIds, bounds}`.
@@ -234,6 +246,53 @@ fn bounds_json(r: Option<Rect>) -> Option<Bounds> {
     r.map(Bounds::from)
 }
 
+/// The selection of `d` as the Drawing view's overlay draws it (frame-loop note §7.1), in drawing units: each selected
+/// object's bounds (the walk and bounds of `draw.selection.get`; a layer or group: its contents'), the selection's
+/// bounds (`draw.selection.get`'s `bounds`), and the point selection's anchors. `None` when nothing is selected.
+pub(crate) fn selection_geometry(cx: &Cx, d: &Drawing) -> Result<Option<SelectionGeometry>, CommandError> {
+    let ids = selected(cx, d);
+    let points: Vec<[f64; 2]> = point_refs(cx, d)
+        .iter()
+        .filter_map(|a| {
+            let l = tt_vector::drawing::locate(d, &a.stroke_id)?;
+            let s = tt_vector::drawing::stroke_at(d, &l.pointer)?;
+            s.points().get(a.anchor as usize).map(|p| [p[0], p[1]])
+        })
+        .collect();
+    if ids.is_empty() && points.is_empty() {
+        return Ok(None);
+    }
+    let all: std::collections::HashMap<String, Option<Rect>> =
+        selectables(cx, d, ids.iter().any(|i| i.starts_with("zn_")))?.into_iter().collect();
+    let mut objects = Vec::with_capacity(ids.len());
+    for id in &ids {
+        let b = all.get(id).copied().flatten().or_else(|| {
+            let l = tt_vector::drawing::locate(d, id)?;
+            matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
+                .then(|| {
+                    tt_vector::drawing::node_at(d, &l.pointer).and_then(|n| tt_vector::drawing::node_bounds(n, false))
+                })
+                .flatten()
+        });
+        if let Some(b) = b {
+            objects.push([b.min_x, b.min_y, b.max_x, b.max_y]);
+        }
+    }
+    let bounds = selection_bounds(cx, d, &ids)?.map(|b| [b.min_x, b.min_y, b.max_x, b.max_y]);
+    Ok(Some(SelectionGeometry { objects, bounds, points }))
+}
+
+/// [`selection_geometry`]'s answer.
+#[derive(Debug, Clone, PartialEq)]
+pub(crate) struct SelectionGeometry {
+    /// Each selected object's bounds, `[minX, minY, maxX, maxY]`, in selection order.
+    pub objects: Vec<[f64; 4]>,
+    /// The selection's bounds; `None` for a point selection alone.
+    pub bounds: Option<[f64; 4]>,
+    /// The selected anchors.
+    pub points: Vec<[f64; 2]>,
+}
+
 /// The local IDs of the drawing selection of `d`.
 pub(crate) fn selected(cx: &Cx, d: &Drawing) -> Vec<String> {
     super::draw::selection_ids(cx, d)
@@ -261,6 +320,7 @@ fn point_json(cx: &Cx, d: &Drawing) -> Vec<Value> {
 
 #[command(
     id = "draw.selection.set",
+    precheck = super::draw::precheck_selection_set,
     kind = ui,
     label = "Select drawing objects",
     scopes = [ui],
@@ -270,8 +330,10 @@ fn point_json(cx: &Cx, d: &Drawing) -> Vec<Value> {
     gui = "Drawing view: Select tool click, drag and lasso (M4 C4.2)",
 )]
 pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<SelectionSetResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let need = |what: &str| {
@@ -303,7 +365,10 @@ pub(crate) fn draw_selection_set(cx: &mut Cx, p: SelectionSetParams) -> Result<S
         SelectBy::Point => {
             let pt = p.point.ok_or_else(|| need("point"))?;
             let zones = drawing_zones(&cx.planar_cache(), &d)?;
-            let hs = super::colour::hits(&d, &zones, P::new(pt.x, pt.y), 0.0, false)?;
+            // The hit tolerance: 3 view pixels (02 §13.2 `draw.hitTest.get`) through the given view's zoom, or 100 %
+            // without a view (02 §13.1 item 5; C42A-R2-02).
+            let tol = crate::addressing::tolerance_du(cx, p.view.as_deref(), HIT_TOLERANCE_PX)?;
+            let hs = super::colour::hits(&d, &zones, P::new(pt.x, pt.y), tol, false)?;
             hs.first().map(|h| vec![h.id.clone()]).unwrap_or_default()
         }
         SelectBy::Rect | SelectBy::Lasso => {
@@ -391,12 +456,13 @@ pub(crate) struct SelectionGetResult {
 
 #[command(
     id = "draw.selection.get",
+    precheck = super::draw::precheck_drawing,
     kind = query,
     label = "Get the drawing selection",
     scopes = [read],
     needs_project,
     example(title = "The current drawing's selection", params = r#"{"drawingId": "drawingBank:#1/drawing:#1"}"#),
-    agent_only = "the GUI shows the selection in the Drawing view",
+    gui = "Properties, Tool options of the Contour Editor: which line is selected (M4 C4.4b)",
 )]
 pub(crate) fn draw_selection_get(cx: &mut Cx, p: SelectionGetParams) -> Result<SelectionGetResult, CommandError> {
     let mut none = Vec::new();
@@ -434,6 +500,18 @@ pub(crate) struct PointSelectionParams {
     /// How to combine.
     #[serde(default)]
     mode: Mode,
+    /// Coordinate space of the rectangle (02 §13.1 item 5): `view` coordinates go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` coordinates (default: the Drawing view).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{selectedPoints}`.
@@ -446,6 +524,7 @@ pub(crate) struct PointSelectionResult {
 
 #[command(
     id = "draw.pointSelection.set",
+    precheck = super::draw::precheck_point_selection,
     kind = ui,
     label = "Select anchor points",
     scopes = [ui],
@@ -457,8 +536,10 @@ pub(crate) fn draw_point_selection_set(
     cx: &mut Cx,
     p: PointSelectionParams,
 ) -> Result<PointSelectionResult, CommandError> {
+    // The pipeline converted view-space coordinates (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let mut keys: Vec<AnchorRef> = Vec::new();
@@ -496,7 +577,7 @@ pub(crate) fn draw_point_selection_set(
         cx.app().points.iter().filter(|(k, _)| !k.starts_with(&format!("{prefix}/"))).cloned().collect();
     let mut all = others;
     all.extend(cur.iter().map(|a| (format!("{prefix}/{}", a.stroke_id), a.anchor)));
-    cx.app_mut().points = all;
+    cx.app_mut().set_points(all);
     let ids = selected(cx, &d);
     let points = point_json(cx, &d);
     cx.emit("draw.selection.changed", json!({ "drawingId": prefix, "selectedIds": ids, "selectedPoints": points }));
@@ -530,6 +611,9 @@ pub(crate) fn draw_selection_changed(
     Err(super::common::event_not_invocable("draw.selection.changed"))
 }
 
+/// The hit tolerance of a point selection, in view pixels (02 §13.2: `draw.hitTest.get`'s default).
+pub(crate) const HIT_TOLERANCE_PX: f64 = 3.0;
+
 // ----- draw.bounds.get -----------------------------------------------------------------------------------------------
 
 /// `draw.bounds.get` parameters.
@@ -556,6 +640,7 @@ pub(crate) struct BoundsResult {
 
 #[command(
     id = "draw.bounds.get",
+    precheck = super::draw::precheck_drawing,
     kind = query,
     label = "Get bounds",
     scopes = [read],
@@ -594,7 +679,7 @@ pub(crate) fn draw_bounds_get(cx: &mut Cx, p: BoundsParams) -> Result<BoundsResu
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct ViewMappingParams {
-    /// The view (`drawing`; views arrive with M4 C4.2).
+    /// The view: `drawing` (the Drawing view window) or a view id.
     #[serde(default = "drawing_view")]
     view: String,
 }
@@ -630,45 +715,70 @@ pub(crate) struct ViewSize {
     height: u32,
 }
 
-/// The headless Drawing view (SI-069): 1920 × 1080 pixels, 100 % zoom (1 view pixel = 1 du, SI-063), no rotation,
-/// the drawing origin at the view centre, y up in drawing space and down in pixels.
-const VIEW_W: u32 = 1920;
-const VIEW_H: u32 = 1080;
-
 #[command(
     id = "draw.viewMapping.get",
     kind = query,
     label = "Get the view mapping",
     scopes = [read],
     example(title = "The Drawing view's mapping", params = r#"{"view": "drawing"}"#),
-    agent_only = "agents convert between view pixels and drawing units",
+    gui = "the Drawing and Camera view canvas: its drawing mapping (02 line 104)",
 )]
 pub(crate) fn draw_view_mapping_get(cx: &mut Cx, p: ViewMappingParams) -> Result<ViewMappingResult, CommandError> {
-    if p.view != "drawing" {
-        return Err(err(
-            "view.notFound",
-            format!(
-                "view `{}` does not exist (views arrive with M4 C4.2; `drawing` is the headless Drawing view)",
-                p.view
-            ),
-            json!({ "pointer": "/view" }),
-        ));
+    // A Camera view's mapping (02 lines 101-104; C43A-R1-01): the current drawing's plane through the element's full
+    // scene transform and the camera at the current frame, then the view transform: the matrices the scene answer,
+    // the gestures and the addressing parameters use (`crate::camera_view`).
+    if let Ok(w) = cx.ui().shell().view(&p.view)
+        && w.ty == crate::shell::ViewType::Camera
+    {
+        let w = w.clone();
+        let chain = crate::camera_view::chain(cx, &w)?;
+        let e = crate::camera_view::current_element(cx)?;
+        let to_view =
+            crate::camera_view::element_to_view(cx, &chain, &e)?.ok_or_else(|| crate::camera_view::behind(&e))?;
+        let to_drawing = crate::camera_view::invert(&to_view).ok_or_else(|| crate::camera_view::behind(&e))?;
+        let doc = cx.document()?;
+        let drawing_id = cx.app().current_drawing(doc).map(|d| d.as_str().to_owned());
+        let t = w.transform();
+        return Ok(ViewMappingResult {
+            drawing_id,
+            drawing_to_view: to_view,
+            view_to_drawing: to_drawing,
+            zoom: t.zoom,
+            rotation: t.rotation_degrees,
+            view_size: ViewSize { width: pixels(w.size.width), height: pixels(w.size.height) },
+        });
     }
+    // The one mapping of the Drawing view window (design note 6; M4 C4.2): `drawing` names the Drawing view, a view id
+    // names that window. Headless, the Drawing view is 1920 x 1080 pixels at 100 % (SI-063, SI-069) until navigated.
+    let w = super::view::drawing_view(cx, Some(p.view.as_str())).map_err(|e| {
+        if e.code == "view.notFound" {
+            err("view.notFound", format!("view `{}` does not exist", p.view), json!({ "pointer": "/view" }))
+        } else {
+            e
+        }
+    })?;
+    let t = w.transform();
+    let size = w.size;
+    let (to_view, to_drawing) = (super::view::drawing_to_view(w), super::view::view_to_drawing(w));
     let drawing_id = if cx.has_project() {
         let mut none = Vec::new();
         target(cx, None, None, None, false, &mut none).ok().map(|t| t.id.as_str().to_owned())
     } else {
         None
     };
-    let (cx0, cy0) = (f64::from(VIEW_W) / 2.0, f64::from(VIEW_H) / 2.0);
     Ok(ViewMappingResult {
         drawing_id,
-        drawing_to_view: [1.0, 0.0, 0.0, -1.0, cx0, cy0],
-        view_to_drawing: [1.0, 0.0, 0.0, -1.0, -cx0, cy0],
-        zoom: 1.0,
-        rotation: 0.0,
-        view_size: ViewSize { width: VIEW_W, height: VIEW_H },
+        drawing_to_view: to_view,
+        view_to_drawing: to_drawing,
+        zoom: t.zoom,
+        rotation: t.rotation_degrees,
+        view_size: ViewSize { width: pixels(size.width), height: pixels(size.height) },
     })
+}
+
+/// A view dimension in whole pixels (0 when not representable).
+fn pixels(v: f64) -> u32 {
+    if v.is_finite() && v >= 0.0 && v <= f64::from(u32::MAX) { v.round() as u32 } else { 0 }
 }
 
 // ----- draw.inspectorPreview.set ---------------------------------------------------------------------------------------
@@ -700,9 +810,10 @@ const PREVIEW_PREF: &str = "drawing.inspectorPreview";
     gui = "Properties view: Drawing tab, Show preview (M4 C4.1)",
 )]
 pub(crate) fn draw_inspector_preview_set(cx: &mut Cx, p: PreviewParams) -> Result<PreviewResult, CommandError> {
+    // Staged as `prefs.set` stages: it emits `prefs.changed` (design note 1 §2; SI-166).
     let mut prefs = serde_json::Map::new();
     prefs.insert(PREVIEW_PREF.into(), json!(p.visible));
-    cx.defer(crate::cx::Effect::Prefs(prefs));
+    super::prefs::stage_stored(cx, prefs)?;
     Ok(PreviewResult { visible: p.visible })
 }
 
@@ -737,6 +848,7 @@ pub(crate) struct RenameResult {
 
 #[command(
     id = "draw.drawing.rename",
+    precheck = super::draw::precheck_drawing,
     kind = action,
     label = "Rename drawing",
     scopes = [edit],
@@ -807,6 +919,7 @@ pub(crate) struct LockResult {
 
 #[command(
     id = "draw.lock.set",
+    precheck = super::draw::precheck_drawing,
     kind = toggle,
     label = "Lock drawing",
     scopes = [edit],

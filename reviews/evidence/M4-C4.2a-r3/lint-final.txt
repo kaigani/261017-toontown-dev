@@ -1,0 +1,9 @@
+['cargo', 'fmt', '--check']
+exit 0
+['cargo', 'clippy', '-p', 'tt-executor', '--all-targets', '--locked', '--features', 'tt-persist/test-hooks', '--', '-D', 'warnings', '-A', 'clippy::empty_line_after_doc_comments']
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r3\crates\executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 1.37s
+exit 0
+['cargo', 'clippy', '-p', 'tt-mcp', '--all-targets', '--locked', '--features', 'tt-persist/test-hooks', '--', '-D', 'warnings', '-A', 'clippy::empty_line_after_doc_comments']
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.21s
+exit 0

@@ -93,6 +93,37 @@ pub(crate) struct TransformResult {
     warnings: Vec<String>,
 }
 
+/// The undo label (05 §17 line 1135: "the operation and the object kind"; SI-144): `Move`, `Rotate`, `Scale`, `Skew`
+/// or `Move Pivot` for one changed group, `Transform` for several; then the node kind (`Element`, `Peg`, `Camera`,
+/// `Skeleton`), plural for several nodes of one kind, `Nodes` for several kinds. A scene-tool drag and the command
+/// sent directly with the same parameters carry the same label.
+fn label(doc: &tt_model::document::Document, ids: &[tt_model::Id], p: &TransformParams) -> String {
+    use tt_model::entities::element::ElementType;
+    let groups = [
+        (p.position.is_some(), "Move"),
+        (p.rotation.is_some(), "Rotate"),
+        (p.scale.is_some(), "Scale"),
+        (p.skew.is_some(), "Skew"),
+        (p.pivot.is_some() || p.rotation_pivot.is_some() || p.scale_pivot.is_some(), "Move Pivot"),
+    ];
+    let changed: Vec<&str> = groups.iter().filter(|g| g.0).map(|g| g.1).collect();
+    let op = if changed.len() == 1 { changed[0] } else { "Transform" };
+    let kind = |id: &tt_model::Id| match doc.element(id).map(|e| *e.element_type()) {
+        Some(ElementType::Peg) => "Peg",
+        Some(ElementType::Camera) => "Camera",
+        Some(ElementType::Skeleton) => "Skeleton",
+        _ => "Element",
+    };
+    let mut kinds: Vec<&str> = ids.iter().map(kind).collect();
+    kinds.dedup();
+    let noun = match (kinds.as_slice(), ids.len()) {
+        ([k], 1) => (*k).to_owned(),
+        ([k], _) => format!("{k}s"),
+        _ => "Nodes".to_owned(),
+    };
+    format!("{op} {noun}")
+}
+
 fn add_or(relative: bool, current: f64, v: f64) -> f64 {
     if relative { current + v } else { v }
 }
@@ -103,6 +134,7 @@ fn mul_or(relative: bool, current: f64, v: f64) -> f64 {
 
 #[command(
     id = "anim.transform.set",
+    precheck = super::anim_key::precheck_transformable,
     kind = action,
     label = "Set transform",
     scopes = [edit],
@@ -117,6 +149,7 @@ pub(crate) fn anim_transform_set(cx: &mut Cx, p: TransformParams) -> Result<Tran
     let doc = cx.document()?.clone();
     let ids = nodes(cx, p.node_ids.as_deref())?;
     let frame = scene_frame(cx, p.frame.map(|f| f as f64))?;
+    cx.set_label(label(&doc, &ids, &p));
     if p.relative && p.position_space == PositionSpace::World && p.position.is_some() {
         return Err(err(
             codes::ARG_INVALID,

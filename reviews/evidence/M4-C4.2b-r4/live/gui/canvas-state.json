@@ -1,0 +1,23 @@
+{
+  "backend": "webgl2",
+  "generation": 0,
+  "drawings": [
+    {
+      "id": "dr_01K7JJN800N19N7TQ1239C9NYC",
+      "rev": 8,
+      "bucket": 0
+    }
+  ],
+  "failures": [],
+  "gesture": null,
+  "selection": {
+    "objects": 0,
+    "handles": 0,
+    "points": 0,
+    "pivot": true
+  },
+  "drawn": 1,
+  "residentDrawings": 1,
+  "residentBytes": 34889512,
+  "lastError": null
+}

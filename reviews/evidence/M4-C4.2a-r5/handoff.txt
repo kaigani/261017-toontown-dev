@@ -1,0 +1,17 @@
+['git', 'rev-parse', 'origin/m4-desktop-shell']
+71f4323e3ab492791b65d829585bedea567b9bd3
+
+EXIT 0
+['git', 'show', 'origin/m4-desktop-shell:reviews/M4-C4.2a-handoff-r2.md']
+fatal: path 'reviews/M4-C4.2a-handoff-r2.md' does not exist in 'origin/m4-desktop-shell'
+
+EXIT 128
+['gh', 'run', 'list', '--branch', 'm4-desktop-shell', '--limit', '5', '--json', 'databaseId,headSha,status,conclusion']
+[{"conclusion":"","databaseId":43632661801,"headSha":"71f4323e3ab492791b65d829585bedea567b9bd3","status":"queued"},{"conclusion":"cancelled","databaseId":43630486854,"headSha":"326ba47560bee6f76efd2c7a9b6e77f5af5b57ea","status":"completed"},{"conclusion":"cancelled","databaseId":43629554763,"headSha":"d512e188fbda67bc8648e39c60238a26d665c672","status":"completed"},{"conclusion":"cancelled","databaseId":43627189532,"headSha":"5e66d287f31736781ac8708fc0085ae6b659847f","status":"completed"},{"conclusion":"cancelled","databaseId":43626452584,"headSha":"688a107951e3ca39638cd8205c89a54a0ae3ee62","status":"completed"}]
+
+EXIT 0
+
+FINAL RECHECK
+[{"conclusion":"","databaseId":43632661801,"headSha":"71f4323e3ab492791b65d829585bedea567b9bd3","status":"in_progress"},{"conclusion":"cancelled","databaseId":43630486854,"headSha":"326ba47560bee6f76efd2c7a9b6e77f5af5b57ea","status":"completed"},{"conclusion":"cancelled","databaseId":43629554763,"headSha":"d512e188fbda67bc8648e39c60238a26d665c672","status":"completed"},{"conclusion":"cancelled","databaseId":43627189532,"headSha":"5e66d287f31736781ac8708fc0085ae6b659847f","status":"completed"},{"conclusion":"cancelled","databaseId":43626452584,"headSha":"688a107951e3ca39638cd8205c89a54a0ae3ee62","status":"completed"}]
+
+EXIT 0

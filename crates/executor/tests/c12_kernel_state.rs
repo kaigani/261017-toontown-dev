@@ -16,7 +16,8 @@ fn window_and_panel_state_is_queryable_and_settable() {
     let h = fixture();
     let panels = ok(&h, "window.panel.list", json!({}));
     let panels = panels.as_array().unwrap();
-    assert_eq!(panels.len(), 21, "01 §5.2 panel catalogue");
+    // 01 §5.2's 21 panels and the Activity panel of 11 §6.4, §11 (SI-174).
+    assert_eq!(panels.len(), 22, "01 §5.2 panel catalogue and the Activity panel");
     let find = |list: &Value, id: &str| list.as_array().unwrap().iter().find(|p| p["panelId"] == id).cloned().unwrap();
     let list = json!(panels);
     assert_eq!(find(&list, "cameraView")["area"], "central");
@@ -151,6 +152,7 @@ fn jobs_run_off_the_document_thread() {
     std::thread::sleep(Duration::from_millis(30));
     let t = Instant::now();
     assert!(run(&h, "app.state.get", json!({})).is_ok());
+    crate::common::timing::record("c12_kernel_state.rs:154", t.elapsed(), Duration::from_millis(250));
     assert!(t.elapsed() < Duration::from_millis(250), "the document thread is not blocked by job.wait");
     let env = waiter.join().unwrap();
     assert!(env.is_ok(), "{:?}", env.error);
@@ -212,6 +214,7 @@ fn the_watchdog_answers_within_its_budget() {
             json!({ "drawingId": "drawingBank:#1/drawing:#1", "width": 2048,
                     "region": {"x": -60, "y": -60, "width": 170, "height": 170} }),
         ));
+        crate::common::timing::record("c12_kernel_state.rs:215", t.elapsed(), Duration::from_millis(500));
         assert!(t.elapsed() < Duration::from_millis(500));
         if env.error.as_ref().is_some_and(|e| e.code == "command.timeout") {
             timed_out = true;
@@ -243,9 +246,22 @@ fn edits(h: &ExecutorHandle) {
 /// with a backup `bk_1a2b3c4d`, recovery data `rc_1a2b3c4d`, `Short.animpkg` and a `media` folder in a temporary folder
 /// that stands for the examples' `/tmp`.
 fn with_files(id: &str) -> bool {
-    ["project.", "doc.asset.", "doc.blob.", "doc.package.", "agent.", "draw.vectorize.", "render.range."]
-        .iter()
-        .any(|p| id.starts_with(p))
+    [
+        "project.",
+        "doc.asset.",
+        "doc.blob.",
+        "doc.package.",
+        "agent.",
+        "draw.vectorize.",
+        "render.range.",
+        // M4 C4.1: keymap and workspace files.
+        "keymap.export",
+        "keymap.import",
+        "workspace.export",
+        "workspace.import",
+    ]
+    .iter()
+    .any(|p| id.starts_with(p))
 }
 
 fn wait_job(h: &ExecutorHandle, started: &Value) {
@@ -318,6 +334,18 @@ fn prepared_with_files(id: &str, dir: &std::path::Path) -> ExecutorHandle {
     .unwrap();
     wait_job(&h, &ok(&h, "project.open", json!({ "path": sample.to_string_lossy() })));
     edits(&h);
+    // M4 C4.1: the files the keymap and workspace import examples read.
+    if id == "keymap.import" {
+        let file = json!({ "format": "toontown-keymap", "formatVersion": "1.0", "baseSet": "default",
+            "bindings": [{ "commandId": "project.save", "keys": "F2", "context": "global" }] });
+        std::fs::write(dir.join("keymap.json"), serde_json::to_vec(&file).unwrap()).unwrap();
+    }
+    if id == "workspace.import" {
+        let layout = ok(&h, "workspace.get", json!({ "name": "Drawing" }));
+        let file =
+            json!({ "format": "toontown-workspace", "formatVersion": "1.0", "name": "Drawing", "layout": layout });
+        std::fs::write(dir.join("drawing.ttworkspace"), serde_json::to_vec(&file).unwrap()).unwrap();
+    }
     // Examples that replace the open project run on a saved one.
     if matches!(
         id,
@@ -383,6 +411,11 @@ fn clipboard_for(h: &ExecutorHandle, id: &str) {
     }
 }
 
+/// Ruling D-56 (correcting D-51): the worked examples' answers stay under 1 MiB, a measurement of the examples, not a
+/// cap on answers (the spec's own limits govern those: 11 §6.5, `doc.blob.get` `maxBytes`). An answer reaches the client
+/// inside a tool result (a text summary and the structured envelope), so the bound leaves room for that wrapper.
+const ANSWER_CAP: usize = (1 << 20) - 8 * 1024;
+
 #[test]
 fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let registry = tt_executor::registry().unwrap();
@@ -390,6 +423,16 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
     let mut schema_checked = 0;
     let mut ran = 0;
     let mut failures = Vec::new();
+    // D-56's measurement: the largest answer of every command's example, and of every job example's final record.
+    let mut largest: (usize, String) = (0, String::new());
+    let mut measure = |what: String, bytes: usize, failures: &mut Vec<String>| {
+        if bytes > largest.0 {
+            largest = (bytes, what.clone());
+        }
+        if bytes > ANSWER_CAP {
+            failures.push(format!("{what}: {bytes} bytes, over the {ANSWER_CAP}-byte bound on the examples (D-56)"));
+        }
+    };
     for e in registry.entries() {
         let Some(c) = e.command else { continue };
         for ex in c.decl.examples {
@@ -411,7 +454,13 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
             }
             let t = Instant::now();
             let env = h.invoke(Invocation::user(e.id(), params));
+            crate::common::timing::record("c12_kernel_state.rs:439", t.elapsed(), Duration::from_secs(30));
             assert!(t.elapsed() < Duration::from_secs(30), "{}: `{}` took {:?}", e.id(), ex.title, t.elapsed());
+            measure(
+                format!("{} example `{}`", e.id(), ex.title),
+                serde_json::to_string(&env).unwrap().len(),
+                &mut failures,
+            );
             let code = env.error.as_ref().map(|x| x.code.clone());
             match (e.spec.kind, e.status()) {
                 (tt_registry::Kind::Event, _) => assert_eq!(code.as_deref(), Some("command.disabled"), "{}", e.id()),
@@ -445,6 +494,10 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
                             && let Some(job) = v.get("jobId").and_then(Value::as_str).filter(|j| *j != "dryRun")
                         {
                             let rec = h.jobs().wait(job, Duration::from_secs(30)).map(|(r, _)| r);
+                            if let Ok(r) = &rec {
+                                let what = format!("{} example `{}` job record", e.id(), ex.title);
+                                measure(what, serde_json::to_string(r).unwrap().len(), &mut failures);
+                            }
                             match rec {
                                 Ok(r) if r.state == tt_executor::JobState::Succeeded => schema_checked += 1,
                                 other => failures.push(format!("{} example `{}`: job {other:?}", e.id(), ex.title)),
@@ -471,6 +524,7 @@ fn every_example_runs_on_the_fixture_under_the_watchdog() {
         )
     );
     println!("examples run: {ran}; successful results schema-checked: {schema_checked}");
+    println!("largest answer (D-51): {} bytes, {}", largest.0, largest.1);
     assert!(ran >= 140, "examples: {ran}");
 }
 

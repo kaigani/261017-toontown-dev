@@ -24,12 +24,6 @@
     "clippy::too_many_arguments": 1,
     "dead_code": 2
   },
-  "crates/executor/src/commands/window.rs": {
-    "dead_code": 1
-  },
-  "crates/executor/src/commands/workspace.rs": {
-    "dead_code": 2
-  },
   "crates/executor/src/run.rs": {
     "clippy::expect_used": 1,
     "clippy::panic": 1,
@@ -123,6 +117,13 @@
   },
   "desktop/src-tauri/src/bindings.rs": {
     "clippy::large_enum_variant": 1
+  },
+  "desktop/src-tauri/src/capture.rs": {
+    "unsafe_code": 1
+  },
+  "desktop/src-tauri/src/menu_hint.rs": {
+    "$ruling": "D-59 (C44A-R1S-03): the Windows-only menu highlight hint, on the ruling's conditions",
+    "unsafe_code": 1
   },
   "desktop/src-tauri/src/spikes/canvas/renderlist.rs": {
     "missing_docs": 1

@@ -52,8 +52,19 @@ pub(crate) fn cameras_of(doc: &Document, scene: &Id) -> Vec<Id> {
 
 /// `anim.lastCamera` when deleting `gone` would leave a scene that has cameras without one (05 §12.1).
 pub(crate) fn refuse_last_camera(doc: &Document, scene: &Id, gone: &dyn Fn(&Id) -> bool) -> Result<(), CommandError> {
-    let cameras = cameras_of(doc, scene);
-    if !cameras.is_empty() && cameras.iter().all(gone) {
+    // Whether some camera of the scene stays: the scene's elements in any order, up to the first camera that stays
+    // (no placement of the tree; closure round 5: a scene with many cameras costs one scan).
+    let Some(sc) = doc.scene(scene) else { return Ok(()) };
+    let mut cameras = false;
+    for id in sc.elements().ids() {
+        if doc.element(id).is_some_and(|e| *e.element_type() == ElementType::Camera) {
+            if !gone(id) {
+                return Ok(());
+            }
+            cameras = true;
+        }
+    }
+    if cameras {
         return Err(err(
             "anim.lastCamera",
             "a scene always keeps at least one camera",
@@ -105,6 +116,7 @@ fn emit_current(cx: &mut Cx, scene: &Id, camera: &Id) {
 
 #[command(
     id = "anim.camera.create",
+    precheck = super::element::precheck_create,
     kind = action,
     label = "Add camera",
     scopes = [edit],
@@ -225,12 +237,13 @@ pub(crate) struct CameraListResult {
 
 #[command(
     id = "anim.camera.list",
+    precheck = super::anim_key::precheck_scene,
     kind = query,
     label = "List cameras",
     scopes = [read],
     needs_project,
     example(title = "Cameras of the current scene", params = "{}"),
-    gui = "Scene views: camera list (M6 C6.2)",
+    gui = "Main toolbar: camera list (M4 C4.4a)",
 )]
 pub(crate) fn anim_camera_list(cx: &mut Cx, p: SceneParam) -> Result<CameraListResult, CommandError> {
     let doc = cx.document()?.clone();
@@ -358,7 +371,7 @@ pub(crate) struct SetParams {
     undo = "Change Camera",
     needs_project,
     example(title = "Widen and roll the Intro camera", params = r#"{"cameraId": "scene:\"Intro\"/element:\"Camera\"", "fov": 60, "roll": 5}"#),
-    agent_only = "agents set camera values (05 §19.1.1 FOV wedge equivalent); the Properties panel does the same (M6 C6.2)",
+    gui = "Top view: FOV wedge dragging (05 §19.1 item 1, lines 1174-1177); camera properties (M6 C6.2)",
 )]
 pub(crate) fn anim_camera_set(cx: &mut Cx, p: SetParams) -> Result<CameraResult, CommandError> {
     let doc = cx.document()?.clone();
@@ -433,12 +446,13 @@ pub(crate) struct CurrentResult {
 
 #[command(
     id = "anim.camera.current.get",
+    precheck = super::anim_key::precheck_scene,
     kind = query,
     label = "Current camera",
     scopes = [read],
     needs_project,
     example(title = "The current camera of the current scene", params = "{}"),
-    gui = "Scene views: camera list (M6 C6.2)",
+    gui = "Main toolbar: camera list (M4 C4.4a)",
 )]
 pub(crate) fn anim_camera_current_get(cx: &mut Cx, p: SceneParam) -> Result<CurrentResult, CommandError> {
     let doc = cx.document()?.clone();
@@ -455,7 +469,7 @@ pub(crate) fn anim_camera_current_get(cx: &mut Cx, p: SceneParam) -> Result<Curr
     undo = "Set Current Camera",
     needs_project,
     example(title = "Make the Intro camera current", params = r#"{"cameraId": "scene:\"Intro\"/element:\"Camera\""}"#),
-    gui = "Scene views: camera list (M6 C6.2)",
+    gui = "Main toolbar: camera list (M4 C4.4a)",
 )]
 pub(crate) fn anim_camera_current_set(cx: &mut Cx, p: CameraParam) -> Result<CameraResult, CommandError> {
     let doc = cx.document()?.clone();

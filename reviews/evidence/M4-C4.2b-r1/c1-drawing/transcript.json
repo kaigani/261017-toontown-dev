@@ -1,0 +1,278 @@
+[
+  {
+    "check": "project.create",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the default palette's Colour 2 is found",
+    "ok": true,
+    "detail": null
+  },
+  {
+    "check": "the view's mapping",
+    "ok": true,
+    "detail": [
+      1.0,
+      0.0,
+      0.0,
+      -1.0,
+      960.0,
+      540.0
+    ]
+  },
+  {
+    "check": "T1: the canvas holds the current drawing at the kernel's revision",
+    "ok": true,
+    "detail": {
+      "canvas": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800KQJT6AA748GCFPB4",
+            "rev": 8,
+            "bucket": 0
+          }
+        ],
+        "failures": [],
+        "gesture": null,
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 23266612,
+        "lastError": null
+      },
+      "rev": 8
+    }
+  },
+  {
+    "check": "a back end draws without errors",
+    "ok": true,
+    "detail": {
+      "backend": "webgl2",
+      "generation": 0,
+      "drawings": [
+        {
+          "id": "dr_01K7JJN800KQJT6AA748GCFPB4",
+          "rev": 8,
+          "bucket": 0
+        }
+      ],
+      "failures": [],
+      "gesture": null,
+      "drawn": 1,
+      "residentDrawings": 1,
+      "residentBytes": 23266612,
+      "lastError": null
+    }
+  },
+  {
+    "check": "D-4 brush: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Brush Tool"
+    ]
+  },
+  {
+    "check": "D-4 pencil: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Pencil Tool"
+    ]
+  },
+  {
+    "check": "D-4 rectangle: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Pencil Tool"
+    ]
+  },
+  {
+    "check": "D-4 ellipse: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Pencil Tool"
+    ]
+  },
+  {
+    "check": "D-4 line: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Pencil Tool"
+    ]
+  },
+  {
+    "check": "D-4 polyline: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Pencil Tool"
+    ]
+  },
+  {
+    "check": "D-4 select: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "D-4 eraser: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Eraser Tool"
+    ]
+  },
+  {
+    "check": "D-4 cutter: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Cutter Tool"
+    ]
+  },
+  {
+    "check": "D-4 scissor: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Cutter Tool"
+    ]
+  },
+  {
+    "check": "D-4 paint: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Paint"
+    ]
+  },
+  {
+    "check": "D-4 unpaint: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Unpaint"
+    ]
+  },
+  {
+    "check": "D-4 paintUnpainted: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Paint Unpainted"
+    ]
+  },
+  {
+    "check": "D-4 dropper: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "D-4 closeGap: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": [
+      "Close Gap"
+    ]
+  },
+  {
+    "check": "D-4 zoom: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "D-4 grabber: the window path equals the headless path (commands, content, one step, label)",
+    "ok": true,
+    "detail": []
+  },
+  {
+    "check": "D-6: inspect.screenshot window is the GUI capture",
+    "ok": true,
+    "detail": {
+      "source": "gui",
+      "width": 1280,
+      "height": 800,
+      "error": null
+    }
+  },
+  {
+    "check": "D-6: inspect.screenshot drawingView is the GUI capture",
+    "ok": true,
+    "detail": {
+      "source": "gui",
+      "width": 901,
+      "height": 645,
+      "error": null
+    }
+  },
+  {
+    "check": "the window capture is larger than the view's (chrome included)",
+    "ok": true,
+    "detail": {
+      "window": [
+        1280,
+        800
+      ],
+      "view": [
+        901,
+        645
+      ]
+    }
+  },
+  {
+    "check": "the view capture is the window capture's pixels at the canvas's place",
+    "ok": true,
+    "detail": [
+      49,
+      126
+    ]
+  },
+  {
+    "check": "D-6: the open dialog is in the window capture",
+    "ok": true,
+    "detail": {
+      "changedSamples": 58982
+    }
+  },
+  {
+    "check": "Escape pressed through the OS",
+    "ok": true,
+    "detail": {
+      "ok": true,
+      "stderr": ""
+    }
+  },
+  {
+    "check": "an OS mouse drag in the canvas commits one Brush Tool step, drawn at the new revision",
+    "ok": true,
+    "detail": {
+      "labels": [
+        "Brush Tool"
+      ],
+      "canvas": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800KQJT6AA748GCFPB4",
+            "rev": 61,
+            "bucket": 0
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 34890640,
+        "lastError": null
+      },
+      "rev": 61
+    }
+  },
+  {
+    "check": "P2: a user press during an agent gesture answers ui.busy, reason userInput (SI-135)",
+    "ok": true,
+    "detail": {
+      "code": "ui.busy",
+      "message": "the user pressed in the view while the agent's gesture was being played; nothing was committed",
+      "details": {
+        "reason": "userInput",
+        "viewId": "drawingView"
+      }
+    }
+  }
+]

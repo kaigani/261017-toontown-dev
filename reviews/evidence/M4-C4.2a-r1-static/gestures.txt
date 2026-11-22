@@ -1,0 +1,2 @@
+C42A-R1-24: polyline never constrains handle angles
+C42A-R1-25: Paint drag never emits gradient/texture mapping

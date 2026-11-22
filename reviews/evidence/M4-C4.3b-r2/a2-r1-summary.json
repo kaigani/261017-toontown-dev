@@ -1,0 +1,32 @@
+{
+  "case": "A2 unchanged round-one case5",
+  "verdict": "PASS",
+  "checks": 104,
+  "rapidPairs": "20/20",
+  "rawHashes": {
+    "cameraView-commit-after.png": "5c6fda968c6d759bfdecb915280e1e47b9fae91290f7f154edfb81999b562026",
+    "cameraView-commit-before.png": "d9af9f77f1f9010eef03bbd1eb11888395a7ab0425fa0a0d3801f8aca44d8df1",
+    "cameraView-commit-held.png": "5c6fda968c6d759bfdecb915280e1e47b9fae91290f7f154edfb81999b562026",
+    "cameraView-escape-after.png": "d9af9f77f1f9010eef03bbd1eb11888395a7ab0425fa0a0d3801f8aca44d8df1",
+    "cameraView-escape-before.png": "d9af9f77f1f9010eef03bbd1eb11888395a7ab0425fa0a0d3801f8aca44d8df1",
+    "cameraView-escape-held.png": "5c6fda968c6d759bfdecb915280e1e47b9fae91290f7f154edfb81999b562026",
+    "canvas-summary.json": "b43a8594d5887415dc9734d423aaba14b3441c99b1ddff7a434174a736ecbc12",
+    "discovery.json": "1b3e437d9e963e9c6eb97f9d94bb1bb64a5516ff909c560ffa20012430784c7c",
+    "discovery.log": "dc0db535670fbed4bd66fdb5c9f109de3e6c1bbf20355784dc35a7339ea9256f",
+    "drawingView-commit-after.png": "752240a3a248221a4d369a6aa47c33c398e8f6b566a3bed8eba2f55bed1e36ae",
+    "drawingView-commit-before.png": "25e4b199555c7f250c11dcd9caf1e10c10abe25fdbf0f1a7b6943c5cdcec408b",
+    "drawingView-commit-held.png": "2e8c48a29f38c3a0c44d9adeeedd5df4cbff1374c15cd51e361e2ecac4b8782e",
+    "drawingView-escape-after.png": "25e4b199555c7f250c11dcd9caf1e10c10abe25fdbf0f1a7b6943c5cdcec408b",
+    "drawingView-escape-before.png": "25e4b199555c7f250c11dcd9caf1e10c10abe25fdbf0f1a7b6943c5cdcec408b",
+    "drawingView-escape-held.png": "2e8c48a29f38c3a0c44d9adeeedd5df4cbff1374c15cd51e361e2ecac4b8782e",
+    "manifest.json": "1e6231f40a2cadb1154bbf9951c57b01d9d793f4e713a4102f4427226035b3ab",
+    "rapid-0-held.png": "702b53d8c301aa69b440d452c9e1e92c9e7cb7ea61c7e42959cce1523ac2301c",
+    "rapid-19-held.png": "702b53d8c301aa69b440d452c9e1e92c9e7cb7ea61c7e42959cce1523ac2301c",
+    "rapid.json": "20d58ffabe13ccc409926551ed287e497affc2ce7fd7eaa99983892edfa7ccd9",
+    "refused-after.png": "bde4638bd6c947c6704d17e24536d1cc4b585ac780b80e9edfd6ac6799c88feb",
+    "refused.json": "c31eb64c1fc4c647db4e15c8c73d71452f20c701004729a91f574a7a3e71647e",
+    "transcript.json": "b071a7a582b977f4573cdb3fd116688ce1ad65df3e231bf374725d0fa530cd2f",
+    "tree-final.json": "7ea721d126972b2e31ce1dc2ae81cdeb5c015d6eb28390e2a5e6a40c94879a85"
+  },
+  "regenerate": "python tests/adversarial/c43b-r1-live.py target/release/toontown.exe case5"
+}

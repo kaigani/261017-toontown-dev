@@ -203,7 +203,7 @@ struct Rollback {
     app: AppContext,
     ui: UiState,
     checkpoints: Option<Vec<Checkpoint>>,
-    clipboard: Option<Value>,
+    clipboard: Option<std::sync::Arc<Value>>,
     edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     /// The agent hub's sessions, grants and policy (C23-R3-01). Its confirmation requests and activity log are
     /// records a refused call makes on purpose (11 §6.3, §11) and are kept.
@@ -234,6 +234,7 @@ impl Rollback {
                 typed_tools_version: s.agents.typed_tools_version,
                 ttl: s.agents.ttl,
                 server_enabled: s.agents.server_enabled,
+                serving: s.agents.serving.clone(),
             },
             timeline: s.timeline.clone(),
             events: s.events.len(),
@@ -259,12 +260,18 @@ impl Rollback {
 
 /// What observers see of the session, to emit `app.state.changed`, `edit.selection.changed`, `workspace.changed`,
 /// `edit.history.changed` and `project.dirty.changed` only when something changed.
-struct Observed {
+pub(crate) struct Observed {
     state: Value,
     history: Option<(usize, usize)>,
     dirty: Option<bool>,
     /// The persisted form of the workspaces (written to the settings when it changes; 01 §11).
     workspaces: Value,
+    /// The persisted form of the drawing settings (written when it changes; M4 C4.2).
+    drawing: Value,
+    /// The current arrangement (docks, floats and their geometry, toolbars, and whether floats are shown at all):
+    /// `workspace.changed` announces any change of it, so every window and the host follow a panel moved, a float
+    /// placed or all floats hidden by any caller (ruling O-2; C41-R2-10).
+    arrangement: Value,
     /// The reported selection (shared list: compared by pointer, then by content only when it was replaced).
     selection: crate::app::Ids,
     /// The Timeline/Exposure Sheet position and cell/row selection (`cell.selection.changed`, 04 §17.4).
@@ -273,13 +280,17 @@ struct Observed {
 
 /// The observed application state. The selection lists are kept as shared lists rather than serialised, so a large
 /// cell selection costs nothing per call; the full state is built only when something changed.
-fn observe(s: &Session) -> Observed {
+pub(crate) fn observe(s: &Session) -> Observed {
     Observed {
         state: crate::commands::app::app_state_without_selection_ids(s),
         selection: s.app.selection.ids.clone(),
         history: s.project.as_ref().map(|p| (p.history.position(), p.history.len())),
         dirty: s.project.as_ref().map(OpenProject::dirty),
         workspaces: s.ui.persisted(),
+        drawing: s.ui.drawing().to_stored(),
+        // With the global float visibility (`window.floatingPanels.set`): which floats the user sees is part of the
+        // arrangement the windows and the host follow (C41-R2-10).
+        arrangement: json!([serde_json::to_value(s.ui.layout()).unwrap_or(Value::Null), s.ui.floating_visible()]),
         cells: (
             s.app.selections.get("xsheet").cloned(),
             s.app.selections.get("timeline").cloned(),
@@ -331,6 +342,14 @@ pub(crate) struct Core {
     /// When the running caller's request was enqueued: its caller's watchdog deadline is this plus `budget`, so waits on
     /// the document thread are bounded from here, not from when the request began.
     call_start: Option<std::time::Instant>,
+    /// The undo label the next staged invocation takes instead of its own: a gesture's command carries the label of
+    /// the tool that is acting (02 §5.2, §7) where that tool reuses another tool's command (the alternate Scissor's
+    /// polygon cut is the Scissor's, 02 §7.4.3). Set by the gesture driver around one invocation, taken by
+    /// [`Core::run_staged`].
+    label_override: Option<&'static str>,
+    /// The text object the next staged invocation types into (design note 5 §3): set by the Text tool's input path
+    /// around one keystroke's commands, copied onto the invocation's step transaction, taken by [`Core::run_staged`].
+    typing: Option<String>,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -386,6 +405,11 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
         }
     };
     validate_params(id, &entry.params_schema(), &params)?;
+    // The common addressing parameters of the point-taking `draw.*` commands (02 §13.1 item 5): view-space points
+    // become drawing-space points here, before the precheck and the handler.
+    let target = crate::addressing::target(&*cx, id, &params)?;
+    cx.set_addressed(target);
+    let params = crate::addressing::normalise(&*cx, id, params)?;
     if let Some(c) = entry.command {
         if c.decl.needs_project && !cx.has_project() {
             return Err(no_project());
@@ -402,6 +426,16 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
         check_expect_rev(cx, &pairs)?;
     }
     let Some(command) = entry.command else { return Err(CommandError::internal("implemented entry without handler")) };
+    // The declared precheck, immediately before the handler (where the handler gave the same refusal before, so the
+    // order of refusals is unchanged: `expectRev` is checked first): the state refusal availability reads too, so the
+    // two are one predicate (ruling O-23). A panicking precheck is contained.
+    if let Some(pre) = command.decl.precheck {
+        let any: &dyn std::any::Any = &*cx;
+        match std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| pre(any, &params))) {
+            Ok(r) => r?,
+            Err(_) => return Err(CommandError::internal(format!("the precheck of `{id}` failed unexpectedly"))),
+        }
+    }
     let result = (command.handler)(cx, params)?;
     // 02 §3.12 item 1: the layers the call changed are settled (re-noded, zones and fills updated) before the next
     // step of a batch reads them; handlers that report stroke or zone IDs settle earlier themselves.
@@ -627,6 +661,13 @@ fn commit(
             p.log_commit(t.rev, back_of(&t), t.before.clone(), &t.after, earlier_revs(&t));
             let mut replayed_anim = None;
             let step_id = match t.kind {
+                // A keystroke of the Text tool's input path extends the open typing run (design note 5 §3).
+                TxnKind::Step if t.typing.as_deref().is_some_and(|k| p.history.extends_run(k, &origin.label())) => {
+                    p.history.extend_top(t.edit, t.touched, t.structural, crate::time::now_iso());
+                    let top = p.history.top().map(|s| (s.id.clone(), s.label.clone())).unwrap_or_default();
+                    undo_ref = Some(UndoRef { step_id: top.0.clone(), label: top.1 });
+                    top.0
+                }
                 TxnKind::Step => {
                     let id = p.history.next_step_id();
                     p.history.push(Step {
@@ -640,6 +681,9 @@ fn commit(
                         anim: anim.cloned(),
                     });
                     undo_ref = Some(UndoRef { step_id: id.clone(), label: t.label.clone() });
+                    if let Some(k) = &t.typing {
+                        p.history.open_run(k, &origin.label());
+                    }
                     id
                 }
                 TxnKind::Undo(i) => {
@@ -849,9 +893,13 @@ fn apply_effects(
                         s.env.settings.prefs.insert(k, v);
                     }
                 }
-                let _ = s.env.write("preferences");
+                s.env.save("preferences");
             }
         }
+    }
+    // A settings write that failed is told once per file per session (ruling O-12).
+    for n in s.env.take_notices() {
+        s.emit("ui.message.shown", n);
     }
     failure.map_or(Ok(()), Err)
 }
@@ -967,6 +1015,16 @@ pub(crate) fn unsaved_changes(p: &OpenProject) -> CommandError {
 }
 
 impl Core {
+    /// Sets (or clears) the label the next staged invocation takes ([`Core::label_override`]'s field).
+    pub(crate) fn set_label_override(&mut self, label: Option<&'static str>) {
+        self.label_override = label;
+    }
+
+    /// Sets (or clears) the typing key of the next staged invocations ([`Core::typing`]'s field).
+    pub(crate) fn set_typing(&mut self, text_id: Option<String>) {
+        self.typing = text_id;
+    }
+
     pub(crate) fn new(registry: &'static Registry, session: Session, budget: Duration) -> Self {
         Self {
             session: Some(session),
@@ -976,6 +1034,8 @@ impl Core {
             budget,
             served_from_cache: false,
             call_start: None,
+            label_override: None,
+            typing: None,
         }
     }
 
@@ -1038,6 +1098,11 @@ impl Core {
     pub(crate) fn audit(&mut self, entry: crate::agents::ActivityEntry) -> crate::agents::ActivityEntry {
         let Some(s) = self.session.as_mut() else { return entry };
         let e = s.agents.record(entry);
+        // The Activity panel appends the entry from this host-only notice (no polling; SI-175); MCP clients never
+        // receive `shell.*` notices.
+        if let Ok(v) = serde_json::to_value(&e) {
+            s.emit("shell.agentActivity", json!({ "entry": v }));
+        }
         if s.agents.persist
             && let Some(dir) =
                 s.project.as_ref().and_then(|p| p.path.as_ref()).and_then(|p| crate::commands::agent::activity_file(p))
@@ -1052,8 +1117,85 @@ impl Core {
         self.session.take().unwrap_or_default()
     }
 
+    /// Lends the session to a read-only dry-run context for `f` and takes it back (availability, ruling O-23): no copy
+    /// is made, nothing is staged or emitted. `None` when there is no session, or when `f` unwinds (the session is
+    /// back either way: it is never moved into the closure).
+    pub(crate) fn with_lent_session<T>(&mut self, f: impl FnOnce(&crate::cx::Cx) -> T) -> Option<T> {
+        let s = self.session.take()?;
+        let cx = crate::cx::Cx::new(s, Origin::User, "availability", true);
+        let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| crate::memo::enabled(|| f(&cx))));
+        self.session = Some(cx.into_session());
+        out.ok()
+    }
+
     pub(crate) fn session(&self) -> Option<&Session> {
         self.session.as_ref()
+    }
+
+    /// A view's composition for the canvas (M4 C4.2b, design note 1 §9; the Camera view, M4 C4.3a, camera-view note
+    /// §3): by the view window's type. Top and Side views are M6 C6.1's.
+    pub(crate) fn canvas_scene(&mut self, view_id: &str) -> Result<crate::canvas::Scene, CommandError> {
+        let session = self.session().ok_or_else(crate::cx::no_project)?;
+        let ty = session.ui.shell().view(view_id).map(|w| (w.ty, w.clone()));
+        match ty {
+            Ok((crate::shell::ViewType::Camera, _)) => {
+                let view = view_id.to_owned();
+                return self
+                    .with_lent_session(move |cx| {
+                        let mut scene = crate::canvas::camera_scene(cx, &view)?;
+                        // Ruling D-79 (finding C44B-R1-03): the drawing tools' overlays and hit targets follow the
+                        // visibility the ink follows; an element the view does not draw shows none.
+                        if crate::canvas::shows_current(&scene) {
+                            scene.contours = crate::contour_gesture::scene_contours(cx);
+                            scene.tool_box = crate::envelope_gesture::scene_tool_box(cx);
+                            (scene.text_edit, scene.text_boxes) = crate::text_edit::scene_text(cx);
+                        }
+                        Ok(scene)
+                    })
+                    .unwrap_or_else(|| Err(crate::cx::no_project()));
+            }
+            Ok((crate::shell::ViewType::Top | crate::shell::ViewType::Side, w)) => {
+                return Err(crate::camera_view::staging_owner(&w, "canvases"));
+            }
+            _ => {}
+        }
+        let mut scene = crate::canvas::scene(self.session().ok_or_else(crate::cx::no_project)?, view_id)?;
+        // The selection walk needs a context: the session is lent to a read-only one (nothing staged or emitted).
+        scene.selection = self.with_lent_session(crate::canvas::selection).transpose()?.flatten();
+        scene.contours = self.with_lent_session(crate::contour_gesture::scene_contours).flatten();
+        scene.tool_box = self.with_lent_session(crate::envelope_gesture::scene_tool_box).flatten();
+        if let Some((edit, boxes)) = self.with_lent_session(crate::text_edit::scene_text) {
+            (scene.text_edit, scene.text_boxes) = (edit, boxes);
+        }
+        Ok(scene)
+    }
+
+    /// The snapshot an interactive canvas payload is built from (M4 C4.2b; design note 1 §6): the document by
+    /// reference count, the drawing (`drawing` or the current one), the planar cache's handle and the blob store.
+    pub(crate) fn canvas_source(&self, drawing: Option<&str>) -> Result<crate::canvas::CanvasSource, CommandError> {
+        let s = self.session().ok_or_else(crate::cx::no_project)?;
+        let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
+        let id = match drawing {
+            Some(d) => tt_model::Id::parse(d)?,
+            None => s.app.current_drawing(&p.doc).ok_or_else(|| {
+                CommandError::with_details("drawing.noTarget", "there is no current drawing", serde_json::json!({}))
+            })?,
+        };
+        // The drawing's selected objects (local ids), for the selection parts (preview note §3).
+        let prefix = format!("{}/", id.as_str());
+        let selection = s
+            .app
+            .selection_of("drawing")
+            .into_iter()
+            .filter_map(|k| k.strip_prefix(&prefix).map(str::to_owned))
+            .collect();
+        Ok(crate::canvas::CanvasSource {
+            doc: p.doc.clone(),
+            drawing: id,
+            selection,
+            cache: s.planar.clone(),
+            blobs: Some(p.store.blobs.clone()),
+        })
     }
 
     pub(crate) fn session_mut(&mut self) -> Option<&mut Session> {
@@ -1069,7 +1211,7 @@ impl Core {
     }
 
     /// Repairs the context after a change and emits the state events.
-    fn settle(s: &mut Session, before: &Observed) {
+    pub(crate) fn settle(s: &mut Session, before: &Observed) {
         if let Some(p) = &s.project {
             let doc = p.doc.clone();
             let cache = s.planar.clone();
@@ -1100,12 +1242,18 @@ impl Core {
             {
                 s.emit("edit.selection.changed", json!({ "context": sel.get("context"), "ids": sel.get("ids") }));
             }
-            if changed.iter().any(|c| c == "workspace")
+            if (changed.iter().any(|c| c == "workspace") || after.arrangement != before.arrangement)
                 && let Some(w) = after.state.get("workspace")
             {
                 s.emit("workspace.changed", w.clone());
             }
             s.emit("app.state.changed", json!({ "changed": changed, "state": full }));
+        } else if after.arrangement != before.arrangement
+            && let Some(w) = after.state.get("workspace")
+        {
+            // The arrangement changed without any app-state field (a float moved, a panel re-docked in a modified
+            // workspace): announced all the same.
+            s.emit("workspace.changed", w.clone());
         }
         // One `cell.selection.changed` per invocation that moved the current position or changed the cell or row
         // selection, whichever command caused it (an explicit selection, a creation, a hidden current column, a
@@ -1133,8 +1281,26 @@ impl Core {
         {
             s.emit("project.dirty.changed", json!({ "projectDirty": d, "globalLibraryDirty": false }));
         }
+        // D-58: an in-app confirmation is bound to the document revision; a change ends it (the held call answers
+        // `confirmation.expired`; the sheet says why).
+        let rev = s.project.as_ref().map(|p| p.doc.document_rev());
+        for id in s.agents.expire_stale(rev) {
+            s.emit(
+                "shell.agentConfirmation",
+                json!({ "confirmationId": id, "outcome": "expired", "reason": "the document changed" }),
+            );
+        }
+        if after.drawing != before.drawing {
+            s.env.save_drawing(&after.drawing);
+            for n in s.env.take_notices() {
+                s.emit("ui.message.shown", n);
+            }
+        }
         if after.workspaces != before.workspaces {
-            let _ = tt_persist::settings::write(&s.env.dirs.settings, "workspaces", &after.workspaces);
+            s.env.save_workspaces(&after.workspaces);
+            for n in s.env.take_notices() {
+                s.emit("ui.message.shown", n);
+            }
         }
     }
 
@@ -1154,6 +1320,10 @@ impl Core {
     pub(crate) fn invoke(&mut self, inv: &Invocation) -> Envelope {
         let mut env = self.invoke_inner(inv);
         crate::label_cancellation(&mut env);
+        // The Text tool's session ends when its condition holds (design note 5 §2), after every accepted call.
+        if env.is_ok() && !self.simulating && !self.is_query(&inv.command) {
+            crate::text_edit::settle(self, &inv.origin);
+        }
         env
     }
 
@@ -1263,6 +1433,11 @@ impl Core {
         let (params, opts) = (inv.params.clone(), inv.options.clone());
         self.run_staged(&inv.origin, &inv.command, entry.id(), &label, dry, |cx| {
             cx.set_confirmation(token, confirm, fingerprint);
+            // Ruling D-83 item 3: the person's contextual edit of the current target, whatever the input (a key, a Tool
+            // options or Properties control, a menu or context-menu item), follows the gesture path's rule.
+            if opts.person {
+                crate::person::person_rule(cx, entry.id(), &params)?;
+            }
             run_step(cx, &entry, params, &opts)
         })
     }
@@ -1281,15 +1456,25 @@ impl Core {
         dry: bool,
         step: impl FnOnce(&mut Cx) -> Result<Value, CommandError>,
     ) -> Envelope {
+        let forced = self.label_override.take();
+        let typing = self.typing.clone();
         let session = self.take_session();
         let before = observe(&session);
         let rollback = Rollback::take(&session);
         let mut cx = Cx::new(session, origin.clone(), id, dry);
         let outcome = step(&mut cx).and_then(|result| {
-            let label = cx.label().map(str::to_owned).unwrap_or_else(|| default_label.to_owned());
+            let label = forced
+                .map(str::to_owned)
+                .or_else(|| cx.label().map(str::to_owned))
+                .unwrap_or_else(|| default_label.to_owned());
             let mut txns = cx.take_txns();
             if let Some(t) = cx.finish_staged(label)? {
                 txns.push(t);
+            }
+            for t in &mut txns {
+                if t.kind == TxnKind::Step {
+                    t.typing.clone_from(&typing);
+                }
             }
             Ok((result, txns))
         });

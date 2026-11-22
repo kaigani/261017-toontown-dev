@@ -1,0 +1,11 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/availability-budget",
+ "verdict": "see checks",
+ "regenerate": "TT_AVAILABILITY_RECEIPT=<out>/debug.json cargo test -p tt-executor --test c41 o23_budget_receipt -- --ignored; the same with --release and <out>/release.json",
+ "manifest": null,
+ "kept": [
+  "debug.json",
+  "release.json"
+ ],
+ "raw": []
+}

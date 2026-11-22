@@ -1,0 +1,30 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r1\crates\executor)
+At line:24 char:1
++ cargo test -p tt-executor --test c41_r1_review part_d_agent_policy -- ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 32.44s
+     Running tests\c41_r1_review.rs (target\debug\deps\c41_r1_review-f29fc8ad7bdf407a.exe)
+
+running 1 test
+test part_d_agent_policy::generic_preferences_enforce_agent_policy_limits ... FAILED
+
+failures:
+
+---- part_d_agent_policy::generic_preferences_enforce_agent_policy_limits stdout ----
+
+thread 'part_d_agent_policy::generic_preferences_enforce_agent_policy_limits' (30356) panicked at crates\executor\tests\c41_r1_review.rs:334:13:
+assertion `left != right` failed: invalid policy accepted through generic preferences: {"policy":"unknown"}
+  left: Ok
+ right: Ok
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+
+failures:
+    part_d_agent_policy::generic_preferences_enforce_agent_policy_limits
+
+test result: FAILED. 0 passed; 1 failed; 0 ignored; 0 measured; 9 filtered out; finished in 0.02s
+
+error: test failed, to rerun pass `-p tt-executor --test c41_r1_review`

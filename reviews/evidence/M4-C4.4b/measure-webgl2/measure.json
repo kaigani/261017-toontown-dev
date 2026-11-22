@@ -1,0 +1,525 @@
+{
+  "backend": "webgl2",
+  "drags": 30,
+  "control": {
+    "frameMs": {
+      "n": 300,
+      "p50": 17.6,
+      "p95": 18.1,
+      "max": 18.5
+    },
+    "canvases": 1,
+    "startScreen": true
+  },
+  "displayRefreshHz": [
+    60
+  ],
+  "rows": [
+    {
+      "name": "Contour Editor anchor drag",
+      "drags": 30,
+      "errors": [],
+      "commitP95": 34.7,
+      "commits": 30,
+      "commitsMs": [
+        35,
+        26.5,
+        26.7,
+        18.1,
+        19,
+        23.9,
+        31.6,
+        32.9,
+        26,
+        26.2,
+        29.2,
+        23.1,
+        27,
+        29.8,
+        26.8,
+        31.3,
+        26.1,
+        33.4,
+        22.5,
+        19.8,
+        27.6,
+        19.6,
+        34.7,
+        27.8,
+        25.9,
+        23.5,
+        31.8,
+        28.9,
+        19.4,
+        33.8
+      ],
+      "inkP95": 0.6,
+      "inkSamples": 652,
+      "gestureWorkP95": 0.2,
+      "workFrames": 1323
+    },
+    {
+      "name": "Perspective corner drag",
+      "drags": 30,
+      "errors": [],
+      "commitP95": 32,
+      "commits": 30,
+      "commitsMs": [
+        20.1,
+        24.7,
+        20,
+        23.9,
+        20.3,
+        25.9,
+        32.5,
+        19.3,
+        32,
+        19.9,
+        27.3,
+        25.9,
+        29.8,
+        22.9,
+        20.6,
+        26.8,
+        18.6,
+        24,
+        27.5,
+        29,
+        23.7,
+        27.7,
+        29.9,
+        18.8,
+        23.1,
+        26.6,
+        30.3,
+        30.9,
+        28.9,
+        26
+      ],
+      "inkP95": 0.4,
+      "inkSamples": 712,
+      "gestureWorkP95": 0.2,
+      "workFrames": 1319
+    },
+    {
+      "name": "Reposition All offset",
+      "drags": 30,
+      "errors": [],
+      "commitP95": 33.6,
+      "commits": 30,
+      "commitsMs": [
+        22.2,
+        19.3,
+        26.2,
+        31.6,
+        21.8,
+        23.8,
+        28.4,
+        24.5,
+        33.8,
+        26.5,
+        32.7,
+        29.1,
+        24.1,
+        28,
+        23.3,
+        26.9,
+        26.7,
+        27.9,
+        21.2,
+        21,
+        24.8,
+        32.3,
+        20.1,
+        19,
+        28.1,
+        33.6,
+        32.3,
+        22.4,
+        25.9,
+        22.8
+      ],
+      "inkP95": 0.3,
+      "inkSamples": 710,
+      "gestureWorkP95": 0.2,
+      "workFrames": 1326
+    }
+  ],
+  "keyToGlyph": {
+    "n": 30,
+    "p50": 27.9,
+    "p95": 35.1,
+    "max": 35.1
+  },
+  "keyParts": {
+    "stages": {
+      "sent": {
+        "n": 30,
+        "p50": 0,
+        "p95": 0.1,
+        "max": 0.1
+      },
+      "event": {
+        "n": 30,
+        "p50": 6.2,
+        "p95": 7.5,
+        "max": 7.9
+      },
+      "answer": {
+        "n": 30,
+        "p50": 11.9,
+        "p95": 18,
+        "max": 18.8
+      },
+      "scene": {
+        "n": 30,
+        "p50": 12,
+        "p95": 18.1,
+        "max": 19
+      },
+      "loaded": {
+        "n": 30,
+        "p50": 27.6,
+        "p95": 34.8,
+        "max": 34.8
+      }
+    },
+    "sceneMs": {
+      "n": 300,
+      "p50": 2.4,
+      "p95": 9.2,
+      "max": 16.4
+    },
+    "loads": [
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 19876,
+        "ms": 15.9
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 20740,
+        "ms": 16.6
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 21628,
+        "ms": 12.6
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 23788,
+        "ms": 10.4
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 25084,
+        "ms": 16.2
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 25084,
+        "ms": 16.8
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 26452,
+        "ms": 16.9
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 27340,
+        "ms": 16.4
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 28900,
+        "ms": 16.8
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 28900,
+        "ms": 16.4
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 30040,
+        "ms": 15.8
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 31336,
+        "ms": 5.2
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 33376,
+        "ms": 13.4
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 34816,
+        "ms": 15.8
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 36088,
+        "ms": 16.5
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 36088,
+        "ms": 16.6
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 36976,
+        "ms": 10.3
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 37960,
+        "ms": 10.6
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 39232,
+        "ms": 7.8
+      },
+      {
+        "key": "dr_01K7JJN80047Q6GBHS1SNTYCHY",
+        "bytes": 40096,
+        "ms": 8.2
+      }
+    ]
+  },
+  "keyToGlyphBound": {
+    "frames": 2,
+    "controlMedianMs": 17.6,
+    "boundMs": 35.2,
+    "marginMs": 0.1
+  },
+  "large": [
+    {
+      "name": "Contour Editor anchor drag (50,000 points)",
+      "drags": 3,
+      "errors": [],
+      "commitP95": 35856.3,
+      "commits": 2,
+      "commitsMs": [
+        35856.3,
+        18706.1
+      ],
+      "inkP95": 1857.1,
+      "inkSamples": 25,
+      "gestureWorkP95": 0.2,
+      "workFrames": 67,
+      "notes": [
+        {
+          "commits": [
+            35856.3
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.point.move"
+          ],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 197062.4271539,
+            "release": 197063.2063051
+          }
+        },
+        {
+          "commits": [
+            561.8
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.pointSelection.set"
+          ],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 197121.6817346,
+            "release": 197122.4612595
+          }
+        },
+        {
+          "commits": [
+            18706.1
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.point.move"
+          ],
+          "toolBox": null,
+          "failures": [],
+          "times": {
+            "press": 197123.9588254,
+            "release": 197124.7370384
+          }
+        }
+      ]
+    },
+    {
+      "name": "Perspective corner drag (50,000 points)",
+      "drags": 3,
+      "errors": [],
+      "commitP95": 19964,
+      "commits": 3,
+      "commitsMs": [
+        19964,
+        19895.1,
+        19934.9
+      ],
+      "inkP95": 0.3,
+      "inkSamples": 72,
+      "gestureWorkP95": 0.2,
+      "workFrames": 133,
+      "notes": [
+        {
+          "commits": [
+            19964
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.envelope.apply"
+          ],
+          "toolBox": {
+            "tool": "perspective",
+            "locked": false,
+            "handles": 8
+          },
+          "failures": [],
+          "times": {
+            "press": 197167.2753171,
+            "release": 197168.0546277
+          }
+        },
+        {
+          "commits": [
+            19895.1
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.envelope.apply"
+          ],
+          "toolBox": {
+            "tool": "perspective",
+            "locked": false,
+            "handles": 8
+          },
+          "failures": [],
+          "times": {
+            "press": 197210.5422604,
+            "release": 197211.3210215
+          }
+        },
+        {
+          "commits": [
+            19934.9
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.envelope.apply"
+          ],
+          "toolBox": {
+            "tool": "perspective",
+            "locked": false,
+            "handles": 8
+          },
+          "failures": [],
+          "times": {
+            "press": 197253.7837522,
+            "release": 197254.5627365
+          }
+        }
+      ]
+    },
+    {
+      "name": "Reposition All offset (50,000 points)",
+      "drags": 3,
+      "errors": [],
+      "commitP95": 21181.7,
+      "commits": 3,
+      "commitsMs": [
+        21173.1,
+        21181.7,
+        21113.5
+      ],
+      "inkP95": 0.3,
+      "inkSamples": 71,
+      "gestureWorkP95": 0.2,
+      "workFrames": 132,
+      "notes": [
+        {
+          "commits": [
+            21173.1
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.repositionAll.apply"
+          ],
+          "toolBox": {
+            "tool": "repositionAll",
+            "locked": false,
+            "handles": 8
+          },
+          "failures": [],
+          "times": {
+            "press": 197298.2709685,
+            "release": 197299.0474227
+          }
+        },
+        {
+          "commits": [
+            21181.7
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.repositionAll.apply"
+          ],
+          "toolBox": {
+            "tool": "repositionAll",
+            "locked": false,
+            "handles": 8
+          },
+          "failures": [],
+          "times": {
+            "press": 197342.7713058,
+            "release": 197343.5488211
+          }
+        },
+        {
+          "commits": [
+            21113.5
+          ],
+          "status": "ok",
+          "code": null,
+          "commands": [
+            "draw.repositionAll.apply"
+          ],
+          "toolBox": {
+            "tool": "repositionAll",
+            "locked": false,
+            "handles": 8
+          },
+          "failures": [],
+          "times": {
+            "press": 197387.4384822,
+            "release": 197388.2176532
+          }
+        }
+      ]
+    }
+  ]
+}

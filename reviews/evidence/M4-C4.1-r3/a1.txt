@@ -1,0 +1,8 @@
+Candidate 64970ec4f77b9b45c51b9e8c1b8a8f01d1d21170
+Both ownership diffs specified in A1: empty.
+All commands --locked, sequential.
+cargo test -p tt-mcp --test c41_r1_review --test c41_r2_review: exit 0; 8 + 14 passed
+cargo test -p tt-executor --test c41_r1_review --test c41_r2_review: exit 0; 17 + 18 passed
+cargo test -p tt-desktop --test c41_r2_review: exit 0; 4 passed
+Python c41-r1s-messages, c41-r1s-parity, c41-r1s-prefs, c41-r2s-message-coverage, c41-r2s-keymap-schema: each exit 0.
+Initial bash resolved to a different shell (no /c, cargo permission denied); corrected to explicit installed Git Bash before any build began.

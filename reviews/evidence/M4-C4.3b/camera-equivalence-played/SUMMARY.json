@@ -1,0 +1,555 @@
+{
+ "receipt": "reviews/evidence/M4-C4.3b/camera-equivalence-played",
+ "verdict": "pass",
+ "regenerate": "TT_E2E_INPUT=played python scripts/c43-gesture-equivalence.py <toontown release binary> <toontown-headless release binary> <out>",
+ "rawAt": "e04565e9",
+ "manifest": {
+  "kind": "toontown.c43.gesture-equivalence",
+  "platform": "win32",
+  "seconds": 9.6,
+  "rows": 14,
+  "input": [
+   "agent"
+  ],
+  "replayNotExact": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the default palette's Colour 2 and Colour 3 are found"
+  },
+  {
+   "ok": true,
+   "check": "the application saves the fixture project"
+  },
+  {
+   "ok": true,
+   "check": "D-32: engine 2's Camera view has the window's size"
+  },
+  {
+   "ok": true,
+   "check": "three-way scene select: click (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way scene select: move (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way scene transform: move (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way scene transform: corner scale (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way scene transform: skew (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way scene transform: pivot (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way brush (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way rectangle (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way ellipse (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way line (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way eraser (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way cutter (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way paint (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  },
+  {
+   "ok": true,
+   "check": "three-way select (drawing) (agent): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step"
+  }
+ ],
+ "rows": [
+  {
+   "name": "scene select: click",
+   "family": "scene",
+   "tool": "select",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "commands": {
+    "window": [
+     {
+      "commandId": "edit.selection.set",
+      "params": {
+       "context": "staging",
+       "ids": [
+        "el_01K7JJN800GG6EH1P1B6MJWSK9"
+       ],
+       "mode": "replace"
+      }
+     }
+    ],
+    "engine2": [
+     {
+      "commandId": "edit.selection.set",
+      "params": {
+       "context": "staging",
+       "ids": [
+        "el_01K7JJN800GG6EH1P1B6MJWSK9"
+       ],
+       "mode": "replace"
+      }
+     }
+    ]
+   },
+   "labels": [
+    [],
+    [],
+    []
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "scene select: move",
+   "family": "scene",
+   "tool": "select",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Move Element"
+    ],
+    [
+     "Move Element"
+    ],
+    [
+     "Move Element"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "scene transform: move",
+   "family": "scene",
+   "tool": "transform",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Move Element"
+    ],
+    [
+     "Move Element"
+    ],
+    [
+     "Move Element"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "scene transform: corner scale",
+   "family": "scene",
+   "tool": "transform",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Scale Element"
+    ],
+    [
+     "Scale Element"
+    ],
+    [
+     "Scale Element"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "scene transform: skew",
+   "family": "scene",
+   "tool": "transform",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Skew Element"
+    ],
+    [
+     "Skew Element"
+    ],
+    [
+     "Skew Element"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "scene transform: pivot",
+   "family": "scene",
+   "tool": "transform",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Move Pivot Element"
+    ],
+    [
+     "Move Pivot Element"
+    ],
+    [
+     "Move Pivot Element"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "brush",
+   "family": "drawing",
+   "tool": "brush",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Brush Tool"
+    ],
+    [
+     "Brush Tool"
+    ],
+    [
+     "Brush Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "rectangle",
+   "family": "drawing",
+   "tool": "rectangle",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Rectangle Tool"
+    ],
+    [
+     "Rectangle Tool"
+    ],
+    [
+     "Rectangle Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "ellipse",
+   "family": "drawing",
+   "tool": "ellipse",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Ellipse Tool"
+    ],
+    [
+     "Ellipse Tool"
+    ],
+    [
+     "Ellipse Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "line",
+   "family": "drawing",
+   "tool": "line",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Line Tool"
+    ],
+    [
+     "Line Tool"
+    ],
+    [
+     "Line Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "eraser",
+   "family": "drawing",
+   "tool": "eraser",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Eraser Tool"
+    ],
+    [
+     "Eraser Tool"
+    ],
+    [
+     "Eraser Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "cutter",
+   "family": "drawing",
+   "tool": "cutter",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Cutter Tool"
+    ],
+    [
+     "Cutter Tool"
+    ],
+    [
+     "Cutter Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "paint",
+   "family": "drawing",
+   "tool": "paint",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [
+     "Paint"
+    ],
+    [
+     "Paint"
+    ],
+    [
+     "Paint"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  },
+  {
+   "name": "select (drawing)",
+   "family": "drawing",
+   "tool": "select",
+   "input": "agent",
+   "played": {
+    "status": "ok",
+    "error": null
+   },
+   "labels": [
+    [],
+    [],
+    []
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 175,
+   "sha256": "5b54d709edc35e7d22d5b2233bd447b92e40a9aa5d22e95e514cb4f3bfcd072b"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 40245,
+   "sha256": "03150a3f5375129f479071567944978d0e57bdc9974ef404722eaa4df370cf75"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 8919,
+   "sha256": "7c4add1d40c7fcf99e59cafc1339ebbcb3e786e62ad2299db328aea5b670d751"
+  }
+ ]
+}

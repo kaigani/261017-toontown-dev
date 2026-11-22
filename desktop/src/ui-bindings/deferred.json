@@ -1,0 +1,435 @@
+{
+  "$comment": "The commands whose GUI location belongs to a checkpoint that has not passed (rulings D-30, D-31): the owner checkpoint, the spec section that defines the location, and the location. The parity gate (crates/executor/tests/c43/parity.rs) requires every implemented command to be bound in parity.json, declared agent-only, or listed here, and exactly one of the three; an owner must not have passed.",
+  "deferred": {
+    "anim.camera.create": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Scene views, Element menu: Add Camera"
+    },
+    "anim.camera.set": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.1 (item 1: FOV wedge dragging, lines 1174-1177)",
+      "location": "the Top view's FOV wedge and the camera properties (C43B-R1S-01)"
+    },
+    "anim.function.curveType.set": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: curve type selector"
+    },
+    "anim.function.key.add": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: add key"
+    },
+    "anim.function.key.duplicate": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: drag a key with the duplicate modifier"
+    },
+    "anim.function.key.remove": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: delete key"
+    },
+    "anim.function.key.set": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: values panel, handles, lock in time"
+    },
+    "anim.function.list": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: channel picker"
+    },
+    "anim.function.preset.apply": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Function editor: Reshape"
+    },
+    "anim.key.add": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu, Timeline: Add Keyframe"
+    },
+    "anim.key.move": {
+      "owner": "M5 C5.1",
+      "section": "05 §19.3 (Command table)",
+      "location": "Timeline: drag keyframes; function editor: timing modifier"
+    },
+    "anim.key.remove": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu, Timeline: Remove Keyframe, Remove All Keyframes"
+    },
+    "anim.loop.set": {
+      "owner": "M5 C5.1",
+      "section": "05 §19.3 (Command table)",
+      "location": "Timeline: loop controls (M5); Properties panel"
+    },
+    "anim.path.lockDepth.set": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Motion point properties, Animation menu: Toggle Constant Z"
+    },
+    "anim.path.point.add": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Motion tool, motion point properties: add point"
+    },
+    "anim.path.point.remove": {
+      "owner": "M6 C6.2",
+      "section": "05 §9.4 (line 704), §9.6 (lines 720-725)",
+      "location": "the motion path's remove point and Delete (C43B-R1S-01)"
+    },
+    "anim.path.point.set": {
+      "owner": "M6 C6.2",
+      "section": "05 §9.4 (motion point properties, line 690)",
+      "location": "the motion point properties (C43B-R1S-01)"
+    },
+    "anim.path.sample": {
+      "owner": "M6 C6.1",
+      "section": "05 §19.3 (Command table)",
+      "location": "Scene views: frame markers, ghosts and pivot paths"
+    },
+    "anim.segment.set": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu, Timeline: Set Constant / Non-Constant Segment"
+    },
+    "anim.segment.uniform.apply": {
+      "owner": "M6 C6.2",
+      "section": "05 §19.3 (Command table)",
+      "location": "Animation menu: Uniform Left / Uniform Right"
+    },
+    "app.currentElement.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §2 (Timeline: the current element)",
+      "location": "Timeline and Exposure Sheet"
+    },
+    "cell.blank.add": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Insert Blank Cell"
+    },
+    "cell.blank.remove": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Delete Blank Cell"
+    },
+    "cell.clipboard.apply": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Edit > Paste / Paste Special with cells selected"
+    },
+    "cell.clipboard.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Edit > Cut / Copy with cells selected in the Exposure Sheet or Timeline"
+    },
+    "cell.columnate.apply": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Columnate dialog"
+    },
+    "cell.cycle.create": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Create Cycle"
+    },
+    "cell.drawing.duplicate": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Duplicate Drawing"
+    },
+    "cell.exposure.add": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Add Exposure"
+    },
+    "cell.exposure.remove": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Remove Exposure"
+    },
+    "cell.exposure.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Set Exposure to 1/2/3/N"
+    },
+    "cell.fill.apply": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Extend Exposure"
+    },
+    "cell.label.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet: type in a cell; Cells panel: drawing name field and slider"
+    },
+    "cell.note.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet cell context: Set Cell Note"
+    },
+    "cell.range.add": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Insert Cells"
+    },
+    "cell.range.delete": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Edit > Delete with cells selected in the Exposure Sheet or Timeline"
+    },
+    "cell.range.move": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline: drag selected cells"
+    },
+    "cell.select": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline: click and drag over cells"
+    },
+    "colour.fillMapping.get": {
+      "owner": "M7 C7.1",
+      "section": "03 §6.6, §8.7 (texture properties, the edit texture tool)",
+      "location": "the Edit Texture tool"
+    },
+    "colour.fillMapping.set": {
+      "owner": "M7 C7.1",
+      "section": "03 §6.6, §8.7 (texture properties, the edit texture tool)",
+      "location": "the Edit Texture tool"
+    },
+    "colour.missing.list": {
+      "owner": "M7 C7.1",
+      "section": "03 §16.3 (Command table)",
+      "location": "Colour palette view: missing colours"
+    },
+    "colour.recolour.apply": {
+      "owner": "M7 C7.1",
+      "section": "03 §16.3 (Command table)",
+      "location": "Colour view: swatch context menu > Replace uses of this colour with..."
+    },
+    "colour.recovery.run": {
+      "owner": "M7 C7.1",
+      "section": "03 §16.3 (Command table)",
+      "location": "Colour palette view: Recover Colours"
+    },
+    "colour.selection.apply": {
+      "owner": "M7 C7.1",
+      "section": "03 §2.4 (the colour view: applying a swatch)",
+      "location": "the Colour view"
+    },
+    "doc.asset.embed": {
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Embed"
+    },
+    "doc.asset.export": {
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Export"
+    },
+    "doc.asset.list": {
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media"
+    },
+    "doc.asset.relink": {
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Relink"
+    },
+    "doc.asset.remove": {
+      "owner": "M8 C8.3",
+      "section": "10 §10.2 (Command table)",
+      "location": "Project › Media › Remove"
+    },
+    "draw.vectorize.preview": {
+      "owner": "M10 C10.2",
+      "section": "09 §8.1 (import entry points: Import and Vectorize)",
+      "location": "the Import and Vectorize dialog"
+    },
+    "draw.vectorize.run": {
+      "owner": "M10 C10.2",
+      "section": "09 §8.1 (import entry points: Import and Vectorize)",
+      "location": "the Import and Vectorize dialog"
+    },
+    "element.annotation.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline layer context: Set as Annotation / Set as Drawing Element"
+    },
+    "element.childExposure.apply": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline cell context on a peg: Extend Children Exposure"
+    },
+    "element.clone": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Clone"
+    },
+    "element.collapsed.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: disclosure control left of a parent row; layer context Collapse/Expand"
+    },
+    "element.colour.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Marker / Background / Default Colour"
+    },
+    "element.create": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu: New Elements / Add <type>; Timeline layer list add control; Exposure Sheet quick-add"
+    },
+    "element.current.move": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Keyboard: Previous / Next Element (in the Exposure Sheet)"
+    },
+    "element.current.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline and Exposure Sheet: click a row name or column header"
+    },
+    "element.delete": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Delete"
+    },
+    "element.drawing.create": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet: type a new name in a cell; Drawing view: draw in a blank cell"
+    },
+    "element.drawing.delete": {
+      "owner": "M9 C9.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Library view of the scene: Delete Drawing (with confirmation when exposed)"
+    },
+    "element.drawing.duplicate": {
+      "owner": "M9 C9.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Library view of the scene: Duplicate Drawing"
+    },
+    "element.drawing.rename": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet cell context: Rename Drawing; library view of the scene"
+    },
+    "element.drawingContent.delete": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet and Timeline cell context: Clear Drawing"
+    },
+    "element.drawingLock.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet cell context: Lock / Unlock Drawing"
+    },
+    "element.duplicate": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Duplicate"
+    },
+    "element.hierarchy.select": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, camera view and Timeline layer context: Select Parent / Children / Child / Previous / Next Sibling"
+    },
+    "element.lock.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, camera view context: Lock / Unlock / Lock All Others / Lock All / Unlock All"
+    },
+    "element.mediaLength.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet media cell context: Reset Media"
+    },
+    "element.note.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, Exposure Sheet column header: Set Element Note"
+    },
+    "element.order.move": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu, Timeline layer context, camera view context, Exposure Sheet column header: Arrange"
+    },
+    "element.order.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: drag rows between rows; Exposure Sheet: drag column headers; element list panel drag"
+    },
+    "element.parent.remove": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline layer context: Detach from Parent"
+    },
+    "element.parent.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: drop rows onto a peg/effect row; layer context: Attach to Next Object"
+    },
+    "element.parentPeg.create": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Element menu and Timeline quick-add: Add Parent Peg"
+    },
+    "element.properties.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Properties view: Element panel, Type and Deformable"
+    },
+    "element.rename": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: double-click a layer name; Exposure Sheet: double-click a column header; Element menu: Rename"
+    },
+    "element.select": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: click row names (with extend/toggle modifiers); Exposure Sheet: click a column header"
+    },
+    "element.solo.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline toolbar: Solo Mode toggle"
+    },
+    "element.timing.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline: drag a bar, its ends or its loop handle; layer context: Change Start Frame / Duration / Loops"
+    },
+    "element.typeColour.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §5.1 (default colour per type category, a preference)",
+      "location": "Preferences: Timeline category colours"
+    },
+    "element.visibility.set": {
+      "owner": "M5 C5.1",
+      "section": "04 §17.4 (Command table)",
+      "location": "Timeline layer list visibility control and context; Exposure Sheet column header: Hide / Show All / Hide All Others"
+    },
+    "render.frame.run": {
+      "owner": "M10 C10.1",
+      "section": "09 §11.2 (Command table)",
+      "location": "File > Export render actions (09); Export Snapshot"
+    },
+    "render.range.run": {
+      "owner": "M10 C10.1",
+      "section": "09 §11.2 (Command table)",
+      "location": "File > Export > Image Sequence"
+    },
+    "xsheet.exposures.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §17.4 (Command table)",
+      "location": "Exposure Sheet: type labels into cells (M5 C5.2); agents write whole windows atomically"
+    }
+  }
+}

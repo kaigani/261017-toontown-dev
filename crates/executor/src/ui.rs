@@ -33,6 +33,8 @@ pub const PANELS: &[(&str, &str)] = &[
     ("motionRecording", "Motion recording"),
     ("lipSync", "Lip-sync"),
     ("history", "History"),
+    // 11 §6.4, §11 (SI-174): the agent activity log and the connected sessions.
+    ("activity", "Activity"),
     ("soundEditor", "Sound element editor"),
     ("capture", "Capture window"),
 ];
@@ -322,35 +324,17 @@ pub const TOOLBAR_GROUPS: &[&str] = &[
     "workspaceList",
 ];
 
-/// Default main toolbar set, in order (01 §5.7).
+/// Default main toolbar set, in order (01 §5.7), from `toolbar-default.json` (data the parity manifest reads too:
+/// parity note §3).
 fn default_toolbar() -> MainToolbar {
-    MainToolbar {
-        visible: true,
-        items: [
-            "drawAid.grid.set",
-            "gridType",
-            "gridOverlay",
-            "separator",
-            "drawAid.onionSkin.set",
-            "onionSkinPrevious",
-            "onionSkinNext",
-            "drawAid.autoLightTable.set",
-            "separator",
-            "firstFrame",
-            "playStop",
-            "lastFrame",
-            "playback.loop.set",
-            "space",
-            "lipsync.panel.open",
-            "flexibleSpace",
-            "cameraList",
-            "sceneList",
-            "workspaceList",
-        ]
-        .iter()
-        .map(|s| (*s).to_owned())
-        .collect(),
-    }
+    MainToolbar { visible: true, items: default_toolbar_items() }
+}
+
+/// The default main toolbar's items (`toolbar-default.json`); empty only if that file were malformed, which a test
+/// rules out.
+#[must_use]
+pub fn default_toolbar_items() -> Vec<String> {
+    serde_json::from_str(include_str!("toolbar-default.json")).unwrap_or_default()
 }
 
 fn arrangement(central: &str, corners: Corners, docks: Docks, palettes_visible: &[&str]) -> Arrangement {
@@ -448,6 +432,10 @@ pub struct UiState {
     floating_hidden: bool,
     focused: Option<String>,
     remembered: BTreeMap<String, Place>,
+    /// View windows, the main window, start screen, context help and sensor facts (M4 C4.1; [`crate::shell`]).
+    shell: crate::shell::ShellState,
+    /// The user's drawing settings: tools, options, global drawing toggles, aids (M4 C4.2; [`crate::drawing`]).
+    drawing: crate::drawing::DrawingSettings,
 }
 
 impl Default for UiState {
@@ -465,6 +453,8 @@ impl Default for UiState {
             floating_hidden: false,
             focused: Some("cameraView".to_owned()),
             remembered: BTreeMap::new(),
+            shell: crate::shell::ShellState::default(),
+            drawing: crate::drawing::DrawingSettings::default(),
         }
     }
 }
@@ -526,6 +516,66 @@ impl UiState {
     #[must_use]
     pub fn layout(&self) -> Layout {
         Layout::from(&self.live)
+    }
+
+    /// The shell state (views, main window, start screen, sensors; M4 C4.1).
+    #[must_use]
+    pub fn shell(&self) -> &crate::shell::ShellState {
+        &self.shell
+    }
+
+    /// The shell state, mutable.
+    pub fn shell_mut(&mut self) -> &mut crate::shell::ShellState {
+        &mut self.shell
+    }
+
+    /// The user's drawing settings (M4 C4.2).
+    #[must_use]
+    pub fn drawing(&self) -> &crate::drawing::DrawingSettings {
+        &self.drawing
+    }
+
+    /// The user's drawing settings, mutable.
+    pub fn drawing_mut(&mut self) -> &mut crate::drawing::DrawingSettings {
+        &mut self.drawing
+    }
+
+    /// Whether a panel is shown in the arrangement in use (central, docked as any tab, or a visible floating panel).
+    #[must_use]
+    pub fn panel_visible(&self, panel: &str) -> bool {
+        let a = self.active();
+        Self::find(a, panel).is_some()
+            || (!self.floating_hidden && a.floating.iter().any(|f| f.panel_id == panel && f.visible))
+    }
+
+    /// The active view window (01 §4, M4 C4.1): the view window last activated (`view.active.set`, `app.mode.set`)
+    /// while it is shown, else the central view. Focus alone (a float's window taking the OS focus, `window.panel.set`
+    /// with `focus`) moves the focused panel, not the active view.
+    #[must_use]
+    pub fn active_view(&self) -> &str {
+        match self.shell.active_view.as_deref() {
+            Some(v) if self.panel_visible(v) => v,
+            _ => self.central_panel(),
+        }
+    }
+
+    /// The type of the active view window.
+    #[must_use]
+    pub fn active_view_type(&self) -> crate::shell::ViewType {
+        let id = self.active_view();
+        self.shell
+            .views
+            .iter()
+            .find(|v| v.view_id == id)
+            .map(|v| v.ty)
+            .or_else(|| crate::shell::ViewType::of_panel(id))
+            .unwrap_or(crate::shell::ViewType::Camera)
+    }
+
+    /// The working mode: the active view window's type decides (01 §4).
+    #[must_use]
+    pub fn mode(&self) -> crate::app::Mode {
+        self.active_view_type().mode()
     }
 
     /// The central view (the active view) of the arrangement in use.
@@ -701,11 +751,12 @@ impl UiState {
         self.panels().into_iter().find(|p| p.panel_id == panel).ok_or_else(|| panel_not_found(&panel))
     }
 
-    /// `window.panel.move`: dock a panel into an area, next to or tabbed with another panel.
+    /// `window.panel.move`: dock a panel into an area, next to or tabbed with another panel. Tabbed with itself in its
+    /// own side area, it is the same-place call that only resizes the area (SI-118, ruling O-3a).
     ///
     /// # Errors
-    /// `window.panelNotFound`; `arg.invalid` for a non-view central panel, a panel moved relative to itself, or a
-    /// `relativeTo` panel that is not docked in `area`.
+    /// `window.panelNotFound`; `arg.invalid` for a non-view central panel, a panel moved relative to itself other than
+    /// the same-place call, or a `relativeTo` panel that is not docked in `area`.
     pub fn move_panel(
         &mut self,
         panel: &str,
@@ -715,6 +766,20 @@ impl UiState {
         size: Option<u32>,
     ) -> Result<Layout, CommandError> {
         Self::check_panel(panel)?;
+        // The same-place call (SI-118, interim ruling O-3a): a panel tabbed with itself in the side area it is docked in
+        // leaves the arrangement exactly as it is and applies `size` to that area (its first group's size); without
+        // `size` it changes nothing. Any other placement relative to itself stays an error.
+        if relative_to == Some(panel)
+            && position == "tab"
+            && Self::find(self.active(), panel).is_some_and(|(a, gi, _)| a == area && gi.is_some())
+        {
+            if let Some(s) = size
+                && let Some(first) = area_mut(&mut self.active_mut().docks, area).and_then(|g| g.first_mut())
+            {
+                first.size = Some(s);
+            }
+            return Ok(self.layout());
+        }
         if let Some(r) = relative_to {
             Self::check_panel(r)?;
             if r == panel {
@@ -992,6 +1057,37 @@ impl UiState {
         }
         self.workspaces.insert(at - 1, Workspace { name: n.clone(), built_in: false, bundled: None, layout });
         Ok((n, at))
+    }
+
+    /// `workspace.import` (M4 C4.1): stores an imported layout under `name`. `replace` overwrites the layout of an
+    /// existing workspace of that name (a built-in one stays restorable); `rename` picks the first free name
+    /// `<name> 2`, `<name> 3`, … Returns the name used.
+    ///
+    /// # Errors
+    /// `workspace.nameInvalid`, `workspace.exists` (neither `replace` nor `rename`), `arg.invalid` for an invalid
+    /// layout.
+    pub fn import(&mut self, name: &str, layout: Layout, replace: bool, rename: bool) -> Result<String, CommandError> {
+        let a = Arrangements::from(layout);
+        validate_layout(&a)?;
+        let n = name.trim();
+        if replace && let Some(w) = self.workspaces.iter_mut().find(|w| w.name == n) {
+            w.layout = a.clone();
+            if self.current == n {
+                self.live = a;
+            }
+            return Ok(n.to_owned());
+        }
+        let chosen = if rename && self.workspaces.iter().any(|w| w.name == n) {
+            (2..10_000)
+                .map(|i| format!("{n} {i}"))
+                .find(|c| !self.workspaces.iter().any(|w| &w.name == c))
+                .unwrap_or_else(|| format!("{n} copy"))
+        } else {
+            n.to_owned()
+        };
+        let checked = self.check_new_name(&chosen)?;
+        self.workspaces.push(Workspace { name: checked.clone(), built_in: false, bundled: None, layout: a });
+        Ok(checked)
     }
 
     /// `workspace.rename`.

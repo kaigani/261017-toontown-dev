@@ -222,23 +222,58 @@ fn answers_just_inside_the_bound_hold_the_thread_at_most_the_budget_plus_one_bou
         assert_eq!(e.code, "command.timeout", "{e:?}");
         assert_eq!(e.details["reason"], Value::Null, "a watchdog timeout, not a cancellation: {e:?}");
         assert!(work::asks() >= 3, "several questions answered inside the bound: {}", work::asks());
+        crate::common::timing::record("c34_round4.rs:225", took, budget + bound * 2);
         assert!(took <= budget + bound * 2, "the request ended by its watchdog within budget + 2 x bound: {took:?}");
         // Whole: every step that committed is one revision and one element; the rest changed nothing.
         let committed = rev(&h) - before;
         assert!(committed < 200, "the watchdog stopped the batch: {committed} steps committed");
         let validate = ok(&h, "doc.validate", json!({ "minSeverity": "error" }));
         assert_eq!(validate["issues"], json!([]), "{validate}");
+        crate::common::timing::record("c34_round4.rs:231", unrelated, bound);
         assert!(unrelated < bound, "an unrelated caller is served at once afterwards: {unrelated:?}");
         return;
     }
     panic!("no trial in five kept every answer inside the bound on this runner");
 }
 
+/// Milliseconds since the Unix epoch now (the clock the job records' `startedAt` uses).
+fn unix_ms_now() -> i64 {
+    let d = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).unwrap();
+    i64::try_from(d.as_millis()).unwrap()
+}
+
+/// Milliseconds since the Unix epoch of an executor timestamp `YYYY-MM-DDTHH:MM:SS.mmmZ` (proleptic Gregorian).
+fn unix_ms(iso: &str) -> i64 {
+    let n = |r: std::ops::Range<usize>| iso[r].parse::<i64>().unwrap_or_else(|_| panic!("timestamp `{iso}`"));
+    let (y, m, d) = (n(0..4), n(5..7), n(8..10));
+    let (hh, mm, ss) = (n(11..13), n(14..16), n(17..19));
+    let ms = if iso.as_bytes().get(19) == Some(&b'.') { n(20..23) } else { 0 };
+    // Days from civil (H. Hinnant).
+    let y2 = if m <= 2 { y - 1 } else { y };
+    let era = y2.div_euclid(400);
+    let yoe = y2 - era * 400;
+    let doy = (153 * (m + if m > 2 { -3 } else { 9 }) + 2) / 5 + d - 1;
+    let doe = yoe * 365 + yoe / 4 - yoe / 100 + doy;
+    let days = era * 146_097 + doe - 719_468;
+    ((days * 86_400 + hh * 3_600 + mm * 60 + ss) * 1_000) + ms
+}
+
+#[test]
+fn executor_timestamps_parse_to_epoch_milliseconds() {
+    assert_eq!(unix_ms("1970-01-01T00:00:00.000Z"), 0);
+    assert_eq!(unix_ms("2026-11-17T20:31:05.123Z"), 1_794_947_465_123);
+    assert_eq!(unix_ms("2000-02-29T12:00:00.000Z"), 951_825_600_000);
+}
+
 #[test]
 fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() {
     let _t = turn();
     let _reset = Reset;
-    let budget = Duration::from_millis(1000);
+    // D-45 (as D-64 for `c34_r1_contract`): a budget whose margin (a tenth) a loaded runner meets. With 1,000 ms the
+    // queued batch's reply had to arrive within 100 ms of its waited step's end; the 3-core macOS runner missed it
+    // once (run 44668936063: `command.timeout`, no step envelopes). The rule checked (the deadline counts from the
+    // enqueue) is the same at any budget.
+    let budget = Duration::from_millis(5000);
     let h = fixture_with(ExecutorConfig { budget });
     let base = std::env::temp_dir().join(format!("c34-round4-queued-wait-{}", std::process::id()));
     let waited = |dir: &std::path::Path| -> BatchRequest {
@@ -250,7 +285,7 @@ fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() 
     };
     let (first_dir, second_dir) = (base.join("first"), base.join("second"));
     work::set_spin_micros(20_000);
-    let (first, second, queued_for) = std::thread::scope(|s| {
+    let (first, second, queued_for, enqueued_ms) = std::thread::scope(|s| {
         // The first batch holds the document thread for most of its budget, waiting on its job.
         let first = s.spawn(|| h.batch(waited(&first_dir), Origin::User));
         let start = Instant::now();
@@ -259,10 +294,11 @@ fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() 
             std::thread::sleep(Duration::from_millis(2));
         }
         // The second is enqueued behind it, so it starts several hundred milliseconds into its own budget.
+        let enqueued_ms = unix_ms_now();
         let enqueued = Instant::now();
         let second = h.batch(waited(&second_dir), Origin::User);
         let took = enqueued.elapsed();
-        (first.join().unwrap(), second, took)
+        (first.join().unwrap(), second, took, enqueued_ms)
     });
     work::set_spin_micros(0);
     let mut jobs = Vec::new();
@@ -272,7 +308,26 @@ fn a_queued_batch_wait_is_bounded_from_its_callers_enqueue_not_from_its_start() 
         assert_eq!(e.code, "job.waitTimeout", "{e:?}");
         jobs.push(e.details["jobId"].as_str().unwrap().to_owned());
     }
-    assert!(queued_for < budget, "the queued batch answered within its caller's budget: {queued_for:?}");
+    // Ruling D-46 item 4 (D-45): which instant the deadline counts from, not how fast the runner is. Counted from the
+    // caller's enqueue (the rule), the queued batch answers about `budget` after it was enqueued; counted from its
+    // start, it would answer about `budget + queue_delay` after. The midpoint `budget + queue_delay / 2` separates the
+    // two whatever the runner's speed: a slow runner moves both instants together (a macOS runner overran the bare
+    // `budget` once, run 43772579796). The queue delay must be large enough to tell them apart.
+    // C43B-R3S-06 (ruling D-48): the queue delay is the executor's, not a caller thread's: the second batch's waited step
+    // submitted its job when the executor started that batch, and the job record's `startedAt` (stamped by the executor,
+    // milliseconds since the epoch on the same clock as `enqueued_ms`) is that instant. A caller descheduled after its
+    // batch answered cannot inflate it.
+    let started = h.jobs().wait(&jobs[1], Duration::ZERO).unwrap().0.started_at;
+    let queue_delay = Duration::from_millis(u64::try_from(unix_ms(&started) - enqueued_ms).unwrap_or(0));
+    assert!(
+        queue_delay >= Duration::from_millis(100),
+        "the second batch waited {queue_delay:?} behind the first: too little to tell the rules apart"
+    );
+    let midpoint = budget + queue_delay / 2;
+    assert!(
+        queued_for < midpoint,
+        "the queued batch answered {queued_for:?} after its enqueue: its deadline counted from its start (queue delay {queue_delay:?}, midpoint {midpoint:?})"
+    );
     for job in jobs {
         ok(&h, "job.cancel", json!({ "jobId": job }));
         h.jobs().wait(&job, Duration::from_secs(60)).unwrap();

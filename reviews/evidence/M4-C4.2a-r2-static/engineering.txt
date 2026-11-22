@@ -1,0 +1,5 @@
+21 changed src files; prohibited added-line hits: 0
+
+Availability: 277 commands, 1144 pairs; 13 asks-user, 1 deferred, 240 execution, 648 parameter, 221 precheck, 21 unreachable.
+Allows: 94 in 38 files; 0 new, 0 removed.
+Help: 127 ids, 127 help, zero missing.

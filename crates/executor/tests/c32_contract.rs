@@ -239,6 +239,7 @@ fn a_running_evaluation_is_cancelled_by_its_callers_budget_and_frees_the_worker(
     let answered = t.elapsed();
     tt_vector::work::hooks::set_spin_micros(0);
     assert_eq!(e.error.as_ref().map(|x| x.code.as_str()), Some("command.timeout"), "{e:?}");
+    crate::common::timing::record("c32_contract.rs:242", answered, budget * 3);
     assert!(answered < budget * 3, "{answered:?}");
     let read = run(&h, "doc.state.get", json!({}));
     assert!(read.is_ok(), "the worker is free: {read:?}");
@@ -264,6 +265,7 @@ fn a_running_evaluation_is_cancelled_by_its_callers_budget_and_frees_the_worker(
     let running = running.join().unwrap();
     tt_vector::work::hooks::set_spin_micros(0);
     assert_eq!(running.error.as_ref().map(|x| x.code.as_str()), Some("command.timeout"));
+    crate::common::timing::record("c32_contract.rs:267", waited, budget * 2);
     assert!(waited < budget * 2, "{waited:?}");
     if queued.status != Status::Ok {
         assert_eq!(queued.error.as_ref().map(|x| x.code.as_str()), Some("command.timeout"), "{queued:?}");

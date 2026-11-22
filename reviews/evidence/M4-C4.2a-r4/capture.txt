@@ -1,0 +1,33 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r4\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.02s
+     Running tests\c42_isolated.rs (target\debug\deps\c42_isolated-e92c91bc0aa252c7.exe)
+
+running 3 tests
+test a_panicking_capture_job_releases_its_slot ... 
+thread 'tt-job-1' (58048) panicked at crates\executor\tests\c42_isolated.rs:126:68:
+capture failure for the test
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'tt-job-2' (49628) panicked at crates\executor\tests\c42_isolated.rs:126:68:
+capture failure for the test
+ok
+test a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards ... cancelled waiter answered Some("command.timeout") after 58.012ms
+waiter with a 250 ms budget answered Some("job.waitTimeout") after 506.6621ms
+
+thread 'a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards' (54972) panicked at crates\executor\tests\c42_isolated.rs:190:5:
+assertion `left == right` failed: Envelope { status: Error, result: None, targets: None, changes: [], changes_truncated: false, changes_since: None, undo: None, warnings: [], document_rev: Some(121), error: Some(CommandError { code: "job.waitTimeout", message: "job `job-3` is still running after 250 ms; it continues", details: Object {"jobId": String("job-3"), "timeoutMs": Number(250)}, hint: Some("wait for it with job.wait, or cancel it with job.cancel") }), dry_run: false, steps: None, committed: false }
+  left: Some("job.waitTimeout")
+ right: Some("limit.exceeded")
+FAILED
+test concurrent_captures_are_capped_and_their_threads_counted ... one capture 233.3724ms; one thread sample 807.228ms
+captures: 10 answered, 4 refused at the cap; threads: base 5, peak 17 with 14 callers
+ok
+
+failures:
+
+failures:
+    a_waiting_capture_honours_its_cancellation_and_budget_and_starts_nothing_afterwards
+
+test result: FAILED. 2 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 39.05s
+
+error: test failed, to rerun pass `-p tt-executor --test c42_isolated`

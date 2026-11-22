@@ -1,0 +1,73 @@
+{
+  "entries": [
+    {
+      "index": 1,
+      "stepId": "u-1",
+      "label": "New Elements",
+      "source": "agent",
+      "agentSessionId": "s1-abb5cc",
+      "agentName": "mcp",
+      "time": "2026-11-16T04:09:57.438Z",
+      "objectCount": 4
+    },
+    {
+      "index": 2,
+      "stepId": "u-2",
+      "label": "Create Drawing",
+      "source": "agent",
+      "agentSessionId": "s1-abb5cc",
+      "agentName": "mcp",
+      "time": "2026-11-16T04:09:57.441Z",
+      "objectCount": 3
+    },
+    {
+      "index": 3,
+      "stepId": "u-3",
+      "label": "Rectangle Tool",
+      "source": "agent",
+      "agentSessionId": "s1-abb5cc",
+      "agentName": "mcp",
+      "time": "2026-11-16T04:09:57.448Z",
+      "objectCount": 3
+    },
+    {
+      "index": 4,
+      "stepId": "u-4",
+      "label": "Paint",
+      "source": "agent",
+      "agentSessionId": "s1-abb5cc",
+      "agentName": "mcp",
+      "time": "2026-11-16T04:09:57.453Z",
+      "objectCount": 2
+    },
+    {
+      "index": 5,
+      "stepId": "u-5",
+      "label": "Brush Tool",
+      "source": "user",
+      "time": "2026-11-16T04:10:00.439Z",
+      "objectCount": 3
+    },
+    {
+      "index": 6,
+      "stepId": "u-6",
+      "label": "Move Element",
+      "source": "agent",
+      "agentSessionId": "s1-abb5cc",
+      "agentName": "mcp",
+      "time": "2026-11-16T04:10:00.450Z",
+      "objectCount": 1
+    },
+    {
+      "index": 7,
+      "stepId": "u-7",
+      "label": "Brush Tool",
+      "source": "user",
+      "time": "2026-11-16T04:10:02.833Z",
+      "objectCount": 3
+    }
+  ],
+  "position": 7,
+  "cleanPosition": 0,
+  "total": 7
+}

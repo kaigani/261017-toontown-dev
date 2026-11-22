@@ -1,0 +1,293 @@
+{
+  "checks": 13,
+  "results": [
+    {
+      "check": "D-61 Escape pen",
+      "ok": true,
+      "detail": {
+        "after": "8",
+        "commands": [
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-61 Enter once pen",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "D-61 Escape rename",
+      "ok": true,
+      "detail": {
+        "after": null,
+        "commands": [
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-61 Enter once rename",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.pen.rename",
+          "params": {
+            "penId": "pen_01M7WGTQNPCGWQK1KA3K32KW1Z",
+            "name": "Review name"
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-61 Enter once font",
+      "ok": true,
+      "detail": [
+        {
+          "command": "tool.text.options.set",
+          "params": {
+            "font": "Review name"
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-61 Enter once search",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "D-61 Escape pref",
+      "ok": true,
+      "detail": {
+        "after": null,
+        "commands": [
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "anim.camera.list",
+            "params": {}
+          },
+          {
+            "command": "anim.camera.current.get",
+            "params": {}
+          },
+          {
+            "command": "app.state.get",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "window.panel.list",
+            "params": {}
+          },
+          {
+            "command": "workspace.get",
+            "params": {}
+          },
+          {
+            "command": "workspace.list",
+            "params": {}
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-61 Enter once pref",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "D-61 Enter once keymap",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "D-61 Enter once new",
+      "ok": true,
+      "detail": [
+        {
+          "command": "project.create",
+          "params": {
+            "name": "Review name",
+            "frameRate": 24,
+            "cameraWidth": 1920,
+            "cameraHeight": 1080,
+            "preset": "default"
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-61 Escape props",
+      "ok": true,
+      "detail": {
+        "after": null,
+        "commands": [
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "anim.camera.list",
+            "params": {}
+          },
+          {
+            "command": "anim.camera.current.get",
+            "params": {}
+          },
+          {
+            "command": "app.state.get",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "window.panel.list",
+            "params": {}
+          },
+          {
+            "command": "workspace.get",
+            "params": {}
+          },
+          {
+            "command": "workspace.list",
+            "params": {}
+          }
+        ]
+      }
+    },
+    {
+      "check": "D-61 Enter once props",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "check": "D-61 Enter once toolbar",
+      "ok": true,
+      "detail": [
+        {
+          "command": "window.toolbar.items.set",
+          "params": {
+            "toolbarId": "main",
+            "items": [
+              "drawAid.grid.set",
+              "gridType",
+              "gridOverlay",
+              "separator",
+              "drawAid.onionSkin.set",
+              "onionSkinPrevious",
+              "onionSkinNext",
+              "drawAid.autoLightTable.set",
+              "separator",
+              "firstFrame",
+              "playStop",
+              "lastFrame",
+              "playback.loop.set",
+              "space",
+              "lipsync.panel.open",
+              "flexibleSpace",
+              "cameraList",
+              "sceneList",
+              "workspaceList"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-a7mhww0a"
+}

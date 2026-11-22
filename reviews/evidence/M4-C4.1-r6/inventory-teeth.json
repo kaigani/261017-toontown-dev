@@ -1,0 +1,12 @@
+[
+  {
+    "case": "deleted-row",
+    "exit": 1,
+    "output": "228 commands in scope, 1090 (command, code) pairs; 13 asks-user, 1 deferred, 236 execution, 607 parameter, 214 precheck, 18 unreachable\nmissing from the table: app.quit project.none (returned at crates/executor/src/cx.rs:211, cx::no_project)\n"
+  },
+  {
+    "case": "valid-class-precheck",
+    "exit": 1,
+    "output": "228 commands in scope, 1090 (command, code) pairs; 13 asks-user, 1 deferred, 236 execution, 607 parameter, 215 precheck, 18 unreachable\ndocs/availability-inventory.md:172: a precheck row names its states or why they cannot be built\ndocs/availability-inventory.md:172: app.quit project.none is marked precheck, but the command's precheck is not declared\n"
+  }
+]

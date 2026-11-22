@@ -413,7 +413,14 @@ pub struct Decl {
     pub agent_only: Option<&'static str>,
     /// GUI locations (panels, context menus, toolbars) that invoke the command besides the menu manifest.
     pub gui: Option<&'static str>,
+    /// The state refusal the command gives with no parameter missing, as a cheap pure function of the session and the
+    /// raw parameters (ruling O-23; reviews/M4-design-availability.md): run by the pipeline before the handler and by
+    /// availability.
+    pub precheck: Option<Precheck>,
 }
+
+/// A precheck: the executor's context as `&dyn Any` (read only) and the raw parameters → the state refusal, if any.
+pub type Precheck = fn(&dyn Any, &Value) -> Result<(), CommandError>;
 
 /// A declared command with its handler.
 #[derive(Debug, Clone, Copy)]
@@ -727,6 +734,14 @@ pub fn encode_command_result<T: Serialize>(id: &str, r: &T) -> Result<Value, Com
             CommandError::internal(format!("result encoding failed: {e}"))
         }
     })
+}
+
+/// Downcasts a read-only context (prechecks).
+///
+/// # Errors
+/// `internal` if a precheck is run with a foreign context.
+pub fn context_ref<T: 'static>(cx: &dyn Any) -> Result<&T, CommandError> {
+    cx.downcast_ref::<T>().ok_or_else(|| CommandError::internal("precheck run with a foreign context"))
 }
 
 /// Downcasts the handler context (the executor passes its invocation context).

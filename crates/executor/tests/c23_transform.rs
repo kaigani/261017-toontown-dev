@@ -269,9 +269,33 @@ fn contour_points_add_set_delete_and_segment_move() {
     let (at, o, i) = (xy(&b[3]), xy(&b[4]), xy(&b[2]));
     assert_eq!((o.0 - at.0, o.1 - at.1), (10.0, 15.0));
     assert_eq!((i.0 - at.0, i.1 - at.1), (-10.0, -15.0));
+    // `reset` makes the handles collinear, each keeping its length (SI-186, ruling D-75 item 4: 02 line 453 "a
+    // flat/smooth state"): collinear handles stay as they are; broken ones turn onto `out - in`.
     ok(&h, "draw.point.set", json!({ "strokeId": qualified, "anchor": 1, "handleMode": "reset" }));
     let b = node(&h, &sid)["bezier"].clone();
-    assert_eq!((xy(&b[2]), xy(&b[4])), (xy(&b[3]), xy(&b[3])));
+    let (at, o, i) = (xy(&b[3]), xy(&b[4]), xy(&b[2]));
+    assert!(((o.0 - at.0) - 10.0).abs() < 1e-9 && ((o.1 - at.1) - 15.0).abs() < 1e-9, "{o:?}");
+    assert!(((i.0 - at.0) + 10.0).abs() < 1e-9 && ((i.1 - at.1) + 15.0).abs() < 1e-9, "{i:?}");
+    ok(
+        &h,
+        "draw.point.set",
+        json!({ "strokeId": qualified, "anchor": 1, "inHandle": {"x": 0, "y": 6}, "outHandle": {"x": 8, "y": 0}, "handleMode": "broken" }),
+    );
+    ok(&h, "draw.point.set", json!({ "strokeId": qualified, "anchor": 1, "handleMode": "reset" }));
+    let b = node(&h, &sid)["bezier"].clone();
+    let (at, o, i) = (xy(&b[3]), xy(&b[4]), xy(&b[2]));
+    let (ov, iv) = ((o.0 - at.0, o.1 - at.1), (i.0 - at.0, i.1 - at.1));
+    assert!(
+        (ov.0 * iv.1 - ov.1 * iv.0).abs() < 1e-9 && ov.0 * iv.0 + ov.1 * iv.1 < 0.0,
+        "collinear, opposite: {ov:?} {iv:?}"
+    );
+    assert!((ov.0.hypot(ov.1) - 8.0).abs() < 1e-9 && (iv.0.hypot(iv.1) - 6.0).abs() < 1e-9, "lengths kept");
+    // Restore the symmetric handles the segment drag below starts from.
+    ok(
+        &h,
+        "draw.point.set",
+        json!({ "strokeId": qualified, "anchor": 1, "inHandle": {"x": 0, "y": 0}, "outHandle": {"x": 0, "y": 0}, "handleMode": "broken" }),
+    );
     // Segment drag: the point at t moves by exactly delta.
     ok(&h, "draw.segment.move", json!({ "strokeId": qualified, "segment": 1, "t": 0.5, "delta": {"x": 0, "y": 30} }));
     let b = node(&h, &sid)["bezier"].clone();

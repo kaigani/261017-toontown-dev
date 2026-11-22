@@ -1,0 +1,171 @@
+{
+  "backend": "webgl2",
+  "drags": 30,
+  "control": {
+    "frameMs": {
+      "n": 300,
+      "p50": 17.8,
+      "p95": 18.2,
+      "max": 19
+    },
+    "canvases": 1,
+    "startScreen": true
+  },
+  "displayRefreshHz": [
+    60
+  ],
+  "keyToGlyph": {
+    "n": 30,
+    "p50": 24.3,
+    "p95": 34.1,
+    "max": 34.4
+  },
+  "keyParts": {
+    "stages": {
+      "sent": {
+        "n": 30,
+        "p50": 0,
+        "p95": 0.2,
+        "max": 0.2
+      },
+      "event": {
+        "n": 30,
+        "p50": 5.4,
+        "p95": 6.7,
+        "max": 6.8
+      },
+      "answer": {
+        "n": 30,
+        "p50": 9.8,
+        "p95": 17.3,
+        "max": 17.4
+      },
+      "scene": {
+        "n": 30,
+        "p50": 9.9,
+        "p95": 17.5,
+        "max": 17.6
+      },
+      "loaded": {
+        "n": 30,
+        "p50": 24.1,
+        "p95": 33.9,
+        "max": 34
+      }
+    },
+    "sceneMs": {
+      "n": 72,
+      "p50": 2.7,
+      "p95": 11.3,
+      "max": 13.2
+    },
+    "loads": [
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 19876,
+        "ms": 16.4
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 20740,
+        "ms": 11.8
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 21628,
+        "ms": 13.6
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 23788,
+        "ms": 13.9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 25084,
+        "ms": 13.8
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 25084,
+        "ms": 13.9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 26452,
+        "ms": 10.8
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 27340,
+        "ms": 14.1
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 28900,
+        "ms": 16.1
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 28900,
+        "ms": 16.9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 30040,
+        "ms": 16.9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 31336,
+        "ms": 9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 33376,
+        "ms": 12.6
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 34816,
+        "ms": 11.1
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 36088,
+        "ms": 11.7
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 36088,
+        "ms": 9.9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 36976,
+        "ms": 14
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 37960,
+        "ms": 15.9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 39232,
+        "ms": 15.9
+      },
+      {
+        "key": "dr_01K7JJN8003ZWE0HPYP5FYVBFE",
+        "bytes": 40096,
+        "ms": 16.4
+      }
+    ]
+  },
+  "keyToGlyphBound": {
+    "frames": 2,
+    "controlMedianMs": 17.8,
+    "boundMs": 35.6,
+    "marginMs": 1.5
+  }
+}

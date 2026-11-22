@@ -1,0 +1,35 @@
+cargo :    Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r1\crates\executor)
+At line:50 char:1
++ cargo test -p tt-executor --test c41_r1_review part_d_settings --lock ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (   Compiling tt...rates\executor):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 19.18s
+     Running tests\c41_r1_review.rs (target\debug\deps\c41_r1_review-f29fc8ad7bdf407a.exe)
+
+running 2 tests
+test part_d_settings::abandoned_settings_temporary_is_cleaned_on_load ... FAILED
+test part_d_settings::malformed_shapes_are_quarantined_independently ... FAILED
+
+failures:
+
+---- part_d_settings::abandoned_settings_temporary_is_cleaned_on_load stdout ----
+
+thread 'part_d_settings::abandoned_settings_temporary_is_cleaned_on_load' (9312) panicked at crates\executor\tests\c41_r1_review.rs:185:9:
+interrupted settings write leaves an orphan forever
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+---- part_d_settings::malformed_shapes_are_quarantined_independently stdout ----
+
+thread 'part_d_settings::malformed_shapes_are_quarantined_independently' (34952) panicked at crates\executor\tests\c41_r1_review.rs:166:9:
+invalid shapes silently retained: ["preferences", "keymap", "state", "recent", "workspaces"]
+
+
+failures:
+    part_d_settings::abandoned_settings_temporary_is_cleaned_on_load
+    part_d_settings::malformed_shapes_are_quarantined_independently
+
+test result: FAILED. 0 passed; 2 failed; 0 ignored; 0 measured; 4 filtered out; finished in 0.07s
+
+error: test failed, to rerun pass `-p tt-executor --test c41_r1_review`

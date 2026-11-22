@@ -1,0 +1,269 @@
+{
+  "after": null,
+  "commands": [
+    {
+      "command": "project.create",
+      "params": {
+        "name": "Review name",
+        "frameRate": 24,
+        "cameraWidth": 1920,
+        "cameraHeight": 1080,
+        "preset": "default"
+      }
+    },
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "window.panel.list",
+      "params": {}
+    },
+    {
+      "command": "workspace.get",
+      "params": {}
+    },
+    {
+      "command": "workspace.list",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "tool.pen.list",
+      "params": {}
+    },
+    {
+      "command": "tool.active.get",
+      "params": {}
+    },
+    {
+      "command": "tool.settings.get",
+      "params": {}
+    },
+    {
+      "command": "tool.options.get",
+      "params": {
+        "toolId": "text"
+      }
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "agent.server.status",
+      "params": {}
+    },
+    {
+      "command": "tool.list",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "tool.settings.get",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "drawAid.staticLightTable.list",
+      "params": {}
+    },
+    {
+      "command": "view.transform.get",
+      "params": {
+        "viewId": "drawingView"
+      }
+    },
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "view.list",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "tool.pen.list",
+      "params": {}
+    },
+    {
+      "command": "tool.active.get",
+      "params": {}
+    },
+    {
+      "command": "tool.settings.get",
+      "params": {}
+    },
+    {
+      "command": "tool.options.get",
+      "params": {
+        "toolId": "text"
+      }
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "doc.loadReport.get",
+      "params": {}
+    },
+    {
+      "command": "agent.server.status",
+      "params": {}
+    },
+    {
+      "command": "tool.list",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "tool.settings.get",
+      "params": {}
+    },
+    {
+      "command": "drawAid.state.get",
+      "params": {}
+    },
+    {
+      "command": "drawAid.staticLightTable.list",
+      "params": {}
+    },
+    {
+      "command": "view.transform.get",
+      "params": {
+        "viewId": "drawingView"
+      }
+    },
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.list",
+      "params": {}
+    },
+    {
+      "command": "anim.camera.current.get",
+      "params": {}
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "edit.history.get",
+      "params": {
+        "limit": 1000
+      }
+    },
+    {
+      "command": "project.recent.list",
+      "params": {}
+    },
+    {
+      "command": "project.recovery.list",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "edit.history.get",
+      "params": {
+        "limit": 1000
+      }
+    },
+    {
+      "command": "project.recent.list",
+      "params": {}
+    },
+    {
+      "command": "project.recovery.list",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    },
+    {
+      "command": "ui.statusBar.get",
+      "params": {}
+    },
+    {
+      "command": "window.panel.list",
+      "params": {}
+    },
+    {
+      "command": "workspace.get",
+      "params": {}
+    },
+    {
+      "command": "workspace.list",
+      "params": {}
+    },
+    {
+      "command": "edit.history.get",
+      "params": {
+        "limit": 1000
+      }
+    },
+    {
+      "command": "app.state.get",
+      "params": {}
+    }
+  ]
+}

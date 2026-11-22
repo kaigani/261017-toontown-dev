@@ -1,0 +1,1 @@
+276 commands in scope, 1142 (command, code) pairs; 13 asks-user, 1 deferred, 240 execution, 647 parameter, 220 precheck, 21 unreachable

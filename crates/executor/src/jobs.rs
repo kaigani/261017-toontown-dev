@@ -60,6 +60,10 @@ pub struct JobRecord {
     pub error: Option<CommandError>,
     /// Session that started it.
     pub session: String,
+    /// The job can still be cancelled: not final, not past its commit point, no cancellation requested yet (the
+    /// progress window offers Cancel only then, 01 §9.5; C43B-R2-06).
+    #[serde(default)]
+    pub cancellable: bool,
     /// Warnings the job recorded (recovery receipts of `render.range.run`, C33-R2-02); kept in every final state.
     #[serde(default, skip_serializing_if = "Vec::is_empty")]
     pub warnings: Vec<Value>,
@@ -124,7 +128,10 @@ impl JobProgress {
     #[must_use]
     pub fn commit(&self) -> bool {
         match self.cancel.compare_exchange(RUNNING, COMMITTED, Ordering::SeqCst, Ordering::SeqCst) {
-            Ok(_) => true,
+            Ok(_) => {
+                self.table.update(&self.job_id, |r| r.cancellable = false);
+                true
+            }
             Err(state) => state == COMMITTED,
         }
     }
@@ -197,6 +204,7 @@ impl JobTable {
                     result: None,
                     error: None,
                     session: session.to_owned(),
+                    cancellable: true,
                     warnings: Vec::new(),
                 },
             );
@@ -209,29 +217,36 @@ impl JobTable {
             .name(format!("tt-{job_id}"))
             .spawn(move || {
                 progress.table.update(&progress.job_id, |r| r.state = JobState::Running);
-                let outcome = work(&progress).and_then(|v| check_final_result(&command, v));
+                // A panicking job ends failed with a typed error instead of leaving its record running for ever (a
+                // running record holds a bound such as the capture slots; C42A-R3 capture bound).
+                let outcome = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| work(&progress)))
+                    .unwrap_or_else(|_| Err(CommandError::internal(format!("job `{command}` failed unexpectedly"))))
+                    .and_then(|v| check_final_result(&command, v));
                 let cancelled = progress.cancelled();
-                progress.table.update(&progress.job_id, |r| match outcome {
-                    // A job that stops at the cancellation and reports what it completed keeps that report
-                    // (`draw.vectorize.run` keeps its finished images, 02 §11.2).
-                    Ok(v) if cancelled => {
-                        r.state = JobState::Cancelled;
-                        r.result = Some(v);
-                    }
-                    // A cancelled job keeps its typed error (C33-R3-01): the cancellation itself, or what met it
-                    // (a rollback the file system refused stays `export.rollbackIncomplete`); its warnings stay too.
-                    Err(e) if cancelled => {
-                        r.state = JobState::Cancelled;
-                        r.error = Some(e);
-                    }
-                    Ok(v) => {
-                        r.state = JobState::Succeeded;
-                        r.progress = 1.0;
-                        r.result = Some(v);
-                    }
-                    Err(e) => {
-                        r.state = JobState::Failed;
-                        r.error = Some(e);
+                progress.table.update(&progress.job_id, |r| {
+                    r.cancellable = false;
+                    match outcome {
+                        // A job that stops at the cancellation and reports what it completed keeps that report
+                        // (`draw.vectorize.run` keeps its finished images, 02 §11.2).
+                        Ok(v) if cancelled => {
+                            r.state = JobState::Cancelled;
+                            r.result = Some(v);
+                        }
+                        // A cancelled job keeps its typed error (C33-R3-01): the cancellation itself, or what met it
+                        // (a rollback the file system refused stays `export.rollbackIncomplete`); its warnings stay too.
+                        Err(e) if cancelled => {
+                            r.state = JobState::Cancelled;
+                            r.error = Some(e);
+                        }
+                        Ok(v) => {
+                            r.state = JobState::Succeeded;
+                            r.progress = 1.0;
+                            r.result = Some(v);
+                        }
+                        Err(e) => {
+                            r.state = JobState::Failed;
+                            r.error = Some(e);
+                        }
                     }
                 });
             })
@@ -275,10 +290,16 @@ impl JobTable {
     /// # Errors
     /// `job.notFound` for an unknown job.
     pub fn cancel(&self, job_id: &str) -> Result<JobRecord, CommandError> {
-        let t = self.lock();
-        let Some(flag) = t.cancel.get(job_id) else { return Err(not_found(job_id)) };
-        let _ = flag.compare_exchange(RUNNING, CANCEL_REQUESTED, Ordering::SeqCst, Ordering::SeqCst);
-        t.jobs.get(job_id).cloned().ok_or_else(|| not_found(job_id))
+        let requested = {
+            let t = self.lock();
+            let Some(flag) = t.cancel.get(job_id) else { return Err(not_found(job_id)) };
+            flag.compare_exchange(RUNNING, CANCEL_REQUESTED, Ordering::SeqCst, Ordering::SeqCst).is_ok()
+        };
+        // Once requested, the job offers no second Cancel (C43B-R2-06).
+        if requested {
+            self.update(job_id, |r| r.cancellable = false);
+        }
+        self.lock().jobs.get(job_id).cloned().ok_or_else(|| not_found(job_id))
     }
 }
 

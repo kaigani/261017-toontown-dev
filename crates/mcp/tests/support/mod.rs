@@ -115,8 +115,11 @@ impl Client {
             let params = v.get("params").cloned().unwrap_or(Value::Null);
             self.asked.push((method.to_owned(), params.clone()));
             let result = (self.responder)(method, &params);
-            let m = json!({ "jsonrpc": "2.0", "id": id, "result": result });
-            self.raw(&m.to_string());
+            // A responder's `null` sends no reply: a client that never answers that request (D-68 item 4).
+            if !result.is_null() {
+                let m = json!({ "jsonrpc": "2.0", "id": id, "result": result });
+                self.raw(&m.to_string());
+            }
             return self.pump(timeout);
         }
         if v.get("method").is_some() {
@@ -201,4 +204,26 @@ pub fn opts(dir: &Path) -> ServerOptions {
 
 pub fn path(p: &Path) -> String {
     p.to_string_lossy().into_owned()
+}
+
+/// Ruling D-46 item 4 (D-45), as `crates/executor/tests/common/timing.rs`: with `TT_TIMING_DIR` set (CI), appends one
+/// JSON line to `<dir>/<binary>.jsonl` with a timing figure and the bound its assertion holds it to; otherwise nothing.
+pub fn record_timing(place: &str, figure: Duration, bound: Duration) {
+    let Some(dir) = std::env::var_os("TT_TIMING_DIR") else { return };
+    let dir = PathBuf::from(dir);
+    let _ = std::fs::create_dir_all(&dir);
+    let binary = std::env::current_exe()
+        .ok()
+        .and_then(|p| p.file_stem().map(|s| s.to_string_lossy().split('-').next().unwrap_or("tests").to_owned()))
+        .unwrap_or_else(|| "tests".to_owned());
+    let line = json!({
+        "place": place,
+        "ms": figure.as_secs_f64() * 1000.0,
+        "boundMs": bound.as_secs_f64() * 1000.0,
+        "os": std::env::consts::OS,
+        "profile": if cfg!(debug_assertions) { "debug" } else { "release" },
+    });
+    if let Ok(mut f) = std::fs::OpenOptions::new().create(true).append(true).open(dir.join(format!("{binary}.jsonl"))) {
+        let _ = writeln!(f, "{line}");
+    }
 }

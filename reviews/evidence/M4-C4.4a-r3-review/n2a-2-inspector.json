@@ -1,0 +1,67 @@
+{
+  "checks": 4,
+  "results": [
+    {
+      "check": "D-66 select field inspector",
+      "ok": true,
+      "detail": {
+        "start": 0,
+        "end": 1,
+        "value": "1"
+      }
+    },
+    {
+      "check": "D-66 clipboard inspector",
+      "ok": true,
+      "detail": {
+        "clipboard": "alpha beta",
+        "cut": "",
+        "paste": "alpha beta"
+      }
+    },
+    {
+      "check": "D-66 field undo redo inspector",
+      "ok": true,
+      "detail": {
+        "undo": "",
+        "redo": "alpha beta"
+      }
+    },
+    {
+      "check": "D-66 text ownership inspector",
+      "ok": true,
+      "detail": {
+        "commands": [
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          },
+          {
+            "command": "agent.server.status",
+            "params": {}
+          },
+          {
+            "command": "ui.statusBar.get",
+            "params": {}
+          }
+        ],
+        "undo": "",
+        "redo": "alpha beta",
+        "value": "alpha b "
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-c07a5juw"
+}

@@ -1,0 +1,1160 @@
+{
+ "rows": [
+  {
+   "list": "mainToolbar.gridType",
+   "option": "normal",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "normal"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "normal"
+     }
+    }
+   ],
+   "shown": "normal",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "normal",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "normal"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "normal"
+     }
+    }
+   ],
+   "shown": "normal",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "normal",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "normal"
+    }
+   },
+   "sent": [],
+   "shown": "normal",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "normal",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "normal"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "normal"
+     }
+    }
+   ],
+   "shown": "normal",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field12",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field12"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "field12"
+     }
+    }
+   ],
+   "shown": "field12",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field12",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field12"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "field12"
+     }
+    }
+   ],
+   "shown": "field12",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field12",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field12"
+    }
+   },
+   "sent": [],
+   "shown": "field12",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field12",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field12"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "field12"
+     }
+    }
+   ],
+   "shown": "field12",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field16",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field16"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "field16"
+     }
+    }
+   ],
+   "shown": "field16",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field16",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field16"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "field16"
+     }
+    }
+   ],
+   "shown": "field16",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field16",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field16"
+    }
+   },
+   "sent": [],
+   "shown": "field16",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.gridType",
+   "option": "field16",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.grid.set",
+    "params": {
+     "type": "field16"
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.grid.set",
+     "params": {
+      "type": "field16"
+     }
+    }
+   ],
+   "shown": "field16",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "0",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 0
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 0
+     }
+    }
+   ],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "0",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 0
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 0
+     }
+    }
+   ],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "0",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 0
+    }
+   },
+   "sent": [],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "0",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 0
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 0
+     }
+    }
+   ],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "1",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 1
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 1
+     }
+    }
+   ],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "1",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 1
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 1
+     }
+    }
+   ],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "1",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 1
+    }
+   },
+   "sent": [],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "1",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 1
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 1
+     }
+    }
+   ],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "2",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 2
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 2
+     }
+    }
+   ],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "2",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 2
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 2
+     }
+    }
+   ],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "2",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 2
+    }
+   },
+   "sent": [],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "2",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 2
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 2
+     }
+    }
+   ],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "3",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 3
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 3
+     }
+    }
+   ],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "3",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 3
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 3
+     }
+    }
+   ],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "3",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 3
+    }
+   },
+   "sent": [],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinPrevious",
+   "option": "3",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "previous": 3
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "previous": 3
+     }
+    }
+   ],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "0",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 0
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 0
+     }
+    }
+   ],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "0",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 0
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 0
+     }
+    }
+   ],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "0",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 0
+    }
+   },
+   "sent": [],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "0",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 0
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 0
+     }
+    }
+   ],
+   "shown": "0",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "1",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 1
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 1
+     }
+    }
+   ],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "1",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 1
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 1
+     }
+    }
+   ],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "1",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 1
+    }
+   },
+   "sent": [],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "1",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 1
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 1
+     }
+    }
+   ],
+   "shown": "1",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "2",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 2
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 2
+     }
+    }
+   ],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "2",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 2
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 2
+     }
+    }
+   ],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "2",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 2
+    }
+   },
+   "sent": [],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "2",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 2
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 2
+     }
+    }
+   ],
+   "shown": "2",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "3",
+   "mode": "mouse",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 3
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 3
+     }
+    }
+   ],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "3",
+   "mode": "keyboard",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 3
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 3
+     }
+    }
+   ],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "3",
+   "mode": "current",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 3
+    }
+   },
+   "sent": [],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.onionSkinNext",
+   "option": "3",
+   "mode": "other-focus",
+   "declared": {
+    "command": "drawAid.onionSkin.set",
+    "params": {
+     "next": 3
+    }
+   },
+   "sent": [
+    {
+     "command": "drawAid.onionSkin.set",
+     "params": {
+      "next": 3
+     }
+    }
+   ],
+   "shown": "3",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Default",
+   "mode": "mouse",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Default"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Default"
+     }
+    }
+   ],
+   "shown": "Default",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Default",
+   "mode": "keyboard",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Default"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Default"
+     }
+    }
+   ],
+   "shown": "Default",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Default",
+   "mode": "current",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Default"
+    }
+   },
+   "sent": [],
+   "shown": "Default",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Default",
+   "mode": "other-focus",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Default"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Default"
+     }
+    }
+   ],
+   "shown": "Default",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Staging",
+   "mode": "mouse",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Staging"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Staging"
+     }
+    }
+   ],
+   "shown": "Staging",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Staging",
+   "mode": "keyboard",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Staging"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Staging"
+     }
+    }
+   ],
+   "shown": "Staging",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Staging",
+   "mode": "current",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Staging"
+    }
+   },
+   "sent": [],
+   "shown": "Staging",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Staging",
+   "mode": "other-focus",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Staging"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Staging"
+     }
+    }
+   ],
+   "shown": "Staging",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Drawing",
+   "mode": "mouse",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Drawing"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Drawing"
+     }
+    }
+   ],
+   "shown": "Drawing",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Drawing",
+   "mode": "keyboard",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Drawing"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Drawing"
+     }
+    }
+   ],
+   "shown": "Drawing",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Drawing",
+   "mode": "current",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Drawing"
+    }
+   },
+   "sent": [],
+   "shown": "Drawing",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Drawing",
+   "mode": "other-focus",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Drawing"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Drawing"
+     }
+    }
+   ],
+   "shown": "Drawing",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Focused drawing",
+   "mode": "mouse",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Focused drawing"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Focused drawing"
+     }
+    }
+   ],
+   "shown": "Focused drawing",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Focused drawing",
+   "mode": "keyboard",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Focused drawing"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Focused drawing"
+     }
+    }
+   ],
+   "shown": "Focused drawing",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Focused drawing",
+   "mode": "current",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Focused drawing"
+    }
+   },
+   "sent": [],
+   "shown": "Focused drawing",
+   "steps": []
+  },
+  {
+   "list": "mainToolbar.workspaceList",
+   "option": "Focused drawing",
+   "mode": "other-focus",
+   "declared": {
+    "command": "workspace.select",
+    "params": {
+     "name": "Focused drawing"
+    }
+   },
+   "sent": [
+    {
+     "command": "workspace.select",
+     "params": {
+      "name": "Focused drawing"
+     }
+    }
+   ],
+   "shown": "Focused drawing",
+   "steps": []
+  }
+ ],
+ "count": 60
+}

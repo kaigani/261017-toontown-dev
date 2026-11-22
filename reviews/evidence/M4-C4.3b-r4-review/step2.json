@@ -1,0 +1,90 @@
+[
+ {
+  "choice": "yes",
+  "native": [
+   {
+    "hwnd": 18287048,
+    "title": "Confirm Save As",
+    "children": [
+     "&Yes",
+     "&No"
+    ]
+   },
+   {
+    "hwnd": 55969084,
+    "title": "Save As",
+    "children": [
+     "Namespace Tree Control",
+     "Namespace Tree Control",
+     "Navigation Pane",
+     "ShellView",
+     "&Save",
+     "Cancel",
+     "&Help",
+     "Navigation buttons",
+     "Up band",
+     "Address: C:\\Users\\kaiga\\OneDrive\\Documents",
+     "Address band"
+    ]
+   },
+   {
+    "hwnd": 141100428,
+    "title": "",
+    "children": []
+   }
+  ],
+  "questionCount": 1,
+  "applicationQuestion": false,
+  "beforeHash": "85d29605941a2b797d9714761b1322a1ef14d8de6783c8c70712e936e338b5ff",
+  "afterHash": "8cef943d2ba5cf850a7a38d84f5a8caf8f05b89f0f9b25ecf0509550e4a4f7db",
+  "sent": [
+   {
+    "command": "project.saveAs",
+    "params": {
+     "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r3-dialogs-u67xjdj7\\overwrite-yes.animpkg",
+     "onExists": "overwrite"
+    }
+   }
+  ]
+ },
+ {
+  "choice": "no",
+  "native": [
+   {
+    "hwnd": 12978460,
+    "title": "Confirm Save As",
+    "children": [
+     "&Yes",
+     "&No"
+    ]
+   },
+   {
+    "hwnd": 23004682,
+    "title": "Save As",
+    "children": [
+     "Namespace Tree Control",
+     "Namespace Tree Control",
+     "Navigation Pane",
+     "ShellView",
+     "&Save",
+     "Cancel",
+     "&Help",
+     "Navigation buttons",
+     "Up band",
+     "Address: C:\\Users\\kaiga\\OneDrive\\Documents",
+     "Address band"
+    ]
+   },
+   {
+    "hwnd": 141100428,
+    "title": "",
+    "children": []
+   }
+  ],
+  "questionCount": 1,
+  "applicationQuestion": false,
+  "beforeHash": "45b8c275994f779e8968d88b8e6238236768b893c32e4ae9a8bec321444842c3",
+  "afterHash": "45b8c275994f779e8968d88b8e6238236768b893c32e4ae9a8bec321444842c3",
+  "sent": []
+ }
+]

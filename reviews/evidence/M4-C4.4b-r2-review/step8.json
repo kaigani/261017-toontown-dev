@@ -1,0 +1,74 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-gftkjbt3",
+  "checks": [
+    {
+      "check": "D-78 other origin shorten caret reconciled",
+      "ok": true,
+      "detail": {
+        "text": "aX",
+        "editor": {
+          "anchor": 2,
+          "caret": 2,
+          "textId": "dr_01K7JJN800MF25VPNK6PZ9X8PQ/nd_01K7JJN800Z1DF4HDJS8NV026X"
+        }
+      }
+    },
+    {
+      "check": "D-78 other origin deletion ends session",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-81 word left",
+      "ok": true,
+      "detail": {
+        "anchor": 9,
+        "caret": 9,
+        "textId": "dr_01K7JJN800Y67EFS6030DE8WKJ/nd_01K7JJN800QZE8KMB31T4GJBYE"
+      }
+    },
+    {
+      "check": "D-81 shift word left punctuation",
+      "ok": true,
+      "detail": {
+        "anchor": 9,
+        "caret": 7,
+        "textId": "dr_01K7JJN800Y67EFS6030DE8WKJ/nd_01K7JJN800QZE8KMB31T4GJBYE"
+      }
+    },
+    {
+      "check": "D-81 word right punctuation",
+      "ok": true,
+      "detail": {
+        "anchor": 8,
+        "caret": 8,
+        "textId": "dr_01K7JJN800Y67EFS6030DE8WKJ/nd_01K7JJN800QZE8KMB31T4GJBYE"
+      }
+    },
+    {
+      "check": "D-81 word backspace punctuation",
+      "ok": true,
+      "detail": "one two three"
+    },
+    {
+      "check": "D-81 word delete",
+      "ok": true,
+      "detail": "one two"
+    },
+    {
+      "check": "D-81 shift word right",
+      "ok": true,
+      "detail": {
+        "anchor": 0,
+        "caret": 3,
+        "textId": "dr_01K7JJN800DJ2HM64WMT3A357S/nd_01K7JJN800R3TQB3E8G571AMYW"
+      }
+    },
+    {
+      "check": "D-81 paired UTF16 events one scalar",
+      "ok": true,
+      "detail": "\ud83d\ude42"
+    }
+  ],
+  "failures": []
+}

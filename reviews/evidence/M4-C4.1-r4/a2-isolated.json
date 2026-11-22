@@ -1,0 +1,20 @@
+{
+  "command": [
+    "C:/Users/kaiga/.cargo/bin/cargo.exe",
+    "test",
+    "-p",
+    "tt-mcp",
+    "--test",
+    "c41_isolated",
+    "--locked",
+    "--",
+    "--nocapture"
+  ],
+  "exit": 0,
+  "seconds": 5.64000370001304,
+  "results": [
+    "     Running tests\\c41_isolated.rs (target\\debug\\deps\\c41_isolated-c752dc59bb20c85f.exe)",
+    "baseline=8 measured=178 idle-sessions=179 formula=659 stats=Stats { workers: 8, pending: 1, lingering: 8, sessions: 32 }",
+    "test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 3.52s"
+  ]
+}

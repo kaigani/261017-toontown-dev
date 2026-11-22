@@ -1,0 +1,21 @@
+ok   the application saves the fixture project
+ok   the canvas is located in the window (OS input)
+ok   three-way brush (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way pencil (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way rectangle (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way ellipse (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way line (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   Polyline double-click ends the gesture (02 7.2.5:535)
+ok   three-way polyline (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way eraser (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   three-way paint (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+{
+ "kind": "toontown.c42.gesture-equivalence",
+ "platform": "win32",
+ "seconds": 10.4,
+ "rows": 8,
+ "input": [
+  "os"
+ ],
+ "failures": []
+}

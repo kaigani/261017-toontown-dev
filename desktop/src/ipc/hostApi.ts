@@ -5,6 +5,7 @@
 // an `ErrorInfo`, and emits events as JSON text. Text is parsed losslessly (64-bit integers survive as bigint) and
 // validated against the generated schemas. A transport that hands over objects instead (in-process test doubles)
 // goes through `certify`: plain data only, structured-clone-able (no Proxy), snapshotted, validated.
+import { createEngineApi, type EngineApi } from './engine';
 import { certify, type Schema } from './schema';
 import { createBenchApi, createSpikeApi, type BenchApi, type SpikeApi } from './spikeApi';
 import type { HostTransport, Unlisten } from './transport';
@@ -39,6 +40,21 @@ export class HostError extends Error {
 
 export interface HostApi extends BenchApi {
   readonly transportKind: HostTransport['kind'];
+  /** The engine: one entry point for every command, events, sensor reports, key dispatch (M4 C4.1). */
+  readonly engine: EngineApi;
+  /** Documents to open at start (01 §1.1 rule 8), taken once. */
+  startup(): Promise<Startup>;
+  /** The engine stopped answering or answers again (reviews/M4-design-engine-restart.md). */
+  onEngineStatus(
+    handler: (status: { notResponding: boolean; generation: number }) => void,
+  ): Promise<Unlisten>;
+  /** Notices of the host itself (for example the agent server could not start; ruling O-6). */
+  onHostNotice(handler: (notice: HostNotice) => void): Promise<Unlisten>;
+  /** A native menu item's hint while it is highlighted (Open Recent's full path, 01 §3.3 line 190); `null` when the
+   *  highlight moves elsewhere or the menu closes. */
+  onMenuHint(handler: (text: string | null) => void): Promise<Unlisten>;
+  /** Restarts a stuck engine (the user's choice, never automatic). */
+  restartEngine(): Promise<{ generation: number }>;
   ping(request: PingRequest): Promise<PingResponse>;
   appInfo(): Promise<EngineInfo>;
   onMenuCommand(handler: (event: MenuCommandEvent) => void): Promise<Unlisten>;
@@ -128,9 +144,124 @@ async function call<T>(
   return data;
 }
 
+const STARTUP_SCHEMA: Schema = {
+  type: 'object',
+  properties: {
+    open: { type: 'array', items: { type: 'string' } },
+    canvas: {
+      type: 'object',
+      properties: { metrics: { type: 'boolean' }, backend: { enum: ['webgpu', 'webgl2', null] } },
+      required: ['metrics', 'backend'],
+      additionalProperties: false,
+    },
+  },
+  required: ['open'],
+  additionalProperties: false,
+};
+
+/** The host's startup answer: documents to open; the canvas's launch options (M4 C4.2b measurements). */
+export interface Startup {
+  open: string[];
+  canvas?: { metrics: boolean; backend: 'webgpu' | 'webgl2' | null };
+}
+
+/** A notice of the host: a message id with its help entry, the severity and the text. */
+export interface HostNotice {
+  messageId: string;
+  severity: 'info' | 'warning' | 'error';
+  text: string;
+}
+
+const HOST_NOTICE_SCHEMA: Schema = {
+  type: 'object',
+  properties: {
+    messageId: { type: 'string', minLength: 1, maxLength: 128 },
+    severity: { enum: ['info', 'warning', 'error'] },
+    text: { type: 'string', maxLength: 4096 },
+  },
+  required: ['messageId', 'severity', 'text'],
+  additionalProperties: false,
+};
+
+function isHostNotice(v: unknown): v is HostNotice {
+  if (typeof v !== 'object' || v === null) return false;
+  const o = v as Record<string, unknown>;
+  return (
+    typeof o['messageId'] === 'string' &&
+    (o['severity'] === 'info' || o['severity'] === 'warning' || o['severity'] === 'error') &&
+    typeof o['text'] === 'string'
+  );
+}
+
+const MENU_HINT_SCHEMA: Schema = {
+  type: 'object',
+  properties: { text: { type: ['string', 'null'], maxLength: 4096 } },
+  required: ['text'],
+  additionalProperties: false,
+};
+
+function isMenuHint(v: unknown): v is { text: string | null } {
+  if (typeof v !== 'object' || v === null) return false;
+  const t = (v as Record<string, unknown>)['text'];
+  return t === null || typeof t === 'string';
+}
+
+const ENGINE_STATUS_SCHEMA: Schema = {
+  type: 'object',
+  properties: { notResponding: { type: 'boolean' }, generation: { type: 'integer', minimum: 0 } },
+  required: ['notResponding', 'generation'],
+  additionalProperties: false,
+};
+
+function isEngineStatus(v: unknown): v is { notResponding: boolean; generation: number } {
+  return (
+    typeof v === 'object' &&
+    v !== null &&
+    typeof (v as { notResponding?: unknown }).notResponding === 'boolean'
+  );
+}
+
+const GENERATION_SCHEMA: Schema = {
+  type: 'object',
+  properties: { generation: { type: 'integer', minimum: 0 } },
+  required: ['generation'],
+  additionalProperties: false,
+};
+
+function isGeneration(v: unknown): v is { generation: number } {
+  return (
+    typeof v === 'object' && v !== null && typeof (v as { generation?: unknown }).generation === 'number'
+  );
+}
+
+function isStartup(v: unknown): v is Startup {
+  return typeof v === 'object' && v !== null && Array.isArray((v as { open?: unknown }).open);
+}
+
 export function createHostApi(transport: HostTransport): HostApi {
   return {
     transportKind: transport.kind,
+    engine: createEngineApi(transport),
+    startup: () =>
+      call(transport, 'startup', undefined, STARTUP_SCHEMA, isStartup).catch(() => ({
+        open: [] as string[],
+      })),
+    onEngineStatus: (handler) =>
+      transport.listen('engine-status', (payload) => {
+        const v = acceptWire(payload, ENGINE_STATUS_SCHEMA, isEngineStatus);
+        if (v !== undefined) handler(v);
+      }),
+    onHostNotice: (handler) =>
+      transport.listen('host-notice', (payload) => {
+        const v = acceptWire(payload, HOST_NOTICE_SCHEMA, isHostNotice);
+        if (v !== undefined) handler(v);
+      }),
+    onMenuHint: (handler) =>
+      transport.listen('menu-hint', (payload) => {
+        const v = acceptWire(payload, MENU_HINT_SCHEMA, isMenuHint);
+        if (v !== undefined) handler(v.text);
+      }),
+    restartEngine: () => call(transport, 'restart_engine', undefined, GENERATION_SCHEMA, isGeneration),
     ping: (request) => call(transport, 'ping', request, pingResponseSchema, isPingResponse),
     appInfo: () => call(transport, 'app_info', undefined, engineInfoSchema, isEngineInfo),
     onMenuCommand: (handler) =>

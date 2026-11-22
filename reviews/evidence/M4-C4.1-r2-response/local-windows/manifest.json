@@ -1,0 +1,26 @@
+{
+  "kind": "toontown.c41.gui-e2e",
+  "os": "Windows-11-10.0.26200-SP0",
+  "app": "toontown.exe",
+  "durationS": 32.0,
+  "checks": 49,
+  "failed": [],
+  "screenshots": [
+    "01-start-screen.png",
+    "02-project.png",
+    "03-preferences.png",
+    "04-restart.png"
+  ],
+  "files": [
+    "01-start-screen.png",
+    "02-project.png",
+    "03-preferences.png",
+    "04-restart.png",
+    "activity.json",
+    "discovery.json",
+    "discovery.log",
+    "tree-01-start.json",
+    "tree-02-project.json",
+    "tree-04-restart.json"
+  ]
+}

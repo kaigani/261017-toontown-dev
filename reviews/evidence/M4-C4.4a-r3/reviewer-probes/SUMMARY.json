@@ -1,0 +1,468 @@
+{
+  "build": "pnpm --dir desktop tauri build --no-bundle -- --locked; batches r2-steps, m1b5-*, r1-steps and l2a4-again at fab440a1, final-m2b at 66abd1d3, final2 at 8c78722b (the final product)",
+  "how": "probes run unchanged; REVIEW_RAW outside the repository; the reviewer's evidence folders restored after each step",
+  "batches": [
+    {
+      "batch": "r2-steps",
+      "what": "tests/adversarial/c44a-r2-live.py, each step once, in order",
+      "runs": [
+        {
+          "run": "m1a-2-01",
+          "exit": 0,
+          "checks": 160,
+          "seconds": 437,
+          "failed": []
+        },
+        {
+          "run": "m1a-3-01",
+          "exit": 0,
+          "checks": 120,
+          "seconds": 293,
+          "failed": []
+        },
+        {
+          "run": "m1a-4-01",
+          "exit": 0,
+          "checks": 8,
+          "seconds": 31,
+          "failed": []
+        },
+        {
+          "run": "m1b-5-01",
+          "exit": 1,
+          "checks": 70,
+          "seconds": 151,
+          "failed": [
+            {
+              "check": "D-60 placement ((800, 500), 'cameraView', 0.01, 0.01)",
+              "detail": "{'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}"
+            },
+            {
+              "check": "D-60 menu opened at ((800, 500), 'cameraView', 0.01, 0.01)",
+              "detail": "{'geometry': {'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}, 'canvas': {'x': 588, 'y': 307, 'width': 197, 'height': 61, 'top': 307, 'right': 785, 'bottom': 368, 'left': 588}}"
+            },
+            {
+              "check": "D-60 placement ((800, 500), 'cameraView', 0.01, 0.5)",
+              "detail": "{'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}"
+            },
+            {
+              "check": "D-60 menu opened at ((800, 500), 'cameraView', 0.01, 0.5)",
+              "detail": "{'geometry': {'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}, 'canvas': {'x': 588, 'y': 307, 'width': 197, 'height': 61, 'top': 307, 'right': 785, 'bottom': 368, 'left': 588}}"
+            },
+            {
+              "check": "D-60 placement ((800, 500), 'cameraView', 0.01, 0.99)",
+              "detail": "{'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}"
+            },
+            {
+              "check": "D-60 menu opened at ((800, 500), 'cameraView', 0.01, 0.99)",
+              "detail": "{'geometry': {'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}, 'canvas': {'x': 588, 'y': 307, 'width': 197, 'height': 61, 'top': 307, 'right': 785, 'bottom': 368, 'left': 588}}"
+            }
+          ]
+        },
+        {
+          "run": "m1b-6-01",
+          "exit": 0,
+          "checks": 7,
+          "seconds": 23,
+          "failed": []
+        },
+        {
+          "run": "m1b-7-01",
+          "exit": 0,
+          "checks": 72,
+          "seconds": 175,
+          "failed": []
+        },
+        {
+          "run": "m2a-1-01",
+          "exit": 0,
+          "checks": 0,
+          "seconds": 4,
+          "failed": []
+        },
+        {
+          "run": "m2a-2-01",
+          "exit": 0,
+          "checks": 6,
+          "seconds": 121,
+          "failed": []
+        },
+        {
+          "run": "m2a-4-01",
+          "exit": 0,
+          "checks": 5,
+          "seconds": 46,
+          "failed": []
+        },
+        {
+          "run": "m2b-5-01",
+          "exit": 0,
+          "checks": 2,
+          "seconds": 13,
+          "failed": []
+        },
+        {
+          "run": "m2b-6-01",
+          "exit": 1,
+          "checks": 4,
+          "seconds": 31,
+          "failed": [
+            {
+              "check": "fifth declines and blocked read completes after decisions",
+              "detail": "{'fifth': {'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'limit.exceeded', 'message': 'this session already waits on 4 held confirmations or jobs at once; this call was not run', 'details': {'limit': 'concurrentJobWaits', 'value': 4}, 'hint': 'wait for an earlier held call or job to end, then call again'}}, 'readStatus': 'ok'}"
+            }
+          ]
+        },
+        {
+          "run": "m2b-7-01",
+          "exit": 0,
+          "checks": 7,
+          "seconds": 29,
+          "failed": []
+        }
+      ],
+      "passed": 10,
+      "of": 12
+    },
+    {
+      "batch": "m1b5-again",
+      "what": "c44a-r2-live.py m1b 5 again (the left-edge Camera view points)",
+      "runs": [
+        {
+          "run": "m1b-5-01",
+          "exit": 1,
+          "checks": 70,
+          "seconds": 153,
+          "failed": [
+            {
+              "check": "D-60 placement ((800, 500), 'cameraView', 0.01, 0.01)",
+              "detail": "{'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}"
+            },
+            {
+              "check": "D-60 menu opened at ((800, 500), 'cameraView', 0.01, 0.01)",
+              "detail": "{'geometry': {'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}, 'canvas': {'x': 588, 'y': 307, 'width': 197, 'height': 61, 'top': 307, 'right': 785, 'bottom': 368, 'left': 588}}"
+            },
+            {
+              "check": "D-60 placement ((800, 500), 'cameraView', 0.01, 0.5)",
+              "detail": "{'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}"
+            },
+            {
+              "check": "D-60 menu opened at ((800, 500), 'cameraView', 0.01, 0.5)",
+              "detail": "{'geometry': {'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}, 'canvas': {'x': 588, 'y': 307, 'width': 197, 'height': 61, 'top': 307, 'right': 785, 'bottom': 368, 'left': 588}}"
+            },
+            {
+              "check": "D-60 placement ((800, 500), 'cameraView', 0.01, 0.99)",
+              "detail": "{'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}"
+            },
+            {
+              "check": "D-60 menu opened at ((800, 500), 'cameraView', 0.01, 0.99)",
+              "detail": "{'geometry': {'client': {'w': 800, 'h': 500}, 'menu': None, 'arrows': [], 'items': []}, 'canvas': {'x': 588, 'y': 307, 'width': 197, 'height': 61, 'top': 307, 'right': 785, 'bottom': 368, 'left': 588}}"
+            }
+          ]
+        }
+      ],
+      "passed": 0,
+      "of": 1
+    },
+    {
+      "batch": "m1b5-cam",
+      "what": "c44a-r2-live.py m1b 5 with the probe's own C44_MIN_CAMERA switch (the 800 by 500 Camera view only)",
+      "runs": [
+        {
+          "run": "m1b-5-01",
+          "exit": 0,
+          "checks": 19,
+          "seconds": 61,
+          "failed": []
+        }
+      ],
+      "passed": 1,
+      "of": 1
+    },
+    {
+      "batch": "r1-steps",
+      "what": "tests/adversarial/c44a-r1-live.py (round 1), each step once, in order",
+      "runs": [
+        {
+          "run": "l1b-5-01",
+          "exit": 0,
+          "checks": 10,
+          "seconds": 18,
+          "failed": []
+        },
+        {
+          "run": "l1b-6-01",
+          "exit": 0,
+          "checks": 327,
+          "seconds": 16,
+          "failed": []
+        },
+        {
+          "run": "l1b-7-01",
+          "exit": 0,
+          "checks": 160,
+          "seconds": 435,
+          "failed": []
+        },
+        {
+          "run": "l1b-8-01",
+          "exit": 0,
+          "checks": 5,
+          "seconds": 9,
+          "failed": []
+        },
+        {
+          "run": "l2a-1-01",
+          "exit": 0,
+          "checks": 11,
+          "seconds": 16,
+          "failed": []
+        },
+        {
+          "run": "l2a-2-01",
+          "exit": 0,
+          "checks": 29,
+          "seconds": 53,
+          "failed": []
+        },
+        {
+          "run": "l2a-3-01",
+          "exit": 0,
+          "checks": 4,
+          "seconds": 6,
+          "failed": []
+        },
+        {
+          "run": "l2a-4-01",
+          "exit": 1,
+          "checks": 38,
+          "seconds": 91,
+          "failed": [
+            {
+              "check": "probe completed",
+              "detail": "ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [RuntimeError('setup project.open {\\'path\\': \\'C:\\\\\\\\Users\\\\\\\\kaiga\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\c44fixture-4xjwpkkx\\\\\\\\restart.animpkg\\'}: {\"status\": \"error\", \"changes\": [], \"warnings\": [], \"documentRev\": null, \"error\": {\"code\": \"fs.outsideRoots\", \"message\": \"`C:\\\\\\\\Users\\\\\\\\kaiga\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\c44fixture-4xjwpkkx\\\\\\\\restart.animpkg` is outside the folders this session may access\", \"details\": {\"path\": \"C:\\\\\\\\Users\\\\\\\\kaiga\\\\\\\\AppData\\\\\\\\Local\\\\\\\\Temp\\\\\\\\c44fixture-4xjwpkkx\\\\\\\\restart.animpkg\", \"pointer\": \"/path\", \"roots\": []}, \"hint\": \"ask the user to grant the folder (11 \\\\u00a76.2)\"}}')])])])])"
+            }
+          ]
+        },
+        {
+          "run": "l2b-5-01",
+          "exit": 0,
+          "checks": 7,
+          "seconds": 24,
+          "failed": []
+        },
+        {
+          "run": "l2b-6-01",
+          "exit": 0,
+          "checks": 24,
+          "seconds": 48,
+          "failed": []
+        },
+        {
+          "run": "l2b-7-01",
+          "exit": 0,
+          "checks": 7,
+          "seconds": 9,
+          "failed": []
+        },
+        {
+          "run": "l3a-1-01",
+          "exit": 0,
+          "checks": 11,
+          "seconds": 73,
+          "failed": []
+        },
+        {
+          "run": "l3a-2-01",
+          "exit": 0,
+          "checks": 6,
+          "seconds": 31,
+          "failed": []
+        },
+        {
+          "run": "l3a-3-01",
+          "exit": 0,
+          "checks": 10,
+          "seconds": 25,
+          "failed": []
+        },
+        {
+          "run": "l3a-4-01",
+          "exit": 0,
+          "checks": 30,
+          "seconds": 6,
+          "failed": []
+        },
+        {
+          "run": "l3b-5-01",
+          "exit": 0,
+          "checks": 11,
+          "seconds": 23,
+          "failed": []
+        },
+        {
+          "run": "l3b-6-01",
+          "exit": 0,
+          "checks": 9,
+          "seconds": 31,
+          "failed": []
+        },
+        {
+          "run": "l3b-7-01",
+          "exit": 0,
+          "checks": 11,
+          "seconds": 20,
+          "failed": []
+        },
+        {
+          "run": "l4a-1-01",
+          "exit": 0,
+          "checks": 11,
+          "seconds": 18,
+          "failed": []
+        },
+        {
+          "run": "l4a-2-01",
+          "exit": 0,
+          "checks": 13,
+          "seconds": 21,
+          "failed": []
+        },
+        {
+          "run": "l4a-3-01",
+          "exit": 0,
+          "checks": 14,
+          "seconds": 16,
+          "failed": []
+        },
+        {
+          "run": "l4a-4-01",
+          "exit": 0,
+          "checks": 11,
+          "seconds": 17,
+          "failed": []
+        },
+        {
+          "run": "l4a-5-01",
+          "exit": 0,
+          "checks": 8,
+          "seconds": 18,
+          "failed": []
+        },
+        {
+          "run": "l4b-6-01",
+          "exit": 0,
+          "checks": 11,
+          "seconds": 25,
+          "failed": []
+        },
+        {
+          "run": "l4b-7-01",
+          "exit": 0,
+          "checks": 14,
+          "seconds": 45,
+          "failed": []
+        }
+      ],
+      "passed": 24,
+      "of": 25
+    },
+    {
+      "batch": "l2a4-again",
+      "what": "c44a-r1-live.py l2a 4, three more runs",
+      "runs": [
+        {
+          "run": "l2a-4-01",
+          "exit": 0,
+          "checks": 38,
+          "seconds": 93,
+          "failed": []
+        },
+        {
+          "run": "l2a-4-02",
+          "exit": 0,
+          "checks": 38,
+          "seconds": 93,
+          "failed": []
+        },
+        {
+          "run": "l2a-4-03",
+          "exit": 0,
+          "checks": 38,
+          "seconds": 93,
+          "failed": []
+        }
+      ],
+      "passed": 3,
+      "of": 3
+    },
+    {
+      "batch": "final-m2b",
+      "what": "c44a-r2-live.py m2b 5, 6, 7 on 66abd1d3 (the refused call's confirmation settled)",
+      "runs": [
+        {
+          "run": "m2b-5-01",
+          "exit": 0,
+          "checks": 2,
+          "seconds": 15,
+          "failed": []
+        },
+        {
+          "run": "m2b-6-01",
+          "exit": 1,
+          "checks": 4,
+          "seconds": 31,
+          "failed": [
+            {
+              "check": "fifth declines and blocked read completes after decisions",
+              "detail": "{'fifth': {'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'limit.exceeded', 'message': 'this session already waits on 4 held confirmations or jobs at once; this call was not run', 'details': {'limit': 'concurrentJobWaits', 'value': 4}, 'hint': 'wait for an earlier held call or job to end, then call again'}}, 'readStatus': 'ok'}"
+            }
+          ]
+        },
+        {
+          "run": "m2b-7-01",
+          "exit": 0,
+          "checks": 7,
+          "seconds": 29,
+          "failed": []
+        }
+      ],
+      "passed": 2,
+      "of": 3
+    },
+    {
+      "batch": "final2",
+      "what": "c44a-r2-live.py m2a 2, m2a 4, m2b 6 on 8c78722b (the final product)",
+      "runs": [
+        {
+          "run": "m2a-2-01",
+          "exit": 0,
+          "checks": 6,
+          "seconds": 121,
+          "failed": []
+        },
+        {
+          "run": "m2a-4-01",
+          "exit": 0,
+          "checks": 5,
+          "seconds": 45,
+          "failed": []
+        },
+        {
+          "run": "m2b-6-01",
+          "exit": 1,
+          "checks": 4,
+          "seconds": 31,
+          "failed": [
+            {
+              "check": "fifth declines and blocked read completes after decisions",
+              "detail": "{'fifth': {'status': 'error', 'changes': [], 'warnings': [], 'documentRev': None, 'error': {'code': 'limit.exceeded', 'message': 'this session already waits on 4 held confirmations or jobs at once; this call was not run', 'details': {'limit': 'concurrentJobWaits', 'value': 4}, 'hint': 'wait for an earlier held call or job to end, then call again'}}, 'readStatus': 'ok'}"
+            }
+          ]
+        }
+      ],
+      "passed": 2,
+      "of": 3
+    }
+  ]
+}

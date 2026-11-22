@@ -1,0 +1,1342 @@
+{
+  "rows": [
+    {
+      "key": "user.name",
+      "spec_type": "string",
+      "spec_default": "\"\" (empty = the OS account's full name)",
+      "spec_range": "\u2264 100 chars",
+      "catalogue": {
+        "key": "user.name",
+        "type": "string",
+        "default": "",
+        "maxLength": 100,
+        "applies": "live",
+        "category": "general",
+        "description": "Author name stamped into templates created afterwards; empty uses the operating system account's full name."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "user.copyright",
+      "spec_type": "string",
+      "spec_default": "\"\"",
+      "spec_range": "\u2264 200 chars",
+      "catalogue": {
+        "key": "user.copyright",
+        "type": "string",
+        "default": "",
+        "maxLength": 200,
+        "applies": "live",
+        "category": "general",
+        "description": "Copyright owner stamped into new templates."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "library.globalPath",
+      "spec_type": "path",
+      "spec_default": "per-user documents folder / application library folder",
+      "spec_range": "existing writable folder",
+      "catalogue": {
+        "key": "library.globalPath",
+        "type": "path",
+        "default": "",
+        "applies": "live",
+        "category": "general",
+        "description": "Location of the global library; empty uses the per-user application library folder. Must be an existing writable folder."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "general.startup.behaviour",
+      "spec_type": "enum",
+      "spec_default": "`startScreen`",
+      "spec_range": "`startScreen` \\| `lastProject` \\| `openDialog` \\| `newDialog` \\| `newDefaultProject`",
+      "catalogue": {
+        "key": "general.startup.behaviour",
+        "type": "enum",
+        "default": "startScreen",
+        "values": [
+          "startScreen",
+          "lastProject",
+          "openDialog",
+          "newDialog",
+          "newDefaultProject"
+        ],
+        "applies": "nextLaunch",
+        "category": "general",
+        "description": "What happens at launch and after Close."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "general.language",
+      "spec_type": "enum",
+      "spec_default": "system language if installed, else `en`",
+      "spec_range": "installed localisations, shown by their own names",
+      "catalogue": {
+        "key": "general.language",
+        "type": "enum",
+        "default": "en",
+        "values": [
+          "en"
+        ],
+        "applies": "restart",
+        "category": "general",
+        "description": "Interface language (installed localisations)."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "general.recentProjects.maxCount",
+      "spec_type": "int",
+      "spec_default": "10",
+      "spec_range": "0\u201330",
+      "catalogue": {
+        "key": "general.recentProjects.maxCount",
+        "type": "int",
+        "default": 10,
+        "min": 0,
+        "max": 30,
+        "applies": "live",
+        "category": "general",
+        "description": "Length of the recent-projects list."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "general.workspace.autoSave",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "general.workspace.autoSave",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "general",
+        "description": "Save the current workspace automatically before switching workspace and at quit."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "files.autosave.enabled",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "files.autosave.enabled",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "files",
+        "description": "Write periodic recovery copies of a modified project."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "files.autosave.intervalMinutes",
+      "spec_type": "int",
+      "spec_default": "5",
+      "spec_range": "1\u201360",
+      "catalogue": {
+        "key": "files.autosave.intervalMinutes",
+        "type": "int",
+        "default": 5,
+        "min": 1,
+        "max": 60,
+        "applies": "live",
+        "category": "files",
+        "description": "Autosave interval in minutes."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "files.backups.count",
+      "spec_type": "int",
+      "spec_default": "3",
+      "spec_range": "0\u201320 (0 = off)",
+      "catalogue": {
+        "key": "files.backups.count",
+        "type": "int",
+        "default": 3,
+        "min": 0,
+        "max": 20,
+        "applies": "live",
+        "category": "files",
+        "description": "Previous versions kept per project (0 = off)."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "project.defaults.frameRate",
+      "spec_type": "number",
+      "spec_default": "24",
+      "spec_range": "1\u2013120",
+      "catalogue": {
+        "key": "project.defaults.frameRate",
+        "type": "number",
+        "default": 24,
+        "min": 1,
+        "max": 120,
+        "applies": "live",
+        "category": "newProject",
+        "description": "Frame rate of the Default format of the new-project form."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "project.defaults.cameraWidth",
+      "spec_type": "int",
+      "spec_default": "1920",
+      "spec_range": "16\u20138192",
+      "catalogue": {
+        "key": "project.defaults.cameraWidth",
+        "type": "int",
+        "default": 1920,
+        "min": 16,
+        "max": 8192,
+        "applies": "live",
+        "category": "newProject",
+        "description": "Camera width of the Default format."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "project.defaults.cameraHeight",
+      "spec_type": "int",
+      "spec_default": "1080",
+      "spec_range": "16\u20138192",
+      "catalogue": {
+        "key": "project.defaults.cameraHeight",
+        "type": "int",
+        "default": 1080,
+        "min": 16,
+        "max": 8192,
+        "applies": "live",
+        "category": "newProject",
+        "description": "Camera height of the Default format."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.theme",
+      "spec_type": "enum",
+      "spec_default": "`system`",
+      "spec_range": "`system` \\| `light` \\| `dark` \\| installed user themes",
+      "catalogue": {
+        "key": "interface.theme",
+        "type": "enum",
+        "default": "system",
+        "values": [
+          "system",
+          "light",
+          "dark"
+        ],
+        "userThemes": true,
+        "applies": "live",
+        "category": "interface",
+        "description": "Interface theme; system follows the operating system appearance."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.statusBar.visible",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "interface.statusBar.visible",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "interface",
+        "description": "Show the status bar."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.mainToolbar.visible",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "interface.mainToolbar.visible",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "interface",
+        "description": "Show the main toolbar."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.timeMeasurement",
+      "spec_type": "enum",
+      "spec_default": "`frames`",
+      "spec_range": "`frames` \\| `feetAndFrames`",
+      "catalogue": {
+        "key": "interface.timeMeasurement",
+        "type": "enum",
+        "default": "frames",
+        "values": [
+          "frames",
+          "feetAndFrames"
+        ],
+        "applies": "live",
+        "category": "interface",
+        "description": "Timeline ruler and frame displays show frame numbers, or feet and frames (16 frames per foot)."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.drawing",
+      "spec_type": "colour",
+      "spec_default": "#8FD98FFF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.drawing",
+        "type": "colour",
+        "default": "#8FD98FFF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of drawing elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.image",
+      "spec_type": "colour",
+      "spec_default": "#A8E0A8FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.image",
+        "type": "colour",
+        "default": "#A8E0A8FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of image elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.sound",
+      "spec_type": "colour",
+      "spec_default": "#B8A8D8FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.sound",
+        "type": "colour",
+        "default": "#B8A8D8FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of sound elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.peg",
+      "spec_type": "colour",
+      "spec_default": "#8080FFFF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.peg",
+        "type": "colour",
+        "default": "#8080FFFF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of peg elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.skeleton",
+      "spec_type": "colour",
+      "spec_default": "#6A8FB5FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.skeleton",
+        "type": "colour",
+        "default": "#6A8FB5FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of skeleton elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.bone",
+      "spec_type": "colour",
+      "spec_default": "#7FA3C8FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.bone",
+        "type": "colour",
+        "default": "#7FA3C8FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of bone elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.media",
+      "spec_type": "colour",
+      "spec_default": "#A0A050FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.media",
+        "type": "colour",
+        "default": "#A0A050FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of media (movie) elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.camera",
+      "spec_type": "colour",
+      "spec_default": "#FF8080FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.camera",
+        "type": "colour",
+        "default": "#FF8080FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of camera elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.effect",
+      "spec_type": "colour",
+      "spec_default": "#C88040FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.effect",
+        "type": "colour",
+        "default": "#C88040FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of effect elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.elementColours.effectParameter",
+      "spec_type": "colour",
+      "spec_default": "#A05030FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.elementColours.effectParameter",
+        "type": "colour",
+        "default": "#A05030FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Default marker colour of effect-parameter (mask and matte) elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.storylineColours.scene",
+      "spec_type": "colour",
+      "spec_default": "#9CC3E6FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.storylineColours.scene",
+        "type": "colour",
+        "default": "#9CC3E6FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Scene blocks in the storyline."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.storylineColours.sceneWarning",
+      "spec_type": "colour",
+      "spec_default": "#F2A65AFF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.storylineColours.sceneWarning",
+        "type": "colour",
+        "default": "#F2A65AFF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Scene blocks with a warning in the storyline."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.storylineColours.transition",
+      "spec_type": "colour",
+      "spec_default": "#C9C9C9FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.storylineColours.transition",
+        "type": "colour",
+        "default": "#C9C9C9FF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Transition blocks in the storyline."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.background.timeline",
+      "spec_type": "colour",
+      "spec_default": "theme default",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.background.timeline",
+        "type": "colour",
+        "default": "",
+        "themeDefault": true,
+        "applies": "live",
+        "category": "interface",
+        "description": "Timeline background; empty uses the theme's colour."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "interface.background.drawingView",
+      "spec_type": "colour",
+      "spec_default": "#FFFFFFFF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "interface.background.drawingView",
+        "type": "colour",
+        "default": "#FFFFFFFF",
+        "applies": "live",
+        "category": "interface",
+        "description": "Background of the Drawing view, and of the Camera view when the scene background colour is not used."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.enabled",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "drawing.onionSkin.enabled",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Onion skin on or off."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.previousCount",
+      "spec_type": "int",
+      "spec_default": "1",
+      "spec_range": "0\u20133",
+      "catalogue": {
+        "key": "drawing.onionSkin.previousCount",
+        "type": "int",
+        "default": 1,
+        "min": 0,
+        "max": 3,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Number of previous drawings shown."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.nextCount",
+      "spec_type": "int",
+      "spec_default": "1",
+      "spec_range": "0\u20133",
+      "catalogue": {
+        "key": "drawing.onionSkin.nextCount",
+        "type": "int",
+        "default": 1,
+        "min": 0,
+        "max": 3,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Number of next drawings shown."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.transparency",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "drawing.onionSkin.transparency",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Onion-skin drawings are semi-transparent."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.colourShading",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "drawing.onionSkin.colourShading",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Onion-skin drawings are tinted with the previous and next colours."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.previousColour",
+      "spec_type": "colour",
+      "spec_default": "#FF0000FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "drawing.onionSkin.previousColour",
+        "type": "colour",
+        "default": "#FF0000FF",
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Tint of previous drawings."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.nextColour",
+      "spec_type": "colour",
+      "spec_default": "#00C000FF",
+      "spec_range": "any",
+      "catalogue": {
+        "key": "drawing.onionSkin.nextColour",
+        "type": "colour",
+        "default": "#00C000FF",
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Tint of next drawings."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.onionSkin.outlineOnly",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "drawing.onionSkin.outlineOnly",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Show onion-skin drawings as outlines."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.lightTable.staticShade",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "drawing.lightTable.staticShade",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Wash out drawings shown on the static light table."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "drawing.lightTable.autoShade",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "drawing.lightTable.autoShade",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "drawingAids",
+        "description": "Wash out drawings shown by the automatic light table."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.antiAliasing",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "display.antiAliasing",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "display",
+        "description": "Anti-alias the whole view."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.smoothBitmaps",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "display.smoothBitmaps",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "display",
+        "description": "Filtered sampling of bitmap images and texture fills on screen."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.smoothToolOverlays",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "display.smoothToolOverlays",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "display",
+        "description": "Anti-alias tool overlays (handles, rotation circle)."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.smoothMotionPaths",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "display.smoothMotionPaths",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "display",
+        "description": "Anti-alias motion paths in staging views."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.fastPencilRendering",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "display.fastPencilRendering",
+        "type": "bool",
+        "default": false,
+        "applies": "restart",
+        "category": "display",
+        "description": "Faster, approximate on-screen rendering of centre-line (pencil) strokes."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.bitmapPreviewMaxSize",
+      "spec_type": "int",
+      "spec_default": "0",
+      "spec_range": "0 (full) or 256\u20138192",
+      "catalogue": {
+        "key": "display.bitmapPreviewMaxSize",
+        "type": "int",
+        "default": 0,
+        "min": 0,
+        "max": 8192,
+        "excludedRange": [
+          1,
+          255
+        ],
+        "applies": "live",
+        "category": "display",
+        "description": "Maximum on-screen resolution (longest side, pixels) of bitmaps and textures: 0 (full) or 256 to 8192. Never affects export."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.cacheMemoryPercent",
+      "spec_type": "int",
+      "spec_default": "30",
+      "spec_range": "5\u201380",
+      "catalogue": {
+        "key": "display.cacheMemoryPercent",
+        "type": "int",
+        "default": 30,
+        "min": 5,
+        "max": 80,
+        "applies": "live",
+        "category": "display",
+        "description": "Share of system memory used for display caches."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.sceneBackground.drawingView",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "display.sceneBackground.drawingView",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "display",
+        "description": "Use the scene background colour in the Drawing view."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "display.sceneBackground.stagingViews",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "display.sceneBackground.stagingViews",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "display",
+        "description": "Use the scene background colour in staging views."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "tablet.ignore",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "tablet.ignore",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "tablet",
+        "description": "Treat the tablet as a mouse (no pressure or tilt)."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "tablet.alternativeInput",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "tablet.alternativeInput",
+        "type": "bool",
+        "default": false,
+        "applies": "restart",
+        "category": "tablet",
+        "description": "Use the alternative operating-system tablet input interface."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "tablet.portraitCorrection",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "tablet.portraitCorrection",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "tablet",
+        "description": "Correct coordinates and pressure on tablet computers used in portrait orientation."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.motionPoint.defaultTension",
+      "spec_type": "number",
+      "spec_default": "0.0",
+      "spec_range": "\u22121.0\u20131.0",
+      "catalogue": {
+        "key": "staging.motionPoint.defaultTension",
+        "type": "number",
+        "default": 0.0,
+        "min": -1.0,
+        "max": 1.0,
+        "applies": "live",
+        "category": "staging",
+        "description": "Tension of newly created motion points (+1 = sharp corner)."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.motionPoint.defaultContinuity",
+      "spec_type": "number",
+      "spec_default": "0.0",
+      "spec_range": "\u22121.0\u20131.0",
+      "catalogue": {
+        "key": "staging.motionPoint.defaultContinuity",
+        "type": "number",
+        "default": 0.0,
+        "min": -1.0,
+        "max": 1.0,
+        "applies": "live",
+        "category": "staging",
+        "description": "Continuity of new motion points."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.motionPoint.defaultBias",
+      "spec_type": "number",
+      "spec_default": "0.0",
+      "spec_range": "\u22121.0\u20131.0",
+      "catalogue": {
+        "key": "staging.motionPoint.defaultBias",
+        "type": "number",
+        "default": 0.0,
+        "min": -1.0,
+        "max": 1.0,
+        "applies": "live",
+        "category": "staging",
+        "description": "Bias of new motion points."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.units.showSuffix",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "staging.units.showSuffix",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "staging",
+        "description": "Show the unit suffix next to coordinate values."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.units.coordinate",
+      "spec_type": "enum",
+      "spec_default": "`fields`",
+      "spec_range": "`fields` \\| `inches` \\| `centimetres`",
+      "catalogue": {
+        "key": "staging.units.coordinate",
+        "type": "enum",
+        "default": "fields",
+        "values": [
+          "fields",
+          "inches",
+          "centimetres"
+        ],
+        "applies": "live",
+        "category": "staging",
+        "description": "Unit for positions."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.units.angle",
+      "spec_type": "enum",
+      "spec_default": "`degrees`",
+      "spec_range": "`degrees` \\| `radians`",
+      "catalogue": {
+        "key": "staging.units.angle",
+        "type": "enum",
+        "default": "degrees",
+        "values": [
+          "degrees",
+          "radians"
+        ],
+        "applies": "live",
+        "category": "staging",
+        "description": "Unit for angles."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.selection.boxHighlight",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "staging.selection.boxHighlight",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "staging",
+        "description": "Draw a box around the selected element in the Camera view; when off the rest is faded."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.selection.alwaysVisible",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "staging.selection.alwaysVisible",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "staging",
+        "description": "Show elements selected in the Timeline or exposure sheet even when they are hidden."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.selection.outline",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "staging.selection.outline",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "staging",
+        "description": "Draw the contour of the selected elements."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.keyframes.linearVelocity",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "staging.keyframes.linearVelocity",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "staging",
+        "description": "New peg functions get linear velocity; when off, a default ease-in and ease-out."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.keyframes.constantByDefault",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "staging.keyframes.constantByDefault",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "staging",
+        "description": "New keyframes are constant (no interpolation)."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "staging.keyframes.snapLastFrame",
+      "spec_type": "bool",
+      "spec_default": "false",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "staging.keyframes.snapLastFrame",
+        "type": "bool",
+        "default": false,
+        "applies": "live",
+        "category": "staging",
+        "description": "Snap the last keyframe to the last frame."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "timing.timeline.singleCellSelection",
+      "spec_type": "bool",
+      "spec_default": "true",
+      "spec_range": "\u2014",
+      "catalogue": {
+        "key": "timing.timeline.singleCellSelection",
+        "type": "bool",
+        "default": true,
+        "applies": "live",
+        "category": "timing",
+        "description": "A click selects one cell; when off, a click selects the whole track."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "edit.pasteSpecial.timeline",
+      "spec_type": "object",
+      "spec_default": "defaults of \u00a76.3",
+      "spec_range": "option set of \u00a76.3",
+      "catalogue": {
+        "key": "edit.pasteSpecial.timeline",
+        "type": "object",
+        "default": {
+          "overwriteDrawings": true,
+          "createDeleteExposure": true,
+          "extendExposures": false,
+          "updateColours": true,
+          "keyframeSubstitution": false,
+          "motionKeys": true,
+          "rotationKeys": true,
+          "scaleKeys": true,
+          "pivotKeys": true,
+          "velocityKeys": true,
+          "skewKeys": true,
+          "boundaryKeys": false
+        },
+        "objectOf": "bool",
+        "applies": "live",
+        "category": "edit",
+        "description": "Remembered paste-special options."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "edit.cutSpecial.timeline",
+      "spec_type": "object",
+      "spec_default": "defaults of \u00a76.3",
+      "spec_range": "option set of \u00a76.3",
+      "catalogue": {
+        "key": "edit.cutSpecial.timeline",
+        "type": "object",
+        "default": {
+          "overwriteDrawings": true,
+          "createDeleteExposure": true,
+          "extendExposures": false,
+          "updateColours": true,
+          "keyframeSubstitution": false,
+          "motionKeys": true,
+          "rotationKeys": true,
+          "scaleKeys": true,
+          "pivotKeys": true,
+          "velocityKeys": true,
+          "skewKeys": true,
+          "boundaryKeys": false
+        },
+        "objectOf": "bool",
+        "applies": "live",
+        "category": "edit",
+        "description": "Remembered cut-special options."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "edit.dragDrop.timeline",
+      "spec_type": "object",
+      "spec_default": "defaults of \u00a76.3",
+      "spec_range": "option set of \u00a76.3",
+      "catalogue": {
+        "key": "edit.dragDrop.timeline",
+        "type": "object",
+        "default": {
+          "overwriteDrawings": true,
+          "createDeleteExposure": true,
+          "extendExposures": false,
+          "updateColours": true,
+          "keyframeSubstitution": false,
+          "motionKeys": true,
+          "rotationKeys": true,
+          "scaleKeys": true,
+          "pivotKeys": true,
+          "velocityKeys": true,
+          "skewKeys": true,
+          "boundaryKeys": false
+        },
+        "objectOf": "bool",
+        "applies": "live",
+        "category": "edit",
+        "description": "Options for dragging cells in the Timeline."
+      },
+      "present": true,
+      "same_type": true
+    },
+    {
+      "key": "edit.pasteSpecial.motionPoint",
+      "spec_type": "object",
+      "spec_default": "all on",
+      "spec_range": "option set of \u00a76.3",
+      "catalogue": {
+        "key": "edit.pasteSpecial.motionPoint",
+        "type": "object",
+        "default": {
+          "x": true,
+          "y": true,
+          "z": true,
+          "tension": true,
+          "continuity": true,
+          "bias": true,
+          "angle": true,
+          "rotationPivot": true,
+          "scaleX": true,
+          "scaleY": true,
+          "scalePivot": true
+        },
+        "objectOf": "bool",
+        "applies": "live",
+        "category": "edit",
+        "description": "Remembered motion-point paste-special options."
+      },
+      "present": true,
+      "same_type": true
+    }
+  ],
+  "extras": [
+    {
+      "key": "drawing.inspectorPreview",
+      "type": "bool",
+      "default": true,
+      "applies": "live",
+      "category": "drawingAids",
+      "description": "Show the drawing preview in the Properties panel's Drawing tab (draw.inspectorPreview.set)."
+    },
+    {
+      "key": "paint.gapClosing",
+      "type": "enum",
+      "default": "off",
+      "values": [
+        "off",
+        "small",
+        "medium",
+        "large"
+      ],
+      "applies": "live",
+      "category": "drawingAids",
+      "description": "Automatic gap closing of the paint tools (colour.gap.mode.set)."
+    },
+    {
+      "key": "staging.depthNudgeStep",
+      "type": "number",
+      "default": 0.01,
+      "min": 0.0001,
+      "max": 1.0,
+      "applies": "live",
+      "category": "staging",
+      "description": "Depth-nudge step in fields (05 \u00c2\u00a76.4, \u00c2\u00a716)."
+    },
+    {
+      "key": "staging.pegOnlyMode",
+      "type": "bool",
+      "default": false,
+      "applies": "live",
+      "category": "staging",
+      "description": "Peg-only mode of the animation tools (05 \u00c2\u00a76.1, \u00c2\u00a716)."
+    },
+    {
+      "key": "agent.server.enabled",
+      "type": "bool",
+      "default": false,
+      "applies": "live",
+      "category": "agent",
+      "description": "Run the agent (MCP) server for attached mode. Off by default (11 \u00c2\u00a74)."
+    },
+    {
+      "key": "agent.server.port",
+      "type": "int",
+      "default": 47215,
+      "min": 1024,
+      "max": 65535,
+      "applies": "live",
+      "category": "agent",
+      "description": "Loopback port of the Streamable HTTP endpoint; the next free port is used when it is taken."
+    },
+    {
+      "key": "agent.server.allowRemote",
+      "type": "bool",
+      "default": false,
+      "applies": "live",
+      "category": "agent",
+      "description": "Allow non-loopback binding (needs the MCP authorization flow; off by default)."
+    },
+    {
+      "key": "agent.policy.defaults",
+      "type": "object",
+      "default": {
+        "policy": "assist",
+        "maxJobs": 2,
+        "maxBatchSteps": 1000,
+        "maxInlineImagePx": 2048,
+        "maxInlineBytes": 52428800,
+        "askInApp": true,
+        "letAgentMoveView": true,
+        "highlightAgentChanges": true
+      },
+      "applies": "live",
+      "category": "agent",
+      "description": "Default policy and limits for new agent sessions (agent.policy.defaults.set)."
+    }
+  ]
+}

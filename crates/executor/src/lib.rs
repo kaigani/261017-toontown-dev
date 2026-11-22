@@ -24,21 +24,40 @@
 //! sets), AG-01…AG-09, §6–§8 and §10.2–§10.3 through the executor; 01 §3 (projects), §5 (window, panels, workspaces:
 //! kernel state), §6.1 (undo/redo), §11 (settings), §12.4. Milestone: M1 (C1.2, C1.3). Decisions: ADR-0013, ADR-0014.
 
+mod addressing;
 pub mod agents;
 mod align;
 mod app;
+mod camera_view;
+pub mod canvas;
 pub mod commands;
+mod contour_gesture;
 mod cx;
+mod drawing;
+mod envelope_gesture;
+pub mod gesture;
+mod help;
 mod history;
+pub mod host;
 mod jobs;
+pub mod keymap;
 mod load_repair;
 mod maintenance;
+mod memo;
 mod persistence;
+/// The interactive-target rule for a person's contextual edits from keys, panels and menus (ruling D-83 item 3).
+pub(crate) mod person;
 mod planar;
+mod prechecks;
+mod prefs;
 mod rules;
 mod run;
+mod scene_gesture;
 mod session;
+pub mod shell;
 mod store;
+pub mod text_edit;
+mod themes;
 mod time;
 mod types;
 mod ui;
@@ -49,22 +68,27 @@ use std::time::Duration;
 
 use serde_json::{Value, json};
 use tt_model::document::Document;
-use tt_registry::{AssemblyError, CommandError, Kind, Registry, Status as DeclStatus, codes};
+use tt_registry::{AssemblyError, Kind, Registry, Status as DeclStatus, codes};
 
 pub use app::{AppState, Mode};
+pub use commands::agent::TOKEN_BYTES as AGENT_TOKEN_BYTES;
 pub use cx::Cx;
 pub use history::MAX_STEPS as MAX_UNDO_STEPS;
+pub use host::{AttachedIo, CapturedPng};
 pub use jobs::{JobNotifier, JobProgress, JobRecord, JobState, JobTable};
 pub use maintenance::Timings as MaintenanceTimings;
 pub use run::LoadGrant;
 pub use session::Event;
 pub use store::{Maintenance, PersistOptions};
+pub use tt_persist::fsx::{is_secret_token, random_token, secret_token};
 pub use tt_persist::settings::UserDirs;
+/// The registry types hosts need without depending on the registry crate (M4 C4.1).
+pub use tt_registry::{CommandError, Status as DeclarationStatus};
 pub use types::{
     BatchRequest, BatchStep, ChangeRecord, Envelope, Invocation, InvokeOptions, OpenOptions, Origin, Status, UndoRef,
     UnsavedPolicy, Warning,
 };
-pub use ui::{Layout, PanelEntry, WorkspaceEntry};
+pub use ui::{Layout, PANELS as PANEL_CATALOGUE, PanelEntry, TOOL_PALETTES, WorkspaceEntry};
 
 /// Crate name as linked into the engine (the headless self-test lists it to prove the crate is present).
 pub const NAME: &str = env!("CARGO_PKG_NAME");
@@ -228,10 +252,14 @@ pub struct ExecutorHandle {
     tx: Sender<Request>,
     registry: &'static Registry,
     jobs: Arc<JobTable>,
-    subscribers: Arc<Mutex<Vec<Sender<Event>>>>,
+    subscribers: Arc<host::Bus>,
+    /// Facts the desktop host reports and the user-priority state agent calls consult (M4 C4.1; ADR-0021).
+    shell: Arc<host::ShellShared>,
     config: ExecutorConfig,
     /// The document thread's watchdog cancellation state (C23-R1-07).
     cancel: Arc<tt_vector::work::CancelState>,
+    /// This engine's recovery ownership token and its fence (C41-R1-15), reachable without the document thread.
+    recovery: Arc<host::RecoveryFence>,
     _guard: Arc<ShutdownGuard>,
 }
 
@@ -289,10 +317,11 @@ impl ExecutorHandle {
         // The system font list (text layout, missingFonts lint) is read once, off the document thread.
         tt_vector::fonts::warm();
         let (tx, rx) = mpsc::channel::<Request>();
-        let subscribers: Arc<Mutex<Vec<Sender<Event>>>> = Arc::new(Mutex::new(Vec::new()));
+        let subscribers: Arc<host::Bus> = Arc::new(host::Bus::default());
         let job_subs = subscribers.clone();
         let jobs = Arc::new(JobTable::with_notifier(Box::new(move |e| broadcast(&job_subs, std::slice::from_ref(&e)))));
         let mut env = store::Env::new(&persist);
+        let recovery = Arc::new(host::RecoveryFence { engine: env.engine.clone(), fence: env.fence.clone() });
         env.poster = Some(Poster(tx.clone()));
         let mut session = session::Session { jobs: jobs.clone(), env, ..session::Session::default() };
         // The saved agent policy defaults and limits (`agent.policy.defaults.set`; C14-R1-06).
@@ -301,6 +330,21 @@ impl ExecutorHandle {
         {
             session.agents.limits = limits;
         }
+        // SI-179: the activity log's persistence and the typed tools saved at the last run.
+        session.agents.persist = session.env.pref(agents::PERSIST_PREF).and_then(|v| v.as_bool()).unwrap_or(false);
+        if let Some(v) = session.env.pref(agents::TYPED_TOOLS_PREF) {
+            session.agents.typed_tools = agents::typed_tools_of(&v);
+        }
+        // M4 C4.1: the start-screen rule follows `general.startup.behaviour`; the main window geometry saved at the
+        // last quit is restored (01 §1.1, §11), clamped to the screens when the host reports them.
+        let by_default = session.env.pref("general.startup.behaviour").and_then(|v| v.as_str().map(str::to_owned));
+        session.ui.shell_mut().start_screen_by_default = by_default.as_deref() == Some("startScreen");
+        if let Some(g) =
+            session.env.settings.window.clone().and_then(|w| serde_json::from_value::<shell::WindowGeometry>(w).ok())
+        {
+            let clamped = session.ui.shell().clamp(g);
+            session.ui.shell_mut().window = clamped;
+        }
         maintenance::start(&mut session);
         let subs = subscribers.clone();
         let budget = config.budget;
@@ -308,10 +352,13 @@ impl ExecutorHandle {
         let worker_cancel = cancel.clone();
         let (done_tx, done_rx) = mpsc::channel::<()>();
         let tick = persist.maintenance.tick;
+        let shell = Arc::new(host::ShellShared::default());
+        let published = shell.clone();
         std::thread::Builder::new()
             .name("tt-document".to_owned())
             .spawn(move || {
-                document_thread(run::Core::new(registry, session, budget), &rx, &subs, &worker_cancel, budget);
+                let core = run::Core::new(registry, session, budget);
+                document_thread(core, &rx, &subs, &published, &worker_cancel, budget);
                 let _ = done_tx.send(());
             })
             .map_err(|e| CommandError::internal(format!("cannot start the document thread: {e}")))?;
@@ -330,7 +377,13 @@ impl ExecutorHandle {
                 .map_err(|e| CommandError::internal(format!("cannot start the maintenance thread: {e}")))?;
         }
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
-        Ok(Self { tx, registry, jobs, subscribers, config, cancel, _guard: guard })
+        Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, _guard: guard })
+    }
+
+    /// The never-block budget of every call (D-68 item 4: the MCP host bounds its own waits by it).
+    #[must_use]
+    pub fn budget(&self) -> Duration {
+        self.config.budget
     }
 
     /// Grants an agent session file-system roots (11 §6.2): paths given by that session must lie inside one of them
@@ -501,8 +554,11 @@ impl ExecutorHandle {
     /// watchdog budget, and the envelope carries the job's final result (its manifest, with `jobId`) or its failure. A
     /// job still running at the timeout answers `job.waitTimeout` with the `jobId`, which stays addressable
     /// (`job.wait`, `job.cancel`).
-    fn waited(&self, params: &Value, env: Envelope, cancelled: Cancelled<'_>) -> Envelope {
-        if params.get("wait") != Some(&Value::Bool(true)) || !env.is_ok() {
+    ///
+    /// `always`: the command's job is always waited for (`inspect.screenshot`, a query whose capture runs off the
+    /// document thread; design note 5 §1a, C42A-R1-02).
+    fn waited(&self, params: &Value, env: Envelope, cancelled: Cancelled<'_>, always: bool) -> Envelope {
+        if (!always && params.get("wait") != Some(&Value::Bool(true))) || !env.is_ok() {
             return env;
         }
         let Some(job) = env
@@ -543,22 +599,43 @@ impl ExecutorHandle {
         }
         let what = inv.command.clone();
         let params = inv.params.clone();
+        // User priority (M4 C4.1): an agent change waits for the user's dialog or gesture, on this thread.
+        if let Err(e) = self.user_priority(&inv.origin, &what, cancelled) {
+            return (Envelope::error(e, None), false);
+        }
         // A query changes nothing: it is not refused before it begins and the worker never asks its caller; a
         // cancellation marks its token, which stops it at its next work-account check, and a link carries only the
         // notice that it was discarded (ADR-0020 decision 8).
         let query = self.registry.get(&what).is_some_and(|e| e.spec.kind == tt_registry::Kind::Query);
+        // Headless captures: a slot on this thread first (design note 5 §1c); released when this call returns.
+        let _slot = if what == "inspect.screenshot" {
+            match self.shell.capture_slot(self.config.budget, cancelled) {
+                Ok(s) => Some(s),
+                Err(e) => return (Envelope::error(e, None), false),
+            }
+        } else {
+            None
+        };
+        // Attached mode (M4 C4.2b; D-6): what the user sees, captured by the host on this thread (never the document
+        // thread), in the headless answer's shape (S3).
+        if let Some(io) = _slot.as_ref().and_then(|_| self.shell.attached_io()) {
+            return (attached_screenshot(io.as_ref(), &params, self.config.budget), false);
+        }
         let called = match probe {
             None => self.call(&what, |r| Request::Invoke(inv, r)),
             Some(_) if query => self.call_with(&what, |r| Request::Invoke(inv, r), cancelled, Link::Notify),
             Some(c) => self.call_until(&what, |r| Request::Invoke(inv, r), c),
         };
         let (env, cached) = called.unwrap_or_else(|e| (Envelope::error(e, None), false));
-        (self.waited(&params, env, cancelled), cached)
+        (self.waited(&params, env, cancelled, what == "inspect.screenshot"), cached)
     }
 
     /// Runs a batch (11 §7.3).
     #[must_use]
     pub fn batch(&self, req: BatchRequest, origin: Origin) -> Envelope {
+        if let Err(e) = self.user_priority(&origin, "batch", &not_cancelled) {
+            return Envelope::error(e, None);
+        }
         self.call("batch", |r| Request::Batch(req, origin, r)).unwrap_or_else(|e| Envelope::error(e, None))
     }
 
@@ -568,6 +645,9 @@ impl ExecutorHandle {
     /// (ADR-0020 decision 8).
     #[must_use]
     pub fn batch_until(&self, req: BatchRequest, origin: Origin, cancelled: Cancelled<'_>) -> Envelope {
+        if let Err(e) = self.user_priority(&origin, "batch", cancelled) {
+            return Envelope::error(e, None);
+        }
         self.call_until("batch", |r| Request::Batch(req, origin, r), cancelled)
             .unwrap_or_else(|e| Envelope::error(e, None))
     }
@@ -608,6 +688,49 @@ impl ExecutorHandle {
         self.call("agent.status", |r| {
             Request::Run(Box::new(move |core| {
                 let _ = r.send(core.agent_status(&session));
+            }))
+        })
+    }
+
+    /// Asks the person in the app for a pending confirmation (ruling D-58, R-a: attached, a window present and the
+    /// session's `askInApp` on): the request is marked in-app, so its token is refused until the person accepts, and
+    /// the windows re-read the pending requests (`shell.agentConfirmation`). `false` when no such request is pending.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn hold_in_app(&self, token: &str) -> Result<bool, CommandError> {
+        let token = token.to_owned();
+        self.call("agent.holdInApp", |r| {
+            Request::Run(Box::new(move |core| {
+                let marked = core.session_mut().is_some_and(|s| {
+                    let found = s.agents.pending.get_mut(&token).map(|p| p.in_app = true).is_some();
+                    if found {
+                        s.emit(
+                            "shell.agentConfirmation",
+                            serde_json::json!({ "confirmationId": token, "outcome": "requested" }),
+                        );
+                    }
+                    found
+                });
+                let _ = r.send(marked);
+            }))
+        })
+    }
+
+    /// Whether an in-app confirmation still waits for the person's answer (D-58): unanswered, within its lifetime and
+    /// bound to the current document revision.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn confirmation_waiting(&self, token: &str) -> Result<bool, CommandError> {
+        let token = token.to_owned();
+        self.call("agent.confirmationWaiting", |r| {
+            Request::Run(Box::new(move |core| {
+                let waiting = core.session().is_some_and(|s| {
+                    let rev = s.project.as_ref().map(|p| p.doc.document_rev());
+                    s.agents.waiting(&token, rev)
+                });
+                let _ = r.send(waiting);
             }))
         })
     }
@@ -676,6 +799,17 @@ impl ExecutorHandle {
         took: Duration,
     ) {
         self.audit_logical_call(origin, &AuditCall { tool, command, params, env, took, cached: false });
+    }
+
+    /// The host tells the kernel where its attached-mode HTTP server serves (`Some(url)`, the discovery file's
+    /// endpoint) or that it stopped (`None`), so `agent.server.status` reports the serving endpoint however the server
+    /// was started (D-62 item 1, C44A-R1-40; 11 §15.1). Queued without waiting, like the activity record.
+    pub fn set_agent_serving(&self, endpoint: Option<String>) {
+        let _ = self.tx.send(Request::Run(Box::new(move |core| {
+            if let Some(s) = core.session_mut() {
+                s.agents.serving = endpoint;
+            }
+        })));
     }
 
     /// [`ExecutorHandle::audit_call`] for a call whose answer may have come from the `requestId` cache (`cached`):
@@ -753,11 +887,48 @@ impl ExecutorHandle {
         self.call("snapshot", Request::Snapshot)
     }
 
+    /// The composition of a Drawing view for the interactive canvas (M4 C4.2b; design note 1 §9): the drawings shown
+    /// with their revisions, the background, the grid and the solid colour values. A read on the document thread.
+    ///
+    /// # Errors
+    /// `view.notFound`, `no.project`, `command.timeout`, `internal`.
+    pub fn canvas_scene(&self, view_id: &str) -> Result<canvas::Scene, CommandError> {
+        let view = view_id.to_owned();
+        self.call("canvas", |r| {
+            Request::Run(Box::new(move |core| {
+                let _ = r.send(core.canvas_scene(&view));
+            }))
+        })?
+    }
+
+    /// The interactive canvas's payload of one drawing (M4 C4.2b; design note 1): `drawing_id`, or the current drawing
+    /// when `None`, at `generation` and zoom `bucket`, in the variant `opts` names (outlines only, 02 §10.2;
+    /// approximate pencil strokes, `display.fastPencilRendering`). The document thread only takes the snapshot; the walk, the
+    /// tessellation and the encoding run on the calling thread.
+    ///
+    /// # Errors
+    /// `drawing.noTarget`, `ref.notFound`, `no.project`, the walk's refusals, `command.timeout`, `internal`.
+    pub fn canvas_drawing(
+        &self,
+        drawing_id: Option<&str>,
+        generation: u64,
+        bucket: i16,
+        opts: canvas::PayloadOptions,
+    ) -> Result<canvas::CanvasPayload, CommandError> {
+        let want = drawing_id.map(str::to_owned);
+        let src = self.call("canvas", |r| {
+            Request::Run(Box::new(move |core| {
+                let _ = r.send(core.canvas_source(want.as_deref()));
+            }))
+        })??;
+        canvas::payload(&src, generation, bucket, opts)
+    }
+
     /// Subscribes to events (11 §9). Events are delivered after each call that produced them.
     #[must_use]
     pub fn subscribe(&self) -> Receiver<Event> {
         let (tx, rx) = mpsc::channel();
-        self.subscribers.lock().unwrap_or_else(PoisonError::into_inner).push(tx);
+        self.subscribers.subs.lock().unwrap_or_else(PoisonError::into_inner).push(tx);
         rx
     }
 
@@ -828,13 +999,20 @@ impl ExecutorHandle {
 fn document_thread(
     mut core: run::Core,
     rx: &Receiver<Request>,
-    subscribers: &Mutex<Vec<Sender<Event>>>,
+    subscribers: &host::Bus,
+    shell: &host::ShellShared,
     cancel: &Arc<tt_vector::work::CancelState>,
     budget: Duration,
 ) {
     let bound = ask_bound(budget);
-    // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result.
-    let flush = |core: &mut run::Core| broadcast(subscribers, &core.take_events());
+    // A call's events are broadcast before its reply is sent, so a subscriber has them when the caller has the result;
+    // the kernel's visible floats are published at the same point (the freshness quorum, C41-R3-06).
+    let flush = |core: &mut run::Core| {
+        if let Some(s) = core.session() {
+            shell.publish_floats(s);
+        }
+        broadcast(subscribers, &core.take_events());
+    };
     tt_vector::work::set_cancel_state(Some(cancel.clone()));
     while let Ok(req) = rx.recv() {
         let (token, link, queued, req) = match req {
@@ -865,14 +1043,18 @@ fn document_thread(
         let shutdown = matches!(req, Request::Shutdown);
         match req {
             Request::Invoke(inv, reply) => {
+                host::acting(subscribers, &inv.origin, &inv.command, true);
                 let env = core.invoke(&inv);
                 let cached = core.take_served_from_cache();
                 flush(&mut core);
+                host::acting(subscribers, &inv.origin, &inv.command, false);
                 let _ = reply.send((env, cached));
             }
             Request::Batch(b, origin, reply) => {
+                host::acting_batch(subscribers, &origin, "batch", Some((&b.label, b.steps.len())), true);
                 let env = core.batch(&b, &origin);
                 flush(&mut core);
+                host::acting_batch(subscribers, &origin, "batch", Some((&b.label, b.steps.len())), false);
                 let _ = reply.send(env);
             }
             Request::Open(doc, options, origin, reply) => {
@@ -929,12 +1111,14 @@ fn document_thread(
 }
 
 /// Delivers events to every live subscriber (dropping closed ones).
-fn broadcast(subscribers: &Mutex<Vec<Sender<Event>>>, events: &[Event]) {
+fn broadcast(bus: &host::Bus, events: &[Event]) {
     if events.is_empty() {
         return;
     }
-    let mut subs = subscribers.lock().unwrap_or_else(PoisonError::into_inner);
+    let mut subs = bus.subs.lock().unwrap_or_else(PoisonError::into_inner);
     subs.retain(|s| events.iter().all(|e| s.send(e.clone()).is_ok()));
+    // Counted under the lock, after delivery: a subscriber that has seen N events finds the count at least N.
+    bus.seq.fetch_add(u64::try_from(events.len()).unwrap_or(u64::MAX), std::sync::atomic::Ordering::AcqRel);
 }
 
 /// `list_commands` on the document thread: enablement is evaluated against the current context.
@@ -1065,6 +1249,11 @@ pub(crate) fn wait_sliced(
 ) -> Option<Result<(JobRecord, bool), CommandError>> {
     let deadline = std::time::Instant::now() + wait;
     loop {
+        // A caller that has cancelled is answered the cancellation (the job continues), also when the job would end
+        // within the next slice: the order of the two events, not the job's speed, decides the answer.
+        if cancelled() {
+            return None;
+        }
         let left = deadline.saturating_duration_since(std::time::Instant::now());
         let slice = left.min(CANCEL_POLL);
         match jobs.wait(job, slice) {
@@ -1272,4 +1461,83 @@ fn wait_cancelled_error(job: &str) -> CommandError {
         serde_json::json!({ "jobId": job, "reason": "cancelled" }),
     )
     .hint("wait for it with job.wait, or cancel it with job.cancel")
+}
+
+/// `inspect.screenshot` in attached mode (M4 C4.2b; design note 5 §2, D-6): the host's capture of what the user sees,
+/// in the headless answer's shape (S3); the inline caps are checked before capturing (the long side, S2) and after
+/// encoding (the bytes).
+fn attached_screenshot(io: &dyn host::AttachedIo, params: &Value, budget: Duration) -> Envelope {
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct P {
+        #[serde(default)]
+        target: Option<String>,
+        #[serde(default)]
+        region: Option<R>,
+    }
+    #[derive(serde::Deserialize)]
+    #[serde(deny_unknown_fields)]
+    struct R {
+        x: f64,
+        y: f64,
+        w: f64,
+        h: f64,
+    }
+    let p: P = match serde_json::from_value(params.clone()) {
+        Ok(p) => p,
+        Err(e) => {
+            return Envelope::error(
+                CommandError::with_details(codes::ARG_INVALID, e.to_string(), json!({ "pointer": "" })),
+                None,
+            );
+        }
+    };
+    let target = p.target.unwrap_or_else(|| "window".to_owned());
+    let region = p.region.map(|r| [r.x, r.y, r.w, r.h]);
+    if let Some(r) = region
+        && !(r.iter().all(|v| v.is_finite()) && r[2] >= 1.0 && r[3] >= 1.0)
+    {
+        return Envelope::error(
+            CommandError::with_details(
+                codes::ARG_INVALID,
+                "a region needs finite numbers and a width and height of at least 1",
+                json!({ "pointer": "/region" }),
+            ),
+            None,
+        );
+    }
+    let side = commands::inspect::SCREENSHOT_MAX_SIDE;
+    match io.capture(&target, region, side, budget) {
+        Ok(c) => {
+            let max_bytes = commands::inspect::SCREENSHOT_MAX_BYTES;
+            if c.png.len() as u64 > max_bytes {
+                return Envelope::error(
+                    CommandError::with_details(
+                        "render.inlineTooLarge",
+                        format!(
+                            "a {} x {} screenshot is over the inline limit of {max_bytes} bytes",
+                            c.width, c.height
+                        ),
+                        json!({ "width": c.width, "height": c.height, "bytes": c.png.len(), "maxInlineBytes": max_bytes, "maxInlinePixels": side }),
+                    ),
+                    None,
+                );
+            }
+            Envelope::ok(
+                json!({
+                    "png": tt_persist::b64::encode(&c.png),
+                    "width": c.width,
+                    "height": c.height,
+                    "sha256": tt_persist::fsx::sha256(&c.png),
+                    "target": target,
+                    "viewId": c.view_id,
+                    "source": "gui",
+                    "drawingId": null,
+                    "note": "what the user sees: the window's own pixels, captured by the host (D-6)",
+                }),
+                None,
+            )
+        }
+        Err(e) => Envelope::error(e, None),
+    }
 }

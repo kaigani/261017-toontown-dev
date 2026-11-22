@@ -1,0 +1,34 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\model)
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\registry-macros)
+   Compiling tt-desktop v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\desktop\src-tauri)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\anim)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\vector)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\colour)
+   Compiling tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\persist)
+   Compiling tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\registry)
+   Compiling tt-audio v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\audio)
+   Compiling tt-lipsync v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\lipsync)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\render)
+   Compiling tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\io)
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\executor)
+   Compiling tt-engine v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\engine)
+   Compiling tt-mcp v0.0.1 (C:\Users\kaiga\work\review\m4-c41-r6\crates\mcp)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 40.98s
+     Running tests\c41_r2_review.rs (target\debug\deps\c41_r2_review-20c45e88e344298f.exe)
+
+running 4 tests
+test part_c1_watchdog::supplied_clock_late_reply_resets_all_strikes ... ok
+test part_c1_freshness::unreported_float_prevents_combined_freshness ... ok
+test part_c1_freshness::generations_and_closed_float ... ok
+test malformed_token_and_dead_endpoint_are_replaced_then_cleared ... ok
+
+test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests\c41_r3_review.rs (target\debug\deps\c41_r3_review-d74ea859157e3768.exe)
+
+running 1 test
+test part_b_freshness::opening_closing_restart_and_reload ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+

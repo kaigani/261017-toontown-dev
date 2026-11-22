@@ -66,6 +66,12 @@ pub enum ArgsError {
     /// `--spike-auto` without `--spike` and `--spike-log`.
     #[error("--spike-auto needs --spike <name> and --spike-log <file>")]
     AutoWithoutLog,
+    /// `--mcp-http` with something that is not a socket address.
+    #[error("--mcp-http needs an address such as 127.0.0.1:0, got `{0}`")]
+    BadAddress(String),
+    /// `--mcp-http` with an address that is not a loopback address (ADR-0022 decision 2; C41-R1-02).
+    #[error("--mcp-http refuses `{0}`: attached mode binds a loopback address only (127.0.0.1 or [::1])")]
+    RemoteAddress(String),
 }
 
 /// Parses `toontown` arguments (without the program name). `Ok(None)` = normal interactive start.
@@ -79,6 +85,12 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     let mut spike_log = None;
     let mut spike_auto = false;
     let mut renderer = None;
+    let mut user_dir = None;
+    let mut mcp_http = None;
+    let mut mcp_discovery = None;
+    let mut open = Vec::new();
+    let mut canvas_metrics = false;
+    let mut canvas_backend = None;
     let mut it = args.into_iter();
     while let Some(arg) = it.next() {
         match arg.as_str() {
@@ -103,8 +115,31 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
                 }
                 renderer = Some(r);
             }
+            // M4 C4.1 (ADR-0021, ADR-0022): the per-user folder, attached mode and its discovery file.
+            "--user-dir" => user_dir = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--user-dir"))?)),
+            "--mcp-http" => {
+                let v = it.next().ok_or(ArgsError::MissingValue("--mcp-http"))?;
+                let addr = v.parse::<std::net::SocketAddr>().map_err(|_| ArgsError::BadAddress(v.clone()))?;
+                if !tt_mcp::http::bind_allowed(&addr) {
+                    return Err(ArgsError::RemoteAddress(v));
+                }
+                mcp_http = Some(addr);
+            }
+            "--mcp-discovery" => {
+                mcp_discovery = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--mcp-discovery"))?));
+            }
+            "--canvas-metrics" => canvas_metrics = true,
+            "--canvas-backend" => {
+                let v = it.next().ok_or(ArgsError::MissingValue("--canvas-backend"))?;
+                if v != "webgpu" && v != "webgl2" {
+                    return Err(ArgsError::Unknown(format!("--canvas-backend {v}")));
+                }
+                canvas_backend = Some(v);
+            }
             // macOS adds `-psn_…` when launched from Finder on older systems.
             other if other.starts_with("-psn_") => {}
+            // A document to open (01 §1.1: command line and OS open-document requests).
+            other if !other.starts_with('-') => open.push(PathBuf::from(other)),
             other => return Err(ArgsError::Unknown(other.to_owned())),
         }
     }
@@ -125,6 +160,12 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
             auto: spike_auto,
             renderer: renderer.filter(|r| r != "auto"),
         }),
+        user_dir,
+        mcp_http,
+        mcp_discovery,
+        open,
+        canvas_metrics,
+        canvas_backend,
     })
 }
 
@@ -148,6 +189,22 @@ pub struct LaunchOptions {
     pub bench: Option<BenchSettings>,
     /// `--spike tablet [--spike-log <file>]` (M0 spike, C0.2).
     pub spike: Option<SpikeSettings>,
+    /// `--user-dir <dir>`: the per-user folder (settings, recovery, backups) instead of the platform's.
+    pub user_dir: Option<PathBuf>,
+    /// `--mcp-http <address>`: serve attached mode on this loopback address from start-up, whatever the stored
+    /// preference says; after start-up the user's `agent.server.set` (or the preference) stops or restarts it, and a
+    /// restart in the same run uses this address and the same token (ruling O-21).
+    pub mcp_http: Option<std::net::SocketAddr>,
+    /// `--mcp-discovery <file>`: also write the discovery file here.
+    pub mcp_discovery: Option<PathBuf>,
+    /// Documents to open.
+    pub open: Vec<PathBuf>,
+    /// `--canvas-metrics`: the interactive canvas publishes its frame, input and load timings in its UI-tree value
+    /// (M4 C4.2b measurements; plan §6, ruling D-5).
+    pub canvas_metrics: bool,
+    /// `--canvas-backend webgpu|webgl2`: the canvas's back end, overriding the selection (ADR-0007 rule set step 1's
+    /// user override, for measurements).
+    pub canvas_backend: Option<String>,
 }
 
 impl LaunchOptions {
@@ -257,6 +314,16 @@ mod tests {
     }
 
     #[test]
+    fn canvas_measurement_flags() {
+        let o = parse_args(args(&["--canvas-metrics", "--canvas-backend", "webgpu"])).unwrap();
+        assert!(o.canvas_metrics);
+        assert_eq!(o.canvas_backend.as_deref(), Some("webgpu"));
+        assert_eq!(o.requested_diagnostic(), None, "product flags, allowed in every build");
+        assert!(parse_args(args(&["--canvas-backend", "vulkan"])).is_err());
+        assert_eq!(parse_args(args(&["--canvas-backend"])), Err(ArgsError::MissingValue("--canvas-backend")));
+    }
+
+    #[test]
     fn bench_with_count() {
         let s = parse_args(args(&["--ipc-bench", "o.json", "--ipc-bench-count", "50"])).unwrap().bench.unwrap();
         assert_eq!(s, BenchSettings { out: "o.json".into(), count: 50 });
@@ -305,5 +372,15 @@ mod tests {
         );
         assert_eq!(parse_args(args(&["--nope"])), Err(ArgsError::Unknown("--nope".into())));
         assert_eq!(parse_args(args(&["-psn_0_12345"])), Ok(LaunchOptions::default()));
+    }
+
+    #[test]
+    fn mcp_http_accepts_loopback_only() {
+        for good in ["127.0.0.1:0", "[::1]:47215", "127.0.0.2:5"] {
+            assert!(parse_args(args(&["--mcp-http", good])).is_ok(), "{good}");
+        }
+        for bad in ["0.0.0.0:0", "[::]:0", "192.168.1.2:47215", "[fe80::1]:1"] {
+            assert_eq!(parse_args(args(&["--mcp-http", bad])), Err(ArgsError::RemoteAddress(bad.to_owned())), "{bad}");
+        }
     }
 }

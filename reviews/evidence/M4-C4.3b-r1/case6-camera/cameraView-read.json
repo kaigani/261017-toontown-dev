@@ -1,0 +1,2254 @@
+{
+  "times": {
+    "press": 419683.4735486,
+    "release": 419686.274002
+  },
+  "before": {
+    "entries": [
+      {
+        "index": 1,
+        "stepId": "u-1",
+        "label": "New Elements",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.110Z",
+        "objectCount": 4
+      },
+      {
+        "index": 2,
+        "stepId": "u-2",
+        "label": "Create Drawing",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.113Z",
+        "objectCount": 3
+      },
+      {
+        "index": 3,
+        "stepId": "u-3",
+        "label": "Rectangle Tool",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.119Z",
+        "objectCount": 3
+      },
+      {
+        "index": 4,
+        "stepId": "u-4",
+        "label": "Paint",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.123Z",
+        "objectCount": 2
+      },
+      {
+        "index": 5,
+        "stepId": "u-5",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:08:43.091Z",
+        "objectCount": 3
+      },
+      {
+        "index": 6,
+        "stepId": "u-6",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:43.112Z",
+        "objectCount": 1
+      },
+      {
+        "index": 7,
+        "stepId": "u-7",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:08:45.506Z",
+        "objectCount": 1
+      },
+      {
+        "index": 8,
+        "stepId": "u-8",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:00.415Z",
+        "objectCount": 1
+      }
+    ],
+    "position": 8,
+    "cleanPosition": 0,
+    "total": 8
+  },
+  "after": {
+    "entries": [
+      {
+        "index": 1,
+        "stepId": "u-1",
+        "label": "New Elements",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.110Z",
+        "objectCount": 4
+      },
+      {
+        "index": 2,
+        "stepId": "u-2",
+        "label": "Create Drawing",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.113Z",
+        "objectCount": 3
+      },
+      {
+        "index": 3,
+        "stepId": "u-3",
+        "label": "Rectangle Tool",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.119Z",
+        "objectCount": 3
+      },
+      {
+        "index": 4,
+        "stepId": "u-4",
+        "label": "Paint",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:40.123Z",
+        "objectCount": 2
+      },
+      {
+        "index": 5,
+        "stepId": "u-5",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:08:43.091Z",
+        "objectCount": 3
+      },
+      {
+        "index": 6,
+        "stepId": "u-6",
+        "label": "Move Element",
+        "source": "agent",
+        "agentSessionId": "s1-c484ae",
+        "agentName": "mcp",
+        "time": "2026-11-16T04:08:43.112Z",
+        "objectCount": 1
+      },
+      {
+        "index": 7,
+        "stepId": "u-7",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:08:45.506Z",
+        "objectCount": 1
+      },
+      {
+        "index": 8,
+        "stepId": "u-8",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:00.415Z",
+        "objectCount": 1
+      },
+      {
+        "index": 9,
+        "stepId": "u-9",
+        "label": "Move Element",
+        "source": "user",
+        "time": "2026-11-16T04:09:06.223Z",
+        "objectCount": 1
+      }
+    ],
+    "position": 9,
+    "cleanPosition": 0,
+    "total": 9
+  },
+  "responses": [],
+  "document": {
+    "bundle": {
+      "format": "animjson",
+      "formatVersion": "1.0",
+      "generator": {
+        "name": "Toontown",
+        "version": "0.0.1",
+        "platform": "windows-x64"
+      },
+      "exportedAt": "2026-11-16T04:09:06.828Z",
+      "sourceProjectId": "pr_01M7H8NXBWS0CRJZ1J13GWRXGT",
+      "scope": {
+        "kind": "project",
+        "ids": [
+          "pr_01M7H8NXBWS0CRJZ1J13GWRXGT"
+        ]
+      },
+      "settings": {
+        "frameRate": 24.0,
+        "cameraWidth": 1920,
+        "cameraHeight": 1080
+      },
+      "scenes": [
+        {
+          "id": "sc_01M7H8NXBXJCGETH2EHS3EQZHK",
+          "type": "scene",
+          "rev": 2,
+          "name": "Scene-1",
+          "visible": true,
+          "backgroundColour": "#FFFFFFFF",
+          "currentCameraId": "el_01M7H8NXBXJCGETH2EHS3EQZHN",
+          "paletteStyles": {
+            "pal_01M7H8NXBWS0CRJZ1J13GWRXGV": "sty_01M7H8NXBWS0CRJZ1J13GWRXGW"
+          },
+          "outTransition": {
+            "id": "tr_01M7H8NXBXJCGETH2EHS3EQZHS",
+            "type": "transition",
+            "rev": 1,
+            "transitionType": "none",
+            "durationLeft": 12,
+            "blankDuration": 0,
+            "durationRight": 12,
+            "colour": "#000000FF",
+            "angle": 0.0,
+            "direction": null,
+            "size": 25
+          },
+          "tree": [
+            {
+              "id": "el_01K7JJN800PBWJNHCTC458QB3P",
+              "children": []
+            },
+            {
+              "id": "el_01M7H8NXBXJCGETH2EHS3EQZHM",
+              "children": [
+                {
+                  "id": "el_01M7H8NXBXJCGETH2EHS3EQZHN",
+                  "children": []
+                }
+              ]
+            },
+            {
+              "id": "el_01M7H8NXBXJCGETH2EHS3EQZHP",
+              "children": []
+            }
+          ],
+          "columnOrder": [
+            "el_01M7H8NXBXJCGETH2EHS3EQZHP",
+            "el_01K7JJN800PBWJNHCTC458QB3P"
+          ],
+          "elements": [
+            {
+              "id": "el_01M7H8NXBXJCGETH2EHS3EQZHM",
+              "type": "element",
+              "rev": 1,
+              "name": "Camera Peg",
+              "elementType": "peg",
+              "start": 1,
+              "duration": 1,
+              "loops": 1,
+              "loopType": "count",
+              "positionLoop": "cycle",
+              "role": "normal",
+              "deformable": false,
+              "visibleInScene": true,
+              "locked": false,
+              "collapsed": false,
+              "markerColour": null,
+              "backgroundColour": null,
+              "columnWidth": 80,
+              "transform": {
+                "offset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "rotation": 0.0,
+                "skew": 0.0,
+                "scale": {
+                  "x": 1.0,
+                  "y": 1.0
+                },
+                "keepProportions": false,
+                "pivot": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "applyPivotTo": "both",
+                "useChildDrawingPivot": false,
+                "lockDepth": false,
+                "orientToPath": false
+              },
+              "exportGroup": {
+                "groupOnVectorExport": false,
+                "addComposite": true
+              },
+              "channels": {},
+              "createdAt": "2026-11-16T04:08:40.060Z"
+            },
+            {
+              "id": "el_01M7H8NXBXJCGETH2EHS3EQZHN",
+              "type": "element",
+              "rev": 1,
+              "name": "Camera",
+              "elementType": "camera",
+              "start": 1,
+              "duration": 1,
+              "loops": 1,
+              "loopType": "count",
+              "positionLoop": "cycle",
+              "role": "normal",
+              "deformable": false,
+              "visibleInScene": true,
+              "locked": false,
+              "collapsed": false,
+              "markerColour": null,
+              "backgroundColour": null,
+              "columnWidth": 80,
+              "transform": {
+                "offset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 16.0
+                },
+                "rotation": 0.0,
+                "skew": 0.0,
+                "scale": {
+                  "x": 1.0,
+                  "y": 1.0
+                },
+                "keepProportions": false,
+                "lockDepth": false,
+                "orientToPath": false
+              },
+              "camera": {
+                "fovMode": "static",
+                "fov": 41.11209043916693
+              },
+              "channels": {},
+              "createdAt": "2026-11-16T04:08:40.060Z"
+            },
+            {
+              "id": "el_01M7H8NXBXJCGETH2EHS3EQZHP",
+              "type": "element",
+              "rev": 1,
+              "name": "Drawing",
+              "elementType": "drawing",
+              "loops": 1,
+              "loopType": "count",
+              "positionLoop": "cycle",
+              "role": "normal",
+              "deformable": false,
+              "visibleInScene": true,
+              "visibleInXsheet": true,
+              "locked": false,
+              "collapsed": false,
+              "markerColour": null,
+              "backgroundColour": null,
+              "columnWidth": 80,
+              "drawingBankId": "db_01M7H8NXBXJCGETH2EHS3EQZHJ",
+              "exposure": [],
+              "transform": {
+                "offset": {
+                  "x": 0.0,
+                  "y": 0.0,
+                  "z": 0.0
+                },
+                "rotation": 0.0,
+                "skew": 0.0,
+                "scale": {
+                  "x": 1.0,
+                  "y": 1.0
+                },
+                "keepProportions": false,
+                "rotationPivot": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "scalePivot": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "rotateAboutPivot": false,
+                "lockDepth": false,
+                "orientToPath": false
+              },
+              "channels": {},
+              "createdAt": "2026-11-16T04:08:40.060Z"
+            },
+            {
+              "id": "el_01K7JJN800PBWJNHCTC458QB3P",
+              "type": "element",
+              "rev": 10,
+              "name": "Bob",
+              "elementType": "drawing",
+              "loops": 1,
+              "loopType": "count",
+              "positionLoop": "cycle",
+              "role": "normal",
+              "deformable": false,
+              "visibleInScene": true,
+              "visibleInXsheet": true,
+              "locked": false,
+              "collapsed": false,
+              "markerColour": null,
+              "backgroundColour": null,
+              "columnWidth": 80,
+              "drawingBankId": "db_01K7JJN80175BDZS34M2RANZ8X",
+              "exposure": [
+                [
+                  "dr_01K7JJN800AC9Y8MTBRFV0GZJN",
+                  24
+                ]
+              ],
+              "transform": {
+                "offset": {
+                  "x": 0.75,
+                  "y": 0.14583333333333334,
+                  "z": 0.0
+                },
+                "rotation": 0.0,
+                "skew": 0.0,
+                "scale": {
+                  "x": 1.0,
+                  "y": 1.0
+                },
+                "keepProportions": false,
+                "rotationPivot": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "scalePivot": {
+                  "x": 0.0,
+                  "y": 0.0
+                },
+                "rotateAboutPivot": false,
+                "lockDepth": false,
+                "orientToPath": false
+              },
+              "channels": {
+                "position": {
+                  "id": "ch_01K7JJN8016ZTC7YMJ3DCGPDSK",
+                  "type": "channel",
+                  "rev": 6,
+                  "name": "position",
+                  "points": [
+                    {
+                      "id": "mp_01K7JJN800GSFFR1KVVXQH109J",
+                      "type": "motionPoint",
+                      "rev": 9,
+                      "frame": 1,
+                      "position": {
+                        "x": 0.20000000000000004,
+                        "y": -0.1,
+                        "z": 0.0
+                      },
+                      "tension": 0.0,
+                      "continuity": 0.0,
+                      "bias": 0.0,
+                      "constantSegment": false,
+                      "lockDepth": false
+                    }
+                  ]
+                }
+              },
+              "createdAt": "2026-11-16T04:08:40.109Z"
+            }
+          ]
+        }
+      ],
+      "elements": [],
+      "drawingBanks": [
+        {
+          "id": "db_01M7H8NXBXJCGETH2EHS3EQZHJ",
+          "type": "drawingBank",
+          "rev": 1,
+          "drawings": []
+        },
+        {
+          "id": "db_01K7JJN80175BDZS34M2RANZ8X",
+          "type": "drawingBank",
+          "rev": 3,
+          "drawings": [
+            {
+              "id": "dr_01K7JJN800AC9Y8MTBRFV0GZJN",
+              "type": "drawing",
+              "rev": 5,
+              "name": "1",
+              "locked": false,
+              "pivot": {
+                "x": 0.0,
+                "y": 0.0
+              },
+              "mouthShape": null,
+              "nodes": [
+                {
+                  "id": "nd_01K7JJN801760M2TTM0F8RHJ4F",
+                  "type": "drawingNode",
+                  "rev": 4,
+                  "kind": "layer",
+                  "hint": "pencil",
+                  "strokes": [
+                    {
+                      "id": "st_01K7JJN800HSAH5JP5N5Y1HGND",
+                      "type": "stroke",
+                      "rev": 5,
+                      "kind": "pencil",
+                      "closed": true,
+                      "points": [
+                        [
+                          -120.0,
+                          -90.0,
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          120.0,
+                          -90.0,
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          120.0,
+                          90.0,
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ],
+                        [
+                          -120.0,
+                          90.0,
+                          0.0,
+                          0.0,
+                          0.0,
+                          0.0
+                        ]
+                      ],
+                      "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXGX",
+                      "fillMatrix": null,
+                      "lineStyle": {
+                        "thickness": 8.0,
+                        "lineType": "solid"
+                      },
+                      "spine": null,
+                      "sides": {
+                        "left": {
+                          "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXGX",
+                          "matrix": null
+                        },
+                        "right": null
+                      }
+                    }
+                  ]
+                }
+              ],
+              "colourRecovery": [],
+              "createdAt": "2026-11-16T04:08:40.113Z"
+            }
+          ]
+        }
+      ],
+      "palettes": [
+        {
+          "id": "pal_01M7H8NXBWS0CRJZ1J13GWRXGV",
+          "type": "palette",
+          "rev": 1,
+          "name": "Default",
+          "styles": [
+            {
+              "id": "sty_01M7H8NXBWS0CRJZ1J13GWRXGW",
+              "type": "paletteStyle",
+              "rev": 1,
+              "name": "Default"
+            }
+          ],
+          "swatches": [
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXGX",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 1",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#00000000"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXGY",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 2",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#000000FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXGZ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 3",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#FFFFFFFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH0",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 4",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#111111FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH1",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 5",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1E1E1EFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH2",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 6",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#2B2B2BFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH3",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 7",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#383838FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH4",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 8",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#454545FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH5",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 9",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#525252FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH6",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 10",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#5F5F5FFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH7",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 11",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#6C6C6CFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH8",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 12",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#797979FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXH9",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 13",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#868686FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHA",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 14",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#939393FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHB",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 15",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#A0A0A0FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHC",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 16",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#ADADADFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHD",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 17",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#BABABAFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHE",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 18",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#C7C7C7FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHF",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 19",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#D4D4D4FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHG",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 20",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#E1E1E1FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHH",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 21",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#EEEEEEFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHJ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 22",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#FF0000FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHK",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 23",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#00FF00FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHM",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 24",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#0000FFFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHN",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 25",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#00FFFFFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHP",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 26",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#FF00FFFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHQ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 27",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#FFFF00FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHR",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 28",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#FBE3D3FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHS",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 29",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#F3CBB0FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHT",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 30",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#E8B591FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHV",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 31",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#D69E78FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHW",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 32",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#BC845EFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHX",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 33",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#9A6648FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHY",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 34",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#784A32FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXHZ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 35",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#55331FFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ0",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 36",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#F6BCBCFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ1",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 37",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#EC7979FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ2",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 38",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#E23636FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ3",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 39",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#B31A1AFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ4",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 40",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#701010FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ5",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 41",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#F6D1BCFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ6",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 42",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#ECA379FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ7",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 43",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#E27536FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ8",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 44",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#B3511AFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJ9",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 45",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#703310FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJA",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 46",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#F6E7BCFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJB",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 47",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#ECCF79FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJC",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 48",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#E2B736FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJD",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 49",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#B38C1AFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJE",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 50",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#705810FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJF",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 51",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#EFF6BCFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJG",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 52",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#DEEC79FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJH",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 53",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#CEE236FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJJ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 54",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#A1B31AFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJK",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 55",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#647010FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJM",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 56",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#D9F6BCFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJN",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 57",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#B3EC79FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJP",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 58",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#8CE236FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJQ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 59",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#66B31AFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJR",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 60",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#407010FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJS",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 61",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#C4F6BCFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJT",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 62",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#88EC79FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJV",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 63",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#4DE236FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJW",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 64",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#2EB31AFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJX",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 65",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1D7010FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJY",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 66",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#BCF6CAFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXJZ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 67",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#79EC96FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK0",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 68",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#36E261FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK1",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 69",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1AB340FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK2",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 70",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#107028FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK3",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 71",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#BCF6DFFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK4",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 72",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#79ECC0FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK5",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 73",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#36E2A0FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK6",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 74",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1AB378FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK7",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 75",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#10704BFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK8",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 76",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#BCF6F6FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXK9",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 77",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#79ECECFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKA",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 78",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#36E2E2FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKB",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 79",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1AB3B3FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKC",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 80",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#107070FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKD",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 81",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#BCE0F6FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKE",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 82",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#79C2ECFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKF",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 83",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#36A3E2FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKG",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 84",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1A7AB3FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKH",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 85",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#104D70FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKJ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 86",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#BCCAF6FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKK",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 87",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#7996ECFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKM",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 88",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#3661E2FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKN",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 89",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1A40B3FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKP",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 90",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#102870FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKQ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 91",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#C3BCF6FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKR",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 92",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#8679ECFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKS",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 93",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#4A36E2FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKT",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 94",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#2B1AB3FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKV",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 95",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#1B1070FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKW",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 96",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#D9BCF6FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKX",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 97",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#B379ECFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKY",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 98",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#8C36E2FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXKZ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 99",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#661AB3FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM0",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 100",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#401070FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM1",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 101",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#EEBCF6FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM2",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 102",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#DC79ECFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM3",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 103",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#CB36E2FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM4",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 104",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#9E1AB3FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM5",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 105",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#631070FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM6",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 106",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#F6BCE7FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM7",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 107",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#EC79CFFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM8",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 108",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#E236B7FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXM9",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 109",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#B31A8CFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMA",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 110",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#701058FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMB",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 111",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#F6BCD2FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMC",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 112",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#EC79A5FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMD",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 113",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#E23678FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXME",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 114",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#B31A54FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMF",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 115",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#701035FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMG",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 116",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#DBCCBDFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMH",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 117",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#C1A68BFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMJ",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 118",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#A68059FF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMK",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 119",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#74593EFF"
+                }
+              }
+            },
+            {
+              "colourId": "col_01M7H8NXBWS0CRJZ1J13GWRXMM",
+              "type": "swatch",
+              "rev": 1,
+              "name": "Colour 120",
+              "kind": "solid",
+              "deformable": false,
+              "values": {
+                "sty_01M7H8NXBWS0CRJZ1J13GWRXGW": {
+                  "rgba": "#423324FF"
+                }
+              }
+            }
+          ],
+          "hidden": false
+        }
+      ],
+      "pens": [
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHA",
+          "type": "pen",
+          "rev": 1,
+          "name": "Pen 1",
+          "kind": "brush",
+          "minSize": 0.5,
+          "maxSize": 2.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        },
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHB",
+          "type": "pen",
+          "rev": 1,
+          "name": "Pen 2",
+          "kind": "brush",
+          "minSize": 1.0,
+          "maxSize": 4.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        },
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHC",
+          "type": "pen",
+          "rev": 1,
+          "name": "Pen 3",
+          "kind": "brush",
+          "minSize": 2.0,
+          "maxSize": 8.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        },
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHD",
+          "type": "pen",
+          "rev": 1,
+          "name": "Pen 4",
+          "kind": "brush",
+          "minSize": 4.0,
+          "maxSize": 16.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        },
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHE",
+          "type": "pen",
+          "rev": 1,
+          "name": "Pen 5",
+          "kind": "brush",
+          "minSize": 8.0,
+          "maxSize": 32.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        },
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHF",
+          "type": "pen",
+          "rev": 1,
+          "name": "Eraser 1",
+          "kind": "eraser",
+          "minSize": 10.0,
+          "maxSize": 10.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        },
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHG",
+          "type": "pen",
+          "rev": 1,
+          "name": "Eraser 2",
+          "kind": "eraser",
+          "minSize": 20.0,
+          "maxSize": 20.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        },
+        {
+          "id": "pen_01M7H8NXBXJCGETH2EHS3EQZHH",
+          "type": "pen",
+          "rev": 1,
+          "name": "Eraser 3",
+          "kind": "eraser",
+          "minSize": 40.0,
+          "maxSize": 40.0,
+          "smoothness": 3,
+          "tip": "round",
+          "tipAngle": 0.0,
+          "colourId": null
+        }
+      ],
+      "assets": [],
+      "blobs": {}
+    },
+    "bytes": 29246,
+    "objectCount": 12
+  }
+}

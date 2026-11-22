@@ -1,0 +1,242 @@
+{
+  "id": "el_01K742SG11W3SGB8Q1H50W74VB",
+  "type": "element",
+  "rev": 1,
+  "name": "Bob",
+  "elementType": "drawing",
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "visibleInXsheet": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": "#9DC3E6FF",
+  "backgroundColour": null,
+  "note": "main character",
+  "columnWidth": 80,
+  "drawingBankId": "db_01K742SG0JW3TVZ32SQC03AMY1",
+  "exposure": [
+    ["dr_01K742SG0KKMCAP9X1E6Z5P4SW", 6],
+    [null, 2],
+    ["dr_01K742SG0M5J3BAJSW8241WA87", 12],
+    ["dr_01K742SG0KKMCAP9X1E6Z5P4SW", 24]
+  ],
+  "cellNotes": {
+    "3": "fix hand",
+    "12": "hold"
+  },
+  "transform": {
+    "offset": {
+      "x": 0,
+      "y": 0,
+      "z": 0
+    },
+    "rotation": 0,
+    "skew": 0,
+    "scale": {
+      "x": 1,
+      "y": 1
+    },
+    "keepProportions": false,
+    "rotationPivot": {
+      "x": 0,
+      "y": 0
+    },
+    "scalePivot": {
+      "x": 0,
+      "y": 0
+    },
+    "rotateAboutPivot": false,
+    "lockDepth": false,
+    "orientToPath": false
+  },
+  "channels": {
+    "position": {
+      "id": "ch_01K742SG1XFEFQMBCSQ7D6AX3G",
+      "type": "channel",
+      "rev": 1,
+      "name": "position",
+      "points": [
+        {
+          "id": "mp_01K742SG1YDDR34S3G0DS5PVPK",
+          "type": "motionPoint",
+          "rev": 1,
+          "frame": 1,
+          "position": {
+            "x": -4,
+            "y": 0,
+            "z": 0
+          },
+          "tension": 0,
+          "continuity": 0,
+          "bias": 0,
+          "constantSegment": false,
+          "lockDepth": false
+        },
+        {
+          "id": "mp_01K742SG1Z9PEPA9753ZZ77JT4",
+          "type": "motionPoint",
+          "rev": 1,
+          "frame": null,
+          "position": {
+            "x": 0,
+            "y": 0,
+            "z": 0
+          },
+          "tension": 0,
+          "continuity": 0,
+          "bias": 0,
+          "constantSegment": false,
+          "lockDepth": false
+        },
+        {
+          "id": "mp_01K742SG20TE2N53WY0C9CNKZR",
+          "type": "motionPoint",
+          "rev": 1,
+          "frame": 24,
+          "position": {
+            "x": 4,
+            "y": 0,
+            "z": 0
+          },
+          "tension": 0,
+          "continuity": 0,
+          "bias": 0,
+          "constantSegment": false,
+          "lockDepth": false
+        }
+      ]
+    },
+    "rotation": {
+      "id": "ch_01K742SG1QFHD2CCT6MTEX2H16",
+      "type": "channel",
+      "rev": 1,
+      "name": "rotation",
+      "curveType": "spline",
+      "keys": [
+        {
+          "id": "ky_01K742SG1R4DF9HWRAYHFSFV52",
+          "type": "key",
+          "rev": 1,
+          "frame": 1,
+          "value": 0,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        },
+        {
+          "id": "ky_01K742SG1SKWBHK8Y5J227CEGJ",
+          "type": "key",
+          "rev": 1,
+          "frame": 12,
+          "value": 45,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        },
+        {
+          "id": "ky_01K742SG1TD4QPFJQ4CNK9WK64",
+          "type": "key",
+          "rev": 1,
+          "frame": 24,
+          "value": -10.5,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        }
+      ]
+    },
+    "scale.x": {
+      "id": "ch_01K742SG1VM41901DYSMMVJQDV",
+      "type": "channel",
+      "rev": 1,
+      "name": "scale.x",
+      "curveType": "spline",
+      "keys": [
+        {
+          "id": "ky_01K742SG1W88HBTZF8Y8YFYY6Y",
+          "type": "key",
+          "rev": 1,
+          "frame": 1,
+          "value": 1,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": null
+        }
+      ]
+    },
+    "velocity": {
+      "id": "ch_01K742SG21WVPRAB3YJD7ZJTMP",
+      "type": "channel",
+      "rev": 1,
+      "name": "velocity",
+      "curveType": "interpolation",
+      "keys": [
+        {
+          "id": "ky_01K742SG22N9R180HJWCAM4TT0",
+          "type": "key",
+          "rev": 1,
+          "frame": 12,
+          "value": 0.5,
+          "constantSegment": false,
+          "handles": {
+            "left": {
+              "dt": -4,
+              "dv": 0
+            },
+            "right": {
+              "dt": 4,
+              "dv": 0
+            },
+            "mode": "smooth"
+          },
+          "easing": "easeInOut"
+        }
+      ]
+    }
+  },
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

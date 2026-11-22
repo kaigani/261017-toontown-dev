@@ -1,0 +1,14 @@
+Product sources: unchanged 43508ba; reviewer branch only.
+Round-1 executor part_e_: 7 passed, including freshness 3/restart 1, 2.01 s.
+New executor freshness: 1 pass, sequence-disclosure 1 fail, 2.04 s.
+New desktop freshness: 1 pass, missing-float quorum 1 fail, 0.01 s.
+New executor restart ownership: 1 pass, 0.14 s.
+Desktop library: 47 pass, 0.27 s (host generation, serialization, watchdog included).
+New supplied-clock watchdog: 1 pass.
+New executor availability: history/toggle pass; sweep and typed refusal fail, 0.83 s.
+Sweep mismatches: copy/cut/cutSpecial/delete in both empty-selection project states.
+New MCP: bounded stale tree pass; disabled/modal typed errors fail, 2.01 s.
+MCP actual disabled reply: status ok, enabled false, handled false.
+MCP actual modal reply: status ok, outcome suspended, reason modal, handled false.
+Fmt check pass. Three-crate all-target clippy with requested features/flags pass, 21.84 s.
+See report for exact tests, verdicts, source reasoning and concurrency coverage limitations.

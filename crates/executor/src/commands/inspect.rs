@@ -398,8 +398,21 @@ fn bitmap_opaque(cx: &Cx, d: &tt_model::entities::drawing::Drawing, node_id: &st
     agent_only = "agents locate objects by position (11 §7.5 hit_test)",
 )]
 pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, CommandError> {
-    if p.space == Space::View || p.view.is_some() {
-        return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2"));
+    if p.space == Space::View {
+        // A Camera view's pixels reach the scene through the camera (views note §6): the image-space hit test at the
+        // output pixel under the view point, the table around the frame included (the view shows it).
+        if let Some((_, chain)) = camera_window(cx, p.view.as_deref())? {
+            if !(p.point.x.is_finite() && p.point.y.is_finite()) {
+                return Err(super::common::invalid("/point", "the point must be finite"));
+            }
+            let pixel = view_to_output(&chain, crate::shell::Point { x: p.point.x, y: p.point.y })?;
+            let hits = image_hits(cx, Some(chain.scene.as_str()), Some(chain.frame), P::new(pixel.x, pixel.y), true)?;
+            return Ok(Hits { hits });
+        }
+        return view_hits(cx, &p);
+    }
+    if p.view.is_some() {
+        return Err(super::common::invalid("/view", "`view` applies to view-space points"));
     }
     if p.space == Space::Drawing {
         return Err(space_unavailable("drawing", "names no element; convert the point to `scene` first"));
@@ -416,9 +429,71 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
             None => return Err(behind_camera(&[0])),
         },
     };
+    // One render list per query (each node evaluated once per frame, C33-R1).
+    let hits = hits_in(cx, &doc, &list, pixel, false)?;
+    Ok(Hits { hits })
+}
+
+/// The view window `view` names when it shows the Camera view, with its chain; `None` for a Drawing view.
+///
+/// # Errors
+/// `view.notFound`; `command.notImplemented` for a Top or Side view (M6 C6.1); the chain's refusals.
+pub(crate) fn camera_window(
+    cx: &Cx,
+    view: Option<&str>,
+) -> Result<Option<(crate::shell::ViewWindow, crate::camera_view::Chain)>, CommandError> {
+    let w = crate::camera_view::resolve_view(cx, view)?.clone();
+    match w.ty {
+        crate::shell::ViewType::Drawing => Ok(None),
+        crate::shell::ViewType::Camera => {
+            let c = crate::camera_view::chain(cx, &w)?;
+            Ok(Some((w, c)))
+        }
+        _ => Err(crate::camera_view::staging_owner(&w, "view-space points")),
+    }
+}
+
+/// A Camera-view pixel → camera output pixels.
+fn view_to_output(
+    chain: &crate::camera_view::Chain,
+    v: crate::shell::Point,
+) -> Result<crate::shell::Point, CommandError> {
+    let inv = crate::camera_view::invert(&chain.output_to_view)
+        .ok_or_else(|| super::common::invalid("/view", "the Camera view's transform is singular"))?;
+    Ok(crate::camera_view::apply(&inv, v))
+}
+
+/// The objects under output pixel `pixel` of a frame, front-most first: each element's drawing at the point through
+/// its plane matrix. `around`: the elements outside the camera frame too (a Camera view shows the table around it).
+///
+/// # Errors
+/// `render.noScene`, `render.noCamera`, the evaluator's and the planar map's refusals.
+pub(crate) fn image_hits(
+    cx: &Cx,
+    scene_id: Option<&str>,
+    frame: Option<u32>,
+    pixel: P,
+    around: bool,
+) -> Result<Vec<HitOut>, CommandError> {
+    let (doc, list) = frame_list(cx, scene_id, frame, None, &Overrides::NONE)?;
+    hits_in(cx, &doc, &list, pixel, around)
+}
+
+/// The objects under output pixel `pixel` of a built render list, front-most first (see [`image_hits`]).
+///
+/// # Errors
+/// The planar map's refusals.
+pub(crate) fn hits_in(
+    cx: &Cx,
+    doc: &tt_model::document::Document,
+    list: &RenderList,
+    pixel: P,
+    around: bool,
+) -> Result<Vec<HitOut>, CommandError> {
     let cache = cx.planar_cache();
     let mut hits = Vec::new();
-    for en in list.entries.iter().rev().filter(|en| en.verdict == Verdict::Drawn) {
+    let shown = |v: Verdict| v == Verdict::Drawn || (around && v == Verdict::OutOfFrame);
+    for en in list.entries.iter().rev().filter(|en| shown(en.verdict)) {
         let (Some(m), Some(did)) = (en.to_pixel, en.drawing.as_ref()) else { continue };
         let Some(d) = doc.drawing(did) else { continue };
         let inv = render::invert(m.0);
@@ -426,6 +501,13 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
             continue;
         }
         let q = Affine(inv).apply(pixel);
+        // Hits are exact (tolerance 0); the slack only absorbs rounding at the extent's edge.
+        if en.extent.is_some_and(|r| {
+            let r = r.grown(1e-6 * (r.max_x - r.min_x).max(r.max_y - r.min_y).max(1.0));
+            q.x < r.min_x || q.x > r.max_x || q.y < r.min_y || q.y > r.max_y
+        }) {
+            continue;
+        }
         let zones = crate::planar::drawing_zones(&cache, d)?;
         for hit in super::colour::hits(d, &zones, q, 0.0, false)? {
             let kind = hit.kind.as_str();
@@ -442,7 +524,55 @@ pub(crate) fn inspect_hit_test(cx: &mut Cx, p: HitParams) -> Result<Hits, Comman
             });
         }
     }
+    Ok(hits)
+}
+
+impl HitOut {
+    /// The element hit.
+    pub(crate) fn element_id(&self) -> &str {
+        &self.element_id
+    }
+}
+
+/// Hits under a view point of the Drawing view (SI-109): the current drawing's objects, top-most first.
+fn view_hits(cx: &Cx, p: &HitParams) -> Result<Hits, CommandError> {
+    if !(p.point.x.is_finite() && p.point.y.is_finite()) {
+        return Err(super::common::invalid("/point", "the point must be finite"));
+    }
+    let hits = view_hit_list(cx, p.view.as_deref(), crate::shell::Point { x: p.point.x, y: p.point.y })?;
     Ok(Hits { hits })
+}
+
+/// The objects of the Drawing view's current drawing under a view point, top-most first (`inspect.hitTest` in view
+/// space; the `pointer` tool's final hover).
+pub(crate) fn view_hit_list(cx: &Cx, view: Option<&str>, at: crate::shell::Point) -> Result<Vec<HitOut>, CommandError> {
+    if let Some((_, chain)) = camera_window(cx, view)? {
+        let pixel = view_to_output(&chain, at)?;
+        return image_hits(cx, Some(chain.scene.as_str()), Some(chain.frame), P::new(pixel.x, pixel.y), true);
+    }
+    let w = super::view::drawing_view(cx, view)?;
+    let q = super::view::to_drawing(w, at);
+    let doc = cx.document()?;
+    let Some(did) = cx.app().current_drawing(doc) else { return Ok(Vec::new()) };
+    let Some(d) = doc.drawing(&did) else { return Ok(Vec::new()) };
+    let element = cx.app().element.as_ref().map(|e| e.as_str().to_owned()).unwrap_or_default();
+    let zones = crate::planar::drawing_zones(&cx.planar_cache(), d)?;
+    let mut hits = Vec::new();
+    for hit in super::colour::hits(d, &zones, P::new(q.x, q.y), 0.0, false)? {
+        let kind = hit.kind.as_str();
+        if kind == "bitmap" && !bitmap_opaque(cx, d, &hit.id, P::new(q.x, q.y)) {
+            continue;
+        }
+        hits.push(HitOut {
+            element_id: element.clone(),
+            drawing_id: did.as_str().to_owned(),
+            layer_id: hit.layer.clone(),
+            object_id: hit.id.clone(),
+            kind: kind.to_owned(),
+            colour_id: hit.colour.clone(),
+        });
+    }
+    Ok(hits)
 }
 
 /// A point with an optional depth.
@@ -512,11 +642,12 @@ fn cspace(s: &str, pointer: &str) -> Result<CSpace, CommandError> {
         "camera" => CSpace::Camera,
         "cameraNormalized" => CSpace::CameraNormalized,
         "image" => CSpace::Image,
-        "view" => return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2")),
         other => {
             return Err(super::common::invalid(
                 pointer,
-                format!("unknown space `{other}` (drawing, local, parent, scene, camera, cameraNormalized, image)"),
+                format!(
+                    "unknown space `{other}` (view, drawing, local, parent, scene, camera, cameraNormalized, image)"
+                ),
             ));
         }
     })
@@ -549,8 +680,94 @@ fn singular(what: &str) -> CommandError {
     agent_only = "agents convert between coordinate spaces (11 §7.5 convert_coordinates)",
 )]
 pub(crate) fn inspect_coordinates_convert(cx: &mut Cx, p: ConvertParams) -> Result<Points, CommandError> {
+    // View space is the Drawing view's pixels (SI-109; M4 C4.2): view points pass through drawing space with the one
+    // mapping (design note 6), so `view` converts to and from every other space.
+    let (vf, vt) = (p.from == "view", p.to == "view");
+    // A Camera view's pixels convert through the camera's output pixels (views note §6): view → image, then the image
+    // space's own conversions, and back.
+    if (vf || vt)
+        && let Some((_, chain)) = camera_window(cx, p.view.as_deref())?
+    {
+        if p.points.iter().any(|q| !(q.x.is_finite() && q.y.is_finite())) {
+            return Err(super::common::invalid("/points", "points must be finite"));
+        }
+        let pts: Vec<Point3> = if vf {
+            p.points
+                .iter()
+                .map(|q| {
+                    view_to_output(&chain, crate::shell::Point { x: q.x, y: q.y }).map(|o| Point3 {
+                        x: o.x,
+                        y: o.y,
+                        z: None,
+                    })
+                })
+                .collect::<Result<_, _>>()?
+        } else {
+            p.points.clone()
+        };
+        let (from, to) =
+            (if vf { "image".to_owned() } else { p.from.clone() }, if vt { "image".to_owned() } else { p.to.clone() });
+        let frame = p.frame.or(Some(chain.frame));
+        let inner = if from == to {
+            pts
+        } else {
+            let q = ConvertParams { from, to, points: pts, view: None, frame, ..p };
+            inspect_coordinates_convert(cx, q)?.points
+        };
+        let out = if vt {
+            inner
+                .iter()
+                .map(|q| {
+                    let v = crate::camera_view::apply(&chain.output_to_view, crate::shell::Point { x: q.x, y: q.y });
+                    Point3 { x: v.x, y: v.y, z: None }
+                })
+                .collect()
+        } else {
+            inner
+        };
+        return Ok(Points { points: out });
+    }
+    if vf || vt {
+        let w = super::view::drawing_view(cx, p.view.as_deref())?.clone();
+        let pts: Vec<Point3> = if vf {
+            p.points
+                .iter()
+                .map(|q| {
+                    let d = super::view::to_drawing(&w, crate::shell::Point { x: q.x, y: q.y });
+                    Point3 { x: d.x, y: d.y, z: None }
+                })
+                .collect()
+        } else {
+            p.points.clone()
+        };
+        let (from, to) = (
+            if vf { "drawing".to_owned() } else { p.from.clone() },
+            if vt { "drawing".to_owned() } else { p.to.clone() },
+        );
+        let inner = if from == to {
+            if pts.iter().any(|q| !(q.x.is_finite() && q.y.is_finite())) {
+                return Err(super::common::invalid("/points", "points must be finite"));
+            }
+            pts
+        } else {
+            let q = ConvertParams { from, to, points: pts, view: None, ..p };
+            inspect_coordinates_convert(cx, q)?.points
+        };
+        let out = if vt {
+            inner
+                .iter()
+                .map(|q| {
+                    let v = super::view::to_view(&w, crate::shell::Point { x: q.x, y: q.y });
+                    Point3 { x: v.x, y: v.y, z: None }
+                })
+                .collect()
+        } else {
+            inner
+        };
+        return Ok(Points { points: out });
+    }
     if p.view.is_some() {
-        return Err(space_unavailable("view", "needs views, which arrive with M4 C4.2"));
+        return Err(super::common::invalid("/view", "`view` applies when `from` or `to` is the view space"));
     }
     let from = cspace(&p.from, "/from")?;
     let to = cspace(&p.to, "/to")?;
@@ -870,17 +1087,182 @@ pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -
     })
 }
 
-/// `inspect.ui.tree` parameters.
+/// `inspect.ui.tree` parameters (11 §7.5 `inspect_ui`).
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields)]
 pub(crate) struct UiTreeParams {
-    /// Window, panel or dialog.
+    /// `window` (default), a panel or view id (01 §5.2), a tool palette id, or `dialogs`; an unknown target, however
+    /// long, is `window.panelNotFound` (no schema bound pre-empts it: C41-R2-21 audit).
     #[serde(default)]
     target: Option<String>,
-    /// Depth.
+    /// Levels below the target to include (default: all).
     #[serde(default)]
     #[schemars(range(min = 1, max = 32))]
     depth: Option<u32>,
+}
+
+/// A node of the virtual UI tree (headless, or before the GUI has reported one).
+fn node(role: &str, id: &str, label: &str) -> Map<String, Value> {
+    let mut m = Map::new();
+    m.insert("role".into(), json!(role));
+    m.insert("id".into(), json!(id));
+    m.insert("label".into(), json!(label));
+    m
+}
+
+/// The tree the kernel can describe itself (11 §3 virtual views): window, main toolbar, tool palettes, panels with
+/// their place, view windows with type, size and transform, status bar, start screen. Every widget that invokes a
+/// command names it.
+fn virtual_tree(cx: &Cx) -> Value {
+    let ui = cx.ui();
+    let layout = ui.layout();
+    let mut root = node("window", "main", crate::help::APP_TITLE);
+    root.insert("fullScreen".into(), json!(ui.full_screen()));
+    let mut children: Vec<Value> = Vec::new();
+    let mut toolbar = node("toolbar", "mainToolbar", "Main toolbar");
+    toolbar.insert("visible".into(), json!(layout.main_toolbar.visible));
+    toolbar.insert(
+        "children".into(),
+        Value::Array(
+            layout
+                .main_toolbar
+                .items
+                .iter()
+                .map(|i| {
+                    let mut b = node("button", i, i);
+                    if i.contains('.') {
+                        b.insert("command".into(), json!({ "commandId": i }));
+                    }
+                    Value::Object(b)
+                })
+                .collect(),
+        ),
+    );
+    children.push(Value::Object(toolbar));
+    for p in &layout.tool_palettes {
+        let mut t = node("toolPalette", &p.id, &p.id);
+        t.insert("visible".into(), json!(p.visible));
+        t.insert("floating".into(), json!(p.floating));
+        children.push(Value::Object(t));
+    }
+    for p in ui.panels() {
+        let mut n = node("panel", &p.panel_id, &p.title);
+        n.insert("visible".into(), json!(p.visible));
+        n.insert("floating".into(), json!(p.floating));
+        n.insert("focused".into(), json!(p.focused));
+        if let Some(a) = &p.area {
+            n.insert("area".into(), json!(a));
+        }
+        if let Ok(v) = ui.shell().view(&p.panel_id) {
+            let t = v.transform();
+            n.insert(
+                "view".into(),
+                json!({ "viewId": v.view_id, "type": v.ty.as_str(), "size": v.size,
+                        "transform": { "zoom": t.zoom, "rotationDegrees": t.rotation_degrees, "centre": t.centre } }),
+            );
+        }
+        children.push(Value::Object(n));
+    }
+    let mut bar = node("statusBar", "statusBar", "Status bar");
+    bar.insert(
+        "visible".into(),
+        json!(cx.pref("interface.statusBar.visible").and_then(|v| v.as_bool()).unwrap_or(true)),
+    );
+    bar.insert(
+        "children".into(),
+        json!([
+            { "role": "text", "id": "status.description", "value": ui.shell().sensors.description },
+            { "role": "text", "id": "status.pointer", "value": ui.shell().sensors.pointer },
+            { "role": "text", "id": "status.agent", "value": super::ui_shell::agent_indicator(cx) }
+        ]),
+    );
+    children.push(Value::Object(bar));
+    let project = cx.session().project.as_ref().map(|p| p.doc.project().id().as_str().to_owned());
+    if ui.shell().start_screen_visible(project.as_deref()) {
+        let mut st = node("startScreen", "startScreen", "Start screen");
+        st.insert("children".into(), json!([
+            { "role": "button", "id": "start.create", "label": "Create", "command": { "commandId": "project.create" } },
+            { "role": "button", "id": "start.open", "label": "Open other", "command": { "commandId": "project.open" } }
+        ]));
+        children.push(Value::Object(st));
+    }
+    children.push(json!({ "role": "dialogs", "id": "dialogs", "label": "Dialogs", "children": [] }));
+    root.insert("children".into(), Value::Array(children));
+    Value::Object(root)
+}
+
+/// The id of the window tree's menu bar node (ruling D-38).
+const MENU_BAR_ID: &str = "menuBar";
+
+/// The window's menu bar subtree (ruling D-38; 11 §7.5 line 339): the menu as the person sees it. The host makes one
+/// platform-aware model of its native menu at every refresh (`desktop/src-tauri/src/menu_model.rs`: each item's role,
+/// label, enabled state and the reason when disabled, check state where it has one, shortcut, and the command with the
+/// parameters a click runs; Open Recent and the workspaces as the native menu labels them), sets the native items from
+/// it and reports it; the tree carries that model as reported, so the two cannot differ (C43B-R2S-03). Headless there is
+/// no menu bar; a window whose host has not reported yet says so.
+fn menu_bar(cx: &Cx) -> Value {
+    let sensors = &cx.ui().shell().sensors;
+    match sensors.menu_bar.clone() {
+        Some(Value::Array(menus)) => {
+            json!({ "role": "menuBar", "id": MENU_BAR_ID, "label": "Menu bar", "present": true, "children": menus })
+        }
+        _ => {
+            let reason = if sensors.attached {
+                "the window's host has not reported its menus yet"
+            } else {
+                "headless: there is no menu bar (11 §3); every menu command runs through run_command"
+            };
+            json!({ "role": "menuBar", "id": MENU_BAR_ID, "label": "Menu bar", "present": false, "reason": reason,
+                    "children": [] })
+        }
+    }
+}
+
+fn find<'a>(n: &'a Value, id: &str) -> Option<&'a Value> {
+    if n.get("id").and_then(Value::as_str) == Some(id) {
+        return Some(n);
+    }
+    n.get("children").and_then(Value::as_array).and_then(|c| c.iter().find_map(|x| find(x, id)))
+}
+
+fn prune(n: &mut Value, depth: u32) {
+    if let Some(m) = n.as_object_mut() {
+        if depth == 0 {
+            if let Some(c) = m.shift_remove("children") {
+                m.insert("childCount".into(), json!(c.as_array().map_or(0, Vec::len)));
+            }
+            return;
+        }
+        if let Some(Value::Array(c)) = m.get_mut("children") {
+            c.iter_mut().for_each(|x| prune(x, depth - 1));
+        }
+    }
+}
+
+/// A required member that is a 64-bit unsigned integer or `null` (`renderedSeq`: always present, `null` when unvouched).
+fn nullable_u64(_: &mut schemars::SchemaGenerator) -> schemars::Schema {
+    schemars::json_schema!({ "type": ["integer", "null"], "minimum": 0, "maximum": u64::MAX })
+}
+
+/// `inspect.ui.tree` result (11 §7.5; additive fields `renderedSeq` and `stale`: ADR-0021 decision 5, SI-121).
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct UiTreeResult {
+    /// `gui` (the tree the front end rendered and reported) or `virtual` (the kernel's tree, headless).
+    source: String,
+    /// The target the tree starts at.
+    target: String,
+    /// The tree: nodes with `role`, `id`, `label`, `value`, `enabled`, `checked`, `visible`, `command`, `children`.
+    root: Value,
+    /// The engine event number the tree vouches for: every window of the freshness quorum rendered the events up to
+    /// it; `null` when the tree is not vouched for or is the headless virtual tree. Always present.
+    #[schemars(required, schema_with = "nullable_u64")]
+    rendered_seq: Option<u64>,
+    /// Set by the MCP `inspect_ui` tool only: `true` when the front end had not rendered the events before the call
+    /// within 2 s (the tree is the last one it has). Absent otherwise; never `null`.
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    #[schemars(with = "bool")]
+    stale: Option<bool>,
 }
 
 #[command(
@@ -888,12 +1270,80 @@ pub(crate) struct UiTreeParams {
     kind = query,
     label = "UI tree",
     scopes = [read],
-    not_implemented = "M4 C4.2",
-    example(title = "The window's accessibility tree, 3 levels", params = r#"{"depth": 3}"#),
-    agent_only = "agents inspect the GUI (11 §7.8 inspect_ui)",
+    example(title = "The window's UI tree, 3 levels", params = r#"{"depth": 3}"#),
+    example(title = "The History panel", params = r#"{"target": "history"}"#),
+    agent_only = "agents inspect the GUI (11 §7.5 inspect_ui)",
 )]
-pub(crate) fn inspect_ui_tree(_cx: &mut Cx, _p: UiTreeParams) -> Result<Map<String, Value>, CommandError> {
-    Err(CommandError::not_implemented("inspect.ui.tree", "M4 C4.2"))
+pub(crate) fn inspect_ui_tree(cx: &mut Cx, p: UiTreeParams) -> Result<UiTreeResult, CommandError> {
+    // Attached mode: the tree the front end rendered and reported (ADR-0021); headless: the virtual tree.
+    // `renderedSeq`: the engine event the accepted GUI tree reflects (C41-R2-07, SI-121); `null` when the tree is not
+    // vouched for or is the headless virtual tree.
+    let sensors = &cx.ui().shell().sensors;
+    let (source, mut tree, seq) = match sensors.ui_tree.clone() {
+        Some(t) if t.is_object() => ("gui", t, sensors.ui_tree_seq),
+        _ => ("virtual", virtual_tree(cx), None),
+    };
+    // Ruling D-38: the window's tree always carries the menu bar, built here at each call from the menus the host
+    // built and the live availability, so it never depends on a menu being open; headless says it has none.
+    let bar = menu_bar(cx);
+    // Last among the window's children: readers that address the window's own nodes by position keep them.
+    if let Some(Value::Array(children)) = tree.get_mut("children") {
+        children.retain(|c| c.get("id").and_then(Value::as_str) != Some(MENU_BAR_ID));
+        children.push(bar);
+    }
+    let target = p.target.unwrap_or_else(|| "window".to_owned());
+    let mut sub = if target == "window" {
+        tree
+    } else {
+        find(&tree, &target).cloned().ok_or_else(|| {
+            CommandError::with_details(
+                "window.panelNotFound",
+                format!("the UI tree has no `{target}`"),
+                json!({ "target": target }),
+            )
+            .hint("targets are window, dialogs, a panel or view id (01 §5.2) or a tool palette id")
+        })?
+    };
+    if let Some(d) = p.depth {
+        prune(&mut sub, d);
+    }
+    // Ruling D-19: the canvas's record of the user's last gesture keeps its samples (positions, pressure, tilt,
+    // timing, modifiers, and the produced commands' parameters, which repeat them) for a session holding `input`;
+    // any other reader sees the summary (origin, tool, view, pointer kind, count, answer, command ids).
+    if !cx.origin().has_scope(tt_registry::Scope::Input) {
+        redact_gestures(&mut sub);
+    }
+    Ok(UiTreeResult { source: source.to_owned(), target, root: sub, rendered_seq: seq, stale: None })
+}
+
+/// The members of a gesture record a reader without the `input` scope sees (ruling D-19).
+const GESTURE_SUMMARY: [&str; 7] = ["origin", "tool", "view", "pointerType", "eventCount", "status", "code"];
+
+/// Reduces every node value's `lastGesture` to its summary: the members of [`GESTURE_SUMMARY`] and the commands' ids.
+fn redact_gestures(n: &mut Value) {
+    if let Some(Value::String(text)) = n.get_mut("value")
+        && text.contains("\"lastGesture\"")
+        && let Ok(Value::Object(mut v)) = serde_json::from_str::<Value>(text)
+        && let Some(Value::Object(record)) = v.get("lastGesture")
+    {
+        let mut summary: serde_json::Map<String, Value> =
+            GESTURE_SUMMARY.iter().filter_map(|k| record.get(*k).map(|x| ((*k).to_owned(), x.clone()))).collect();
+        let ids: Vec<Value> = record
+            .get("commands")
+            .and_then(Value::as_array)
+            .map(|cs| {
+                cs.iter().map(|c| json!({ "commandId": c.get("commandId").cloned().unwrap_or(Value::Null) })).collect()
+            })
+            .unwrap_or_default();
+        summary.insert("commands".into(), Value::Array(ids));
+        v.insert("lastGesture".into(), Value::Object(summary));
+        if let Ok(t) = serde_json::to_string(&Value::Object(v)) {
+            *text = t;
+        }
+    }
+    if let Some(Value::Array(children)) = n.get_mut("children") {
+        children.iter_mut().for_each(redact_gestures);
+    }
 }
 
 /// `inspect.screenshot` parameters.
@@ -901,11 +1351,296 @@ pub(crate) fn inspect_ui_tree(_cx: &mut Cx, _p: UiTreeParams) -> Result<Map<Stri
 #[serde(deny_unknown_fields)]
 pub(crate) struct ScreenshotParams {
     /// Window, view, panel or dialog.
-    #[serde(default)]
-    target: Option<String>,
+    #[serde(default = "window")]
+    target: String,
     /// Region.
     #[serde(default)]
     region: Option<Rect>,
+}
+
+fn window() -> String {
+    "window".into()
+}
+
+/// Captures that may run at once in one executor (each holds one job thread until it is encoded; design note 5 §1c).
+pub(crate) const MAX_CAPTURES: usize = 2;
+
+/// The inline side limit of a screenshot (11 §6.5: 2048 px).
+pub(crate) const SCREENSHOT_MAX_SIDE: u32 = 2048;
+
+/// The inline byte limit of an attached screenshot (11 §6.5: 8 MB; tool definitions lines 249-250).
+pub(crate) const SCREENSHOT_MAX_BYTES: u64 = 8 * 1024 * 1024;
+
+fn inline_too_large(w: u32, h: u32, bytes: Option<usize>, max_bytes: u64) -> CommandError {
+    CommandError::with_details(
+        "render.inlineTooLarge",
+        format!("a {w} x {h} screenshot is over the inline limits ({SCREENSHOT_MAX_SIDE} px, {max_bytes} bytes)"),
+        json!({ "maxInlinePixels": SCREENSHOT_MAX_SIDE, "maxInlineBytes": max_bytes, "width": w, "height": h,
+                "bytes": bytes }),
+    )
+    .hint("pass a region of at most 2048 x 2048 view pixels")
+}
+
+/// The headless screenshot (design note 5 §1): the target view window rendered at its virtual size through the final
+/// software rasteriser, the current drawing through the view's mapping on the Drawing-view background. The display
+/// aids are drawn by the interactive renderer only (06 §6.10).
+fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult, CommandError> {
+    let shell = cx.ui().shell();
+    let target = p.target.clone();
+    let id = match target.as_str() {
+        "window" => {
+            let active = cx.ui().active_view();
+            if shell.view(active).is_ok_and(|w| w.ty == crate::shell::ViewType::Drawing) {
+                active.to_owned()
+            } else {
+                "drawingView".to_owned()
+            }
+        }
+        "drawing" => "drawingView".to_owned(),
+        other => other.to_owned(),
+    };
+    let w = shell.view(&id).map_err(|_| {
+        CommandError::with_details(
+            "view.notFound",
+            format!("headless, `{target}` has nothing to capture (only view windows are rendered)"),
+            json!({ "target": target, "pointer": "/target" }),
+        )
+        .hint("target window, drawing or a view id (inspect.ui.tree lists them)")
+    })?;
+    if matches!(w.ty, crate::shell::ViewType::Top | crate::shell::ViewType::Side) {
+        let mut e = crate::camera_view::staging_owner(w, "headless screenshots");
+        if let Some(d) = e.details.as_object_mut() {
+            d.insert("target".into(), json!(target));
+        }
+        return Err(e);
+    }
+    let camera_view = w.ty == crate::shell::ViewType::Camera;
+    let (vw, vh) = (w.size.width.round(), w.size.height.round());
+    let region = match &p.region {
+        Some(r) => {
+            if ![r.x, r.y, r.w, r.h].iter().all(|v| v.is_finite()) || r.w < 1.0 || r.h < 1.0 {
+                return Err(super::common::invalid(
+                    "/region",
+                    "the region needs a finite position and a size of at least 1 px",
+                ));
+            }
+            (r.x.round(), r.y.round(), r.w.round(), r.h.round())
+        }
+        None => (0.0, 0.0, vw, vh),
+    };
+    let (_, max_bytes) = render::inline_limits(cx);
+    let side = |v: f64| if v.is_finite() && v >= 1.0 && v <= f64::from(u32::MAX) { v as u32 } else { u32::MAX };
+    let (width, height) = (side(region.2), side(region.3));
+    // The caps are checked before anything is rendered (S2).
+    if width.max(height) > SCREENSHOT_MAX_SIDE {
+        return Err(inline_too_large(width, height, None, max_bytes));
+    }
+    let bg = &cx.ui().drawing().aids.background;
+    let colour = if camera_view {
+        // The Camera view shows the scene's background (05 §3.2), as a render does.
+        cx.document()
+            .ok()
+            .and_then(|doc| {
+                crate::camera_view::current_scene(cx)
+                    .ok()
+                    .and_then(|s| doc.scene(&s))
+                    .map(|s| s.background_colour().to_string())
+            })
+            .unwrap_or_else(|| bg.colour.clone())
+    } else if bg.use_scene_colour {
+        cx.document()
+            .ok()
+            .and_then(|doc| {
+                cx.app().scene.as_ref().and_then(|s| doc.scene(s)).map(|s| s.background_colour().to_string())
+            })
+            .unwrap_or_else(|| bg.colour.clone())
+    } else {
+        bg.colour.clone()
+    };
+    let background = tt_model::value::Colour::parse(&colour).map(|c| c.channels()).unwrap_or([240, 240, 240, 255]);
+    let m = super::view::drawing_to_view(w);
+    let d2p = Affine([m[0], m[1], m[2], m[3], m[4] - region.0, m[5] - region.1]);
+    let scale = (m[0] * m[3] - m[1] * m[2]).abs().sqrt();
+    // The snapshot (design note 5 §1a; C42A-R1-02): the document by reference count, the drawing's id, the planar
+    // cache's handle and the blob store; the rasterising and the encoding run on a job thread, never on this one.
+    let doc = cx.document().ok().cloned();
+    // The Camera view (C4.3a): the final renderer's camera walk at the view's frame, drawn through the view transform
+    // (camera-view note §2); the list is built here, the items and pixels on the job thread.
+    let camera = if camera_view {
+        let chain = crate::camera_view::chain(cx, w)?;
+        let overrides = Overrides::default();
+        let req = render_list::Request {
+            scene: &chain.scene,
+            frame: chain.frame,
+            camera: None,
+            width: chain.width,
+            height: chain.height,
+            only: None,
+            overrides: &overrides,
+        };
+        let docr = cx.document()?;
+        let mut ev = super::anim_common::evaluator(docr, "capturing the Camera view");
+        let list = render_list::build(docr, &req, &mut ev)?;
+        let m = chain.output_to_view;
+        Some((list, [m[0], m[1], m[2], m[3], m[4] - region.0, m[5] - region.1]))
+    } else {
+        None
+    };
+    let drawing_id = if camera_view { None } else { doc.as_ref().and_then(|d| cx.app().current_drawing(d)) };
+    let capture = Capture {
+        camera,
+        doc,
+        drawing_id: drawing_id.clone(),
+        cache: cx.planar_cache(),
+        blobs: cx.project().ok().map(|pr| pr.store.blobs.clone()),
+        raster: super::draw_render::Raster {
+            d2p,
+            scale,
+            width,
+            height,
+            background,
+            show_strokes: false,
+            show_selection: false,
+        },
+        max_bytes,
+    };
+    let mut result = ScreenshotResult {
+        png: None,
+        width,
+        height,
+        sha256: None,
+        target,
+        view_id: id,
+        source: "virtual".into(),
+        drawing_id: drawing_id.map(|d| d.as_str().to_owned()),
+        note: if camera_view {
+            "headless: the camera composition through the Camera view's transform on the scene's background; overlays \
+               are drawn by the interactive renderer only (05 lines 283-284, 06 §6.10)"
+                .into()
+        } else {
+            "headless: the drawing through the view mapping on the Drawing-view background; display aids are drawn by \
+               the interactive renderer only (06 §6.10)"
+                .into()
+        },
+        job_id: None,
+    };
+    if cx.dry_run() {
+        result.job_id = Some("dryRun".into());
+        return Ok(result);
+    }
+    // At most MAX_CAPTURES captures in flight (each is one job thread; design note 5 §1c).
+    let running = cx
+        .session()
+        .jobs
+        .list(None, None)
+        .iter()
+        .filter(|j| j.command_id == "inspect.screenshot" && !j.state.is_final())
+        .count();
+    if running >= MAX_CAPTURES {
+        return Err(CommandError::with_details(
+            tt_registry::codes::LIMIT_EXCEEDED,
+            format!("{running} captures are running; at most {MAX_CAPTURES} run at once"),
+            json!({ "limit": "concurrentCaptures", "max": MAX_CAPTURES, "running": running }),
+        )
+        .hint("retry when a capture has answered"));
+    }
+    let done = result.clone();
+    let origin = cx.origin().clone();
+    let job = cx.session().jobs.submit("inspect.screenshot", &origin.session_key(), move |progress| {
+        let (png, sha) = capture.run(&|| progress.cancelled())?;
+        let finished = ScreenshotResult { png: Some(png), sha256: Some(sha), ..done };
+        serde_json::to_value(finished).map_err(|e| CommandError::internal(e.to_string()))
+    })?;
+    result.job_id = Some(job);
+    Ok(result)
+}
+
+/// What a headless capture needs, taken on the document thread (C42A-R1-02).
+struct Capture {
+    /// The Camera view's render list and its output-pixels-to-capture matrix (C4.3a); `None` for the Drawing view.
+    camera: Option<(render_list::RenderList, [f64; 6])>,
+    doc: Option<tt_model::document::Document>,
+    drawing_id: Option<tt_model::Id>,
+    cache: crate::planar::SharedCache,
+    blobs: Option<tt_persist::container::Blobs>,
+    raster: super::draw_render::Raster,
+    max_bytes: u64,
+}
+
+impl Capture {
+    /// Rasterises and encodes off the document thread: the PNG (base64) and its sha256.
+    fn run(&self, stop: &dyn Fn() -> bool) -> Result<(String, String), CommandError> {
+        let r = self.raster;
+        if let (Some((list, m)), Some(doc)) = (self.camera.as_ref(), self.doc.as_ref()) {
+            let work = u64::from(r.width) * u64::from(r.height) / 1024;
+            let (items, _, _) = render_list::items(doc, self.blobs.as_ref(), &self.cache, list, work)?;
+            let scene = tt_render::Scene {
+                width: r.width,
+                height: r.height,
+                background: r.background,
+                items: vec![tt_render::Item::Layer { transform: *m, items }],
+            };
+            let pixels = render::rasterise(&scene, stop)?;
+            return self.encode(&pixels);
+        }
+        let drawing =
+            self.doc.as_ref().zip(self.drawing_id.as_ref()).and_then(|(doc, id)| doc.drawing(id).map(|d| (doc, d)));
+        let pixels = match drawing {
+            Some((doc, d)) => {
+                let src = super::draw_render::Sources {
+                    cache: &self.cache,
+                    blobs: self.blobs.as_ref(),
+                    selection: None,
+                    stop,
+                };
+                super::draw_render::rasterise_with(&src, doc, d, None, r, std::time::Instant::now())?.0
+            }
+            None => r.background.repeat(r.width as usize * r.height as usize),
+        };
+        if stop() {
+            return Err(CommandError::new("job.cancelled", "the capture was cancelled"));
+        }
+        self.encode(&pixels)
+    }
+
+    /// Encodes the pixels and checks the byte cap.
+    fn encode(&self, pixels: &[u8]) -> Result<(String, String), CommandError> {
+        let r = self.raster;
+        let png = tt_render::encode_png(pixels, r.width, r.height)
+            .map_err(|e| CommandError::with_details("render.failed", e.to_string(), json!({})))?;
+        // The byte cap is known only after encoding (design note 5 §3; ADR-0020 decision 8).
+        if png.len() as u64 > self.max_bytes {
+            return Err(inline_too_large(r.width, r.height, Some(png.len()), self.max_bytes));
+        }
+        Ok((tt_persist::b64::encode(&png), render::sha256_hex(&png)))
+    }
+}
+
+/// `inspect.screenshot` result (spec A row 1062: `{png, width, height, sha256}`; design note 5 §3).
+#[derive(Debug, Clone, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct ScreenshotResult {
+    /// The PNG, base64 (`null` only inside a batch, where the capture job's id is answered instead of waiting).
+    png: Option<String>,
+    /// Width in pixels.
+    width: u32,
+    /// Height in pixels.
+    height: u32,
+    /// The PNG's sha256 (hex; `null` with `png`).
+    sha256: Option<String>,
+    /// The target captured.
+    target: String,
+    /// The view window captured.
+    view_id: String,
+    /// `virtual` (headless) or `gui` (attached, C4.2b).
+    source: String,
+    /// The drawing shown.
+    drawing_id: Option<String>,
+    /// What a headless capture contains.
+    note: String,
+    /// The capture job (the handle waits for it; design note 5 §1a).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    job_id: Option<String>,
 }
 
 #[command(
@@ -913,10 +1648,10 @@ pub(crate) struct ScreenshotParams {
     kind = query,
     label = "Screenshot",
     scopes = [read],
-    not_implemented = "M4 C4.2",
-    example(title = "The main window", params = "{}"),
+    example(title = "The active view", params = "{}"),
+    example(title = "A 400 x 300 region of the Drawing view", params = r#"{"target": "drawingView", "region": {"x": 760, "y": 390, "w": 400, "h": 300}}"#),
     agent_only = "agents look at the GUI (11 §7.8 screenshot)",
 )]
-pub(crate) fn inspect_screenshot(_cx: &mut Cx, _p: ScreenshotParams) -> Result<Map<String, Value>, CommandError> {
-    Err(CommandError::not_implemented("inspect.screenshot", "M4 C4.2"))
+pub(crate) fn inspect_screenshot(cx: &mut Cx, p: ScreenshotParams) -> Result<ScreenshotResult, CommandError> {
+    virtual_screenshot(cx, &p)
 }

@@ -1,0 +1,356 @@
+{
+  "client": {
+    "w": 1280,
+    "h": 600
+  },
+  "menu": {
+    "x": 252,
+    "y": 4,
+    "width": 334.578125,
+    "height": 602,
+    "top": 4,
+    "right": 586.578125,
+    "bottom": 606,
+    "left": 252
+  },
+  "arrows": [
+    {
+      "text": "\u25b2",
+      "rect": {
+        "x": 257,
+        "y": 9,
+        "width": 324.578125,
+        "height": 12.90625,
+        "top": 9,
+        "right": 581.578125,
+        "bottom": 21.90625,
+        "left": 257
+      },
+      "class": "context-menu-arrow spent"
+    },
+    {
+      "text": "\u25bc",
+      "rect": {
+        "x": 257,
+        "y": 588.09375,
+        "width": 324.578125,
+        "height": 12.90625,
+        "top": 588.09375,
+        "right": 581.578125,
+        "bottom": 601,
+        "left": 257
+      },
+      "class": "context-menu-arrow"
+    }
+  ],
+  "items": [
+    {
+      "id": "drawingView.drawingMenu.cut",
+      "rect": {
+        "x": 257,
+        "y": 21.90625,
+        "width": 274.828125,
+        "height": 23,
+        "top": 21.90625,
+        "right": 531.828125,
+        "bottom": 44.90625,
+        "left": 257
+      },
+      "label": "Cutnothing is selected in the drawing context"
+    },
+    {
+      "id": "drawingView.drawingMenu.copy",
+      "rect": {
+        "x": 257,
+        "y": 44.90625,
+        "width": 284.625,
+        "height": 23,
+        "top": 44.90625,
+        "right": 541.625,
+        "bottom": 67.90625,
+        "left": 257
+      },
+      "label": "Copynothing is selected in the drawing context"
+    },
+    {
+      "id": "drawingView.drawingMenu.paste",
+      "rect": {
+        "x": 257,
+        "y": 67.90625,
+        "width": 190.171875,
+        "height": 23,
+        "top": 67.90625,
+        "right": 447.171875,
+        "bottom": 90.90625,
+        "left": 257
+      },
+      "label": "Pastethe clipboard is empty"
+    },
+    {
+      "id": "drawingView.drawingMenu.selectAll",
+      "rect": {
+        "x": 257,
+        "y": 90.90625,
+        "width": 85.3125,
+        "height": 23,
+        "top": 90.90625,
+        "right": 342.3125,
+        "bottom": 113.90625,
+        "left": 257
+      },
+      "label": "Select All"
+    },
+    {
+      "id": "drawingView.drawingMenu.deselectAll",
+      "rect": {
+        "x": 257,
+        "y": 113.90625,
+        "width": 99.828125,
+        "height": 23,
+        "top": 113.90625,
+        "right": 356.828125,
+        "bottom": 136.90625,
+        "left": 257
+      },
+      "label": "Deselect All"
+    },
+    {
+      "id": "drawingView.drawingMenu.arrange.front",
+      "rect": {
+        "x": 257,
+        "y": 165.90625,
+        "width": 261.25,
+        "height": 23,
+        "top": 165.90625,
+        "right": 518.25,
+        "bottom": 188.90625,
+        "left": 257
+      },
+      "label": "Bring to Frontthere is nothing to arrange"
+    },
+    {
+      "id": "drawingView.drawingMenu.arrange.forward",
+      "rect": {
+        "x": 257,
+        "y": 188.90625,
+        "width": 262.09375,
+        "height": 23,
+        "top": 188.90625,
+        "right": 519.09375,
+        "bottom": 211.90625,
+        "left": 257
+      },
+      "label": "Bring Forwardthere is nothing to arrange"
+    },
+    {
+      "id": "drawingView.drawingMenu.arrange.backward",
+      "rect": {
+        "x": 257,
+        "y": 211.90625,
+        "width": 268.71875,
+        "height": 23,
+        "top": 211.90625,
+        "right": 525.71875,
+        "bottom": 234.90625,
+        "left": 257
+      },
+      "label": "Send Backwardthere is nothing to arrange"
+    },
+    {
+      "id": "drawingView.drawingMenu.arrange.back",
+      "rect": {
+        "x": 257,
+        "y": 234.90625,
+        "width": 256.125,
+        "height": 23,
+        "top": 234.90625,
+        "right": 513.125,
+        "bottom": 257.90625,
+        "left": 257
+      },
+      "label": "Send to Backthere is nothing to arrange"
+    },
+    {
+      "id": "drawingView.drawingMenu.flip.horizontal",
+      "rect": {
+        "x": 257,
+        "y": 286.90625,
+        "width": 242.953125,
+        "height": 23,
+        "top": 286.90625,
+        "right": 499.953125,
+        "bottom": 309.90625,
+        "left": 257
+      },
+      "label": "Flip Horizontalthere is nothing to flip"
+    },
+    {
+      "id": "drawingView.drawingMenu.flip.vertical",
+      "rect": {
+        "x": 257,
+        "y": 309.90625,
+        "width": 225.3125,
+        "height": 23,
+        "top": 309.90625,
+        "right": 482.3125,
+        "bottom": 332.90625,
+        "left": 257
+      },
+      "label": "Flip Verticalthere is nothing to flip"
+    },
+    {
+      "id": "drawingView.drawingMenu.rotate.90cw",
+      "rect": {
+        "x": 257,
+        "y": 332.90625,
+        "width": 256.9375,
+        "height": 23,
+        "top": 332.90625,
+        "right": 513.9375,
+        "bottom": 355.90625,
+        "left": 257
+      },
+      "label": "Rotate 90\u00b0 CWthere is nothing to rotate"
+    },
+    {
+      "id": "drawingView.drawingMenu.rotate.90ccw",
+      "rect": {
+        "x": 257,
+        "y": 355.90625,
+        "width": 264.640625,
+        "height": 23,
+        "top": 355.90625,
+        "right": 521.640625,
+        "bottom": 378.90625,
+        "left": 257
+      },
+      "label": "Rotate 90\u00b0 CCWthere is nothing to rotate"
+    },
+    {
+      "id": "drawingView.drawingMenu.rotate.180",
+      "rect": {
+        "x": 257,
+        "y": 378.90625,
+        "width": 240.203125,
+        "height": 23,
+        "top": 378.90625,
+        "right": 497.203125,
+        "bottom": 401.90625,
+        "left": 257
+      },
+      "label": "Rotate 180\u00b0there is nothing to rotate"
+    },
+    {
+      "id": "drawingView.drawingMenu.group",
+      "rect": {
+        "x": 257,
+        "y": 410.90625,
+        "width": 209.890625,
+        "height": 23,
+        "top": 410.90625,
+        "right": 466.890625,
+        "bottom": 433.90625,
+        "left": 257
+      },
+      "label": "Groupthere is nothing to group"
+    },
+    {
+      "id": "drawingView.drawingMenu.ungroup",
+      "rect": {
+        "x": 257,
+        "y": 433.90625,
+        "width": 237.4375,
+        "height": 23,
+        "top": 433.90625,
+        "right": 494.4375,
+        "bottom": 456.90625,
+        "left": 257
+      },
+      "label": "Ungroupthere is nothing to ungroup"
+    },
+    {
+      "id": "drawingView.drawingMenu.flatten",
+      "rect": {
+        "x": 257,
+        "y": 465.90625,
+        "width": 214.609375,
+        "height": 23,
+        "top": 465.90625,
+        "right": 471.609375,
+        "bottom": 488.90625,
+        "left": 257
+      },
+      "label": "Flattenthere is nothing to flatten"
+    },
+    {
+      "id": "drawingView.drawingMenu.optimize",
+      "rect": {
+        "x": 257,
+        "y": 488.90625,
+        "width": 238.65625,
+        "height": 23,
+        "top": 488.90625,
+        "right": 495.65625,
+        "bottom": 511.90625,
+        "left": 257
+      },
+      "label": "Optimizethere is nothing to optimize"
+    },
+    {
+      "id": "drawingView.drawingMenu.smooth",
+      "rect": {
+        "x": 257,
+        "y": 511.90625,
+        "width": 226.515625,
+        "height": 23,
+        "top": 511.90625,
+        "right": 483.515625,
+        "bottom": 534.90625,
+        "left": 257
+      },
+      "label": "Smooththere is nothing to smooth"
+    },
+    {
+      "id": "drawingView.drawingMenu.centreLine",
+      "rect": {
+        "x": 257,
+        "y": 534.90625,
+        "width": 284.140625,
+        "height": 23,
+        "top": 534.90625,
+        "right": 541.140625,
+        "bottom": 557.90625,
+        "left": 257
+      },
+      "label": "Extract Centre Linethere is nothing to extract"
+    },
+    {
+      "id": "drawingView.drawingMenu.linesToBrush",
+      "rect": {
+        "x": 257,
+        "y": 557.90625,
+        "width": 309.578125,
+        "height": 23,
+        "top": 557.90625,
+        "right": 566.578125,
+        "bottom": 580.90625,
+        "left": 257
+      },
+      "label": "Convert Lines to Brushthere is nothing to convert"
+    },
+    {
+      "id": "drawingView.drawingMenu.breakApart",
+      "rect": {
+        "x": 257,
+        "y": 589.90625,
+        "width": 293.09375,
+        "height": 23,
+        "top": 589.90625,
+        "right": 550.09375,
+        "bottom": 612.90625,
+        "left": 257
+      },
+      "label": "Break Text Apartthere is nothing to break apart"
+    }
+  ]
+}

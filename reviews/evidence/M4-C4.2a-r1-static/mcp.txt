@@ -1,0 +1,2 @@
+C42A-R1-21: pointer event schema has no event properties or required fields
+C42A-R1-22: successful pointer strips command envelopes (undo, changes, warnings)

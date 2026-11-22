@@ -1,0 +1,437 @@
+{
+  "checks": 18,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-uwtttpat",
+  "results": [
+    {
+      "check": "drawingView-keystone command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -45.5,
+                "y": -30.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-keystone undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-keystone D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-keystone finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-keystone undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView independent preview Hausdorff within 1 view pixel",
+      "ok": true,
+      "detail": {
+        "distance": 1.0,
+        "heldInk": 44,
+        "committedInk": 81
+      }
+    },
+    {
+      "check": "drawingView missed press empties selection",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView following marquee selects",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 316.921875,
+            "y": 397,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 316.921875,
+            "y": 397,
+            "modifiers": [],
+            "dt": 8,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 516.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 117,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 516.921875,
+            "y": 237,
+            "modifiers": [],
+            "dt": 321,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "rect",
+              "rect": {
+                "x": -100.078125,
+                "y": -80.5,
+                "width": 200,
+                "height": 160
+              },
+              "rectRule": "inside",
+              "mode": "replace"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "drawingView following corner works",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "drawingView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1,
+          0,
+          0,
+          -1,
+          417,
+          316.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 336.921875,
+            "y": 377,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 371.921875,
+            "y": 347,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 371.921875,
+            "y": 347,
+            "modifiers": [],
+            "dt": 329,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.envelope.apply",
+            "params": {
+              "corners": [
+                {
+                  "x": -45.5,
+                  "y": -30.5
+                },
+                {
+                  "x": 80.5,
+                  "y": -60.5
+                },
+                {
+                  "x": 80.5,
+                  "y": 60.5
+                },
+                {
+                  "x": -80.5,
+                  "y": 60.5
+                }
+              ],
+              "mapping": "auto"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView-keystone command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.envelope.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -45.5,
+                "y": -30.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ],
+            "mapping": "auto"
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-keystone undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Perspective Tool",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-keystone D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-keystone finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-keystone undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView independent preview Hausdorff within 1 view pixel",
+      "ok": true,
+      "detail": {
+        "distance": 1.0,
+        "heldInk": 1099,
+        "committedInk": 1331
+      }
+    },
+    {
+      "check": "cameraView missed press empties selection",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView following marquee selects",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 256.921875,
+            "y": 349,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 256.921875,
+            "y": 349,
+            "modifiers": [],
+            "dt": 13,
+            "pressure": 1
+          },
+          {
+            "type": "move",
+            "x": 576.921875,
+            "y": 93,
+            "modifiers": [],
+            "dt": 100,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 576.921875,
+            "y": 93,
+            "modifiers": [],
+            "dt": 337,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 4,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.selection.set",
+            "params": {
+              "by": "rect",
+              "rect": {
+                "x": -100.048828125,
+                "y": -79.6875,
+                "width": 200,
+                "height": 160
+              },
+              "rectRule": "inside",
+              "mode": "replace"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "check": "cameraView following corner works",
+      "ok": true,
+      "detail": {
+        "origin": "user",
+        "tool": "perspective",
+        "view": "cameraView",
+        "pointerType": "mouse",
+        "drawingToView": [
+          1.5999999999999999,
+          0,
+          0,
+          -1.5999999999999999,
+          417,
+          221.5
+        ],
+        "events": [
+          {
+            "type": "down",
+            "x": 288.921875,
+            "y": 317,
+            "modifiers": [],
+            "dt": 0,
+            "pressure": 1,
+            "button": "left"
+          },
+          {
+            "type": "move",
+            "x": 344.921875,
+            "y": 269,
+            "modifiers": [],
+            "dt": 116,
+            "pressure": 1
+          },
+          {
+            "type": "up",
+            "x": 344.921875,
+            "y": 269,
+            "modifiers": [],
+            "dt": 340,
+            "pressure": 1
+          }
+        ],
+        "eventCount": 3,
+        "status": "ok",
+        "code": null,
+        "commands": [
+          {
+            "commandId": "draw.envelope.apply",
+            "params": {
+              "corners": [
+                {
+                  "x": -45.5,
+                  "y": -30.5
+                },
+                {
+                  "x": 80.5,
+                  "y": -60.5
+                },
+                {
+                  "x": 80.5,
+                  "y": 60.5
+                },
+                {
+                  "x": -80.5,
+                  "y": 60.5
+                }
+              ],
+              "mapping": "auto"
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

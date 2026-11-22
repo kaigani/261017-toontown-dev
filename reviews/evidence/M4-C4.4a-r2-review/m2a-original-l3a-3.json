@@ -1,0 +1,915 @@
+{
+  "checks": 10,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l3a3",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "confirmable overwrite observe",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "permission.denied",
+          "message": "`agent.activity.export` needs the scopes [\"files.write\"]",
+          "details": {
+            "commandId": "agent.activity.export",
+            "missingScopes": [
+              "files.write"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "check": "policy observe",
+      "ok": true,
+      "detail": {
+        "read": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7VVZ80H6QDQP9HKGY6ATKGN",
+              "name": "Live3 policy",
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\policy.animpkg",
+              "dirty": false,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7VVZ80H6QDQP9HKGY6ATKMS",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN80098XN2WAKGXE58YRS",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN80098XN2WAKGXE58YRS"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-b9a9a9",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-63eaab",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-6a9e85",
+                "name": "policy-observe",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s3-6a9e85",
+              "client": "policy-observe",
+              "policy": "observe",
+              "scopes": [
+                "read"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "observe",
+                "maxJobs": 2,
+                "maxBatchSteps": 2,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": false,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "mutation": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "permission.denied",
+            "message": "`draw.rectangle.add` needs the scopes [\"edit\"]",
+            "details": {
+              "commandId": "draw.rectangle.add",
+              "missingScopes": [
+                "edit"
+              ]
+            }
+          }
+        },
+        "confirmable": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5,
+          "error": {
+            "code": "permission.denied",
+            "message": "`agent.activity.export` needs the scopes [\"files.write\"]",
+            "details": {
+              "commandId": "agent.activity.export",
+              "missingScopes": [
+                "files.write"
+              ]
+            }
+          }
+        },
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:58350/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-b9a9a9",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:12.996Z",
+                "lastActivity": "2026-11-20T06:58:13.280Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-63eaab",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:13.128Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-6a9e85",
+                "client": "policy-observe",
+                "policy": "observe",
+                "scopes": [
+                  "read"
+                ],
+                "connectedAt": "2026-11-20T06:58:21.668Z",
+                "lastActivity": "2026-11-20T06:58:21.688Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        }
+      }
+    },
+    {
+      "check": "batch length enforced observe",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 5,
+        "error": {
+          "code": "limit.exceeded",
+          "message": "a batch of this session has at most 2 steps",
+          "details": {
+            "limit": "maxBatchSteps",
+            "value": 2,
+            "actual": 3
+          }
+        }
+      }
+    },
+    {
+      "check": "confirmable overwrite assist",
+      "ok": true,
+      "detail": {
+        "status": "needs_confirmation",
+        "result": {
+          "status": "needs_confirmation",
+          "confirmToken": "cf_16f522965d10d4c15131c693",
+          "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json` with the agent activity log",
+          "consequences": [
+            {
+              "kind": "overwrite",
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json"
+            }
+          ],
+          "category": "overwrite"
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6
+      }
+    },
+    {
+      "check": "policy assist",
+      "ok": true,
+      "detail": {
+        "read": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7VVZ80H6QDQP9HKGY6ATKGN",
+              "name": "Live3 policy",
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\policy.animpkg",
+              "dirty": false,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7VVZ80H6QDQP9HKGY6ATKMS",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN80098XN2WAKGXE58YRS",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN80098XN2WAKGXE58YRS"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-b9a9a9",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-63eaab",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-6a9e85",
+                "name": "policy-observe",
+                "acting": false
+              },
+              {
+                "sessionId": "s4-fce98d",
+                "name": "policy-assist",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s4-fce98d",
+              "client": "policy-assist",
+              "policy": "assist",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "assist",
+                "maxJobs": 2,
+                "maxBatchSteps": 2,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": false,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        },
+        "mutation": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+            "strokeIds": [
+              "st_01K7JJN8008N3H4CPPQXZ19DXF"
+            ],
+            "zoneIds": [
+              "zn_STK4JJG4RNA5XX8X7X9H85TJKY"
+            ],
+            "layerId": "nd_01K7JJN8016D05GEMTYGJ38P5R",
+            "createdIds": [
+              "st_01K7JJN8008N3H4CPPQXZ19DXF",
+              "nd_01K7JJN8016D05GEMTYGJ38P5R",
+              "zn_STK4JJG4RNA5XX8X7X9H85TJKY"
+            ],
+            "modifiedIds": [],
+            "removedIds": [],
+            "rev": 6
+          },
+          "changes": [
+            {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9/st_01K7JJN8008N3H4CPPQXZ19DXF",
+              "type": "stroke",
+              "op": "created",
+              "rev": 6,
+              "parentId": "dr_01K7JJN800ECJYMXSD42XE8NG9/nd_01K7JJN8016D05GEMTYGJ38P5R",
+              "index": 0
+            },
+            {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9/nd_01K7JJN8016D05GEMTYGJ38P5R",
+              "type": "drawingNode",
+              "op": "created",
+              "rev": 6,
+              "parentId": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+              "index": 1
+            },
+            {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+              "type": "drawing",
+              "op": "modified",
+              "rev": 6,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/nodes/1",
+                  "value": {
+                    "id": "nd_01K7JJN8016D05GEMTYGJ38P5R",
+                    "type": "drawingNode"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-4",
+            "label": "Rectangle Tool"
+          },
+          "warnings": [],
+          "documentRev": 6
+        },
+        "confirmable": {
+          "status": "needs_confirmation",
+          "result": {
+            "status": "needs_confirmation",
+            "confirmToken": "cf_16f522965d10d4c15131c693",
+            "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json` with the agent activity log",
+            "consequences": [
+              {
+                "kind": "overwrite",
+                "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json"
+              }
+            ],
+            "category": "overwrite"
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6
+        },
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:58350/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-b9a9a9",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:12.996Z",
+                "lastActivity": "2026-11-20T06:58:13.280Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-63eaab",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:13.128Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-6a9e85",
+                "client": "policy-observe",
+                "policy": "observe",
+                "scopes": [
+                  "read"
+                ],
+                "connectedAt": "2026-11-20T06:58:21.668Z",
+                "lastActivity": "2026-11-20T06:58:21.694Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s4-fce98d",
+                "client": "policy-assist",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:29.190Z",
+                "lastActivity": "2026-11-20T06:58:29.231Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_16f522965d10d4c15131c693",
+                "sessionId": "s4-fce98d",
+                "commandId": "agent.activity.export",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json` with the agent activity log",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json"
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": false,
+                "expiresInMs": 299975
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6
+        }
+      }
+    },
+    {
+      "check": "batch length enforced assist",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 6,
+        "error": {
+          "code": "limit.exceeded",
+          "message": "a batch of this session has at most 2 steps",
+          "details": {
+            "limit": "maxBatchSteps",
+            "value": 2,
+            "actual": 3
+          }
+        }
+      }
+    },
+    {
+      "check": "confirmable overwrite autonomous",
+      "ok": true,
+      "detail": {
+        "status": "ok",
+        "result": {
+          "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-autonomous.json",
+          "entries": 23,
+          "omitted": []
+        },
+        "changes": [],
+        "warnings": [],
+        "documentRev": 7
+      }
+    },
+    {
+      "check": "policy autonomous",
+      "ok": true,
+      "detail": {
+        "read": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7VVZ80H6QDQP9HKGY6ATKGN",
+              "name": "Live3 policy",
+              "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\policy.animpkg",
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7VVZ80H6QDQP9HKGY6ATKMS",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN80098XN2WAKGXE58YRS",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "cameraView",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN80098XN2WAKGXE58YRS"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": false
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-b9a9a9",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-63eaab",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-6a9e85",
+                "name": "policy-observe",
+                "acting": false
+              },
+              {
+                "sessionId": "s4-fce98d",
+                "name": "policy-assist",
+                "acting": false
+              },
+              {
+                "sessionId": "s5-59f34c",
+                "name": "policy-autonomous",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s5-59f34c",
+              "client": "policy-autonomous",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "autonomous",
+                "maxJobs": 2,
+                "maxBatchSteps": 2,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": false,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6
+        },
+        "mutation": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+            "strokeIds": [
+              "st_01K7JJN800NPFBTJBWTTR44YAF"
+            ],
+            "zoneIds": [
+              "zn_QYNVW6HW56DHMQSZNXHDQGKSMF"
+            ],
+            "layerId": "nd_01K7JJN8016SE8TNASZCKXE4PK",
+            "createdIds": [
+              "st_01K7JJN800NPFBTJBWTTR44YAF",
+              "nd_01K7JJN8016SE8TNASZCKXE4PK",
+              "zn_QYNVW6HW56DHMQSZNXHDQGKSMF"
+            ],
+            "modifiedIds": [],
+            "removedIds": [],
+            "rev": 7
+          },
+          "changes": [
+            {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9/st_01K7JJN800NPFBTJBWTTR44YAF",
+              "type": "stroke",
+              "op": "created",
+              "rev": 7,
+              "parentId": "dr_01K7JJN800ECJYMXSD42XE8NG9/nd_01K7JJN8016SE8TNASZCKXE4PK",
+              "index": 0
+            },
+            {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9/nd_01K7JJN8016SE8TNASZCKXE4PK",
+              "type": "drawingNode",
+              "op": "created",
+              "rev": 7,
+              "parentId": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+              "index": 2
+            },
+            {
+              "id": "dr_01K7JJN800ECJYMXSD42XE8NG9",
+              "type": "drawing",
+              "op": "modified",
+              "rev": 7,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/nodes/2",
+                  "value": {
+                    "id": "nd_01K7JJN8016SE8TNASZCKXE4PK",
+                    "type": "drawingNode"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-5",
+            "label": "Rectangle Tool"
+          },
+          "warnings": [],
+          "documentRev": 7
+        },
+        "confirmable": {
+          "status": "ok",
+          "result": {
+            "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-autonomous.json",
+            "entries": 23,
+            "omitted": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 7
+        },
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:58350/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-b9a9a9",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:12.996Z",
+                "lastActivity": "2026-11-20T06:58:13.280Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-63eaab",
+                "client": "review-live3-primary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:13.128Z",
+                "lastActivity": null,
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-6a9e85",
+                "client": "policy-observe",
+                "policy": "observe",
+                "scopes": [
+                  "read"
+                ],
+                "connectedAt": "2026-11-20T06:58:21.668Z",
+                "lastActivity": "2026-11-20T06:58:21.694Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s4-fce98d",
+                "client": "policy-assist",
+                "policy": "assist",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:29.190Z",
+                "lastActivity": "2026-11-20T06:58:29.255Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s5-59f34c",
+                "client": "policy-autonomous",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:58:36.724Z",
+                "lastActivity": "2026-11-20T06:58:36.750Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": [
+              {
+                "confirmationId": "cf_16f522965d10d4c15131c693",
+                "sessionId": "s4-fce98d",
+                "commandId": "agent.activity.export",
+                "summary": "Overwrite `C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json` with the agent activity log",
+                "consequences": [
+                  {
+                    "kind": "overwrite",
+                    "path": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44fixture-re5dalmi\\overwrite-assist.json"
+                  }
+                ],
+                "category": "overwrite",
+                "decision": null,
+                "inApp": false,
+                "expiresInMs": 292477
+              }
+            ]
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 7
+        }
+      }
+    },
+    {
+      "check": "batch length enforced autonomous",
+      "ok": true,
+      "detail": {
+        "status": "error",
+        "changes": [],
+        "warnings": [],
+        "documentRev": 7,
+        "error": {
+          "code": "limit.exceeded",
+          "message": "a batch of this session has at most 2 steps",
+          "details": {
+            "limit": "maxBatchSteps",
+            "value": 2,
+            "actual": 3
+          }
+        }
+      }
+    }
+  ]
+}

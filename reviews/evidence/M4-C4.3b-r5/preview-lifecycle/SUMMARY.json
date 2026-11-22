@@ -1,0 +1,315 @@
+{
+ "rowF": {
+  "regenerate": "python scripts/c43-preview-lifecycle.py <hooks toontown.exe> <toontown-headless> <out> --states f",
+  "previousCanvasCode": {
+   "exit": 1,
+   "rows": [
+    {
+     "name": "(f) the window switched to the Camera view and back while pending: the pending overlay is not drawn in the Camera view, and is drawn again back in the Drawing view, both before the answer (D-53)",
+     "ok": false,
+     "detail": {
+      "samples": [
+       {
+        "type": "camera",
+        "viewType": "camera",
+        "overlay": true,
+        "preview": false,
+        "answered": false
+       },
+       {
+        "type": "drawing",
+        "viewType": "drawing",
+        "overlay": true,
+        "preview": false,
+        "answered": false
+       }
+      ],
+      "answeredAt": 2.561
+     }
+    },
+    {
+     "name": "(f) the window switched to the Camera view and back while pending: the commit answered, nothing left drawn",
+     "ok": true,
+     "detail": {
+      "answeredAt": 2.561,
+      "pending": false
+     }
+    },
+    {
+     "name": "(f) the window switched to the Camera view and back while pending: the drawing equals the direct commands' (D-32)",
+     "ok": true,
+     "detail": {
+      "statuses": [
+       "ok"
+      ]
+     }
+    }
+   ],
+   "note": "dist built from CanvasView.tsx before b60d1e08: the overlay is drawn in the Camera view"
+  },
+  "fixed": {
+   "exit": 0,
+   "rows": [
+    {
+     "name": "(f) the window switched to the Camera view and back while pending: the pending overlay is not drawn in the Camera view, and is drawn again back in the Drawing view, both before the answer (D-53)",
+     "ok": true,
+     "detail": {
+      "samples": [
+       {
+        "type": "camera",
+        "viewType": "camera",
+        "overlay": false,
+        "preview": false,
+        "answered": false
+       },
+       {
+        "type": "drawing",
+        "viewType": "drawing",
+        "overlay": true,
+        "preview": false,
+        "answered": false
+       }
+      ],
+      "answeredAt": 2.567
+     }
+    },
+    {
+     "name": "(f) the window switched to the Camera view and back while pending: the commit answered, nothing left drawn",
+     "ok": true,
+     "detail": {
+      "answeredAt": 2.567,
+      "pending": false
+     }
+    },
+    {
+     "name": "(f) the window switched to the Camera view and back while pending: the drawing equals the direct commands' (D-32)",
+     "ok": true,
+     "detail": {
+      "statuses": [
+       "ok"
+      ]
+     }
+    }
+   ]
+  }
+ },
+ "allStates": {
+  "regenerate": "python scripts/c43-preview-lifecycle.py <hooks toontown.exe> <toontown-headless> <out>",
+  "exit": 0,
+  "manifest": {
+   "kind": "toontown.c43b.preview-lifecycle",
+   "commitDelayMs": 2500,
+   "sceneDelayMs": 1800,
+   "seconds": 67.4,
+   "rows": 19,
+   "passed": 19,
+   "failed": [],
+   "failures": []
+  },
+  "rows": [
+   {
+    "name": "(a) Select move: drawn until the committed frame (answer 2500 ms late)",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.569,
+     "heldSamples": 32,
+     "heldAll": true,
+     "afterSamples": 8,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "name": "(a) Select move: the drawing equals the direct commands' (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "name": "(a) Select corner scale: drawn until the committed frame (answer 2500 ms late)",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.584,
+     "heldSamples": 34,
+     "heldAll": true,
+     "afterSamples": 8,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "name": "(a) Select corner scale: the drawing equals the direct commands' (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "name": "(a) Brush: drawn until the committed frame (answer 2500 ms late)",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.572,
+     "heldSamples": 33,
+     "heldAll": true,
+     "afterSamples": 8,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "name": "(a) Brush: the drawing equals the direct commands' (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "name": "(a) Rectangle: drawn until the committed frame (answer 2500 ms late)",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.573,
+     "heldSamples": 35,
+     "heldAll": true,
+     "afterSamples": 7,
+     "afterNone": true,
+     "status": "ok"
+    }
+   },
+   {
+    "name": "(a) Rectangle: the drawing equals the direct commands' (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "name": "(c) undo by keyboard right after the release: answered, and nothing is left drawn once settled",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.593,
+     "status": "ok",
+     "pending": false
+    }
+   },
+   {
+    "name": "(c) undo by keyboard right after the release: the drawing equals the direct commands then undo (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok",
+      "ok"
+     ]
+    }
+   },
+   {
+    "name": "(d) a second gesture before the first settles: the second press came before the first answer, both committed, nothing left drawn",
+    "ok": true,
+    "detail": {
+     "secondPressAfterFirstRelease": 0.567,
+     "firstAnsweredAt": 2.581,
+     "secondAnsweredAt": 3.92,
+     "pending": false
+    }
+   },
+   {
+    "name": "(d) a second gesture before the first settles: the drawing equals both gestures' direct commands (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok",
+      "ok"
+     ]
+    }
+   },
+   {
+    "name": "(e) a refusal clears at once: refused, and nothing is drawn from just after the answer",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.573,
+     "status": "error",
+     "code": "drawing.locked",
+     "drawnAfterAnswer": []
+    }
+   },
+   {
+    "name": "(e) a refusal clears at once: the drawing is unchanged",
+    "ok": true,
+    "detail": null
+   },
+   {
+    "name": "(f) the window switched to the Camera view and back while pending: the pending overlay is not drawn in the Camera view, and is drawn again back in the Drawing view, both before the answer (D-53)",
+    "ok": true,
+    "detail": {
+     "samples": [
+      {
+       "type": "camera",
+       "viewType": "camera",
+       "overlay": false,
+       "preview": false,
+       "answered": false
+      },
+      {
+       "type": "drawing",
+       "viewType": "drawing",
+       "overlay": true,
+       "preview": false,
+       "answered": false
+      }
+     ],
+     "answeredAt": 2.574
+    }
+   },
+   {
+    "name": "(f) the window switched to the Camera view and back while pending: the commit answered, nothing left drawn",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.574,
+     "pending": false
+    }
+   },
+   {
+    "name": "(f) the window switched to the Camera view and back while pending: the drawing equals the direct commands' (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   },
+   {
+    "name": "(b) a scene answer in flight before the commit arrives first: the trace is staged (scene built before the commit, delivered between the commit and its answer) and the preview stays until the committed frame",
+    "ok": true,
+    "detail": {
+     "answeredAt": 2.584,
+     "heldSamples": 35,
+     "heldAll": true,
+     "afterSamples": 8,
+     "afterNone": true,
+     "status": "ok",
+     "releaseAfterSceneAsked": 1.122,
+     "sceneDelayMs": 1800,
+     "sceneArrivesAfterRelease": 0.678,
+     "staged": true
+    }
+   },
+   {
+    "name": "(b) a scene answer in flight before the commit arrives first: the drawing equals the direct commands' (D-32)",
+    "ok": true,
+    "detail": {
+     "statuses": [
+      "ok"
+     ]
+    }
+   }
+  ]
+ }
+}

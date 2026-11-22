@@ -1,0 +1,245 @@
+// The dock area (01 §5.4; M4 C4.1): renders the kernel's arrangement with dockview and turns every docking gesture
+// into a command. Drops are vetoed and replaced by `window.panel.move`; a tab's close button is `window.panel.set
+// {visible: false}`; a double-click toggles floating; the tab bar's context menu is the panel checklist. A splitter
+// drag ends in the same-place `window.panel.move` (a panel tabbed with itself) that records the area's size in every
+// area (SI-118, interim ruling O-3a). The grid is rebuilt from the kernel's answer. The checklist is the shared context
+// menu (M4 C4.4a, design note 1 §9): check marks, the keyboard, and each panel's visibility toggled.
+import {
+  DockviewReact,
+  themeDark,
+  themeLight,
+  type DockviewApi,
+  type DockviewReadyEvent,
+  type IDockviewPanelHeaderProps,
+  type IDockviewPanelProps,
+} from 'dockview-react';
+import { useCallback, useEffect, useRef, useState, type FunctionComponent } from 'react';
+
+import { PANEL_CATALOGUE, panelInfo } from '../panels/catalogue';
+import { PanelBody } from '../panels/PanelBody';
+import { useActions } from '../shell/actionsApi';
+import { ContextMenu } from '../shell/ContextMenu';
+import { menuAt, type MenuAt, type MenuGroup } from '../shell/contextMenuModel';
+import { useSlice } from '../state/context';
+import { useAppliedTheme } from '../theme/theme';
+import type { Arrangement, Layout, PanelEntry } from '../state/types';
+import { applyPlan } from './applyPlan';
+import { dropToMove, fingerprint, samePlaceResize, type Area } from './layoutPlan';
+
+function title(id: string): string {
+  return panelInfo(id)?.title ?? id;
+}
+
+function PanelComponent(props: IDockviewPanelProps<{ panelId: string }>) {
+  return <PanelBody panelId={props.params.panelId} />;
+}
+
+function Tab(props: IDockviewPanelHeaderProps<{ panelId: string }>) {
+  const actions = useActions();
+  const id = props.params.panelId;
+  const panels = (useSlice('panels') as readonly PanelEntry[] | undefined) ?? [];
+  const floating = panels.find((p) => p.panelId === id)?.floating === true;
+  const [menu, setMenu] = useState<MenuAt | null>(null);
+  // The shown tab of its group is reported as selected (the UI tree's `checked`; O-5).
+  const [shown, setShown] = useState(props.api.isVisible);
+  useEffect(() => {
+    const d = props.api.onDidVisibilityChange((e) => {
+      setShown(e.isVisible);
+    });
+    return () => {
+      d.dispose();
+    };
+  }, [props.api]);
+  return (
+    <div
+      className="dock-tab"
+      role="tab"
+      // Reachable with the keyboard, so the context-menu key or Shift+F10 opens the checklist (design note 1 §9).
+      tabIndex={0}
+      aria-selected={shown}
+      data-tt-role="tab"
+      data-tt-id={`tab.${id}`}
+      data-tt-command="window.panel.set"
+      data-tt-label={title(id)}
+      onDoubleClick={() => {
+        // Double-click toggles floating/docked (01 §5.4).
+        void actions.run('window.panel.set', { panelId: id, floating: !floating });
+      }}
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setMenu(menuAt(e));
+      }}
+    >
+      <span>{title(id)}</span>
+      <button
+        type="button"
+        className="dock-tab-close"
+        aria-label={`Hide ${title(id)}`}
+        data-tt-role="button"
+        data-tt-id={`tab.${id}.hide`}
+        data-tt-command="window.panel.set"
+        data-tt-params={JSON.stringify({ panelId: id, visible: false })}
+        onPointerDown={(e) => {
+          e.stopPropagation();
+        }}
+        onClick={(e) => {
+          e.stopPropagation();
+          void actions.run('window.panel.set', { panelId: id, visible: false });
+        }}
+      >
+        ×
+      </button>
+      {menu && (
+        <PanelChecklist
+          at={menu}
+          onClose={() => {
+            setMenu(null);
+          }}
+        />
+      )}
+    </div>
+  );
+}
+
+/** The tab bar's context menu: every panel with its show/hide check mark (01 §5.4 lines 387-388; design note 1 §9).
+ *  Each item's reference leaves the visibility open and the kernel completes it as a toggle, as the Window menu's panel
+ *  items are. */
+const PANEL_MENU: readonly MenuGroup[] = [
+  {
+    items: PANEL_CATALOGUE.map((p) => ({
+      id: p.id,
+      label: p.title,
+      command: 'window.panel.set',
+      params: { panelId: p.id },
+      check: true,
+    })),
+  },
+];
+
+export function PanelChecklist({ at, onClose }: { at: MenuAt; onClose: () => void }) {
+  return <ContextMenu id="panelChecklist" label="Panels" at={at} groups={PANEL_MENU} onClose={onClose} />;
+}
+
+const SIDES: readonly Area[] = ['left', 'right', 'top', 'bottom'];
+
+const components: Record<string, FunctionComponent<IDockviewPanelProps<{ panelId: string }>>> = {
+  panel: PanelComponent,
+};
+
+export function DockArea({ layout, fullScreen }: { layout: Layout | undefined; fullScreen: boolean }) {
+  const actions = useActions();
+  const dark = useAppliedTheme() === 'dark';
+  const apiRef = useRef<DockviewApi | null>(null);
+  const shown = useRef<string>('');
+  const arrangement: Arrangement | undefined = layout ? (fullScreen ? layout.fullScreen : layout) : undefined;
+  const arrangementRef = useRef(arrangement);
+  useEffect(() => {
+    arrangementRef.current = arrangement;
+  }, [arrangement]);
+
+  const render = useCallback(() => {
+    const api = apiRef.current;
+    const a = arrangementRef.current;
+    if (!api || !a) return;
+    const fp = fingerprint(a);
+    if (fp === shown.current) return;
+    shown.current = fp;
+    applyPlan(api, a);
+  }, []);
+
+  useEffect(render, [arrangement, render]);
+
+  // The rendered size of each side area (the width of left and right, the height of top and bottom), as dockview laid
+  // it out: reported in the UI tree (`area.<side>` nodes) so a splitter's effect can be checked in the GUI, not only in
+  // the kernel (round 2 e2e adequacy).
+  const measure = useCallback((): Partial<Record<Area, number>> => {
+    const api = apiRef.current;
+    const a = arrangementRef.current;
+    const out: Partial<Record<Area, number>> = {};
+    if (!api || !a) return out;
+    for (const area of SIDES) {
+      const first = a.docks[area][0];
+      const group = first ? api.getPanel(first.current)?.group : undefined;
+      if (group) out[area] = area === 'left' || area === 'right' ? group.api.width : group.api.height;
+    }
+    return out;
+  }, []);
+  const [sizes, setSizes] = useState<Partial<Record<Area, number>>>({});
+
+  // The end of a splitter drag records the side areas' new sizes with the same-place `window.panel.move` (SI-118,
+  // interim ruling O-3a). Sizes are measured when the drag starts and when it ends; only a changed area is sent.
+  const hostRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const host = hostRef.current;
+    if (!host) return;
+    let start: Partial<Record<Area, number>> | null = null;
+    const down = (e: PointerEvent) => {
+      start = e.target instanceof Element && e.target.closest('.dv-sash') ? measure() : null;
+    };
+    const up = () => {
+      const a = arrangementRef.current;
+      if (!start || !a) return;
+      const end = measure();
+      for (const area of SIDES) {
+        const before = start[area];
+        const after = end[area];
+        if (before === undefined || after === undefined || Math.abs(after - before) < 2) continue;
+        const params = samePlaceResize(a, area, after);
+        if (params) void actions.run('window.panel.move', params);
+      }
+      start = null;
+    };
+    host.addEventListener('pointerdown', down, true);
+    window.addEventListener('pointerup', up, true);
+    return () => {
+      host.removeEventListener('pointerdown', down, true);
+      window.removeEventListener('pointerup', up, true);
+    };
+  }, [actions, measure]);
+
+  const onReady = useCallback(
+    (e: DockviewReadyEvent) => {
+      apiRef.current = e.api;
+      e.api.onDidLayoutChange(() => {
+        const next = measure();
+        setSizes((old) => (JSON.stringify(old) === JSON.stringify(next) ? old : next));
+      });
+      // Docking gestures become commands: dockview never rearranges by itself (gesture equivalence, 11 §2).
+      e.api.onWillDrop((drop) => {
+        drop.preventDefault();
+        const a = arrangementRef.current;
+        const moved = drop.getData()?.panelId;
+        if (!a || !moved) return;
+        const target = drop.group?.activePanel?.id ?? null;
+        const params = dropToMove(a, moved, target, drop.position);
+        if (params) void actions.run('window.panel.move', params);
+      });
+      render();
+    },
+    [actions, render, measure],
+  );
+
+  return (
+    <div className="dock-host" ref={hostRef} data-tt-role="dock" data-tt-id="dock">
+      <DockviewReact
+        components={components}
+        defaultTabComponent={Tab}
+        onReady={onReady}
+        className="tt-dockview"
+        theme={dark ? themeDark : themeLight}
+      />
+      {SIDES.map((area) => {
+        const size = sizes[area];
+        return size === undefined ? null : (
+          <span
+            key={area}
+            hidden
+            data-tt-role="area"
+            data-tt-id={`area.${area}`}
+            data-tt-value={String(Math.round(size))}
+          />
+        );
+      })}
+    </div>
+  );
+}

@@ -199,8 +199,6 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
   - `anim.node.get` `/result/static`: a member whose type is not stated (`static`)
   - `anim.prefs.set` `/result/prefs`: a member whose type is not stated (`prefs`)
-  - `anim.view.coords.get` `/params/points/*`: an object whose fields are not listed
-  - `anim.view.coords.get` `/result/points/*`: an object whose fields are not listed
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
@@ -231,19 +229,15 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-026 — `draw.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `draw.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `draw.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
-## SI-027 — `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-027 — `drawAid.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 02 and spec A (`drawAid.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `drawAid.changed` `/result/state`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `drawAid.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-028 — `element.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `element.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `element.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-029 — `export.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -298,11 +292,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-031 — `import.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `import.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `import.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-032 — `keymap.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `keymap.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `keymap.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-033 — `library.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -336,11 +330,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-036 — `prefs.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `prefs.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `prefs.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-037 — `print.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Resolved in C1.2 r3 (C12-R3-01):** every position of `print.*` is now typed from its owning section or its sibling commands; no placeholder remains.
+- **Resolved:** no placeholder remains in `print.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-038 — `sound.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -359,36 +353,17 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
 - **Question:** define these shapes in the owning section (field names and types).
 
-## SI-040 — `tool.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-040 — `tool.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 02 and spec A (`tool.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `tool.list` `/result/tools/*/options`: an object whose fields are not listed
-  - `tool.list` `/result/tools/*/optionSchema`: an object whose fields are not listed
-  - `tool.options.changed` `/result/options`: an object whose fields are not listed
-  - `tool.options.get` `/result/options`: an object whose fields are not listed
-  - `tool.options.set` `/params/options`: an object whose fields are not listed
-  - `tool.options.set` `/result/options`: an object whose fields are not listed
-  - `tool.pen.create` `/params/settings`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `tool.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
-## SI-041 — `ui.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-041 — `ui.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 01 and spec A (`ui.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `ui.message.shown` `/result/details`: a member whose type is not stated (`details`)
-  - `ui.statusBar.get` `/result/pointer`: a member whose type is not stated (`pointer`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `ui.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
-## SI-042 — `view.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-042 — `view.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 01 and spec A (`view.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `view.list` `/result/*/transform`: a member whose type is not stated (`transform`)
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `view.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 ## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
 
@@ -831,6 +806,17 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   other strokes of the moved stroke's own layer (layers are independent planar maps, 02 §3.1), by their whole contour
   — anchors and segment interiors, curved segments included — within 8 du; ties go to the lower stroke ID, then the
   lower segment and parameter.
+- **M4 C4.4b (ruling D-76 item 1):** D-75 item 1's amendment (a moved stroke's unmoved anchors as candidates) was
+  withdrawn before review and reverted; the rule above stands as decided, pinned by the M2 reviewer oracles of
+  `c24_r2_routes.rs` and `c24_r3_routes.rs`. The radius is 8 view pixels through the call's view (`view`; 100 % without
+  one), and an omitted `snap` follows the Snap to Contour setting (SI-187). Kernel tests:
+  `crates/executor/tests/c44b_contour.rs` (an open stroke's end does not snap to its own start; no anchor of a moved
+  stroke is a candidate). **Question for the user:** 02 line 799 says snapping makes "shapes close"; under this rule an
+  open stroke's end cannot snap to its own start, so one stroke cannot close itself by Snap to Contour (it closes onto
+  another stroke, or with `draw.stroke.set {closed}`). *The alternative:* a stroke with moved anchors offers its unmoved
+  anchors (not its segments) as candidates, so an end dragged within the radius of its own start lands on it and the
+  shape closes; the anchors being moved are never candidates. It changes `draw.point.move`'s result for agents and the
+  M2 oracles' candidate set.
 
 ## SI-071 — the Cutter's segment primitive and brush strokes (found in M2 C2.3; decided)
 
@@ -1244,7 +1230,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Sections:** 09 §11.1–§11.4, 11 §7.5, §7.8, 06 §6.10.
 - **Decision (builder, C3.3):** compositions `camera` and `element` (`elementIds` through the camera; `drawingId` in
   drawing space at the camera's table-plane scale, colours through the scene's styles); `xsheet` (owner M5 C5.1) and
-  `activeView` (owner M4 C4.2) are refused `render.compositionUnavailable` with the owner. `quality: "draft"` renders as
+  `activeView` (owner M4 C4.2) are refused `render.compositionUnavailable` with the owner. **M4 C4.2a:** `activeView`
+  with the Drawing view active renders the current drawing through the view's mapping at the view's size times
+  `scale`; with another view type active, and for `render.range.run`, it is refused with owner M4 C4.3. Headless renders
+  always use the final software rasteriser, so `quality: "draft"` keeps the `render.draftAsFinal` warning. `quality: "draft"` renders as
   final with a `render.draftAsFinal` warning until the interactive renderer (M4 C4.2). `cameraFrame` has no effect on
   compositions that are the camera frame (warning `render.cameraFrameNotApplicable`). `cameraId` is accepted so the
   generic `render_frame` tool's `camera` keeps its meaning; the tool's `output` path writes a file and `sceneColour` is
@@ -1285,7 +1274,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   (unreachable through the scale and skew limits) would be `inspect.singularTransform`. Inspection frames are integers,
   as the registry rows bind them (`frame?: int`); a fractional frame is a typed `arg.invalid` (C3.3 round 1).
   `inspect.frame.describe` takes the same `include`/`exclude` as `render.frame.run` and describes that render (SI-107).
-- **Question:** none.
+- **`pointer` (M4 C4.3a round 1):** 11 line 354 gives `pointer` a `space: "camera"` without defining it, and 05 §1.3
+  lines 62-71 list "Camera output (render) space" (top-left origin, y down, output pixels) among the coordinate spaces.
+  `pointer` uses this issue's `camera` (fields from the camera centre on the table plane, y up, roll applied), the same
+  name and meaning as `inspect.coordinates.convert`; output pixels are `image` here. Pointer note item 4 states it.
+- **Question:** should `pointer`'s `camera` space mean camera output pixels (05 §1.3's render space) rather than this
+  issue's centred fields?
 
 ## SI-110 — generic `render_frame` default width (found in M3 C3.3 round 1; decided by ruling)
 
@@ -1304,3 +1298,1226 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   only by in-process callers, batch step envelopes and the activity log. The contract is ADR-0020 decision 8.
 - **Question:** add a code for a request its caller cancelled to 11 §10, or confirm `command.timeout` with
   `reason: "cancelled"`.
+
+## SI-112 — virtual view creation and view ids (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 11 §7.6 ("the agent can create them with `ui.view.create {type, width, height}` (section 01)"), 01 §12.2
+  (`view.*`), spec A.
+- **Problem:** `ui.view.create` is named in 11 but exists in neither 01 §12.2 nor spec A; `viewId` has no defined
+  value.
+- **Decision taken:** the view windows are the four view panels of 01 §5.2 (`cameraView`, `drawingView`, `topView`,
+  `sideView`), in attached and headless mode alike, and `viewId` is the panel id; each window can switch its type
+  (01 §4). No creation command is added (the registry stays equal to spec A). Owner of any change: M4 C4.2.
+- **Question:** confirm, or add `ui.view.create` to 01 §12.2 and spec A with its semantics.
+
+## SI-113 — facts only the shell knows have no command (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 01 §12.1 rule 8, §12.4 (`modal`), §9.1 (description and pointer segments), 11 §6.4, §7.5
+  (`inspect_ui`).
+- **Problem:** modal state, a gesture in progress, text-field focus, hover description, pointer text, view canvas
+  sizes, screens and the rendered UI tree are read by commands but set by nothing in spec A.
+- **Decision taken:** the desktop host reports them through a kernel API (`ExecutorHandle::report_shell`), not a
+  command; a report changes no document, setting, layout or history, and agents cannot send one (ADR-0021,
+  `reviews/M4-design-busy-arbitration.md`).
+- **Question:** confirm that these are shell inputs outside the command layer.
+
+## SI-114 — two names for one user-busy state, and the main toolbar's visibility (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 01 §12.4 (`modal`), §12.1 rule 8 (`ui.busy`); 11 §6.4 (`get_state.ui.userBusy`, `ui.modalOpen`);
+  01 §5.7 and §7.3 (`interface.mainToolbar.visible`, toolbar configuration per workspace).
+- **Decisions taken:** `app.state.get` reports `modal` as 01 defines it (`ui.userBusy` is not added: it is `modal`
+  being non-null); agent changes that conflict with a dialog or a gesture wait and fail with `ui.busy`, and
+  focus-changing agent `ui` commands under a user dialog fail with `ui.modalOpen` (both codes, each where its section
+  says). The main toolbar's visibility follows `interface.mainToolbar.visible` in both directions (`window.toolbar.set
+  {toolbarId: "main"}` writes the preference); its items stay per workspace.
+- **Question:** confirm, and say whether toolbar visibility is per workspace or global.
+
+## SI-115 — UI conventions awaiting spec amendments where the spec is silent (found in M4 C4.1; defaults taken)
+
+- **Context:** the orchestrator's design review lists conventions that wait for spec-owner approval (reviews/
+  M4-C4.1-plan.md §12). Where 01 already requires a behaviour it is built; where it is silent, nothing is invented.
+- **Silent in the spec, not built (attach points recorded in the plan §12):** an add-panel control on every tab bar,
+  collapsible dock areas, maximise one panel, a panel menu in every header, a message log panel, preferences
+  export/import, a shortcut sheet, user-saved resolution presets on the start screen, focus-follows-pointer, tap/hold
+  tool keys, bundled alternative keymap sets.
+- **Additive members taken now:** `ui.theme.list` items carry `colours` for user themes (the front end needs the
+  tokens; 01 §12.2 lists `{themeId, name, builtIn, dark}`).
+- **Question:** approve or reject each convention so the owning checkpoint can build it.
+
+## SI-116 — `waitForUserMs` has no command, toggles bound without their state (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 01 §12.1 rule 8, 11 §6.4 (`waitForUserMs`, default 10 000); 01 §8.1 (a binding is a command reference
+  with fixed parameters); 01 §8.2 (full screen F11 / Ctrl+Cmd+F toggles).
+- **Problems:** no command sets `waitForUserMs`; the toggle commands take an explicit state (`window.fullScreen.set
+  {enabled}`, never a toggle; readiness bullet 4), yet a key or a menu item toggles.
+- **Decisions taken:** `waitForUserMs` is an executor setting (default 10 000 ms) the host and tests set; a binding or
+  menu item that leaves a toggle's state parameter out gets the negation of the current state at dispatch (the kernel
+  completes the reference; `window.panel.set {panelId}` shows a hidden or background panel and hides a front one).
+- **Question:** add `waitForUserMs` to `agent.policy.defaults.set` or the session grant; confirm the toggle completion.
+
+## SI-117 — preferences other sections use without a key in 01 §7.3 (found in M4 C4.1; decided by the builder)
+
+- **Sections:** 05 §16 (depth-nudge step, peg-only mode), 03 (paint gap closing), 02 (drawing preview), 01 §7.3.
+- **Decision taken:** keys in the 01 style: `staging.depthNudgeStep` (number 0.0001–1, default 0.01),
+  `staging.pegOnlyMode` (bool, default off), `paint.gapClosing` (enum off/small/medium/large, the kernel key of
+  `colour.gap.mode.set`), `drawing.inspectorPreview` (bool, the kernel key of `draw.inspectorPreview.set`).
+  `interface.background.timeline`'s "theme default" is the empty string. Motion-recording options (05 §14.2) are
+  registered by M6.
+- **Conflicts noted:** "Selection always visible" defaults to on in 01 §7.3 and 05 §16, off in 02 §10.7; 01 governs.
+- **Question:** add the keys to 01 §7.3 and settle the default of 02 §10.7.
+
+## SI-118 — a splitter drag has no user command (found in M4 C4.1; interim, awaiting the spec owner)
+
+- **Sections:** 01 §5.4 and §5.6 (a workspace stores "sizes" of the dock layout), 01 §12.2 (`window.panel.move
+  {size?}`, `workspace.layout.set`), spec A.
+- **Problem:** the only user command that carries a dock size is `window.panel.move`, whose `size` applies when a
+  panel is docked. Resizing a dock area by dragging its splitter, with every panel staying where it is, has no
+  command; `workspace.layout.set` is agent-only in the registry ("agents apply prepared layouts; users arrange panels
+  by dragging"). The GUI never mutates state outside a registered command.
+- **Interim decision (orchestrator rulings O-3 and O-3a, M4 C4.1 round 1):** at the end of a splitter drag the GUI
+  runs the existing user command `window.panel.move` as a same-place call: `{panelId: P, area: <P's present area>,
+  relativeTo: P, position: "tab", size}` (a panel tabbed with itself, a call the declaration already admits). The kernel
+  leaves the arrangement exactly as it is (no re-insertion, no tab reorder, no front-tab change, no size migrating to
+  another group) and applies `size` to P's area; without `size` it changes nothing and emits no `workspace.changed`.
+  `relativeTo: P` with any other `position`, or an `area` that is not P's present area, stays an error. No command is
+  added; the registry stays equal to spec A. (O-3 first used re-insertion calls, which existed for only 3 of the built-in
+  workspaces' side areas; O-3a replaced them so every area behaves the same.)
+- **Question:** add a user command for dock area sizes (for example `window.dock.size.set {area, size}`), or make
+  `workspace.layout.set` a user command as well.
+
+## SI-119 — no message id for a settings file that could not be saved (found in M4 C4.1 round 1; interim)
+
+- **Sections:** 01 §11 (settings files, `prefs.corrupt`), 01 §12.2 message list.
+- **Problem:** 01 §11 names `prefs.corrupt` for a file that cannot be read, but no id for a write that fails (an
+  unwritable or full settings folder). Ruling O-12 requires the user to be told once per file per session, with the
+  path and the operating system's reason, while the change stays in memory.
+- **Interim decision:** `prefs.saveFailed` (severity warning; details `kind`, `path`, `reason`, `message`), also used
+  when a per-user folder cannot be created. It has a help entry like every other message id.
+- **Question:** add `prefs.saveFailed` (or another id) to 01 §11 and the message list.
+
+## SI-120 — the answer to a request cut off by an engine restart (found in M4 C4.1 round 1; interim)
+
+- **Sections:** 11 §10 (generic codes), 11 P5 (never block), reviews/M4-design-engine-restart.md.
+- **Problem:** when the user restarts an engine that stopped answering, a request still in flight on the old engine
+  has no specified answer. Its outcome is unknown (the old engine may have applied it, and may still apply it if it
+  wakes up, though it is fenced from writing recovery data).
+- **Interim decision (ruling O-14):** `command.timeout` with `details.reason: "engineRestarted"`,
+  `details.generation` (the generation the request started on) and `details.currentGeneration`, by analogy with the
+  caller-cancelled request of SI-111. The window shows it as a status line ("the engine restarted while it ran; check
+  the result"), never as applied.
+- **Question:** confirm, or define a dedicated code (for example `engine.restarted`) in 11 §10.
+
+## SI-121 — which events a UI tree reflects (found in M4 C4.1 round 2; interim, awaiting the spec owner)
+
+- **Sections:** 11 §7.5 (`inspect_ui`), 01 §12.4, ADR-0021 decision 5.
+- **Problem:** 11 §7.5 defines `inspect_ui` as returning the rendered UI tree, but not which engine events the tree
+  reflects, nor what happens when the front end has not rendered the latest events yet. An agent that changes state
+  and then inspects the GUI cannot tell whether the tree shows its change.
+- **Interim decision (round 2 brief; C41-R2-07):** two additive result fields. `inspect.ui.tree` answers
+  `renderedSeq`: the engine event number the accepted GUI tree vouches for, `null` when it is not vouched for (a
+  window has not reported, or reported without a number) or is the headless virtual tree. `inspect_ui` waits up to
+  2 s for the front end to render the events before the call; if it has not, it answers the last tree with
+  `stale: true` (never an error). In the desktop host every window counts: the main window, each float the host
+  opened, each window that reported anything.
+- **Question:** confirm both fields (names, `null`, the 2 s wait) for 11 §7.5, or specify another way to tell an agent
+  which events a tree reflects.
+
+## SI-122 — one ladder for step-wise zooming (found in M4 C4.2 planning; interim, rulings D-10 and D-15)
+
+- **Sections:** 02 §4.3 (zoom in / out "in steps (recommended ×2 per step, range 1/16× to 16×)"), 01 §6.5 and 01 §12.2
+  `view.zoom.set` (a table from 6.25 % to 6400 %: 6.25, 12.5, 25, 33.3, 50, 66.7, 100, 150, 200, 300, 400, 600, 800,
+  1200, 1600, 3200, 6400 %), 02 §7.5 (Zoom tool), 02 §13.3 (Zoom: "`view.*` commands").
+- **Problem:** the two sections give two step ladders for the same user intention (zoom in or out one step), and the
+  implementation now uses both:
+  - **the mouse wheel** in the Drawing view steps along 02 §4.3's ladder (powers of two between 1/16 and 16; ruling
+    D-10), sending `view.zoom.set {zoom: <next power of two>, anchor}`;
+  - **a Zoom-tool click** (alternate: out) and the **stepping commands and keys** (`view.zoom.set {steps: ±1}`,
+    Primary+= / Primary+-) step along 01 §6.5's table (the review's permanent test `zoom_click` requires the click to
+    send table steps; ruling D-15);
+  - **a Zoom-tool marquee** fits its rectangle exactly (no ladder), and `view.zoom.set {zoom}` accepts any value in
+    6.25 %-6400 %.
+- **Interim decision:** as above (D-10, D-15); no code change until the spec owner answers.
+- **Question:** one ladder for all step-wise zooming (wheel, Zoom-tool click, zoom keys and `view.zoom.set {steps}`):
+  02 §4.3's or 01 §6.5's?
+
+## SI-123 — a rotate-view navigation tool (found in M4 C4.2 planning; interim, ruling D-10)
+
+- **Sections:** 01 §6.5 ("Rotate view", "Pan"), 02 §5.1 and the `tool.active.set` enum (`zoom`, `grabber` only).
+- **Problem:** 01 names a rotate-view tool that 02 and the tool enum do not have.
+- **Interim decision:** no new `tool.active.set` value; view rotation only through `view.rotation.set` (and its key
+  bindings); the pan tool is `grabber`.
+- **Question:** add a rotate-view tool to 02 §5.1 and the enum, or drop it from 01 §6.5.
+
+## SI-124 — `tool.*.select` in 11 §7.6 (found in M4 C4.2 planning; interim, ruling D-10)
+
+- **Sections:** 11 §7.6 (line 359), 02 §13.2, the registry (`tool.active.set`, `tool.group.select`).
+- **Problem:** 11 §7.6 refers to `tool.*.select` commands that the registry does not declare.
+- **Interim decision:** `tool.active.set` (and `tool.group.select` for a group) are the commands `pointer {tool}` and the
+  rail use.
+- **Question:** correct 11 §7.6 to the registry's names.
+
+## SI-125 — `pointer` spaces and tilt against 02 §13.3 (found in M4 C4.2 planning; interim, ruling D-10)
+
+- **Sections:** 11 tool `pointer` (line 354: `space` view, drawing, scene or camera; `tiltX`, `tiltY`), 02 §13.3
+  (samples in view pixels, mapped with the view mapping at the press; no tilt).
+- **Problem:** `pointer` accepts coordinates in other spaces, and tilt, which the gesture-equivalence definition does
+  not mention.
+- **Interim decision:** samples given in `drawing` space are converted to view pixels with the view mapping at the press
+  and then handled as view samples (one path); `scene` and `camera` space in the Drawing view are refused
+  (`arg.invalid`); tilt is carried by the input-source abstraction and recorded, and changes no stroke (no tool option
+  of 02 §6 to §7 uses it). In a Camera view (C4.3a): `drawing` points go through the current element's plane, `camera`
+  points (SI-109: fields from the camera centre) through the camera's output pixels, and `scene` points are table-plane
+  points (Z = 0) projected through the camera; each becomes a view sample, as above.
+- **Question:** specify the spaces and tilt in 02 §13.3, or restrict `pointer`.
+
+## SI-126 — the static light-table panel before the Exposure Sheet exists (found in M4 C4.2 planning; interim)
+
+- **Sections:** 02 §10.4 (the panel "inside the Exposure Sheet area"), SI-085 (two storage models), plan M5 (the
+  Exposure Sheet).
+- **Problem:** C4.2 has no Exposure Sheet to hold the static light-table panel.
+- **Interim decision:** static light-table entries are edited through the `drawAid.staticLightTable.*` commands and a
+  section of the Drawing view's aid controls; the panel moves into the Exposure Sheet in M5. Storage follows 02 §12.3
+  (scene scope) pending SI-085.
+- **Question:** confirm, together with SI-085.
+
+## SI-127 — Drawing-view UI conventions the spec does not state (found in M4 C4.2 planning; interim)
+
+- **Sections:** 01 §5.1 to §5.7, 02 §5.1, 02 §10, SI-115.
+- **Problem:** the spec does not state the tool palette's placement and order, a Drawing-view toolbar, the place of the
+  aid controls beyond the toolbar items, or cursor shapes beyond the polyline cues.
+- **Interim decision (the orchestrator's conventions for M4 to M7):** the tool palette is the left vertical rail in
+  02 §5.1 group order, one button per group showing the last-used tool; view toolbars inside their view (the Drawing
+  view's holds navigation and the aids); workspace toolbars at the top; tool options in the Properties panel; system
+  cursors plus a crosshair for the drawing tools.
+- **Question:** confirm or specify, together with SI-115.
+
+## SI-128 — view state persistence and the agent-view preference (found in M4 C4.2; interim)
+
+- **Sections:** 01 §6.5 ("remembered per view type"), 02 §12.3 (no row for view transforms), 11 §6.4 ("Let the agent
+  move my view": agent `ui` commands affect the user's visible views or only virtual views owned by the agent session),
+  11 §7.6 (`ui.view.create`, not in the registry).
+- **Problem:** whether view transforms persist across sessions is not stated; with the preference off, agent view
+  changes should go to session-owned virtual views, which no registered command creates.
+- **Interim decision:** view transforms are session state (not persisted; the canvas size comes from the host each
+  launch). With `letAgentMoveView` off, an agent's `view.*` change refuses with `permission.denied`,
+  `details.preference: "letAgentMoveView"`.
+- **Question:** persist view transforms (in which scope), and register `ui.view.create` for agent-owned virtual views.
+
+## SI-129 — owner of the gestures of tools outside C4.2's scope (found in M4 C4.2; interim)
+
+- **Sections:** 02 §7.1.2 (Contour Editor), §7.4.x (Perspective, Reposition All Drawings), §7.6 (Text), 03 §8 (Edit
+  Texture), 02 §7.2 (the invisible Stroke tool), plan line 171 (C4.2's tools: brush, pencil, select, eraser, paint,
+  shapes).
+- **Problem:** these tools can be made active (`tool.active.set`), but their gestures are not in C4.2's scope and no
+  checkpoint names them.
+- **Interim decision:** their gestures answer `command.notImplemented`; their structured commands already work. Owners
+  (C4.3 plan answer 5): Edit Texture, M7 C7.1 (its row names the edit-texture tool); the Contour Editor, Perspective,
+  Reposition All Drawings and Text are named by no milestone row: no owner, listed in M4's merge note §3 for the spec
+  owner to assign, and their refusals say so. Built in C4.2a after all: the invisible Stroke tool, whose gesture is the Brush's with
+  `kind: "invisible"` (02 §13.3's table), so it needs nothing beyond the Brush gesture.
+- **Question:** the owner checkpoint of these gestures.
+
+## SI-130 — the `pointer` tool's event cap (found in M4 C4.2; interim)
+
+- **Sections:** 11 §6.5 (session limits: batches of 1,000 steps, inline payloads), 11 §7.6 (`pointer`).
+- **Problem:** no limit is stated for the number of events in one `pointer` call; a stroke can hold thousands of samples.
+- **Interim decision:** at most 10,000 events per call; more refuse with `limit.exceeded`, `details.limit:
+  "pointerEvents"`. Coordinates must be finite and within ±10,000,000 view pixels (`arg.invalid`).
+- **Question:** confirm the cap or define it in 11 §6.5.
+
+## SI-131 — Drawing-tool details the spec leaves open (found in M4 C4.2a; interim; narrowed after review round 1)
+
+- **Sections:** 02 §5.2, §6.1, §7.1.1 lines 428-432, §7.2.5, §7.3.4, §7.6.1, §7.7, §10.4, §12.3 lines 1111-1118,
+  §13.2, §13.3; 01 §8.2; 11 §7.6; ruling D-10 (SI-122).
+- **Problem:** building the tools, the gesture mapping and the aids needs a few values the spec leaves open. Where the
+  spec answers, it is followed and cited; only the remainder is listed.
+- **Interim decisions (the conservative choice in each case, ruling D-10):**
+  1. A press and release whose samples stay within 3 view pixels of the press is a click (Select, Paint, Paint
+     Unpainted, Zoom, Polyline anchors); a longer drag is a drag. (The spec names clicks and drags, not the threshold.)
+  2. The Select tool's drawing-pivot handle is a 6-view-pixel radius around the pivot; a drag that starts on it moves
+     the pivot (`draw.pivot.set`), checked before a drag on the selection (`draw.transform.apply`) and the marquee.
+  3. The modifier roles are 02 §7.1.1's and §5.2's (constrain, alternate, temporary select); open are only (a) their
+     keys, taken as Shift, Alt and Ctrl or Meta, held at the press, and (b) whether a constrain click adds or toggles
+     (§7.1.1 line 431 allows either): it adds (`mode: "add"`).
+  4. When Draw on Top Layer and Draw Behind are both on, the gesture's command gets `layer: "top"`.
+  5. *Withdrawn* (C42A-R1-03): the Text panel's ranges are 02 §7.6.1's (margins 0-1000, indent and line spacing
+     -99-1000) and are enforced.
+  6. The scopes and default pens are 02 §12.3 (lines 1111-1118) and §7.7; open is only the fallback when a project
+     lacks `Pen 3` or `Eraser 2`: the family's first pen.
+  7. Tool keys: one single key per tool group in the drawing context (`S`, `B`, `F`, `E`, `Z`, `T`; 01 §8.2 leaves the
+     letters to design work); a key on the active group advances within it (02 §5.1).
+  8. *Withdrawn* (C42A-R1-23, ruling D-11): the Dropper sends `colour.pick` then `colour.current.set` (02 §13.3 line
+     1217); `colour.current.set` is implemented.
+  9. Static light-table entries are scene scope in 02 §12.3; open are only (a) the entry id `lt<n>`, unique within its
+     scene, and the cap of 256 entries per scene (`limit.exceeded`, `details.limit: "staticLightTableEntries"`), and
+     (b) where they are kept until the Exposure Sheet: the session's per-scene light table (SI-085; the project's
+     session state with M5 C5.2).
+  10. Ending a Polyline is 02 §7.2.5's (double click, a click on the first point); open is only `pointer`'s call
+      boundary: a call's last gesture still pressed at its end is discarded (D-7c), and a Polyline's clicks within one
+      call are one gesture, committed at the call's end if nothing ended them earlier.
+  11. The wheel and the Zoom tool follow D-10 (SI-122): the wheel steps along the 02 §4.3 ladder; open is only the
+      wheel's sign, taken from the pointer-event convention (a negative `wheelDelta` zooms in). The Zoom-tool click
+      sends table `steps` (the review's permanent test `part_d_equivalence::zoom_click`); a Zoom marquee fits its
+      rectangle exactly (02 §7.5 line 658). See SI-122 for the open ladder question.
+- **Question:** confirm each, or state the values in 02 and 11.
+
+## SI-132 — host-only view announcements and the headless screenshot's targets (found in M4 C4.2a; interim)
+
+- **Sections:** 01 §12.2 (`view.*`), spec A (no view event; 796 entries), 11 tool `screenshot` (line 335), 11 §15.2
+  `inspect.screenshot` (`target?: string = "window"`), ADR-0021 (host notifications as `shell.*` events).
+- **Problem:** (a) the canvas must follow every view change, but spec A has no view event and the registry cannot grow;
+  (b) headless there is no rendered chrome, so a screenshot of a panel, a dialog or the window chrome has nothing to
+  capture.
+- **Interim decisions:** (a) every view change announces the host-only event `shell.view` (`viewId`, type, size,
+  transform and both matrices), not delivered to agents, who read `view.list`, `view.transform.get` and
+  `draw.viewMapping.get`; (b) headless, `inspect.screenshot` captures view windows only (`window` = the active Drawing
+  view, else `drawingView`; `drawing`; a view id); another panel or `dialogs` refuses `view.notFound`; the Camera view
+  type answers `command.notImplemented` (M4 C4.3). Attached captures (C4.2b, D-6) take every target.
+- **Question:** add a view event to spec A, or confirm `shell.view`; state the headless targets in 11 §15.2.
+
+## SI-133 — a view-space rectangle in a rotated view (found in M4 C4.2a round 3; interim)
+
+- **Sections:** 02 §13.1 item 5 (the common addressing parameters: `space: "view"` points), the rectangle parameters
+  of `draw.selection.set`, `draw.pointSelection.set` and `draw.cut.apply` (`{x, y, width, height}`, axis-aligned in
+  drawing space), 03 §16.2 (`colour.paint.apply {rect}`).
+- **Problem:** a rectangle given in view pixels of a rotated view is a rotated rectangle in drawing space, which the
+  axis-aligned parameter cannot express; the spec does not say what happens.
+- **Interim decision (the conservative choice):** refused with `arg.invalid` ("a rectangle cannot be given in a rotated
+  view; give a polygon"); without rotation it converts exactly. The colour commands, whose rectangle becomes a polygon
+  internally, convert its four corners.
+- **Question:** convert a view-space rectangle to a polygon (where the command takes one), or refuse it?
+
+
+## SI-134 — the hit tolerance of a point selection (found in M4 C4.2a round 4; interim, ruling D-10)
+
+- **Sections:** 02 §7.1 (a click selects "the front-most object under the pointer"), 02 §13.1 item 5 (hit tolerance is a
+  view-dependent tolerance, through the given view's zoom or 100 %), 02 §13.2 line 1313 (`draw.hitTest.get`:
+  `tolerance: number = 3 (view px)`; the only numeric hit tolerance in the spec).
+- **Problem:** the spec does not say whether `draw.selection.set {by: point}` has a hit tolerance, nor which.
+- **Interim decision:** a point selection takes the front-most object within 3 view pixels of the point (the
+  `draw.hitTest.get` default), through the given view's zoom or 100 % without a view; the Select gesture states the view
+  when the zoom is not 100 % (ruling D-16).
+- **Alternative:** an exact hit (no tolerance), as before C4.2a round 2.
+- **Question:** does a point selection have a hit tolerance, and which?
+
+## SI-135 — an agent gesture interrupted by the user in attached mode (found in M4 C4.2b; interim)
+
+- **Sections:** 11 §6.4 (coexistence: the user has priority; `waitForUserMs`, `ui.busy`), 11 §7.6 (`pointer` through the
+  real input path).
+- **Problem:** the spec says the user has priority but not what an agent's `pointer` call answers when the user presses
+  while the agent's gesture is being played in the window.
+- **Interim decision:** the agent's gesture is discarded before any command, and its call answers `ui.busy` with
+  `details: {reason: "userInput", viewId}`; nothing is committed.
+- **Question:** confirm the code and details, or name another.
+
+## SI-136 — how long the product measures each canvas back end (found in M4 C4.2b; interim)
+
+- **Sections:** ADR-0007 canvas rule set, step 1 ("both back ends are measured at first launch and after a GPU, driver or
+  webview version change"); step 0 defines a cell by the C0.3 spike's 10 s pan/zoom.
+- **Problem:** the product measurement's duration and scheduling are not stated; 10 s on each of six cells would hold
+  the GPU for a minute at first launch.
+- **Interim decision:** 2 s per cell on an offscreen canvas, after the first launch and after each version change; until
+  a result exists the canvas runs WebGL2; an inconclusive cell is measured again on the next change. Each cell's timed
+  frames follow one untimed warm-up frame (the first use of freshly uploaded buffers), and a timed frame over 500 ms
+  ends the cell, missed at that rate, so a software adapter is not held for the whole cell.
+- **Question:** confirm, or state the duration.
+
+## SI-137 — interactive tessellation tolerance, zoom buckets and the resident geometry budget (found in M4 C4.2b; interim)
+
+- **Sections:** 06 §6.9 (caps for bitmaps: `displayBitmapMaxSize`; overlay buffering), 06 §6.10 (the interactive renderer
+  is a preview, not bound by determinism), 01 §6.5 (the zoom table).
+- **Problem:** the spec gives no flattening tolerance for the interactive canvas, no geometry memory budget, and no rule
+  for fills the canvas cannot yet show exactly.
+- **Interim decision:** curves are flattened to 0.25 view pixels at the top of the zoom bucket (buckets are the powers of
+  two of the zoom table), and crossing a bucket reloads the visible drawings; the resident set is the Drawing view's
+  composition (a drawing leaving it is dropped and reloaded when it returns), so no byte cap or off-screen eviction is
+  needed for this view (`display.cacheMemoryPercent` bounds nothing here yet); a texture-filled zone and a bitmap node
+  are drawn with their image's mean colour until bitmap pixels are transported, and `display.smoothBitmaps` and
+  `display.bitmapPreviewMaxSize` act from then on (exported pixels come only from the final renderer).
+- **Question:** confirm or state these values.
+
+## SI-138 — the appearance of the Drawing view's overlay (found in M4 C4.2b; interim)
+
+- **Sections:** 02 §4.2 (layer 9: the overlay), 02 §7.1 to §7.5 (what each tool shows), SI-127 (UI conventions).
+- **Problem:** colours, widths and handle sizes of the selection outline, handles, marquee, lasso, gesture ink and
+  cursor ghosts are not specified.
+- **Interim decision:** the theme's accent colour for selection and marquee (1 view pixel, constant across zoom),
+  8-pixel square handles, gesture ink in the current colour and pen thickness at the current zoom, a dashed outline for
+  the lasso.
+- **Question:** confirm or specify.
+
+## SI-139 — how the Drawing view shows onion skin, light tables and shade (found in M4 C4.2b; interim)
+
+- **Sections:** 02 §4.2 (canvas layers 3 to 7), 02 §10.2 (onion skin: "dimmed or tinted", "lighter", recommended opacity
+  50/30/15 %, outline only), 02 §10.3 (auto light table: "all elements as they are layered at the current frame",
+  "washed out" when shade is on), 02 §10.4 (static light table, shade).
+- **Problem:** the spec does not say how a tint is applied, how much "washed out" is, where another element's drawing
+  sits in the Drawing view's drawing space, nor how an outline-only drawing is drawn.
+- **Interim decision:**
+  - A tint replaces each pixel's colour with the tint colour and keeps its coverage.
+  - Transparency multiplies coverage by 50/30/15 % for distances 1/2/3; without it, onion drawings are opaque.
+  - Shade draws a drawing at 40 % opacity over the layers below.
+  - The auto light table shows the other elements' drawings exposed at the current frame in their own drawing space
+    (identity placement, the Drawing view having no camera), back to front in the final renderer's order for equal
+    depths (the Timeline's bottom row first), leaving out elements hidden in the Exposure Sheet.
+  - Outline only draws brush outlines and pencil centre lines one view pixel wide in the drawing's colours (or the
+    tint).
+- **Question:** confirm or specify.
+
+## SI-140 — where the canvas back-end choice and its measurement live (found in M4 C4.2b; interim)
+
+- **Sections:** ADR-0007 canvas rule set step 1 (both back ends measured at first launch and after a GPU, driver or
+  webview change; "the user can override the choice in preferences"), 01 §7.2-§7.3 (the preference catalogue: no such
+  key), ADR-0021 decision 13 and ruling D-7d (persisted settings go through the settings files' rules).
+- **Problem:** the rule set requires a persisted measurement and a user override, but the catalogue has no key for
+  either.
+- **Interim decision:** two Display keys in the catalogue: `display.canvasBackend` (`auto` | `webgpu` | `webgl2`,
+  default `auto`, applies at the next launch: the user override) and `display.canvasBackendMeasured` (an object of
+  strings: the machine fingerprint (GPU adapter, WebGL renderer, webview), the selected back end and the measured
+  cells), written by the canvas after a measurement and read at its next start. The launch flag `--canvas-backend`
+  overrides both (measurements).
+- **Question:** add the keys to 01 §7.3, or name another home for the choice.
+
+## SI-141 — Drawing view feedback and window-routing details the spec leaves open (found in M4 C4.2b round 1; interim)
+
+- **Sections:** 02 §4.2 (layer 9: selection outline and handles), §7.1.1 (the Select tool's box, handles, rotation
+  "just outside a corner", the resize pointer "in 15° steps", the undo labels), §13.5 (`draw.transform.apply` and its
+  label), 11 §7.6 (`pointer`), 11 §10 (`ui.viewNotFound`), rulings D-7a and D-4, plan §5 (gesture equivalence through
+  the real window).
+- **Problem:** building the selection overlay and its handles, answering routed agent gestures whose window goes away,
+  playing agent gestures in a window, and exposing what the window collected need values the spec does not give.
+- **Interim decisions (frame-loop note §7; conservative choices, ruling D-10):**
+  1. A selected object's outline is its bounds box (02 §4.2 names a "selection outline" without its shape); the
+     selection's bounding box and handles are 02 §7.1.1's.
+  2. A handle is hit within 6 view pixels of its centre, the drawing pivot's radius (SI-131 item 2); the pivot is
+     tested first, then corners, sides, the rotation zone, the box's inside.
+  3. "Just outside a corner" is outside the box and within 18 view pixels (three hit radii) of a corner.
+  4. A corner scales about the opposite corner and a side about the opposite side; rotation turns about the box's
+     centre (02 §8 line 828's pivot); the constrain modifier gives a corner the factor of larger magnitude on both
+     axes; a factor below 0.001 in magnitude is refused (`arg.invalid`, nothing committed).
+  5. The resize pointer is the platform's cursor of the nearest of eight directions: no platform offers a 15° set.
+  6. Undo labels (C42B-R2-04). A tool's gesture commits under the label 02 §7 gives that tool, and the Select tool's
+     drags under 02 §7.1.1's "Move Object", "Copy Object", "Scale Object" and "Rotate Object". 02 §13.5 gives
+     `draw.transform.apply` "Move/Scale/Rotate Object"; it is read as naming the operation the call performs: a call
+     with one operation (translate, scale or rotate alone, or `copy`) carries that operation's label, the same as the
+     gesture; a call combining operations, or carrying `skew` or `matrix`, carries "Move/Scale/Rotate Object". The
+     shape commands carry their tools' labels ("Rectangle Tool", "Ellipse Tool", "Line Tool", "Polyline Tool") and
+     `draw.cut.apply` with `rect` carries "Scissor Tool", with `polygon` "Cutter Tool". A gesture whose tool reuses
+     another tool's command commits under the acting tool's label (02 §5.2, §7; C42B-R3-20): the Scissor's free-form
+     cut (alternate) runs the polygon cut and commits as "Scissor Tool"; the temporary Select is the Select tool; the
+     pen's eraser end is the Eraser; the temporary Dropper commits no step. The reading of §13.5 is confirmed by
+     ruling D-20 (C4.2b round 3); a combined call's "Move/Scale/Rotate Object" stays the interim. Question: the label
+     of a combined `draw.transform.apply` call, or one with `skew` or `matrix`.
+  7. A routed agent gesture whose window is destroyed or reloaded, or whose canvas reports `rect: null`, answers
+     `ui.viewNotFound` with `details: {reason: "windowClosed", viewId}` at once, nothing committed (D-7a).
+  8. An agent gesture is played in the window at no fewer than 16 events per frame and over at most 120 frames (about
+     two seconds at 60 Hz), so its simulated time is never waited for (P3).
+  9. The window keeps a record of its last committed gesture (tool, view, pointer kind, the events as committed with
+     their pressure, tilt, time and modifiers, the commands produced, the answer) in the canvas's UI-tree value, which
+     `inspect_ui` serves; the events are kept whole up to 4,096 and the record says how many there were (plan §5's
+     equivalence through the real window needs what the window collected; a longer gesture is recorded by its count
+     and its commands by id, without their parameters, which carry every sample). Who reads it (ruling D-19):
+     `inspect_ui` serves the samples (positions, pressure, tilt, timing, modifiers, the commands' parameters) only to
+     a session holding `input`; with `read` alone the record is its summary (origin, tool, view, pointer kind, count,
+     answer, command ids).
+  10. A multi-click gesture left open (a Polyline between its clicks) is the user's gesture in progress: the window
+      keeps reporting the modal state, so agent writes wait and answer `ui.busy` for as long as it stays open, as with
+       a dialog left open (11 §6.4; accepted in C4.2b round 2). No timeout closes it. A double click, Enter or a click
+      on the first anchor ends and commits it; Escape, another tool, the window losing focus or the view going away
+      discards it (no pointer capture is held between clicks, so a lost capture between clicks changes nothing). Each
+      ending ends the modal state. A press within 500 ms and 8 view pixels of the double click that ended it (a triple
+      click) continues that double click and opens nothing: a pointer press carries no click count, so the window
+      counts for itself. Question: should an open multi-click gesture time out, and after how long?
+- **Question:** confirm each, or state the values in 02 and 11.
+
+## SI-142 — which view an `activeView` render used (found in M4 C4.2b round 3; interim)
+
+- **Sections:** 09 §11.4 (`RenderResult`), 11 §7.5 (`render`, `screenshot`), A (`render.frame.run`), 01 §4 (the
+  active view), the views note §1.
+- **Problem:** `render.frame.run {composition: "activeView"}` renders the active view, which is the view last
+  activated while shown, else the central view; focus alone does not move it (a float's window taking the focus
+  moves `focusedPanel` only). Its result (09 §11.4's `RenderResult`, with 11 §7.5's additions) has no member naming
+  the view, so an agent working with floats cannot tell from the result which view was drawn. `inspect.screenshot`
+  already answers its `viewId`.
+- **Interim decision:** the result shape is unchanged. An agent that needs to know reads `app.state.get` (its
+  `activeView`) and renders in one batch, which runs both against the same state; or it activates the view it means
+  first (`view.active.set`), as the e2e does. A press in a view window activates that view (C4.3 plan answer 4): through
+  `view.active.set` with the user's origin, UI state, no undo step; the same press acts as the tool's press.
+- **Question:** should `RenderResult` name the view for an `activeView` render (for example `viewId`), and should a
+  click into a view window activate it (01 §12's GUI column for `view.active.set`)?
+
+## SI-143 — two commands for a view window's type (found in M4 C4.3; interim)
+
+- **Sections:** 01 §12.2 (`view.type.set`), 05 §19.3 line 1231 (`anim.view.type.set`), 05 §3.1 lines 300-309.
+- **Problem:** both commands switch a view window between Drawing, Camera, Top and Side: one state, two commands.
+- **Interim decision (ruling, C4.3 plan answer 2):** `view.type.set` is the command C4.1-C4.3 implement and the GUI
+  binds; `anim.view.type.set`, `anim.view.slot.select` and `anim.view.get` stay declared without a handler, owner M6.
+- **Question:** which command is canonical; should `anim.view.type.set` be an alias of `view.type.set` or be removed?
+
+## SI-144 — the undo labels of scene-tool drags and `anim.transform.set` (found in M4 C4.3; interim)
+
+- **Sections:** 05 §17 line 1135 ("Undo labels name the operation and the object kind (e.g. move peg, rotate bone,
+  change tension, add keyframe); wording is a UX-writing task"), §5.0-§5.2, §19.3 (`anim.transform.set`).
+- **Problem:** no literal labels are given, and `anim.transform.set` carried the fixed label "Transform".
+- **Interim decision:** the operation from the changed group (`Move` for position, `Rotate`, `Scale`, `Skew`, `Move
+  Pivot` for a pivot; `Transform` for several groups), then the node kind (`Element`, `Peg`, `Camera`, `Skeleton`),
+  plural for several nodes of one kind, `Nodes` for several kinds: "Move Element", "Rotate Peg", "Scale Elements",
+  "Transform Nodes". A scene-tool drag and the command sent directly with the same parameters carry the same label.
+- **Question:** confirm the wording, or give the labels.
+
+## SI-145 — the Camera view's plane mapping, the near plane and the tolerance (found in M4 C4.3; interim)
+
+- **Sections:** 05 §2.6 lines 234-252 (projection, rigid camera, near plane 0.1 field), §3.2, 06 §6.9-§6.10, ADR-0006
+  decision 7, ADR-0007.
+- **Problem:** the spec does not say how the interactive view maps a drawing's plane (a homography in general), what it
+  does with a plane crossing the near plane, or how finely it flattens a drawing shown at several scales.
+- **Interim decision:** the Camera view uses the final renderer's own plane mapping (`render_list::plane_to_pixel`, the
+  affine map through three projected points of the plane: exact for planes facing the camera, the renderer's
+  approximation otherwise), so no homography exists; a plane is drawn exactly when that mapping exists (its reference
+  points in front of the near plane), in renders and in the view alike. Curves are flattened in drawing units to the
+  view tolerance divided by the largest singular value of the full matrix (C42B-R1-01's rule); a drawing shown by
+  several occurrences is resident once, at the zoom bucket of its largest occurrence. A drawing tool's gesture, and a
+  point-taking command's Camera-view points, on an element whose plane has no mapping refuse `inspect.behindCamera`
+  and create nothing; availability gives the same refusal (C4.3a round 1, C43A-R1-03). Scene points keep SI-146's rule,
+  which is defined there.
+- **Question:** should either consumer use the true projection for rotated planes, and how should a plane crossing the
+  near plane be clipped?
+
+## SI-146 — what a scene-space point addressed to a drawing means (found in M4 C4.3; interim)
+
+- **Sections:** 02 §13.1 item 5 lines 1151-1155 (`space: drawing|scene|view; view?; frame?`), 05 lines 40-60 (scene
+  space is three-dimensional), 11 §5.3.
+- **Problem:** a drawing command's point in scene space has two coordinates; the scene is three-dimensional.
+- **Interim decision:** the point of the addressed element's plane whose scene X and Y are the given ones, through the
+  element's world matrix at the frame (the command's `frame`, else the current frame); the Drawing view's existing
+  scene space (the current element's transform at the current frame) is the same rule.
+- **Which element (C4.3a round 1, C43A-R1-02):** the element is resolved before any conversion, from the call's own
+  target (02 §13.1 item 4, the C4.2a ruling's order): with `drawingId`, the element showing that drawing (the
+  call's `elementId` if it shows it, else the current element if it does, else the first element of the drawing's
+  bank in canonical order); else with a qualified object id (`<drawingId>/<objectId>`), the same for that drawing;
+  else `elementId`; else the current element. The frame is the call's `frame`, else the current frame. The same
+  element and frame give a Camera view's view-space points (the element's plane through the camera, both at that
+  frame: the view as it shows that frame) and the view-pixel tolerances.
+- **Question:** confirm, or define the plane or depth a scene point means, and which element a `drawingId` shared by a
+  clone group means.
+
+## SI-147 — a Camera view without a current camera (found in M4 C4.3; interim)
+
+- **Sections:** 05 §3.2, §12 (cameras), 09 (`render.noCamera`).
+- **Problem:** a scene may have no camera; the Camera view shows "through the current camera".
+- **Interim decision:** the Camera view answers no occurrences, the background and the grid, `camera: null`; its
+  scene-space conversions, renders and scene-tool gestures refuse `render.noCamera`, as renders do.
+- **Question:** confirm, or define what the view shows.
+
+## SI-148 — how a request names the scene tools in the Camera view (found in M4 C4.3; interim)
+
+- **Sections:** 11 §7.6 (`pointer` `tool?: toolId`; "`tool` selects the tool first, same as the corresponding select
+  command"), 05 §5.0 (the scene tools, including Select), 02 line 413 (every drawing tool works in the Camera view), 05
+  lines 29-31 (scene and drawing tools remembered separately).
+- **Problem:** `select` names both the drawing Select (`tool.active.set`) and the scene Select (`anim.tool.set`); in the
+  Camera view either family can act.
+- **Interim decision:** the Camera view runs the tool family chosen last: `anim.tool.set` makes it the scene tools,
+  `tool.active.set` the drawing tools. A `pointer` request's `tool` for a Camera view is passed to `anim.tool.set` when
+  it is one of its ids (`select` included), else to `tool.active.set`; the family follows. The Drawing view always runs
+  the drawing tool. **The Edit commands follow the family too (ruling D-87):** with the Camera view focused and the
+  drawing tools chosen last, the clipboard and delete commands on the `auto` context (`edit.cut`, `edit.copy`,
+  `edit.paste`, `edit.delete`, `edit.cutSpecial`; the native Edit menu, their keys) act on the drawing's selection, as
+  the view's context menu does; with the scene tools, on the staging selection. The selection commands
+  (`edit.selection.*`, `edit.selectAll`, `edit.deselectAll`) keep the focused panel's context.
+- **Question:** how should a request name the drawing Select in the Camera view, or should the families be one tool
+  set?
+
+## SI-149 — what `anim.view.coords.get`'s `depth` means (found in M4 C4.3; interim)
+
+- **Sections:** 05 §19.3 line 1234 (`anim.view.coords.get`: `viewId; points; from: "scene"|"view"; depth?: number = 0`;
+  "Map points between scene space and view pixels (for pointer simulation)"), 05 lines 40-60 (scene space), §2.6.
+- **Problem:** a view pixel names a ray, not a scene point; `depth` is not defined.
+- **Interim decision:** `depth` is the scene Z of the plane a view point is unprojected onto (0: the table plane);
+  a scene point given without `z` takes that Z. With `from: "view"` the answer's points carry `z`. A plane at or
+  behind the camera's near plane, or a scene point there, answers `inspect.behindCamera`. Camera views only; Top and
+  Side views are M6 C6.1's; a Drawing view window answers `arg.invalid`.
+- **Question:** confirm, or define `depth` (a camera distance, or the scene Z).
+
+## SI-150 — the scene tools' furniture and what each handle does in the Camera view (found in M4 C4.3; interim)
+
+- **Sections:** 05 §3.5 lines 347-360 (3 px drag start, 4 px pick tolerance, pick priority, nudges), §5.0-§5.2 lines
+  393-420 (bounding box, corner and side scale handles, a rotation handle, side skew handles, the pivot marker), SI-141
+  (the Drawing view's Select furniture).
+- **Problem:** the spec names the handles but not where they are, what a drag does with several selected nodes of
+  different parents and depths, or about which point a handle scales or rotates.
+- **Interim decision:** the furniture sits on the selection's union box in view pixels. Corners and side midpoints are
+  scale handles (6 view pixels, as SI-141); skew handles sit 12 view pixels outside each side's midpoint; rotation is
+  outside the box within 18 view pixels of a corner (as SI-141); the Transform tool's pivot marker is the first
+  selected element's rotation pivot (6 view pixels). A press picks element content within 4 view pixels (the hit at
+  the press and at eight points 4 view pixels around it), front-most first, locked elements skipped; a click on
+  nothing clears the selection; a drag from empty space selects every element whose box touches its rectangle. A
+  drag of several nodes is one `anim.transform.set` for all of them: a move uses the first selected node's depth and
+  parent to turn the view delta into a parent-space delta; a scale handle's factor (about the opposite corner or
+  side, as in the Drawing view; a side handle sends only the axis it changes, C4.3a round 1) and a rotation (about the
+  box's centre) are applied relatively to each node about its own pivots; a skew handle on a horizontal side skews by the angle whose tangent is its horizontal drag over half the
+  box's height (vertical sides: vertical drag over half the width).
+- **Question:** confirm the furniture and how a multi-node drag combines, or give them.
+
+## SI-151 — the Transform tool's temporary Skew in the Camera view (found in M4 C4.3a round 1, C43A-R1-21; interim)
+
+- **Sections:** 05 §5.0 line 394 ("While the *alternate modifier* is held with the Transform tool active, the Skew tool
+  is active"), line 393 (temporary select, which lists Skew), line 398 (keyed channels), §5.4 (Skew: top/bottom side
+  handles apply horizontal shear, the `skew` channel; left/right side handles apply a vertical shear converted to
+  rotation + skew + scale by the §2.5 decomposition, keying those channels), §2.5, §17 line 1135.
+- **Problem:** §5.4 names the Skew tool's side handles but not where they sit, what a press elsewhere does, how the
+  vertical shear's decomposition applies to several nodes with different transforms, or which modifier wins when the
+  temporary-select and alternate modifiers are both held.
+- **Interim decision:** the modifiers are read at the press. The Transform tool with the alternate modifier runs the
+  Skew tool for that gesture; the stored scene tool stays Transform (`anim.tool.get` unchanged, no
+  `anim.tool.changed`). With the temporary-select modifier also held the Select tool wins (line 393 lists Skew among
+  the tools it overrides). The Skew tool's handles are the selection box's side midpoints and the skew handles outside
+  them (SI-150's positions); its corners, rotation zone and pivot marker do nothing. A drag from the top or bottom side
+  is a horizontal shear: a relative `skew`, keyed at the current frame, by the angle whose tangent is the horizontal
+  drag over half the box's height (as SI-150). A drag from the left or right side is a vertical shear y' = y + k·x in
+  the parent's axes, k the vertical drag over half the box's width (up is positive on the right side, down on the left):
+  the first selected node's local R(θ)·K(κ)·S(sx, sy) is premultiplied by the shear and decomposed by §2.5, and the
+  change is applied relatively to every selected node (rotation + Δθ, skew + Δκ, scale × the two ratios), keying only
+  the channels whose value changes. It is exact for one node; several nodes with different transforms each receive the
+  first node's change. A click selects as the Transform tool's click; a drag that starts anywhere else commits
+  nothing. The label follows SI-144 from the parameters: "Skew Element" for a horizontal shear, "Transform Element"
+  for a vertical shear (several groups change).
+- **Question:** confirm, or define the Skew tool's handles, how a vertical shear combines over several nodes, and its
+  label.
+
+## SI-152 — the scene tool and the tool family a new session starts with (found in M4 C4.3a round 1; interim)
+
+- **Sections:** 05 lines 29-31 (scene and drawing tools remembered separately), §5.0 ("Exactly one scene tool is
+  active"), 01 §4 (staging mode: the Camera view is its main view), A (`anim.tool.get`).
+- **Problem:** the spec does not say which scene tool is active in a new session, nor whether the Camera view starts
+  with the scene tools or the drawing tools (SI-148's family).
+- **Interim decision:** a new session's scene tool is Select (`anim.tool.get` answers `{tool: "select"}`) and the
+  Camera view runs the scene tools until a `tool.active.set` (SI-148): staging is the Camera view's main use (01 §4).
+  The drawing tool keeps its own default (`tool.active.get`, C4.1). Both are session UI state: neither is saved in the
+  project nor restored at the next start.
+- **Question:** confirm, or give the start-up tool and family (and whether they persist across sessions).
+
+## SI-153 — the Camera view's appearance (found in M4 C4.3b; interim)
+
+- **Sections:** 05 §3.2 lines 311-321 (the camera frame, "the area outside the frame is dimmed", pivots, selection
+  highlighting, "unselected content is shown faded"), §12.4 line 901 (a non-current camera's frame "as a thin outline"),
+  §1.2 (12 fields across the default camera's frame), 02 §10.1 (grid types), §10.5, §10.7 (box highlighting, outline on
+  selection, selection always visible), SI-138 (the Drawing view's overlay).
+- **Problem:** the colours and amounts are not given: how much the outside of the frame is dimmed, how faded
+  unselected content is, the highlight colour, how pivots and other cameras' frames are drawn, and how the grid lies in
+  the Camera view.
+- **Interim decision:**
+  - **Dimming:** outside the camera frame, black at 35 % opacity over the composition; the frame's outline 1 view
+    pixel, black at 60 %.
+  - **Fading:** with box highlighting off, unselected occurrences at opacity 0.35.
+  - **Highlight colour:** SI-138's accent colour. It is used for the selection boxes (1 view pixel) and for the outline
+    entries of outline on selection.
+  - **Markers:** a pivot is a cross 12 view pixels wide; another camera's frame is a 1-pixel outline in the accent
+    colour at 70 %.
+  - **The grid:** in camera output pixels aligned with the camera frame: 12 cells across its width for `field12` and
+    `normal`, 16 for `field16`; square cells; centred on the frame.
+- **Question:** confirm or specify.
+
+## SI-154 — how exact the live transform preview is, and the Drawing view's selection payloads (found in M4 C4.3b; interim)
+
+- **Sections:** 05 §5.0 line 399 ("Views update live during a drag"), 02 §7.1.1, ADR-0007 decision 1, SI-141, SI-150,
+  plan answer 6.
+- **Problem:** the spec asks for live feedback but not how faithful it must be. The final effect of a scene-tool drag
+  on nodes at several depths, or about several pivots, is not one view-pixel transform.
+- **Interim decision:**
+  - **The preview:** a view-pixel affine of the selection by the furniture rule of the command (preview note §2).
+  - **Exact cases:** the selected objects of a Drawing-view Select drag (a painted zone that the kernel re-derives
+    from moved strokes is not among them: it stays until the commit), a Camera-view move of nodes at one depth, and a
+    Camera-view scale, rotation or skew of one node facing the camera (its factor, angle or shear from the box rule,
+    re-anchored at that node's pivot as the kernel applies it, SI-150). Elsewhere it approximates, and the committed
+    state replaces it when drawn.
+  - **Selection payloads:** `canvas_load` takes `part: all | selection | rest`, so the Drawing view can move only the
+    selected objects.
+- **Question:** should the preview be exact in every case (a kernel-computed preview per sample)?
+
+## SI-155 — what a person can act on that is not a command (found in M4 C4.3b; interim)
+
+- **Sections:** 11 P1 line 19, §14.1 lines 560-563 (every GUI action has a binding), 01 §12 (`window.*` geometry
+  commands), plan §8 ("the parity manifest's treatment of GUI-only conveniences").
+- **Problem:** moving a float, dragging a splitter, scrolling, typing into a field before submitting, hovering,
+  focusing, cancelling a dialog, moving between the pages of a dialog, and a control whose function a later checkpoint
+  builds are actions in the GUI but not commands.
+- **Interim decision:** the parity manifest marks such an element `guiOnly` with one reason from `geometry`, `scroll`,
+  `typing`, `hover`, `focus`, `dismiss` (a dialog's Cancel or close: nothing changes), `navigate` (between the pages
+  of one dialog, as Preferences' categories) and `placeholder` (a control 01 places that a later checkpoint builds,
+  disabled, its owner in the tooltip); any other unbound element fails the gate. A field inside a form is `typing`
+  without a declaration: the form's submit sends the command its value is for. Geometry that ends in a `window.*`
+  command is bound to that command. A command declared agent-only that the GUI's source reads (its state stores, the
+  host's own reads) stays agent-only: that read is plumbing, not a location a person acts at (parity note 9, PA3).
+- **Question:** confirm the list, and that plumbing reads do not bind an agent-only command.
+- **Ruled (D-35, C4.3b round 1):** a mention in the source binds nothing. A mutating command is bound only by a
+  manifest action (a menu item, a default key binding, a rendered actionable element, a toolbar item, a gesture row, or
+  a window gesture row: `window-gestures.json`, for geometry that ends in a `window.*` or `view.active.set` command).
+  A query is bound only by a read declared under the surface that shows it (`reads.json` `surfaces`), checked both
+  ways against the product's call sites; the plumbing reads (`reads.json` `plumbing`: the watchdog's state poll, the
+  host's preferences and geometry reads, a form waiting for its job) bind nothing. Built: one more reason, `disclose`
+  (a control that only shows or hides a surface of the GUI's own, as the status bar's agent indicator opening its
+  popover; the surface's own controls are collected and bound). Round 1's collector then rendered a message box: its
+  buttons answer the question of the action that asked it, so one more reason, `answer` (a single informational OK is
+  `dismiss`); the action's own command is bound where the action is. Question: confirm `answer`.
+
+## SI-156 — where the drawing Select tool's handles are in a Camera view (found in M4 C4.3b; defect fixed)
+
+- **Sections:** 02 §7.1 (Select: "drag drawing pivot", bounding-box handles), §7.1.1, line 61 (the Camera view's
+  mapping is the inverse of the element's full scene transform and camera projection, restricted to the drawing
+  plane), §13.3 (the mapping is taken at the press).
+- **Problem:** the gesture driver placed the drawing Select's pivot handle and selection-box handles through the
+  Drawing view's own transform in every view. In a Camera view the drawing's points are shown through the element's
+  plane and the camera, so a press on the pivot or a box handle where the Camera view shows it was taken as a marquee
+  or a move, and a press where the Drawing view would show it took a handle no one could see. The parity gate's
+  gesture battery found it (no Camera view gesture produced `draw.pivot.set`).
+- **Decision (a defect, not an interpretation):** the handles are placed with the inverse of the gesture's press
+  mapping in a Camera view (the same mapping its samples use, 02 line 61), and with the Drawing view's transform in a
+  Drawing view as before. Behaviour change: in a Camera view, a Select drag from the pivot moves the pivot and one from
+  a box handle scales or rotates; the Drawing view is unchanged.
+- **Test:** `crates/executor/tests/c43/scene_tools.rs`
+  `si156_the_drawing_select_handles_in_the_camera_view_are_where_it_shows_them`, and the parity gate's battery; both
+  fail with the mapping disabled.
+
+## SI-157 — a gesture's end and the agent change waiting on it (found in M4 C4.3b; defect fixed)
+
+- **Sections:** 11 §6.4 lines 236-238 (agent mutations wait while the user is mid-gesture), lines 586-587 (the agent's
+  call waits and then succeeds), 01 §12.1 rule 8.
+- **Problem:** a view window reported the end of a gesture's modal state and then sent the gesture's commit, two
+  messages the host handles independently. An agent change waiting on the gesture could run between them: its step
+  landed before the gesture's. E6 in the played mode found it (the agent's step before the played drag's); with real
+  input the commit usually won the race.
+- **Decision (a defect, not an interpretation):** the window sends a gesture's commit after its earlier reports and
+  reports the end of the modal state only once the commit has answered, so a waiting agent change runs after the
+  gesture's step. The window's commit of an agent gesture it played (already arbitrated when the host routed it to the
+  window) does not wait on the modal state the window holds for it. Behaviour change: the modal state lasts until the
+  gesture's commit has been applied; an agent change waiting on it is answered after the gesture's step, never before.
+- **Test:** `scripts/c43-e6-coexistence.py` (both modes: the history's order, the answer after the release);
+  `desktop/src/canvas/gestureOrder.test.ts` (the commit is sent before the end is reported).
+
+## SI-158 — how exact the Camera view's three-way can be through a headless view of another size (found in M4 C4.3b; interim)
+
+- **Sections:** plan §5 ("the exact three-way ... content, ids, one undo step and its label, exactly"), ruling D-4 (no
+  tolerance), 11 §3 (headless views are virtual), SI-069 (the virtual views' sizes), 05 §5.1-§5.2 (a scene drag's X/Y
+  converted to the node's parent space so the element stays under the pointer).
+- **Problem:** the three-way's second engine replays the window's samples on a headless engine whose Camera view is
+  the virtual 960 x 540 view, while the window's is whatever size the window has; no command sets a headless view's
+  size (the desktop host reports the window's). A drawing tool's samples replay in drawing units and a scene tool's
+  in camera units, both independent of the view's size, but a scene move's parent-space delta and a skew are computed
+  through the view's geometry (view pixels at the element's depth), so the replay can differ from the window in the
+  last bits (measured: 3.6e-16 and 1.1e-14 relative). The window and the third engine (the window's commands sent
+  directly) agree exactly.
+- **Ruled (D-32):** the window and the third engine agree exactly. Where the headless replay can be given the window's
+  own view size and transform it is, and that row is compared exactly; the tolerance (1e-9 relative, each row recording
+  its difference) stays only where it cannot. Built: the headless binary takes `--view-size VIEW=WIDTHxHEIGHT`
+  (applied through the same sensor report a desktop window sends), the three-way starts its headless engines with the
+  window's Camera view size, every row resets the view's transform on all three engines, and engine 2 replays the
+  window's view pixels as collected, compared exactly. The size-independent replay with the tolerance remains only as
+  the fallback when the sizes cannot be matched (the receipt's `D-32` check fails then).
+
+## SI-159 — click to activate never fired (found in M4 C4.3b; defect fixed)
+
+- **Sections:** views note V9, SI-142 (a press in a view window that is not the active view activates it first).
+- **Problem:** the canvas read `app.state.get`'s `activeView` as a string; it is an object (`{viewId, panelId, type}`,
+  SI-026), so the canvas never knew the active view and a press never activated its window. The Camera view e2e's V9
+  check (real OS input) found it.
+- **Decision (a defect):** the canvas reads `activeView.viewId` (`desktop/src/canvas/activeView.ts`, tested against
+  the answer's shape). Behaviour change: a press in an inactive Drawing or Camera view window now activates it, as V9
+  states.
+
+
+## SI-160 — the person cancels an agent session's job from the progress window (found in M4 C4.3b round 2; ruled)
+
+- **Sections:** 01 §9.5 lines 925-927 (long operations show a progress window with Cancel where cancellation is
+  supported), 01 §9.1 (the status bar's progress area), 11 §6.4 (user priority in attached mode), 11 §15.2 (`job.list
+  {all: true}` lists every session's jobs for the GUI; `job.cancel`).
+- **Problem:** the status bar showed every session's running jobs as text only (C43B-R2-06). 01 §9.5 asks for Cancel
+  where cancellation is supported, and says nothing about whose job it is; 11 §6.4 gives the person priority over an
+  agent but does not name cancelling an agent's job.
+- **Ruled (round 2, C43B-R2-06):** the status bar's jobs segment opens the progress window, which lists every running
+  job (the window's own and every agent session's) with its title, the session that started it, the current step and
+  the fraction, and a Cancel that sends `job.cancel {jobId}` while the job is cancellable. The person may cancel an
+  agent session's job: under 11 §6.4 the person's decision wins, as Pause and Stop already let them stop the session.
+  The agent learns of it from the job's final state (`cancelled`, through `job_status` and `job.finished`). The window
+  opens by itself when another session's job starts (01 §9.5: long operations show it; the window's own long
+  operations keep their progress dialog), and closes when no job runs.
+- **Built:** `JobRecord.cancellable` (true while the job is neither final nor past its commit point, and no cancellation
+  was requested; `crates/executor/src/jobs.rs`), so Cancel is offered only where it can take effect; the progress
+  window in `desktop/src/shell/StatusBar.tsx`; `shell/jobsWindow.test.tsx`; the D-44 flow table's
+  "progress window › Cancel" row through the real window.
+
+## SI-161 — keymap Import's default choice (found in M4 C4.3b round 2; ruled)
+
+- **Sections:** 01 §8.3 item 8 (import merges into or replaces the keymap), 01 §9.5 (specific verbs; the default and
+  cancel buttons follow platform conventions).
+- **Problem:** 01 says Import offers merge or replace but not which is the default. Round 2 fixed the question
+  (C43B-R2-08, the application's message box with Merge, Replace and Cancel) with Replace as the default button.
+- **Ruled (D-46 item 3):** Merge, the choice that destroys nothing, is the default button (focused; Enter takes it);
+  Replace has its own button and the destructive style; Cancel is the cancel button (Escape).
+- **Built:** `desktop/src/prefs/PreferencesDialog.tsx`; `keymapChoices.test.tsx` asserts the default; the D-44 Import rows
+  check that Merge is the focused default; the D-39 Import row clicks Replace.
+
+## SI-162 — Workspace Delete without a question (found in M4 C4.3b round 2; open)
+
+- **Sections:** 01 §5.5 (Window › Workspace › Delete Workspace), 01 §9.5 (messages).
+- **Problem:** Delete Workspace removes the current user workspace at once, as 01 §5.5 is written; the layout cannot
+  be recovered (no undo: workspace state is not document state). Every other destructive file-level action in 01 asks
+  first.
+- **Question for the spec owner:** should Delete Workspace ask ("Delete the workspace "Name"? This cannot be undone."
+  with Delete and Cancel)? Until answered the behaviour stays as 01 states it (ruling D-46 item 5); if a question is
+  added, it gets its rows in the D-44 flow table.
+
+## SI-163 — large MCP answers and a client's per-event limit (found in M4 C4.3b round 4; ruled, corrected; an open question)
+
+- **Sections:** 11 §6.5 (inline limits), 11 §7.2 (the result envelope), 11 §8 (jobs and `job_wait`).
+- **Problem:** a completed `render.range.run` of 12 000 frames answered `job_wait` with a 4.1 MB record listing every
+  output. Over the streamable HTTP transport that answer was one server-sent event, and a common client (Python `mcp`
+  2.0.0 over `httpx2` 2.12.0) refuses any event over 1 MiB, reporting "SSE stream ended without a response" although the
+  server wrote the whole answer (D-49 item 4; `reviews/evidence/M4-C4.3b-r4/job-wait`).
+- **Ruled (D-51 item 2, corrected by D-56):** there is no general 1 MiB cap: the spec's limits govern answers (11 §6.5
+  inline images up to 8 MB encoded by default, `doc.blob.get` `maxBytes` up to 64 MiB, a 100 000-frame evaluation
+  delivered whole as the reviewer's `c32_r4_delivery.rs` requires). What stays: a range job's answer is small (SI-181);
+  over HTTP, an answer over 1 MiB with nothing yet sent on its request's stream goes as one plain `application/json`
+  body, which the protocol allows and which no per-event limit applies to (`http.rs` `JSON_BODY_ABOVE`); the worked
+  examples are measured, each under 1 MiB (`c12_kernel_state`).
+- **Open question for the user:** an answer over 1 MiB that follows progress notifications on the same request is still
+  one server-sent event, which such a client refuses. Whether the product should do more for those clients (a smaller
+  answer on request, a file instead) is the user's call; M11's client compatibility checks own the measurement.
+
+## SI-164 — a failed or cancelled Open and the previous project (found in M4 C4.3b closure; open)
+
+- **Sections:** 01 §3.2 (Open: "the current project is closed before the new one is loaded"; cancelling "leaves no
+  project open"; on an error "the project is not opened"), 10 LOAD-02.
+- **Problem:** after Open fails (a file that is not a project) or is cancelled, no project is open: the one that was
+  open before is gone, though nothing replaced it. The closure check expected it to stay open; the spec says otherwise.
+- **Question for the spec owner:** should a failed or cancelled Open return to the previous project (for instance by
+  loading the new one before closing the old)? Until answered the behaviour is the spec as written (ruling D-53
+  context); the D-44 "error box › OK" row checks it.
+## SI-167 — which pen is current after the current pen is deleted (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 02 §6.1 lines 354-384 (pens; Delete), 02 §12.1 ("Delete Pen").
+- **Problem:** 02 says the last pen of a type cannot be deleted but not which pen becomes current when the current one
+  is. The kernel cleared the slot without an event, so the default pen took over unannounced and the Pen panel and the
+  cursor could not follow.
+- **Decided:** the next pen of the same type in the list becomes current, else the previous one, announced with
+  `tool.pen.changed {penId, change: "selected"}` after the deletion's own event. Deleting a pen that is not current
+  leaves the current pen. Undo restores the pen, not the selection (selection is UI state, 02 §12.1).
+- **Built:** `tool.pen.delete` (`crates/executor/src/commands/tool.rs`); `c44a_panels.rs`.
+## SI-166 — one state for automatic gap closing, written by two commands; staged preferences announce themselves (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 03 §8.8 (Auto Close Gap: "reachable from the main menu and the paint tools' options"), 01 §7.3
+  (preferences), 11 §9 (events).
+- **Problem:** `colour.gapClosing.set` and `prefs.set {paint.gapClosing}` write the same preference, but the first
+  staged it without `prefs.changed`, so a surface showing the mode could not follow an agent's change. The same held
+  for `draw.inspectorPreview.set`. `prefs.json` named a command that does not exist (`colour.gap.mode.set`).
+- **Decided:** both commands stage their preference as `prefs.set` does (`prefs::stage`): only a changed value is
+  written, and it emits `prefs.changed {keys, source}`. `colour.gapClosing.get` is a declared read of the Tool options
+  page, no longer agent-only (D-40 answer 5). The main menu's Colour › Auto Close Gap has four radio items; availability
+  checks the one naming the current mode. The description in `prefs.json` names `colour.gapClosing.set`.
+- **Built:** `colour.rs`, `draw_select.rs`, `host.rs` (`checked_of`), `menu.json`; `c44a_panels.rs`; the D-39 rows of
+  the Paint page and the three menu items.
+
+## SI-183 — the generic `tool.options.set` and the GUI (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 02 §7.7 (tool options), A (`tool.options.set`, `tool.select.options.set`, `tool.pencil.options.set`,
+  `tool.polyline.options.set`, `tool.text.options.set`).
+- **Problem:** every tool with options has its own command, so the GUI never needs the generic setter, which C4.4 owned
+  as deferred (D-31: no deferred entry owned by C4.4a at its handoff).
+- **Decided:** `tool.options.set` is agent-only, the structured generic equivalent of the per-tool commands (as D-40
+  answer 1 declares `tool.tablet.set`). The Tool options page reads `tool.options.get` and writes through each tool's own
+  command.
+## SI-165 — the tablet settings: one state for `tool.tablet.set` and the Tablet preferences, and their keys (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §7.3 lines 743-749 (Tablet: `tablet.ignore`, `tablet.alternativeInput` bool, restart,
+  `tablet.portraitCorrection`), 02 §6.3 lines 400-407 (four options, with "Compatibility tablet handling" and "Tablet
+  input interface", a choice), A (`tool.tablet.set {ignoreTablet, portraitCorrection, compatibilityMode,
+  inputInterface}`), D-40 answer 1.
+- **Problem:** `tool.tablet.set` wrote its own state and emitted `tool.options.changed`, while the Preferences dialog
+  wrote the `tablet.*` keys with `prefs.set`: two states for one setting. 01 and 02 also name different options.
+- **Decided:** the keys are 01's catalogue, `tablet.ignore`, `tablet.portraitCorrection` (live) and
+  `tablet.alternativeInput` (bool, restart), with `tablet.compatibilityMode` (bool, restart) added for 02's fourth
+  option. 02's "Tablet input interface" is `tablet.alternativeInput`: `tool.tablet.set {inputInterface}` takes `default`
+  or `alternative` (any other name is `arg.invalid`) and the settings report `inputInterface: "alternative"` or `null`.
+  (Design note 1 §5 proposed a string key replacing `tablet.alternativeInput`; that was built first and withdrawn when
+  the reviewer's catalogue receipt `c41-r1s-prefs.py` showed it breaks 01 §7.3.) `tool.tablet.set` stages them as
+  `prefs.set` does and emits
+  `prefs.changed`; the tablet settings `tool.settings.get` reports are read from them; `tool.tablet.set` is agent-only,
+  the structured equivalent of the Tablet category (D-40 answer 1). No consumer of the tablet state exists yet (the
+  canvas sends raw pressure); that stays so in M4.
+- **Built:** `tool.rs` (`tool_tablet_set`, `tablet_of`), `prefs.json`; `c44a_panels.rs`
+  (`the_tablet_command_and_the_tablet_preferences_are_one_state`); D-39 rows for the four keys through the Preferences
+  dialog (OS form).
+
+## SI-169 — the Text panel's font list, font determinism and outline colour (found in M4 C4.4a; ruled; a proposal for the user)
+
+- **Sections:** 02 §7.6.1 lines 683-699 (the Text panel: font, ..., outline colour), 02 §13.5, A (no query lists
+  fonts), ADR-0016 lines 39 and 112-117 (system fonts with `fontdb`; layout depends on the installed font files), D-40
+  answer 3, D-57.
+- **Problem:** the panel needs a list of fonts; no command gives one, and adding `draw.font.list` is a spec A addition.
+  Choosing an outline colour needs the palette (M7).
+- **Ruled (D-57):** no `draw.font.list` (listed under "Spec A additions proposed by M4, for the user"); the panel keeps
+  the typed family name, empty for the platform default (`null`). System fonts are allowed; only a bundled font is
+  deterministic across the two systems; the panel marks fonts that are not bundled.
+- **Correction:** design note 1 §5 said determinism "holds only for the bundled default (as today)". That was wrong: the
+  product bundles no font. A run whose font is absent, and the default (`null`), lay out with the platform's default
+  sans-serif face (`crates/vector/src/fonts.rs`); B612 under `tests/fixtures/fonts` is a test-only fixture kept out of
+  the product. So today no font is deterministic across the two systems, and the panel marks every font, the platform
+  default included ("… is not bundled: text lays out with this computer's font files and may differ on another
+  system").
+- **Proposal for the user (not built):** bundle one open-licensed default face (for example under the SIL OFL, with its
+  licence in the product's notices), register it with the font database at start-up and use it for the default font,
+  so that text in the default font lays out the same on Windows and macOS. It changes the layout of existing text in the
+  default font, so it needs a format and goldens decision; owner to be named by the user.
+- **Built:** the Text panel edits every default but the outline colour (`tool.text.options.set`); the font field and its
+  "not bundled" note (`TextPanel.tsx`, `TextPanel.test.tsx`); an outline already set can be removed (`outlineColourId:
+  null`). The outline colour list comes with the palette (M7).
+
+## SI-168 — the drawing inspector's subject before M5, and two commands that rename a drawing (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 02 §9 lines 858-872 (the inspector shows "the drawing selected in the Cells panel, Exposure Sheet or
+  library"), D-40 answer 4, A (`draw.drawing.rename`, `element.drawing.rename`, both "Rename Drawing").
+- **Problem:** the panels that select a drawing arrive with M5; and two commands rename a drawing.
+- **Decided:** until M5 the inspector's subject is the current element's drawing at the current frame (from
+  `app.state.get` and `element.drawing.list`'s exposures); nothing is shown when no drawing is exposed there. The
+  inspector renames with `draw.drawing.rename` (02 §9's command); `element.drawing.rename` stays as the element bank's
+  equivalent. `element.drawing.list` is the inspector's declared read and leaves agent-only (D-40 answer 5).
+  `draw.drawing.get` stays agent-only: the inspector does not need it.
+- **Built:** `desktop/src/panels/DrawingInspectorPage.tsx`; `DrawingInspectorPage.test.tsx`; D-39 rows (OS form).
+
+## SI-171 — the camera list's undo label (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.7 lines 453-460 (the main toolbar's camera list), 05 line 1282 (`anim.camera.current.set`
+  undoable, no label given), D-40 answer 10, D-23 (spec-stated labels in every equivalence test).
+- **Problem:** 05 says choosing the current camera makes an undo step but names no label.
+- **Decided:** the registry's label "Set Current Camera" is the step's label; the D-39 row of the camera list checks
+  it. The three camera commands' `gui` strings name the main toolbar's camera list (M4 C4.4a) instead of M6 C6.2.
+- **Built:** `Toolbars.tsx` (`CameraList`, reading `anim.camera.list` and `anim.camera.current.get`); `cameraList.test.tsx`;
+  the D-39 row "main toolbar › camera list" in both forms.
+
+## SI-170 — toolbar items with fixed parameters (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.7 lines 445-464 (the main toolbar's customisation; "every toolbar item is a command reference
+  (command ID plus optional fixed parameters)"), 05 `window.toolbar.items.set` (items are strings),
+  `reviews/M4-design-panels.md` §7.
+- **Problem:** the spec lets a toolbar item carry fixed parameters, but `window.toolbar.items.set` and the stored
+  workspace hold an item as a string (a group id, a spacer or a command id), and `allowedItems` lists strings.
+- **Decided:** in M4 an item is a group id, a spacer or a command id with no parameters; a command whose run needs
+  parameters is still placeable and opens its dialog, as its menu item does. Items with fixed parameters need a
+  structured item in the workspace format and in `window.toolbar.items.set`; they are left to the milestone that
+  changes that format, and no command or stored state here assumes them.
+- **Built:** `toolbarSheet.tsx` (Window › Customize Toolbar…: staged Add, Remove, Move Up, Move Down, filter; Apply sends
+  one `window.toolbar.items.set {toolbarId: main, items}`; Restore Default sends `window.toolbar.items.reset`);
+  `toolbarSheet.test.tsx`; the D-39 row "Window › Customize Toolbar" and the D-44 rows of `dialog:Customize Toolbar`.
+
+## SI-172 — the secondary click on the canvas, and Control on macOS (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.3 line 373 (each view's context menu), 02 §4.4 lines 291-296, 02 §13.3 (no tool maps a
+  secondary drag), 05 §5.0 lines 393-394 (the temporary-select modifier), `reviews/M4-design-panels.md` §9, D-40
+  answers 11 and 12.
+- **Problem:** a secondary press was a tool gesture on the canvas (the collector took any button), so the views could
+  have no context menu; and on macOS Control-click is the secondary click while Control (or Command) was also taken as
+  the temporary-select modifier.
+- **Decided:** the canvas never passes a secondary press to the gesture collector. The `contextmenu` event (a
+  secondary click, at its release on Windows and at the press on macOS; the context-menu key; Shift+F10 with the view
+  focused) opens the view's menu at the pointer, or at the view's corner from the keyboard; a secondary press dragged
+  more than 4 pixels opens nothing. On macOS a Control-press is the secondary click and starts no gesture, and the
+  temporary-select modifier is Command alone, as macOS applications behave; Windows keeps Control or the Windows key.
+  The menu shows the family the view runs: the Camera view with a scene tool shows the scene family (the general edit
+  items of 01 §6 only; the items of 05 §3.2 lines 326-328 are M6 C6.1's by D-30), else the Drawing family of 02 §4.4,
+  without Feather Edges until `draw.feather.apply` is implemented (D-40 answer 11). The dock tab's checklist moves to
+  the same component (check marks, the keyboard, each panel's reference completed by the kernel as a toggle; the central
+  view's item disabled with the kernel's reason).
+- **Built:** `ContextMenu.tsx`, `contextMenuModel.ts`, `viewMenus.ts`, `CanvasView.tsx`, `DockArea.tsx`;
+  `contextMenu.test.tsx`; the parity collector's `viewContextMenu:scene` and `viewContextMenu:drawing`; D-39 rows in both
+  forms for the 22 Drawing-family items, the five scene-family items and 20 checklist items (OS form only: the checklist
+  opens with a secondary click; its reference is the Window menu's panel item's).
+
+## SI-173 — the agent settings: one state for their commands and `prefs.set` (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §7.3 lines 783-789 (Agent access: the `agent.*` keys are also read and written through
+  `prefs.get` and `prefs.set`, subject to 11's restrictions), 11 §15.1, `reviews/M4-design-agent-surfaces.md` §2.
+- **Problem:** `agent.server.set` wrote its keys without `prefs.changed`, so a surface showing them could not follow a
+  change made from the command layer; and the category's controls used `prefs.set`.
+- **Decided:** `agent.server.set` validates and stages its keys as `prefs.set` does (an unchanged value is still stored,
+  without an event); `prefs.set` on `agent.server.enabled` already started and stopped the server through the host's
+  `prefs.changed` handler and the policy defaults already shared one validator. Preferences › Agent access sends one
+  command per changed group at OK, in table order, never `prefs.set`; a refusal part-way leaves the later groups staged
+  and says the earlier ones were applied. Regenerate token acts at once after a question (Cancel the default).
+- **Built:** `agent.rs`, `commands/prefs.rs` (`stage_stored`), `AgentAccessPage.tsx`, `agentAccess.ts`,
+  `PreferencesDialog.tsx`; `c44a_agent.rs` (`the_server_command_and_the_server_preferences_are_one_state`),
+  `agentAccess.test.tsx`; D-39 rows for each control at OK; D-44 rows of the Regenerate question.
+
+## SI-174 — the Activity panel and Window › Activity (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 01 §5.2 (the panel catalogue, 21 panels), 01 Window menu, 11 §6.4 (the indicator's Activity…), 11 §11
+  (the activity panel), `reviews/M4-design-agent-surfaces.md` §3.
+- **Problem:** 11 requires an activity panel that 01's catalogue and Window menu do not list.
+- **Decided:** a dockable panel `activity` ("Activity") joins the kernel's catalogue (22 panels), Window › Activity
+  shows it (a checked item like the other panels), and the indicator's popover has Activity…. The panel lists the log of
+  this project session (the last 500 entries; the log keeps all), Undo back to before an entry (`edit.history.move` to
+  just before its step, named first when later steps are yours; disabled with the reason when the step is gone or
+  undone), Copy as batch JSON (the batch export's form; `clipboard`), Export… (`agent.activity.export`, the path from the
+  platform's save dialog) and the sessions strip (policy at once, scopes at OK, Pause or Resume, Disconnect).
+- **Built:** `ui.rs` `PANELS`, `menu.json`, `catalogue.ts`, `ActivityPanel.tsx`, `activityModel.ts`, `StatusBar.tsx`;
+  `ActivityPanel.test.tsx`; parity `float:activity`, `float:activity:scopes`; D-39 rows (the session controls in the OS
+  form on a second test-only session; scope `app` named in the MCP form); D-44 rows of the Undo back question.
+
+## SI-175 — the Activity panel's live updates, and the entry fields it lacks (found in M4 C4.4a; partly built, a ruling asked)
+
+- **Sections:** 11 §11, `reviews/M4-design-agent-surfaces.md` §3 (kernel gaps 1 and 2).
+- **Problem:** no event says the activity log grew, and an entry has no batch id and no changed ids, so the panel can
+  neither group a script's calls nor highlight what an entry changed.
+- **Built:** a host-only notice `shell.agentActivity {entry}` after every recorded entry (`run.rs` `audit`; MCP clients
+  never receive `shell.*`); the panel appends from it alone, and re-reads the log on a gap in `seq` and on every open or
+  close.
+- **Asked:** the design's registry additions (`agent.activity.recorded`, `afterSeq` on `agent.activity.list`, `batchId`
+  and `changedIds` on the entry) change spec A, which is read-only here. Until a ruling adds them, the panel groups by
+  entry (a batch's steps are in its parameters) and selecting an entry highlights nothing.
+
+## SI-176 — a session's grant announced (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 11 §6.4, §15.1, `reviews/M4-design-agent-surfaces.md` §3, §5.
+- **Problem:** connect and disconnect have events, pause and resume have `agent.paused` and `agent.resumed`, but a grant
+  changes a session silently.
+- **Decided:** `agent.session.grant` emits the host-only notice `shell.agentSession {sessionId}`; the sessions strip
+  re-reads on it and on the four events. The registry event the design proposed (`agent.session.changed`) needs spec A
+  and waits with SI-175's ruling.
+
+## SI-177 — confirmations asked in the app, and 11 §6.3's order (found in M4 C4.4a; ruled, D-58)
+
+- **Sections:** 11 §6.3 steps 1 and 2 (elicitation when the client supports it; otherwise `needs_confirmation`, and "in
+  attached mode the user may instead be shown the confirmation in the GUI"), 11 §6.4, `reviews/M4-design-agent-surfaces.md`
+  §4, D-49 item 2.
+- **Problem:** read literally, step 1 sends an elicitation first whenever the client supports it, so in attached mode the
+  agent's own client would answer for the person at the application, who owns the document. A token of an in-app request
+  was also usable before anyone answered (`take` let it through unless declined).
+- **Ruled (D-58):** attached, a window present and the session's `askInApp` on, the request goes to the app only, with no
+  elicitation (interim default, because the person at the application owns the document); the MCP server holds the call
+  until the answer, the token's expiry or a document change, and the agent receives the outcome (the command's result,
+  `confirmation.declined` or `confirmation.expired`). An in-app token is refused until the person accepts. The sheet is
+  not modal, never takes the focus, Decline is its default (Return and Escape inside it decline; Accept needs a click or
+  the focus moved to it), and it says why a request ended unanswered. A revision change ends the request.
+- **Open for the user:** whether step 1's order should change in the spec for attached mode (this interim reading puts
+  the app first).
+- **Built:** `agents.rs` (`Pending.in_app`, `expired`; `take` refuses an unanswered in-app token without consuming it;
+  `waiting`, `expire_stale`; `pendingConfirmations` with `inApp` and `expiresInMs`), `run.rs` (a revision change expires
+  open requests), `agent.rs` (`agent.confirmation.respond` announces the decision), `lib.rs` (`hold_in_app`,
+  `confirmation_waiting`), `crates/mcp/src/server.rs` (`asked_in_app`, `held_until_answered`), the host-only notice
+  `shell.agentConfirmation` (D-57 table), `ConfirmationSheet.tsx`; tests `c44a_agent.rs`
+  (`an_in_app_token_waits_for_the_persons_answer`, written first), `c44a_in_app_confirmation.rs` (the held call over MCP:
+  accepted, declined, document changed), `confirmationSheet.test.tsx`; parity `confirmSheet`; D-44 rows in a session of
+  their own (Accept, Decline, Return, document changed, decided in another window, three queued, expiry), each request
+  raised by a test-only MCP client held on its call.
+
+## SI-178 — Regenerate token disconnects the HTTP clients and keeps the endpoint (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 11 §15.1 (`agent.token.regenerate`: "connected HTTP clients are disconnected"), 11 §4, ADR-0022.
+- **Problem:** the command rewrote the discovery file with `endpoint: null` and left the HTTP sessions connected.
+- **Decided:** after the new token is written, the host-only notice `shell.agentToken` makes the desktop host restart a
+  running server: its sessions end, and the discovery file is written again with the endpoint and the new token. The old
+  token is refused from then on.
+- **Built:** `agent.rs`, `host.rs` (`restart_http`), `shell.rs`; the D-44 rows "Agent access › Regenerate token ›
+  Regenerate / Cancel / Enter (default Cancel)" in a session of their own (the old token answered 401, the new 200, at the
+  same endpoint).
+
+## SI-179 — the activity log's persistence and the typed tools are preferences (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 11 §11 (persistence "is a preference, default off"), 11 §5 (typed tools), 01 §7.3 (Agent access keys
+  defined by 11), `reviews/M4-design-agent-surfaces.md` §6.
+- **Problem:** `agent.activity.persist.set` and `agent.typedTools.set` set session state only, so both reverted at the
+  next start.
+- **Decided:** two keys, `agent.activity.persist` (bool, default false, live) and `agent.typedTools` (object
+  `{enabled, namespaces}`, default off with no namespaces, live), category agent. The commands stage them as `prefs.set`
+  does (`prefs.changed`), `prefs.set` writes the same state, and the executor applies them at start. An object
+  preference's list member (`namespaces`) is validated as a list of strings.
+- **Built:** `prefs.json`, `agents.rs`, `agent.rs`, `commands/prefs.rs`, `prefs.rs` (`same_type`), `lib.rs`;
+  `c44a_agent.rs` (`the_activity_persistence_and_the_typed_tools_survive_a_restart`).
+
+## SI-180 — the `clipboard` GUI-only reason, and the load report window's read (found in M4 C4.4a; decided by the builder)
+
+- **Sections:** 10 §7.3 (the load report, shown once as a summary), 11 §11 (copy as batch JSON), SI-155 (GUI-only
+  reasons), D-40 answers 5 and 6, `reviews/M4-design-agent-surfaces.md` §7, §8.
+- **Problem:** two actions write the system clipboard and change no document or application state (the load report's
+  Copy details, the Activity panel's Copy as batch JSON): no GUI-only reason fitted, and the gate had no check that such
+  an element runs nothing.
+- **Decided:** `clipboard` joins the GUI-only reasons (`parity.ts`). Every write goes through one function, `copyText`
+  (`shell/clipboard.ts`). The check: each element declared `clipboard` writes exactly once and runs no command, and the
+  check fails on a fixture that also runs one. The load report window is non-modal, shown once per `project.opened` whose
+  report has a warning or an error, a repair, a migration or a read-only state, whoever opened the project; its read
+  `doc.loadReport.get` leaves the deferred table (D-40 answer 5).
+- **Built:** `clipboard.ts`, `loadReport.ts`, `LoadReportWindow.tsx`; `loadReport.test.tsx` (once per open, none for
+  information only, Copy details, the `clipboard` check and its failing fixture); the parity collector's `loadReport`;
+  its D-44 reason; the D-39 check "load report window" in both forms (a folder of a newer minor format with an unknown
+  value shows one window; the clean project opened next shows none).
+
+## SI-181 — a range job's bounded answer; the manifest file is the full list (found in M4 C4.4a; ruled)
+
+- **Sections:** 09 §11.4 (the range manifest, `files` one entry per frame), 11 §8 (jobs), A (`render.range.run`).
+- **Problem:** a range's manifest lists every frame, 4.1 MB at 12 000 frames, in the job's answer.
+- **Ruled (D-56 item 1 and 4):** the job's answer always carries `outputs {count, location, pattern, first, last,
+  truncated}` and lists `files` only up to 100 frames; the companion manifest file at `manifestPath`, written with the
+  frames, lists every frame and is the full list. There is no paged-read command (`job.outputs.list` would need a spec A
+  row, D-57; it is listed among the spec A additions proposed for the user).
+- **Built:** `crates/executor/src/commands/render.rs` (`Manifest::bounded`, `Outputs`); `c33_range.rs` (150 frames: the
+  summary, the answer's size, the full companion file); the 12 000-frame wait answers in about 1.9 KB on stdio and HTTP
+  (`reviews/evidence/M4-C4.4a/job-wait-cap`).
+
+## SI-182 — inline payloads keep the spec's limits; large answers over HTTP (found in M4 C4.4a; ruled)
+
+- **Sections:** 11 §6.5 (inline image limit, default 8 MB encoded), 09 §8 item 3 (inline vs. file output),
+  10 / A `doc.blob.get` (`maxBytes` default 8 388 608, up to 67 108 864).
+- **Problem:** base64 adds a third, so an 8 MB inline image or blob is about 10.7 MB in one answer, over some clients'
+  per-event limit when the answer is a server-sent event.
+- **Ruled (D-56 item 2 and 3):** the inline limits are the spec's (the session's limits and `maxBytes`); no answer is
+  replaced by `limit.exceeded` for its size, no notification is replaced and no event list is truncated (all three were
+  built and withdrawn). Over HTTP an answer over 1 MiB sent before anything else on its stream is one `application/json`
+  body (`http.rs` `stream_sse`, `a_large_first_answer_is_a_json_body_and_anything_else_an_event_stream`). The remaining
+  case (progress first) is SI-163's open question.
+
+## SI-184 — Contour Editor point selection, hit targets and Delete (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* 02 lines 448-449 say "click a stroke to select it and show its anchors; click or marquee to select points" with no radii, order or command for selecting a stroke; `draw.pointSelection.set` (line 1331) cannot name a stroke without anchors; line 457's Delete has no key binding distinct from `edit.delete`. *Decision:* §3 and §4: shown strokes are the object selection plus strokes holding selected anchors; radii anchor 6, handle 5, segment 4 view px, nearest wins, anchor on a tie, front-most between strokes; handles of selected anchors only; invisible strokes only with Show Strokes; a click off every target is the Select click and clears the point selection (two `ui` commands); the marquee is `rect` in drawing units over every stroke; constrain is `add`; Delete and Backspace resolve to `draw.point.delete` while the Contour Editor is active. *Why:* SI-141's radius convention; the object selection already means "selected stroke" for the other selection tools (02 §1.3); one key dispatch serves the window and agents.
+
+## SI-185 — alternate + drag a point (interim, D-40 answer 7) (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* line 455 "changes the shape of the two segments connected to it", no command or rule. *Decision:* `draw.point.set` with both handles moved by the drag delta, `handleMode: broken`, the anchor unmoved, so the two adjacent control points follow the pointer. *Why:* D-40's interim; the result is exact to preview and stated in one call an agent can repeat.
+
+## SI-186 — handle drags and what `reset` does (found in M4 C4.4b; decided by ruling D-75 item 4; declared behaviour change of `draw.point.set`)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* line 454 gives only the alternate handle drag; line 453 says reset "minimises the handle angle to a flat/smooth state"; the kernel's `reset` zeroes both handles. *Decision:* a plain handle drag sends `handleMode: symmetric` (the opposite handle mirrors), the alternate one `broken`; `reset` makes the handles collinear: direction `out - in` normalised, each keeping its length; with both zero, the direction of next anchor minus previous anchor and lengths one third of the adjacent chords (one neighbour at an open end). The builder test `crates/executor/tests/c23_transform.rs` (the `reset` assertion near line 272) is updated with the change. Line 456's "entire selection" is the point selection. *Why:* "independently" in line 454 implies the plain drag is dependent; "smooth" excludes a corner. *Question:* the reading of "flat/smooth".
+
+## SI-187 — Snap to Contour in the gesture and the preview (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-contour-editor.md`.
+- **Entry:** *Spec:* line 461 "a dragged point snaps", line 798 "points moved ... snap", line 1338 `snap?: bool = Snap to Contour setting`; nothing on multi-point drags or on feedback. *Decision:* the gesture sends the raw delta with `snap` explicit and the command snaps every moved anchor (SI-070's candidates); the omitted `snap` defaults to the setting; the preview is approximate (within the radius) while a candidate is in range. *Why:* the command owns the snap, so the gesture and the agent's call are one call; a per-sample kernel query would break ADR-0007 decision 1. *Question:* is a kernel-computed snap preview wanted?
+
+## SI-188 — Perspective's handles, side drags and `mapping` option (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-envelope-tools.md`.
+- **Entry:** *Spec:* 02 lines 468-470 give corner and side handles without positions or radii, a side drag only with alternate, and "changes the size and angle of the opposite sides symmetrically" without a direction; line 707 gives a `mapping` option no A command sets. *Decision:* §2, §3: handles on the command's own box, re-taken after each commit; 6 px; a plain side drag moves the side; the alternate side drag spreads or closes its corners symmetrically about the midpoint (the larger-coordinate corner follows the drag along the side) and moves both by the perpendicular part, so the adjacent sides tilt as mirror images; constrain ignored on handles; an alternate drag off the handles lassos wherever it starts (the inside has no other meaning here); `mapping` a kernel option (default `auto`) sent with every envelope. *Why:* a symmetric keystone is line 467's change of perspective; one box to draw, hit and map. *Question:* the side rules (another reading moves the opposite side by the mirrored drag) and the option's command.
+
+## SI-189 — Reposition All: handles, the envelope's reference box, locked drawings (found in M4 C4.4b; decided by ruling D-75 item 7; declared behaviour change of `draw.repositionAll.apply`: one map from the current frame's drawing, locked drawings listed in `skippedIds`)
+
+- **From:** `reviews/M4-design-envelope-tools.md`.
+- **Entry:** *Spec:* lines 478-480 give Select's box handles and envelope handles at the same positions; A line 261's `corners` names no reference box, and the kernel maps each drawing's own bounds, against "applied identically to every drawing"; line 414 refuses tools on a locked drawing. *Decision:* §4: box handles without modifiers, envelope handles with alternate; `corners` target the corners of the bounds of the element's drawing at the current frame, and that one map applies to every drawing; locked drawings are skipped, the call refused only when nothing can move. *Why:* one transform for all drawings is the purpose (line 477); the current drawing is what the user sees. *Question:* the reference box (the union of all drawings' bounds is the alternative).
+
+## SI-190 — the envelope preview (interim; D-40 answer 8, SI-154 extended) (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-envelope-tools.md`.
+- **Entry:** *Spec:* 05 line 399 asks for live views, not their accuracy; the commit's map (02 lines 471-472, SI-070) is not affine. *Decision:* §6: the window maps the kernel's tessellated vertices through its port of the kernel's map in the vertex stage; exact for affine maps, anchor vertices and bitmap corners; approximate between anchors, for pencil widths, text and gradient colours; at most 1 view px on the sample drawing (§9). *Why:* ADR-0007 decision 1; constant per-frame cost. *Question:* as SI-154's. *Accepted limit (ruling D-83 item 4; C44B-R2S-04):* for a vertex within single-precision rounding of a projective map's pole line, the preview's float32 denominator can take the other sign than the kernel's, so that vertex's clamped image points the other way, far outside the view; the commit is the kernel's (`reviews/M4-design-envelope-tools.md` §6).
+
+## SI-191 — the typing run (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 02 §12.1 lines 1066-1067 make "a run of typing" one step without defining a run; §13.3 lines 1199-1201 and 1229 equate "click, then `type_text`" with one `draw.text.add` and one step. *Decided:* §3's rule (the input path's keystrokes on one object by one origin, ended by a caret move, a highlight, a format, leaving, undo, redo or a save; no timers; a command is always its own step); the Text row of §13.3 compares on the document, the labels against the two-command sequence. *Why:* answer 2, and §12.1 is the more specific rule.
+
+## SI-192 — glyph metrics without a spec A query (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 02 §13 has no caret or line query; answer 3 asked for one by registry addition, which D-57 forbids. *Decided:* the kernel lays out and hit-tests (§5); the window gets the geometry in the scene answer (form 1.2) and the panel the session by `shell.textEdit`; `draw.text.layout.get` is proposed to the user. *Why:* the kernel stays the only layout, the window derives nothing, spec A stays the user's.
+
+## SI-193 — keyboard focus while text is edited in a canvas (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 01 §8.4 lines 862-864 name text fields, numeric fields and rename editors, not text edited in a view; 11 line 356 gives `type_text` a widget target only. *Decided:* the editing session is a text field for §8.4 in the window and in the kernel's `key` routing; the editing keys of §4; Escape ends editing; Primary+Z is the document's undo; Cut, Copy, Paste and Select All act on the text; `type_text` without a target types into the caller's session. *Why:* 02 lines 669-675 and 680 need these keys and the headless path needs a target.
+
+## SI-194 — the Text tool's ambiguous mappings (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** (answer 7). *Spec:* 02 lines 672-676 say "border" and "frame" without geometry; line 681 names "Delete Text Object", which no command carries. *Decided:* §2's hit zones; a frame drag sends `draw.text.set {position}` ("Move Text Object"); a width handle `{width}` or `{width, position}`; a click elsewhere ends editing and acts there; the deletion is `draw.object.delete`, labelled "Delete Text Object" by its handler when every removed object is an empty text object (a declared behaviour change, so an agent's deletion gets it too). *Why:* answer 7's interim, and a label set by the command keeps the three paths equal.
+
+## SI-195 — "the next typed characters" (found in M4 C4.4b; interim)
+
+- **From:** `reviews/M4-design-text-tool.md`.
+- **Entry:** *Spec:* 02 lines 677-679: panel changes with nothing highlighted apply to the next typed characters, and text takes the current colour; the format model cannot hold a zero-length run. *Decided:* §6's pending format, set by `draw.textFormat.set {length: 0}` at the session's caret, applied by the next keystroke's commands inside its run; paragraph fields apply to the caret's paragraph. *Why:* no spec A change, and the same command serves the panel and agents.
+
+## SI-196 — where `draw.stroke.set` lives in the GUI (found in M4 C4.4b; interim)
+
+- **From:** C4.4b's last deferred entry (`deferred.json`: "02 §7.1.2 (Contour Editor); §8 (line properties)").
+- **Entry:** *Spec:* 02 line 1326 declares `draw.stroke.set` ("Edit Stroke": geometry, pressure, thickness, visibility) and no surface names a control for it; §7.1.2 edits anchors through the point commands. *Decided:* the Properties panel's Tool options page for the Contour Editor shows the line properties of the one selected pencil line or invisible stroke: Line thickness (the one numeric field; disabled for an invisible stroke) and Invisible (a checkbox turning a pencil line invisible and back), each one `draw.stroke.set`; with anything else selected it says to select one line. Geometry and pressure stay agent-only uses of the same command (the Contour Editor's gestures edit geometry with the point commands). *Why:* the Contour Editor is the tool that shows a line's anchors, and the Tool options page is where a tool's per-object settings already live (02 §7.7). *Question:* a Line section in the Properties panel for every selection tool instead.
+
+## SI-197 — the missing-font warning's code (found in M4 C4.4b; decided by ruling D-75 item 9; declared behaviour change)
+
+- **Sections:** 10 §11 (the load-time warnings table, line 958: "Missing font | info | Fallback for display; name kept |
+  `text.fontMissing`"), 02 §3.7 (text layout), 02 §13.5 (`draw.text.add`, `draw.text.set`).
+- **Problem:** the kernel warned with `drawing.fontMissing` when a text object's font was not installed; 10's table names
+  the code `text.fontMissing` with severity info.
+- **Decided (D-75 item 9):** the warning is `text.fontMissing`, severity info, emitted by the text handlers'
+  layout (`crates/executor/src/commands/draw_text.rs` `bounds_and_fonts`) and listed by `doc.validate`; the text keeps
+  the font's name and is displayed with the platform's default face. A **declared behaviour change** for agents that
+  matched the old code; no reviewer test pinned it (C4.4b handoff §2). The retained example results were regenerated
+  with the change.
+
+## SI-198 — locked and hidden elements under the drawing tools' gestures (found in M4 C4.4b round 1; ruled by D-79 and D-80; interim details)
+
+- **Sections:** 05 §6.6 ("A locked element cannot be picked or edited interactively in the Camera view. Commands
+  addressing it by id still act on it"), the model's element `locked` field ("Locked in scene views"), 02 line 414 (tools
+  refuse a locked drawing), 02 §1.2 and 04 §10.1 (scene visibility governs the Camera view), 02 §10.7 (Show outline on
+  selection, Selection always visible).
+- **Problem:** the drawing tools' gestures in the Camera view edited a locked element and an element hidden in the scene
+  (findings C44B-R1-02, -03); no single place stated the rule; no code names the hidden case.
+- **Ruled (D-79), built:** one rule in the gesture path (`gesture.rs` `interactive_target`), applied to every gesture
+  whose commands include an edit (a registry `action`), for every drawing tool and view: a locked drawing is refused in
+  both views (`drawing.locked`; Reposition All keeps SI-189's precheck); a locked element is refused in the scene views
+  (Camera, Top, Side: `element.locked`) and edited in the Drawing view (D-80: 04 line 572, "Locked elements can still be
+  edited in the Drawing View"; 04 §10.4); an element the Camera view does not draw is refused there (`element.hidden`,
+  a new code; the element's visibility decides, not whether its drawing has ink: an empty drawing is shown). The
+  drawing tools' overlays follow the same visibility (`docs/canvas-format.md` §11.8). The Text tool's session ends when
+  its target becomes one of these. Agents addressing an element by id are unaffected. **Ruling D-83 item 3:** the same
+  rule holds for every person's contextual edit of the current target whatever the input (a key, a Tool options or
+  Properties control, a menu or context-menu item), in the active view (`gesture::person_rule`, applied in the host's
+  key resolution and to the window's actions); an agent's direct call is unaffected. **Ruling D-87:** a refused person's
+  action is reported the same way whatever the input (a gesture, a key, a native menu item, a context-menu item, a
+  panel control): the status line carries the command's label and the refusal's reason (`desktop/src/shell/refusals.ts`
+  decides; `command.disabled` by its reason), never a message box.
+- **"Selection always visible" (ruling D-85 item 1; finding C44B-R2-01).** 02 line 961: elements selected in the
+  Timeline or the Exposure Sheet are displayed in the Camera view even if hidden; the kernel keys the exception on those
+  selections (contexts `timeline` and `xsheet`, element entries; a cell selection selects cells, not their element).
+  **A staging selection** (the Camera view's own element selection) keeps its element displayed too: the selection
+  display options of 02 §10.7 already follow it (SI-153, CV5), and an element selected in the view must not vanish from
+  the view it is selected in. **Displayed content is editable** by the drawing tools, in the Camera view, as any drawn
+  element: the option displays the element, and the interactive-target rule follows what the view draws.
+- **Interim readings (confirm or specify):** `element.hidden` is the code of the hidden case; with only "Show outline
+  on selection" a hidden element's outline is displayed but not editable; the staging selection counts for "Selection
+  always visible" as well as the Timeline's and the Exposure Sheet's.
+
+## SI-199 — geometry beyond a perspective map's vanishing line (found in M4 C4.4b round 2; ruling D-83 item 4; a question for the user)
+
+- **From:** `reviews/M4-design-envelope-tools.md` §6; finding C44B-R2S-04.
+- **Entry:** *Spec:* 02 lines 468-473 (the Perspective tool) and SI-070 do not say what happens to a point the
+  projective map sends to infinity (on or beyond the map's vanishing line, where its denominator is zero or changes
+  sign). *Today:* the kernel clamps the denominator away from zero with its sign (`Envelope::apply`, 1e-12), so such a
+  point lands at a very large coordinate and the stroke through it is committed with it. *Question:* should the kernel
+  refuse an envelope apply that would carry any of the selection's geometry onto or beyond the vanishing line (a
+  precheck naming it), instead of clamping? No change until answered.
+
+## SI-200 — a lock file kept open by another program (found in M4 C4.4b round 3; ruling D-86 item 1; interim, a question for the user)
+
+- **From:** `reviews/M4-design-lock-takeover.md` §2 (I3, I4) and §4.1; finding C44B-R3S-01.
+- **Entry:** *Spec:* 10 §8.6 (LOCK-01 to LOCK-03) and 11 §10 name no outcome for a lock file that a program outside the
+  protocol (a virus scanner, an indexer, a backup tool) keeps open so that a stale lock cannot be replaced. *Decided:*
+  the opener decides for at most 12 s (`ACQUIRE_BOUND`), then refuses the open with the existing code `fs.ioError`,
+  `details: {reason: "lockFileInUse", path}`, leaving the project and its lock unchanged (an arbitration file already
+  proved abandoned may be left scheduled for deletion; ruling D-89 item 1); the window names the file and offers Try
+  Again.
+  *Question:* should 11 §10 have a dedicated code (for example `project.lockFileInUse`) instead of `fs.ioError` with a
+  reason? D-57 keeps the existing code until the user says.
+
+## Spec A additions proposed by M4, for the user
+
+Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
+below is written as it would appear in spec A, with what the window does without it. None is built.
+
+| Proposed row (A's columns: id, kind, label, parameters, result, undo) | Why | Without it |
+|---|---|---|
+| `draw.text.layout.get` \| query \| Caret stops and line boxes of a text object \| `textId: id; drawingId?: id` \| `{lines: [{start, length, top, baseline, bottom}], carets: [{index, x, top, bottom}], rev}` \| n/a | an agent places a caret or reads line boxes without the window (design note 5 §5; SI-192; ruling D-75 item 8) | a headless agent cannot read caret positions, line boxes or the edit session; it places the caret with `pointer` and `key` and reads the text with `draw.drawing.get` (an attached agent reads the session in `inspect_ui`) |
+| `tool.perspective.options.set` \| action \| Perspective tool options \| `mapping?: enum "auto"\|"projective"\|"bilinear"` \| `{options}` \| no | the Tool options page's envelope mapping (02 §7.7 line 707; SI-188; ruling D-75 item 5) | Perspective's gestures send the default `auto`; `tool.options.set` (agent-only) sets it |
+| `draw.font.list` \| query \| Installed font families \| — \| `{families: [{name, styles: [string]}], default: string}` \| n/a | the Text panel's font list (02 §7.6.1; SI-169) | the font is a typed family name; the panel says every font lays out with this computer's font files |
+| `job.outputs.list` \| query \| A job's outputs, paged \| `jobId: id; offset?: int = 0; limit?: int = 1000 (1-1000)` \| `{total, offset, items: [ManifestFile]}` \| n/a | reading a long range's outputs through MCP (SI-181) | the job's answer summarises them (`outputs`); the companion manifest file at `manifestPath` lists every one |
+| `agent.activity.recorded` \| event \| An activity entry was recorded \| — \| `{entry: ActivityEntry}` \| n/a | the Activity panel's live list (SI-175) | the host-only notice `shell.agentActivity` (window only) |
+| `agent.activity.list` parameter `afterSeq?: int` | a gap-free re-read by sequence (SI-175) | the panel re-reads the last 500 entries |
+| `ActivityEntry` members `batchId?: string; changedIds?: [id]; changedIdsTruncated?: bool` | grouping a script's calls; highlighting what an entry changed (SI-175) | the panel groups by entry; selecting an entry highlights nothing |
+| `agent.session.changed` \| event \| A session's grant, pause or resume changed \| — \| `{sessionId}` \| n/a | the sessions strip and the indicator (SI-176) | `agent.paused` and `agent.resumed` exist; a grant is the host-only `shell.agentSession` |
+| `agent.confirmation.resolved` \| event \| A pending confirmation was decided, expired or used \| — \| `{confirmationId, outcome: accepted \| declined \| expired \| used}` \| n/a | the confirmation sheet drops a request decided elsewhere (SI-177) | the host-only `shell.agentConfirmation` and a re-read of `agent.server.status` |

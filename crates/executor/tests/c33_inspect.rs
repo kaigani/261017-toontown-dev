@@ -70,8 +70,9 @@ fn hit_test_follows_transformed_geometry_and_depth() {
     ok(&h, "element.visibility.set", json!({ "elementIds": [front], "scope": "scene", "visible": false }));
     assert!(!hits(&h, "image", both.0, both.1).contains(&front), "the hidden element is not hit");
     assert_eq!(hits(&h, "image", only_back.0, only_back.1), vec![back]);
-    let e = err(&h, "inspect.hitTest", json!({ "space": "view", "point": { "x": 0, "y": 0 } }));
-    assert_eq!(e.code, "inspect.spaceUnavailable");
+    // View space arrived with M4 C4.2 (SI-109): the Drawing view's current drawing under a view point.
+    let v = ok(&h, "inspect.hitTest", json!({ "space": "view", "point": { "x": 0, "y": 0 } }));
+    assert!(v["hits"].is_array(), "{v}");
 }
 
 #[test]
@@ -169,7 +170,8 @@ fn conversions_refuse_the_near_plane_views_and_missing_elements() {
             json!({ "from": "view", "to": "scene", "points": [{ "x": 0, "y": 0 }] })
         )
         .code,
-        "inspect.spaceUnavailable"
+        "arg.invalid",
+        "view space arrived with M4 C4.2 (SI-109); through drawing space, scene space needs elementId"
     );
     assert_eq!(
         err(

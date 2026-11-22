@@ -160,10 +160,14 @@ fn compositions_and_formats() {
     let c = solids(&h, 2)[1].clone();
     let other = square(&h, "Other", 50.0, &c.0);
     ok(&h, "anim.transform.set", json!({ "nodeIds": [other], "target": "static", "position": { "x": 4 } }));
-    for (comp, owner) in [("xsheet", "M5 C5.1"), ("activeView", "M4 C4.2")] {
+    // `activeView` renders the Drawing view since M4 C4.2 and the Camera view since M4 C4.3a (SI-107); with a Top view
+    // active it waits for M6 C6.1.
+    ok(&h, "view.type.set", json!({ "type": "top" }));
+    for (comp, owner) in [("xsheet", "M5 C5.1"), ("activeView", "M6 C6.1")] {
         let e = err(&h, "render.frame.run", json!({ "composition": comp }));
         assert_eq!((e.code.as_str(), e.details["owner"].as_str()), ("render.compositionUnavailable", Some(owner)));
     }
+    ok(&h, "view.type.set", json!({ "type": "camera" }));
     // `element`: only the given elements, through the camera.
     let only = render(&h, json!({ "frame": 1, "scale": 0.25, "composition": "element", "elementIds": [other] }));
     assert_eq!(only.at(240, 135), [255, 255, 255, 255], "the square is not in the composition");
@@ -233,6 +237,7 @@ fn a_render_past_the_callers_budget_is_cancelled_and_frees_the_worker() {
     let e = run(&h, "render.frame.run", json!({ "frame": 1, "scale": 0.25 }));
     tt_vector::work::hooks::set_spin_micros(0);
     assert_eq!(e.error.as_ref().map(|x| x.code.as_str()), Some("command.timeout"), "{e:?}");
+    crate::common::timing::record("c33_render.rs:240", t.elapsed(), budget * 4);
     assert!(t.elapsed() < budget * 4, "{:?}", t.elapsed());
     assert!(run(&h, "doc.state.get", json!({})).is_ok(), "the worker answers");
     assert_eq!(rev(&h), rev0);

@@ -13,6 +13,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "vitest run --config vite.config.ts",
+    "parity:gen": "node ../scripts/gen-parity-manifest.mjs",
     "tauri": "tauri"
   },
   "dependencies": {

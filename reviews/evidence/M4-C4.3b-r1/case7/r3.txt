@@ -1,0 +1,85 @@
+ok   project.create
+ok   the default palette's Colour 2 is found
+ok   the view's mapping
+ok   T1: the canvas holds the current drawing at the kernel's revision
+ok   a back end draws without errors
+ok   the canvas shows what the final renderer draws: the plain view (a real capture against the activeView render, under 1 % of pixels differ)
+ok   the canvas shows what the final renderer draws: zoomed 200 % and panned (a real capture against the activeView render, under 1 % of pixels differ)
+ok   the canvas shows what the final renderer draws: zoomed, panned and rotated 30� (a real capture against the activeView render, under 1 % of pixels differ)
+ok   the canvas shows what the final renderer draws: after the brush gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 brush: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the pencil gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 pencil: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the rectangle gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 rectangle: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the ellipse gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 ellipse: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the line gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 line: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the polyline gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 polyline: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 select: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the eraser gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 eraser: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the cutter gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 cutter: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the scissor gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 scissor: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the paint gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 paint: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the unpaint gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 unpaint: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the paintUnpainted gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 paintUnpainted: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the dropper gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 dropper: the window path equals the headless path (commands, content, one step, label)
+ok   the canvas shows what the final renderer draws: after the closeGap gesture (a real capture against the activeView render, under 1 % of pixels differ)
+ok   D-4 closeGap: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 zoom: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 grabber: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 select: corner scale: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 select: constrained corner: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 select: side scale: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 select: rotate: the window path equals the headless path (commands, content, one step, label)
+ok   D-4 select: drawing pivot: the window path equals the headless path (commands, content, one step, label)
+ok   selecting an object shows the selection overlay: eight handles and the outlines (canvas summary)
+ok   a real capture shows the eight handle squares at the handle positions
+ok   deselecting removes the handles (summary and capture)
+ok   D-6: inspect.screenshot window is the GUI capture
+ok   D-6: inspect.screenshot drawingView is the GUI capture
+ok   the window capture is larger than the view's (chrome included)
+ok   the view capture is the window capture's pixels at the canvas's place
+ok   D-6: the open dialog is in the window capture
+ok   Escape pressed through the OS
+ok   an OS mouse drag in the canvas commits one Brush Tool step, drawn at the new revision
+ok   P2: a user press during an agent gesture answers ui.busy, reason userInput (SI-135)
+ok   the user binds F8 to the Brush tool and F9 to closing the Drawing view
+ok   a Polyline ended by double click leaves 1 Polyline Tool step(s) and ends the gesture's modal state
+ok   rectangle write after double click
+ok   a Polyline ended by Enter leaves 1 Polyline Tool step(s) and ends the gesture's modal state
+ok   rectangle write after Enter
+ok   a Polyline ended by closing click leaves 1 Polyline Tool step(s) and ends the gesture's modal state
+ok   rectangle write after closing click
+ok   a Polyline ended by Escape leaves 0 Polyline Tool step(s) and ends the gesture's modal state
+ok   rectangle write after Escape
+ok   a Polyline ended by tool change leaves 0 Polyline Tool step(s) and ends the gesture's modal state
+ok   rectangle write after tool change
+ok   between-click query and delayed busy write
+ok   a Polyline ended by busy between clicks leaves 1 Polyline Tool step(s) and ends the gesture's modal state
+ok   rectangle write after busy between clicks
+ok   the left-docked canvas is found in the window capture, on the screen
+ok   a Polyline ended by view going away leaves 0 Polyline Tool step(s) and ends the gesture's modal state
+ok   rectangle write after view going away
+ok   F9 closed the Drawing view (its canvas is gone)
+ok   the Drawing view floats
+ok   the canvas shows what the final renderer draws: the Drawing view in a float window (a real capture against the activeView render, under 1 % of pixels differ)
+ok   after the float closed and the view docked, inspect.screenshot drawingView captures the docked view
+ok   the canvas shows what the final renderer draws: the Drawing view docked again after its float closed (a real capture against the activeView render, under 1 % of pixels differ)
+ok   pointer reaches the docked view
+{
+ "kind": "toontown.c42.gui-e2e",
+ "platform": "win32",
+ "seconds": 115.3,
+ "failures": [],
+ "checks": 78
+}

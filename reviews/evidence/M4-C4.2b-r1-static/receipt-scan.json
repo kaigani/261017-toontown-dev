@@ -1,0 +1,23 @@
+[
+  {
+    "path": "reviews/evidence/M4-C4.2b/workstation-webgl2.json",
+    "bytes": 3183,
+    "tokenLike": false,
+    "pngAncillary": [],
+    "vendorNameMatches": 2
+  },
+  {
+    "path": "reviews/evidence/M4-C4.2b/workstation-webgpu.json",
+    "bytes": 3185,
+    "tokenLike": false,
+    "pngAncillary": [],
+    "vendorNameMatches": 2
+  },
+  {
+    "path": "reviews/evidence/M4-C4.2b-r1-static/ci-summary.json",
+    "bytes": 1023,
+    "tokenLike": false,
+    "pngAncillary": [],
+    "vendorNameMatches": 0
+  }
+]

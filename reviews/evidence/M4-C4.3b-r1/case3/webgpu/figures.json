@@ -1,0 +1,82 @@
+[
+  {
+    "scene": 1,
+    "variant": "plain",
+    "capture": [
+      914,
+      465
+    ],
+    "render": [
+      1920,
+      1080
+    ],
+    "compared": 425010,
+    "covered": 1.0,
+    "different": 2067,
+    "fraction": 0.004863414978471095
+  },
+  {
+    "scene": 1,
+    "variant": "zoom-pan-resize",
+    "capture": [
+      914,
+      541
+    ],
+    "render": [
+      1920,
+      1080
+    ],
+    "compared": 494474,
+    "covered": 1.0,
+    "different": 2406,
+    "fraction": 0.004865776562569518
+  },
+  {
+    "scene": 2,
+    "variant": "plain",
+    "capture": [
+      914,
+      541
+    ],
+    "render": [
+      1920,
+      1080
+    ],
+    "compared": 494474,
+    "covered": 1.0,
+    "different": 2640,
+    "fraction": 0.005339006702071292
+  },
+  {
+    "scene": 3,
+    "variant": "plain",
+    "capture": [
+      914,
+      541
+    ],
+    "render": [
+      1920,
+      1080
+    ],
+    "compared": 463662,
+    "covered": 0.9376873202635528,
+    "different": 726,
+    "fraction": 0.0015657957736454572
+  },
+  {
+    "scene": 4,
+    "variant": "plain",
+    "capture": [
+      914,
+      541
+    ],
+    "render": [
+      1920,
+      1080
+    ],
+    "compared": 494474,
+    "covered": 1.0,
+    "different": 1578,
+    "fraction": 0.003191269915101704
+  }
+]

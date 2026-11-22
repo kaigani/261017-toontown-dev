@@ -1,0 +1,38 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.49s
+     Running tests\c42a_r5_review.rs (target\debug\deps\c42a_r5_review-3d600326458fc50b.exe)
+
+running 1 test
+REFUSAL draw.line.add {"from":{"x":1020,"y":1020},"to":{"x":1080,"y":1080},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.line.add {"from":{"x":1020,"y":1020},"to":{"x":1080,"y":1080},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.line.add {"from":{"x":1020,"y":1020},"to":{"x":1080,"y":1080},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+LOCK draw.line.add: Availability { command_id: "draw.line.add", params: Object {"from": Object {"x": Number(1020), "y": Number(1020)}, "to": Object {"x": Number(1080), "y": Number(1080)}, "elementId": String("el_01K7JJN800J6GZ68MHS01HNTDM"), "frame": Number(5)}, enabled: false, reason: Some("drawing `Target` is locked"), checked: None, label: None, dialog: false } drawing.locked
+REFUSAL draw.ellipse.add {"from":{"x":1020,"y":1020},"to":{"x":1080,"y":1080},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.ellipse.add {"from":{"x":1020,"y":1020},"to":{"x":1080,"y":1080},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.ellipse.add {"from":{"x":1020,"y":1020},"to":{"x":1080,"y":1080},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.selection.set {"by":"rect","rect":{"x":990,"y":990,"width":120,"height":120},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.selection.set {"by":"rect","rect":{"x":990,"y":990,"width":120,"height":120},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.selection.set {"by":"rect","rect":{"x":990,"y":990,"width":120,"height":120},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.pointSelection.set {"rect":{"x":990,"y":990,"width":120,"height":120},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.pointSelection.set {"rect":{"x":990,"y":990,"width":120,"height":120},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.pointSelection.set {"rect":{"x":990,"y":990,"width":120,"height":120},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.erase.apply {"path":[{"x":990,"y":1050},{"x":1110,"y":1050}],"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.erase.apply {"path":[{"x":990,"y":1050},{"x":1110,"y":1050}],"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.erase.apply {"path":[{"x":990,"y":1050},{"x":1110,"y":1050}],"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+LOCK draw.erase.apply: Availability { command_id: "draw.erase.apply", params: Object {"path": Array [Object {"x": Number(990), "y": Number(1050)}, Object {"x": Number(1110), "y": Number(1050)}], "elementId": String("el_01K7JJN800J6GZ68MHS01HNTDM"), "frame": Number(5)}, enabled: false, reason: Some("drawing `Target` is locked"), checked: None, label: None, dialog: false } drawing.locked
+REFUSAL draw.transform.apply {"ids":["st_01K7JJN800DDW44SJVC40KANBT"],"translate":{"x":10,"y":20},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.transform.apply {"ids":["st_01K7JJN800DDW44SJVC40KANBT"],"translate":{"x":10,"y":20},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.transform.apply {"ids":["st_01K7JJN800DDW44SJVC40KANBT"],"translate":{"x":10,"y":20},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+LOCK draw.transform.apply: Availability { command_id: "draw.transform.apply", params: Object {"ids": Array [String("st_01K7JJN800DDW44SJVC40KANBT")], "translate": Object {"x": Number(10), "y": Number(20)}, "elementId": String("el_01K7JJN800J6GZ68MHS01HNTDM"), "frame": Number(5)}, enabled: false, reason: Some("drawing `Target` is locked"), checked: None, label: None, dialog: false } drawing.locked
+REFUSAL colour.paint.apply {"points":[{"x":1050,"y":1050}],"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL colour.paint.apply {"points":[{"x":1050,"y":1050}],"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL colour.paint.apply {"points":[{"x":1050,"y":1050}],"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.hitTest.get {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+test second_element_eight_families_and_refusals ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.26s
+
+
+EXIT 0

@@ -18,6 +18,9 @@ vello_cpu = { version = "=0.3.0", default-features = false, features = ["std", "
 # `Level::fallback()` (scalar, no platform SIMD) needs this feature of vello_cpu's SIMD crate.
 fearless_simd = { version = "=0.7.0", features = ["force_support_fallback"] }
 png = "=0.18.1"
+# The interactive canvas format (M4 C4.2b, design note 1 §8): polygon triangulation only (fills and stroke unions);
+# curves are flattened and round caps built here, so no platform libm call reaches the bytes.
+lyon_tessellation = "=1.0.23"
 
 [lints]
 workspace = true

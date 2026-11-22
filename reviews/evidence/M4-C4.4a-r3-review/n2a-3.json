@@ -1,0 +1,786 @@
+{
+  "checks": 18,
+  "results": [
+    {
+      "check": "D-66 Save keymap/modal pen",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "project.save",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "job.wait",
+          "params": {
+            "jobId": "job-2",
+            "timeoutMs": 20000
+          }
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "project.recent.list",
+          "params": {}
+        },
+        {
+          "command": "project.recovery.list",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes pen",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal rename",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "project.save",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "job.wait",
+          "params": {
+            "jobId": "job-3",
+            "timeoutMs": 20000
+          }
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "project.recent.list",
+          "params": {}
+        },
+        {
+          "command": "project.recovery.list",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes rename",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal font",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "project.save",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "job.wait",
+          "params": {
+            "jobId": "job-4",
+            "timeoutMs": 20000
+          }
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "job.list",
+          "params": {
+            "all": true
+          }
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.list",
+          "params": {}
+        },
+        {
+          "command": "anim.camera.current.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "edit.history.get",
+          "params": {
+            "limit": 1000
+          }
+        },
+        {
+          "command": "project.recent.list",
+          "params": {}
+        },
+        {
+          "command": "project.recovery.list",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "app.state.get",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "window.panel.list",
+          "params": {}
+        },
+        {
+          "command": "workspace.get",
+          "params": {}
+        },
+        {
+          "command": "workspace.list",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes font",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal search",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes search",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal pref",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes pref",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal keymap",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes keymap",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal new",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes new",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal props",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes props",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    },
+    {
+      "check": "D-66 Save keymap/modal toolbar",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        },
+        {
+          "command": "agent.server.status",
+          "params": {}
+        },
+        {
+          "command": "ui.statusBar.get",
+          "params": {}
+        }
+      ]
+    },
+    {
+      "check": "D-66 document resumes toolbar",
+      "ok": true,
+      "detail": [
+        "edit.selectAll",
+        "edit.undo",
+        "tool.group.select"
+      ]
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-hsx34v1t"
+}

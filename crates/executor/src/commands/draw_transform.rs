@@ -85,6 +85,12 @@ fn bounds_of(d: &Drawing, objs: &[Located]) -> Option<Rect> {
     acc
 }
 
+/// Perspective's box (design note 4 §2): the bounds of what `draw.envelope.apply` maps with no `ids` (the selection),
+/// `None` when nothing is selected.
+pub(crate) fn envelope_box(cx: &Cx, d: &Drawing) -> Option<Rect> {
+    objects_of(cx, d, None, "distort").ok().and_then(|o| bounds_of(d, &o))
+}
+
 fn centre(r: &Rect) -> P {
     P::new((r.min_x + r.max_x) / 2.0, (r.min_y + r.max_y) / 2.0)
 }
@@ -314,6 +320,18 @@ pub(crate) struct TransformParams {
     /// The drawing revision the caller read.
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
@@ -356,6 +374,7 @@ fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
 
 #[command(
     id = "draw.transform.apply",
+    precheck = super::draw::precheck_transform,
     kind = action,
     label = "Transform",
     scopes = [edit],
@@ -366,8 +385,10 @@ fn affine_of(p: &TransformParams, pivot: P) -> Result<Affine, CommandError> {
     gui = "Drawing view: Select tool handles and nudges (M4 C4.2)",
 )]
 pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<TransformResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let mut changes = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut changes)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, p.expect_rev)?;
@@ -389,8 +410,20 @@ pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<Tr
     let pivot =
         p.pivot.map(|q| P::new(q.x, q.y)).or_else(|| bounds_of(&d, &objs).map(|b| centre(&b))).unwrap_or_default();
     let m = affine_of(&p, pivot)?;
+    // 02 §13.5 writes the label "Move/Scale/Rotate Object": the three labels of 02 §7.1.1, one per operation
+    // ("Move Object", "Scale Object", "Rotate Object"); a transform combining them, a skew or a matrix keeps the
+    // combined label (C42B-R2-04; SI-141 item 6). A copy is "Copy Object".
+    let single =
+        match (p.translate.is_some(), p.scale.is_some(), p.rotate.is_some(), p.skew.is_some() || p.matrix.is_some()) {
+            (true, false, false, false) => Some("Move Object"),
+            (false, true, false, false) => Some("Scale Object"),
+            (false, false, true, false) => Some("Rotate Object"),
+            _ => None,
+        };
     if p.copy {
         cx.set_label("Copy Object");
+    } else if let Some(label) = single {
+        cx.set_label(label);
     }
     let a = map_objects(cx, &t.id, &objs, &Map::Affine(m), p.copy, &mut changes)?;
     Ok(TransformResult { drawing_id: t.id.as_str().to_owned(), ids: a.ids, changed: a.changed, rev: a.rev })
@@ -503,6 +536,7 @@ pub(crate) struct FlipParams {
 
 #[command(
     id = "draw.flip.apply",
+    precheck = super::draw::precheck_flip,
     kind = action,
     label = "Flip",
     scopes = [edit],
@@ -558,6 +592,7 @@ pub(crate) struct RotateParams {
 
 #[command(
     id = "draw.rotate.apply",
+    precheck = super::draw::precheck_rotate,
     kind = action,
     label = "Rotate",
     scopes = [edit],
@@ -615,6 +650,18 @@ pub(crate) struct EnvelopeParams {
     /// Mapping.
     #[serde(default)]
     mapping: Mapping,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, CommandError> {
@@ -648,6 +695,7 @@ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, Com
 
 #[command(
     id = "draw.envelope.apply",
+    precheck = super::draw::precheck_envelope,
     kind = action,
     label = "Perspective",
     scopes = [edit],
@@ -657,11 +705,13 @@ fn envelope_of(b: &Rect, corners: &[Point], mapping: Mapping) -> Result<Map, Com
     gui = "Drawing view: Perspective tool (M4 C4.2)",
 )]
 pub(crate) fn draw_envelope_apply(cx: &mut Cx, p: EnvelopeParams) -> Result<TransformResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     if p.corners.len() != 4 {
         return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
     }
     let mut changes = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut changes)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut changes)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -694,21 +744,52 @@ pub(crate) struct RepositionParams {
     /// Matrix (overrides).
     #[serde(default)]
     matrix: Option<[f64; 6]>,
-    /// Envelope corners (of each drawing's bounds).
+    /// Envelope corners: targets of the corners of the bounds of the element's drawing at the current frame, one map
+    /// applied to every drawing (02 §7.1.4 "applied identically to every drawing"; SI-189, ruling D-75 item 7).
     #[serde(default)]
     corners: Option<Vec<Point>>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
 }
 
-/// `{drawingIds}`.
+/// `{drawingIds, skippedIds}`.
 #[derive(Debug, Serialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) struct RepositionResult {
     /// The drawings changed.
     drawing_ids: Vec<String>,
+    /// The locked drawings left unchanged (02 line 414; SI-189).
+    skipped_ids: Vec<String>,
+}
+
+/// The reference box of `corners` (SI-189): the bounds of `element`'s drawing at `frame`; `drawing.noTarget` without
+/// one (no drawing exposed there, or an empty one).
+pub(crate) fn reposition_reference(
+    doc: &tt_model::document::Document,
+    element: &Id,
+    frame: u32,
+) -> Result<Rect, CommandError> {
+    crate::app::AppContext::exposed_drawing(doc, element, frame.max(1))
+        .and_then(|id| doc.drawing(&id).and_then(|d| vd::drawing_bounds(d, true)))
+        .ok_or_else(|| {
+            err(
+                "drawing.noTarget",
+                "envelope corners need a drawing with content at the current frame: its bounds are the reference box",
+                json!({ "pointer": "/corners" }),
+            )
+        })
 }
 
 #[command(
     id = "draw.repositionAll.apply",
+    precheck = precheck_reposition_all,
     kind = action,
     label = "Reposition all drawings",
     scopes = [edit],
@@ -718,6 +799,8 @@ pub(crate) struct RepositionResult {
     gui = "Drawing view: Reposition All Drawings tool (M4 C4.2)",
 )]
 pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Result<RepositionResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     let element = match p.element_id.as_deref() {
         Some(r) => Id::parse(&cx.resolve_as(r, ObjectType::Element)?)?,
         None => cx.app().element.clone().ok_or_else(|| {
@@ -741,25 +824,32 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
         matrix: p.matrix,
         copy: false,
         expect_rev: None,
+        space: super::colour::Space::default(),
+        view: None,
+        frame: None,
+        element_id: None,
+    };
+    // One map for every drawing (SI-189): envelope corners map the reference box, the current frame's drawing's bounds.
+    let m = match &p.corners {
+        Some(c) => {
+            if c.len() != 4 {
+                return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
+            }
+            let b = reposition_reference(&doc, &element, p.frame.unwrap_or(cx.app().frame))?;
+            envelope_of(&b, c, Mapping::Auto)?
+        }
+        None => Map::Affine(affine_of(&tp, p.pivot.map(|q| P::new(q.x, q.y)).unwrap_or_default())?),
     };
     let mut changes = Vec::new();
     let mut changed_ids = Vec::new();
+    let mut skipped_ids = Vec::new();
     let mut moves = Vec::new();
     for id in &ids {
         let Some(d) = doc.drawing(id) else { continue };
         if *d.locked() {
+            skipped_ids.push(id.as_str().to_owned());
             continue;
         }
-        let m = match &p.corners {
-            Some(c) => {
-                if c.len() != 4 {
-                    return Err(err("arg.invalid", "four corners are required", json!({ "pointer": "/corners" })));
-                }
-                let Some(b) = vd::drawing_bounds(d, true) else { continue };
-                envelope_of(&b, c, Mapping::Auto)?
-            }
-            None => Map::Affine(affine_of(&tp, p.pivot.map(|q| P::new(q.x, q.y)).unwrap_or_default())?),
-        };
         let dj = drawing_json(&doc, id)?;
         let mut ops = Vec::new();
         for (k, n) in dj.get("nodes").and_then(Value::as_array).into_iter().flatten().enumerate() {
@@ -781,7 +871,7 @@ pub(crate) fn draw_reposition_all_apply(cx: &mut Cx, p: RepositionParams) -> Res
     cx.patch_entries(changes)?;
     // Every drawing moves whole: its zones keep their fills with mapped matrices (C23-R1-01).
     repaint_mapped(cx, &moves)?;
-    Ok(RepositionResult { drawing_ids: changed_ids })
+    Ok(RepositionResult { drawing_ids: changed_ids, skipped_ids })
 }
 
 // ----- contour editing ---------------------------------------------------------------------------------------------------
@@ -815,13 +905,27 @@ fn set_path(v: &mut Value, p: &Path) {
 }
 
 /// Resolves a stroke for a contour edit: drawing, locked check, stroke JSON.
-fn contour_target(cx: &mut Cx, stroke: &str) -> Result<(Id, Drawing, Located, Value), CommandError> {
+/// How a stroke-addressed command names its drawing (02 §13.1 item 4).
+struct Addressed<'a> {
+    drawing_id: Option<&'a str>,
+    element_id: Option<&'a str>,
+    frame: Option<u32>,
+}
+
+fn contour_target(
+    cx: &mut Cx,
+    stroke: &str,
+    at: &Addressed<'_>,
+) -> Result<(Id, Drawing, Located, Value), CommandError> {
     let mut none = Vec::new();
+    // A stroke id qualified with its drawing names it; else `drawingId`, else `elementId` + `frame`, else the current
+    // drawing.
     let (drawing_ref, local) = match stroke.split_once('/') {
         Some((d, s)) if d.starts_with("dr_") => (Some(d.to_owned()), s.to_owned()),
-        _ => (None, stroke.to_owned()),
+        _ => (at.drawing_id.map(str::to_owned), stroke.to_owned()),
     };
-    let t = target(cx, drawing_ref.as_deref(), None, None, false, &mut none)?;
+    let (element, frame) = if drawing_ref.is_some() { (None, None) } else { (at.element_id, at.frame) };
+    let t = target(cx, drawing_ref.as_deref(), element, frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -853,6 +957,22 @@ pub(crate) struct PointAddParams {
     #[serde(default)]
     #[schemars(range(min = 0.0, max = 1.0))]
     t: Option<f64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified
+    /// with its drawing (`<drawingId>/<strokeId>`) names the drawing itself.
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{strokeId, anchor, rev}`.
@@ -896,6 +1016,7 @@ fn nearest_location(path: &Path, q: P) -> Option<(usize, f64)> {
 
 #[command(
     id = "draw.point.add",
+    precheck = super::draw::precheck_point_add,
     kind = action,
     label = "Add point",
     scopes = [edit],
@@ -905,7 +1026,13 @@ fn nearest_location(path: &Path, q: P) -> Option<(usize, f64)> {
     gui = "Drawing view: Contour Editor, click on a segment (M4 C4.2)",
 )]
 pub(crate) fn draw_point_add(cx: &mut Cx, p: PointAddParams) -> Result<PointAddResult, CommandError> {
-    let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
+    let (did, _d, l, mut v) = contour_target(
+        cx,
+        &p.stroke_id,
+        &Addressed { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame },
+    )?;
     let path = path_of(&v);
     let segs = path.segments();
     let (seg, t) = match (p.at, p.segment, p.t) {
@@ -936,6 +1063,8 @@ pub(crate) fn draw_point_add(cx: &mut Cx, p: PointAddParams) -> Result<PointAddR
     anchors.insert(seg + 1, new);
     set_path(&mut v, &Path { anchors, closed: path.closed });
     let (changed, rev) = commit_stroke(cx, &did, &l, v)?;
+    // The point selection keeps naming the same anchors (design note 3 §3).
+    cx.app_mut().points_inserted(&format!("{}/{}", did.as_str(), l.id), (seg + 1) as u32);
     Ok(PointAddResult { stroke_id: l.id, anchor: (seg + 1) as u32, changed, rev })
 }
 
@@ -951,9 +1080,22 @@ pub(crate) struct PointMoveParams {
     points: Option<Vec<AnchorRef>>,
     /// Offset (du).
     delta: Point,
-    /// Snap moved anchors to other strokes' anchors within 8 du (Snap to Contour, 02 §8.9; default off).
+    /// Snap moved anchors to the other strokes of their layer within 8 view pixels (Snap to Contour, 02 §8.9 and line
+    /// 1338; default: the Snap to Contour setting, `tool.snapToContour.set`; SI-187).
     #[serde(default)]
-    snap: bool,
+    snap: Option<bool>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{modifiedIds, removedIds, rev}`.
@@ -1021,6 +1163,7 @@ fn nearest_on(path: &tt_vector::path::Path, q: P) -> Option<(f64, usize, f64, P)
 
 #[command(
     id = "draw.point.move",
+    precheck = super::draw::precheck_point_move,
     kind = action,
     label = "Move points",
     scopes = [edit],
@@ -1030,8 +1173,13 @@ fn nearest_on(path: &tt_vector::path::Path, q: P) -> Option<(f64, usize, f64, P)
     gui = "Drawing view: Contour Editor drag (M4 C4.2)",
 )]
 pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<ContourResult, CommandError> {
+    // The Snap to Contour radius is in view pixels: through the given view's zoom, or 100 % (02 §13.1 item 5).
+    let snap_radius = crate::addressing::tolerance_du(cx, p.view.as_deref(), SNAP_RADIUS)?;
+    let snap = p.snap.unwrap_or(cx.ui().drawing().snap_to_contour);
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, p.frame);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
@@ -1070,7 +1218,8 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
     let dj = drawing_json(&doc, &t.id)?;
     // Snap to Contour (02 §8.9; C23-R1-03): the other strokes of the moved stroke's own layer, by their whole
     // contour (anchors and segment interiors, curves included); cross-layer contours are not candidates (SI-070).
-    let contours: Vec<(String, String, tt_vector::path::Path)> = if p.snap {
+    // Every stroke with a moved anchor is excluded (SI-070 as decided; ruling D-76 item 1 withdrew D-75 item 1).
+    let contours: Vec<(String, String, tt_vector::path::Path)> = if snap {
         vd::objects(&d)
             .iter()
             .filter(|o| o.kind == ObjectKind::Stroke && !moved.iter().any(|(s, _)| *s == o.id))
@@ -1101,7 +1250,7 @@ pub(crate) fn draw_point_move(cx: &mut Cx, p: PointMoveParams) -> Result<Contour
                     .iter()
                     .filter(|(list, _, _)| *list == l.list)
                     .filter_map(|(_, id, path)| nearest_on(path, q).map(|(dist, seg, t, at)| (dist, id, seg, t, at)))
-                    .filter(|c| c.0 <= SNAP_RADIUS)
+                    .filter(|c| c.0 <= snap_radius)
                     .min_by(|a, b| {
                         a.0.total_cmp(&b.0).then_with(|| a.1.cmp(b.1)).then(a.2.cmp(&b.2)).then(a.3.total_cmp(&b.3))
                     });
@@ -1131,7 +1280,9 @@ pub(crate) enum HandleMode {
     Symmetric,
     /// Handles independent.
     Broken,
-    /// Both handles removed (a corner).
+    /// The handles made collinear (smooth), each keeping its length, along the out handle minus the in handle; with
+    /// both handles zero, along the next anchor minus the previous one, a third of each adjacent chord long (an open end
+    /// takes its one neighbour's direction and no handle on its free side). SI-186, ruling D-75 item 4.
     Reset,
 }
 
@@ -1155,6 +1306,22 @@ pub(crate) struct PointSetParams {
     /// Handle mode.
     #[serde(default)]
     handle_mode: Option<HandleMode>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified
+    /// with its drawing (`<drawingId>/<strokeId>`) names the drawing itself.
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `{strokeId, rev}`.
@@ -1172,6 +1339,7 @@ pub(crate) struct PointSetResult {
 
 #[command(
     id = "draw.point.set",
+    precheck = super::draw::precheck_point_set,
     kind = action,
     label = "Set point",
     scopes = [edit],
@@ -1181,9 +1349,33 @@ pub(crate) struct PointSetResult {
     gui = "Drawing view: Contour Editor handle drag (M4 C4.2)",
 )]
 pub(crate) fn draw_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetResult, CommandError> {
-    let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
+    let (did, _d, l, mut v) = contour_target(
+        cx,
+        &p.stroke_id,
+        &Addressed { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame },
+    )?;
     let mut path = path_of(&v);
     let k = p.anchor as usize;
+    // The neighbours `reset` reads (SI-186): the previous and next anchors (around a closed path).
+    let n = path.anchors.len();
+    let neighbours = (
+        if k > 0 {
+            path.anchors.get(k - 1).map(|a| a.p)
+        } else if path.closed && n > 1 {
+            path.anchors.last().map(|a| a.p)
+        } else {
+            None
+        },
+        if k + 1 < n {
+            path.anchors.get(k + 1).map(|a| a.p)
+        } else if path.closed && n > 1 {
+            path.anchors.first().map(|a| a.p)
+        } else {
+            None
+        },
+    );
     let Some(a) = path.anchors.get_mut(k) else {
         return Err(err(
             "drawing.objectNotFound",
@@ -1201,9 +1393,34 @@ pub(crate) fn draw_point_set(cx: &mut Cx, p: PointSetParams) -> Result<PointSetR
         a.outh = P::new(h.x, h.y);
     }
     match p.handle_mode {
+        // SI-186 (ruling D-75 item 4; 02 line 453 "a flat/smooth state"): the handles become collinear, each keeping its
+        // length, along `out - in`; with both zero (or opposite-free), along next minus previous anchor, a third of each
+        // adjacent chord long (an open end takes its one neighbour's direction and no handle on its free side).
         Some(HandleMode::Reset) => {
-            a.inh = P::default();
-            a.outh = P::default();
+            let (li, lo) = (a.inh.len(), a.outh.len());
+            let along = a.outh - a.inh;
+            let (prev, next) = neighbours;
+            let chord_dir = match (prev, next) {
+                (Some(pv), Some(nx)) => nx - pv,
+                (None, Some(nx)) => nx - a.p,
+                (Some(pv), None) => a.p - pv,
+                (None, None) => P::default(),
+            };
+            let dir = if along.len() > 1e-12 { along } else { chord_dir };
+            let dl = dir.len();
+            if dl <= 1e-12 {
+                a.inh = P::default();
+                a.outh = P::default();
+            } else {
+                let u = dir * (1.0 / dl);
+                let (li, lo) = if li <= 1e-12 && lo <= 1e-12 {
+                    (prev.map_or(0.0, |pv| (a.p - pv).len() / 3.0), next.map_or(0.0, |nx| (nx - a.p).len() / 3.0))
+                } else {
+                    (li, lo)
+                };
+                a.inh = u * -li;
+                a.outh = u * lo;
+            }
         }
         Some(HandleMode::Symmetric) => match (p.in_handle, p.out_handle) {
             (Some(_), None) => a.outh = a.inh * -1.0,
@@ -1232,6 +1449,7 @@ pub(crate) struct PointDeleteParams {
 
 #[command(
     id = "draw.point.delete",
+    precheck = super::draw::precheck_point_delete,
     kind = action,
     label = "Delete points",
     scopes = [edit],
@@ -1291,6 +1509,10 @@ pub(crate) fn draw_point_delete(cx: &mut Cx, p: PointDeleteParams) -> Result<Con
     let removed: Vec<String> = removals.iter().map(|l| l.id.clone()).collect();
     ops.extend(removals.iter().map(|l| op("remove", &l.pointer, None)));
     cx.patch_entries(vec![(EntryKey::Drawing(t.id.clone()), ops)])?;
+    // The deleted anchors leave the point selection and the later ones move down (design note 3 §3).
+    for (sid, gone) in &by {
+        cx.app_mut().points_removed(&format!("{}/{sid}", t.id.as_str()), gone);
+    }
     let mut changed = Changed { modified_ids: modified, removed_ids: removed, ..Changed::default() };
     crate::planar::settled(cx, &doc, &t.id, &[])?.report(&mut changed);
     Ok(ContourResult { drawing_id: t.id.as_str().to_owned(), changed, rev: committed_rev(cx)? })
@@ -1310,6 +1532,22 @@ pub(crate) struct SegmentMoveParams {
     t: f64,
     /// Offset of that point (du).
     delta: Point,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
+    /// The frame of scene-space points (02 §13.1 item 5: the addressed element's plane at that frame, SI-146).
+    #[serde(default)]
+    frame: Option<u32>,
+    /// The drawing (default: `elementId` + `frame`, else the current drawing; 02 §13.1 item 4). A stroke id qualified
+    /// with its drawing (`<drawingId>/<strokeId>`) names the drawing itself.
+    #[serde(default)]
+    drawing_id: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 fn half() -> f64 {
@@ -1318,6 +1556,7 @@ fn half() -> f64 {
 
 #[command(
     id = "draw.segment.move",
+    precheck = super::draw::precheck_segment_move,
     kind = action,
     label = "Move segment",
     scopes = [edit],
@@ -1327,10 +1566,16 @@ fn half() -> f64 {
     gui = "Drawing view: Contour Editor segment drag (M4 C4.2)",
 )]
 pub(crate) fn draw_segment_move(cx: &mut Cx, p: SegmentMoveParams) -> Result<PointSetResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view, p.frame);
     if p.t <= 0.0 || p.t >= 1.0 {
         return Err(err("arg.invalid", "`t` must be strictly between 0 and 1", json!({ "pointer": "/t" })));
     }
-    let (did, _d, l, mut v) = contour_target(cx, &p.stroke_id)?;
+    let (did, _d, l, mut v) = contour_target(
+        cx,
+        &p.stroke_id,
+        &Addressed { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame },
+    )?;
     let mut path = path_of(&v);
     let segs = path.segments();
     let s = p.segment as usize;
@@ -1349,4 +1594,37 @@ pub(crate) fn draw_segment_move(cx: &mut Cx, p: SegmentMoveParams) -> Result<Poi
     set_path(&mut v, &path);
     let (changed, rev) = commit_stroke(cx, &did, &l, v)?;
     Ok(PointSetResult { stroke_id: l.id, changed, rev })
+}
+
+/// `draw.repositionAll.apply` (ruling O-23): a current element when none is given, with a drawing bank.
+pub(crate) fn precheck_reposition_all(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    if v.get("elementId").is_some_and(|x| !x.is_null()) {
+        return Ok(());
+    }
+    let element =
+        cx.app().element.clone().ok_or_else(|| {
+            err("drawing.noTarget", "there is no current element", json!({ "pointer": "/elementId" }))
+        })?;
+    let doc = cx.document()?;
+    let Some(bank) = doc.element(&element).and_then(|e| e.drawing_bank_id().clone()) else {
+        return Err(err("drawing.notVectorElement", "the element has no drawings", json!({ "pointer": "/elementId" })));
+    };
+    // Envelope corners need the reference box (SI-189): the current frame's drawing with content.
+    if v.get("corners").is_some_and(|x| !x.is_null()) {
+        let frame =
+            v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()).unwrap_or(cx.app().frame);
+        reposition_reference(doc, &element, frame)?;
+    }
+    // Something to move: an unlocked drawing with content (with corners, with bounds), as the handler's loop finds;
+    // read once per document revision (`memo`).
+    let corners = v.get("corners").is_some_and(|x| !x.is_null());
+    let (project, rev) = crate::memo::document_version(cx);
+    crate::memo::memo_rev(&format!("reposition:{project}:{bank}:{corners}"), rev, || {
+        let ids: Vec<Id> = doc.bank(&bank).map(|b| b.drawings().ids().to_vec()).unwrap_or_default();
+        let movable = ids
+            .iter()
+            .filter_map(|id| doc.drawing(id))
+            .any(|d| !*d.locked() && !d.nodes().is_empty() && (!corners || vd::drawing_bounds(d, true).is_some()));
+        if movable { Ok(()) } else { Err(nothing_to_do("reposition")) }
+    })
 }

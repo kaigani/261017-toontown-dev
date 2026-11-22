@@ -1,0 +1,161 @@
+{
+  "checks": 8,
+  "failures": [
+    {
+      "check": "D-69 F11 reaches keymap",
+      "ok": false,
+      "detail": {
+        "commands": [],
+        "keys": [
+          {
+            "key": "F11",
+            "code": "",
+            "target": "pen.maxSize.field"
+          }
+        ],
+        "hostResolution": {
+          "outcome": "suspended",
+          "keys": "F11",
+          "reason": "textField"
+        }
+      }
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-qzg2f45a",
+  "results": [
+    {
+      "check": "D-68 page does not scroll",
+      "ok": true,
+      "detail": {
+        "innerWidth": 800,
+        "innerHeight": 500,
+        "html": {
+          "h": 500,
+          "sh": 500,
+          "w": 800
+        },
+        "body": {
+          "h": 500,
+          "sh": 500,
+          "w": 800
+        }
+      }
+    },
+    {
+      "check": "D-68 last tool wheel-visible",
+      "ok": true,
+      "detail": {
+        "last": "drawingTools.text",
+        "rect": {
+          "x": 4,
+          "y": 406,
+          "width": 96,
+          "height": 23,
+          "top": 406,
+          "right": 100,
+          "bottom": 429,
+          "left": 4
+        },
+        "rail": {
+          "x": 0,
+          "y": 63,
+          "width": 120,
+          "height": 408,
+          "top": 63,
+          "right": 120,
+          "bottom": 471,
+          "left": 0
+        }
+      }
+    },
+    {
+      "check": "D-68 last tool chosen",
+      "ok": true,
+      "detail": {
+        "commands": [
+          {
+            "command": "tool.active.set",
+            "params": {
+              "toolId": "text"
+            }
+          }
+        ],
+        "active": {
+          "toolId": "text",
+          "temporaryToolId": null,
+          "group": "text"
+        }
+      }
+    },
+    {
+      "check": "function binding found in shortcut editor",
+      "ok": true,
+      "detail": {
+        "details": "Full ScreenFull-screen presentationF11 (global) RemoveContext globaldrawingstagingAdd shortcutReset"
+      }
+    },
+    {
+      "check": "numeric field really focused",
+      "ok": true,
+      "detail": {
+        "focus": "pen.maxSize.field"
+      }
+    },
+    {
+      "check": "D-69 F11 reaches keymap",
+      "ok": false,
+      "detail": {
+        "commands": [],
+        "keys": [
+          {
+            "key": "F11",
+            "code": "",
+            "target": "pen.maxSize.field"
+          }
+        ],
+        "hostResolution": {
+          "outcome": "suspended",
+          "keys": "F11",
+          "reason": "textField"
+        }
+      }
+    },
+    {
+      "check": "D-69 Shift+F10 kept",
+      "ok": true,
+      "detail": {
+        "items": [
+          "Emoji",
+          "Undo",
+          "Cut",
+          "Copy",
+          "Paste",
+          "Paste as plain text",
+          "Select all"
+        ],
+        "commands": []
+      }
+    },
+    {
+      "check": "button F11 control",
+      "ok": true,
+      "detail": {
+        "commands": [
+          {
+            "command": "window.fullScreen.set",
+            "params": {
+              "enabled": true
+            }
+          }
+        ],
+        "focus": "BUTTON"
+      }
+    }
+  ],
+  "captures": {
+    "overpainted": 0,
+    "outside": 0,
+    "refused": 0,
+    "revealed": 0
+  }
+}

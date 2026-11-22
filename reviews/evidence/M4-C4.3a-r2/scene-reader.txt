@@ -1,0 +1,2 @@
+pnpm exec vitest run --config vite.config.ts src/test/c43a-r1s-scene.test.ts src/canvas/scene.test.ts
+2 files passed; 44 tests passed.

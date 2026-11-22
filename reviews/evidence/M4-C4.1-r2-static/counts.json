@@ -1,0 +1,9 @@
+{
+  "test_files": 43,
+  "tests": 261,
+  "gui_success_checks": 43,
+  "gui_call_sites": 45,
+  "lifecycle_success_checks": 44,
+  "allow_lints": 94,
+  "allow_files": 38
+}

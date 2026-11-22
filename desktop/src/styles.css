@@ -1,17 +1,61 @@
-:root {
+/* Desktop shell styles (M4 C4.1). Colours are theme tokens (01 §5.8; src/theme/theme.ts): the built-in light and dark
+   palettes below; a user theme overrides the tokens inline. */
+:root,
+:root[data-theme='dark'] {
   color-scheme: dark;
+  --tt-background: #1e1f22;
+  --tt-surface: #26282c;
+  --tt-surfaceAlt: #2e3035;
+  --tt-border: #0e0f11;
+  --tt-text: #d6d7da;
+  --tt-textMuted: #8c8f96;
+  --tt-accent: #6aa2ff;
+  --tt-accentText: #0b1220;
+  --tt-selection: #2f4a7a;
+  --tt-focus: #8fb8ff;
+  --tt-danger: #ff6b6b;
+  --tt-warning: #e0b050;
+  --tt-success: #5fc77a;
+  --tt-tooltipBackground: #000000;
+  --tt-tooltipText: #ffffff;
+  --tt-tabActive: #33363c;
+  --tt-tabInactive: #24262a;
+}
+
+:root[data-theme='light'] {
+  color-scheme: light;
+  --tt-background: #f3f3f5;
+  --tt-surface: #ffffff;
+  --tt-surfaceAlt: #e9eaee;
+  --tt-border: #c9cbd1;
+  --tt-text: #1d1f23;
+  --tt-textMuted: #6b6f78;
+  --tt-accent: #2563eb;
+  --tt-accentText: #ffffff;
+  --tt-selection: #cfe0ff;
+  --tt-focus: #1d4ed8;
+  --tt-danger: #c62828;
+  --tt-warning: #a86b00;
+  --tt-success: #1e7d3a;
+  --tt-tooltipBackground: #1d1f23;
+  --tt-tooltipText: #ffffff;
+  --tt-tabActive: #ffffff;
+  --tt-tabInactive: #e4e5e9;
+}
+
+:root {
   font-family:
     system-ui,
     -apple-system,
-    'Segoe UI',
     sans-serif;
   font-size: 13px;
-  --bg: #1e1f22;
-  --fg: #d6d7da;
-  --muted: #8c8f96;
-  --accent: #6aa2ff;
-  --warn: #e0b050;
-  --err: #ff6b6b;
+  /* Names the M0 spike pages use. */
+  --bg: var(--tt-background);
+  --fg: var(--tt-text);
+  --muted: var(--tt-textMuted);
+  --accent: var(--tt-accent);
+  --warn: var(--tt-warning);
+  --err: var(--tt-danger);
 }
 
 html,
@@ -19,8 +63,38 @@ body,
 #root {
   margin: 0;
   height: 100%;
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--tt-background);
+  color: var(--tt-text);
+}
+
+/* Ruling D-68 item 5: the page itself never scrolls (panels do), down to the least window size (800 by 500). */
+html,
+body {
+  overflow: hidden;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--tt-text);
+  background: var(--tt-surfaceAlt);
+  border: 1px solid var(--tt-border);
+  border-radius: 3px;
+  padding: 2px 8px;
+}
+
+button:disabled {
+  color: var(--tt-textMuted);
+  opacity: 0.6;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--tt-focus);
+  outline-offset: 1px;
 }
 
 .app {
@@ -29,68 +103,673 @@ body,
   height: 100%;
 }
 
-.dock-host {
+/* Workspace toolbars at the top (binding convention). */
+.main-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px;
+  background: var(--tt-surface);
+  border-bottom: 1px solid var(--tt-border);
+}
+
+.toolbar-separator {
+  width: 1px;
+  height: 18px;
+  margin: 0 4px;
+  background: var(--tt-border);
+}
+
+.toolbar-space {
+  width: 16px;
+}
+
+.toolbar-flex {
+  flex: 1;
+}
+
+.workspace-row {
+  display: flex;
   flex: 1;
   min-height: 0;
 }
 
-.panel-placeholder {
+/* Tool palettes, vertical on the left (binding convention). */
+.tool-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  /* D-68 item 5: as wide as its tools' names (within bounds), and it scrolls when taller than the window: at 800 by 500
+     the Drawing tools and the other palettes' titles are taller than the row and had made the page scroll. */
+  flex: none;
+  box-sizing: border-box;
+  min-width: 40px;
+  max-width: 120px;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 6px 4px;
+  background: var(--tt-surface);
+  border-right: 1px solid var(--tt-border);
+}
+
+.tool-rail .tool-button {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.tool-palette-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  background: var(--tt-surfaceAlt);
+  color: var(--tt-textMuted);
+  cursor: default;
+}
+
+.dock-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+}
+
+.dock-host {
+  flex: 1;
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+}
+
+.tt-dockview {
+  position: absolute;
+  inset: 0;
+}
+
+.dock-tab {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px 0 8px;
+  height: 100%;
+}
+
+.dock-tab-close {
+  padding: 0 4px;
+  border: none;
+  background: transparent;
+  color: var(--tt-textMuted);
+}
+
+.context-menu {
+  position: fixed;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  /* D-66 item 1: the placement's bounds are the outer box's (border and padding included). */
+  box-sizing: border-box;
+  min-width: 180px;
+  padding: 4px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 35%);
+}
+
+.context-menu button {
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+/* D-60 item 1: the items scroll inside a menu taller than the window, between two arrows. */
+.context-menu-items {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow-y: auto;
+}
+
+.context-menu-arrow {
+  flex: none;
+  padding: 1px 0;
+  font-size: 0.7em;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--tt-text);
+  cursor: default;
+  user-select: none;
+}
+
+.context-menu-arrow.spent {
+  color: var(--tt-textMuted);
+  opacity: 0.4;
+}
+
+.context-menu button:hover {
+  background: var(--tt-selection);
+}
+
+.context-menu button {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 3px 10px 3px 4px;
+}
+
+.context-menu button:focus-visible {
+  background: var(--tt-selection);
+  outline: none;
+}
+
+.context-menu button[aria-disabled='true'] {
+  color: var(--tt-textMuted);
+}
+
+.context-menu button[aria-disabled='true']:hover {
+  background: transparent;
+}
+
+.context-menu-check {
+  display: inline-block;
+  width: 1em;
+  text-align: center;
+}
+
+.context-menu-reason {
+  margin-left: auto;
+  padding-left: 12px;
+  font-size: 0.85em;
+}
+
+.context-menu-heading {
+  padding: 4px 10px 2px 22px;
+  font-size: 0.8em;
+  color: var(--tt-textMuted);
+}
+
+.context-menu-separator {
+  height: 1px;
+  margin: 4px 2px;
+  background: var(--tt-border);
+}
+
+.panel-placeholder,
+.history-panel {
   padding: 12px 16px;
-  color: var(--muted);
+  color: var(--tt-textMuted);
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  background: var(--tt-surface);
 }
 
 .panel-placeholder h2 {
   margin: 0 0 6px;
   font-size: 14px;
-  color: var(--fg);
+  color: var(--tt-text);
 }
 
 .no-properties {
-  color: var(--fg);
+  color: var(--tt-text);
   font-style: italic;
+}
+
+.history-panel ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.history-entry {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  color: var(--tt-text);
+}
+
+.history-entry.current {
+  background: var(--tt-selection);
+}
+
+.history-entry.dimmed {
+  color: var(--tt-textMuted);
+}
+
+.history-entry.agent .source {
+  color: var(--tt-accent);
+}
+
+.history-entry time,
+.history-entry .source {
+  color: var(--tt-textMuted);
+  font-size: 11px;
+}
+
+.view-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* View toolbars live inside their view (binding convention). */
+.view-toolbar {
+  display: flex;
+  gap: 4px;
+  padding: 3px 6px;
+  background: var(--tt-surface);
+  border-bottom: 1px solid var(--tt-border);
+}
+
+.view-toolbar .spacer {
+  flex: 1;
+}
+
+/* The zoom readout and the drawing aids share the view toolbar's one row (01 §5.3); when the window is narrow the row
+   scrolls sideways instead of wrapping over the canvas. */
+.view-toolbar {
+  align-items: center;
+}
+
+.view-chrome {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: thin;
+}
+
+.view-chrome > * {
+  flex: none;
+}
+
+.view-canvas {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--tt-textMuted);
+  background: var(--tt-background);
 }
 
 .status-bar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 16px;
   padding: 3px 10px;
-  border-top: 1px solid #000;
-  background: #16171a;
+  border-top: 1px solid var(--tt-border);
+  background: var(--tt-surface);
   font-size: 12px;
   white-space: nowrap;
-}
-
-.status-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
   overflow: hidden;
 }
 
+.status-message {
+  min-width: 120px;
+}
+
+.status-description {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  color: var(--tt-textMuted);
+}
+
 .status-warning {
-  color: var(--warn);
+  color: var(--tt-warning);
 }
 
 .status-error {
-  color: var(--err);
+  color: var(--tt-danger);
 }
 
-.status-engine {
-  color: var(--muted);
+.agent-indicator {
+  position: relative;
 }
 
-.status-bar button {
-  font: inherit;
-  padding: 1px 8px;
-  color: var(--fg);
-  background: #2b2d31;
-  border: 1px solid #3a3c42;
-  border-radius: 3px;
+.agent-indicator.connected button {
+  border-color: var(--tt-accent);
 }
 
-/* C0.2 tablet spike page (spike code). */
+.agent-indicator.acting button {
+  background: var(--tt-accent);
+  color: var(--tt-accentText);
+}
+
+.agent-popover {
+  position: absolute;
+  right: 0;
+  bottom: 26px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 320px;
+  padding: 8px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 35%);
+  white-space: normal;
+}
+
+.agent-session,
+.agent-activity {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.activity-entry {
+  width: 100%;
+  font-size: 11px;
+  color: var(--tt-textMuted);
+}
+
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 40%);
+}
+
+.dialog,
+.message-box {
+  max-width: min(560px, 92vw);
+  max-height: 88vh;
+  overflow: auto;
+  padding: 16px 20px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 32px rgb(0 0 0 / 45%);
+}
+
+.dialog-wide {
+  max-width: min(980px, 96vw);
+  width: 96vw;
+}
+
+.dialog h2,
+.message-box h2 {
+  margin: 0 0 12px;
+  font-size: 15px;
+}
+
+.message-box .severity {
+  text-transform: capitalize;
+  color: var(--tt-textMuted);
+}
+
+.message-error h2 .severity {
+  color: var(--tt-danger);
+}
+
+.message-warning h2 .severity {
+  color: var(--tt-warning);
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.button-default {
+  background: var(--tt-accent);
+  color: var(--tt-accentText);
+  border-color: var(--tt-accent);
+}
+
+.button-destructive {
+  border-color: var(--tt-danger);
+}
+
+.field {
+  display: grid;
+  /* The control column may shrink below a long option's width: the control then fits its card. */
+  grid-template-columns: 120px minmax(0, 1fr);
+  align-items: center;
+  gap: 4px 10px;
+  margin: 6px 0;
+}
+
+.field > input,
+.field > select {
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.field-problem {
+  grid-column: 2;
+  color: var(--tt-danger);
+}
+
+/* D-67: the token group's width does not depend on what it shows (it fills the button row, whose items are pushed to
+   the end), and its notes have a line of their own, its height reserved: a note never moves the field. */
+.agent-token {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.agent-token-notes {
+  min-height: 1.5em;
+}
+
+.agent-token-notes > small + small {
+  margin-left: 8px;
+}
+
+.busy-overlay {
+  position: fixed;
+  right: 16px;
+  bottom: 36px;
+  z-index: 55;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 12px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+}
+
+.notifications {
+  position: fixed;
+  right: 16px;
+  top: 48px;
+  z-index: 58;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.notification {
+  max-width: 360px;
+  padding: 8px 12px;
+  background: var(--tt-surface);
+  border-left: 3px solid var(--tt-accent);
+  box-shadow: 0 4px 12px rgb(0 0 0 / 30%);
+}
+
+.notification-error {
+  border-left-color: var(--tt-danger);
+}
+
+.notification-warning {
+  border-left-color: var(--tt-warning);
+}
+
+.engine-banner,
+.refresh-errors {
+  position: fixed;
+  left: 50%;
+  top: 48px;
+  transform: translateX(-50%);
+  z-index: 59;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-danger);
+}
+
+/* The start screen (01 §2). */
+.start-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) minmax(280px, 1fr);
+  align-content: start;
+  gap: 24px;
+  padding: 40px 48px;
+  overflow: auto;
+  background: var(--tt-background);
+}
+
+.start-screen section {
+  padding: 16px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  border-radius: 6px;
+}
+
+.start-screen h2 {
+  margin: 0 0 10px;
+  font-size: 15px;
+}
+
+.start-screen ul {
+  list-style: none;
+  margin: 0 0 10px;
+  padding: 0;
+}
+
+.start-screen .recent {
+  border: none;
+  background: transparent;
+  padding: 2px 0;
+  text-align: left;
+}
+
+.recent.missing,
+.missing-mark {
+  color: var(--tt-textMuted);
+}
+
+.start-show {
+  grid-column: 1 / -1;
+}
+
+.owner-note {
+  color: var(--tt-textMuted);
+}
+
+/* Preferences (01 §7). */
+.prefs-layout {
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 16px;
+  min-height: 420px;
+}
+
+.prefs-categories {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.prefs-categories button {
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+.prefs-categories button[aria-pressed='true'] {
+  background: var(--tt-selection);
+}
+
+.prefs-body {
+  max-height: 60vh;
+  overflow: auto;
+}
+
+.pref-field {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 2px 12px;
+  align-items: center;
+  margin: 8px 0;
+}
+
+.pref-description {
+  grid-column: 1 / -1;
+  color: var(--tt-textMuted);
+}
+
+.keymap-editor {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.keymap-list {
+  max-height: 50vh;
+  overflow: auto;
+}
+
+.keymap-list button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  border: none;
+  background: transparent;
+  text-align: left;
+}
+
+.keymap-list button[aria-pressed='true'] {
+  background: var(--tt-selection);
+}
+
+.shortcuts {
+  color: var(--tt-textMuted);
+}
+
+.capture.capturing {
+  border-color: var(--tt-accent);
+}
+
+.tips-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.help-text {
+  white-space: pre-wrap;
+  font-family: inherit;
+}
+
 .spike {
   display: flex;
   flex-direction: column;
@@ -228,4 +907,147 @@ body,
 .canvas-spike-readout {
   flex: 0 0 160px;
   overflow: auto;
+}
+
+/* A dialog takes the keyboard focus when it opens (shell/modalFocus.ts); the container itself draws no ring. */
+.dialog:focus,
+.message-box:focus {
+  outline: none;
+}
+
+/* A floating panel's own window (ruling O-2): a title strip over the panel. */
+.float-window {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--tt-surface);
+  color: var(--tt-text);
+}
+.float-title {
+  padding: 4px 8px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--tt-border);
+  background: var(--tt-surfaceAlt);
+  user-select: none;
+  cursor: default;
+}
+.float-body {
+  flex: 1;
+  overflow: auto;
+}
+
+/* The interactive canvas (M4 C4.2b): the surface fills its view window; the backing store is sized in device pixels. */
+.view-canvas {
+  position: relative;
+  overflow: hidden;
+}
+.view-canvas-surface {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+
+/* A measurement value in the UI tree (`--canvas-metrics` only): present for the tree, never seen. */
+.tt-probe {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+
+/* The progress window (01 §9.5; C43B-R2-06): the running jobs, above the status bar's jobs segment. */
+.status-jobs-area {
+  position: relative;
+}
+
+.status-jobs:disabled {
+  border-color: transparent;
+  background: transparent;
+}
+
+.jobs-window {
+  position: absolute;
+  right: 0;
+  bottom: 26px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 340px;
+  padding: 8px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 35%);
+  white-space: normal;
+}
+
+.jobs-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 8px;
+  align-items: center;
+}
+
+.jobs-step {
+  grid-column: 1 / -1;
+  font-size: 11px;
+  color: var(--tt-textMuted);
+}
+
+.jobs-row progress {
+  width: 100%;
+}
+
+.load-report {
+  position: fixed;
+  right: 16px;
+  bottom: 40px;
+  z-index: 45;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(460px, calc(100vw - 32px));
+  max-height: 60vh;
+  overflow: auto;
+  padding: 10px 12px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  box-shadow: 0 4px 16px rgb(0 0 0 / 35%);
+}
+
+.load-report-groups {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.load-report-groups ul {
+  margin: 2px 0 6px 18px;
+  padding: 0;
+  font-size: 0.9em;
+}
+
+.confirm-sheet {
+  position: fixed;
+  top: 64px;
+  left: 50%;
+  z-index: 46;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(480px, calc(100vw - 32px));
+  padding: 12px 14px;
+  background: var(--tt-surface);
+  border: 1px solid var(--tt-border);
+  box-shadow: 0 6px 20px rgb(0 0 0 / 40%);
+}
+
+.confirm-sheet ul {
+  margin: 0;
+  padding-left: 18px;
 }

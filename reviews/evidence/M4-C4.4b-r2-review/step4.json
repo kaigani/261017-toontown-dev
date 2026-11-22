@@ -1,0 +1,1146 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-d0czw_jf",
+  "checks": [
+    {
+      "check": "D-79 hidden no overlays contourEditor",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null,
+        "contours": null,
+        "textEdit": null,
+        "textBoxes": null
+      }
+    },
+    {
+      "check": "cameraView contourEditor D-80/D-79 no edit or undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "lastGesture": {
+          "origin": "user",
+          "tool": "contourEditor",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            432,
+            230
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 303.921875,
+              "y": 326,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 335.921875,
+              "y": 294,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 335.921875,
+              "y": 294,
+              "modifiers": [],
+              "dt": 119,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 3,
+          "status": "error",
+          "code": "element.hidden",
+          "commands": []
+        },
+        "status": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView contourEditor person told element.hidden",
+      "ok": true,
+      "detail": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "D-79 hidden no overlays perspective",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null,
+        "contours": null,
+        "textEdit": null,
+        "textBoxes": null
+      }
+    },
+    {
+      "check": "cameraView perspective D-80/D-79 no edit or undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "lastGesture": {
+          "origin": "user",
+          "tool": "perspective",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            432,
+            230
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 303.921875,
+              "y": 326,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 335.921875,
+              "y": 294,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 335.921875,
+              "y": 294,
+              "modifiers": [],
+              "dt": 112,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 3,
+          "status": "error",
+          "code": "element.hidden",
+          "commands": []
+        },
+        "status": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView perspective person told element.hidden",
+      "ok": true,
+      "detail": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "D-79 hidden no overlays repositionAll",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null,
+        "contours": null,
+        "textEdit": null,
+        "textBoxes": null
+      }
+    },
+    {
+      "check": "cameraView repositionAll D-80/D-79 no edit or undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "lastGesture": {
+          "origin": "user",
+          "tool": "repositionAll",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            432,
+            230
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 431.921875,
+              "y": 230,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 463.921875,
+              "y": 198,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 463.921875,
+              "y": 198,
+              "modifiers": [],
+              "dt": 124,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 3,
+          "status": "error",
+          "code": "element.hidden",
+          "commands": []
+        },
+        "status": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView repositionAll person told element.hidden",
+      "ok": true,
+      "detail": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "D-79 hidden no overlays text",
+      "ok": true,
+      "detail": {
+        "drawings": [],
+        "toolBox": null,
+        "contours": null,
+        "textEdit": null,
+        "textBoxes": null
+      }
+    },
+    {
+      "check": "cameraView text D-80/D-79 no edit or undo",
+      "ok": true,
+      "detail": {
+        "history": [],
+        "lastGesture": {
+          "origin": "user",
+          "tool": "text",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            432,
+            230
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 431.921875,
+              "y": 230,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 431.921875,
+              "y": 230,
+              "modifiers": [],
+              "dt": 4,
+              "pressure": 1
+            },
+            {
+              "type": "move",
+              "x": 431.921875,
+              "y": 230,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 431.921875,
+              "y": 230,
+              "modifiers": [],
+              "dt": 113,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 4,
+          "status": "error",
+          "code": "element.hidden",
+          "commands": []
+        },
+        "status": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+      }
+    },
+    {
+      "check": "cameraView text person told element.hidden",
+      "ok": true,
+      "detail": "the element is hidden in the scene, so the Camera view does not edit it (02 \u00a71.2, \u00a710.7)"
+    },
+    {
+      "check": "02 10.7 keepSelectionVisible contourEditor edit policy",
+      "ok": true,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800Q10P0A4GFB7HPX4G",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": null,
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "contours": {
+          "strokes": 1,
+          "anchors": 4,
+          "selected": 0,
+          "handles": 0,
+          "locked": false
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22177900,
+        "lastError": null
+      }
+    },
+    {
+      "check": "02 10.7 keepSelectionVisible perspective edit policy",
+      "ok": false,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800HNBZGR7WY92AHGNB",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "toolBox": {
+          "tool": "perspective",
+          "locked": false,
+          "handles": 8
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22177900,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "contourEditor",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 288.921875,
+              "y": 317,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 124,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 3,
+          "status": "ok",
+          "code": null,
+          "commands": [
+            {
+              "commandId": "draw.point.move",
+              "params": {
+                "drawingId": "dr_01K7JJN800Q10P0A4GFB7HPX4G",
+                "points": [
+                  {
+                    "strokeId": "st_01K7JJN800ZHTGJM5PEYHAMC9S",
+                    "anchor": 0
+                  }
+                ],
+                "delta": {
+                  "x": 20,
+                  "y": 20
+                },
+                "snap": false,
+                "view": "cameraView"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "02 10.7 keepSelectionVisible repositionAll edit policy",
+      "ok": true,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800TDCBAC2509FAGCD3",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "toolBox": {
+          "tool": "repositionAll",
+          "locked": false,
+          "handles": 8
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22177900,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "perspective",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 288.921875,
+              "y": 317,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 288.921875,
+              "y": 317,
+              "modifiers": [],
+              "dt": 7,
+              "pressure": 1
+            },
+            {
+              "type": "move",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 119,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 4,
+          "status": "ok",
+          "code": null,
+          "commands": [
+            {
+              "commandId": "draw.selection.set",
+              "params": {
+                "by": "rect",
+                "rect": {
+                  "x": -80.048828125,
+                  "y": -59.6875,
+                  "width": 20,
+                  "height": 20
+                },
+                "rectRule": "inside",
+                "mode": "replace"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "02 10.7 keepSelectionVisible text edit policy",
+      "ok": true,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800KWDGJHGPKCPXNMA5",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22177900,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "repositionAll",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 416.921875,
+              "y": 221,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 416.921875,
+              "y": 221,
+              "modifiers": [],
+              "dt": 7,
+              "pressure": 1
+            },
+            {
+              "type": "move",
+              "x": 448.921875,
+              "y": 189,
+              "modifiers": [],
+              "dt": 117,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 448.921875,
+              "y": 189,
+              "modifiers": [],
+              "dt": 125,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 4,
+          "status": "ok",
+          "code": null,
+          "commands": [
+            {
+              "commandId": "draw.repositionAll.apply",
+              "params": {
+                "translate": {
+                  "x": 20,
+                  "y": 20
+                }
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "02 10.7 outlineOnSelection contourEditor edit policy",
+      "ok": true,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800DNAXAHQ4X3NMA248#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22173772,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "text",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 416.921875,
+              "y": 221,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 416.921875,
+              "y": 221,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 416.921875,
+              "y": 221,
+              "modifiers": [],
+              "dt": 120,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 3,
+          "status": "ok",
+          "code": null,
+          "commands": [
+            {
+              "commandId": "draw.text.add",
+              "params": {
+                "text": "",
+                "format": {
+                  "size": 36,
+                  "bold": false,
+                  "italic": false,
+                  "baseline": "normal",
+                  "kerning": 0,
+                  "autoKern": true,
+                  "align": "left",
+                  "leftMargin": 0,
+                  "rightMargin": 0,
+                  "indent": 0,
+                  "lineSpacing": 0
+                },
+                "position": {
+                  "x": -0.048828125,
+                  "y": 0.3125
+                },
+                "colourId": "col_01M807M5BFDWC3N0SQAHX4ZH1K"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "check": "02 10.7 outlineOnSelection perspective edit policy",
+      "ok": true,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800M3CSDN23YCC9M9RH#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "error",
+          "code": "element.hidden"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22173772,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "contourEditor",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 288.921875,
+              "y": 317,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 122,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 3,
+          "status": "error",
+          "code": "element.hidden",
+          "commands": []
+        }
+      }
+    },
+    {
+      "check": "02 10.7 outlineOnSelection repositionAll edit policy",
+      "ok": true,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800Q4QH2PPPQFWK1RVP#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "error",
+          "code": "element.hidden"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22173772,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "perspective",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 288.921875,
+              "y": 317,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 288.921875,
+              "y": 317,
+              "modifiers": [],
+              "dt": 1,
+              "pressure": 1
+            },
+            {
+              "type": "move",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 150,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 111,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 4,
+          "status": "error",
+          "code": "element.hidden",
+          "commands": []
+        }
+      }
+    },
+    {
+      "check": "02 10.7 outlineOnSelection text edit policy",
+      "ok": true,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN80077V5EJ9PS2CGB7HY#outline",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "error",
+          "code": "element.hidden"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22173772,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "repositionAll",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 416.921875,
+              "y": 221,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 416.921875,
+              "y": 221,
+              "modifiers": [],
+              "dt": 6,
+              "pressure": 1
+            },
+            {
+              "type": "move",
+              "x": 448.921875,
+              "y": 189,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 448.921875,
+              "y": 189,
+              "modifiers": [],
+              "dt": 115,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 4,
+          "status": "error",
+          "code": "element.hidden",
+          "commands": []
+        }
+      }
+    },
+    {
+      "check": "D-79 visible empty brush adds",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "D-79 visible empty text adds",
+      "ok": true,
+      "detail": null
+    }
+  ],
+  "failures": [
+    {
+      "check": "02 10.7 keepSelectionVisible perspective edit policy",
+      "ok": false,
+      "detail": {
+        "backend": "webgl2",
+        "generation": 0,
+        "drawings": [
+          {
+            "id": "dr_01K7JJN800HNBZGR7WY92AHGNB",
+            "rev": 4,
+            "bucket": 1
+          }
+        ],
+        "failures": [],
+        "gesture": {
+          "status": "ok"
+        },
+        "selection": {
+          "objects": 0,
+          "handles": 0,
+          "points": 0,
+          "pivot": false
+        },
+        "viewType": "camera",
+        "overlay": false,
+        "camera": {
+          "frame": true,
+          "pivots": 1,
+          "boxes": 1,
+          "otherCameras": 0,
+          "handles": 0
+        },
+        "toolBox": {
+          "tool": "perspective",
+          "locked": false,
+          "handles": 8
+        },
+        "drawn": 1,
+        "residentDrawings": 1,
+        "residentBytes": 22177900,
+        "lastError": null,
+        "lastGesture": {
+          "origin": "user",
+          "tool": "contourEditor",
+          "view": "cameraView",
+          "pointerType": "mouse",
+          "drawingToView": [
+            1.5999999999999999,
+            0,
+            0,
+            -1.5999999999999999,
+            417,
+            221.5
+          ],
+          "events": [
+            {
+              "type": "down",
+              "x": 288.921875,
+              "y": 317,
+              "modifiers": [],
+              "dt": 0,
+              "pressure": 1,
+              "button": "left"
+            },
+            {
+              "type": "move",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 133,
+              "pressure": 1
+            },
+            {
+              "type": "up",
+              "x": 320.921875,
+              "y": 285,
+              "modifiers": [],
+              "dt": 124,
+              "pressure": 1
+            }
+          ],
+          "eventCount": 3,
+          "status": "ok",
+          "code": null,
+          "commands": [
+            {
+              "commandId": "draw.point.move",
+              "params": {
+                "drawingId": "dr_01K7JJN800Q10P0A4GFB7HPX4G",
+                "points": [
+                  {
+                    "strokeId": "st_01K7JJN800ZHTGJM5PEYHAMC9S",
+                    "anchor": 0
+                  }
+                ],
+                "delta": {
+                  "x": 20,
+                  "y": 20
+                },
+                "snap": false,
+                "view": "cameraView"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

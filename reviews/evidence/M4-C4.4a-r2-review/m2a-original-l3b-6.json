@@ -1,0 +1,1370 @@
+{
+  "checks": 9,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44-r2-regression-ohexzs6o\\l3b6",
+  "results": [
+    {
+      "check": "independent HTTP initialize",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "two independent clients status",
+      "ok": true,
+      "detail": {
+        "enabled": true,
+        "endpoint": "http://127.0.0.1:56826/mcp",
+        "sessions": [
+          {
+            "sessionId": "s1-7a32ca",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T06:59:10.082Z",
+            "lastActivity": "2026-11-20T06:59:10.308Z",
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s2-379acc",
+            "client": "review-live3-primary",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T06:59:10.215Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s3-f5a363",
+            "client": "review-live3-secondary",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-20T06:59:10.305Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      }
+    },
+    {
+      "check": "session pause isolated",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.session.pause",
+            "params": {
+              "sessionId": "s2-379acc"
+            }
+          }
+        ],
+        "primary": {
+          "status": "error",
+          "changes": [],
+          "warnings": [],
+          "documentRev": null,
+          "error": {
+            "code": "agent.paused",
+            "message": "the user paused this agent session",
+            "details": {
+              "waitedMs": 10000
+            },
+            "hint": "wait and call again; the user resumes the session in the app"
+          }
+        },
+        "other": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7VW0ZRGPWBHQGGCJFTX13ZE",
+              "name": "Live3 sessions",
+              "path": null,
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7VW0ZRGPWBHQGGCJFTX143J",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN8005130967FD6GPZHQS",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800B8NQJZHC5QENZ11N",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "activity",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN8005130967FD6GPZHQS"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": true
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-7a32ca",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-379acc",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-f5a363",
+                "name": "review-live3-secondary",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s3-f5a363",
+              "client": "review-live3-secondary",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "autonomous",
+                "maxJobs": 2,
+                "maxBatchSteps": 1000,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": true,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 4
+        }
+      }
+    },
+    {
+      "check": "session resume isolated",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.session.resume",
+            "params": {
+              "sessionId": "s2-379acc"
+            }
+          }
+        ],
+        "primary": {
+          "status": "ok",
+          "result": {
+            "drawingId": "dr_01K7JJN800B8NQJZHC5QENZ11N",
+            "strokeIds": [
+              "st_01K7JJN8007B6VC7BPTQKXA101"
+            ],
+            "zoneIds": [
+              "zn_H8QR52JYZD1J7WBVSC9YSB8Y7N"
+            ],
+            "layerId": "nd_01K7JJN801ZDDMDD4MH9KASX9G",
+            "createdIds": [
+              "st_01K7JJN8007B6VC7BPTQKXA101",
+              "nd_01K7JJN801ZDDMDD4MH9KASX9G",
+              "zn_H8QR52JYZD1J7WBVSC9YSB8Y7N"
+            ],
+            "modifiedIds": [],
+            "removedIds": [],
+            "rev": 5
+          },
+          "changes": [
+            {
+              "id": "dr_01K7JJN800B8NQJZHC5QENZ11N/st_01K7JJN8007B6VC7BPTQKXA101",
+              "type": "stroke",
+              "op": "created",
+              "rev": 5,
+              "parentId": "dr_01K7JJN800B8NQJZHC5QENZ11N/nd_01K7JJN801ZDDMDD4MH9KASX9G",
+              "index": 0
+            },
+            {
+              "id": "dr_01K7JJN800B8NQJZHC5QENZ11N/nd_01K7JJN801ZDDMDD4MH9KASX9G",
+              "type": "drawingNode",
+              "op": "created",
+              "rev": 5,
+              "parentId": "dr_01K7JJN800B8NQJZHC5QENZ11N",
+              "index": 1
+            },
+            {
+              "id": "dr_01K7JJN800B8NQJZHC5QENZ11N",
+              "type": "drawing",
+              "op": "modified",
+              "rev": 5,
+              "patch": [
+                {
+                  "op": "add",
+                  "path": "/nodes/1",
+                  "value": {
+                    "id": "nd_01K7JJN801ZDDMDD4MH9KASX9G",
+                    "type": "drawingNode"
+                  }
+                }
+              ]
+            }
+          ],
+          "undo": {
+            "stepId": "u-4",
+            "label": "Rectangle Tool"
+          },
+          "warnings": [],
+          "documentRev": 5
+        },
+        "other": {
+          "status": "ok",
+          "result": {
+            "project": {
+              "id": "pr_01M7VW0ZRGPWBHQGGCJFTX13ZE",
+              "name": "Live3 sessions",
+              "path": null,
+              "dirty": true,
+              "globalLibraryDirty": false,
+              "readOnly": false
+            },
+            "scene": {
+              "id": "sc_01M7VW0ZRGPWBHQGGCJFTX143J",
+              "name": "Scene-1",
+              "frameCount": 24
+            },
+            "frame": 1,
+            "element": {
+              "id": "el_01K7JJN8005130967FD6GPZHQS",
+              "name": "ModalUndoSentinel",
+              "type": "drawing"
+            },
+            "drawing": {
+              "id": "dr_01K7JJN800B8NQJZHC5QENZ11N",
+              "name": "1"
+            },
+            "mode": "drawing",
+            "activeView": {
+              "viewId": "drawingView",
+              "panelId": "drawingView",
+              "type": "drawing"
+            },
+            "focusedPanel": "activity",
+            "activeTool": null,
+            "selection": {
+              "context": "timeline",
+              "ids": [
+                "el_01K7JJN8005130967FD6GPZHQS"
+              ],
+              "kinds": [
+                "element"
+              ]
+            },
+            "workspace": {
+              "name": "Drawing",
+              "modified": true
+            },
+            "playback": {
+              "playing": false
+            },
+            "startScreenVisible": false,
+            "modal": null,
+            "agentSessions": [
+              {
+                "sessionId": "s1-7a32ca",
+                "name": "mcp",
+                "acting": false
+              },
+              {
+                "sessionId": "s2-379acc",
+                "name": "review-live3-primary",
+                "acting": false
+              },
+              {
+                "sessionId": "s3-f5a363",
+                "name": "review-live3-secondary",
+                "acting": false
+              }
+            ],
+            "fullScreen": false,
+            "agent": {
+              "sessionId": "s3-f5a363",
+              "client": "review-live3-secondary",
+              "policy": "autonomous",
+              "scopes": [
+                "read",
+                "edit",
+                "ui",
+                "input",
+                "files.read",
+                "files.write",
+                "prefs",
+                "library.global"
+              ],
+              "paused": false,
+              "limits": {
+                "policy": "autonomous",
+                "maxJobs": 2,
+                "maxBatchSteps": 1000,
+                "maxInlineImagePx": 2048,
+                "maxInlineBytes": 52428800,
+                "askInApp": true,
+                "letAgentMoveView": true,
+                "highlightAgentChanges": true
+              }
+            }
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 5
+        }
+      }
+    },
+    {
+      "check": "grant targets primary",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.session.grant",
+          "params": {
+            "sessionId": "s2-379acc",
+            "policy": "observe"
+          }
+        }
+      ]
+    },
+    {
+      "check": "scope grant applies to primary only",
+      "ok": true,
+      "detail": {
+        "sent": [
+          {
+            "command": "agent.session.grant",
+            "params": {
+              "sessionId": "s2-379acc",
+              "scopes": [
+                "read",
+                "edit"
+              ]
+            }
+          }
+        ],
+        "status": {
+          "status": "ok",
+          "result": {
+            "enabled": true,
+            "endpoint": "http://127.0.0.1:56826/mcp",
+            "sessions": [
+              {
+                "sessionId": "s1-7a32ca",
+                "client": "mcp",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:59:10.082Z",
+                "lastActivity": "2026-11-20T06:59:11.025Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s2-379acc",
+                "client": "review-live3-primary",
+                "policy": "observe",
+                "scopes": [
+                  "read",
+                  "edit"
+                ],
+                "connectedAt": "2026-11-20T06:59:10.215Z",
+                "lastActivity": "2026-11-20T06:59:30.628Z",
+                "paused": false,
+                "transport": "http"
+              },
+              {
+                "sessionId": "s3-f5a363",
+                "client": "review-live3-secondary",
+                "policy": "autonomous",
+                "scopes": [
+                  "read",
+                  "edit",
+                  "ui",
+                  "input",
+                  "files.read",
+                  "files.write",
+                  "prefs",
+                  "library.global"
+                ],
+                "connectedAt": "2026-11-20T06:59:10.305Z",
+                "lastActivity": "2026-11-20T06:59:24.246Z",
+                "paused": false,
+                "transport": "http"
+              }
+            ],
+            "pendingConfirmations": []
+          },
+          "changes": [],
+          "warnings": [],
+          "documentRev": 6
+        }
+      }
+    },
+    {
+      "check": "indicator acting session and label",
+      "ok": true,
+      "detail": {
+        "samples": [
+          {
+            "text": "Agent acting: review-live3-secondary (Agent server status)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          },
+          {
+            "text": "Agent acting: review-live3-secondary (Indicator review)",
+            "state": "acting"
+          }
+        ],
+        "answerStatus": "ok"
+      }
+    },
+    {
+      "check": "disconnect isolated",
+      "ok": true,
+      "detail": [
+        {
+          "command": "agent.session.disconnect",
+          "params": {
+            "sessionId": "s2-379acc"
+          }
+        }
+      ]
+    },
+    {
+      "check": "D-57 session/token events exclude shell notices",
+      "ok": true,
+      "detail": {
+        "jsonrpc": "2.0",
+        "id": 8,
+        "result": {
+          "contents": [
+            {
+              "uri": "app://events?after=0",
+              "mimeType": "application/json",
+              "text": "{\"eventCount\": 15, \"types\": {\"agent.session.connected\": 1, \"workspace.changed\": 1, \"app.state.changed\": 1, \"agent.paused\": 1, \"agent.resumed\": 1, \"doc.changed\": 3, \"draw.drawing.changed\": 3, \"edit.history.changed\": 3, \"agent.session.disconnected\": 1}, \"firstSeq\": 1, \"lastSeq\": 15, \"rawTextBytes\": 950078, \"sha256\": \"aa5aba73007b3ec663e1aa526cc79cf97184529ab2203fc338b58d4f0086a46e\"}"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}

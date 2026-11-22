@@ -1,0 +1,53 @@
+ok   the application started and serves attached mode
+ok   initialize over Streamable HTTP
+ok   start screen in the rendered tree
+ok   status bar in the rendered tree
+ok   main toolbar in the rendered tree
+ok   every visible panel is rendered
+ok   window.panel.set history: the History tab is in the rendered GUI
+ok   ui.statusBar.set false: the GUI drops the status bar
+ok   ui.statusBar.set true: the GUI shows the status bar
+ok   project.create: the GUI closes the start screen and shows the workspace
+ok   the window title names the project
+ok   workspace.select Drawing: the GUI shows the Drawing view as its group's selected tab
+ok   the kernel's mode follows the view the GUI shows (drawing)
+ok   prefs.set interface.theme dark: the GUI applies the dark theme
+ok   keymap.set F2
+ok   the key tool runs the command bound to F2 (project.save, refused without a path)
+ok   keymap.set F3 (hide the status bar)
+ok   workspace.create E2E
+ok   window.geometry.set accepted
+ok   prefs.outOfRange
+ok   keymap.reservedKey
+ok   the GUI shows Preferences and reports it: app.state.get has the modal dialog
+ok   an agent change waits for the user and fails with ui.busy
+ok   a focus change under a user dialog is ui.modalOpen
+ok   Escape pressed in the application window (OS input)
+ok   the kernel sees the dialog closed (modal: null)
+ok   after the dialog closed, F3 resolves to ui.statusBar.set and runs
+ok   after the dialog closed, an agent action is accepted
+ok   the same-place window.panel.move sets the area size only: the kernel, the GUI tabs unchanged, and the GUI renders the area at the new size
+ok   window.panel.set floating: the combined inspect_ui tree has the float window
+ok   the OS lists the History float as a window of the application
+ok   window.panel.set geometry: the OS float window takes the size
+ok   three floats are OS windows of the application
+ok   minimising the main window hides the floats; restoring shows them
+ok   window.floatingPanels.set visible false after minimise and restore: every float window goes and stays gone
+ok   window.floatingPanels.set visible true: the three floats return
+ok   hidden floats stay hidden through minimise and restore, and return when shown again
+ok   workspace.save stores the arrangement with its float
+ok   the OS window has the requested size, which the kernel holds
+ok   preferences persisted across a restart
+ok   the key binding persisted
+ok   the user workspace persisted
+ok   after the restart the float is a window again (tree and OS)
+ok   window.panel.set floating false: the float window closes (tree and OS)
+ok   the window geometry persisted: the restarted OS window has it
+ok   the persisted theme is applied by the restarted GUI
+ok   after the restart the GUI renders the area at the size the splitter set
+ok   a corrupt keymap file falls back to the defaults
+ok   the corrupt file was kept aside
+{
+  "failed": []
+}
+

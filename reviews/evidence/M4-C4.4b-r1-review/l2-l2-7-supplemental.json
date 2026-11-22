@@ -1,0 +1,2962 @@
+[
+  {
+    "name": "cameraView-perspective-active-after-switch",
+    "value": {
+      "toolId": "select",
+      "temporaryToolId": null,
+      "group": "select"
+    }
+  },
+  {
+    "name": "cameraView-perspective-context-action",
+    "value": [
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "draw.viewMapping.get",
+        "params": {
+          "view": "cameraView"
+        }
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "draw.viewMapping.get",
+        "params": {
+          "view": "cameraView"
+        }
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ]
+  },
+  {
+    "name": "cameraView-perspective-drawTopLayer",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "perspective",
+        "options": {
+          "mapping": "auto"
+        }
+      }
+    }
+  },
+  {
+    "name": "cameraView-perspective-empty-drawings",
+    "value": {
+      "origin": "user",
+      "tool": "perspective",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1.5999999999999999,
+        0,
+        0,
+        -1.5999999999999999,
+        417,
+        221.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 288.921875,
+          "y": 317,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 116,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 303,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "rect",
+            "rect": {
+              "x": -80.048828125,
+              "y": -59.6875,
+              "width": 30,
+              "height": 25
+            },
+            "rectRule": "inside",
+            "mode": "replace"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "cameraView-perspective-empty-selection",
+    "value": {
+      "origin": "user",
+      "tool": "perspective",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1.5999999999999999,
+        0,
+        0,
+        -1.5999999999999999,
+        417,
+        221.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 288.921875,
+          "y": 317,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 288.921875,
+          "y": 317,
+          "modifiers": [],
+          "dt": 10,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 100,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 311,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "rect",
+            "rect": {
+              "x": -80.048828125,
+              "y": -59.6875,
+              "width": 30,
+              "height": 25
+            },
+            "rectRule": "inside",
+            "mode": "replace"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "cameraView-perspective-held-agent",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "perspective"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "cameraView-perspective-held-frame",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "perspective"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "cameraView-perspective-held-tool",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "perspective"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "cameraView-perspective-keyboard-switch-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800R6P4F07MXV7VA1GP",
+        "ids": [
+          "st_01K7JJN80062PWTR35GNEEHCTE"
+        ],
+        "createdIds": [
+          "zn_641VKMQJCMGV1SAMC4FXQ2R9G8"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN80062PWTR35GNEEHCTE"
+        ],
+        "removedIds": [
+          "zn_8ED203YCCEXRXNZKZ7JVF24RSM"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Scale Object"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-perspective-lifecycle-agent-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800X1652D6SY6S9KVJ0",
+        "ids": [
+          "st_01K7JJN8000EM8W0VXKM9CE10A"
+        ],
+        "createdIds": [
+          "zn_NSMJ0VWC81ZSDWTS2GHMVGP9GB"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN8000EM8W0VXKM9CE10A"
+        ],
+        "removedIds": [
+          "zn_VWXQT00M6108E1K8DGFWEZXNEC"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-perspective-lifecycle-frame-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800BBW1E8HVM53H4DKT",
+        "ids": [
+          "st_01K7JJN8002JN54K6WCBMSNMR4"
+        ],
+        "createdIds": [
+          "zn_3ZMBK7YS6BTKECJRM1C0RSMSVA"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN8002JN54K6WCBMSNMR4"
+        ],
+        "removedIds": [
+          "zn_7QAHP15H24FNQ02PKTJ1P4Y2TQ"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-perspective-lifecycle-tool-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800ZJJY12K8FA5WG1XY",
+        "ids": [
+          "st_01K7JJN800KCNQCJETBZA4ARQ8"
+        ],
+        "createdIds": [
+          "zn_7CX5V6ESSDC05DZGY4TY1QE6TN"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN800KCNQCJETBZA4ARQ8"
+        ],
+        "removedIds": [
+          "zn_3ZM4BWETJ1YYAE2E6WBRT5SPC8"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-perspective-options",
+    "value": "<div class=\"tool-options\" data-tt-role=\"group\" data-tt-id=\"toolOptions\" data-tt-label=\"Tool options\"><div class=\"tool-toggles\" role=\"group\" aria-label=\"Drawing settings\"><label title=\"Draw Behind is on: it takes precedence (02 \u00a78.10)\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.drawTopLayer\" data-tt-command=\"tool.drawTopLayer.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\" disabled=\"\">Draw on Top Layer</label><label title=\"Draw Behind\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.placeBehind\" data-tt-command=\"tool.placeBehind.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Draw Behind</label><label title=\"Snap to Contour\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.snapToContour\" data-tt-command=\"tool.snapToContour.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Snap to Contour</label></div></div>"
+  },
+  {
+    "name": "cameraView-perspective-placeBehind",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "perspective",
+        "options": {
+          "mapping": "auto"
+        }
+      }
+    }
+  },
+  {
+    "name": "cameraView-perspective-snapToContour",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "perspective",
+        "options": {
+          "mapping": "auto"
+        }
+      }
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-active-after-switch",
+    "value": {
+      "toolId": "select",
+      "temporaryToolId": null,
+      "group": "select"
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-context-action",
+    "value": [
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ]
+  },
+  {
+    "name": "cameraView-repositionAll-drawTopLayer",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "repositionAll",
+        "options": {}
+      }
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-empty-drawings",
+    "value": {
+      "origin": "user",
+      "tool": "repositionAll",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1.5999999999999999,
+        0,
+        0,
+        -1.5999999999999999,
+        417,
+        221.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 288.921875,
+          "y": 317,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 288.921875,
+          "y": 317,
+          "modifiers": [],
+          "dt": 7,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 117,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 300,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "error",
+      "code": "drawing.nothingToDo",
+      "commands": []
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-empty-selection",
+    "value": {
+      "origin": "user",
+      "tool": "repositionAll",
+      "view": "cameraView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1.5999999999999999,
+        0,
+        0,
+        -1.5999999999999999,
+        417,
+        221.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 288.921875,
+          "y": 317,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 288.921875,
+          "y": 317,
+          "modifiers": [],
+          "dt": 11,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 117,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 336.921875,
+          "y": 277,
+          "modifiers": [],
+          "dt": 297,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131409593557256,
+              "y": 0.7919916796671866
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-held-agent",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "repositionAll"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-held-frame",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "repositionAll"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-held-tool",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "repositionAll"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-keyboard-switch-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800Z7JDGRQM52XZNS54",
+        "ids": [
+          "st_01K7JJN800697DS6EKJT9V8QRA"
+        ],
+        "createdIds": [
+          "zn_BXHMMDMWQD1N7XX9NZST442BVY"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN800697DS6EKJT9V8QRA"
+        ],
+        "removedIds": [
+          "zn_KYNS7RNYYHZVTQ6JT6YWXHN9W8"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Scale Object"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-lifecycle-agent-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingIds": [
+          "dr_01K7JJN800NRWGNM41N1Z168HP",
+          "dr_01K7JJN800SH814MJZH3TBC1BN",
+          "dr_01K7JJN800RN952WCZTQEG86AP"
+        ],
+        "skippedIds": []
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Reposition All Drawings"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-lifecycle-frame-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingIds": [
+          "dr_01K7JJN800HV20PQ2D69236EK9",
+          "dr_01K7JJN800NXX7SAK875VV69P7",
+          "dr_01K7JJN800T6ZS0ZVMN7V7RX91"
+        ],
+        "skippedIds": []
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Reposition All Drawings"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-lifecycle-tool-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingIds": [
+          "dr_01K7JJN800JYY0VTVYHQZW7T6N",
+          "dr_01K7JJN8001PQVSX51PBTP9F8P",
+          "dr_01K7JJN800T6FG6EZ12Z9N4VFJ"
+        ],
+        "skippedIds": []
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Reposition All Drawings"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-options",
+    "value": "<div class=\"tool-options\" data-tt-role=\"group\" data-tt-id=\"toolOptions\" data-tt-label=\"Tool options\"><div class=\"tool-toggles\" role=\"group\" aria-label=\"Drawing settings\"><label title=\"Draw Behind is on: it takes precedence (02 \u00a78.10)\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.drawTopLayer\" data-tt-command=\"tool.drawTopLayer.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\" disabled=\"\">Draw on Top Layer</label><label title=\"Draw Behind\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.placeBehind\" data-tt-command=\"tool.placeBehind.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Draw Behind</label><label title=\"Snap to Contour\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.snapToContour\" data-tt-command=\"tool.snapToContour.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Snap to Contour</label></div></div>"
+  },
+  {
+    "name": "cameraView-repositionAll-placeBehind",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "repositionAll",
+        "options": {}
+      }
+    }
+  },
+  {
+    "name": "cameraView-repositionAll-snapToContour",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "repositionAll",
+        "options": {}
+      }
+    }
+  },
+  {
+    "name": "drawingView-perspective-active-after-switch",
+    "value": {
+      "toolId": "select",
+      "temporaryToolId": null,
+      "group": "select"
+    }
+  },
+  {
+    "name": "drawingView-perspective-context-action",
+    "value": [
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ]
+  },
+  {
+    "name": "drawingView-perspective-drawTopLayer",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "perspective",
+        "options": {
+          "mapping": "auto"
+        }
+      }
+    }
+  },
+  {
+    "name": "drawingView-perspective-empty-drawings",
+    "value": {
+      "origin": "user",
+      "tool": "perspective",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        417,
+        316.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 336.921875,
+          "y": 377,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 336.921875,
+          "y": 377,
+          "modifiers": [],
+          "dt": 15,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 100,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 297,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "rect",
+            "rect": {
+              "x": -80.078125,
+              "y": -60.5,
+              "width": 30,
+              "height": 26
+            },
+            "rectRule": "inside",
+            "mode": "replace"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "drawingView-perspective-empty-selection",
+    "value": {
+      "origin": "user",
+      "tool": "perspective",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        417,
+        316.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 336.921875,
+          "y": 377,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 116,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 303,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 3,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.selection.set",
+          "params": {
+            "by": "rect",
+            "rect": {
+              "x": -80.078125,
+              "y": -60.5,
+              "width": 30,
+              "height": 26
+            },
+            "rectRule": "inside",
+            "mode": "replace"
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "drawingView-perspective-held-agent",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "perspective"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "drawingView-perspective-held-frame",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "perspective"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "drawingView-perspective-held-tool",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201cperspective\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "perspective"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "drawingView-perspective-keyboard-switch-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800KPJH2MMCHZ1682WV",
+        "ids": [
+          "st_01K7JJN800BN7SD15M6EPBHD41"
+        ],
+        "createdIds": [
+          "zn_210GZ5R426KA4WN78CGGC2QSZ5"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN800BN7SD15M6EPBHD41"
+        ],
+        "removedIds": [
+          "zn_BXXQX9A1Q2EH7KS8EHDXFDY1NK"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Scale Object"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-perspective-lifecycle-agent-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN80004NGJ7YTKFRKRA12",
+        "ids": [
+          "st_01K7JJN80047HBWVYQV4Q7A4VT"
+        ],
+        "createdIds": [
+          "zn_QP512F2HNVWQ7FRWBGRWPEDQCT"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN80047HBWVYQV4Q7A4VT"
+        ],
+        "removedIds": [
+          "zn_A48806NXYJYEBH6P0W54DXMF9Y"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-perspective-lifecycle-frame-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800TSHKWNZQT6P9JCGT",
+        "ids": [
+          "st_01K7JJN800PDKYWH5H4WGHDYS9"
+        ],
+        "createdIds": [
+          "zn_WATM8TMNYPKVCNZXPQRGPFZ819"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN800PDKYWH5H4WGHDYS9"
+        ],
+        "removedIds": [
+          "zn_J3S89RNMCP4NZ94CDQDN7WX52N"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-perspective-lifecycle-tool-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800CTJBXZ1MPXS1B0C4",
+        "ids": [
+          "st_01K7JJN8009SGZRYBY673Q2WVW"
+        ],
+        "createdIds": [
+          "zn_KW6STAXT88X07VZJ6KWJ40QSFR"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN8009SGZRYBY673Q2WVW"
+        ],
+        "removedIds": [
+          "zn_8QR9JXV9Q3PE1M8DYE654RYTPC"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Perspective Tool"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-perspective-options",
+    "value": "<div class=\"tool-options\" data-tt-role=\"group\" data-tt-id=\"toolOptions\" data-tt-label=\"Tool options\"><div class=\"tool-toggles\" role=\"group\" aria-label=\"Drawing settings\"><label title=\"Draw Behind is on: it takes precedence (02 \u00a78.10)\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.drawTopLayer\" data-tt-command=\"tool.drawTopLayer.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\" disabled=\"\">Draw on Top Layer</label><label title=\"Draw Behind\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.placeBehind\" data-tt-command=\"tool.placeBehind.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Draw Behind</label><label title=\"Snap to Contour\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.snapToContour\" data-tt-command=\"tool.snapToContour.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Snap to Contour</label></div></div>"
+  },
+  {
+    "name": "drawingView-perspective-placeBehind",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "perspective",
+        "options": {
+          "mapping": "auto"
+        }
+      }
+    }
+  },
+  {
+    "name": "drawingView-perspective-snapToContour",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "perspective",
+        "options": {
+          "mapping": "auto"
+        }
+      }
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-active-after-switch",
+    "value": {
+      "toolId": "select",
+      "temporaryToolId": null,
+      "group": "select"
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-context-action",
+    "value": [
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "edit.selectAll",
+        "params": {
+          "context": "drawing"
+        }
+      },
+      {
+        "command": "anim.camera.list",
+        "params": {}
+      },
+      {
+        "command": "anim.camera.current.get",
+        "params": {}
+      },
+      {
+        "command": "app.state.get",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "window.panel.list",
+        "params": {}
+      },
+      {
+        "command": "workspace.get",
+        "params": {}
+      },
+      {
+        "command": "workspace.list",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      },
+      {
+        "command": "agent.server.status",
+        "params": {}
+      },
+      {
+        "command": "ui.statusBar.get",
+        "params": {}
+      }
+    ]
+  },
+  {
+    "name": "drawingView-repositionAll-drawTopLayer",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.drawTopLayer.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "repositionAll",
+        "options": {}
+      }
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-empty-drawings",
+    "value": {
+      "origin": "user",
+      "tool": "repositionAll",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        417,
+        316.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 336.921875,
+          "y": 377,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 336.921875,
+          "y": 377,
+          "modifiers": [],
+          "dt": 13,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 100,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 309,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "error",
+      "code": "drawing.nothingToDo",
+      "commands": []
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-empty-selection",
+    "value": {
+      "origin": "user",
+      "tool": "repositionAll",
+      "view": "drawingView",
+      "pointerType": "mouse",
+      "drawingToView": [
+        1,
+        0,
+        0,
+        -1,
+        417,
+        316.5
+      ],
+      "events": [
+        {
+          "type": "down",
+          "x": 336.921875,
+          "y": 377,
+          "modifiers": [],
+          "dt": 0,
+          "pressure": 1,
+          "button": "left"
+        },
+        {
+          "type": "move",
+          "x": 336.921875,
+          "y": 377,
+          "modifiers": [],
+          "dt": 4,
+          "pressure": 1
+        },
+        {
+          "type": "move",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 117,
+          "pressure": 1
+        },
+        {
+          "type": "up",
+          "x": 366.921875,
+          "y": 351,
+          "modifiers": [],
+          "dt": 294,
+          "pressure": 1
+        }
+      ],
+      "eventCount": 4,
+      "status": "ok",
+      "code": null,
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 0.8131750510849469,
+              "y": 0.7851239669421488
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-held-agent",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "repositionAll"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-held-frame",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "repositionAll"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-held-tool",
+    "value": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.busy",
+        "message": "the user is busy (gesture \u201crepositionAll\u201d); the agent's change waited and gave up",
+        "details": {
+          "blockedBy": {
+            "kind": "gesture",
+            "title": "repositionAll"
+          },
+          "waitedMs": 10000
+        },
+        "hint": "retry when the user is done; app.state.get reports `modal`"
+      }
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-keyboard-switch-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingId": "dr_01K7JJN800P81ZZ828NDJ0A0S7",
+        "ids": [
+          "st_01K7JJN800RNBWFGZ3SXDE98C2"
+        ],
+        "createdIds": [
+          "zn_TNSK2V5B51CW7GCFTRN27EHQ02"
+        ],
+        "modifiedIds": [
+          "st_01K7JJN800RNBWFGZ3SXDE98C2"
+        ],
+        "removedIds": [
+          "zn_CXZC93TJ4C8CTTD5GE35FQFDEW"
+        ],
+        "rev": 10
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Scale Object"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-lifecycle-agent-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingIds": [
+          "dr_01K7JJN800X3WD3NEXKH7DP3QP",
+          "dr_01K7JJN800KCFRQAM1MJZZ8KM8",
+          "dr_01K7JJN8000W92TC0NSNGST23R"
+        ],
+        "skippedIds": []
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Reposition All Drawings"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-lifecycle-frame-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingIds": [
+          "dr_01K7JJN800FTJXS4495X9KPKFH",
+          "dr_01K7JJN800NZ6ESJ9DKR83FG4G",
+          "dr_01K7JJN8001MSWGT25XEB0T7SE"
+        ],
+        "skippedIds": []
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Reposition All Drawings"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-lifecycle-tool-direct-answer",
+    "value": {
+      "status": "ok",
+      "result": {
+        "drawingIds": [
+          "dr_01K7JJN8004F2DQBXDZ5MVDFHF",
+          "dr_01K7JJN800WS52BY0MVZAQ8GB5",
+          "dr_01K7JJN800Y58MMFJ7SSP8Z6BC"
+        ],
+        "skippedIds": []
+      },
+      "undo": {
+        "stepId": "u-1",
+        "label": "Reposition All Drawings"
+      },
+      "error": null,
+      "errors": null
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-options",
+    "value": "<div class=\"tool-options\" data-tt-role=\"group\" data-tt-id=\"toolOptions\" data-tt-label=\"Tool options\"><div class=\"tool-toggles\" role=\"group\" aria-label=\"Drawing settings\"><label title=\"Draw Behind is on: it takes precedence (02 \u00a78.10)\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.drawTopLayer\" data-tt-command=\"tool.drawTopLayer.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\" disabled=\"\">Draw on Top Layer</label><label title=\"Draw Behind\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.placeBehind\" data-tt-command=\"tool.placeBehind.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Draw Behind</label><label title=\"Snap to Contour\"><input data-tt-role=\"checkbox\" data-tt-id=\"toolOptions.snapToContour\" data-tt-command=\"tool.snapToContour.set\" data-tt-params=\"{&quot;enabled&quot;:false}\" type=\"checkbox\">Snap to Contour</label></div></div>"
+  },
+  {
+    "name": "drawingView-repositionAll-placeBehind",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.placeBehind.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "repositionAll",
+        "options": {}
+      }
+    }
+  },
+  {
+    "name": "drawingView-repositionAll-snapToContour",
+    "value": {
+      "sent": [
+        {
+          "command": "tool.snapToContour.set",
+          "params": {
+            "enabled": true
+          }
+        }
+      ],
+      "options": {
+        "toolId": "repositionAll",
+        "options": {}
+      }
+    }
+  },
+  {
+    "name": "cameraView-perspective-context",
+    "value": [
+      {
+        "id": "cameraView.drawingMenu.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.selectAll",
+        "label": "Select All",
+        "command": {
+          "commandId": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.deselectAll",
+        "label": "Deselect All",
+        "command": {
+          "commandId": "edit.deselectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.front",
+        "label": "Bring to Front",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "front"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.forward",
+        "label": "Bring Forward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "forward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.backward",
+        "label": "Send Backward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "backward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.back",
+        "label": "Send to Back",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "back"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.horizontal",
+        "label": "Flip Horizontal",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "horizontal"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.vertical",
+        "label": "Flip Vertical",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "vertical"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90cw",
+        "label": "Rotate 90\u00b0 CW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90cw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90ccw",
+        "label": "Rotate 90\u00b0 CCW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90ccw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.180",
+        "label": "Rotate 180\u00b0",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "180"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.group",
+        "label": "Group",
+        "command": {
+          "commandId": "draw.group.create",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.ungroup",
+        "label": "Ungroup",
+        "command": {
+          "commandId": "draw.group.delete",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.flatten",
+        "label": "Flatten",
+        "command": {
+          "commandId": "draw.flatten.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.optimize",
+        "label": "Optimize",
+        "command": {
+          "commandId": "draw.optimize.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.smooth",
+        "label": "Smooth",
+        "command": {
+          "commandId": "draw.smooth.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.centreLine",
+        "label": "Extract Centre Line",
+        "command": {
+          "commandId": "draw.centreLine.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.linesToBrush",
+        "label": "Convert Lines to Brush",
+        "command": {
+          "commandId": "draw.linesToBrush.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.breakApart",
+        "label": "Break Text Apart",
+        "command": {
+          "commandId": "draw.breakApart.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      }
+    ]
+  },
+  {
+    "name": "cameraView-repositionAll-context",
+    "value": [
+      {
+        "id": "cameraView.drawingMenu.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.selectAll",
+        "label": "Select All",
+        "command": {
+          "commandId": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.deselectAll",
+        "label": "Deselect All",
+        "command": {
+          "commandId": "edit.deselectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.front",
+        "label": "Bring to Front",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "front"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.forward",
+        "label": "Bring Forward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "forward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.backward",
+        "label": "Send Backward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "backward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.arrange.back",
+        "label": "Send to Back",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "back"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.horizontal",
+        "label": "Flip Horizontal",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "horizontal"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.flip.vertical",
+        "label": "Flip Vertical",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "vertical"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90cw",
+        "label": "Rotate 90\u00b0 CW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90cw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.90ccw",
+        "label": "Rotate 90\u00b0 CCW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90ccw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.rotate.180",
+        "label": "Rotate 180\u00b0",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "180"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.group",
+        "label": "Group",
+        "command": {
+          "commandId": "draw.group.create",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.ungroup",
+        "label": "Ungroup",
+        "command": {
+          "commandId": "draw.group.delete",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.flatten",
+        "label": "Flatten",
+        "command": {
+          "commandId": "draw.flatten.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.optimize",
+        "label": "Optimize",
+        "command": {
+          "commandId": "draw.optimize.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.smooth",
+        "label": "Smooth",
+        "command": {
+          "commandId": "draw.smooth.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.centreLine",
+        "label": "Extract Centre Line",
+        "command": {
+          "commandId": "draw.centreLine.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.linesToBrush",
+        "label": "Convert Lines to Brush",
+        "command": {
+          "commandId": "draw.linesToBrush.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "cameraView.drawingMenu.breakApart",
+        "label": "Break Text Apart",
+        "command": {
+          "commandId": "draw.breakApart.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      }
+    ]
+  },
+  {
+    "name": "drawingView-perspective-context",
+    "value": [
+      {
+        "id": "drawingView.drawingMenu.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.selectAll",
+        "label": "Select All",
+        "command": {
+          "commandId": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.deselectAll",
+        "label": "Deselect All",
+        "command": {
+          "commandId": "edit.deselectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.front",
+        "label": "Bring to Front",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "front"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.forward",
+        "label": "Bring Forward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "forward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.backward",
+        "label": "Send Backward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "backward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.back",
+        "label": "Send to Back",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "back"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.horizontal",
+        "label": "Flip Horizontal",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "horizontal"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.vertical",
+        "label": "Flip Vertical",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "vertical"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90cw",
+        "label": "Rotate 90\u00b0 CW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90cw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90ccw",
+        "label": "Rotate 90\u00b0 CCW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90ccw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.180",
+        "label": "Rotate 180\u00b0",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "180"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.group",
+        "label": "Group",
+        "command": {
+          "commandId": "draw.group.create",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.ungroup",
+        "label": "Ungroup",
+        "command": {
+          "commandId": "draw.group.delete",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.flatten",
+        "label": "Flatten",
+        "command": {
+          "commandId": "draw.flatten.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.optimize",
+        "label": "Optimize",
+        "command": {
+          "commandId": "draw.optimize.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.smooth",
+        "label": "Smooth",
+        "command": {
+          "commandId": "draw.smooth.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.centreLine",
+        "label": "Extract Centre Line",
+        "command": {
+          "commandId": "draw.centreLine.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.linesToBrush",
+        "label": "Convert Lines to Brush",
+        "command": {
+          "commandId": "draw.linesToBrush.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.breakApart",
+        "label": "Break Text Apart",
+        "command": {
+          "commandId": "draw.breakApart.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      }
+    ]
+  },
+  {
+    "name": "drawingView-repositionAll-context",
+    "value": [
+      {
+        "id": "drawingView.drawingMenu.cut",
+        "label": "Cut",
+        "command": {
+          "commandId": "edit.cut",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.copy",
+        "label": "Copy",
+        "command": {
+          "commandId": "edit.copy",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.paste",
+        "label": "Paste",
+        "command": {
+          "commandId": "edit.paste",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.selectAll",
+        "label": "Select All",
+        "command": {
+          "commandId": "edit.selectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.deselectAll",
+        "label": "Deselect All",
+        "command": {
+          "commandId": "edit.deselectAll",
+          "params": {
+            "context": "drawing"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.front",
+        "label": "Bring to Front",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "front"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.forward",
+        "label": "Bring Forward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "forward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.backward",
+        "label": "Send Backward",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "backward"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.arrange.back",
+        "label": "Send to Back",
+        "command": {
+          "commandId": "draw.arrange.apply",
+          "params": {
+            "to": "back"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.horizontal",
+        "label": "Flip Horizontal",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "horizontal"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.flip.vertical",
+        "label": "Flip Vertical",
+        "command": {
+          "commandId": "draw.flip.apply",
+          "params": {
+            "axis": "vertical"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90cw",
+        "label": "Rotate 90\u00b0 CW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90cw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.90ccw",
+        "label": "Rotate 90\u00b0 CCW",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "90ccw"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.rotate.180",
+        "label": "Rotate 180\u00b0",
+        "command": {
+          "commandId": "draw.rotate.apply",
+          "params": {
+            "by": "180"
+          }
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.group",
+        "label": "Group",
+        "command": {
+          "commandId": "draw.group.create",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.ungroup",
+        "label": "Ungroup",
+        "command": {
+          "commandId": "draw.group.delete",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.flatten",
+        "label": "Flatten",
+        "command": {
+          "commandId": "draw.flatten.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.optimize",
+        "label": "Optimize",
+        "command": {
+          "commandId": "draw.optimize.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.smooth",
+        "label": "Smooth",
+        "command": {
+          "commandId": "draw.smooth.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.centreLine",
+        "label": "Extract Centre Line",
+        "command": {
+          "commandId": "draw.centreLine.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.linesToBrush",
+        "label": "Convert Lines to Brush",
+        "command": {
+          "commandId": "draw.linesToBrush.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      },
+      {
+        "id": "drawingView.drawingMenu.breakApart",
+        "label": "Break Text Apart",
+        "command": {
+          "commandId": "draw.breakApart.apply",
+          "params": {}
+        },
+        "disabled": null,
+        "reason": null
+      }
+    ]
+  }
+]

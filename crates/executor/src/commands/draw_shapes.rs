@@ -55,8 +55,15 @@ struct Common<'a> {
     symmetry: bool,
 }
 
-/// Adds a pencil path through `draw.stroke.add`: corner points, or a Bézier list.
-fn add(cx: &mut Cx, c: &Common<'_>, geometry: Value, closed: bool) -> Result<ShapeResult, CommandError> {
+/// Adds a pencil path through `draw.stroke.add`: corner points, or a Bézier list. The step keeps the shape's own undo
+/// label (`label`: 02 §7.2, §13.5; C42B-R2-04), not the stroke command's "Pencil Tool".
+fn add(
+    cx: &mut Cx,
+    c: &Common<'_>,
+    geometry: Value,
+    closed: bool,
+    label: &'static str,
+) -> Result<ShapeResult, CommandError> {
     let mut v = json!({ "kind": "pencil", "fit": false, "closed": closed, "layer": c.layer, "symmetry": c.symmetry });
     if let Some(o) = v.as_object_mut() {
         if let Some(m) = geometry.as_object() {
@@ -81,6 +88,7 @@ fn add(cx: &mut Cx, c: &Common<'_>, geometry: Value, closed: bool) -> Result<Sha
     let p: StrokeAddParams = serde_json::from_value(v)
         .map_err(|e| err("arg.invalid", format!("shape parameters: {e}"), json!({ "pointer": "" })))?;
     let r = serde_json::to_value(draw_stroke_add(cx, p)?).map_err(|e| CommandError::internal(e.to_string()))?;
+    cx.set_label(label);
     let ids = |k: &str| -> Vec<String> {
         r.get(k).and_then(Value::as_array).into_iter().flatten().filter_map(Value::as_str).map(str::to_owned).collect()
     };
@@ -162,6 +170,12 @@ pub(crate) struct BoxShapeParams {
     /// Symmetry copies (02 §6.2).
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 impl BoxShapeParams {
@@ -182,6 +196,7 @@ impl BoxShapeParams {
 
 #[command(
     id = "draw.rectangle.add",
+    precheck = super::draw::precheck_shape,
     kind = action,
     label = "Rectangle",
     scopes = [edit],
@@ -191,6 +206,8 @@ impl BoxShapeParams {
     gui = "Drawing view: Rectangle tool (M4 C4.2)",
 )]
 pub(crate) fn draw_rectangle_add(cx: &mut Cx, p: BoxShapeParams) -> Result<ShapeResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let (a, b) = drag_box(p.from, p.to, p.square, p.from_centre);
     if let Some(e) = degenerate(a, b, "rectangle") {
         return Err(e);
@@ -198,7 +215,7 @@ pub(crate) fn draw_rectangle_add(cx: &mut Cx, p: BoxShapeParams) -> Result<Shape
     // Counter-clockwise from the lower-left corner (y up).
     let (x0, x1, y0, y1) = (a.x.min(b.x), a.x.max(b.x), a.y.min(b.y), a.y.max(b.y));
     let pts = [P::new(x0, y0), P::new(x1, y0), P::new(x1, y1), P::new(x0, y1)];
-    add(cx, &p.common(), points_json(&pts), true)
+    add(cx, &p.common(), points_json(&pts), true, "Rectangle Tool")
 }
 
 /// The Bézier constant of a quarter circle.
@@ -246,10 +263,17 @@ pub(crate) struct EllipseParams {
     /// Symmetry copies (02 §6.2).
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 #[command(
     id = "draw.ellipse.add",
+    precheck = super::draw::precheck_shape,
     kind = action,
     label = "Ellipse",
     scopes = [edit],
@@ -273,6 +297,8 @@ pub(crate) fn draw_ellipse_add(cx: &mut Cx, p: EllipseParams) -> Result<ShapeRes
         pen_id: p.pen_id,
         layer: p.layer,
         symmetry: p.symmetry,
+        space: p.space,
+        view: p.view,
     };
     let (a, b) = drag_box(p.from, p.to, p.square, p.from_centre);
     if let Some(e) = degenerate(a, b, "ellipse") {
@@ -297,7 +323,7 @@ pub(crate) fn draw_ellipse_add(cx: &mut Cx, p: EllipseParams) -> Result<ShapeRes
         P::new(cx0 + rx, cy0 - ky),
     ];
     let bezier = json!({ "bezier": list.iter().map(|q| json!({ "x": q.x, "y": q.y })).collect::<Vec<_>>() });
-    add(cx, &p.common(), bezier, true)
+    add(cx, &p.common(), bezier, true, "Ellipse Tool")
 }
 
 /// `draw.line.add` parameters.
@@ -343,10 +369,17 @@ pub(crate) struct LineParams {
     /// Symmetry copies.
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 #[command(
     id = "draw.line.add",
+    precheck = super::draw::precheck_line,
     kind = action,
     label = "Line",
     scopes = [edit],
@@ -356,6 +389,8 @@ pub(crate) struct LineParams {
     gui = "Drawing view: Line tool (M4 C4.2)",
 )]
 pub(crate) fn draw_line_add(cx: &mut Cx, p: LineParams) -> Result<ShapeResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let from = match (p.from, p.continue_previous) {
         (Some(f), false) => P::new(f.x, f.y),
         (_, true) => {
@@ -403,7 +438,7 @@ pub(crate) fn draw_line_add(cx: &mut Cx, p: LineParams) -> Result<ShapeResult, C
         layer: &p.layer,
         symmetry: p.symmetry,
     };
-    let r = add(cx, &c, points_json(&[from, to]), false)?;
+    let r = add(cx, &c, points_json(&[from, to]), false, "Line Tool")?;
     remember_line_end(cx, &r.drawing_id, to);
     Ok(r)
 }
@@ -489,6 +524,12 @@ pub(crate) struct PolylineParams {
     /// Symmetry copies.
     #[serde(default = "yes")]
     symmetry: bool,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn eight() -> f64 {
@@ -497,6 +538,7 @@ fn eight() -> f64 {
 
 #[command(
     id = "draw.polyline.add",
+    precheck = super::draw::precheck_shape,
     kind = action,
     label = "Polyline",
     scopes = [edit],
@@ -506,6 +548,8 @@ fn eight() -> f64 {
     gui = "Drawing view: Polyline tool (M4 C4.2)",
 )]
 pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = &p.space;
     let mut anchors: Vec<(P, P, P)> = p
         .points
         .iter()
@@ -514,7 +558,9 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
             (P::new(q.x, q.y), h(q.in_handle), h(q.out_handle))
         })
         .collect();
-    if p.snap && p.snap_radius > 0.0 {
+    // The snap radius is in view pixels: through the given view's zoom, or 100 % without one (02 §13.1 item 5).
+    let snap_radius = crate::addressing::tolerance_du(cx, p.view.as_deref(), p.snap_radius)?;
+    if p.snap && snap_radius > 0.0 {
         let mut none = Vec::new();
         let t = super::draw::target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none);
         // A cell without a drawing yet (createDrawing) has nothing to snap to.
@@ -530,7 +576,7 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
             for a in &mut anchors {
                 if let Some(best) = existing
                     .iter()
-                    .filter(|e| e.dist(a.0) <= p.snap_radius)
+                    .filter(|e| e.dist(a.0) <= snap_radius)
                     .min_by(|x, y| x.dist(a.0).total_cmp(&y.dist(a.0)))
                 {
                     a.0 = *best;
@@ -565,5 +611,5 @@ pub(crate) fn draw_polyline_add(cx: &mut Cx, p: PolylineParams) -> Result<ShapeR
         layer: &p.layer,
         symmetry: p.symmetry,
     };
-    add(cx, &c, bezier, p.closed)
+    add(cx, &c, bezier, p.closed, "Polyline Tool")
 }

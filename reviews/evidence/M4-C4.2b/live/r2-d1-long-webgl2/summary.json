@@ -1,0 +1,180 @@
+{
+ "kind": "toontown.c42b.d1-long-summary",
+ "runner": "c42b-r2-live.py (30 samples)",
+ "mode": "d1-long-webgl2",
+ "exitCode": 1,
+ "assertion": "every commit (release-to-committed) <= 150 ms (the reviewer's probe, unchanged)",
+ "commitsMs": [
+  152.1,
+  175.5,
+  227.8,
+  241.5,
+  161.6,
+  139.4,
+  123.9,
+  133.4,
+  130.2,
+  186.3,
+  167.4,
+  129.8,
+  130.9,
+  128.7,
+  197.7,
+  120.9,
+  130.9,
+  135.9,
+  149.5,
+  138.7,
+  135.4,
+  127.8,
+  137.4,
+  129.5,
+  136.5,
+  133.3,
+  132.4,
+  137.8,
+  127.2,
+  126.9
+ ],
+ "commitParts": [
+  {
+   "answerMs": 115.6,
+   "drawMs": 36.5
+  },
+  {
+   "answerMs": 128.4,
+   "drawMs": 47.1
+  },
+  {
+   "answerMs": 172.5,
+   "drawMs": 55.3
+  },
+  {
+   "answerMs": 184.2,
+   "drawMs": 57.3
+  },
+  {
+   "answerMs": 121.2,
+   "drawMs": 40.4
+  },
+  {
+   "answerMs": 94.1,
+   "drawMs": 45.3
+  },
+  {
+   "answerMs": 97.8,
+   "drawMs": 26.1
+  },
+  {
+   "answerMs": 95,
+   "drawMs": 38.4
+  },
+  {
+   "answerMs": 95.5,
+   "drawMs": 34.7
+  },
+  {
+   "answerMs": 143.8,
+   "drawMs": 42.5
+  },
+  {
+   "answerMs": 129.4,
+   "drawMs": 38
+  },
+  {
+   "answerMs": 95.9,
+   "drawMs": 33.9
+  },
+  {
+   "answerMs": 93.4,
+   "drawMs": 37.5
+  },
+  {
+   "answerMs": 94.4,
+   "drawMs": 34.3
+  },
+  {
+   "answerMs": 141,
+   "drawMs": 56.7
+  },
+  {
+   "answerMs": 92.4,
+   "drawMs": 28.5
+  },
+  {
+   "answerMs": 97.2,
+   "drawMs": 33.7
+  },
+  {
+   "answerMs": 97.4,
+   "drawMs": 38.5
+  },
+  {
+   "answerMs": 116.5,
+   "drawMs": 33
+  },
+  {
+   "answerMs": 102.3,
+   "drawMs": 36.4
+  },
+  {
+   "answerMs": 98.5,
+   "drawMs": 36.9
+  },
+  {
+   "answerMs": 95.3,
+   "drawMs": 32.5
+  },
+  {
+   "answerMs": 97.1,
+   "drawMs": 40.3
+  },
+  {
+   "answerMs": 96.8,
+   "drawMs": 32.7
+  },
+  {
+   "answerMs": 96.9,
+   "drawMs": 39.6
+  },
+  {
+   "answerMs": 94.7,
+   "drawMs": 38.6
+  },
+  {
+   "answerMs": 100.2,
+   "drawMs": 32.2
+  },
+  {
+   "answerMs": 94.9,
+   "drawMs": 42.9
+  },
+  {
+   "answerMs": 96,
+   "drawMs": 31.2
+  },
+  {
+   "answerMs": 94,
+   "drawMs": 32.9
+  }
+ ],
+ "commitStats": {
+  "n": 30,
+  "p50": 135.9,
+  "p95": 227.8,
+  "max": 241.5
+ },
+ "frameMs": {
+  "n": 300,
+  "p50": 16.7,
+  "p95": 16.8,
+  "max": 66.7
+ },
+ "backend": "webgl2",
+ "rawFile": {
+  "name": "d1-long-webgl2.json",
+  "bytes": 45334367,
+  "sha256": "2da0d7486275f75b4a046742c6ffa399b37a7bea2d53037e305b8bab0502c040",
+  "note": "the probe's raw output (every sample of every gesture) is not committed for its size"
+ }
+}

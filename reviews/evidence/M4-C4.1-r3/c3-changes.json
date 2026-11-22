@@ -1,0 +1,1553 @@
+[
+  {
+    "check": "fresh renderedSeq is number",
+    "ok": true,
+    "detail": {
+      "source": "gui",
+      "target": "window",
+      "root": {
+        "role": "window",
+        "id": "main",
+        "label": "Toontown",
+        "children": [
+          {
+            "role": "group",
+            "id": "app",
+            "value": "light",
+            "children": [
+              {
+                "role": "toolbar",
+                "id": "mainToolbar",
+                "label": "Main toolbar",
+                "children": [
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.drawAid.grid.set",
+                    "label": "Grid visibility, type and overlay",
+                    "command": {
+                      "commandId": "drawAid.grid.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.gridType",
+                    "label": "Grid type",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.gridOverlay",
+                    "label": "Overlay",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.drawAid.onionSkin.set",
+                    "label": "Onion skin on/off and counts",
+                    "command": {
+                      "commandId": "drawAid.onionSkin.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.onionSkinPrevious",
+                    "label": "Previous drawings",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.onionSkinNext",
+                    "label": "Next drawings",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.drawAid.autoLightTable.set",
+                    "label": "Auto light table",
+                    "command": {
+                      "commandId": "drawAid.autoLightTable.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.firstFrame",
+                    "label": "First frame",
+                    "command": {
+                      "commandId": "app.frame.set",
+                      "params": {
+                        "frame": 1
+                      }
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.playStop",
+                    "label": "Play/Stop",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.lastFrame",
+                    "label": "Last frame",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.playback.loop.set",
+                    "label": "Loop playback on/off",
+                    "command": {
+                      "commandId": "playback.loop.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.lipsync.panel.open",
+                    "label": "Open/raise the lip-sync panel",
+                    "command": {
+                      "commandId": "lipsync.panel.open",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.cameraList",
+                    "label": "Camera",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.sceneList",
+                    "label": "Scene",
+                    "enabled": false
+                  },
+                  {
+                    "role": "field",
+                    "id": "mainToolbar.workspaceList",
+                    "label": "Workspace",
+                    "value": "Default",
+                    "command": {
+                      "commandId": "workspace.select"
+                    }
+                  }
+                ]
+              },
+              {
+                "role": "toolPalettes",
+                "id": "toolPalettes",
+                "label": "Tool palettes",
+                "children": [
+                  {
+                    "role": "toolPalette",
+                    "id": "drawingTools",
+                    "label": "Drawing tools"
+                  },
+                  {
+                    "role": "toolPalette",
+                    "id": "animationTools",
+                    "label": "Animation tools"
+                  },
+                  {
+                    "role": "toolPalette",
+                    "id": "boneTools",
+                    "label": "Bone tools"
+                  },
+                  {
+                    "role": "toolPalette",
+                    "id": "effectTools",
+                    "label": "Effect tools"
+                  }
+                ]
+              },
+              {
+                "role": "dock",
+                "id": "dock",
+                "children": [
+                  {
+                    "role": "tab",
+                    "id": "tab.cameraView",
+                    "label": "Camera view",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.cameraView.hide",
+                        "label": "Hide Camera view",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "cameraView",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "cameraView",
+                    "label": "Camera view",
+                    "children": [
+                      {
+                        "role": "toolbar",
+                        "id": "cameraView.toolbar",
+                        "children": [
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.drawing",
+                            "label": "Drawing",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "drawing"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.camera",
+                            "label": "Camera",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "camera"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.side",
+                            "label": "Side",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "side"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.top",
+                            "label": "Top",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "top"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.focus",
+                            "label": "Focus",
+                            "command": {
+                              "commandId": "window.panel.set"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "role": "canvas",
+                        "id": "cameraView.canvas"
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.timeline",
+                    "label": "Timeline",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.timeline.hide",
+                        "label": "Hide Timeline",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "timeline",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.xsheet",
+                    "label": "Exposure sheet",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.xsheet.hide",
+                        "label": "Hide Exposure sheet",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "xsheet",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.functionEditor",
+                    "label": "Function editor",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.functionEditor.hide",
+                        "label": "Hide Function editor",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "functionEditor",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.storyline",
+                    "label": "Storyline",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.storyline.hide",
+                        "label": "Hide Storyline",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "storyline",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "timeline",
+                    "label": "Timeline",
+                    "children": [
+                      {
+                        "role": "text",
+                        "id": "timeline.owner",
+                        "label": "This panel's content arrives with M5 C5.1."
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.colour",
+                    "label": "Colour",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.colour.hide",
+                        "label": "Hide Colour",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "colour",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.properties",
+                    "label": "Properties",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.properties.hide",
+                        "label": "Hide Properties",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "properties",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.library",
+                    "label": "Library",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.library.hide",
+                        "label": "Hide Library",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "library",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "colour",
+                    "label": "Colour",
+                    "children": [
+                      {
+                        "role": "text",
+                        "id": "colour.owner",
+                        "label": "This panel's content arrives with M7 C7.1."
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.pen",
+                    "label": "Pen",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.pen.hide",
+                        "label": "Hide Pen",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "pen",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.text",
+                    "label": "Text",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.text.hide",
+                        "label": "Hide Text",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "text",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.cells",
+                    "label": "Cells",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.cells.hide",
+                        "label": "Hide Cells",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "cells",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "pen",
+                    "label": "Pen",
+                    "children": [
+                      {
+                        "role": "text",
+                        "id": "pen.owner",
+                        "label": "This panel's content arrives with M4 C4.2."
+                      }
+                    ]
+                  },
+                  {
+                    "role": "area",
+                    "id": "area.right",
+                    "value": "330"
+                  },
+                  {
+                    "role": "area",
+                    "id": "area.bottom",
+                    "value": "190"
+                  }
+                ]
+              },
+              {
+                "role": "statusBar",
+                "id": "statusBar",
+                "children": [
+                  {
+                    "role": "text",
+                    "id": "status.line"
+                  },
+                  {
+                    "role": "text",
+                    "id": "status.description"
+                  },
+                  {
+                    "role": "text",
+                    "id": "status.context"
+                  },
+                  {
+                    "role": "text",
+                    "id": "status.pointer"
+                  },
+                  {
+                    "role": "text",
+                    "id": "status.playback"
+                  },
+                  {
+                    "role": "agentIndicator",
+                    "id": "agent",
+                    "label": "mcp",
+                    "value": "connected",
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "agent.toggle",
+                        "label": "Agent: mcp"
+                      }
+                    ]
+                  }
+                ]
+              },
+              {
+                "role": "startScreen",
+                "id": "startScreen",
+                "label": "Start screen",
+                "children": [
+                  {
+                    "role": "group",
+                    "id": "start.new",
+                    "label": "New project",
+                    "children": [
+                      {
+                        "role": "form",
+                        "id": "start.form",
+                        "children": [
+                          {
+                            "role": "field",
+                            "id": "start.name",
+                            "value": "Untitled"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.preset",
+                            "value": "default"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.frameRate",
+                            "value": "24"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.width",
+                            "value": "1920"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.height",
+                            "value": "1080"
+                          },
+                          {
+                            "role": "button",
+                            "id": "start.create",
+                            "label": "Create",
+                            "command": {
+                              "commandId": "project.create"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "role": "list",
+                    "id": "start.recent",
+                    "label": "Recent projects",
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "start.openOther",
+                        "label": "Open other\u2026",
+                        "command": {
+                          "commandId": "project.open"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "group",
+                    "id": "start.learn",
+                    "label": "Learning",
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "start.sample",
+                        "label": "Sample project",
+                        "enabled": false
+                      },
+                      {
+                        "role": "button",
+                        "id": "start.docs",
+                        "label": "Documentation",
+                        "command": {
+                          "commandId": "ui.help.open"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "group",
+                    "id": "start.showAtStartup",
+                    "children": [
+                      {
+                        "role": "field",
+                        "id": "start.showAtStartup.box",
+                        "value": "true",
+                        "checked": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "role": "notifications",
+            "label": "Notifications"
+          }
+        ]
+      },
+      "renderedSeq": 1
+    }
+  },
+  {
+    "check": "unbound key handled false",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "outcome": "unbound",
+        "keys": "F24",
+        "handled": false
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "disabled Undo typed reason",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "command.disabled",
+        "message": "`edit.undo` is not enabled: no project is open",
+        "details": {
+          "commandId": "edit.undo",
+          "reason": "no project is open",
+          "keys": "F6"
+        }
+      }
+    }
+  },
+  {
+    "check": "agent key under modal ui.modalOpen",
+    "ok": true,
+    "detail": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "ui.modalOpen",
+        "message": "a dialog the user opened has the keyboard; keys reach it, not the application",
+        "details": {
+          "keys": "F7",
+          "reason": "modal"
+        }
+      }
+    }
+  },
+  {
+    "check": "same key after OS Escape works",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "visible": false
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "float command accepted",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "panelId": "history",
+        "title": "History",
+        "visible": true,
+        "floating": true,
+        "current": true,
+        "geometry": {
+          "x": 80,
+          "y": 80,
+          "width": 480,
+          "height": 360
+        },
+        "focused": true
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "new float never falsely fresh without float",
+    "ok": false,
+    "detail": {
+      "source": "gui",
+      "target": "window",
+      "root": {
+        "role": "window",
+        "id": "main",
+        "label": "Toontown",
+        "children": [
+          {
+            "role": "group",
+            "id": "app",
+            "value": "light",
+            "children": [
+              {
+                "role": "toolbar",
+                "id": "mainToolbar",
+                "label": "Main toolbar",
+                "children": [
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.drawAid.grid.set",
+                    "label": "Grid visibility, type and overlay",
+                    "command": {
+                      "commandId": "drawAid.grid.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.gridType",
+                    "label": "Grid type",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.gridOverlay",
+                    "label": "Overlay",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.drawAid.onionSkin.set",
+                    "label": "Onion skin on/off and counts",
+                    "command": {
+                      "commandId": "drawAid.onionSkin.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.onionSkinPrevious",
+                    "label": "Previous drawings",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.onionSkinNext",
+                    "label": "Next drawings",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.drawAid.autoLightTable.set",
+                    "label": "Auto light table",
+                    "command": {
+                      "commandId": "drawAid.autoLightTable.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.firstFrame",
+                    "label": "First frame",
+                    "command": {
+                      "commandId": "app.frame.set",
+                      "params": {
+                        "frame": 1
+                      }
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.playStop",
+                    "label": "Play/Stop",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.lastFrame",
+                    "label": "Last frame",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.playback.loop.set",
+                    "label": "Loop playback on/off",
+                    "command": {
+                      "commandId": "playback.loop.set",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.lipsync.panel.open",
+                    "label": "Open/raise the lip-sync panel",
+                    "command": {
+                      "commandId": "lipsync.panel.open",
+                      "params": {}
+                    },
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.cameraList",
+                    "label": "Camera",
+                    "enabled": false
+                  },
+                  {
+                    "role": "button",
+                    "id": "mainToolbar.sceneList",
+                    "label": "Scene",
+                    "enabled": false
+                  },
+                  {
+                    "role": "field",
+                    "id": "mainToolbar.workspaceList",
+                    "label": "Workspace",
+                    "value": "Default",
+                    "command": {
+                      "commandId": "workspace.select"
+                    }
+                  }
+                ]
+              },
+              {
+                "role": "toolPalettes",
+                "id": "toolPalettes",
+                "label": "Tool palettes",
+                "children": [
+                  {
+                    "role": "toolPalette",
+                    "id": "drawingTools",
+                    "label": "Drawing tools"
+                  },
+                  {
+                    "role": "toolPalette",
+                    "id": "animationTools",
+                    "label": "Animation tools"
+                  },
+                  {
+                    "role": "toolPalette",
+                    "id": "boneTools",
+                    "label": "Bone tools"
+                  },
+                  {
+                    "role": "toolPalette",
+                    "id": "effectTools",
+                    "label": "Effect tools"
+                  }
+                ]
+              },
+              {
+                "role": "dock",
+                "id": "dock",
+                "children": [
+                  {
+                    "role": "tab",
+                    "id": "tab.cameraView",
+                    "label": "Camera view",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.cameraView.hide",
+                        "label": "Hide Camera view",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "cameraView",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "cameraView",
+                    "label": "Camera view",
+                    "children": [
+                      {
+                        "role": "toolbar",
+                        "id": "cameraView.toolbar",
+                        "children": [
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.drawing",
+                            "label": "Drawing",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "drawing"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.camera",
+                            "label": "Camera",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "camera"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.side",
+                            "label": "Side",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "side"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.type.top",
+                            "label": "Top",
+                            "command": {
+                              "commandId": "view.type.set",
+                              "params": {
+                                "viewId": "cameraView",
+                                "type": "top"
+                              }
+                            },
+                            "enabled": false
+                          },
+                          {
+                            "role": "button",
+                            "id": "cameraView.focus",
+                            "label": "Focus",
+                            "command": {
+                              "commandId": "window.panel.set"
+                            }
+                          }
+                        ]
+                      },
+                      {
+                        "role": "canvas",
+                        "id": "cameraView.canvas"
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.timeline",
+                    "label": "Timeline",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.timeline.hide",
+                        "label": "Hide Timeline",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "timeline",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.xsheet",
+                    "label": "Exposure sheet",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.xsheet.hide",
+                        "label": "Hide Exposure sheet",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "xsheet",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.functionEditor",
+                    "label": "Function editor",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.functionEditor.hide",
+                        "label": "Hide Function editor",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "functionEditor",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.storyline",
+                    "label": "Storyline",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.storyline.hide",
+                        "label": "Hide Storyline",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "storyline",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "timeline",
+                    "label": "Timeline",
+                    "children": [
+                      {
+                        "role": "text",
+                        "id": "timeline.owner",
+                        "label": "This panel's content arrives with M5 C5.1."
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.colour",
+                    "label": "Colour",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.colour.hide",
+                        "label": "Hide Colour",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "colour",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.properties",
+                    "label": "Properties",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.properties.hide",
+                        "label": "Hide Properties",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "properties",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.library",
+                    "label": "Library",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.library.hide",
+                        "label": "Hide Library",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "library",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "colour",
+                    "label": "Colour",
+                    "children": [
+                      {
+                        "role": "text",
+                        "id": "colour.owner",
+                        "label": "This panel's content arrives with M7 C7.1."
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.pen",
+                    "label": "Pen",
+                    "checked": true,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.pen.hide",
+                        "label": "Hide Pen",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "pen",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.text",
+                    "label": "Text",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.text.hide",
+                        "label": "Hide Text",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "text",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "tab",
+                    "id": "tab.cells",
+                    "label": "Cells",
+                    "checked": false,
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "tab.cells.hide",
+                        "label": "Hide Cells",
+                        "command": {
+                          "commandId": "window.panel.set",
+                          "params": {
+                            "panelId": "cells",
+                            "visible": false
+                          }
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "panel",
+                    "id": "pen",
+                    "label": "Pen",
+                    "children": [
+                      {
+                        "role": "text",
+                        "id": "pen.owner",
+                        "label": "This panel's content arrives with M4 C4.2."
+                      }
+                    ]
+                  },
+                  {
+                    "role": "area",
+                    "id": "area.right",
+                    "value": "330"
+                  },
+                  {
+                    "role": "area",
+                    "id": "area.bottom",
+                    "value": "190"
+                  }
+                ]
+              },
+              {
+                "role": "startScreen",
+                "id": "startScreen",
+                "label": "Start screen",
+                "children": [
+                  {
+                    "role": "group",
+                    "id": "start.new",
+                    "label": "New project",
+                    "children": [
+                      {
+                        "role": "form",
+                        "id": "start.form",
+                        "children": [
+                          {
+                            "role": "field",
+                            "id": "start.name",
+                            "value": "Untitled"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.preset",
+                            "value": "default"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.frameRate",
+                            "value": "24"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.width",
+                            "value": "1920"
+                          },
+                          {
+                            "role": "field",
+                            "id": "start.height",
+                            "value": "1080"
+                          },
+                          {
+                            "role": "button",
+                            "id": "start.create",
+                            "label": "Create",
+                            "command": {
+                              "commandId": "project.create"
+                            }
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "role": "list",
+                    "id": "start.recent",
+                    "label": "Recent projects",
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "start.openOther",
+                        "label": "Open other\u2026",
+                        "command": {
+                          "commandId": "project.open"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "group",
+                    "id": "start.learn",
+                    "label": "Learning",
+                    "children": [
+                      {
+                        "role": "button",
+                        "id": "start.sample",
+                        "label": "Sample project",
+                        "enabled": false
+                      },
+                      {
+                        "role": "button",
+                        "id": "start.docs",
+                        "label": "Documentation",
+                        "command": {
+                          "commandId": "ui.help.open"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "role": "group",
+                    "id": "start.showAtStartup",
+                    "children": [
+                      {
+                        "role": "field",
+                        "id": "start.showAtStartup.box",
+                        "value": "true",
+                        "checked": true
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "role": "notifications",
+            "label": "Notifications"
+          }
+        ]
+      },
+      "renderedSeq": 27
+    }
+  },
+  {
+    "observation": "MCP app scope refusal",
+    "envelope": {
+      "status": "error",
+      "changes": [],
+      "warnings": [],
+      "documentRev": null,
+      "error": {
+        "code": "permission.denied",
+        "message": "`agent.policy.defaults.set` needs the scopes [\"app\"]",
+        "details": {
+          "commandId": "agent.policy.defaults.set",
+          "missingScopes": [
+            "app"
+          ]
+        }
+      }
+    }
+  },
+  {
+    "check": "single policy member user shortcut applied",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "values": {
+          "agent.policy.defaults": {
+            "policy": "autonomous",
+            "maxJobs": 4,
+            "maxBatchSteps": 789,
+            "maxInlineImagePx": 1024,
+            "maxInlineBytes": 123456,
+            "askInApp": false,
+            "letAgentMoveView": false,
+            "highlightAgentChanges": false
+          }
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "policy siblings survive restart",
+    "ok": true,
+    "detail": {
+      "expected": {
+        "policy": "autonomous",
+        "maxJobs": 4,
+        "maxBatchSteps": 789,
+        "maxInlineImagePx": 1024,
+        "maxInlineBytes": 123456,
+        "askInApp": false,
+        "letAgentMoveView": false,
+        "highlightAgentChanges": false
+      },
+      "actual": {
+        "policy": "autonomous",
+        "maxJobs": 4,
+        "maxBatchSteps": 789,
+        "maxInlineImagePx": 1024,
+        "maxInlineBytes": 123456,
+        "askInApp": false,
+        "letAgentMoveView": false,
+        "highlightAgentChanges": false
+      }
+    }
+  },
+  {
+    "check": "user enable shortcut reaches preference",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "values": {
+          "agent.server.enabled": true
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "disable shortcut cleared preference",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "values": {
+          "agent.server.enabled": false
+        }
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  },
+  {
+    "check": "disabled endpoint stops and discovery clears within 3s",
+    "ok": false,
+    "detail": {
+      "durationS": 3.0053614000207745,
+      "responding": true,
+      "advertised": true
+    }
+  },
+  {
+    "check": "reenable with same bearer works",
+    "ok": true,
+    "detail": {
+      "status": "ok",
+      "result": {
+        "enabled": true,
+        "endpoint": null,
+        "sessions": [
+          {
+            "sessionId": "s1-ca5ac4",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-14T02:12:01.869Z",
+            "lastActivity": "2026-11-14T02:12:06.308Z",
+            "paused": false,
+            "transport": "http"
+          },
+          {
+            "sessionId": "s2-003803",
+            "client": "mcp",
+            "policy": "autonomous",
+            "scopes": [
+              "read",
+              "edit",
+              "ui",
+              "input",
+              "files.read",
+              "files.write",
+              "prefs",
+              "library.global"
+            ],
+            "connectedAt": "2026-11-14T02:12:06.947Z",
+            "lastActivity": null,
+            "paused": false,
+            "transport": "http"
+          }
+        ],
+        "pendingConfirmations": []
+      },
+      "changes": [],
+      "warnings": [],
+      "documentRev": null
+    }
+  }
+]

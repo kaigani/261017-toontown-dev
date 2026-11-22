@@ -1,0 +1,42 @@
+{
+  "id": "el_01K742SG1H4KS4Y1FG6WTW7EAH",
+  "type": "element",
+  "rev": 1,
+  "name": "Shadow",
+  "elementType": "dropShadow",
+  "start": 1,
+  "duration": 48,
+  "loops": 1,
+  "loopType": "count",
+  "positionLoop": "cycle",
+  "role": "normal",
+  "deformable": false,
+  "visibleInScene": true,
+  "locked": false,
+  "collapsed": false,
+  "markerColour": null,
+  "backgroundColour": null,
+  "columnWidth": 80,
+  "params": {
+    "parentColourTransformMode": "drawingsOnly",
+    "colour": "#000000FF",
+    "opacity": 50,
+    "hideElements": false,
+    "transform": {
+      "xAxis": {
+        "x": 1,
+        "y": 0
+      },
+      "yAxis": {
+        "x": 0,
+        "y": 1
+      },
+      "origin": {
+        "x": 0.2,
+        "y": -0.2
+      }
+    }
+  },
+  "channels": {},
+  "createdAt": "2026-10-17T09:30:12.345Z"
+}

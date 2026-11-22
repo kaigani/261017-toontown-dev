@@ -59,8 +59,11 @@ pub fn command_definitions() -> (Map<String, Value>, Map<String, Value>) {
         add_root(&mut defs, id, "result", e.result_schema());
         let examples: Vec<Value> =
             c.decl.examples.iter().map(|x| serde_json::from_str(x.params).unwrap_or(Value::Null)).collect();
+        // M4 C4.1: the label and summary the shortcut editor browses and filters by (01 §8.3 items 1-2).
         let mut entry = json!({
             "kind": e.spec.kind.as_str(),
+            "label": c.decl.label,
+            "summary": e.spec.summary,
             "params": format!("{id}.params"),
             "result": format!("{id}.result"),
             "examples": examples,

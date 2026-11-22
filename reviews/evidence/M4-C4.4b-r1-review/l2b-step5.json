@@ -1,0 +1,404 @@
+{
+  "checks": 48,
+  "failures": [],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-kkac7_tl",
+  "results": [
+    {
+      "check": "drawingView-offset command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 20,
+              "y": 16
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-offset undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-offset D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-offset D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 0.0
+    },
+    {
+      "check": "drawingView-offset finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-offset undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-rotate command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "rotate": 18.373285992975546,
+            "pivot": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-rotate undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-rotate D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-rotate D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 0.0
+    },
+    {
+      "check": "drawingView-rotate finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-rotate undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-scale command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 1.1245499659433686,
+              "y": 1.115702479338843
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-scale undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-scale D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-scale D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 1.4210854715202004e-14
+    },
+    {
+      "check": "drawingView-scale finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-scale undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-envelope command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "check": "drawingView-envelope undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "drawingView-envelope D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-envelope D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 2.0097183471152322e-14
+    },
+    {
+      "check": "drawingView-envelope finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "drawingView-envelope undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-offset command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 20,
+              "y": 15
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-offset undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-offset D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-offset D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 0.0
+    },
+    {
+      "check": "cameraView-offset finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-offset undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-rotate command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 30,
+              "y": -20
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-rotate undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-rotate D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-rotate D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 0.0
+    },
+    {
+      "check": "cameraView-rotate finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-rotate undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-scale command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 1.1245726937628495,
+              "y": 1.1248049921996879
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-scale undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-scale D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-scale D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 7.32410687763558e-15
+    },
+    {
+      "check": "cameraView-scale finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-scale undo exact all drawings",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-envelope command",
+      "ok": true,
+      "detail": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "check": "cameraView-envelope undo labels",
+      "ok": true,
+      "detail": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ]
+    },
+    {
+      "check": "cameraView-envelope D-32 exact all drawing content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-envelope D-75 one independent current-bounds map all drawings",
+      "ok": true,
+      "detail": 2.842170943040401e-14
+    },
+    {
+      "check": "cameraView-envelope finite saved content",
+      "ok": true,
+      "detail": null
+    },
+    {
+      "check": "cameraView-envelope undo exact all drawings",
+      "ok": true,
+      "detail": null
+    }
+  ]
+}

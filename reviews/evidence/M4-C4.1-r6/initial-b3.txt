@@ -1,0 +1,125 @@
+none edit.undo present True
+none edit.undo parity True
+none edit.undo disabled key True
+none edit.redo present True
+none edit.redo parity True
+none edit.redo disabled key True
+none project.save present True
+none project.save parity True
+none project.save disabled key True
+none edit.copy present True
+none edit.copy parity True
+none edit.copy disabled key True
+none edit.cut present True
+none edit.cut parity True
+none edit.cut disabled key True
+none edit.paste present True
+none edit.paste parity True
+none edit.paste disabled key True
+none edit.delete present True
+none edit.delete parity True
+none edit.delete disabled key True
+create project True
+new edit.undo present True
+new edit.undo parity True
+new edit.undo disabled key True
+new edit.redo present True
+new edit.redo parity True
+new edit.redo disabled key True
+new project.save present True
+new project.save parity True
+new edit.copy present True
+new edit.copy parity True
+new edit.copy disabled key True
+new edit.cut present True
+new edit.cut parity True
+new edit.cut disabled key True
+new edit.paste present True
+new edit.paste parity True
+new edit.paste disabled key True
+new edit.delete present True
+new edit.delete parity True
+new edit.delete disabled key True
+edit fixture True
+edit edit.undo present True
+edit edit.undo parity True
+edit edit.redo present True
+edit edit.redo parity True
+edit edit.redo disabled key True
+edit project.save present True
+edit project.save parity True
+edit edit.copy present True
+edit edit.copy parity True
+edit edit.cut present True
+edit edit.cut parity True
+edit edit.paste present True
+edit edit.paste parity True
+edit edit.paste disabled key True
+edit edit.delete present True
+edit edit.delete parity True
+undo fixture True
+undo edit.undo present True
+undo edit.undo parity True
+undo edit.undo disabled key True
+undo edit.redo present True
+undo edit.redo parity True
+undo project.save present True
+undo project.save parity True
+undo edit.copy present True
+undo edit.copy parity True
+undo edit.copy disabled key True
+undo edit.cut present True
+undo edit.cut parity True
+undo edit.cut disabled key True
+undo edit.paste present True
+undo edit.paste parity True
+undo edit.paste disabled key True
+undo edit.delete present True
+undo edit.delete parity True
+undo edit.delete disabled key True
+empty latency True
+2376 elements created in four batches True
+large latency True
+ADR-0021 decision 9 responsiveness True
+toggle 0 False False
+toggle 0 True True
+toggle 1 False True
+toggle 1 True True
+toggle 2 False True
+toggle 2 True True
+toggle 3 False True
+toggle 3 True True
+toggle 4 False True
+toggle 4 True True
+toggle 5 False True
+toggle 5 True True
+toggle 6 False True
+toggle 6 True True
+toggle 7 False True
+toggle 7 True True
+toggle 8 False True
+toggle 8 True True
+toggle 9 False True
+toggle 9 True True
+toggle 10 False True
+toggle 10 True True
+toggle 11 False True
+toggle 11 True True
+toggle 12 False True
+toggle 12 True True
+toggle 13 False True
+toggle 13 True True
+toggle 14 False True
+toggle 14 True True
+toggle 15 False True
+toggle 15 True True
+toggle 16 False True
+toggle 16 True True
+toggle 17 False True
+toggle 17 True True
+toggle 18 False True
+toggle 18 True True
+toggle 19 False True
+toggle 19 True True
+discovery always complete True
+same bearer after twenty toggles True

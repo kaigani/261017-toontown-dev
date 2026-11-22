@@ -23,7 +23,7 @@
 //! protected file); a reader that catches it mid-write sees an unreadable lock, which counts as held.
 
 use std::fs::{self, File, OpenOptions};
-use std::io::{Seek, SeekFrom, Write};
+use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::sync::Mutex;
 use std::time::{Duration, SystemTime};
@@ -107,12 +107,25 @@ const PROTECTION: &str = if cfg!(windows) { "shareMode" } else { "flock" };
 pub enum Boundary {
     /// The arbiter was taken (any operation).
     ArbiterTaken,
+    /// An arbiter verified its file is still its own, before removing it with its protection still held (ruling D-77).
+    ArbiterReleasing,
+    /// A contender proved an arbitration file abandoned under the file's own protection, before removing it (ruling
+    /// D-77).
+    ArbiterAbandonedProven,
+    /// A file was created exclusively and is not yet protected (ruling D-83 item 1; the path is the created file's:
+    /// the arbitration file or the lock file).
+    CreatedUnprotected,
+    /// One attempt at the arbiter ended without it (the arbitration file existed, was being removed, or the created
+    /// file was lost before it was protected; ruling D-83 item 2: a contender's attempt is observable).
+    ArbiterNotTaken,
     /// An opener created its lock file, before writing its content.
     PublishCreated,
     /// An opener wrote its lock file, before reading it back.
     PublishWritten,
-    /// A taker decided the lock is stale, before removing it.
+    /// A taker decided the lock is stale, before proving it may remove it (the decision, not yet an act).
     TakeoverDecided,
+    /// A taker holds the stale lock file's own protection, before re-validating it and removing it (ruling D-78).
+    TakeoverProven,
     /// A heartbeat verified ownership, before writing.
     HeartbeatChecked,
     /// A heartbeat wrote, before releasing the arbiter.
@@ -132,6 +145,12 @@ pub enum Boundary {
     /// An invocation or batch step committed on the document thread, before the next boundary (the path is empty; M3
     /// C3.4 round 2: request cancellation between steps).
     Committed,
+    /// An engine's recovery write checked its fence under the ownership lock, before it writes (the path is the
+    /// recovery entry's folder; M4 C4.1 round 2, ruling O-18).
+    RecoveryWriteChecked,
+    /// An MCP server-side work thread (`list_commands`, `describe_command`, `get_docs`) started, before its work (the
+    /// path is empty; M4 C4.1 closure, ruling O-20: holding such threads at their cap).
+    ServerWork,
 }
 
 #[cfg(feature = "test-hooks")]
@@ -181,27 +200,68 @@ fn create_protected(path: &Path) -> std::io::Result<File> {
         o.share_mode(0x0000_0007);
     }
     let f = o.open(path)?;
-    // The file was created exclusively, so a conflicting lock can only be a `probe`'s momentary shared lock: it is
-    // waited out. Giving up removes the file just created, so no empty, unprotected file is left behind for every
-    // opener to read as an unreadable holder (macOS CI run 41170158603).
+    boundary(Boundary::CreatedUnprotected, path);
+    // Elsewhere than Windows the protection is a `flock` taken after the creation (design note
+    // `reviews/M4-design-lock-takeover.md`, step C1). A conflicting lock is a `probe`'s momentary shared lock, waited
+    // out, or a prover's: a contender that found this file older than TAKEOVER_STALE while its creator was suspended.
     #[cfg(not(windows))]
-    for attempt in 0..=200 {
-        match f.try_lock() {
-            Ok(()) => break,
-            Err(std::fs::TryLockError::WouldBlock) if attempt < 200 => std::thread::sleep(Duration::from_millis(1)),
-            Err(e) => {
-                drop(f);
-                let _ = fs::remove_file(path);
-                return Err(match e {
-                    std::fs::TryLockError::WouldBlock => {
-                        std::io::Error::new(std::io::ErrorKind::AlreadyExists, "locked by another holder")
-                    }
-                    std::fs::TryLockError::Error(e) => e,
-                });
+    {
+        let mut attempt = 0;
+        loop {
+            match f.try_lock() {
+                Ok(()) => break,
+                Err(std::fs::TryLockError::WouldBlock) if attempt < 200 => {
+                    attempt += 1;
+                    std::thread::sleep(Duration::from_millis(1));
+                }
+                Err(std::fs::TryLockError::WouldBlock) => {
+                    // Another opener holds a lock on it (a prover). Removing the file by name now, without its
+                    // protection, could land on a successor's file once the prover has removed this one (ruling D-83
+                    // item 1): it is left, unprotected and empty, for a proof to remove once it is stale.
+                    drop(f);
+                    return Err(std::io::Error::new(std::io::ErrorKind::AlreadyExists, "locked by another holder"));
+                }
+                Err(std::fs::TryLockError::Error(e)) => {
+                    // A file system that cannot lock: nobody can hold this file's protection, so the M1 rule stays (its
+                    // own just-created file, removed while the path still names it).
+                    remove_own(&f, path);
+                    drop(f);
+                    return Err(e);
+                }
             }
+        }
+        // C2 (ruling D-83 item 1): under the protection, the path must still name the very file opened. A prover may
+        // have proven it abandoned and removed it between its creation and the lock; this handle then protects a file
+        // no path names and confers nothing. That is contention: the caller decides again from the start.
+        if !names(&f, path) {
+            drop(f);
+            return Err(std::io::Error::new(
+                std::io::ErrorKind::AlreadyExists,
+                "the created file was removed before it was protected",
+            ));
         }
     }
     Ok(f)
+}
+
+/// Whether `path` still names the very file `held` is open on (ruling D-83 item 1: a handle is trusted only while
+/// the path still names it). Elsewhere than Windows: the same device and inode. On Windows a protected file is
+/// protected from its creation (the creating handle can write, and a proof's open is refused while any handle can
+/// write), so no contender can remove or replace it while the handle is open: the handle names it.
+fn names(held: &File, path: &Path) -> bool {
+    #[cfg(not(windows))]
+    {
+        use std::os::unix::fs::MetadataExt;
+        match (held.metadata(), fs::metadata(path)) {
+            (Ok(a), Ok(b)) => a.dev() == b.dev() && a.ino() == b.ino(),
+            _ => false,
+        }
+    }
+    #[cfg(windows)]
+    {
+        let _ = (held, path);
+        true
+    }
 }
 
 /// Whether a live process protects the file: `Some(true)` held, `Some(false)` free (nobody alive protects it, as seen
@@ -351,17 +411,19 @@ fn write_in_place(f: &mut File, text: &[u8]) -> std::io::Result<()> {
 impl Drop for LockHandle {
     fn drop(&mut self) {
         let ours = self.info.lock().map(|i| i.lock_id.clone()).unwrap_or_default();
-        // Removed only while it is still ours, under the arbiter (never someone else's publication). The protected
-        // handle is closed first (on Windows the file cannot be removed while it is open without delete sharing).
+        // Removed only while it is still ours, under the arbiter (never someone else's publication), and while its
+        // protected handle is still open (ruling D-78: an own removal; the handle shares deletion on Windows), which is
+        // closed only after.
         let arbiter = Arbiter::take(&self.path, 200);
         let mine = arbiter.is_some() && read(&self.path).is_some_and(|i| i.lock_id == ours);
         if mine {
             boundary(Boundary::ReleaseChecked, &self.path);
+            let guard = self.file.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+            if let Some(f) = guard.as_ref() {
+                remove_own(f, &self.path);
+            }
         }
         self.release_handle();
-        if mine {
-            let _ = fs::remove_file(&self.path);
-        }
         drop(arbiter);
     }
 }
@@ -398,6 +460,17 @@ pub enum Locked {
     HeldByOther(LockInfo),
     /// The location is not writable: open read-only (RO-01).
     NotWritable(String),
+    /// A file of the lock (the lock file or its arbitration file, the path given) is held open by a program outside
+    /// the protocol (a virus scanner, an indexer, a backup tool) in a way that keeps it from being replaced, and was
+    /// still so after [`ACQUIRE_BOUND`] (ruling D-86 item 1): nobody owns the lock; the project lock and every live
+    /// participant's files are unchanged, and an arbitration file this opener already proved abandoned may be left
+    /// scheduled for deletion (it goes when that program lets go; ruling D-89 item 1).
+    /// The next open, once that program lets go, proceeds.
+    InUse(PathBuf),
+    /// The caller cancelled while the opener was deciding (ruling D-86 item 1): as [`Locked::InUse`], the project lock
+    /// and every live participant's files are unchanged; a file already proved abandoned may be left scheduled for
+    /// deletion.
+    Cancelled,
 }
 
 /// How long an unprotected, empty arbitration file (or an unreadable, unprotected lock) may live before it counts as
@@ -414,39 +487,55 @@ fn takeover_path(lock: &Path) -> PathBuf {
 /// The lock's arbitration file (`<lock>.takeover`, created exclusively and protected while held): every change of the
 /// lock file — publishing, taking over, heartbeat, release — happens while holding it (C13-R1-02, C13-R3-01).
 struct Arbiter {
+    /// The lock file this arbiter serves (the path the boundaries report).
+    lock: PathBuf,
     path: PathBuf,
     token: String,
     file: Option<File>,
 }
 
 impl Arbiter {
-    /// One attempt. An arbitration file nobody protects any more and older than [`TAKEOVER_STALE`] is removed (its
-    /// holder crashed); a protected one is left alone however old it looks.
+    /// One attempt. An arbitration file its holder left behind is removed only by [`remove_if_abandoned`], which proves
+    /// it abandoned while holding the file's own protection; a protected one is left alone however old it looks.
     fn try_take(lock: &Path) -> Option<Self> {
+        Self::attempt(lock).ok()
+    }
+
+    /// One attempt that says why it failed: `Err(None)` contention (the arbitration file exists, is being removed, or
+    /// the created file was lost before it was protected), `Err(Some(e))` another error creating it, which the caller
+    /// classifies ([`contention`]: a pending deletion is contention, ruling D-84).
+    fn attempt(lock: &Path) -> Result<Self, Option<std::io::Error>> {
         let path = takeover_path(lock);
         match create_protected(&path) {
             Ok(mut f) => {
                 let token = fsx::random_token(8);
                 let _ = f.write_all(token.as_bytes()).and_then(|()| f.flush());
                 boundary(Boundary::ArbiterTaken, lock);
-                Some(Self { path, token, file: Some(f) })
+                Ok(Self { lock: lock.to_owned(), path, token, file: Some(f) })
             }
             Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists || e.raw_os_error() == Some(32) => {
-                // Nobody protects it: its holder died. That is certain at once on Windows (the protection exists from
-                // the moment the file does) and, elsewhere, once its token is written (written only after the
-                // `flock`); an empty, unprotected file may be a publisher between creating and locking it, and goes
-                // after TAKEOVER_STALE. Two takers removing the same abandoned file stay safe: each holder checks that
-                // its arbiter is still its own before it reports ownership (`still_ours`).
-                let probed = probe(&path);
-                let written = fs::metadata(&path).is_ok_and(|m| m.len() > 0);
-                let abandoned = probed == Some(false) && (cfg!(windows) || written)
-                    || probed != Some(true) && age(&path).is_some_and(|a| a > TAKEOVER_STALE);
-                if abandoned {
+                // A2 (design note `reviews/M4-design-lock-takeover.md`): a left-behind arbitration file is removed only
+                // under its own protection, re-validated after the pause point: its token is written (a holder writes
+                // it only after taking its protection) or it is older than TAKEOVER_STALE (a publisher between
+                // creating and protecting it is younger). On Windows any file no live holder protects is abandoned.
+                let valid = |b: Option<&[u8]>| {
+                    cfg!(windows) || b.is_some_and(|b| !b.is_empty()) || age(&path).is_some_and(|a| a > TAKEOVER_STALE)
+                };
+                // Not renamed aside (ruling D-84): several contenders can hold proofs of one arbitration file at once,
+                // and a rename is by name, so a late one could move a successor's file. Its pending deletion is
+                // contention instead, re-decided by the caller within its bound.
+                let proof = remove_proven(&path, lock, Boundary::ArbiterAbandonedProven, false, false, valid);
+                if proof == Removal::Unsupported && age(&path).is_some_and(|a| a > TAKEOVER_STALE) {
+                    // A file system that cannot lock: protection cannot be proven, the age rule of M1 stays.
                     let _ = fs::remove_file(&path);
                 }
-                None
+                boundary(Boundary::ArbiterNotTaken, lock);
+                Err(None)
             }
-            Err(_) => None,
+            Err(e) => {
+                boundary(Boundary::ArbiterNotTaken, lock);
+                Err(Some(e))
+            }
         }
     }
 
@@ -461,19 +550,176 @@ impl Arbiter {
         None
     }
 
-    /// Whether the arbitration file is still this arbiter's (it was not removed as abandoned meanwhile).
+    /// Whether the arbitration file is still this arbiter's (it was not removed as abandoned meanwhile): the path still
+    /// names the protected file (ruling D-83 item 1) and holds this arbiter's token.
     fn still_ours(&self) -> bool {
-        fsx::read_limited(&self.path, 64).is_ok_and(|b| b == self.token.as_bytes())
+        self.file.as_ref().is_some_and(|f| names(f, &self.path))
+            && fsx::read_limited(&self.path, 64).is_ok_and(|b| b == self.token.as_bytes())
     }
 }
 
 impl Drop for Arbiter {
     fn drop(&mut self) {
-        let ours = self.still_ours();
-        drop(self.file.take());
-        if ours {
-            let _ = fs::remove_file(&self.path);
+        // Ruling D-77: the file is removed while its protection is still held (unlinked before the `flock` is released;
+        // on Windows deleted while the handle, which shares deletion, is still open), and only then closed. No other
+        // contender can therefore see a live arbiter's file unprotected, judge it abandoned and remove it, and no
+        // removal by name of this file can land on a successor's file (handoff C4.4b section 6: the "0 owners"
+        // interleaving).
+        if self.still_ours() {
+            boundary(Boundary::ArbiterReleasing, &self.lock);
+            if let Some(f) = self.file.as_ref() {
+                remove_own(f, &self.path);
+            }
         }
+        drop(self.file.take());
+    }
+}
+
+/// What a removal by a non-owner found (ruling D-78; design note `reviews/M4-design-lock-takeover.md` §3).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Removal {
+    /// The file was the one decided about, and it is removed.
+    Removed,
+    /// A live owner (or a probe, or another prover) protects it: nothing is removed.
+    Protected,
+    /// The path names another file now, or its content no longer matches the decision: the caller re-decides.
+    Changed,
+    /// No file at the path.
+    Gone,
+    /// The file system cannot lock (Unix `flock` refused with an error; Windows refusing the sharing semantics):
+    /// protection cannot be proven.
+    Unsupported,
+}
+
+/// A proof of removal (ruling D-78): the contender takes the file's own protection, which a live owner refuses; after
+/// the pause point `at`, it re-validates under that protection that the file is the very one its decision was about
+/// (`valid` reads the bytes read through the opened file, `None` when unreadable), and removes exactly that file.
+///
+/// - **Windows:** an open with read and delete access that shares reading and deletion but not writing fails while any
+///   handle can write the file (a live owner protects its file from the moment it exists); a delete-pending file
+///   refuses the open too (contention). `FILE_FLAG_DELETE_ON_CLOSE` deletes the file this handle opened when it
+///   closes, never a file created at the path later (none can be while it exists). A file that fails `valid` is still
+///   one no live owner holds, so it is dead either way; the caller re-decides.
+///   With `aside` (ruling D-84; only for a file one prover alone can hold: the lock file, proven under the arbiter),
+///   the proven file is first renamed to a unique name beside it while this handle protects it, so its name is free at
+///   once even when another program's handle that shares deletion (another opener's probe, a scanner, an indexer, a
+///   backup) defers the deletion; the delete-on-close removes it under its new name when the last handle closes.
+/// - **Elsewhere:** an exclusive, non-blocking `flock` on the opened file, refused while its owner, a probe or another
+///   prover holds a lock on it (with `patient`, a probe's momentary shared lock is waited out for up to 200 ms). After
+///   the pause point, the opened file's device and inode must equal the path's and its bytes satisfy `valid`; the path
+///   is then unlinked while the `flock` is held, and closed after. Nobody can replace the path in between: that needs
+///   its removal, and every removal needs this `flock` or is its owner's own. An unlink frees the name at once.
+fn remove_proven(
+    path: &Path,
+    lock: &Path,
+    at: Boundary,
+    patient: bool,
+    aside: bool,
+    valid: impl Fn(Option<&[u8]>) -> bool,
+) -> Removal {
+    proven_removal(path, lock, at, patient, aside, &valid)
+}
+
+/// The bytes of an opened file (at most 64 KiB), read through that handle.
+fn bytes_of(f: &File) -> Option<Vec<u8>> {
+    let mut b = Vec::new();
+    f.take(64 * 1024).read_to_end(&mut b).ok().map(|_| b)
+}
+
+#[cfg(windows)]
+fn proven_removal(
+    path: &Path,
+    lock: &Path,
+    at: Boundary,
+    _patient: bool,
+    aside: bool,
+    valid: &dyn Fn(Option<&[u8]>) -> bool,
+) -> Removal {
+    use std::os::windows::fs::OpenOptionsExt;
+    const GENERIC_READ: u32 = 0x8000_0000;
+    const DELETE: u32 = 0x0001_0000;
+    const FILE_SHARE_READ: u32 = 0x0000_0001;
+    const FILE_SHARE_DELETE: u32 = 0x0000_0004;
+    const FILE_FLAG_DELETE_ON_CLOSE: u32 = 0x0400_0000;
+    let f = match OpenOptions::new()
+        .access_mode(GENERIC_READ | DELETE)
+        .share_mode(FILE_SHARE_READ | FILE_SHARE_DELETE)
+        .custom_flags(FILE_FLAG_DELETE_ON_CLOSE)
+        .open(path)
+    {
+        Ok(f) => f,
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Removal::Gone,
+        // ERROR_INVALID_FUNCTION, ERROR_NOT_SUPPORTED: a file system without these sharing semantics.
+        Err(e) if matches!(e.raw_os_error(), Some(1 | 50)) => return Removal::Unsupported,
+        // ERROR_SHARING_VIOLATION (a live owner), ERROR_ACCESS_DENIED (delete pending): contention.
+        Err(_) => return Removal::Protected,
+    };
+    boundary(at, lock);
+    let ok = valid(bytes_of(&f).as_deref());
+    if ok && aside {
+        // The name is freed at once (ruling D-84). A failed rename leaves the name pending, which the caller treats as
+        // contention.
+        let mut s = path.as_os_str().to_owned();
+        s.push(format!(".removed-{}", fsx::random_token(6)));
+        let _ = fs::rename(path, PathBuf::from(s));
+    }
+    // Closing the handle deletes the file it opened (wherever it now is, once the last handle closes).
+    drop(f);
+    if ok { Removal::Removed } else { Removal::Changed }
+}
+
+#[cfg(not(windows))]
+fn proven_removal(
+    path: &Path,
+    lock: &Path,
+    at: Boundary,
+    patient: bool,
+    _aside: bool,
+    valid: &dyn Fn(Option<&[u8]>) -> bool,
+) -> Removal {
+    use std::os::unix::fs::MetadataExt;
+    let f = match File::open(path) {
+        Ok(f) => f,
+        Err(e) if e.kind() == std::io::ErrorKind::NotFound => return Removal::Gone,
+        Err(_) => return Removal::Protected,
+    };
+    // A `probe`'s shared lock is momentary: with `patient`, it is waited out (up to 200 ms, as `create_protected`
+    // does); a live owner's lock outlasts that.
+    let mut attempt = 0;
+    loop {
+        match f.try_lock() {
+            Ok(()) => break,
+            Err(std::fs::TryLockError::WouldBlock) if patient && attempt < 200 => {
+                attempt += 1;
+                std::thread::sleep(Duration::from_millis(1));
+            }
+            Err(std::fs::TryLockError::WouldBlock) => return Removal::Protected,
+            Err(std::fs::TryLockError::Error(_)) => return Removal::Unsupported,
+        }
+    }
+    boundary(at, lock);
+    // Re-validated after the pause point, under the `flock`: the path still names this file, and what it holds is what
+    // the decision was about.
+    let same = match (f.metadata(), fs::metadata(path)) {
+        (Ok(held), Ok(named)) => held.dev() == named.dev() && held.ino() == named.ino(),
+        _ => false,
+    };
+    if !same || !valid(bytes_of(&f).as_deref()) {
+        return Removal::Changed;
+    }
+    let _ = fs::remove_file(path);
+    // Closing the file releases the `flock`, after the unlink.
+    drop(f);
+    Removal::Removed
+}
+
+/// An own removal (ruling D-78): the owner removes its own file while `held`, the handle that protects it, is still
+/// open (Unix: unlinked while the `flock` is held, and only if the path still names that inode; Windows: deleted while
+/// the handle, which shares deletion, is open). The caller has verified its nonce (the arbiter's token, the lock's
+/// `lockId`) and closes the handle after.
+fn remove_own(held: &File, path: &Path) {
+    if names(held, path) {
+        let _ = fs::remove_file(path);
     }
 }
 
@@ -537,77 +783,199 @@ fn unreadable_holder(path: &Path) -> LockInfo {
     }
 }
 
-/// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11).
+/// Whether an error creating a file at `lock`'s location is contention rather than a folder that cannot be written
+/// (ruling D-84): an existing file; on Windows a sharing violation or a name whose deletion is pending (reported as
+/// access denied); and any permission error while the folder itself can be written.
+fn contention(e: &std::io::Error, lock: &Path) -> bool {
+    e.kind() == std::io::ErrorKind::AlreadyExists
+        || (cfg!(windows) && matches!(e.raw_os_error(), Some(32 | 303)))
+        || (e.kind() == std::io::ErrorKind::PermissionDenied && folder_writable(lock))
+}
+
+/// Whether the lock's folder can be written: a uniquely named file is created there and removed (ruling D-84: a
+/// project is reported not writable only when its folder really cannot be written).
+fn folder_writable(lock: &Path) -> bool {
+    let mut s = lock.as_os_str().to_owned();
+    s.push(format!(".probe-{}", fsx::random_token(6)));
+    let p = PathBuf::from(s);
+    match OpenOptions::new().write(true).create_new(true).open(&p) {
+        Ok(f) => {
+            drop(f);
+            let _ = fs::remove_file(&p);
+            true
+        }
+        Err(_) => false,
+    }
+}
+
+/// How long `acquire` re-decides under contention before it answers from what is true at that moment (ruling D-84):
+/// the lock held, or the arbiter held by another live opener, is answered `HeldByOther`; a folder that cannot be
+/// written, `NotWritable`; when nothing is held (a removed file's name kept by another program's handle, an arbitration
+/// file left empty by a creator that gave up, removable once older than `TAKEOVER_STALE`), it decides again for
+/// another round.
+const DECIDE_BOUND: Duration = Duration::from_secs(2);
+
+/// The longest `acquire` decides while every round ends in the same contention before it answers [`Locked::InUse`]
+/// (ruling D-86 item 1): longer than `TAKEOVER_STALE` by one round, so an arbitration file a creator left empty when it
+/// gave up (design note step C1) becomes removable within it, and only a program outside the protocol that keeps a
+/// lock file open outlasts it.
+pub const ACQUIRE_BOUND: Duration = Duration::from_secs(12);
+
+/// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11); [`acquire_until`] with no cancellation.
+#[must_use]
+pub fn acquire(project: &Path) -> Locked {
+    acquire_until(project, &|| false)
+}
+
+/// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11), returning [`Locked::Cancelled`] at once when
+/// `cancelled` answers true while it decides.
 ///
 /// Publication and takeover happen only while holding the lock's arbiter (`<lock>.takeover`): under it, the lock's
 /// state is read again; a stale lock is removed; the new lock is created exclusively and protected, written and
-/// flushed; and the file is read back. `Acquired` is returned only when the file holds this session's token and the
-/// arbiter was not lost meanwhile (C13-R3-01); otherwise the holder is reported. A lock that cannot be read counts as
-/// held until it is abandoned.
+/// flushed; and the file is read back. `Acquired` is returned only when the path still names the protected file, it
+/// holds this session's token and the arbiter was not lost meanwhile (C13-R3-01, D-83). Contention (an arbitration
+/// file held or being removed, a name whose deletion is pending, a publication that could not be confirmed) is decided
+/// again from the start (ruling D-84). `HeldByOther` is answered only when it is true at that moment (a live owner
+/// protects the lock, or a lock the protocol counts as held, or another opener holds the arbiter past the bound), and
+/// `NotWritable` only when the folder cannot be written or the lock cannot be written through its own handle.
+/// It always answers within [`ACQUIRE_BOUND`] and one round (ruling D-86 item 1): when every round ends in contention
+/// that nobody in the protocol causes, [`Locked::InUse`] names the file kept open.
 #[must_use]
-pub fn acquire(project: &Path) -> Locked {
+pub fn acquire_until(project: &Path, cancelled: &dyn Fn() -> bool) -> Locked {
     let path = lock_path(project);
+    let started = std::time::Instant::now();
+    // The file whose contention ended the opener's last attempt (D-86): the arbitration file or the lock file.
+    let mut in_use = takeover_path(&path);
     let info = LockInfo::new();
     let text = match info.to_bytes() {
         Ok(t) => t,
         Err(e) => return Locked::NotWritable(e.to_string()),
     };
-    for _ in 0..400 {
-        if let State::Held(c) = state(&path) {
-            return Locked::HeldByOther(c);
-        }
-        let Some(arbiter) = Arbiter::try_take(&path) else {
-            std::thread::sleep(Duration::from_millis(5));
-            continue;
-        };
-        let took_over = match state(&path) {
-            State::Held(c) => return Locked::HeldByOther(c),
-            State::Absent => None,
-            State::Stale(c) => {
-                boundary(Boundary::TakeoverDecided, &path);
-                if let Err(e) = fs::remove_file(&path)
-                    && e.kind() != std::io::ErrorKind::NotFound
-                {
-                    // Still protected (its holder came back between the probe and the removal), or not removable.
-                    if probe(&path) == Some(true) {
-                        return Locked::HeldByOther(read(&path).unwrap_or_else(|| unreadable_holder(&path)));
-                    }
-                    return Locked::NotWritable(format!("cannot replace the stale lock: {e}"));
+    let pause = || std::thread::sleep(Duration::from_millis(5));
+    // Another's stale lock this call removed in an earlier round: still the lock it took over when a later round
+    // confirms the publication.
+    let mut removed: Option<LockInfo> = None;
+    loop {
+        let deadline = std::time::Instant::now() + DECIDE_BOUND;
+        while std::time::Instant::now() < deadline {
+            if cancelled() {
+                return Locked::Cancelled;
+            }
+            if let State::Held(c) = state(&path) {
+                return Locked::HeldByOther(c);
+            }
+            let arbiter = match Arbiter::attempt(&path) {
+                Ok(a) => a,
+                Err(Some(e)) if !contention(&e, &path) => return Locked::NotWritable(e.to_string()),
+                Err(_) => {
+                    in_use = takeover_path(&path);
+                    pause();
+                    continue;
                 }
-                c
+            };
+            let took_over = match state(&path) {
+                State::Held(c) => return Locked::HeldByOther(c),
+                State::Absent => None,
+                State::Stale(c) => {
+                    boundary(Boundary::TakeoverDecided, &path);
+                    // A4 (design note `reviews/M4-design-lock-takeover.md`): the decision above is acted on only
+                    // through a proof of removal, re-validated after its pause point: the lock file is the one decided
+                    // about (its `lockId`, or still unreadable for an abandoned unreadable lock) and no live owner
+                    // protects it. Proven under the arbiter, it is renamed aside on Windows (D-84).
+                    let decided = c.as_ref().map(|i| i.lock_id.clone());
+                    let valid = |b: Option<&[u8]>| {
+                        let now = b.and_then(|b| serde_json::from_slice::<LockInfo>(b).ok());
+                        match &decided {
+                            Some(id) => now.is_some_and(|i| &i.lock_id == id),
+                            None => now.is_none(),
+                        }
+                    };
+                    match remove_proven(&path, &path, Boundary::TakeoverProven, true, true, valid) {
+                        Removal::Removed | Removal::Gone => {}
+                        // Refused. Held only if a live owner protects it now (I2: it came back, or a lock was published
+                        // meanwhile); a foreign handle that refuses sharing deletion is contention (D-84).
+                        Removal::Protected => {
+                            if probe(&path) == Some(true) {
+                                return Locked::HeldByOther(read(&path).unwrap_or_else(|| unreadable_holder(&path)));
+                            }
+                            in_use.clone_from(&path);
+                            drop(arbiter);
+                            pause();
+                            continue;
+                        }
+                        // Another file, or another content: re-decide from the start.
+                        Removal::Changed => {
+                            drop(arbiter);
+                            continue;
+                        }
+                        // A file system that cannot lock: the M1 rule, under the arbiter.
+                        Removal::Unsupported => {
+                            if let Err(e) = fs::remove_file(&path)
+                                && e.kind() != std::io::ErrorKind::NotFound
+                                && !contention(&e, &path)
+                            {
+                                return Locked::NotWritable(format!("cannot replace the stale lock: {e}"));
+                            }
+                        }
+                    }
+                    // This call's own unconfirmed publication (below) is not another's stale lock.
+                    let other = c.filter(|c| c.lock_id != info.lock_id);
+                    if other.is_some() {
+                        removed.clone_from(&other);
+                    }
+                    other
+                }
+            };
+            let mut file = match create_protected(&path) {
+                Ok(f) => f,
+                Err(e) if contention(&e, &path) => {
+                    in_use.clone_from(&path);
+                    drop(arbiter);
+                    pause();
+                    continue;
+                }
+                Err(e) => return Locked::NotWritable(e.to_string()),
+            };
+            boundary(Boundary::PublishCreated, &path);
+            if let Err(e) = write_in_place(&mut file, &text) {
+                remove_own(&file, &path);
+                drop(file);
+                return Locked::NotWritable(e.to_string());
             }
-        };
-        let mut file = match create_protected(&path) {
-            Ok(f) => f,
-            Err(e) if e.kind() == std::io::ErrorKind::AlreadyExists || e.raw_os_error() == Some(32) => {
-                drop(arbiter);
-                continue;
+            boundary(Boundary::PublishWritten, &path);
+            // Validate the publication before announcing ownership: the path still names the protected file (ruling
+            // D-83 item 1), it holds this session's token, and the arbiter was not lost meanwhile.
+            let back = if names(&file, &path) { read(&path) } else { None };
+            let still = arbiter.still_ours();
+            drop(arbiter);
+            if still && back.is_some_and(|b| b.lock_id == info.lock_id) {
+                return Locked::Acquired {
+                    handle: LockHandle { path, info: Mutex::new(info), file: Mutex::new(Some(file)) },
+                    took_over: took_over.or(removed),
+                };
             }
-            Err(e) => return Locked::NotWritable(e.to_string()),
-        };
-        boundary(Boundary::PublishCreated, &path);
-        if let Err(e) = write_in_place(&mut file, &text) {
+            // Not confirmed (ruling D-84: never "held by another" for a lock nobody holds): the publication confers
+            // nothing. It is closed, not removed (a removal needs a valid arbiter); a protected publication of this
+            // host that nobody protects is stale at once, so the next round takes it over.
             drop(file);
-            let _ = fs::remove_file(&path);
-            return Locked::NotWritable(e.to_string());
         }
-        boundary(Boundary::PublishWritten, &path);
-        // Validate the publication before announcing ownership.
-        let back = read(&path);
-        let still = arbiter.still_ours();
-        drop(arbiter);
-        return match back {
-            Some(b) if b.lock_id == info.lock_id && still => Locked::Acquired {
-                handle: LockHandle { path, info: Mutex::new(info), file: Mutex::new(Some(file)) },
-                took_over,
-            },
-            Some(b) => Locked::HeldByOther(b),
-            None => Locked::HeldByOther(unreadable_holder(&path)),
-        };
-    }
-    match state(&path) {
-        State::Held(c) | State::Stale(Some(c)) => Locked::HeldByOther(c),
-        _ => Locked::NotWritable("the lock could not be taken".to_owned()),
+        // The bound passed without a decision: only what is true now is answered.
+        match state(&path) {
+            State::Held(c) => return Locked::HeldByOther(c),
+            // Another opener holds the arbiter: the project is being opened by it.
+            _ if probe(&takeover_path(&path)) == Some(true) => {
+                return Locked::HeldByOther(read(&path).unwrap_or_else(|| unreadable_holder(&path)));
+            }
+            _ if !folder_writable(&path) => {
+                return Locked::NotWritable("the project's folder cannot be written".to_owned());
+            }
+            // Nothing is held, and the contention has lasted the whole bound: a program outside the protocol keeps
+            // the file open (ruling D-86 item 1). The project lock and live participants' files are unchanged; a helper
+            // already proved abandoned may be left scheduled for deletion (ruling D-89 item 1).
+            _ if started.elapsed() >= ACQUIRE_BOUND => return Locked::InUse(in_use),
+            // Nothing is held: decide again for another round.
+            _ => {}
+        }
     }
 }
 

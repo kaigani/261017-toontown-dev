@@ -1,0 +1,42 @@
+[
+  {
+    "name": "gui",
+    "code": 0,
+    "seconds": 33.29473289998714
+  },
+  {
+    "name": "lifecycle",
+    "code": 0,
+    "seconds": 0.5762003999843728
+  },
+  {
+    "name": "floats",
+    "code": 0,
+    "seconds": 25.597319499996956
+  },
+  {
+    "name": "keys",
+    "code": 0,
+    "seconds": 11.669138900004327
+  },
+  {
+    "name": "changes-1",
+    "code": 0,
+    "seconds": 11.740703099989332
+  },
+  {
+    "name": "changes-2",
+    "code": 0,
+    "seconds": 9.868169900000794
+  },
+  {
+    "name": "changes-3",
+    "code": 0,
+    "seconds": 9.557240900001489
+  },
+  {
+    "name": "conformance",
+    "code": 0,
+    "seconds": 2.646408300002804
+  }
+]

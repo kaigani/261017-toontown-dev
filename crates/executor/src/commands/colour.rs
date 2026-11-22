@@ -18,7 +18,7 @@ use tt_model::document::{Document, EntryKey};
 use tt_model::entities::drawing::{Drawing, DrawingNode, NodeKind};
 use tt_model::entities::palette::SwatchKind;
 use tt_model::{Id, ObjectType};
-use tt_registry::{CommandError, codes, command};
+use tt_registry::{CommandError, command};
 use tt_vector::geom::{P, Rect};
 use tt_vector::planar::fill::Fill;
 use tt_vector::planar::gap;
@@ -89,7 +89,7 @@ impl GapMode {
         }
     }
 
-    fn of(v: Option<&Value>) -> Self {
+    pub(crate) fn of(v: Option<&Value>) -> Self {
         match v.and_then(Value::as_str) {
             Some("small") => GapMode::Small,
             Some("medium") => GapMode::Medium,
@@ -109,21 +109,42 @@ fn gap_tolerance(cx: &Cx, choice: GapChoice) -> Option<f64> {
     }
 }
 
-fn check_space(space: Space) -> Result<(), CommandError> {
-    match space {
-        Space::Drawing => Ok(()),
-        Space::Scene => Err(err(
-            codes::ARG_INVALID,
-            "scene-space point targets need the scene transforms (M3 C3.2)",
-            json!({ "pointer": "/space", "space": "scene" }),
-        )
-        .hint("give points in drawing space (space: \"drawing\")")),
-        Space::View => Err(err(
-            codes::ARG_INVALID,
-            "view-space point targets need the desktop views (M4 C4.2)",
-            json!({ "pointer": "/space", "space": "view" }),
-        )
-        .hint("give points in drawing space (space: \"drawing\")")),
+/// How a call's points reach drawing space and how its view-pixel tolerances scale (SI-065; M4 C4.2): `drawing`
+/// points are used as given; `view` points go through the Drawing view's mapping (design note 6). A named `view`
+/// (or view-space points) sets the zoom tolerances are divided by (02 §13.3 "the view's zoom for tolerances").
+pub(crate) struct Frame {
+    /// The call's space → drawing units (`None`: drawing space).
+    to_drawing: Option<crate::camera_view::Matrix>,
+    /// View pixels per drawing unit (1 without a view).
+    scale: f64,
+}
+
+fn frame(cx: &Cx, space: Space, view: Option<&str>) -> Result<Frame, CommandError> {
+    let name = match space {
+        Space::Drawing => "drawing",
+        Space::Scene => "scene",
+        Space::View => "view",
+    };
+    let (to_drawing, scale) = crate::camera_view::addressing(cx, name, view, None)?;
+    Ok(Frame { to_drawing, scale })
+}
+
+impl Frame {
+    /// A point of the call in drawing space.
+    fn point(&self, p: Point, pointer: &str) -> Result<P, CommandError> {
+        let q = point(p, pointer)?;
+        Ok(match &self.to_drawing {
+            Some(m) => {
+                let d = crate::camera_view::apply(m, crate::shell::Point { x: q.x, y: q.y });
+                P::new(d.x, d.y)
+            }
+            None => q,
+        })
+    }
+
+    /// A tolerance in view pixels, in drawing units.
+    fn du(&self, px: f64) -> f64 {
+        px / self.scale
     }
 }
 
@@ -1022,7 +1043,7 @@ pub(crate) fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<Str
     let doc = cx.document()?;
     let colour = match given {
         Some(c) => Some(super::draw_stroke::swatch_colour(cx, c)),
-        None => super::draw_stroke::current_colour(doc),
+        None => super::draw_stroke::current_colour(cx.app(), doc),
     };
     let Some(c) = colour else {
         return Err(err(
@@ -1045,7 +1066,9 @@ pub(crate) fn resolve_colour(cx: &Cx, given: Option<&str>) -> Result<(Option<Str
 struct Call<'a> {
     drawing_id: Option<&'a str>,
     element_id: Option<&'a str>,
-    space: Space,
+    /// With `element_id` (default: the current element), the frame whose cell is painted (02 §13.1 item 4).
+    frame: Option<u32>,
+    frame_ref: Frame,
     targets: Targets<'a>,
     mode: Mode,
     colour: (Option<String>, SwatchKind),
@@ -1053,10 +1076,9 @@ struct Call<'a> {
 }
 
 fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError> {
-    let Call { drawing_id, element_id, space, targets, mode, colour, gap_choice } = call;
-    check_space(space)?;
+    let Call { drawing_id, element_id, frame: cell, frame_ref: frame, targets, mode, colour, gap_choice } = call;
     let mut none = Vec::new();
-    let t = target(cx, drawing_id, element_id, None, false, &mut none)?;
+    let t = target(cx, drawing_id, element_id, cell, false, &mut none)?;
     let before = cx.document()?.clone();
     let d = t.drawing(&before)?.into_owned();
     check_editable(&d, None)?;
@@ -1070,26 +1092,29 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     }
     let pts: Vec<P> = targets
         .points
-        .map(|v| v.iter().enumerate().map(|(i, p)| point(*p, &format!("/points/{i}"))).collect::<Result<Vec<_>, _>>())
+        .map(|v| {
+            v.iter().enumerate().map(|(i, p)| frame.point(*p, &format!("/points/{i}"))).collect::<Result<Vec<_>, _>>()
+        })
         .transpose()?
         .unwrap_or_default();
     resolve_points(&d, &zones, &pts, targets.zones_only, &mut work, &mut loc)?;
     if let Some(path) = targets.path {
         let path: Vec<P> =
-            path.iter().enumerate().map(|(i, p)| point(*p, &format!("/path/{i}"))).collect::<Result<_, _>>()?;
+            path.iter().enumerate().map(|(i, p)| frame.point(*p, &format!("/path/{i}"))).collect::<Result<_, _>>()?;
         resolve_path(&d, &zones, &path, &mut work, &mut loc)?;
     }
     if let Some(lasso) = targets.lasso {
         let poly: Vec<P> =
-            lasso.iter().enumerate().map(|(i, p)| point(*p, &format!("/lasso/{i}"))).collect::<Result<_, _>>()?;
+            lasso.iter().enumerate().map(|(i, p)| frame.point(*p, &format!("/lasso/{i}"))).collect::<Result<_, _>>()?;
         resolve_region(&zones, &poly, "lasso", &mut loc);
     }
     if let Some(r) = targets.rect {
+        let corner = |x: f64, y: f64| frame.point(Point { x, y }, "/rect");
         let poly = [
-            P::new(r.x, r.y),
-            P::new(r.x + r.width, r.y),
-            P::new(r.x + r.width, r.y + r.height),
-            P::new(r.x, r.y + r.height),
+            corner(r.x, r.y)?,
+            corner(r.x + r.width, r.y)?,
+            corner(r.x + r.width, r.y + r.height)?,
+            corner(r.x, r.y + r.height)?,
         ];
         resolve_region(&zones, &poly, "rect", &mut loc);
     }
@@ -1105,7 +1130,7 @@ fn paint_common(cx: &mut Cx, call: Call<'_>) -> Result<PaintResult, CommandError
     let open = std::mem::take(&mut loc.open);
     let (mut d, mut zones) = (d, zones);
     if !open.is_empty() {
-        match gap_tolerance(cx, gap_choice) {
+        match gap_tolerance(cx, gap_choice).map(|t| frame.du(t)) {
             Some(tol) => {
                 let mut closing =
                     Located { targets: Vec::new(), skipped: Vec::new(), open: Vec::new(), closed: Vec::new() };
@@ -1227,6 +1252,7 @@ struct Targets<'a> {
 
 #[command(
     id = "colour.paint.apply",
+    precheck = super::draw::precheck_paint,
     kind = action,
     label = "Paint",
     scopes = [edit],
@@ -1238,8 +1264,9 @@ struct Targets<'a> {
 )]
 pub(crate) fn colour_paint_apply(cx: &mut Cx, p: PaintParams) -> Result<PaintResult, CommandError> {
     let colour = resolve_colour(cx, p.colour_id.as_deref())?;
+    let drag = frame(cx, p.space, p.view.as_deref())?;
     let mapping = match p.mapping {
-        Some(m) => Some((point(m.from, "/mapping/from")?, point(m.to, "/mapping/to")?)),
+        Some(m) => Some((drag.point(m.from, "/mapping/from")?, drag.point(m.to, "/mapping/to")?)),
         None => None,
     };
     let targets = Targets {
@@ -1254,14 +1281,16 @@ pub(crate) fn colour_paint_apply(cx: &mut Cx, p: PaintParams) -> Result<PaintRes
         respect_protected: p.respect_protected,
         expect_rev: p.expect_rev,
     };
-    let _ = (&p.scene_id, p.frame, &p.view);
+    let _ = (&p.scene_id, p.frame);
     cx.set_label("Paint");
+    let frame = frame(cx, p.space, p.view.as_deref())?;
     paint_common(
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
             element_id: p.element_id.as_deref(),
-            space: p.space,
+            frame_ref: frame,
+            frame: p.frame,
             targets,
             mode: Mode::Paint { only_unpainted: p.only_unpainted, only_painted: p.only_painted },
             colour,
@@ -1316,6 +1345,9 @@ pub(crate) struct PaintUnpaintedParams {
     /// The drawing revision the caller read.
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `colour.paintUnpainted.apply` result (03 §16.3 plus the common edit members, SI-058).
@@ -1341,6 +1373,7 @@ pub(crate) struct PaintUnpaintedResult {
 
 #[command(
     id = "colour.paintUnpainted.apply",
+    precheck = super::draw::precheck_paint_unpainted,
     kind = action,
     label = "Paint Unpainted",
     scopes = [edit],
@@ -1354,7 +1387,7 @@ pub(crate) fn colour_paint_unpainted_apply(
     p: PaintUnpaintedParams,
 ) -> Result<PaintUnpaintedResult, CommandError> {
     let colour = resolve_colour(cx, p.colour_id.as_deref())?;
-    let _ = (&p.scene_id, p.frame, &p.view);
+    let _ = (&p.scene_id, p.frame);
     let targets = Targets {
         object_ids: p.object_ids.as_ref(),
         points: p.points.as_ref(),
@@ -1368,12 +1401,14 @@ pub(crate) fn colour_paint_unpainted_apply(
         expect_rev: p.expect_rev,
     };
     cx.set_label("Paint Unpainted");
+    let frame = frame(cx, p.space, p.view.as_deref())?;
     let r = paint_common(
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
-            element_id: None,
-            space: p.space,
+            element_id: p.element_id.as_deref(),
+            frame_ref: frame,
+            frame: p.frame,
             targets,
             mode: Mode::Paint { only_unpainted: true, only_painted: false },
             colour,
@@ -1386,7 +1421,7 @@ pub(crate) fn colour_paint_unpainted_apply(
         Err(e) if e.code == "colour.alreadyPainted" || (p.all && e.code == "colour.noTarget") => {
             let count = e.details.get("skipped").and_then(Value::as_array).map_or(0, Vec::len);
             let mut none = Vec::new();
-            let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+            let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
             return Ok(PaintUnpaintedResult {
                 drawing_id: t.id.as_str().to_owned(),
                 painted: Vec::new(),
@@ -1448,6 +1483,9 @@ pub(crate) struct UnpaintParams {
     /// The drawing revision the caller read.
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// One unpainted object.
@@ -1481,6 +1519,7 @@ pub(crate) struct UnpaintResult {
 
 #[command(
     id = "colour.paint.remove",
+    precheck = super::draw::precheck_unpaint,
     kind = action,
     label = "Unpaint",
     scopes = [edit],
@@ -1490,7 +1529,7 @@ pub(crate) struct UnpaintResult {
     gui = "Drawing and Camera views: Unpaint tool (M4 C4.2)",
 )]
 pub(crate) fn colour_paint_remove(cx: &mut Cx, p: UnpaintParams) -> Result<UnpaintResult, CommandError> {
-    let _ = (&p.scene_id, p.frame, &p.view);
+    let _ = (&p.scene_id, p.frame);
     let targets = Targets {
         object_ids: p.object_ids.as_ref(),
         points: p.points.as_ref(),
@@ -1504,12 +1543,14 @@ pub(crate) fn colour_paint_remove(cx: &mut Cx, p: UnpaintParams) -> Result<Unpai
         expect_rev: p.expect_rev,
     };
     cx.set_label("Unpaint");
+    let frame = frame(cx, p.space, p.view.as_deref())?;
     let r = paint_common(
         cx,
         Call {
             drawing_id: p.drawing_id.as_deref(),
-            element_id: None,
-            space: p.space,
+            element_id: p.element_id.as_deref(),
+            frame_ref: frame,
+            frame: p.frame,
             targets,
             mode: Mode::Remove,
             colour: (None, SwatchKind::Solid),
@@ -1610,6 +1651,7 @@ pub(crate) struct PickResult {
 
 #[command(
     id = "colour.pick",
+    precheck = super::draw::precheck_target,
     kind = query,
     label = "Pick colour",
     scopes = [read],
@@ -1618,11 +1660,11 @@ pub(crate) struct PickResult {
     gui = "Drawing and Camera views: Dropper tool (M4 C4.2)",
 )]
 pub(crate) fn colour_pick(cx: &mut Cx, p: PickParams) -> Result<PickResult, CommandError> {
-    check_space(p.space)?;
-    let _ = (&p.scene_id, p.frame, &p.view);
-    let at = point(p.point, "/point")?;
+    let f = frame(cx, p.space, p.view.as_deref())?;
+    let _ = (&p.scene_id, p.frame);
+    let at = f.point(p.point, "/point")?;
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let zones = drawing_zones(&cx.planar_cache(), &d)?;
@@ -1692,6 +1734,12 @@ pub(crate) struct HitTestParams {
     /// Report invisible strokes.
     #[serde(default)]
     include_invisible: bool,
+    /// Coordinate space of the point (02 §13.1 item 5): a `view` point goes through the view's one mapping.
+    #[serde(default)]
+    space: Space,
+    /// The view of a `view` point and of the view-pixel tolerance (default: the Drawing view; the tolerance at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn three() -> f64 {
@@ -1744,7 +1792,10 @@ pub(crate) fn draw_hit_test_get(cx: &mut Cx, p: HitTestParams) -> Result<HitTest
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let zones = drawing_zones(&cx.planar_cache(), &d)?;
-    let hs = hits(&d, &zones, at, p.tolerance, p.include_invisible)?;
+    // `tolerance` is in view pixels: through the given view's zoom, or 100 % without a view (02 §13.1 item 5).
+    let _ = &p.space;
+    let tol = crate::addressing::tolerance_du(cx, p.view.as_deref(), p.tolerance)?;
+    let hs = hits(&d, &zones, at, tol, p.include_invisible)?;
     let zone_id = hs.iter().find(|h| matches!(h.kind, HitKind::Zone(..))).map(|h| h.id.clone());
     Ok(HitTestResult {
         point: p.point,
@@ -1789,6 +1840,9 @@ pub(crate) struct GapCloseParams {
     /// View of `view` points.
     #[serde(default)]
     view: Option<String>,
+    /// With `frame`, the element whose cell holds the drawing (default: the current element; 02 §13.1 item 4).
+    #[serde(default)]
+    element_id: Option<String>,
 }
 
 /// `colour.gap.close` result (03 §16.3 plus the common edit members, SI-058).
@@ -1812,6 +1866,7 @@ pub(crate) struct GapCloseResult {
 
 #[command(
     id = "colour.gap.close",
+    precheck = super::draw::precheck_edit,
     kind = action,
     label = "Close Gap",
     scopes = [edit],
@@ -1821,16 +1876,16 @@ pub(crate) struct GapCloseResult {
     gui = "Drawing and Camera views: Close Gap tool (M4 C4.2)",
 )]
 pub(crate) fn colour_gap_close(cx: &mut Cx, p: GapCloseParams) -> Result<GapCloseResult, CommandError> {
-    check_space(p.space)?;
-    let _ = (&p.scene_id, p.frame, &p.view);
-    let (from, to) = (point(p.from, "/from")?, point(p.to, "/to")?);
+    let f = frame(cx, p.space, p.view.as_deref())?;
+    let _ = (&p.scene_id, p.frame);
+    let (from, to) = (f.point(p.from, "/from")?, f.point(p.to, "/to")?);
     let mut none = Vec::new();
-    let t = target(cx, p.drawing_id.as_deref(), None, None, false, &mut none)?;
+    let t = target(cx, p.drawing_id.as_deref(), p.element_id.as_deref(), p.frame, false, &mut none)?;
     let before = cx.document()?.clone();
     let d = t.drawing(&before)?.into_owned();
     check_editable(&d, None)?;
     // A tolerance proportional to the drag, at least the large gap tolerance (03 §8.6).
-    let tol = (from.dist(to) * 0.5).max(gap::TOLERANCE_PX[2]);
+    let tol = (from.dist(to) * 0.5).max(f.du(gap::TOLERANCE_PX[2]));
     let mut work = Work::new(tt_vector::work::PLANAR_WORK_BUDGET, "closing a gap");
     let mut found = None;
     for l in crate::planar::layers(&d).into_iter().rev() {
@@ -1901,10 +1956,11 @@ pub(crate) struct GapClosingSetResult {
 )]
 pub(crate) fn colour_gap_closing_set(cx: &mut Cx, p: GapClosingSetParams) -> Result<GapClosingSetResult, CommandError> {
     // A persisted user preference (03 §8.8; C22-R1-07 ruling): the `prefs` scope, written as a staged effect after the
-    // invocation succeeds (nothing is written by a dry run or a failed batch).
+    // invocation succeeds (nothing is written by a dry run or a failed batch). Staged as `prefs.set` stages, so it
+    // emits `prefs.changed` and every surface showing the mode follows (design note 1 §2; SI-166).
     let mut prefs = serde_json::Map::new();
     prefs.insert(GAP_PREF.into(), json!(p.mode));
-    cx.defer(crate::cx::Effect::Prefs(prefs));
+    super::prefs::stage_stored(cx, prefs)?;
     Ok(GapClosingSetResult { mode: p.mode })
 }
 
@@ -1935,7 +1991,7 @@ pub(crate) struct GapClosingGetResult {
     label = "Get automatic gap closing",
     scopes = [read],
     example(title = "Current gap closing mode", params = "{}"),
-    agent_only = "the GUI shows the mode in the paint tool options",
+    gui = "Properties panel: Tool options page of the paint tools; Colour › Auto Close Gap (M4 C4.4a)",
 )]
 pub(crate) fn colour_gap_closing_get(
     cx: &mut Cx,
@@ -1950,4 +2006,79 @@ pub(crate) fn colour_gap_closing_get(
             large: gap::TOLERANCE_PX[2],
         },
     })
+}
+
+// ----- colour.current.set (ruling D-11, pulled forward from M7 C7.1 for the Dropper) -------------------------------
+
+/// `colour.current.set` parameters.
+#[derive(Debug, Deserialize, JsonSchema)]
+#[serde(deny_unknown_fields, rename_all = "camelCase")]
+pub(crate) struct CurrentSetParams {
+    /// The colour (a swatch's colour id or a swatch reference).
+    colour_id: String,
+}
+
+/// `{paletteId, colourId}`.
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct CurrentColour {
+    /// The current palette (switched when the colour is in another one, 03 §2.4).
+    palette_id: String,
+    /// The current colour.
+    colour_id: String,
+}
+
+#[command(
+    id = "colour.current.set",
+    kind = ui,
+    label = "Set the current colour",
+    scopes = [ui],
+    needs_project,
+    example(title = "Make the first palette's second swatch current", params = r#"{"colourId": "palette:#1/swatch:#2"}"#),
+    gui = "the Colour panel's swatches and the Dropper tool (03 §2.4, 02 §7.3.4); wired in M4 C4.2",
+)]
+pub(crate) fn colour_current_set(cx: &mut Cx, p: CurrentSetParams) -> Result<CurrentColour, CommandError> {
+    let c = super::draw_stroke::swatch_colour(cx, &p.colour_id);
+    let doc = cx.document()?;
+    let Some(pal) = doc.palettes().find(|pal| pal.swatches().iter().any(|s| s.colour_id().as_str() == c)) else {
+        return Err(err(
+            "colour.notFound",
+            format!("colour `{}` is not in any palette", p.colour_id),
+            json!({ "pointer": "/colourId", "colourId": p.colour_id }),
+        ));
+    };
+    let palette = pal.id().clone();
+    let colour = Id::parse(&c)?;
+    let next = Some((colour.clone(), palette.clone()));
+    // An event only for an effective change (the C4.1 change-event rule).
+    if cx.app().colour != next {
+        cx.app_mut().colour = next;
+        cx.emit("colour.current.changed", json!({ "paletteId": palette.as_str(), "colourId": colour.as_str() }));
+    }
+    Ok(CurrentColour { palette_id: palette.as_str().to_owned(), colour_id: colour.as_str().to_owned() })
+}
+
+/// `colour.current.changed` payload.
+#[derive(Debug, Serialize, JsonSchema)]
+#[serde(rename_all = "camelCase")]
+pub(crate) struct CurrentChanged {
+    /// The current palette.
+    palette_id: String,
+    /// The current colour.
+    colour_id: String,
+}
+
+#[command(
+    id = "colour.current.changed",
+    kind = event,
+    label = "Current palette or colour changed",
+    scopes = [read],
+    example(title = "Subscribe (events take no parameters)", params = "{}"),
+    agent_only = "an event delivered to subscribers",
+)]
+pub(crate) fn colour_current_changed(
+    _cx: &mut Cx,
+    _p: super::common::NoParams,
+) -> Result<CurrentChanged, CommandError> {
+    Err(super::common::event_not_invocable("colour.current.changed"))
 }

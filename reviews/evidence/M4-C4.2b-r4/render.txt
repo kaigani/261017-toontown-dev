@@ -1,0 +1,23 @@
+   Compiling tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\model)
+   Compiling tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\anim)
+   Compiling tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\colour)
+   Compiling tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\vector)
+   Compiling tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\fx)
+   Compiling tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42b-r4\crates\render)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 22.80s
+     Running tests\c42b_r1_review.rs (target\debug\deps\c42b_r1_review-41b48e4a7c8c9ad8.exe)
+
+running 2 tests
+test degenerate_and_limit_geometry_is_finite_and_repeatable ... ok
+test anisotropic_layer_preserves_final_stroke_coverage ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.04s
+
+     Running tests\c42b_r2_review.rs (target\debug\deps\c42b_r2_review-27979882802b70a2.exe)
+
+running 2 tests
+test five_fresh_encodings ... ok
+test corpus_and_version_rules ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.00s
+

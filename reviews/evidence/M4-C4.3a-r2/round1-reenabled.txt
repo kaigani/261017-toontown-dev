@@ -1,0 +1,38 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c43a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 36.66s
+     Running tests\c43a_r1_review.rs (target\debug\deps\c43a_r1_review-d5ee8c790f5cbb68.exe)
+
+running 30 tests
+test mapping::camera_drawing_mapping_is_queryable ... ok
+test mapping::scene_depth_projection_round_trips_and_refusals ... ok
+test mapping::explicit_element_scene_point_uses_addressed_element ... ok
+test part_c_mapping::case6_no_camera_not_constructible ... ok
+test scene_tools::click_short_drag_and_empty_click_are_nonundoable_selection ... ok
+test scene_tools::tool_families_are_independent_and_nonundoable ... ok
+test part_c_mapping::case5_top_side_refuse ... ok
+test part_c_mapping::case7_extreme_coordinates ... ok
+test part_c_mapping::case1_scene_rectangle_nested_pegs ... ok
+test part_c_mapping::case3_brush_three_spaces ... ok
+test part_c_mapping::case4_unmappable_planes ... ok
+test part_c_mapping::case8_tolerances_and_replay ... ok
+test part_d_scene_tools::case4_locked_hidden ... ok
+test part_b_composition::case6_nested_pegs_three_corners ... ok
+test part_c_mapping::case2_view_four_shapes ... ok
+test part_b_composition::case4_hidden_ancestor ... ok
+test part_b_composition::case5_near_plane ... ok
+test part_d_scene_tools::case3_pick_priority_tolerance ... ok
+test part_b_composition::case7_shared_drawing_clone ... ok
+test part_b_composition::case3_two_cameras ... ok
+test part_d_scene_tools::case2_existing_new_static ... ok
+test part_b_composition::case2_timeline_tie_reorder ... ok
+test scene_tools::select_and_transform_drag_have_spec_parameters_content_and_history ... ok
+test part_d_scene_tools::case1_position_only ... ok
+test part_b_composition::case1_three_depths ... ok
+test part_d_scene_tools::case6_select_handles_labels ... ok
+test part_d_scene_tools::case5_transform_handles ... ok
+test composition::independent_projection_and_final_pixels ... ok
+test part_d_scene_tools::case8_screenshot ... ok
+test part_d_scene_tools::case7_active_view ... ok
+
+test result: ok. 30 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.38s
+

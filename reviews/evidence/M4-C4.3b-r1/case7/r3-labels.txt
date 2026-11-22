@@ -1,0 +1,28 @@
+ok   the application saves the fixture project
+ok   the canvas is located in the window (OS input)
+ok   three-way rectangle (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo rectangle
+ok   three-way ellipse (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo ellipse
+ok   three-way line (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo line
+ok   three-way polyline (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo polyline
+ok   three-way eraser (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo eraser
+ok   three-way cutter (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo cutter
+ok   three-way scissor (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo scissor
+ok   three-way select: move (os): the window, the recorded samples replayed headless and the produced commands sent directly give the same commands, content and undo step
+ok   specified label and undo/redo select: move
+{
+ "kind": "toontown.c42.gesture-equivalence",
+ "platform": "win32",
+ "seconds": 8.8,
+ "rows": 8,
+ "input": [
+  "os"
+ ],
+ "failures": []
+}

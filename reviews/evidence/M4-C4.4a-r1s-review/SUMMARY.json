@@ -1,0 +1,17 @@
+{
+  "productHead": "0032529b",
+  "reviewBase": "53a1014e",
+  "mode": "static",
+  "cases": {
+    "S1": "PASS",
+    "S2": "FAIL C44A-R1S-01",
+    "S3": "PASS",
+    "S4": "PASS",
+    "S5": "PASS",
+    "S6": "FAIL C44A-R1S-02",
+    "S7": "FAIL C44A-R1S-03"
+  },
+  "probe": "python tests/adversarial/c44a-r1s-static.py",
+  "allowCheck": "python scripts/check-product-allows.py",
+  "allowResult": "1 new unsafe_code allowance in desktop/src-tauri/src/menu_hint.rs; exit 1"
+}

@@ -8,13 +8,19 @@ use tt_executor::{ExecutorConfig, ExecutorHandle, Invocation};
 #[test]
 fn smooth_watchdog_reaches_mcp_and_next_read_answers() {
     let dir = tmp();
-    let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_millis(600) }).unwrap();
-    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
-    let (mut c, _) = Client::connect(&h, opts(&dir), json!({}));
+    // Setup (ruling D-68 item 6, D-45): the 20,000-point stroke is built by an executor with the product's 5,000 ms
+    // budget; the 600 ms executor the test times opens that document.
+    let setup = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_millis(5000) }).unwrap();
+    assert!(setup.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
     let points: Vec<_> = (0..20_000).map(|i| json!({"x":2000+i,"y":2000})).collect();
-    let add=h.invoke(Invocation::user("draw.stroke.add",json!({"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","kind":"invisible","fit":false,"layer":"new","points":points})));
+    let add=setup.invoke(Invocation::user("draw.stroke.add",json!({"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","kind":"invisible","fit":false,"layer":"new","points":points})));
     assert!(add.is_ok(), "{add:?}");
     let ids = add.result.unwrap()["strokeIds"].clone();
+    let built = setup.snapshot().unwrap().unwrap();
+    drop(setup);
+    let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_millis(600) }).unwrap();
+    assert!(h.open_document(built, None, false).is_ok());
+    let (mut c, _) = Client::connect(&h, opts(&dir), json!({}));
     let revision_before = h.snapshot().unwrap().unwrap().document_rev();
     let start = Instant::now();
     let r = c.run("draw.smooth.apply", json!({"drawingId":"dr_01K742SG0KKMCAP9X1E6Z5P4SW","ids":ids,"tolerance":1}));

@@ -1,0 +1,23 @@
+{
+  "method": "median accent span across rows through the light centre; pixel footprint includes antialiasing and outline intersections",
+  "zoom1": [
+    9,
+    9,
+    9,
+    9,
+    9,
+    8,
+    9,
+    8
+  ],
+  "zoom2_rotated30": [
+    8,
+    9,
+    9,
+    8,
+    8,
+    8,
+    8,
+    8
+  ]
+}

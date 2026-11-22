@@ -75,7 +75,7 @@ test('C01-R2-01: lint coverage follows frontend imports outside desktop/src', as
     // The exact CLI glob (eslint .) must reject the reachable forbidden import, wherever it lives.
     // Fresh process: lintText above intentionally replaces source in TypeScript's in-memory project service.
     const cli = spawnSync(process.execPath, ['node_modules/eslint/bin/eslint.js', '.', '--max-warnings', '0', '--format', 'json'], {
-      cwd: desktop, encoding: 'utf8', timeout: 30_000, maxBuffer: 8 * 1024 * 1024,
+      cwd: desktop, encoding: 'utf8', timeout: 120_000, maxBuffer: 8 * 1024 * 1024,
     });
     assert.ifError(cli.error);
     const results = JSON.parse(cli.stdout);

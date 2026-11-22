@@ -1,0 +1,1133 @@
+{
+ "receipt": "C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m4-desktop-shell/reviews/evidence/M4-C4.4b-r4/equivalence",
+ "verdict": "pass",
+ "regenerate": "python scripts/c44b-gesture-equivalence.py target/release/toontown.exe target/release/toontown-headless.exe <out>",
+ "manifest": {
+  "kind": "toontown.c44b.gesture-equivalence",
+  "platform": "win32",
+  "seconds": 40.2,
+  "rows": 20,
+  "input": [
+   "os"
+  ],
+  "replayNotExact": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the application saves the fixture project"
+  },
+  {
+   "ok": true,
+   "check": "D-32: engine 2's views have the window's sizes"
+  },
+  {
+   "ok": true,
+   "check": "D-23: every row states the spec's expectation before it runs"
+  },
+  {
+   "ok": true,
+   "check": "the drawingView canvas is located in the window (OS input)"
+  },
+  {
+   "ok": true,
+   "check": "the drawingView calibration click is recorded"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: anchor drag (drawingView): each path does what the spec states (02 §7.1.2 line 450; §13.3 (Contour Editor); design note 3 §2; label line 463)"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: anchor drag (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: segment drag (drawingView): each path does what the spec states (02 §7.1.2 line 451; design note 3 §2)"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: segment drag (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: insert (temporary select) (drawingView): each path does what the spec states (02 §7.1.2 line 452; design note 3 §2)"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: insert (temporary select) (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: reset (alternate click) (drawingView): each path does what the spec states (02 §7.1.2 line 453; SI-186 (D-75 item 4))"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: reset (alternate click) (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: corner (drawingView): each path does what the spec states (02 §7.1.3 lines 468-469; SI-188; label line 473)"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: corner (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: alternate side (drawingView): each path does what the spec states (02 §7.1.3 line 470; SI-188)"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: alternate side (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: offset (drawingView): each path does what the spec states (02 §7.1.4 line 478; SI-189; label line 481)"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: offset (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: rotation (drawingView): each path does what the spec states (02 §7.1.4 line 479; SI-141 item 3)"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: rotation (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: alternate corner (drawingView): each path does what the spec states (02 §7.1.4 line 480; SI-189 (D-75 item 7))"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: alternate corner (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way text: click (drawingView): each path does what the spec states (02 §7.6 line 669; §13.3 line 1229; SI-191; label 02 line 1066)"
+  },
+  {
+   "ok": true,
+   "check": "three-way text: click (drawingView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "the cameraView canvas is located in the window (OS input)"
+  },
+  {
+   "ok": true,
+   "check": "the cameraView calibration click is recorded"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: anchor drag (cameraView): each path does what the spec states (02 §7.1.2 line 450; §13.3 (Contour Editor); design note 3 §2; label line 463)"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: anchor drag (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: segment drag (cameraView): each path does what the spec states (02 §7.1.2 line 451; design note 3 §2)"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: segment drag (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: insert (temporary select) (cameraView): each path does what the spec states (02 §7.1.2 line 452; design note 3 §2)"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: insert (temporary select) (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: reset (alternate click) (cameraView): each path does what the spec states (02 §7.1.2 line 453; SI-186 (D-75 item 4))"
+  },
+  {
+   "ok": true,
+   "check": "three-way contour: reset (alternate click) (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: corner (cameraView): each path does what the spec states (02 §7.1.3 lines 468-469; SI-188; label line 473)"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: corner (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: alternate side (cameraView): each path does what the spec states (02 §7.1.3 line 470; SI-188)"
+  },
+  {
+   "ok": true,
+   "check": "three-way perspective: alternate side (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: offset (cameraView): each path does what the spec states (02 §7.1.4 line 478; SI-189; label line 481)"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: offset (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: rotation (cameraView): each path does what the spec states (02 §7.1.4 line 479; SI-141 item 3)"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: rotation (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: alternate corner (cameraView): each path does what the spec states (02 §7.1.4 line 480; SI-189 (D-75 item 7))"
+  },
+  {
+   "ok": true,
+   "check": "three-way reposition: alternate corner (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way text: click (cameraView): each path does what the spec states (02 §7.6 line 669; §13.3 line 1229; SI-191; label 02 line 1066)"
+  },
+  {
+   "ok": true,
+   "check": "three-way text: click (cameraView) (os): the window, the replay and the direct commands agree"
+  },
+  {
+   "ok": true,
+   "check": "three-way text: click (cameraView): typing gives one \"Typing\" step and the same text (SI-191)"
+  }
+ ],
+ "rows": [
+  {
+   "name": "contour: anchor drag (drawingView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 450; §13.3 (Contour Editor); design note 3 §2; label line 463",
+    "command": "draw.point.move",
+    "params": {
+     "snap": false
+    },
+    "keys": [
+     "points",
+     "delta"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "contour: segment drag (drawingView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 451; design note 3 §2",
+    "command": "draw.segment.move",
+    "params": {},
+    "keys": [
+     "strokeId",
+     "segment",
+     "t",
+     "delta"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "contour: insert (temporary select) (drawingView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 452; design note 3 §2",
+    "command": "draw.point.add",
+    "params": {},
+    "keys": [
+     "strokeId",
+     "segment",
+     "t"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "contour: reset (alternate click) (drawingView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 453; SI-186 (D-75 item 4)",
+    "command": "draw.point.set",
+    "params": {
+     "handleMode": "reset"
+    },
+    "keys": [
+     "strokeId",
+     "anchor"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "perspective: corner (drawingView)",
+   "tool": "perspective",
+   "input": "os",
+   "labels": [
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.3 lines 468-469; SI-188; label line 473",
+    "command": "draw.envelope.apply",
+    "params": {
+     "mapping": "auto"
+    },
+    "keys": [
+     "corners"
+    ],
+    "label": "Perspective Tool"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "perspective: alternate side (drawingView)",
+   "tool": "perspective",
+   "input": "os",
+   "labels": [
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.3 line 470; SI-188",
+    "command": "draw.envelope.apply",
+    "params": {
+     "mapping": "auto"
+    },
+    "keys": [
+     "corners"
+    ],
+    "label": "Perspective Tool"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "reposition: offset (drawingView)",
+   "tool": "repositionAll",
+   "input": "os",
+   "commands": {
+    "window": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "translate": {
+        "x": 40,
+        "y": 20
+       }
+      }
+     }
+    ],
+    "engine2": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "translate": {
+        "x": 40.0,
+        "y": 20.0
+       }
+      }
+     }
+    ]
+   },
+   "labels": [
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.4 line 478; SI-189; label line 481",
+    "command": "draw.repositionAll.apply",
+    "params": {},
+    "keys": [
+     "translate"
+    ],
+    "label": "Reposition All Drawings"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "reposition: rotation (drawingView)",
+   "tool": "repositionAll",
+   "input": "os",
+   "commands": {
+    "window": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "rotate": 24.830338939238093,
+       "pivot": {
+        "x": 0,
+        "y": 0
+       }
+      }
+     }
+    ],
+    "engine2": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "rotate": 24.830338939238093,
+       "pivot": {
+        "x": 0.0,
+        "y": 0.0
+       }
+      }
+     }
+    ]
+   },
+   "labels": [
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.4 line 479; SI-141 item 3",
+    "command": "draw.repositionAll.apply",
+    "params": {},
+    "keys": [
+     "rotate",
+     "pivot"
+    ],
+    "label": "Reposition All Drawings"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "reposition: alternate corner (drawingView)",
+   "tool": "repositionAll",
+   "input": "os",
+   "labels": [
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.4 line 480; SI-189 (D-75 item 7)",
+    "command": "draw.repositionAll.apply",
+    "params": {},
+    "keys": [
+     "corners"
+    ],
+    "label": "Reposition All Drawings"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "text: click (drawingView)",
+   "tool": "text",
+   "input": "os",
+   "labels": [
+    [
+     "New Text Object"
+    ],
+    [
+     "New Text Object"
+    ],
+    [
+     "New Text Object"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.6 line 669; §13.3 line 1229; SI-191; label 02 line 1066",
+    "command": "draw.text.add",
+    "params": {
+     "text": ""
+    },
+    "keys": [
+     "position",
+     "format"
+    ],
+    "label": "New Text Object"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "contour: anchor drag (cameraView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 450; §13.3 (Contour Editor); design note 3 §2; label line 463",
+    "command": "draw.point.move",
+    "params": {
+     "snap": false
+    },
+    "keys": [
+     "points",
+     "delta"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "contour: segment drag (cameraView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 451; design note 3 §2",
+    "command": "draw.segment.move",
+    "params": {},
+    "keys": [
+     "strokeId",
+     "segment",
+     "t",
+     "delta"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "contour: insert (temporary select) (cameraView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 452; design note 3 §2",
+    "command": "draw.point.add",
+    "params": {},
+    "keys": [
+     "strokeId",
+     "segment",
+     "t"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "contour: reset (alternate click) (cameraView)",
+   "tool": "contourEditor",
+   "input": "os",
+   "labels": [
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ],
+    [
+     "Contour Editing"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.2 line 453; SI-186 (D-75 item 4)",
+    "command": "draw.point.set",
+    "params": {
+     "handleMode": "reset"
+    },
+    "keys": [
+     "strokeId",
+     "anchor"
+    ],
+    "label": "Contour Editing"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "perspective: corner (cameraView)",
+   "tool": "perspective",
+   "input": "os",
+   "labels": [
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.3 lines 468-469; SI-188; label line 473",
+    "command": "draw.envelope.apply",
+    "params": {
+     "mapping": "auto"
+    },
+    "keys": [
+     "corners"
+    ],
+    "label": "Perspective Tool"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "perspective: alternate side (cameraView)",
+   "tool": "perspective",
+   "input": "os",
+   "labels": [
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ],
+    [
+     "Perspective Tool"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.3 line 470; SI-188",
+    "command": "draw.envelope.apply",
+    "params": {
+     "mapping": "auto"
+    },
+    "keys": [
+     "corners"
+    ],
+    "label": "Perspective Tool"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "reposition: offset (cameraView)",
+   "tool": "repositionAll",
+   "input": "os",
+   "commands": {
+    "window": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "translate": {
+        "x": 40,
+        "y": 20
+       }
+      }
+     }
+    ],
+    "engine2": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "translate": {
+        "x": 40.0,
+        "y": 20.0
+       }
+      }
+     }
+    ]
+   },
+   "labels": [
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.4 line 478; SI-189; label line 481",
+    "command": "draw.repositionAll.apply",
+    "params": {},
+    "keys": [
+     "translate"
+    ],
+    "label": "Reposition All Drawings"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "reposition: rotation (cameraView)",
+   "tool": "repositionAll",
+   "input": "os",
+   "commands": {
+    "window": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "rotate": 24.78794652958571,
+       "pivot": {
+        "x": 0,
+        "y": 0
+       }
+      }
+     }
+    ],
+    "engine2": [
+     {
+      "commandId": "draw.repositionAll.apply",
+      "params": {
+       "rotate": 24.78794652958571,
+       "pivot": {
+        "x": 0.0,
+        "y": 0.0
+       }
+      }
+     }
+    ]
+   },
+   "labels": [
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.4 line 479; SI-141 item 3",
+    "command": "draw.repositionAll.apply",
+    "params": {},
+    "keys": [
+     "rotate",
+     "pivot"
+    ],
+    "label": "Reposition All Drawings"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "reposition: alternate corner (cameraView)",
+   "tool": "repositionAll",
+   "input": "os",
+   "labels": [
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ],
+    [
+     "Reposition All Drawings"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.1.4 line 480; SI-189 (D-75 item 7)",
+    "command": "draw.repositionAll.apply",
+    "params": {},
+    "keys": [
+     "corners"
+    ],
+    "label": "Reposition All Drawings"
+   },
+   "specProblems": []
+  },
+  {
+   "name": "text: click (cameraView)",
+   "tool": "text",
+   "input": "os",
+   "labels": [
+    [
+     "New Text Object"
+    ],
+    [
+     "New Text Object"
+    ],
+    [
+     "New Text Object"
+    ]
+   ],
+   "statuses": [
+    "ok",
+    "ok",
+    "ok"
+   ],
+   "sameCommands": true,
+   "sameContent": true,
+   "sameLabels": true,
+   "replayExact": true,
+   "replayLargestDifference": 0.0,
+   "expected": {
+    "spec": "02 §7.6 line 669; §13.3 line 1229; SI-191; label 02 line 1066",
+    "command": "draw.text.add",
+    "params": {
+     "text": ""
+    },
+    "keys": [
+     "position",
+     "format"
+    ],
+    "label": "New Text Object"
+   },
+   "specProblems": [],
+   "editorBefore": {
+    "role": "textEditor",
+    "id": "canvas.textEditor",
+    "label": "Text editor",
+    "value": "",
+    "command": {
+     "commandId": "draw.text.set"
+    }
+   },
+   "focusBefore": null,
+   "editor": {
+    "role": "textEditor",
+    "id": "canvas.textEditor",
+    "label": "Text editor",
+    "value": "",
+    "command": {
+     "commandId": "draw.text.set"
+    }
+   },
+   "typing": {
+    "texts": [
+     [
+      "Hi"
+     ],
+     [
+      "Hi"
+     ],
+     [
+      "Hi"
+     ]
+    ],
+    "labels": [
+     [
+      "Typing"
+     ],
+     [
+      "Typing"
+     ],
+     [
+      "Typing",
+      "Typing"
+     ]
+    ],
+    "textId": "nd_01K7JJN800A5AGQG2FWX86W7A7"
+   }
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 184,
+   "sha256": "72b5600ace3291b7251013f789b9ace302357ec1563e445224142053e737e484"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 64837,
+   "sha256": "fd0d46a3cec889c748cec9ea2db92cd1569ec65659b8c9db445b0ce9d413028d"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 16919,
+   "sha256": "96968f02b8209d0c5d4c223c13a647e396d721d6e8749fff59bb9a3445129e5b"
+  }
+ ]
+}

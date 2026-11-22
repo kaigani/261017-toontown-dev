@@ -1,0 +1,57 @@
+['cargo', 'test', '-p', 'tt-executor', '--test', 'c42a_r5_review', '--locked', '--', '--nocapture']
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 5.67s
+     Running tests\c42a_r5_review.rs (target\debug\deps\c42a_r5_review-3d600326458fc50b.exe)
+
+running 1 test
+REFUSAL draw.hitTest.get (fixture for draw.line.add) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for draw.line.add) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for draw.line.add) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+LOCK draw.line.add: Availability { command_id: "draw.line.add", params: Object {"from": Object {"x": Number(1020), "y": Number(1020)}, "to": Object {"x": Number(1080), "y": Number(1080)}, "elementId": String("el_01K7JJN800J6GZ68MHS01HNTDM"), "frame": Number(5)}, enabled: false, reason: Some("drawing `Target` is locked"), checked: None, label: None, dialog: false } drawing.locked
+REFUSAL draw.hitTest.get (fixture for draw.ellipse.add) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for draw.ellipse.add) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for draw.ellipse.add) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.hitTest.get (fixture for draw.selection.set) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for draw.selection.set) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for draw.selection.set) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.hitTest.get (fixture for draw.pointSelection.set) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for draw.pointSelection.set) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for draw.pointSelection.set) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.hitTest.get (fixture for draw.erase.apply) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for draw.erase.apply) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for draw.erase.apply) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+LOCK draw.erase.apply: Availability { command_id: "draw.erase.apply", params: Object {"path": Array [Object {"x": Number(990), "y": Number(1050)}, Object {"x": Number(1110), "y": Number(1050)}], "elementId": String("el_01K7JJN800J6GZ68MHS01HNTDM"), "frame": Number(5)}, enabled: false, reason: Some("drawing `Target` is locked"), checked: None, label: None, dialog: false } drawing.locked
+REFUSAL draw.hitTest.get (fixture for draw.transform.apply) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for draw.transform.apply) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for draw.transform.apply) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+LOCK draw.transform.apply: Availability { command_id: "draw.transform.apply", params: Object {"ids": Array [String("st_01K7JJN800DDW44SJVC40KANBT")], "translate": Object {"x": Number(10), "y": Number(20)}, "elementId": String("el_01K7JJN800J6GZ68MHS01HNTDM"), "frame": Number(5)}, enabled: false, reason: Some("drawing `Target` is locked"), checked: None, label: None, dialog: false } drawing.locked
+REFUSAL draw.hitTest.get (fixture for colour.paint.apply) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for colour.paint.apply) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for colour.paint.apply) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+REFUSAL draw.hitTest.get (fixture for draw.hitTest.get) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Absent\"","frame":5}: ref.notFound
+REFUSAL draw.hitTest.get (fixture for draw.hitTest.get) {"point":{"x":1000,"y":1050},"elementId":"el_01K7JJN800J6GZ68MHS01HNTDM","frame":999999}: drawing.noTarget
+REFUSAL draw.hitTest.get (fixture for draw.hitTest.get) {"point":{"x":1000,"y":1050},"elementId":"scene:#1/element:\"Dialogue\"","frame":5}: drawing.notVectorElement
+test second_element_eight_families_and_refusals ... ok
+
+test result: ok. 1 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.28s
+
+
+EXIT 0
+['cargo', 'fmt', '--check']
+
+EXIT 0
+['cargo', 'clippy', '-p', 'tt-executor', '--all-targets', '--locked', '--features', 'tt-persist/test-hooks', '--', '-D', 'warnings', '-A', 'clippy::empty_line_after_doc_comments']
+   Compiling tt-registry-macros v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\registry-macros)
+    Checking tt-model v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\model)
+    Checking tt-anim v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\anim)
+    Checking tt-vector v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\vector)
+    Checking tt-colour v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\colour)
+    Checking tt-persist v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\persist)
+    Checking tt-registry v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\registry)
+    Checking tt-fx v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\fx)
+    Checking tt-render v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\render)
+    Checking tt-io v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\io)
+    Checking tt-executor v0.0.1 (C:\Users\kaiga\work\review\m4-c42a-r5\crates\executor)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 25.33s
+
+EXIT 0

@@ -1,0 +1,52 @@
+{
+  "generation": 3,
+  "scene": {
+    "viewId": "drawingView",
+    "background": [
+      240,
+      240,
+      240,
+      255
+    ],
+    "grid": {
+      "visible": false,
+      "type": "normal",
+      "overlay": false
+    },
+    "entries": [
+      {
+        "drawingId": "dr_01K742SG11W3SGB8Q1H50W74VA",
+        "rev": 7,
+        "role": "current",
+        "opacity": 1.0,
+        "tint": null,
+        "shade": false,
+        "outline": false,
+        "matrix": [
+          1,
+          0,
+          0,
+          1,
+          0,
+          0
+        ]
+      }
+    ],
+    "colours": {
+      "col_01K742SG059XGSNZ6M9MACZ2ZY": [
+        140,
+        122,
+        138,
+        255
+      ]
+    },
+    "paletteStamp": 12345,
+    "drawingPivot": [
+      0.0,
+      0.0
+    ],
+    "selection": null,
+    "sceneForm": "1.1",
+    "viewType": "drawing"
+  }
+}

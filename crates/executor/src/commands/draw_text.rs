@@ -1,6 +1,7 @@
 //! `draw.text.add`, `draw.text.set`, `draw.textFormat.set` (02 §3.7, §7.6, §13.5): text objects with
 //! per-character runs and per-paragraph formatting, laid out by `tt-vector` for their bounds. A missing font keeps its
-//! name and is reported (`drawing.fontMissing`, 02 §3.7); `doc.validate` lists missing fonts (`missingFonts`).
+//! name and is reported (`text.fontMissing`, info: 10 line 958; ruling D-75 item 9); `doc.validate` lists missing
+//! fonts (`missingFonts`).
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -18,7 +19,7 @@ use super::draw_stroke::{Addr, colour_of, drawing_in, stroke_target};
 use crate::cx::Cx;
 
 /// Baseline (`script` in the project format).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum Baseline {
     /// Normal.
@@ -40,7 +41,7 @@ impl Baseline {
 }
 
 /// Paragraph alignment.
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Deserialize, JsonSchema)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub(crate) enum Align {
     /// Left.
@@ -183,7 +184,7 @@ fn bounds_and_fonts(cx: &mut Cx, c: &Content, width: Option<f64>, transform: [f6
     let l = text::layout(c, width);
     for f in &l.missing_fonts {
         cx.warn(
-            "drawing.fontMissing",
+            "text.fontMissing",
             format!("font `{f}` is not installed; the text keeps the name and is displayed with a fallback font"),
             vec![object.to_owned()],
         );
@@ -222,6 +223,12 @@ pub(crate) struct TextAddParams {
     /// Text colour (default: the current colour).
     #[serde(default)]
     colour_id: Option<String>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn yes() -> bool {
@@ -247,6 +254,7 @@ pub(crate) struct TextResult {
 
 #[command(
     id = "draw.text.add",
+    precheck = super::draw::precheck_add_content,
     kind = action,
     label = "Add text",
     scopes = [edit],
@@ -257,6 +265,8 @@ pub(crate) struct TextResult {
     gui = "Drawing view: Text tool (M4 C4.2)",
 )]
 pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     check_position(p.position, "/position")?;
     check_len(&p.text, "/text")?;
     if let Some(w) = p.width {
@@ -377,6 +387,12 @@ pub(crate) struct TextSetParams {
     /// The drawing revision the caller read (02 §3.12).
     #[serde(default)]
     expect_rev: Option<u64>,
+    /// Coordinate space of the points (02 §13.1 item 5): `view` points go through the view's one mapping.
+    #[serde(default)]
+    space: super::colour::Space,
+    /// The view of `view` points and of view-pixel tolerances (default: the Drawing view; tolerances at 100 %).
+    #[serde(default)]
+    view: Option<String>,
 }
 
 fn text_node(
@@ -407,6 +423,7 @@ fn text_node(
 
 #[command(
     id = "draw.text.set",
+    precheck = super::draw::precheck_text_set,
     kind = action,
     label = "Edit text",
     scopes = [edit],
@@ -416,6 +433,8 @@ fn text_node(
     gui = "Drawing view: Text tool typing, box width and move (M4 C4.2)",
 )]
 pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult, CommandError> {
+    // The pipeline converted view-space points (crate::addressing).
+    let _ = (&p.space, &p.view);
     let content_edit = p.text.is_some() || p.insert.is_some() || p.delete.is_some();
     let width_edit = p.width_mode.is_some() || p.width.is_some();
     if !content_edit && !width_edit && p.position.is_none() {
@@ -618,6 +637,7 @@ pub(crate) struct TextFormatResult {
 
 #[command(
     id = "draw.textFormat.set",
+    precheck = super::draw::precheck_text_set,
     kind = action,
     label = "Format text",
     scopes = [edit],
@@ -662,6 +682,46 @@ pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<T
     let count = p.length.map_or(len - p.start as usize, |l| l as usize);
     if p.start as usize + count > len {
         return Err(err(codes::ARG_INVALID, format!("the text has {len} characters"), json!({ "pointer": "/length" })));
+    }
+    // The session's own call at its caret with nothing highlighted keeps character fields for the next keystroke
+    // (SI-195): no document change, no step.
+    if p.length == Some(0) {
+        let mut fields = serde_json::Map::new();
+        let mut put = |k: &str, v: Option<Value>| {
+            if let Some(v) = v {
+                fields.insert(k.to_owned(), v);
+            }
+        };
+        put("font", p.font.clone().map(Value::from));
+        put("size", p.size.map(Value::from));
+        put("bold", p.bold.map(Value::from));
+        put("italic", p.italic.map(Value::from));
+        put("baseline", p.baseline.and_then(|b| serde_json::to_value(b).ok()));
+        put("kerning", p.kerning.map(Value::from));
+        put("autoKern", p.auto_kern.map(Value::from));
+        put("colourId", p.colour_id.clone().map(Value::from));
+        put("outlineColourId", p.outline_colour_id.clone().map(Value::from));
+        put("align", p.align.and_then(|a| serde_json::to_value(a).ok()));
+        put("leftMargin", p.left_margin.map(Value::from));
+        put("rightMargin", p.right_margin.map(Value::from));
+        put("indent", p.indent.map(Value::from));
+        put("lineSpacing", p.line_spacing.map(Value::from));
+        fields.insert("textId".into(), json!(l.id));
+        fields.insert("start".into(), json!(p.start));
+        fields.insert("length".into(), json!(0));
+        if crate::text_edit::take_pending(cx, &Value::Object(fields)) {
+            let width = if *n.width_mode() == Some(WidthMode::Fixed) { *n.width() } else { None };
+            let transform = n.transform().unwrap_or(tt_model::value::IDENTITY);
+            let object = format!("{}/{}", d.id().as_str(), l.id);
+            let bounds = bounds_and_fonts(cx, &c, width, transform, &object);
+            return Ok(TextFormatResult {
+                drawing_id: d.id().as_str().to_owned(),
+                text_id: l.id,
+                changed: super::draw::Changed::default(),
+                bounds,
+                rev: committed_rev(cx)?,
+            });
+        }
     }
     c.format(p.start as usize, count, &fmt);
     let base = l.pointer.clone();

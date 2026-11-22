@@ -1,0 +1,33 @@
+{
+  "$comment": "Gesture rows on the window and the dock (ruling D-35: a gesture row is an action entry): what the user does with the pointer outside the canvas tools' gesture table, and the commands it sends. Each row names the product files that send them; the gate (crates/executor/tests/common/parity_gate.rs) requires a call site of each command in one of those files, and the manifest carries the rows as its `windowGestures` section.",
+  "rows": [
+    {
+      "id": "dock:drop",
+      "surface": "dock",
+      "gesture": "drag a panel's tab and drop it on another area, tab group or edge (01 §5.4)",
+      "commands": ["window.panel.move"],
+      "files": ["desktop/src/dock/DockArea.tsx"]
+    },
+    {
+      "id": "dock:splitter",
+      "surface": "dock",
+      "gesture": "drag a splitter between dock areas (01 §5.4; SI-118)",
+      "commands": ["window.panel.move"],
+      "files": ["desktop/src/dock/DockArea.tsx"]
+    },
+    {
+      "id": "window:moveResize",
+      "surface": "mainWindow",
+      "gesture": "move or resize the main window by its native frame (01 §12, the geometry commands)",
+      "commands": ["window.geometry.set"],
+      "files": ["desktop/src-tauri/src/shell.rs"]
+    },
+    {
+      "id": "canvas:activate",
+      "surface": "canvas",
+      "gesture": "a press in a view window that is not the active view activates it (views note V9; SI-142)",
+      "commands": ["view.active.set"],
+      "files": ["desktop/src/canvas/CanvasView.tsx"]
+    }
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "status": "ok",
+  "result": {
+    "drawingId": "dr_01K7JJN800JCY12TY2SV9YF2EN",
+    "createdDrawing": false,
+    "strokeIds": [
+      "st_01K7JJN8004AC0TSWB84Q6652P"
+    ],
+    "zoneIds": [],
+    "layerId": "nd_01K7JJN801HHM987X6JJP13MTW",
+    "createdIds": [
+      "st_01K7JJN8004AC0TSWB84Q6652P",
+      "nd_01K7JJN801HHM987X6JJP13MTW"
+    ],
+    "modifiedIds": [],
+    "removedIds": [],
+    "rev": 7,
+    "hints": []
+  },
+  "changes": [
+    {
+      "id": "dr_01K7JJN800JCY12TY2SV9YF2EN/st_01K7JJN8004AC0TSWB84Q6652P",
+      "type": "stroke",
+      "op": "created",
+      "rev": 7,
+      "parentId": "dr_01K7JJN800JCY12TY2SV9YF2EN/nd_01K7JJN801HHM987X6JJP13MTW",
+      "index": 0
+    },
+    {
+      "id": "dr_01K7JJN800JCY12TY2SV9YF2EN/nd_01K7JJN801HHM987X6JJP13MTW",
+      "type": "drawingNode",
+      "op": "created",
+      "rev": 7,
+      "parentId": "dr_01K7JJN800JCY12TY2SV9YF2EN",
+      "index": 3
+    },
+    {
+      "id": "dr_01K7JJN800JCY12TY2SV9YF2EN",
+      "type": "drawing",
+      "op": "modified",
+      "rev": 7,
+      "patch": [
+        {
+          "op": "add",
+          "path": "/nodes/3",
+          "value": {
+            "id": "nd_01K7JJN801HHM987X6JJP13MTW",
+            "type": "drawingNode"
+          }
+        }
+      ]
+    }
+  ],
+  "undo": {
+    "stepId": "u-6",
+    "label": "Pencil Tool"
+  },
+  "warnings": [],
+  "documentRev": 7
+}

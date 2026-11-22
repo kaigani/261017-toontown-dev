@@ -187,8 +187,9 @@ pub(crate) struct Session {
     pub ui: UiState,
     pub jobs: Arc<JobTable>,
     pub events: Vec<Event>,
-    /// The kernel clipboard (01 §12.4 `Clipboard`), `null` when empty.
-    pub clipboard: Option<Value>,
+    /// The kernel clipboard (01 §12.4 `Clipboard`), `null` when empty. Shared and replaced whole, never edited in
+    /// place, so prechecks can read facts about it once per clipboard (`memo`, ruling O-24).
+    pub clipboard: Option<std::sync::Arc<Value>>,
     /// The remembered options of cut special, paste special and motion-point paste special (01 §6.3).
     pub edit_options: std::collections::BTreeMap<String, serde_json::Map<String, Value>>,
     /// The persistence environment (C1.3).

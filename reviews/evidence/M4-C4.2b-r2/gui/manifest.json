@@ -1,0 +1,9 @@
+{
+  "kind": "toontown.c42.gui-e2e",
+  "platform": "win32",
+  "seconds": 86.8,
+  "failures": [
+    "the canvas shows what the final renderer draws: the Drawing view in a float window (a real capture against the activeView render, under 1 % of pixels differ): {\"error\": [null, {\"code\": \"render.compositionUnavailable\", \"message\": \"the `activeView` composition of this view type arrives with M4 C4.3\", \"details\": {\"composition\": \"activeView\", \"owner\": \"M4 C4.3\"}}]}"
+  ],
+  "checks": 60
+}

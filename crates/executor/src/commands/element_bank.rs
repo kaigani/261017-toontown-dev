@@ -151,7 +151,7 @@ pub(crate) struct ListResult {
     needs_project,
     example(title = "Bob's drawings with usage", params = r#"{"elementId": "scene:\"Intro\"/element:\"Bob\""}"#),
     example(title = "Bob's unused drawings with 32-pixel thumbnails", params = r#"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "filter": "unused", "thumbnails": 32}"#),
-    agent_only = "the Cells panel, Exposure Sheet and library show the drawings directly",
+    gui = "Properties panel: Drawing page, the drawing inspector (M4 C4.4a)",
 )]
 pub(crate) fn element_drawing_list(cx: &mut Cx, p: ListParams) -> Result<ListResult, CommandError> {
     let id = element_id(cx, &p.element_id, "/elementId")?;
@@ -659,6 +659,7 @@ pub(crate) struct DrawingIds {
 
 #[command(
     id = "element.drawingContent.delete",
+    precheck = precheck_drawing_content_delete,
     kind = action,
     label = "Clear drawing",
     scopes = [edit],
@@ -709,6 +710,7 @@ pub(crate) struct LockParams {
 
 #[command(
     id = "element.drawingLock.set",
+    precheck = precheck_drawing_lock,
     kind = toggle,
     label = "Lock drawing",
     scopes = [edit],
@@ -768,4 +770,41 @@ pub(crate) struct DrawingChanged {
 )]
 pub(crate) fn element_drawing_changed(_cx: &mut Cx, _p: NoParams) -> Result<DrawingChanged, CommandError> {
     Err(super::common::event_not_invocable("element.drawing.changed"))
+}
+
+/// `element.drawingContent.delete` (ruling O-23): the drawings given, else the drawing at the current cell.
+pub(crate) fn precheck_drawing_content_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref())?;
+    let doc = cx.document()?;
+    for d in &ids {
+        let dr = doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
+        let bank = doc.bank_of(d).cloned().ok_or_else(|| internal("drawing without bank"))?;
+        if let Some(e) = doc.bank_users(&bank).first() {
+            applicable(doc, e, "element.drawingContent.delete", VECTOR)?;
+        }
+        if *dr.locked() {
+            return Err(locked(doc, d));
+        }
+    }
+    Ok(())
+}
+
+fn precheck_drawing_ids(v: &Value) -> Option<Vec<String>> {
+    v.get("drawingIds")
+        .and_then(Value::as_array)
+        .map(|a| a.iter().filter_map(|x| x.as_str().map(str::to_owned)).collect())
+}
+
+/// `element.drawingLock.set`: the drawings (given, else the current one) of drawing or annotation elements (the loop
+/// of the handler, without its changes).
+pub(crate) fn precheck_drawing_lock(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref())?;
+    let doc = cx.document()?;
+    for d in &ids {
+        doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
+        if let Some(e) = doc.bank_of(d).and_then(|b| doc.bank_users(b).first()) {
+            applicable(doc, e, "element.drawingLock.set", VECTOR)?;
+        }
+    }
+    Ok(())
 }

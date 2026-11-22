@@ -40,6 +40,9 @@ indexmap = { version = "2.14", features = ["serde"] }
 # Current release (MIT-0 accepted for its borrow-or-share dependency, ADR-0003); no network schema resolution.
 jsonschema = { version = "0.59", default-features = false }
 unicode-normalization = "0.1"
+# Extended grapheme clusters (UAX #29) for the text caret (ruling D-82 item 2; MIT OR Apache-2.0; already in the lock
+# through tao).
+unicode-segmentation = "1.13"
 getrandom = "0.4"
 ryu = "1.0"
 proptest = "1.12"
@@ -86,6 +89,12 @@ print_stderr = "warn"
 codegen-units = 16
 debug = "line-tables-only"
 
+# Debug info of test and debug builds (M4 C4.1, orchestrator ruling): on Windows the ~360 test executables carried
+# about 124 GB of debug files (PDBs) in a 150 GB `target/`. Workspace crates keep line tables (file and line stay in
+# backtraces); dependencies carry no debug info (`debug = false` below).
+[profile.dev]
+debug = "line-tables-only"
+
 # Test builds optimise their dependencies (JSON, schema validation, compression, polygon unions; M2 C2.1): the suites
 # spend much of their time there and the Windows check job must fit its 60-minute budget. Workspace crates stay
 # unoptimised (their timing-based watchdog tests keep their margins) except the vector engine's geometry and the model
@@ -94,6 +103,7 @@ debug = "line-tables-only"
 # builds are unaffected.
 [profile.dev.package."*"]
 opt-level = 2
+debug = false
 
 [profile.dev.package.tt-vector]
 opt-level = 1

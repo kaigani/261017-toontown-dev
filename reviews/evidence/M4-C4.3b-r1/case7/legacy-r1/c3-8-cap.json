@@ -1,0 +1,15 @@
+{
+  "status": "error",
+  "changes": [],
+  "warnings": [],
+  "documentRev": null,
+  "error": {
+    "code": "render.inlineTooLarge",
+    "message": "a 2049 x 10 screenshot is over the inline limit of 2048 pixels",
+    "details": {
+      "width": 2049.0,
+      "height": 10.0,
+      "maxInlinePixels": 2048
+    }
+  }
+}

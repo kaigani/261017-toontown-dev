@@ -1,0 +1,633 @@
+{
+  "checks": 38,
+  "failures": [
+    {
+      "check": "cameraView-insert requested new-anchor selection (observation; spec and design note silent)",
+      "ok": false,
+      "detail": []
+    },
+    {
+      "check": "drawingView-insert requested new-anchor selection (observation; spec and design note silent)",
+      "ok": false,
+      "detail": []
+    }
+  ],
+  "results": [
+    {
+      "check": "drawingView-reset command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-reset undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-reset D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-reset undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView D-75 reset collinear lengths",
+      "ok": true
+    },
+    {
+      "check": "drawingView-end command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-end undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-end D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-end undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-zero-reset command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-zero-reset undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-zero-reset D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-zero-reset undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-insert command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-insert undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-insert D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-insert undo exact content",
+      "ok": true
+    },
+    {
+      "check": "drawingView insert shape unchanged 101 samples",
+      "ok": true
+    },
+    {
+      "check": "cameraView-reset command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-reset undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-reset D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-reset undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView D-75 reset collinear lengths",
+      "ok": true
+    },
+    {
+      "check": "cameraView-end command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-end undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-end D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-end undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-zero-reset command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-zero-reset undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-zero-reset D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-zero-reset undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-insert command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-insert undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-insert D-32 exact direct content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-insert undo exact content",
+      "ok": true
+    },
+    {
+      "check": "cameraView insert shape unchanged 101 samples",
+      "ok": true
+    },
+    {
+      "check": "cameraView-insert requested new-anchor selection (observation; spec and design note silent)",
+      "ok": false
+    },
+    {
+      "check": "drawingView-insert requested new-anchor selection (observation; spec and design note silent)",
+      "ok": false
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-end",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN8002NMCPMGQXG6P88NZ",
+            "strokeId": "st_01K7JJN80034M1BHABA664HSD3",
+            "anchor": 0,
+            "handleMode": "reset"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN80034M1BHABA664HSD3"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474366
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80034M1BHABA664HSD3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80034M1BHABA664HSD3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "a28113b8cc846fd9bd6f603f70a9f8754d346c8b224e9afaf0691f82ad9683f5",
+      "afterSha256": "30e03897c27d1c15605ace27f836a91db6944231946cdbda4d900f5872672c95"
+    },
+    {
+      "name": "cameraView-insert",
+      "commands": [
+        {
+          "commandId": "draw.point.add",
+          "params": {
+            "drawingId": "dr_01K7JJN800FGN3K4CVXJVES4ZV",
+            "strokeId": "st_01K7JJN800RWFQTNDAC33A4V9C",
+            "segment": 0,
+            "t": 0.49990751990134186
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800RWFQTNDAC33A4V9C"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800RWFQTNDAC33A4V9C",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800RWFQTNDAC33A4V9C",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "8889045a0a8a7e9683d417070a60c9d564846b3ded5f64af2b770a8993502969",
+      "afterSha256": "403d1c152ffa589571be6fc3532193a2c70ee735d0af3b57cf23ce5cf0ed76f8"
+    },
+    {
+      "name": "cameraView-reset",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800182AWJE419WD9HBM",
+            "strokeId": "st_01K7JJN800A4QN2SQ7XN3FZQE4",
+            "anchor": 1,
+            "handleMode": "reset"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800A4QN2SQ7XN3FZQE4"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -14.41719674768097,
+          "width": 168.0,
+          "height": 29.64732879390077
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800A4QN2SQ7XN3FZQE4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800A4QN2SQ7XN3FZQE4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "715731aa998c90b303362e43365cf72ffb5fd11e8e69a35b89b27d6e114a86ee",
+      "afterSha256": "c034c906867edaa5290d7eb248f147fb766ef34b75074a64f5883a8f35486ee8"
+    },
+    {
+      "name": "cameraView-zero-reset",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800KESQCK1MY8AVV5CZ",
+            "strokeId": "st_01K7JJN800TW3RFB0YGDGS01J1",
+            "anchor": 1,
+            "handleMode": "reset"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800TW3RFB0YGDGS01J1"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -17.333333333333332,
+          "width": 168.0,
+          "height": 34.66666666666667
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800TW3RFB0YGDGS01J1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800TW3RFB0YGDGS01J1",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "bd7a13ac0be9a2ac38efe694b67a613c861306634fb2c3c07bb8730d81de29c9",
+      "afterSha256": "05cb17b7d9ab0fce69d395a9c68542e4a395f12e2dbec66548cba2f96d6039f0"
+    },
+    {
+      "name": "drawingView-end",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800VFFXVW4CVECKDYA7",
+            "strokeId": "st_01K7JJN800NE3RWEN0SZ5TWFA4",
+            "anchor": 0,
+            "handleMode": "reset"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800NE3RWEN0SZ5TWFA4"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474366
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800NE3RWEN0SZ5TWFA4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800NE3RWEN0SZ5TWFA4",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "1770e8cb208685f99c35179def05b2fa220e4d21aa5e937f91fdaa0b57a667d8",
+      "afterSha256": "f644fd1bc78784bbe726e8a389b20f5360a6dfc159c1637286820240dc3a4950"
+    },
+    {
+      "name": "drawingView-insert",
+      "commands": [
+        {
+          "commandId": "draw.point.add",
+          "params": {
+            "drawingId": "dr_01K7JJN800JABJN7V7QP0QJKCZ",
+            "strokeId": "st_01K7JJN800WJEHC8M7NJC24BM3",
+            "segment": 0,
+            "t": 0.4982290441984105
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800WJEHC8M7NJC24BM3"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -12.160534609054897,
+          "width": 168.0,
+          "height": 33.48104268474367
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800WJEHC8M7NJC24BM3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800WJEHC8M7NJC24BM3",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "33f8181fbf48739046d9ec1ee1f19d3832f583f7a993d1995eb465255e0567bc",
+      "afterSha256": "1d5c542f96cdcc5bdc83aaca2b3ca0cc61f9a795e76b1e6602c4001992070651"
+    },
+    {
+      "name": "drawingView-reset",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN800WP7V70YGXRWJ4QGE",
+            "strokeId": "st_01K7JJN800YZTEYSY7Z89AQ64H",
+            "anchor": 1,
+            "handleMode": "reset"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN800YZTEYSY7Z89AQ64H"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -14.41719674768097,
+          "width": 168.0,
+          "height": 29.64732879390077
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800YZTEYSY7Z89AQ64H",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800YZTEYSY7Z89AQ64H",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "560e64ff784c2d28aa1d56ceb26ce4f00a399585270b71f672215a772ebae132",
+      "afterSha256": "33eeb545033d8c336a66fac7b25c622f75a2e72507e2405ccfb4df5e313a2767"
+    },
+    {
+      "name": "drawingView-zero-reset",
+      "commands": [
+        {
+          "commandId": "draw.point.set",
+          "params": {
+            "drawingId": "dr_01K7JJN80037SS2QFTVZSTG0DT",
+            "strokeId": "st_01K7JJN8008SP59DF53Z3FZST9",
+            "anchor": 1,
+            "handleMode": "reset"
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Contour Editing",
+          "user"
+        ]
+      ],
+      "selection": {
+        "selectedIds": [
+          "st_01K7JJN8008SP59DF53Z3FZST9"
+        ],
+        "bounds": {
+          "x": -84.0,
+          "y": -17.333333333333332,
+          "width": 168.0,
+          "height": 34.66666666666667
+        },
+        "selectedPoints": []
+      },
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008SP59DF53Z3FZST9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8008SP59DF53Z3FZST9",
+          "kind": "pencil",
+          "closed": false,
+          "anchors": 3
+        }
+      ],
+      "beforeSha256": "64eff8039acaf2b993e464ef0740478ffb2e4f469d87251b9cf3c74a4b34da14",
+      "afterSha256": "cc0df74543eabc143d560909d56c9b58f5832ddc3708bf113a92433dce8a04f8"
+    }
+  ],
+  "measurements": [
+    {
+      "check": "drawingView D-75 reset collinear lengths",
+      "detail": {
+        "before": [
+          [
+            -25.0,
+            15.0
+          ],
+          [
+            25.0,
+            35.0
+          ]
+        ],
+        "after": [
+          [
+            -27.06951460018549,
+            -10.827805840074195
+          ],
+          [
+            39.93529248931197,
+            15.974116995724787
+          ]
+        ]
+      }
+    },
+    {
+      "check": "drawingView insert shape unchanged 101 samples",
+      "detail": 4.296434007659337e-14
+    },
+    {
+      "check": "cameraView D-75 reset collinear lengths",
+      "detail": {
+        "before": [
+          [
+            -25.0,
+            15.0
+          ],
+          [
+            25.0,
+            35.0
+          ]
+        ],
+        "after": [
+          [
+            -27.06951460018549,
+            -10.827805840074195
+          ],
+          [
+            39.93529248931197,
+            15.974116995724787
+          ]
+        ]
+      }
+    },
+    {
+      "check": "cameraView insert shape unchanged 101 samples",
+      "detail": 2.8916994303251375e-14
+    }
+  ],
+  "transcriptSha256": "0d8aec1ea4f2d899d3a6afd8a580855b82264df64e36ac706fc574b220bd04d0",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-upkmepxj"
+}

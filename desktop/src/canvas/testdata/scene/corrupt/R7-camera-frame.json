@@ -1,0 +1,156 @@
+{
+  "generation": 3,
+  "scene": {
+    "sceneForm": "1.1",
+    "viewId": "cameraView",
+    "viewType": "camera",
+    "background": [
+      255,
+      255,
+      255,
+      255
+    ],
+    "grid": {
+      "visible": true,
+      "type": "field12",
+      "overlay": false
+    },
+    "entries": [
+      {
+        "drawingId": "dr_01K742SG11W3SGB8Q1H50W74VB",
+        "rev": 7,
+        "role": "staticUnder",
+        "opacity": 1.0,
+        "tint": null,
+        "shade": false,
+        "outline": false,
+        "elementId": "el_01K742SG12CTMHXEB7TY99G4XV",
+        "matrix": [
+          1.2,
+          0.0,
+          0.0,
+          -1.2,
+          400.0,
+          500.0
+        ]
+      },
+      {
+        "drawingId": "dr_01K742SG11W3SGB8Q1H50W74VC",
+        "rev": 7,
+        "role": "current",
+        "opacity": 1.0,
+        "tint": null,
+        "shade": false,
+        "outline": false,
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+        "matrix": [
+          1.4,
+          0.5,
+          0.5,
+          -1.4,
+          900.0,
+          520.0
+        ]
+      },
+      {
+        "drawingId": "dr_01K742SG11W3SGB8Q1H50W74VD",
+        "rev": 7,
+        "role": "staticUnder",
+        "opacity": 1.0,
+        "tint": null,
+        "shade": false,
+        "outline": false,
+        "elementId": "el_01K742SG11W3SGB8Q1H50W74VC",
+        "matrix": [
+          0.6,
+          0.0,
+          0.0,
+          -0.6,
+          2400.0,
+          540.0
+        ]
+      }
+    ],
+    "colours": {
+      "col_01K742SG059XGSNZ6M9MACZ2ZY": [
+        140,
+        122,
+        138,
+        255
+      ]
+    },
+    "paletteStamp": 12345,
+    "drawingPivot": null,
+    "selection": null,
+    "frame": 12,
+    "camera": {
+      "elementId": "el_01K742SG0ZZYY8HE4MW501XMJV",
+      "size": [
+        1920,
+        1080
+      ],
+      "cameraToView": [
+        0.47,
+        0.17,
+        -0.17,
+        0.47,
+        12.0,
+        30.0
+      ]
+    },
+    "overlays": {
+      "cameraFrame": [
+        0,
+        0,
+        1280,
+        720
+      ],
+      "pivots": [
+        [
+          900.0,
+          520.0
+        ]
+      ],
+      "selectionBoxes": [
+        [
+          840.0,
+          460.0,
+          960.0,
+          580.0
+        ]
+      ],
+      "selectionUnion": [
+        840.0,
+        460.0,
+        960.0,
+        580.0
+      ],
+      "otherCameras": [
+        [
+          [
+            100.0,
+            100.0
+          ],
+          [
+            300.0,
+            100.0
+          ],
+          [
+            300.0,
+            220.0
+          ],
+          [
+            100.0,
+            220.0
+          ]
+        ]
+      ],
+      "selectionDisplay": {
+        "outlineOnSelection": false,
+        "boxHighlighting": true,
+        "keepSelectionVisible": false
+      },
+      "currentOnTop": true
+    }
+  }
+}

@@ -1,0 +1,194 @@
+[
+  {
+    "name": "brush",
+    "tool": "brush",
+    "input": "os",
+    "labels": [
+      [
+        "Brush Tool"
+      ],
+      [
+        "Brush Tool"
+      ],
+      [
+        "Brush Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  },
+  {
+    "name": "pencil",
+    "tool": "pencil",
+    "input": "os",
+    "labels": [
+      [
+        "Pencil Tool"
+      ],
+      [
+        "Pencil Tool"
+      ],
+      [
+        "Pencil Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  },
+  {
+    "name": "rectangle",
+    "tool": "rectangle",
+    "input": "os",
+    "labels": [
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ],
+      [
+        "Rectangle Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  },
+  {
+    "name": "ellipse",
+    "tool": "ellipse",
+    "input": "os",
+    "labels": [
+      [
+        "Ellipse Tool"
+      ],
+      [
+        "Ellipse Tool"
+      ],
+      [
+        "Ellipse Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  },
+  {
+    "name": "line",
+    "tool": "line",
+    "input": "os",
+    "labels": [
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ],
+      [
+        "Line Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  },
+  {
+    "name": "polyline",
+    "tool": "polyline",
+    "input": "os",
+    "labels": [
+      [
+        "Polyline Tool"
+      ],
+      [
+        "Polyline Tool"
+      ],
+      [
+        "Polyline Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  },
+  {
+    "name": "eraser",
+    "tool": "eraser",
+    "input": "os",
+    "labels": [
+      [
+        "Eraser Tool"
+      ],
+      [
+        "Eraser Tool"
+      ],
+      [
+        "Eraser Tool"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  },
+  {
+    "name": "paint",
+    "tool": "paint",
+    "input": "os",
+    "labels": [
+      [
+        "Paint"
+      ],
+      [
+        "Paint"
+      ],
+      [
+        "Paint"
+      ]
+    ],
+    "statuses": [
+      "ok",
+      "ok",
+      "ok"
+    ],
+    "sameCommands": true,
+    "sameContent": true,
+    "sameLabels": true
+  }
+]

@@ -1,0 +1,121 @@
+Traceback (most recent call last):
+  File "C:\Users\kaiga\work\review\m4-c42b-r3\reviews\evidence\M4-C4.2b-r3\ownership.py", line 3, in <module>
+    assert r.returncode == 0, r.stdout
+           ^^^^^^^^^^^^^^^^^
+AssertionError: diff --git a/reviews/M4-C4.2b-r2-static.md b/reviews/M4-C4.2b-r2-static.md
+new file mode 100644
+index 00000000..37d054d3
+--- /dev/null
++++ b/reviews/M4-C4.2b-r2-static.md
+@@ -0,0 +1,110 @@
++# M4 C4.2b round 2 static audit
++
++Verdict: PASS static inspection, subject to the execution limitations recorded per item. Candidate 308bf3465f75750316ecf86009428201b5645814. P0=0, P1=0, P2=0, P3=0. No cargo executed. This report does not certify dynamic performance closure.
++
++## Item 1: format and static guards
++
++The three Python round-1 static guards pass. After frozen-lockfile installation, the format reviewer suite passes. Combined format, selection, model and input suites: 66 tests pass in four files; TypeScript checking passes.
++
++Field comparison: header offsets 0 magic/4 bytes; 4 major/u16; 6 minor/u16; 8 length/u16; 10 bucket/i16; 12 slots/u32; 16 generation/u64; 24 revision/u64; 32 ULID/26 bytes; 58 flags/u16; 60 records/u32; 64 bounds/16 bytes all agree. Colour entry offsets 0 length/u16, 2 kind/u8, 3 reserved/u8, 4 RGBA/4 bytes, 8 UTF-8 id and padding agree. Record header offsets 0 kind/u16, 2 flags/u16, 4 length/u32 agree. Mesh offsets 0 V/u32, 4 I/u32, 8 vertices/12V, then indices/4I agree, including vertex x/y/slot/flags at 0/4/8/10. Gradient record offsets 8 kind/u8, 9 count/u8, 10 reserved/u16, 12 matrix/24 bytes, 36 stops/8S, then mesh agree. Bitmap offsets 8 width/u16, 10 height/u16, 12 quad/32 bytes, 44 length/u16, 46 slot/u16, 48 id/padding, then reserved/u32 agree. All multi-byte fields are little endian. No missing code field or differing offset, size or meaning identified (docs/canvas-format.md sections 1-4; canvas.rs:615-699; format.ts:147-263).
++
++The document supplies V1-V10, validation order, exact u64 identities and major/minor/reserved-field rules. Both implementations cite it. Transport note section 2 explicitly replaces the historical 64-byte header with 80 and defers to the normative document: no surviving 64-byte requirement.
++
++Item verdict: PASS.
++
++## Item 2: selection overlay
++
++Scene selection enters via scene.ts and model.ts; CanvasView.tsx:389-414 keys the overlay by selectionVersion, viewVersion and tool, maps it with d2v, and combines it below the current gesture. layers.ts draws this window overlay after static composition. selection.ts:77-128 draws each selected object's bounds, the aggregate bounds, eight 8-pixel handles, selected anchors and the drawing pivot. The mapping applies before constant pixel widths/squares are constructed, so zoom does not enlarge them; pan and rotation move their centres and box corners. Cleared selection removes its outlines/handles; the drawing pivot can remain. Export commands cannot consume these renderer-local triangles (06 section 6.10).
++
++Rotation zones are kernel hit regions, not painted geometry; selectionCursor does not supply a distinct rotation cursor. Section 7 promises the hit region, not a painted ring. The note explicitly defers live transform preview, Perspective/Text/Contour Editor handles and Reposition All work to C4.3/SI-129. Bounds rather than exact silhouettes are the SI-141 interim. drawAid.selectionDisplay is Camera View only (spec/02_drawing.md:1401; SI-117), so its omission here agrees with the note.
++
++selection.test.ts passes its four cases: tool-dependent visibility/pivot, changed-selection handles, mapped corners/midpoints at three mappings, and resize/move cursors. The claimed constant-width assertion only compares triangle counts; it does not prove pixel width. model.test.ts covers selection-only version changes without static invalidation. These unit tests do not prove actual screen compositing or export isolation by execution.
++
++Item verdict: PASS static inspection; no additional promise missing beyond the explicit deferrals.
++
++## Item 3: other window fixes
++
++Generation fencing: CanvasView.tsx:176-188 adopts a new generation by cancelling collector/overlay and aborting playing and queued requests. attached.rs:40-50 stores both generation and window in Pending; :136-148 drains replaced-engine/window calls, :221-235 checks the commit generation before executing, :261 sends generation/view/request id in agent-input. SI-120 refusal is command.timeout/reason engineRestarted. Window teardown forgets reports and drains routed calls; set_presence(None), attached.rs:175-190, drains the corresponding view immediately with ui.viewNotFound/reason windowClosed. These are host-owned registries rather than window-owned promises.
++
++Per-call target resolution: attached.rs:200-216 filters currently visible windows and prefers the float; pointer :256 and screenshot :298-301 both use it. A destroyed float's old rectangle no longer determines a fresh capture.
++
++Last gesture: input.ts:287 onward and CanvasView.tsx:445,479,526 put lastGesture into the canvas UI-tree value once per answer. It records origin, tool, view, pointer kind, mapping, events including pressure/tilt/modifiers/dt, count, answer status/code and produced command ids/parameters. Above 4,096 events both events and command parameters are omitted: command ids are command names, not retrievable replay handles. Thus neither exact pointer replay nor direct-parameter replay is possible from that long record alone. SI-141 item 9 expressly documents this limit. inspect.ui.tree is scopes=[read] (commands/inspect.rs:1111), so read-only agents also receive samples. This is broader than the requested input-scoped exposure; it reveals input timing/pressure/trajectory as well as resulting document content. No cited normative input-only restriction was found in the supplied plan section 15; recorded as an observation rather than an invented failing requirement. No extra web-content permission or capability is introduced.
++
++Capture: attached.rs:317 onward checks requested side cap before snapshot and re-encodes only the crop. The amended screenshot note section 2 expressly explains the whole-area platform-encoded intermediate, lack of a region argument on Windows, shared macOS path and decode bound; this is not crop-before-platform-encoding, and is not claimed as such.
++
++Polyline: input.ts:144-175 retains clicks until doubleClick or closing click within 8 pixels (at least three clicks). CanvasView.tsx:566-593 keeps modal state between clicks, ignores lost capture between clicks, and cancels on Escape; tool change and teardown also cancel. Input tests pass the pending, close, doubleClick and cancel cases. There is no inactivity expiry. Under pointer note P4/D-12 an abandoned pending Polyline can indefinitely exclude agent writes/session changes; each individual call still times out with ui.busy. A user Escape or tool switch releases it. This is a coexistence risk, not a demonstrated violation of the rule requiring agent exclusion during a reported gesture.
++
++Item verdict: PASS static fixes, with replay/scope and indefinite-modal observations; live closure belongs to the independent dynamic audit.
++
++## Item 4: decisions and spec issues
++
++SI-141 items 1-9 were read against their implementation: bounds outlines (selection.ts:94), 6-pixel handle radius (:31), pivot-first hit ordering, 18-pixel exterior rotation zone, opposite-corner/side scaling and 0.001 minimum magnitude (executor gesture select), eight-direction cursor approximation (:131 onward), retained registry undo label, immediate routed window refusal (attached.rs:86-148), 16-events/120-frames playback (CanvasView.tsx:495-512), and 4,096-event record cap (input.ts:287 onward) agree. Items 5 and 6 acknowledge explicit spec wording/conflict rather than genuine silence: the cursor's 15-degree steps are approximated, and the command label is retained over the gesture label. The other numerical conventions are conservative interims, not new command contracts. SI-135 through SI-140 retain the stated interruption, measurement, tessellation, appearance, composition and backend preference conventions.
++
++The 400-ms overlay timeout and settledVersion qualification (CanvasView.tsx:378-380,485-489; model.ts settledVersion) are implementation timing policy rather than a new SI entry. The append-only fast-path eligibility is documented in document/mod.rs:600-650 and the fix commit, not a user-facing convention. No additional numeric contract was identified without documentation beyond these timing details.
++
++ADR-0007:212-253 now records E-C1, E-C2, E-C3, names run 43673359849 and artifact paths, and gives workstation row 6 and both runner classes row 3. Thus the round-1 placeholder defect is closed. E-C3 compares current cached-static rendering with historical full-frame transfer figures; it is not a new tiled-host implementation benchmark. The owner question about applying row 3 to software/virtual classes and unmeasured real-machine E-C4 remains explicit. Documentation closure does not resolve that architectural sign-off question or independently validate remote receipt numbers.
++
++Item verdict: PASS documentation closure; row-3 applicability and comparison methodology remain observations.
++
++## Item 5: incremental commits
++
++Eligibility is exactly one drawing entry and nonempty all-add operations at the identical /nodes/- or /nodes/<digits>[/children/<digits>...]/strokes/- path, object values, no from/range. Unsupported shapes or validation failures fall back to staged_commit (document/mod.rs:578-697). Added nodes/strokes individually pass object::from_json (:655-667), which performs normalization/schema/default input processing; existing typed objects are cloned. Append order is preserved; this path allocates no ids. Whole drawing Check runs :683-687; staged clone rebuilds derived state and runs issues() :689-695. The latter includes document integrity and limits (issues :914-920, integrity_issues :962 onward). Depth is bounded before append (:632-643). Executor Cx::stage (:671-695) still receives the candidate and stages it rather than directly installing a live mutation. No on-page violation of plan section 3.2 executor-only mutation was identified.
++
++Debug comparison (:581-592) compares the changed drawing and EntryCommit vector to the general path, not all document internals; change.rs:325-329 separately compares fast versus general change records. Release omits both comparisons. appended_nodes_diff requires identical entry-key sets and only one drawing changed, equal original node prefix and equal drawing fields excluding nodes (change.rs:340-354). It creates appended-node records then the drawing modification.
++
++Added indexing slices in change.rs:350 are guarded by a.nodes.len()>n; pair[0]/pair[1] in document/mod.rs:621-628 follows even token length and chunks(2). No new unwrap(), expect(), panic!(), unreachable!() or unsafe was added in this model diff. New guarded indexing is present, not absent. get_mut-based layer traversal returns None on invalid paths (drawing.rs:489-500).
++
++Risk: reparsing only new objects no longer renormalizes the entire old drawing. Typed previously validated input is the assumption. Default values of appended objects still go through from_json; no definite ordering/id/default discrepancy was established by reading. Dynamic equivalence, undo fidelity and hostile input testing are assigned to the separate dynamic session and were not executed here.
++
++Item verdict: PASS static engineering-rule inspection, with release equivalence risk recorded as an observation.
++
++## Item 6: CI, response and handoff
++
++ci.yml adds Windows desktop-gui modes c2, c3, d2, d2-exact-attached, d2-exact-headless, d3-webgl2; states d1 budget modes and d3-webgpu require workstation evidence. Desktop-gui timeout rises 45 to 60 minutes. Byte-gate timeout rises 20 to 35 and gains the three-way gesture script on both OSes.
++
++c42-gui-e2e.py:164-213 compares captured RGB against activeView final rendering with maximum-channel difference threshold 32, requiring fewer than 1% differing pixels. It retries until static reload/overlay clearing settles, retaining the best comparison. Calls at :297-302 cover plain, 200% zoom/pan and 30-degree rotation; :369-374 repeats after successful drawing-tool gestures. The nonempty fixture makes a blank canvas fail the initial comparison; this is a source assessment, not a rerun of a GUI here.
++
++c42-gesture-equivalence.py:220-243 has 22 rows: Brush, Pencil, Rectangle, Ellipse, Line, Polyline, Select, Eraser, Cutter, Scissor, Paint, Unpaint, Paint Unpainted, Dropper, Close Gap, Zoom, Grabber, and five Select-handle cases. Recorded window samples go to headless pointer and their commands to a third engine; commands/content/undo are compared. Windows uses OS input; macOS uses window-played agent input. The table does not separately cover invisible Stroke (SI-129 says built through Brush), nor deferred Contour Editor, Perspective, Reposition All, Text or Edit Texture. Thus ?every tool? must be read as the listed built cases, not the full section 5.1 catalogue. Byte-gate header explicitly says executor exports, not interactive pixels.
++
++Latest completed fix-head run: 43677722406 at 5d044f1d26e937a9f559634d6e1ca324f2bc45a8, failure, 36 jobs. Both lint jobs fail at the front-end lint/type-check/test/format/licences step; both check jobs fail at Reviewer Python suites. Evidence ci-summary.json records the API summary. Candidate run 43685400029 was queued at initial lookup; no candidate green run is claimed. External obstacle to candidate execution evidence: queued remote CI; this audit does not watch or execute cargo.
++
++All four requested inventory scripts pass (checks.txt). Both initial fetch and end fetch find no response or handoff, last checked 2026-11-14T22:53:58-08:00. Their budget/profile/machine/receipt and named-green-head claims therefore cannot be audited: no such documents exist. The literal requested bb859db diff is NOT empty: four later-added static reviewer files, 157 lines. These are additions, not edits to files existing at that baseline. No substantive rewrite of an existing reviewer probe is shown by that comparison. No absence-of-all-diff claim is made.
++
++Item verdict: PASS static CI inspection; candidate green execution and absent handoff evidence remain external limitations, not invented product findings.
++
++## Closure table
++
++Closed here means the static cause is addressed, not that live performance has been rerun.
++
++| Round-1 finding or requirement | Status | Evidence |
++|---|---|---|
++| C42B-R1-01 | Closed statically | crates/render/src/canvas.rs:468-480, local stroke pieces transformed after construction |
++| C42B-R1-02 | Closed statically | crates/executor/src/canvas.rs:321-345, current occurrence at frame |
++| C42B-R1-03 | Closed within documented bound | desktop/src/canvas/input.ts:287-359; CanvasView.tsx:445,479; long-record limitation in item 3 |
++| C42B-R1-04 | Open execution closure | document/mod.rs:578-697 addresses serialization cost; independent dynamic session must verify long-stroke budgets |
++| C42B-R1-05 | Closed statically | attached.rs:200-216,256,298-301 per-call target |
++| C42B-R1-20 | Closed | scene u64 validation and model bigint comparison; reviewer format suite passes |
++| C42B-R1-21 | Closed | CanvasView.tsx:176-188; attached.rs:136-148,221-235 |
++| C42B-R1-22 | Closed statically | selection.ts:77-128; CanvasView.tsx:389-414; overlay tests pass |
++| C42B-R1-23 | Closed documentation | docs/decisions/ADR-0007-interactive-canvas.md:212-253, placeholders replaced |
++| Host generation fencing | Closed statically | attached.rs:40-50,136-140,229-235 |
++| Pending call when window goes away | Closed statically | attached.rs:146-148,175-190; host teardown |
++| Capture cropped before encoding | Closed with explicit exception | screenshot note section 2 amendment; attached.rs:317 onward |
++| E2e fails blank canvas | Closed statically | c42-gui-e2e.py:164-213,297-302 |
++| D-18 format document | Closed | docs/canvas-format.md sections 1-10; canvas.rs:16; format.ts:1-4 |
++| Byte-gate wording | Closed | scripts/c42-byte-gate.py:13-17 |
++
++## Observations (not findings)
++
++- Constant-width overlay test checks triangle counts rather than measured width; geometry construction supplies stronger static evidence.
++- Long gesture records cannot reproduce samples or parameterized commands above 4,096 events.
++- read-scoped UI inspection exposes collected input trajectories and timing; input-only restriction is not enforced.
++- Pending Polyline modal state has no expiry and can exclude agent writes until user intervention.
++- Runner row 3 and historical-transfer E-C3 comparison need owner interpretation before architectural sign-off.
++- Release fast path relies on old typed state remaining canonical; debug equivalence assertions are absent in release.
++- Gesture table omits a separate invisible-Stroke row and excludes the SI-129 deferred tools.
++- Literal reviewer-file baseline comparison includes later additions; it cannot truthfully be described as empty.
++
++## Closing summary
++
++All six items have verdicts. No new requirement-backed finding established: P0=0/P1=0/P2=0/P3=0. Static cause closure is recorded above; R1-04 performance closure is expressly assigned to the independent dynamic audit. Candidate CI and missing response/handoff are named external evidence limitations. Only reviewer-owned files were written. No cargo, product changes, new probes or GUI execution were performed.
+

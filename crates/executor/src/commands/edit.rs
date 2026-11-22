@@ -317,6 +317,23 @@ pub(crate) fn resolve_context(cx: &Cx, c: EditContext) -> EditContext {
     c.resolve(cx.ui().focused(), &central)
 }
 
+/// [`resolve_context`] for the clipboard and delete operations (`edit.cut`, `edit.copy`, `edit.paste`, `edit.delete`,
+/// `edit.cutSpecial`, ...): the Camera view runs the tool family chosen last (SI-148), so with the drawing tools its
+/// Edit commands act on the drawing's selection, as its context menu's do (ruling D-87: Edit › Cut, Paste and Delete
+/// there reach the interactive-target rule and tell the person why they are refused). The selection commands keep
+/// [`resolve_context`].
+pub(crate) fn resolve_edit_context(cx: &Cx, c: EditContext) -> EditContext {
+    let central = cx.ui().central_panel().to_owned();
+    let panel = cx.ui().focused().unwrap_or(&central).to_owned();
+    let resolved = c.resolve(cx.ui().focused(), &central);
+    let camera = cx.ui().shell().view(&panel).is_ok_and(|w| w.ty == crate::shell::ViewType::Camera);
+    if c == EditContext::Auto && resolved == EditContext::Staging && camera && !cx.ui().shell().scene_family {
+        EditContext::Drawing
+    } else {
+        resolved
+    }
+}
+
 /// The selection of `context` (each context keeps its own, 01 §6.4).
 pub(crate) fn selection_in(cx: &Cx, context: EditContext) -> Vec<String> {
     cx.app().selection_of(context.as_str())
@@ -329,7 +346,7 @@ pub(crate) fn selection_in(cx: &Cx, context: EditContext) -> Vec<String> {
     scopes = [read],
     needs_project,
     example(title = "Selection of the focused context", params = "{}"),
-    agent_only = "the GUI shows the selection directly",
+    gui = "the Camera view canvas: the selected elements it previews",
 )]
 pub(crate) fn edit_selection_get(cx: &mut Cx, p: ContextParams) -> Result<SelectionGetResult, CommandError> {
     let context = resolve_context(cx, p.context);
@@ -846,7 +863,7 @@ pub(crate) struct ClipboardGetParams {
 )]
 pub(crate) fn edit_clipboard_get(cx: &mut Cx, p: ClipboardGetParams) -> Result<Option<Clipboard>, CommandError> {
     let clip: Option<Clipboard> = match &cx.session().clipboard {
-        Some(v) => Some(serde_json::from_value(v.clone()).map_err(|e| CommandError::internal(e.to_string()))?),
+        Some(v) => Some(serde_json::from_value(Value::clone(v)).map_err(|e| CommandError::internal(e.to_string()))?),
         None => None,
     };
     Ok(clip.map(|mut c| {
@@ -880,7 +897,8 @@ pub(crate) struct ClipboardSummary {
 pub(crate) fn store_clipboard(cx: &mut Cx, clip: &Clipboard) -> Result<ClipboardSummary, CommandError> {
     validate_clipboard(clip)?;
     let summary = ClipboardSummary { kind: clip.kind, item_count: clip.item_count };
-    cx.session_mut().clipboard = Some(serde_json::to_value(clip).map_err(|e| CommandError::internal(e.to_string()))?);
+    cx.session_mut().clipboard =
+        Some(std::sync::Arc::new(serde_json::to_value(clip).map_err(|e| CommandError::internal(e.to_string()))?));
     cx.emit("edit.clipboard.changed", json!({ "kind": summary.kind, "itemCount": summary.item_count }));
     Ok(summary)
 }

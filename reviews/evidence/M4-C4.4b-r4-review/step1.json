@@ -1,0 +1,14 @@
+[
+  {
+    "probe": "n1 2",
+    "exit": 0,
+    "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r4-prior-t4gxcwn9\\console.txt",
+    "failLines": []
+  },
+  {
+    "probe": "n1 3",
+    "exit": 0,
+    "log": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\r4-prior-6cc18tk4\\console.txt",
+    "failLines": []
+  }
+]

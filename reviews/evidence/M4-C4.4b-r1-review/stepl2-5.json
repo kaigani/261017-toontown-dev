@@ -1,0 +1,754 @@
+{
+  "checks": 48,
+  "failures": [],
+  "results": [
+    {
+      "check": "drawingView-offset command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-offset undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-offset D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-offset D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-offset finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-offset undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-rotate command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-rotate undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-rotate D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-rotate D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-rotate finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-rotate undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-scale command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-scale undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-scale D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-scale D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-scale finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-scale undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-envelope command",
+      "ok": true
+    },
+    {
+      "check": "drawingView-envelope undo labels",
+      "ok": true
+    },
+    {
+      "check": "drawingView-envelope D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-envelope D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "drawingView-envelope finite saved content",
+      "ok": true
+    },
+    {
+      "check": "drawingView-envelope undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-offset command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-offset undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-offset D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-offset D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-offset finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-offset undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-rotate command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-rotate undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-rotate D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-rotate D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-rotate finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-rotate undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-scale command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-scale undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-scale D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-scale D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-scale finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-scale undo exact all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-envelope command",
+      "ok": true
+    },
+    {
+      "check": "cameraView-envelope undo labels",
+      "ok": true
+    },
+    {
+      "check": "cameraView-envelope D-32 exact all drawing content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-envelope D-75 one independent current-bounds map all drawings",
+      "ok": true
+    },
+    {
+      "check": "cameraView-envelope finite saved content",
+      "ok": true
+    },
+    {
+      "check": "cameraView-envelope undo exact all drawings",
+      "ok": true
+    }
+  ],
+  "actions": [
+    {
+      "name": "cameraView-envelope",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -35.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ]
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800Y4G5EY7NAPD22G99",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800RDH98F69E4ZNSRG7",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800K63Z0QVSXZV4VKBB",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800Y4G5EY7NAPD22G99",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800RDH98F69E4ZNSRG7",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800K63Z0QVSXZV4VKBB",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "23a4c93e1ac2c34ffb8db24f5496c0b4e405314b2cbdda6f78cd4ec5808f9519",
+      "afterSha256": "6ae788c9c8020806fbc3145d96714acdcc3a82c96e5f0d0848c71a61ae304e73"
+    },
+    {
+      "name": "cameraView-offset",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 20,
+              "y": 15
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN80091YHSCQET0J44PPN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YZD8VNT1NYXJYZR3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800WEC36N7RFXZBRAG0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN80091YHSCQET0J44PPN",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YZD8VNT1NYXJYZR3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800WEC36N7RFXZBRAG0",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "b11fbea4fa9d7498369a6cee0ddc84d981cd6b53d679662d4df597b04b00efd2",
+      "afterSha256": "28c02dad3c620ddef209bb99723b52caccbb3a212ee067f087e3b7f8f3d66310"
+    },
+    {
+      "name": "cameraView-rotate",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 30,
+              "y": -20
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8008WWS6Y2PKVK0JB8G",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8002899VKAG81N3H07X",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800T5B4E5QQJ03N78R3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8008WWS6Y2PKVK0JB8G",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8002899VKAG81N3H07X",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800T5B4E5QQJ03N78R3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "1dff77d4fa6e618a0026e8928dc181ef3daea3965217c603fe62b8565a42d392",
+      "afterSha256": "4c0a8bde95df4f0e4f070eba57750d54e8217e3e95296663251272ede5ba7551"
+    },
+    {
+      "name": "cameraView-scale",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 1.1245726937628495,
+              "y": 1.1248049921996879
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8000PQ56HQEN3EQ33P6",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZVSWA5958EKCX5JV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005XKFXV0ESAQZSWC1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8000PQ56HQEN3EQ33P6",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800ZVSWA5958EKCX5JV",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8005XKFXV0ESAQZSWC1",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "8b930b2a36e24dd45bcabc70a25c0c0be9c0bced6aaaf5f8aacb83130aa706fa",
+      "afterSha256": "e63822ac5c0c84bbe63377beabb7ad1bb3bbb411834ec5c9038a9e80a23dca79"
+    },
+    {
+      "name": "drawingView-envelope",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "corners": [
+              {
+                "x": -50.5,
+                "y": -34.5
+              },
+              {
+                "x": 80.5,
+                "y": -60.5
+              },
+              {
+                "x": 80.5,
+                "y": 60.5
+              },
+              {
+                "x": -80.5,
+                "y": 60.5
+              }
+            ]
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800QN3XBD7NMA6EKY84",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YWJ3Y95GZNRXQ08C",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007SXBNBCXAPRQQ3K8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800QN3XBD7NMA6EKY84",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YWJ3Y95GZNRXQ08C",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8007SXBNBCXAPRQQ3K8",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "90ee6603091c595d4b5e96ea713a0aa1c9ec9289ae671da66ac785aacbe14c15",
+      "afterSha256": "21e659bc7dc84a50bceda322a9ec2e5dba48c1615789bbcc986d9bac9eb70c7c"
+    },
+    {
+      "name": "drawingView-offset",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "translate": {
+              "x": 20,
+              "y": 16
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN800A33NWYE47WZW96P3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8002WT1YR5CDVHPWREF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001NMEHPDH0FPNBKC9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN800A33NWYE47WZW96P3",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8002WT1YR5CDVHPWREF",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8001NMEHPDH0FPNBKC9",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "0e70854a5b2cb611fe01a80c8111d4834f06a95094a69cefa9db9f7b719ae269",
+      "afterSha256": "7eb0c0607b9b289cb8f582f1a9bd0959aac4c945334d4e8cfe9129655aa46d38"
+    },
+    {
+      "name": "drawingView-rotate",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "rotate": 18.373285992975546,
+            "pivot": {
+              "x": 0,
+              "y": 0
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8006F1FN7K5XPSDCGE4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800T7WW4GR03676Q9NC",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004B7304SCM00BBAQM",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8006F1FN7K5XPSDCGE4",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800T7WW4GR03676Q9NC",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN8004B7304SCM00BBAQM",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "158815faf887ff6207925144df319ed3e8245be5b942b92d11987d22bb0443f3",
+      "afterSha256": "4450e05cb0c2b83af56b359a6dcad210e68641bcf2d400530417dd8c9707bc50"
+    },
+    {
+      "name": "drawingView-scale",
+      "commands": [
+        {
+          "commandId": "draw.repositionAll.apply",
+          "params": {
+            "scale": {
+              "x": 1.1245499659433686,
+              "y": 1.115702479338843
+            },
+            "pivot": {
+              "x": 80.5,
+              "y": 60.5
+            }
+          }
+        }
+      ],
+      "labels": [
+        [
+          "Reposition All Drawings",
+          "user"
+        ]
+      ],
+      "selection": null,
+      "display": null,
+      "geometryBefore": [
+        {
+          "id": "st_01K7JJN8009R0RDF0BAMQN9JR5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800GRVM5XX0ZD7WERBZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YCXE93HTHGPJ6B05",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "geometryAfter": [
+        {
+          "id": "st_01K7JJN8009R0RDF0BAMQN9JR5",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800GRVM5XX0ZD7WERBZ",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        },
+        {
+          "id": "st_01K7JJN800YCXE93HTHGPJ6B05",
+          "kind": "pencil",
+          "closed": true,
+          "anchors": 4
+        }
+      ],
+      "beforeSha256": "cc4fea15cab4fe094313b8c7d0e9dad669c7ec424bb16a70000a57b075b64d06",
+      "afterSha256": "9769b4989b7980c6013dd1ad30acf950c07bd47e070030f12f890ab6fce2ac0b"
+    }
+  ],
+  "measurements": [],
+  "canvases": [],
+  "captures": [],
+  "transcriptSha256": "18635fead84e4295c62cb3432ea0f23927d81f336f5a498c87b0eb7e7d42e53c",
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-kkac7_tl"
+}

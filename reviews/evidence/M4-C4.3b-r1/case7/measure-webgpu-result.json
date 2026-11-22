@@ -1,0 +1,20 @@
+{
+  "name": "measure-webgpu",
+  "exit": 0,
+  "independentChecks": [
+    {
+      "assertion": "D-33 requested backend ran",
+      "pass": true,
+      "requested": "webgpu",
+      "actual": "webgpu"
+    },
+    {
+      "assertion": "D-33 30 actual commits sample",
+      "pass": true
+    },
+    {
+      "assertion": "D-33 30 actual commits groups1k",
+      "pass": true
+    }
+  ]
+}

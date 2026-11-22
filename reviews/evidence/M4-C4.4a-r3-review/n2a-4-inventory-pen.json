@@ -1,0 +1,47 @@
+[
+  {
+    "id": "pen.minSize",
+    "type": "range",
+    "disabled": false
+  },
+  {
+    "id": "pen.minSize.field",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pen.maxSize",
+    "type": "range",
+    "disabled": false
+  },
+  {
+    "id": "pen.maxSize.field",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pen.smoothness",
+    "type": "range",
+    "disabled": false
+  },
+  {
+    "id": "pen.smoothness.field",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pen.tipAngle",
+    "type": "range",
+    "disabled": false
+  },
+  {
+    "id": "pen.tipAngle.field",
+    "type": "text",
+    "disabled": false
+  },
+  {
+    "id": "pen.placeBehind",
+    "type": "checkbox",
+    "disabled": false
+  }
+]

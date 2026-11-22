@@ -1,0 +1,15 @@
+
+running 8 tests
+test direct_transform_uses_command_table_label ... ignored, orchestrator ruling D-20: draw.transform.apply's table label names the operation performed
+test serialized_field_absent_null_present_matrix ... ok
+test two_step_atomic_refusal_restores_document ... ok
+test alternate_scissor_label_is_scissor_tool ... ok
+test window_and_headless_commit_match_and_agent_keeps_hover ... ok
+test wire_gesture_refusals_are_atomic ... ok
+test shell_end_reports_release_kernel_modal_for_each_ending ... ok
+test six_gesture_and_command_labels ... ok
+
+test result: ok. 7 passed; 0 failed; 1 ignored; 0 measured; 0 filtered out; finished in 0.21s
+
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 0.22s
+     Running tests\c42b_r3_review.rs (target\debug\deps\c42b_r3_review-dd886751694d3eb4.exe)

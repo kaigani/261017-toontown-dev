@@ -1,0 +1,607 @@
+{
+  "checks": 400,
+  "failures": [],
+  "captures": {
+    "overpainted": 195,
+    "outside": 160,
+    "refused": 45,
+    "revealed": 0,
+    "unpainted": 0
+  },
+  "schedules": {
+    "quickShow": {
+      "overpainted": 40,
+      "outside": 0,
+      "refused": 0,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "showHide": {
+      "overpainted": 40,
+      "outside": 0,
+      "refused": 0,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "leavePage": {
+      "overpainted": 0,
+      "outside": 40,
+      "refused": 0,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "ok": {
+      "overpainted": 0,
+      "outside": 40,
+      "refused": 0,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "cancel": {
+      "overpainted": 0,
+      "outside": 40,
+      "refused": 0,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "escape": {
+      "overpainted": 0,
+      "outside": 40,
+      "refused": 0,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "regenerate": {
+      "overpainted": 0,
+      "outside": 0,
+      "refused": 40,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "resize": {
+      "overpainted": 35,
+      "outside": 0,
+      "refused": 5,
+      "revealed": 0,
+      "unpainted": 0
+    },
+    "simultaneous": {
+      "overpainted": 80,
+      "outside": 0,
+      "refused": 0,
+      "revealed": 0,
+      "unpainted": 0
+    }
+  },
+  "dispatchMs": {
+    "min": 0.0032999960239976645,
+    "max": 12.085199996363372,
+    "above30": 0
+  },
+  "raw": [
+    "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-5hpwaitw",
+    "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-d18px3o3"
+  ],
+  "regenerationRefusals": [
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 0.01920000067912042,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 2.0157000108156353,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 4.007000010460615,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 6.008800002746284,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 8.010199991986156,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 10.009299992816523,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 12.00829999288544,
+      "safe": true,
+      "code": 401,
+      "responseKeys": [
+        "body",
+        "http"
+      ],
+      "tokenFree": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 0.01889999839477241,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 2.0069000020157546,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 4.007000010460615,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 6.011199991917238,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 8.00660002278164,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 10.014500003308058,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 12.008699995931238,
+      "safe": true,
+      "code": 401,
+      "responseKeys": [
+        "body",
+        "http"
+      ],
+      "tokenFree": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 0.0047000066842883825,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 2.0050999883096665,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 4.005800001323223,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 6.008199998177588,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 8.006899995962158,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 10.009299992816523,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 12.014100007945672,
+      "safe": true,
+      "code": 401,
+      "responseKeys": [
+        "body",
+        "http"
+      ],
+      "tokenFree": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 0.010399991879239678,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 2.009199990425259,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 4.007600015029311,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 6.008700001984835,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 8.013199985725805,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 10.007699980633333,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 12.006499979179353,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 0.01479999627918005,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 2.0084999850951135,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 4.007799987448379,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 6.007699994370341,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 8.007200027350336,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 10.009200021158904,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 12.007399986032397,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 0.011399999493733048,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 2.1050999930594116,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 4.004999995231628,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 6.008500000461936,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    },
+    {
+      "target": "window",
+      "kind": "refused",
+      "nonGrey": 0,
+      "dispatchMs": 8.008300006622449,
+      "safe": true,
+      "code": null,
+      "responseKeys": [
+        "transportError"
+      ],
+      "tokenFree": true,
+      "sessionEnded": true
+    }
+  ]
+}
