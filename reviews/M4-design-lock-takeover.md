@@ -36,7 +36,13 @@ earlier, after the protection that justified it was gone or was never re-checked
   `Acquired` handle whose file is the lock's current file.
 - **I2. A protected live lock is never removed by a taker**, and a protected live arbitration file never by a reaper:
   only its owner removes its own file, while still protecting it.
-- **I3. A stale lock is taken by exactly one contender** when any contender stays alive (no "everyone told held").
+- **I3. A stale lock is taken by exactly one contender** when any contender stays alive (no "everyone told held"),
+  **provided no program outside the protocol keeps the lock file or the arbitration file open** in a way that keeps it
+  from being replaced (on Windows: a handle that refuses sharing deletion, or one that keeps a proven file's name delete
+  pending). When one does, every opener ends within `ACQUIRE_BOUND` (12 s) and one round with `InUse` naming that file,
+  nothing changed on disk, and the next open after that program lets go proceeds under I3 (ruling D-86 item 1; finding
+  C44B-R3S-01).
+- **I4. Every open answers within a bound** (D-86 item 1): `ACQUIRE_BOUND` plus one round, or at once when cancelled.
 
 ## 3. Primitives
 
@@ -103,9 +109,20 @@ Every step names what the contender has proved and under which protection.
   that moment: the lock held (a live owner, or a lock the protocol counts as held) or the arbiter held by another live
   opener: `HeldByOther`; the folder not writable: `NotWritable`. When nothing is held (a removed file's name kept by
   another program's handle; an arbitration file left empty by a creator that gave up, which becomes removable once
-  older than `TAKEOVER_STALE`), it decides for another round. I3 therefore holds on Windows with other handles open on
-  both files: the lock file's name is freed at once (A4'), and the arbitration file's pending deletion ends when the
-  other handle closes, after which the next attempt takes it.
+  older than `TAKEOVER_STALE`), it decides for another round, **until `ACQUIRE_BOUND` (12 s, ruling D-86 item 1)**:
+  then it answers `InUse` with the file whose contention ended its last attempt (the arbitration file, or the lock file
+  when its proof was refused by a foreign handle or its creation found the name pending) and changes nothing. The
+  bound is `TAKEOVER_STALE` plus one round, so an arbitration file a creator left empty (C1) becomes removable within
+  it and only a program outside the protocol outlasts it. A cancelled opener (`acquire_until`'s `cancelled`, the open
+  job's cancellation) answers `Cancelled` at the start of its next attempt, at most one attempt's work (milliseconds)
+  later. The project commands turn `InUse` into `fs.ioError` with `reason: "lockFileInUse"` and the file's `path`
+  (SI-200); the window says which file is in use and offers Try Again.
+- **Why the arbitration file's name is not freed as the lock file's is (A4').** Several contenders can hold proofs of
+  one arbitration file at once (A2 runs without the arbiter), and a rename is by name: a late prover's rename could move
+  a successor's fresh arbitration file aside, breaking I1. A safe version needs a rename bound to the proof's own handle
+  (`SetFileInformationByHandle` with `FileRenameInfo`), which the standard library does not offer and which would be
+  new foreign-function code and `unsafe` (not added without the user's agreement), plus a serialisation of competing
+  proofs. Not built; the bound and `InUse` answer the case instead (D-86 item 1 makes the name-freeing optional).
 
 ## 5. Why the schedules cannot happen
 

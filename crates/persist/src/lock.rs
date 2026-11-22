@@ -460,6 +460,13 @@ pub enum Locked {
     HeldByOther(LockInfo),
     /// The location is not writable: open read-only (RO-01).
     NotWritable(String),
+    /// A file of the lock (the lock file or its arbitration file, the path given) is held open by a program outside
+    /// the protocol (a virus scanner, an indexer, a backup tool) in a way that keeps it from being replaced, and was
+    /// still so after [`ACQUIRE_BOUND`] (ruling D-86 item 1): nobody owns the lock and nothing was changed on disk.
+    /// The next open, once that program lets go, proceeds.
+    InUse(PathBuf),
+    /// The caller cancelled while the opener was deciding (ruling D-86 item 1): nothing was changed on disk.
+    Cancelled,
 }
 
 /// How long an unprotected, empty arbitration file (or an unreadable, unprotected lock) may live before it counts as
@@ -804,7 +811,20 @@ fn folder_writable(lock: &Path) -> bool {
 /// another round.
 const DECIDE_BOUND: Duration = Duration::from_secs(2);
 
-/// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11).
+/// The longest `acquire` decides while every round ends in the same contention before it answers [`Locked::InUse`]
+/// (ruling D-86 item 1): longer than `TAKEOVER_STALE` by one round, so an arbitration file a creator left empty when it
+/// gave up (design note step C1) becomes removable within it, and only a program outside the protocol that keeps a
+/// lock file open outlasts it.
+pub const ACQUIRE_BOUND: Duration = Duration::from_secs(12);
+
+/// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11); [`acquire_until`] with no cancellation.
+#[must_use]
+pub fn acquire(project: &Path) -> Locked {
+    acquire_until(project, &|| false)
+}
+
+/// Tries to lock a project path (LOCK-01, LOCK-02; ADR-0014 §11), returning [`Locked::Cancelled`] at once when
+/// `cancelled` answers true while it decides.
 ///
 /// Publication and takeover happen only while holding the lock's arbiter (`<lock>.takeover`): under it, the lock's
 /// state is read again; a stale lock is removed; the new lock is created exclusively and protected, written and
@@ -814,9 +834,14 @@ const DECIDE_BOUND: Duration = Duration::from_secs(2);
 /// again from the start (ruling D-84). `HeldByOther` is answered only when it is true at that moment (a live owner
 /// protects the lock, or a lock the protocol counts as held, or another opener holds the arbiter past the bound), and
 /// `NotWritable` only when the folder cannot be written or the lock cannot be written through its own handle.
+/// It always answers within [`ACQUIRE_BOUND`] and one round (ruling D-86 item 1): when every round ends in contention
+/// that nobody in the protocol causes, [`Locked::InUse`] names the file kept open.
 #[must_use]
-pub fn acquire(project: &Path) -> Locked {
+pub fn acquire_until(project: &Path, cancelled: &dyn Fn() -> bool) -> Locked {
     let path = lock_path(project);
+    let started = std::time::Instant::now();
+    // The file whose contention ended the opener's last attempt (D-86): the arbitration file or the lock file.
+    let mut in_use = takeover_path(&path);
     let info = LockInfo::new();
     let text = match info.to_bytes() {
         Ok(t) => t,
@@ -829,6 +854,9 @@ pub fn acquire(project: &Path) -> Locked {
     loop {
         let deadline = std::time::Instant::now() + DECIDE_BOUND;
         while std::time::Instant::now() < deadline {
+            if cancelled() {
+                return Locked::Cancelled;
+            }
             if let State::Held(c) = state(&path) {
                 return Locked::HeldByOther(c);
             }
@@ -836,6 +864,7 @@ pub fn acquire(project: &Path) -> Locked {
                 Ok(a) => a,
                 Err(Some(e)) if !contention(&e, &path) => return Locked::NotWritable(e.to_string()),
                 Err(_) => {
+                    in_use = takeover_path(&path);
                     pause();
                     continue;
                 }
@@ -865,6 +894,7 @@ pub fn acquire(project: &Path) -> Locked {
                             if probe(&path) == Some(true) {
                                 return Locked::HeldByOther(read(&path).unwrap_or_else(|| unreadable_holder(&path)));
                             }
+                            in_use.clone_from(&path);
                             drop(arbiter);
                             pause();
                             continue;
@@ -895,6 +925,7 @@ pub fn acquire(project: &Path) -> Locked {
             let mut file = match create_protected(&path) {
                 Ok(f) => f,
                 Err(e) if contention(&e, &path) => {
+                    in_use.clone_from(&path);
                     drop(arbiter);
                     pause();
                     continue;
@@ -934,6 +965,9 @@ pub fn acquire(project: &Path) -> Locked {
             _ if !folder_writable(&path) => {
                 return Locked::NotWritable("the project's folder cannot be written".to_owned());
             }
+            // Nothing is held, and the contention has lasted the whole bound: a program outside the protocol keeps
+            // the file open (ruling D-86 item 1). Nothing was changed on disk.
+            _ if started.elapsed() >= ACQUIRE_BOUND => return Locked::InUse(in_use),
             // Nothing is held: decide again for another round.
             _ => {}
         }

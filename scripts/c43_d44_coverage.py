@@ -93,6 +93,9 @@ COVERAGE: dict[str, dict] = {
     "class:native picker replace question": {"rows": ["Save As (existing file) › native Yes",
                                                        "Save As (existing file) › native No"],
                                               "default": "No (the platform's)"},
+    "message:project.lockFileInUse": {"reason": "needs a program outside the lock protocol keeping the project's lock "
+                                               "file open past the lock's 12 s bound (D-86 item 1); lockFileInUse.test.tsx "
+                                               "covers Try Again and Cancel, the kernel test the refusal"},
     "message:keymap.importMode": {"rows": ["shortcut editor › Import › Merge", "shortcut editor › Import › Replace",
                                            "shortcut editor › Import › Cancel",
                                            "shortcut editor › Import › Enter (default Merge)"], "default": "Merge"},

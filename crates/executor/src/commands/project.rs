@@ -171,14 +171,23 @@ fn name_error(e: &tt_model::ModelError) -> CommandError {
     CommandError::with_details(code, e.message(), json!({ "pointer": "/name", "rule": rule }))
 }
 
-/// Locks a project path for writing (LOCK-01/02, RO-01): `(lock, readOnly, warnings, lock holder)`.
-fn lock_for(path: &Path, read_only: bool) -> (Option<Arc<lock::LockHandle>>, bool, Vec<ResultWarning>, Option<Value>) {
+/// What [`lock_for`] answers: `(lock, readOnly, warnings, lock holder)`.
+type LockFor = (Option<Arc<lock::LockHandle>>, bool, Vec<ResultWarning>, Option<Value>);
+
+/// Locks a project path for writing (LOCK-01/02, RO-01): `(lock, readOnly, warnings, lock holder)`. `cancelled` is the
+/// caller's cancellation (a job's), read while the lock is being decided.
+///
+/// # Errors
+/// `fs.ioError` (`reason: "lockFileInUse"`, the file's `path`) when a program outside the lock protocol keeps a lock
+/// file open past the lock's bound (ruling D-86 item 1; SI-200): nothing was changed on disk, and opening again once
+/// that program lets go proceeds. `job.cancelled` when cancelled meanwhile.
+fn lock_for(path: &Path, read_only: bool, cancelled: &dyn Fn() -> bool) -> Result<LockFor, CommandError> {
     if read_only {
-        return (None, true, Vec::new(), None);
+        return Ok((None, true, Vec::new(), None));
     }
     let attr_ro = std::fs::metadata(path).is_ok_and(|m| m.permissions().readonly());
     if attr_ro {
-        return (
+        return Ok((
             None,
             true,
             vec![ResultWarning {
@@ -187,9 +196,9 @@ fn lock_for(path: &Path, read_only: bool) -> (Option<Arc<lock::LockHandle>>, boo
                 details: json!({ "path": path.to_string_lossy() }),
             }],
             None,
-        );
+        ));
     }
-    match lock::acquire(path) {
+    Ok(match lock::acquire_until(path, cancelled) {
         Locked::Acquired { handle, took_over } => {
             let w = took_over
                 .map(|old| ResultWarning {
@@ -224,7 +233,29 @@ fn lock_for(path: &Path, read_only: bool) -> (Option<Arc<lock::LockHandle>>, boo
             }],
             None,
         ),
-    }
+        Locked::InUse(file) => return Err(lock_file_in_use(&file)),
+        Locked::Cancelled => {
+            return Err(CommandError::with_details(
+                "job.cancelled",
+                "cancelled while the project's lock was being taken; nothing was changed",
+                json!({}),
+            ));
+        }
+    })
+}
+
+/// The refusal of a lock file kept open by a program outside the lock protocol (ruling D-86 item 1; SI-200).
+fn lock_file_in_use(file: &Path) -> CommandError {
+    CommandError::with_details(
+        tt_persist::codes::FS_IO,
+        format!(
+            "the project's lock file `{}` is in use by another program; nothing was changed; close that program (or \
+             wait for it) and try again",
+            file.display()
+        ),
+        json!({ "reason": "lockFileInUse", "path": file.to_string_lossy() }),
+    )
+    .hint("try again once the other program has closed the file")
 }
 
 /// Writes a snapshot for `project.create {path}` and returns the lock and the written result.
@@ -245,7 +276,7 @@ fn write_new(
     let form = persistence::form_for(&path.to_string_lossy());
     let env = &cx.session().env;
     let w = persistence::write(snap, path, form, None, &env.cache, form == Form::Folder)?;
-    let (lock, _, _, _) = lock_for(path, false);
+    let (lock, _, _, _) = lock_for(path, false, &|| false)?;
     Ok((w, lock))
 }
 
@@ -491,7 +522,7 @@ pub(crate) fn project_open(cx: &mut Cx, p: OpenParams) -> Result<Job<OpenResult>
     let migrations = cx.session().env.migrations;
     let read_only = p.read_only;
     let job = cx.session().jobs.submit("project.open", &origin.session_key(), move |progress| {
-        let (lock, read_only, lock_warnings, locked_by) = lock_for(&path, read_only);
+        let (lock, read_only, lock_warnings, locked_by) = lock_for(&path, read_only, &|| progress.cancelled())?;
         let report = |f: f64, text: &str| {
             progress.report(f * 0.95, text);
             !progress.cancelled()
@@ -631,6 +662,18 @@ fn submit_save(
                     ));
                 }
                 Locked::NotWritable(_) => None,
+                Locked::InUse(file) => {
+                    let _ = poster.run(POST_TIMEOUT, |core| {
+                        if let Some(p) = core.session_mut().and_then(|s| s.project.as_mut()) {
+                            p.store.saving = false;
+                        }
+                    });
+                    return Err(lock_file_in_use(&file));
+                }
+                // `acquire` takes no cancellation here (the save is committed): never answered.
+                Locked::Cancelled => {
+                    return Err(CommandError::with_details("job.cancelled", "the save was cancelled", json!({})));
+                }
             }
         } else {
             if let Some(h) = &held {
@@ -1271,7 +1314,7 @@ fn recover_claimed(
         let original = info.original_path.clone();
         let mut warnings = Vec::new();
         let (lock, read_only, lock_warnings, locked_by) = match &original {
-            Some(o) if Path::new(o).exists() => lock_for(Path::new(o), false),
+            Some(o) if Path::new(o).exists() => lock_for(Path::new(o), false, &|| progress.cancelled())?,
             _ => (None, false, Vec::new(), None),
         };
         if let Some(o) = &original

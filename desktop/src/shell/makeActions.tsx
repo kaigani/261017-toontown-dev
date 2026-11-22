@@ -15,6 +15,16 @@ import { AboutDialog, BackupsDialog, CheckProjectDialog, ProjectInfoDialog } fro
 import { JobProgress, NewProjectDialog, ProjectPropertiesDialog } from './projectForms';
 import { ToolbarSheet } from './toolbarSheet';
 
+/** The file a refusal names when a program outside the lock protocol keeps a lock file open (ruling D-86 item 1;
+ *  SI-200: `fs.ioError`, `reason: "lockFileInUse"`), or null for any other answer. */
+export function lockFileInUse(env: Envelope | null): string | null {
+  const e = env?.status === 'error' ? env.error : undefined;
+  const d = (e?.details ?? {}) as Record<string, unknown>;
+  return e?.code === 'fs.ioError' && d['reason'] === 'lockFileInUse' && typeof d['path'] === 'string'
+    ? d['path']
+    : null;
+}
+
 function jobIdOf(env: Envelope): string | null {
   const r = env.result as Record<string, unknown> | undefined;
   const id = r?.['jobId'];
@@ -54,7 +64,10 @@ export function makeActions(
     const env = await running.done;
     if (timer) clearTimeout(timer);
     if (busy.shown) setBusy(null);
-    const answered = env.status === 'error' && env.error !== undefined && handled.includes(env.error.code);
+    const answered =
+      (env.status === 'error' && env.error !== undefined && handled.includes(env.error.code)) ||
+      // The open flows ask the person about a lock file in use themselves (D-86 item 1).
+      lockFileInUse(env) !== null;
     if (env.status !== 'ok' && env.status !== 'needs_confirmation' && !answered)
       await messages.failure(env, command);
     return env;
@@ -68,7 +81,7 @@ export function makeActions(
     ));
     const final = done ?? env;
     if (final.status !== 'ok') {
-      await messages.failure(final, title);
+      if (lockFileInUse(final) === null) await messages.failure(final, title);
       return final;
     }
     // `job.wait` answers `ok` with the job's record: a job that failed is a failure the user is told about (01 §9.5),
@@ -80,7 +93,7 @@ export function makeActions(
         status: 'error',
         error: record.error ?? { code: 'job.failed', message: 'The job failed.' },
       };
-      await messages.failure(failed, title);
+      if (lockFileInUse(failed) === null) await messages.failure(failed, title);
       return failed;
     }
     if (record?.state === 'cancelled') messages.status(`${title}: cancelled`);
@@ -151,6 +164,29 @@ export function makeActions(
       />
     ));
 
+  /** Runs an open flow; when it is refused because a program outside the lock protocol keeps a lock file open
+   *  (D-86 item 1), the person is told which file and may try again (nothing was changed). */
+  const withLockRetry = async (attempt: () => Promise<Envelope | null>): Promise<Envelope | null> => {
+    for (;;) {
+      const env = await attempt();
+      const path = lockFileInUse(env);
+      if (path === null) return env;
+      const a = await messages.show({
+        severity: 'warning',
+        messageId: 'project.lockFileInUse',
+        title: 'Lock file in use',
+        text:
+          `Another program has the project's lock file open: ${path}. Nothing was changed. ` +
+          'Close that program, or wait for it to finish, then try again.',
+        buttons: [
+          { id: 'retry', label: 'Try Again', role: 'default' },
+          { id: 'cancel', label: 'Cancel', role: 'cancel' },
+        ],
+      });
+      if (a.button !== 'retry') return env;
+    }
+  };
+
   const perform = async (command: string, params: Record<string, unknown> = {}): Promise<Envelope | null> => {
     const p: Record<string, unknown> = { ...params };
     if (DISCARDING.has(command) && p['onUnsaved'] === undefined) {
@@ -167,7 +203,7 @@ export function makeActions(
           if (!chosen) return null;
           Object.assign(p, chosen);
         }
-        return run('project.create', p);
+        return withLockRetry(() => run('project.create', p));
       }
       case 'project.open': {
         if (p['path'] === undefined) {
@@ -175,10 +211,10 @@ export function makeActions(
           if (!path) return null;
           p['path'] = path;
         }
-        return waitJob(await run('project.open', p), 'Opening project', true);
+        return withLockRetry(async () => waitJob(await run('project.open', p), 'Opening project', true));
       }
       case 'project.recovery.open':
-        return waitJob(await run(command, p), 'Recovering project', true);
+        return withLockRetry(async () => waitJob(await run(command, p), 'Recovering project', true));
       case 'project.save':
         return save();
       case 'project.saveAs':

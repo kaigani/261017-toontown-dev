@@ -627,6 +627,112 @@ fn only_a_folder_that_cannot_be_written_is_not_writable() {
     let _ = std::fs::remove_dir_all(&dir);
 }
 
+/// A reader of the arbitration file as the reviewer's foreign program holds it (C44B-R3S-01): reading, sharing reading,
+/// writing and deletion.
+#[cfg(windows)]
+fn helper_reader(path: &Path) -> std::fs::File {
+    use std::os::windows::fs::OpenOptionsExt;
+    std::fs::OpenOptions::new().read(true).share_mode(0x1 | 0x2 | 0x4).open(path).unwrap()
+}
+
+/// Not a bound of the protocol's: a hang detector, four times the lock's own bound and a round (D-45).
+#[cfg(windows)]
+const HANG: Duration = Duration::from_secs(4 * (12 + 2));
+
+/// Ruling D-86 item 1 (finding C44B-R3S-01), the reviewer's ordering: a stale lock and an abandoned, token-bearing
+/// arbitration file that another program keeps open. An opener proves the file with delete-on-close; its name stays
+/// delete pending while the reader holds it, and every creation is refused. The opener answers within the bound that
+/// the file is in use (`InUse`, its path) and changes nothing; once the reader closes, the next open owns the lock and
+/// reports the stale lock it took over.
+#[cfg(windows)]
+#[test]
+fn a_helper_file_kept_open_by_another_program_ends_the_open_within_the_bound() {
+    let _s = serial();
+    lock::hooks::set(None);
+    let (dir, project) = project();
+    let lock_file = lock::lock_path(&project);
+    let takeover = takeover_of(&lock_file);
+    stale_lock(&lock_file, "stale");
+    std::fs::write(&takeover, b"left-behind").unwrap();
+    let reader = helper_reader(&takeover);
+    let start = Instant::now();
+    let outcome = lock::acquire(&project);
+    let took = start.elapsed();
+    let Locked::InUse(file) = &outcome else { panic!("the open answers that the helper file is in use: {outcome:?}") };
+    assert_eq!(file, &takeover, "the file in use is named");
+    assert!(took >= lock::ACQUIRE_BOUND, "it decided for the whole bound: {took:?}");
+    assert!(took < HANG, "and then answered: {took:?}");
+    assert_eq!(lock::read(&lock_file).map(|i| i.lock_id).as_deref(), Some("stale"), "nothing changed on disk");
+    drop(reader);
+    let next = lock::acquire(&project);
+    let Locked::Acquired { handle, took_over } = &next else { panic!("the next open owns the lock: {next:?}") };
+    assert!(handle.held());
+    assert_eq!(took_over.as_ref().map(|i| i.lock_id.as_str()), Some("stale"), "the stale lock is reported");
+    drop(next);
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+/// The same with three openers at once: each answers within the bound that the file is in use; then one owns it.
+#[cfg(windows)]
+#[test]
+fn three_openers_against_a_helper_file_kept_open_all_answer_within_the_bound() {
+    let _s = serial();
+    lock::hooks::set(None);
+    let (dir, project) = project();
+    let lock_file = lock::lock_path(&project);
+    let takeover = takeover_of(&lock_file);
+    stale_lock(&lock_file, "stale");
+    std::fs::write(&takeover, b"left-behind").unwrap();
+    let reader = helper_reader(&takeover);
+    let start = Instant::now();
+    let openers: Vec<_> = ["A", "B", "C"].iter().map(|n| participant(n, &project)).collect();
+    let outcomes: Vec<Locked> = openers.into_iter().map(|t| t.join().unwrap()).collect();
+    assert!(start.elapsed() < HANG, "every opener answered: {:?}", start.elapsed());
+    assert!(outcomes.iter().all(|o| matches!(o, Locked::InUse(_))), "{outcomes:?}");
+    assert_eq!(lock::read(&lock_file).map(|i| i.lock_id).as_deref(), Some("stale"), "nothing changed on disk");
+    drop(reader);
+    let after: Vec<Locked> =
+        ["D", "E", "F"].iter().map(|n| participant(n, &project)).map(|t| t.join().unwrap()).collect();
+    assert_eq!(owners(&after).len(), 1, "exactly one owner once the reader let go: {after:?}");
+    drop(after);
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
+/// Ruling D-86 item 1: an opener cancelled while it decides returns at once, changing nothing (both systems: the
+/// contention here is a releasing arbiter held at its boundary).
+#[test]
+fn an_opener_cancelled_while_it_decides_returns_at_once() {
+    let _s = serial();
+    let (dir, project) = project();
+    let lock_file = lock::lock_path(&project);
+    let takeover = takeover_of(&lock_file);
+    let Locked::Acquired { handle, .. } = lock::acquire(&project) else { panic!("the first open takes the lock") };
+    let sched = Schedule::install(&[&lock_file, &takeover]);
+    sched.arm("H", Boundary::ArbiterReleasing);
+    let h = std::thread::Builder::new().name("H".into()).spawn(move || drop(handle)).unwrap();
+    sched.wait_held("H", Boundary::ArbiterReleasing);
+    let cancel = Arc::new(std::sync::atomic::AtomicBool::new(false));
+    sched.arm("A", Boundary::ArbiterNotTaken);
+    let a = {
+        let (p, c) = (project.clone(), cancel.clone());
+        std::thread::Builder::new()
+            .name("A".into())
+            .spawn(move || lock::acquire_until(&p, &|| c.load(std::sync::atomic::Ordering::SeqCst)))
+            .unwrap()
+    };
+    sched.wait_held("A", Boundary::ArbiterNotTaken);
+    cancel.store(true, std::sync::atomic::Ordering::SeqCst);
+    sched.resume("A", Boundary::ArbiterNotTaken);
+    let outcome = a.join().unwrap();
+    assert!(matches!(outcome, Locked::Cancelled), "{outcome:?}");
+    assert!(!lock_file.exists(), "nothing published");
+    sched.resume("H", Boundary::ArbiterReleasing);
+    h.join().unwrap();
+    drop(sched);
+    assert!(!takeover.exists());
+    let _ = std::fs::remove_dir_all(&dir);
+}
+
 /// xorshift64: a fixed, reproducible set of contenders and start delays. The delays vary who meets whom; they order
 /// nothing the assertions depend on (exactly one owner, its handle valid, for any interleaving).
 fn next(s: &mut u64) -> u64 {

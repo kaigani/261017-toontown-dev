@@ -2486,6 +2486,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   refuse an envelope apply that would carry any of the selection's geometry onto or beyond the vanishing line (a
   precheck naming it), instead of clamping? No change until answered.
 
+## SI-200 — a lock file kept open by another program (found in M4 C4.4b round 3; ruling D-86 item 1; interim, a question for the user)
+
+- **From:** `reviews/M4-design-lock-takeover.md` §2 (I3, I4) and §4.1; finding C44B-R3S-01.
+- **Entry:** *Spec:* 10 §8.6 (LOCK-01 to LOCK-03) and 11 §10 name no outcome for a lock file that a program outside the
+  protocol (a virus scanner, an indexer, a backup tool) keeps open so that a stale lock cannot be replaced. *Decided:*
+  the opener decides for at most 12 s (`ACQUIRE_BOUND`), then refuses the open with the existing code `fs.ioError`,
+  `details: {reason: "lockFileInUse", path}`, changing nothing on disk; the window names the file and offers Try Again.
+  *Question:* should 11 §10 have a dedicated code (for example `project.lockFileInUse`) instead of `fs.ioError` with a
+  reason? D-57 keeps the existing code until the user says.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
