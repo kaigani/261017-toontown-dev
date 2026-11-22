@@ -589,3 +589,20 @@ fn the_caret_moves_and_cuts_by_grapheme_clusters() {
     assert_eq!(e.status, Status::Ok, "{e:?}");
     assert_eq!(text_of(&h, &id), "q\u{301}xb", "the next keystroke lands after the cluster, not inside it");
 }
+
+#[test]
+fn the_scene_answer_carries_the_session_for_a_surface_that_mounts_later() {
+    // Ruling D-85 item 2 (finding C44B-R2-02): the Text panel opened after the session began reads the session from
+    // the scene answer (`textEdit.drawingId`, `textEdit.format`, the notice's values); a canvas reads the current colour.
+    let h = ready();
+    let id = new_text(&h, (-700.0, -400.0));
+    input(&h, Input::Text("A".into()));
+    let scene = serde_json::to_value(h.canvas_scene("drawingView").unwrap()).unwrap();
+    let edit = &scene["textEdit"];
+    assert_eq!(edit["drawingId"], json!(D1), "{edit}");
+    assert_eq!(edit["textId"], json!(id));
+    assert_eq!(edit["format"]["bold"], json!(false), "the values the panel shows at the caret: {edit}");
+    assert!(scene["currentColour"].is_string(), "the current colour: {}", scene["currentColour"]);
+    let camera = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
+    assert_eq!(camera["textEdit"]["drawingId"], json!(D1), "every view's answer carries it");
+}

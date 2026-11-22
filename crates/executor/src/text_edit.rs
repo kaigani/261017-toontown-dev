@@ -995,6 +995,8 @@ pub(crate) fn scene_text(cx: &Cx) -> (Option<crate::canvas::SceneTextEdit>, Opti
         }
         let size = b.content.run_at(s.caret.saturating_sub(1)).size;
         Some(crate::canvas::SceneTextEdit {
+            drawing_id: s.drawing.clone(),
+            format: shown_format(&b.content, s),
             text_id: s.text.clone(),
             view_id: s.view_id.clone(),
             anchor: s.anchor,

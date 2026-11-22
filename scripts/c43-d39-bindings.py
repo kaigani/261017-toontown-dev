@@ -2229,15 +2229,16 @@ async def build_and_run(t: Table, only: set) -> None:
     # The Text panel formatting the text the Text tool highlights (design note 5 §6): a session opened by the table's
     # agent connection (a Text tool click, `type_text`, then Shift+Home), so in the OS form the person's clicks format
     # the agent's session's highlight; the caret-only rows need the session's own origin and run in the MCP form.
-    async def text_session(highlight=True, two_runs=False):
+    async def text_session(highlight=True, two_runs=False, panel_after=False):
         # A fresh session on a fresh object: the last row's session ends with its tool, its objects go.
         await cmd("tool.active.set", {"toolId": "select"})
         nodes = (await cmd("draw.drawing.get", {"flatten": True})).get("nodes") or []
         old = [n.get("id") for n in nodes if "text" in n and "runs" in n]
         if old:
             await cmd("draw.object.delete", {"ids": old})
-        # The Text panel first: showing it after the view could take the view's place in the dock.
-        await cmd("window.panel.set", {"panelId": "text", "visible": True})
+        # The Text panel first: showing it after the view could take the view's place in the dock. With `panel_after`
+        # (D-85 item 2) it is hidden while the session opens and shown once it is open, so it mounts after the session.
+        await cmd("window.panel.set", {"panelId": "text", "visible": not panel_after})
         await tool_fixture("text")
         m = await view_map()
         x, y = to_view(m, -50, 75)
@@ -2256,6 +2257,8 @@ async def build_and_run(t: Table, only: set) -> None:
             await cmd("draw.textFormat.set", {"textId": c44b["text"], "start": 0, "length": 2, "bold": True})
         if highlight:
             await e2e.call(t.s, "key", {"keys": "Shift+Home"})
+        if panel_after:
+            await cmd("window.panel.set", {"panelId": "text", "visible": True})
         # A wait for a state (D-45): the panel shows the session's role.
         want = "Selected text" if highlight else "Next typed text"
         start = time.monotonic()
@@ -2330,6 +2333,17 @@ async def build_and_run(t: Table, only: set) -> None:
                  "expect": lambda b: ("draw.textFormat.set", {"drawingId": c44b["drawing"], "textId": c44b["text"], "start": 5,
                                                               "length": 0, "bold": True}),
                  "label": None, "setup": lambda: text_session(highlight=False), "state": text_runs,
+                 "effect": lambda b, a, k: a == b, "disabled": None, "after": carried,
+                 "mcpOnly": True, "osReason": "the pending field belongs to the session's own origin (the table's agent "
+                                             "connection opened it); the person's own session is the three-way script's"})
+
+    rows.append({"name": "Text panel (caret) › opened while editing, then Bold, then a keystroke",
+                 "spec": f"{spec_line('draw.textFormat.set')}; 02 §7.6.1 lines 677-679; D-85 item 2 (C44B-R2-02: a panel "
+                         "that mounts after the session began reads it)",
+                 "action": ("dom", "text.bold"),
+                 "expect": lambda b: ("draw.textFormat.set", {"drawingId": c44b["drawing"], "textId": c44b["text"], "start": 5,
+                                                              "length": 0, "bold": True}),
+                 "label": None, "setup": lambda: text_session(highlight=False, panel_after=True), "state": text_runs,
                  "effect": lambda b, a, k: a == b, "disabled": None, "after": carried,
                  "mcpOnly": True, "osReason": "the pending field belongs to the session's own origin (the table's agent "
                                              "connection opened it); the person's own session is the three-way script's"})

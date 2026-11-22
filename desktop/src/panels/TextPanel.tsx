@@ -93,12 +93,20 @@ export function TextPanel() {
     refresh();
     let off: (() => void) | null = null;
     let stopped = false;
+    // A notice heard since mounting is newer than the scene answer read below.
+    let heard = false;
     void engine
       .onEvent((e) => {
         const toolId = obj(e.payload)['toolId'];
         // The Text tool's session (design note 5 §5): host-only, never sent to an agent.
-        if (e.name === 'shell.textEdit') setEditing(editingOf(e.payload));
-        if (e.name === 'project.closed') setEditing(null);
+        if (e.name === 'shell.textEdit') {
+          heard = true;
+          setEditing(editingOf(e.payload));
+        }
+        if (e.name === 'project.closed') {
+          heard = true;
+          setEditing(null);
+        }
         if (
           (e.name === 'tool.options.changed' && (toolId === 'text' || toolId === null)) ||
           e.name === 'project.opened' ||
@@ -109,7 +117,24 @@ export function TextPanel() {
       .then((u) => {
         if (stopped) u();
         else off = u;
-      });
+        // Ruling D-85 item 2 (finding C44B-R2-02): a panel opened while a session is open reads the session when it
+        // mounts (the scene answer's `textEdit`, which every view's answer carries), then follows the notices.
+        return engine.canvasScene('drawingView').then((scene) => {
+          if (stopped || heard) return;
+          const t = obj(obj(scene)['textEdit']);
+          if (typeof t['textId'] !== 'string') return;
+          setEditing(
+            editingOf({
+              drawingId: t['drawingId'],
+              textId: t['textId'],
+              anchor: t['anchor'],
+              caret: t['caretIndex'],
+              format: t['format'],
+            }),
+          );
+        });
+      })
+      .catch(() => undefined);
     return () => {
       stopped = true;
       off?.();

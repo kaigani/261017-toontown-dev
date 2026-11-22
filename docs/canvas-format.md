@@ -262,6 +262,7 @@ The answer is `{generation, scene}`; `scene` has:
 | `toolBox` | object | 1.2 | Both view types, while Perspective or Reposition All is the active tool and its box exists (§11.9); else absent. |
 | `textEdit` | object | 1.2 | Both view types, while the Text tool's edit session is open on the current drawing (§11.10); else absent. |
 | `textBoxes` | array | 1.2 | Both view types, every text box of the current drawing while the Text tool is active (§11.10); else absent. |
+| `currentColour` | string | 1.2 | Both view types: the current colour (03 §2.4), for a canvas that mounts after it was chosen (ruling D-85 item 2); absent without one. |
 
 ### 11.3 Entries
 
@@ -316,7 +317,9 @@ Form 1.0's checks (every member's type, the known enumerations) stay. Form 1.1 a
 
 - **R10** (form 1.2) `textEdit`, when present: a non-empty `textId`, a string `viewId`, `anchor` and `caretIndex`
   non-negative integers, `quad` four points, `caret` and `handles` two points, `highlight` an array of four-point
-  quads, `size` a positive number; `textBoxes`, when present, an array of `{textId (non-empty), quad (four points)}`.
+  quads, `size` a positive number; `drawingId` (the edited object's drawing) and `format` (the Text panel's values over
+  the highlight or at the caret, `null` where they differ, as the `shell.textEdit` notice's) added by ruling D-85 item
+  2, for a surface that mounts after the session began (readers accept an answer without them); `textBoxes`, when present, an array of `{textId (non-empty), quad (four points)}`.
 
 `viewId`, `paletteStamp` and the booleans have a type and no narrower domain (a float window's id is any view id).
 
@@ -342,7 +345,8 @@ flags); the test names the field each is refused for. The Rust side writes the v
 **Visibility (ruling D-79; 02 §1.2, §10.7, 04 §10.1).** In the Camera view `contours`, `toolBox`, `textEdit` and
 `textBoxes` are absent when the view would not draw the current element (its render verdict is hidden, behind the
 camera, or it is not in the camera's scene): an element hidden in the scene shows no drawing-tool overlay and offers no
-hit target, unless "Selection always visible" shows it; "Show outline on selection" draws only its outline, which is not
+hit target, unless "Selection always visible" shows it (an element selected in the Timeline, the Exposure Sheet or the
+Camera view's staging selection; SI-198); "Show outline on selection" draws only its outline, which is not
 editable. Visibility is the element's, not its ink's: an empty drawing or one of invisible strokes only is shown (round
 1 live probes l3b 7 and l1b 8). The
 Drawing view shows the current drawing whatever the scene's visibility.

@@ -90,10 +90,14 @@ export interface Scene {
   textEdit: SceneTextEdit | null;
   /** Form 1.2: the current drawing's text boxes while the Text tool is active (§11.10); `null` otherwise. */
   textBoxes: SceneTextBox[] | null;
+  /** The current colour (03 §2.4), for a canvas that mounts after it was chosen (D-85 item 2); `null` when absent. */
+  currentColour?: string | null;
 }
 
 /** The Text tool's edit session (§11.10), drawing units. */
 export interface SceneTextEdit {
+  /** The edited object's drawing (D-85 item 2; `''` from an answer without it). */
+  drawingId: string;
   textId: string;
   viewId: string;
   anchor: number;
@@ -108,6 +112,8 @@ export interface SceneTextEdit {
   handles: [Pt, Pt];
   /** The run size at the caret (du). */
   size: number;
+  /** The Text panel's values over the highlight or at the caret, `null` where they differ (D-85 item 2). */
+  format: Record<string, unknown>;
 }
 
 /** A text box of the current drawing (§11.10). */
@@ -352,6 +358,7 @@ function textEditOf(v: unknown): SceneTextEdit | null {
   const size = num(o['size'], 'textEdit.size');
   if (size <= 0) throw new TypeError('textEdit.size: not positive');
   return {
+    drawingId: typeof o['drawingId'] === 'string' ? o['drawingId'] : '',
     textId,
     viewId: str(o['viewId'], 'textEdit.viewId'),
     anchor: count(o['anchor'], 'textEdit.anchor'),
@@ -361,6 +368,7 @@ function textEditOf(v: unknown): SceneTextEdit | null {
     highlight: list(o['highlight'], 'textEdit.highlight', quadOf),
     handles: handles as [Pt, Pt],
     size,
+    format: obj(o['format']) ?? {},
   };
 }
 
@@ -479,6 +487,7 @@ export function parseSceneAnswer(v: unknown): SceneAnswer {
       toolBox: toolBoxOf(s['toolBox']),
       textEdit: textEditOf(s['textEdit']),
       textBoxes: textBoxesOf(s['textBoxes']),
+      currentColour: typeof s['currentColour'] === 'string' ? s['currentColour'] : null,
     },
   };
 }

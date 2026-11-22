@@ -341,3 +341,35 @@ fn a_persons_key_panel_or_menu_edit_follows_the_rule_and_an_agents_direct_call_d
     let env = person(&h, "draw.selection.set", pick);
     assert_eq!(env.status, Status::Ok, "{env:?}");
 }
+
+#[test]
+fn selection_always_visible_keeps_a_hidden_element_selected_in_the_timeline_or_exposure_sheet_editable() {
+    // 02 §10.7 line 961 (ruling D-85 item 1, finding C44B-R2-01): "Elements selected in the Timeline/Exposure Sheet are
+    // displayed in the Camera View even if hidden." With the option on and the element hidden in the scene, an element
+    // selected in the Timeline, the Exposure Sheet or the Camera view's own staging selection (SI-198) is drawn, its
+    // drawing tools' overlays are there and its content is edited; with no selection it is not drawn and not edited.
+    for context in ["timeline", "xsheet", "staging", "none"] {
+        let (h, _) = ready();
+        ok(&h, "drawAid.selectionDisplay.set", json!({ "keepSelectionVisible": true, "outlineOnSelection": false }));
+        if context != "none" {
+            ok(&h, "edit.selection.set", json!({ "context": context, "ids": [BOB] }));
+        }
+        ok(&h, "element.visibility.set", json!({ "elementIds": [BOB], "scope": "scene", "visible": false }));
+        ok(&h, "tool.active.set", json!({ "toolId": "contourEditor" }));
+        let scene = serde_json::to_value(h.canvas_scene("cameraView").unwrap()).unwrap();
+        let drawn = scene["entries"].as_array().unwrap().iter().any(|e| e["drawingId"] == D1 && e["tint"].is_null());
+        let before = position(&h);
+        let env = gesture(&h, "cameraView", "contourEditor", &drag((300.0, 300.0), (290.0, 290.0)));
+        if context == "none" {
+            assert!(!drawn, "not selected: the hidden element is not drawn");
+            assert!(scene["contours"].is_null());
+            assert_eq!(env.error.as_ref().map(|e| e.code.as_str()), Some("element.hidden"), "{env:?}");
+            assert_eq!(position(&h), before);
+        } else {
+            assert!(drawn, "{context}: the selected hidden element is drawn: {}", scene["entries"]);
+            assert!(scene["contours"].is_object(), "{context}: its overlay is there");
+            assert_eq!(env.status, Status::Ok, "{context}: {env:?}");
+            assert!(position(&h) > before, "{context}: the drag edits");
+        }
+    }
+}

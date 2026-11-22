@@ -98,6 +98,8 @@ export interface ScriptedHost extends HostTransport {
   };
   /** Answers to `pick_path` (null: cancelled). */
   picked: string | null;
+  /** `canvas_scene` answers by view id (a missing view refuses, as a host without that canvas would). */
+  scenes: Record<string, unknown>;
   /** D-62 item 2, D-65 item 2: the agent token `agent_token` delivers, each delivery numbered when the host handles the
    *  call, as the desktop host does. While `capturing` nothing is delivered. With `holdToken` each answer is held in
    *  transit until `releaseToken()` (the oldest first), so a test can order a late answer after other events. */
@@ -147,6 +149,7 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         ? { enabled: false, reason: 'there is nothing to undo' }
         : { enabled: true },
     picked: null,
+    scenes: {},
     token: '0123456789abcdef0123456789abcdef0123456789abcdef',
     capturing: false,
     holdToken: false,
@@ -265,6 +268,10 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
               ...host.available({ commandId: r.commandId, params: r.params ?? {} }),
             })),
           );
+        }
+        case 'canvas_scene': {
+          const scene = host.scenes[String(json['viewId'])];
+          return scene === undefined ? Promise.reject(new Error('no scene')) : Promise.resolve(scene);
         }
         case 'pick_path':
           return Promise.resolve({ path: host.picked });

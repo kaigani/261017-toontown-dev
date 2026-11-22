@@ -253,7 +253,10 @@ export function CanvasView({
           : ['brush', 'pencil', 'polyline'].includes(tool)
             ? penSizes.brush * zoom
             : 1;
-      const ink = (currentColour ? model?.scene?.colours[currentColour] : undefined) ?? ACCENT;
+      // The current colour from `colour.current.changed`, else the scene answer's (a canvas that mounts after it was
+      // chosen; D-85 item 2).
+      const colourId = currentColour ?? model?.scene?.currentColour ?? null;
+      const ink = (colourId ? model?.scene?.colours[colourId] : undefined) ?? ACCENT;
       style = { tool, ink, width };
     };
     const refreshSceneTool = () => {

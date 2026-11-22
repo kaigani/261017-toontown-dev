@@ -2465,8 +2465,16 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   rule holds for every person's contextual edit of the current target whatever the input (a key, a Tool options or
   Properties control, a menu or context-menu item), in the active view (`gesture::person_rule`, applied in the host's
   key resolution and to the window's actions); an agent's direct call is unaffected.
+- **"Selection always visible" (ruling D-85 item 1; finding C44B-R2-01).** 02 line 961: elements selected in the
+  Timeline or the Exposure Sheet are displayed in the Camera view even if hidden; the kernel keys the exception on those
+  selections (contexts `timeline` and `xsheet`, element entries; a cell selection selects cells, not their element).
+  **A staging selection** (the Camera view's own element selection) keeps its element displayed too: the selection
+  display options of 02 §10.7 already follow it (SI-153, CV5), and an element selected in the view must not vanish from
+  the view it is selected in. **Displayed content is editable** by the drawing tools, in the Camera view, as any drawn
+  element: the option displays the element, and the interactive-target rule follows what the view draws.
 - **Interim readings (confirm or specify):** `element.hidden` is the code of the hidden case; with only "Show outline
-  on selection" a hidden element's outline is displayed but not editable.
+  on selection" a hidden element's outline is displayed but not editable; the staging selection counts for "Selection
+  always visible" as well as the Timeline's and the Exposure Sheet's.
 
 ## SI-199 — geometry beyond a perspective map's vanishing line (found in M4 C4.4b round 2; ruling D-83 item 4; a question for the user)
 

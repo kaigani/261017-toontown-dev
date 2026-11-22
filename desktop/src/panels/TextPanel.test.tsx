@@ -119,4 +119,75 @@ describe('the Text panel (02 §7.6.1)', () => {
     });
     expect(el('text.removeOutline')).toHaveProperty('disabled', true);
   });
+
+  // Ruling D-85 item 2 (finding C44B-R2-02): the panel reads the Text tool's session when it mounts (the scene answer's
+  // `textEdit`), then follows the host-only `shell.textEdit` notice. Opened before, during and after a session.
+  const SESSION = {
+    drawingId: 'dr_1',
+    textId: 'tx_1',
+    viewId: 'drawingView',
+    anchor: 1,
+    caretIndex: 1,
+    format: { ...DEFAULTS, outlineColourId: undefined },
+  };
+  async function panelWithScene(textEdit: unknown, role: string): Promise<ScriptedHost> {
+    const h = createScriptedHost({
+      'app.state.get': () => ok({ ...PROJECT }),
+      'tool.options.get': () => ok({ toolId: 'text', options: DEFAULTS }),
+    });
+    h.scenes['drawingView'] = { textEdit };
+    render(
+      <HostProvider api={createHostApi(h)}>
+        <App floatPanel="text" />
+      </HostProvider>,
+    );
+    await screen.findByText(role);
+    return h;
+  }
+  const formatted = (h: ScriptedHost) =>
+    h
+      .actions()
+      .filter((a) => a.command === 'draw.textFormat.set')
+      .map((a) => a.params);
+
+  it('opened during a session: it shows the session and Bold formats the next typed text', async () => {
+    const h = await panelWithScene(SESSION, 'Next typed text');
+    act(() => {
+      fireEvent.click(el('text.bold'));
+    });
+    await waitFor(() => {
+      expect(formatted(h)).toEqual([{ drawingId: 'dr_1', textId: 'tx_1', start: 1, length: 0, bold: true }]);
+    });
+    expect(sent(h)).toEqual([]);
+  });
+
+  it('opened before a session: it follows the notice that opens it, and the one that ends it', async () => {
+    const h = await panelWithScene(null, 'Defaults for new text');
+    act(() => {
+      h.event('shell.textEdit', {
+        drawingId: 'dr_1',
+        textId: 'tx_1',
+        viewId: 'drawingView',
+        anchor: 0,
+        caret: 2,
+        format: DEFAULTS,
+      });
+    });
+    await screen.findByText('Selected text');
+    act(() => {
+      h.event('shell.textEdit', null);
+    });
+    await screen.findByText('Defaults for new text');
+  });
+
+  it('opened after a session ended: the defaults, and Bold sets the default', async () => {
+    const h = await panelWithScene(null, 'Defaults for new text');
+    act(() => {
+      fireEvent.click(el('text.bold'));
+    });
+    await waitFor(() => {
+      expect(sent(h)).toEqual([{ bold: true }]);
+    });
+    expect(formatted(h)).toEqual([]);
+  });
 });

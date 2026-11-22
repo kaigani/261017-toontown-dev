@@ -318,6 +318,11 @@ pub struct Scene {
     /// Form 1.2: every text box of the current drawing while the Text tool is active (§11.10); absent otherwise.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub text_boxes: Option<Vec<SceneTextBox>>,
+    /// The current colour (03 §2.4), for the live gesture ink of a canvas that mounts after the colour was chosen
+    /// (ruling D-85 item 2: a surface reads its state when it mounts, then follows `colour.current.changed`); absent
+    /// without a project or a palette.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub current_colour: Option<String>,
     /// Whether the view shows the current element (rulings D-79, D-80): always in the Drawing view; in the Camera view
     /// when the composition would draw it, ink or not (an empty drawing, or one of invisible strokes only, is still
     /// shown). The window's alone: not part of the scene answer.
@@ -330,6 +335,9 @@ pub struct Scene {
 #[derive(Debug, Clone, PartialEq, serde::Serialize, schemars::JsonSchema)]
 #[serde(rename_all = "camelCase")]
 pub struct SceneTextEdit {
+    /// The drawing of the edited text object (ruling D-85 item 2: a surface that mounts after the session began, such
+    /// as the Text panel, reads the session here, then follows the host-only `shell.textEdit` notice).
+    pub drawing_id: String,
     /// The edited text object (local id).
     pub text_id: String,
     /// The view the session was opened in (its editor is focused there).
@@ -348,6 +356,9 @@ pub struct SceneTextEdit {
     pub handles: [[f64; 2]; 2],
     /// The size of the run at the caret (du): the editor's pre-edit size.
     pub size: f64,
+    /// The values the Text panel shows over the highlight or at the caret, `null` where they differ (the
+    /// `shell.textEdit` notice's `format`; design note 5 §6).
+    pub format: serde_json::Value,
 }
 
 /// A text box of the current drawing (§11.10): its corners, as [`SceneTextEdit::quad`].
@@ -578,6 +589,7 @@ pub(crate) fn scene(s: &crate::session::Session, view_id: &str) -> Result<Scene,
         // Filled by [`selection`] with a read-only context (the selection walk needs one).
         selection: None,
         current_shown: true,
+        current_colour: crate::commands::draw_stroke::current_colour(&s.app, doc),
         contours: None,
         tool_box: None,
         text_edit: None,
@@ -680,6 +692,7 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
         camera: Some(None),
         overlays: None,
         current_shown: false,
+        current_colour: crate::commands::draw_stroke::current_colour(cx.app(), doc),
     };
     let chain = match crate::camera_view::chain(cx, &w) {
         Ok(c) => c,
@@ -712,6 +725,15 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
     let list = render_list::build(doc, &req, &mut ev)?;
     let current = cx.app().element.clone();
     let selected: Vec<Id> = cx.app().selection_list("staging").iter().filter_map(|k| Id::parse(k).ok()).collect();
+    // "Selection always visible" (02 §10.7 line 961; ruling D-85 item 1, finding C44B-R2-01): the elements selected in
+    // the Timeline or the Exposure Sheet are displayed even if hidden. The Camera view's own staging selection keeps
+    // its element displayed too (SI-198: the selection display options already follow it, and an element selected in
+    // the view must not vanish from it). A cell selection selects cells, not their element.
+    let kept: Vec<Id> = ["timeline", "xsheet", "staging"]
+        .iter()
+        .flat_map(|c| cx.app().selection_list(c).iter())
+        .filter_map(|k| Id::parse(k).ok())
+        .collect();
     // The selection display (05 §3.2 lines 319-321, 02 §10.7; camera-view note §6, CV5; SI-153): with box highlighting
     // off the unselected occurrences are faded; with outline on selection (which needs box highlighting) each selected
     // occurrence is drawn again as outlines in the highlight colour, on top, even where hidden; with selection always
@@ -727,13 +749,13 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
         current.as_ref() == Some(&en.id)
             && en.to_pixel.is_some()
             && (matches!(en.verdict, Verdict::Drawn | Verdict::OutOfFrame | Verdict::Empty | Verdict::NoDrawing)
-                || (en.verdict == Verdict::Hidden && selected.contains(&en.id) && display.keep_selection_visible))
+                || (en.verdict == Verdict::Hidden && kept.contains(&en.id) && display.keep_selection_visible))
     });
     for en in &list.entries {
         let (Some(m), Some(d)) = (en.to_pixel, en.drawing.as_ref().and_then(|d| doc.drawing(d))) else { continue };
         let is_selected = selected.contains(&en.id);
         let shown = matches!(en.verdict, Verdict::Drawn | Verdict::OutOfFrame)
-            || (en.verdict == Verdict::Hidden && is_selected && display.keep_selection_visible);
+            || (en.verdict == Verdict::Hidden && kept.contains(&en.id) && display.keep_selection_visible);
         if is_selected && outlines && (shown || en.verdict == Verdict::Hidden) {
             outlined.push((d, en, m));
         }

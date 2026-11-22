@@ -136,6 +136,25 @@ then the run of one class after it. So a run of punctuation is a word of its own
 and a double click selects the run of one class under the point (`word_at`). Words are runs of whole clusters, and a
 cluster's class is its first character's (below).
 
+**Surfaces that mount after the event (ruling D-85 item 2; finding C44B-R2-02).** A surface that depends on session
+state reads it when it mounts and then follows the notices. The Text panel reads the session from the scene answer's
+`textEdit` (which now carries `drawingId` and `format`, the notice's values) and ignores that answer once a notice has
+arrived since it mounted. Every surface fed by a host-only notice, or by an event it only listens to, checked for the
+same gap:
+
+| Surface | Fed by | Read when it mounts | Finding |
+|---|---|---|---|
+| Text panel | `shell.textEdit` | the scene answer's `textEdit` | **gap, fixed** |
+| Canvas gesture ink | `colour.current.changed` | the scene answer's new `currentColour` (no declared query reports the current colour) | **gap, fixed** (the live ink was the accent colour until the colour changed) |
+| Agent indicator (status bar) | `shell.agentActing` | none possible | **gap, listed:** the host announces acting around each agent request, outside the document thread, and `app.state.get`'s `acting` is always false (a query waits for the running command). The window's store subscribes when the window starts, so in a running application only a window loaded while an agent command runs misses its "acting" notice, and only until that command's "done" notice. |
+| Activity panel | `shell.agentActivity`, `shell.agentSession` | `agent.activity.list`, `agent.server.status` | none |
+| Confirmation sheet | `shell.agentConfirmation` | `agent.server.status` | none |
+| Agent access page | `shell.agentToken` | the token is read on demand (`agent_token`); the notice only hides a shown token | none |
+| View chrome, panel body, canvas mapping | `shell.view` | `view.transform.get`, `view.list`, `draw.viewMapping.get` | none |
+| Canvas staging selection | `edit.selection.changed` | `edit.selection.get` | none |
+| Status line | store slices (`ui.statusBar.get`) | read when the store starts and on every resync | none (its transient messages are the window's own) |
+| Help, Preferences | `shell.help`, `shell.preferences` | requests to open a window, no state | none |
+
 **Grapheme clusters (ruling D-82 item 2).** What a reader takes for one character can be several code points: a base
 letter and a combining mark that NFC does not compose (q with an acute), an emoji joined sequence (woman, ZWJ,
 laptop), a flag (two regional indicators), a symbol with a variation selector, a Hangul leading consonant before a
