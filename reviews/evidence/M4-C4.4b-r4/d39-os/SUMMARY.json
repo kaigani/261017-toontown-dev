@@ -1,0 +1,5623 @@
+{
+ "receipt": "C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m4-desktop-shell/reviews/evidence/M4-C4.4b-r4/d39-os",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-d39-bindings.py target/release/toontown.exe <out> --mode os --only \"Contour Editor,Perspective,Reposition All Drawings,Text tool,Text panel,chrome,Tool options,Edit\"",
+ "manifest": {
+  "kind": "toontown.c43b.d39-bindings",
+  "mode": "os",
+  "seconds": 452.4,
+  "rows": 116,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the IPC recorder sees the page's commands"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Edit › Cut Special: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/01_application_shell.md:1099 (label \"Cut Special\"))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › grid: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionSkin: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1389; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionOutline: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1390; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › autoLightTable: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1392; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › strokes: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1399; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › currentOnTop: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1400; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › boxHighlighting: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › outlineOnSelection: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › keepSelectionVisible: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › sceneBackground: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1402; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › lightTableShade: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1393; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionPrevious: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionNext: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTablePanel: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1398; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTableAdd: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1394; 02 §10.3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTableShowAll: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1396; 02 §10.3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTableClear: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1395; 02 §10.3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › symmetry: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1378; 02 §6.2)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › grid: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1388; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionSkin: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1389; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionOutline: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1390; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › autoLightTable: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1392; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › strokes: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1399; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › currentOnTop: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1400; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › boxHighlighting: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › outlineOnSelection: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › keepSelectionVisible: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1401; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › sceneBackground: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1402; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › lightTableShade: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1393; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionPrevious: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionNext: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1391; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTablePanel: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1398; 02 §10)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTableAdd: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1394; 02 §10.3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTableShowAll: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1396; 02 §10.3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTableClear: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1395; 02 §10.3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › symmetry: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1378; 02 §6.2)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 tools palette › contourEditor: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1361; 02 §7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Select: rectangle rule: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1366; 02 §7.7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Brush: pen: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1367; 02 §7.7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Eraser: pen: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1370; 02 §7.7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Pencil: line thickness source: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1368; 02 §7.7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Polyline: snapping: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1369; 02 §7.7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Paint: automatic gap closing: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/03_colour.md:1064; 03 §8.8)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › drawTopLayer: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1380; 02 §8.9-§8.11)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › placeBehind: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1379; 02 §8.9-§8.11)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › snapToContour: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1381; 02 §8.9-§8.11)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Pencil: fixed thickness: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1368; 02 §7.7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Pencil: fixed thickness (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (02 §7.7; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Pencil: fixed thickness (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (02 §7.7; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Polyline: snap radius (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (02 §7.7; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Polyline: snap radius (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (02 §7.7; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Polyline: snap radius: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1369; 02 §7.7)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › bold: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › italic: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › autoKern: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › align: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › baseline: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › Remove outline: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › size (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › font (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › kerning (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › leftMargin (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › rightMargin (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › indent (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › lineSpacing (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › size (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › size (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › kerning (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › kerning (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › leftMargin (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › leftMargin (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › rightMargin (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › rightMargin (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › indent (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › indent (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › lineSpacing (invalid): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › lineSpacing (out of range): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1371; 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Snap to Contour on, then a drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1338; 02 §7.1.2 lines 450, 461; §8.9 (SI-187: the setting made explicit))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Delete: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1340; 02 §7.1.2 line 457 (SI-184))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Delete in the Camera view, element locked: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1340; 05 §6.6, 04 §10.4; D-80; D-83 item 3 (refused, nothing sent, nothing changes))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Delete by key in the Camera view, element locked: the status line says why: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1340; D-83 item 3; D-87 (the refusal's reason on the status line))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Edit › Delete (native menu) in the Camera view, element locked: the status line says why: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/01_application_shell.md:1098; SI-148 (the drawing tools act on the drawing's selection); D-83 item 3; D-87)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Contour Editor › Delete with no anchor selected: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1340; 02 §7.1.2 line 457; C41-R2-09 (a refused key is consumed silently))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › corner drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473 (SI-188))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › alternate side drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 §7.1.3 line 470 (SI-188: symmetric about the side's middle))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › a missed press, then a marquee and a corner drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473; SI-188 (a drag off the handles selects); D-76 item 3)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Perspective › locked drawing: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1335; 02 line 414; design note 4 §7 (grey handles, the kernel's refusal))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Reposition All Drawings › offset drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1336; 02 §7.1.4 lines 478-481 (SI-189))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Reposition All Drawings › rotation drag: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1336; 02 §7.1.4 line 479 (SI-141 item 3: the rotation zone))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Reposition All Drawings › every drawing locked: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1336; 02 line 414; SI-189 (refused only when nothing can move))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Contour Editor: line invisible: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Contour Editor: line thickness: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196); D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Contour Editor: line invisible in the Camera view, element locked: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1326; 05 §6.6, 04 §10.4; D-80; D-83 item 3 (refused, no undo step, nothing changes))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › bold: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1 lines 677-678)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › italic: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1 lines 677-678)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › autoKern: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1 lines 677-678)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › align: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › baseline: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › size (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › font (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › kerning (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › leftMargin (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › rightMargin (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › indent (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › lineSpacing (typed): the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (caret) › bold: runs in the MCP form only (the pending field belongs to the session's own origin (the table's agent connection opened it); the person's own session is the three-way script's)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (caret) › opened while editing, then Bold, then a keystroke: runs in the MCP form only (the pending field belongs to the session's own origin (the table's agent connection opened it); the person's own session is the three-way script's)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text tool › click, then typing in the editor: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/02_drawing.md:1324 (\"Typing\"); 02 §7.6 lines 669-670; design note 5 §4; SI-191)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text tool › Primary+Z in the editor undoes the typing (the document's undo): the window sends exactly the command, changes the state and makes the spec's undo steps (SI-193 (Primary+Z is the document's undo while text is edited in a view); 01 §8.4; finding C44B-R1S-04)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › a range over two runs shows Mixed: the window sends exactly the command, changes the state and makes the spec's undo steps (02 §7.6.1; design note 5 §6 (a field that differs over the range is Mixed))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel (selected text) › an agent's change is shown: the window sends exactly the command, changes the state and makes the spec's undo steps (02 §7.6.1; D-40 (an agent's draw.textFormat.set shows in the panel))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 dock tab menu › functionEditor: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/01_application_shell.md:1120; 01 §5.4 lines 387-388)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 dock tab menu › soundEditor: the window sends exactly the command, changes the state and makes the spec's undo steps (spec/01_application_shell.md:1120; 01 §5.4 lines 387-388)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 File › Open Recent › an entry's full path: the status bar shows the highlighted entry's full path, then its line again; no command (01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\"))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Edit › Cut Special: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › grid: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionSkin: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionOutline: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › autoLightTable: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › strokes: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › currentOnTop: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › boxHighlighting: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › outlineOnSelection: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › keepSelectionVisible: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › sceneBackground: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › lightTableShade: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionPrevious: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › onionNext: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTablePanel: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTableAdd: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTableShowAll: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › staticLightTableClear: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 drawingView chrome › symmetry: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › grid: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionSkin: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionOutline: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › autoLightTable: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › strokes: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › currentOnTop: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › boxHighlighting: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › outlineOnSelection: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › keepSelectionVisible: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › sceneBackground: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › lightTableShade: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionPrevious: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › onionNext: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTablePanel: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTableAdd: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTableShowAll: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › staticLightTableClear: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 cameraView chrome › symmetry: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 tools palette › contourEditor: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › drawTopLayer: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › placeBehind: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › snapToContour: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Tool options › Polyline: snap radius: disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › kerning (typed): disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › leftMargin (typed): disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › rightMargin (typed): disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › indent (typed): disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Text panel › lineSpacing (typed): disabled while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  }
+ ],
+ "rows": [
+  {
+   "name": "Edit › Cut Special",
+   "spec": "spec/01_application_shell.md:1099 (label \"Cut Special\")",
+   "action": [
+    "menu",
+    [
+     "Edit",
+     "Cut Special"
+    ]
+   ],
+   "clicks": [
+    {
+     "input": "real native menu clicks (the item enabled before: True)",
+     "expected": {
+      "command": "edit.cutSpecial",
+      "params": {}
+     },
+     "sent": [
+      {
+       "command": "edit.cutSpecial",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Cut Special",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "menu",
+    [
+     "Edit",
+     "Cut Special"
+    ]
+   ],
+   "disabled": {
+    "target": [
+     "menu",
+     [
+      "Edit",
+      "Cut Special"
+     ]
+    ],
+    "ok": true,
+    "nativeEnabled": false,
+    "treeEnabled": false
+   }
+  },
+  {
+   "name": "drawingView chrome › grid",
+   "spec": "spec/02_drawing.md:1388; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.grid"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.grid.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.grid.set",
+       "params": {
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.grid.set",
+      "params": {
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.grid.set",
+       "params": {
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.grid"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.grid"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › onionSkin",
+   "spec": "spec/02_drawing.md:1389; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.onionSkin"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkin.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkin.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkin.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkin.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.onionSkin"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.onionSkin"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › onionOutline",
+   "spec": "spec/02_drawing.md:1390; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.onionOutline"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinStyle.set",
+      "params": {
+       "outline": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinStyle.set",
+       "params": {
+        "outline": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinStyle.set",
+      "params": {
+       "outline": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinStyle.set",
+       "params": {
+        "outline": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.onionOutline"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.onionOutline"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › autoLightTable",
+   "spec": "spec/02_drawing.md:1392; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.autoLightTable"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.autoLightTable.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.autoLightTable.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.autoLightTable.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.autoLightTable.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.autoLightTable"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.autoLightTable"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › strokes",
+   "spec": "spec/02_drawing.md:1399; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.strokes"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.strokes.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.strokes.set",
+       "params": {
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.strokes.set",
+      "params": {
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.strokes.set",
+       "params": {
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.strokes"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.strokes"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › currentOnTop",
+   "spec": "spec/02_drawing.md:1400; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.currentOnTop"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.currentOnTop.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.currentOnTop.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.currentOnTop.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.currentOnTop.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.currentOnTop"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.currentOnTop"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › boxHighlighting",
+   "spec": "spec/02_drawing.md:1401; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.boxHighlighting"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "boxHighlighting": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "boxHighlighting": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "boxHighlighting": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "boxHighlighting": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.boxHighlighting"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.boxHighlighting"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › outlineOnSelection",
+   "spec": "spec/02_drawing.md:1401; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.outlineOnSelection"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "outlineOnSelection": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "outlineOnSelection": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "outlineOnSelection": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "outlineOnSelection": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.outlineOnSelection"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.outlineOnSelection"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › keepSelectionVisible",
+   "spec": "spec/02_drawing.md:1401; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.keepSelectionVisible"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "keepSelectionVisible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "keepSelectionVisible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "keepSelectionVisible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "keepSelectionVisible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.keepSelectionVisible"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.keepSelectionVisible"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › sceneBackground",
+   "spec": "spec/02_drawing.md:1402; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.sceneBackground"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.background.set",
+      "params": {
+       "useSceneColour": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.background.set",
+       "params": {
+        "useSceneColour": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.background.set",
+      "params": {
+       "useSceneColour": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.background.set",
+       "params": {
+        "useSceneColour": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.sceneBackground"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.sceneBackground"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › lightTableShade",
+   "spec": "spec/02_drawing.md:1393; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.lightTableShade"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.lightTableShade.set",
+      "params": {
+       "auto": false,
+       "static": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.lightTableShade.set",
+       "params": {
+        "auto": false,
+        "static": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.lightTableShade.set",
+      "params": {
+       "auto": true,
+       "static": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.lightTableShade.set",
+       "params": {
+        "auto": true,
+        "static": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.lightTableShade"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.lightTableShade"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › onionPrevious",
+   "spec": "spec/02_drawing.md:1391; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.onionPrevious"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinCycle.run",
+      "params": {
+       "direction": "previous"
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinCycle.run",
+       "params": {
+        "direction": "previous"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.onionPrevious"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.onionPrevious"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › onionNext",
+   "spec": "spec/02_drawing.md:1391; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.onionNext"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinCycle.run",
+      "params": {
+       "direction": "next"
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinCycle.run",
+       "params": {
+        "direction": "next"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.onionNext"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.onionNext"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › staticLightTablePanel",
+   "spec": "spec/02_drawing.md:1398; 02 §10",
+   "action": [
+    "dom",
+    "drawingView.aid.staticLightTablePanel"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTablePanel.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTablePanel.set",
+       "params": {
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.staticLightTablePanel"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.staticLightTablePanel"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › staticLightTableAdd",
+   "spec": "spec/02_drawing.md:1394; 02 §10.3",
+   "action": [
+    "dom",
+    "drawingView.aid.staticLightTableAdd"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTable.add",
+      "params": {}
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTable.add",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.staticLightTableAdd"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.staticLightTableAdd"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › staticLightTableShowAll",
+   "spec": "spec/02_drawing.md:1396; 02 §10.3",
+   "action": [
+    "dom",
+    "drawingView.aid.staticLightTableShowAll"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTable.set",
+      "params": {
+       "all": true,
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTable.set",
+       "params": {
+        "all": true,
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.staticLightTableShowAll"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.staticLightTableShowAll"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › staticLightTableClear",
+   "spec": "spec/02_drawing.md:1395; 02 §10.3",
+   "action": [
+    "dom",
+    "drawingView.aid.staticLightTableClear"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTable.remove",
+      "params": {
+       "all": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTable.remove",
+       "params": {
+        "all": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.aid.staticLightTableClear"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.aid.staticLightTableClear"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "drawingView chrome › symmetry",
+   "spec": "spec/02_drawing.md:1378; 02 §6.2",
+   "action": [
+    "dom",
+    "drawingView.symmetry"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.symmetry.set",
+      "params": {
+       "mode": "mirror"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.symmetry.set",
+       "params": {
+        "mode": "mirror"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.symmetry.set",
+      "params": {
+       "mode": "none"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.symmetry.set",
+       "params": {
+        "mode": "none"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingView.symmetry"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingView.symmetry"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › grid",
+   "spec": "spec/02_drawing.md:1388; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.grid"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.grid.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.grid.set",
+       "params": {
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.grid.set",
+      "params": {
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.grid.set",
+       "params": {
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.grid"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.grid"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › onionSkin",
+   "spec": "spec/02_drawing.md:1389; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.onionSkin"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkin.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkin.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkin.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkin.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.onionSkin"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.onionSkin"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › onionOutline",
+   "spec": "spec/02_drawing.md:1390; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.onionOutline"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinStyle.set",
+      "params": {
+       "outline": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinStyle.set",
+       "params": {
+        "outline": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinStyle.set",
+      "params": {
+       "outline": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinStyle.set",
+       "params": {
+        "outline": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.onionOutline"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.onionOutline"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › autoLightTable",
+   "spec": "spec/02_drawing.md:1392; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.autoLightTable"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.autoLightTable.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.autoLightTable.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.autoLightTable.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.autoLightTable.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.autoLightTable"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.autoLightTable"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › strokes",
+   "spec": "spec/02_drawing.md:1399; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.strokes"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.strokes.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.strokes.set",
+       "params": {
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.strokes.set",
+      "params": {
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.strokes.set",
+       "params": {
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.strokes"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.strokes"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › currentOnTop",
+   "spec": "spec/02_drawing.md:1400; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.currentOnTop"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.currentOnTop.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.currentOnTop.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.currentOnTop.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.currentOnTop.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.currentOnTop"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.currentOnTop"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › boxHighlighting",
+   "spec": "spec/02_drawing.md:1401; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.boxHighlighting"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "boxHighlighting": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "boxHighlighting": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "boxHighlighting": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "boxHighlighting": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.boxHighlighting"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.boxHighlighting"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › outlineOnSelection",
+   "spec": "spec/02_drawing.md:1401; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.outlineOnSelection"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "outlineOnSelection": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "outlineOnSelection": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "outlineOnSelection": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "outlineOnSelection": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.outlineOnSelection"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.outlineOnSelection"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › keepSelectionVisible",
+   "spec": "spec/02_drawing.md:1401; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.keepSelectionVisible"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "keepSelectionVisible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "keepSelectionVisible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.selectionDisplay.set",
+      "params": {
+       "keepSelectionVisible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.selectionDisplay.set",
+       "params": {
+        "keepSelectionVisible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.keepSelectionVisible"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.keepSelectionVisible"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › sceneBackground",
+   "spec": "spec/02_drawing.md:1402; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.sceneBackground"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.background.set",
+      "params": {
+       "useSceneColour": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.background.set",
+       "params": {
+        "useSceneColour": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.background.set",
+      "params": {
+       "useSceneColour": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.background.set",
+       "params": {
+        "useSceneColour": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.sceneBackground"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.sceneBackground"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › lightTableShade",
+   "spec": "spec/02_drawing.md:1393; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.lightTableShade"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.lightTableShade.set",
+      "params": {
+       "auto": false,
+       "static": false
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.lightTableShade.set",
+       "params": {
+        "auto": false,
+        "static": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.lightTableShade.set",
+      "params": {
+       "auto": true,
+       "static": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.lightTableShade.set",
+       "params": {
+        "auto": true,
+        "static": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.lightTableShade"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.lightTableShade"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › onionPrevious",
+   "spec": "spec/02_drawing.md:1391; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.onionPrevious"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinCycle.run",
+      "params": {
+       "direction": "previous"
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinCycle.run",
+       "params": {
+        "direction": "previous"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.onionPrevious"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.onionPrevious"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › onionNext",
+   "spec": "spec/02_drawing.md:1391; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.onionNext"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.onionSkinCycle.run",
+      "params": {
+       "direction": "next"
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.onionSkinCycle.run",
+       "params": {
+        "direction": "next"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.onionNext"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.onionNext"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › staticLightTablePanel",
+   "spec": "spec/02_drawing.md:1398; 02 §10",
+   "action": [
+    "dom",
+    "cameraView.aid.staticLightTablePanel"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTablePanel.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTablePanel.set",
+       "params": {
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.staticLightTablePanel"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.staticLightTablePanel"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › staticLightTableAdd",
+   "spec": "spec/02_drawing.md:1394; 02 §10.3",
+   "action": [
+    "dom",
+    "cameraView.aid.staticLightTableAdd"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTable.add",
+      "params": {}
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTable.add",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.staticLightTableAdd"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.staticLightTableAdd"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › staticLightTableShowAll",
+   "spec": "spec/02_drawing.md:1396; 02 §10.3",
+   "action": [
+    "dom",
+    "cameraView.aid.staticLightTableShowAll"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTable.set",
+      "params": {
+       "all": true,
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTable.set",
+       "params": {
+        "all": true,
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.staticLightTableShowAll"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.staticLightTableShowAll"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › staticLightTableClear",
+   "spec": "spec/02_drawing.md:1395; 02 §10.3",
+   "action": [
+    "dom",
+    "cameraView.aid.staticLightTableClear"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "drawAid.staticLightTable.remove",
+      "params": {
+       "all": true
+      }
+     },
+     "sent": [
+      {
+       "command": "drawAid.staticLightTable.remove",
+       "params": {
+        "all": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.aid.staticLightTableClear"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.aid.staticLightTableClear"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "cameraView chrome › symmetry",
+   "spec": "spec/02_drawing.md:1378; 02 §6.2",
+   "action": [
+    "dom",
+    "cameraView.symmetry"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.symmetry.set",
+      "params": {
+       "mode": "mirror"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.symmetry.set",
+       "params": {
+        "mode": "mirror"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.symmetry.set",
+      "params": {
+       "mode": "none"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.symmetry.set",
+       "params": {
+        "mode": "none"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "cameraView.symmetry"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "cameraView.symmetry"
+    ],
+    "ok": true,
+    "unchanged": true
+   }
+  },
+  {
+   "name": "tools palette › contourEditor",
+   "spec": "spec/02_drawing.md:1361; 02 §7",
+   "action": [
+    "dom",
+    "drawingTools.contourEditor"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.active.set",
+      "params": {
+       "toolId": "contourEditor"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.active.set",
+       "params": {
+        "toolId": "contourEditor"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "drawingTools.contourEditor"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "drawingTools.contourEditor"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Tool options › Select: rectangle rule",
+   "spec": "spec/02_drawing.md:1366; 02 §7.7",
+   "action": [
+    "select",
+    "toolOptions.rectRule",
+    "intersect"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 1 arrow keys and Enter",
+     "expected": {
+      "command": "tool.select.options.set",
+      "params": {
+       "rectRule": "intersect"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.select.options.set",
+       "params": {
+        "rectRule": "intersect"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Brush: pen",
+   "spec": "spec/02_drawing.md:1367; 02 §7.7",
+   "action": [
+    "select",
+    "toolOptions.pen",
+    "pen_01M814DA8470VTVQJVYSDR7F5T"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 2 arrow keys and Enter",
+     "expected": {
+      "command": "tool.brush.options.set",
+      "params": {
+       "penId": "pen_01M814DA8470VTVQJVYSDR7F5T"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.brush.options.set",
+       "params": {
+        "penId": "pen_01M814DA8470VTVQJVYSDR7F5T"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Eraser: pen",
+   "spec": "spec/02_drawing.md:1370; 02 §7.7",
+   "action": [
+    "select",
+    "toolOptions.pen",
+    "pen_01M814DA8470VTVQJVYSDR7F5Z"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 1 arrow keys and Enter",
+     "expected": {
+      "command": "tool.eraser.options.set",
+      "params": {
+       "penId": "pen_01M814DA8470VTVQJVYSDR7F5Z"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.eraser.options.set",
+       "params": {
+        "penId": "pen_01M814DA8470VTVQJVYSDR7F5Z"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Pencil: line thickness source",
+   "spec": "spec/02_drawing.md:1368; 02 §7.7",
+   "action": [
+    "select",
+    "toolOptions.thicknessSource",
+    "fixed"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 1 arrow keys and Enter",
+     "expected": {
+      "command": "tool.pencil.options.set",
+      "params": {
+       "thicknessSource": "fixed",
+       "thickness": 1
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.pencil.options.set",
+       "params": {
+        "thicknessSource": "fixed",
+        "thickness": 1
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Polyline: snapping",
+   "spec": "spec/02_drawing.md:1369; 02 §7.7",
+   "action": [
+    "dom",
+    "toolOptions.snap"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.polyline.options.set",
+      "params": {
+       "snap": false
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.polyline.options.set",
+       "params": {
+        "snap": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.polyline.options.set",
+      "params": {
+       "snap": true
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.polyline.options.set",
+       "params": {
+        "snap": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Paint: automatic gap closing",
+   "spec": "spec/03_colour.md:1064; 03 §8.8",
+   "action": [
+    "select",
+    "toolOptions.gapClosing",
+    "medium"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 2 arrow keys and Enter",
+     "expected": {
+      "command": "colour.gapClosing.set",
+      "params": {
+       "mode": "medium"
+      }
+     },
+     "sent": [
+      {
+       "command": "colour.gapClosing.set",
+       "params": {
+        "mode": "medium"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › drawTopLayer",
+   "spec": "spec/02_drawing.md:1380; 02 §8.9-§8.11",
+   "action": [
+    "dom",
+    "toolOptions.drawTopLayer"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.drawTopLayer.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.drawTopLayer.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.drawTopLayer.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.drawTopLayer.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "toolOptions.drawTopLayer"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "toolOptions.drawTopLayer"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Tool options › placeBehind",
+   "spec": "spec/02_drawing.md:1379; 02 §8.9-§8.11",
+   "action": [
+    "dom",
+    "toolOptions.placeBehind"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.placeBehind.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.placeBehind.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.placeBehind.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.placeBehind.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "toolOptions.placeBehind"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "toolOptions.placeBehind"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Tool options › snapToContour",
+   "spec": "spec/02_drawing.md:1381; 02 §8.9-§8.11",
+   "action": [
+    "dom",
+    "toolOptions.snapToContour"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.snapToContour.set",
+      "params": {
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.snapToContour.set",
+       "params": {
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.snapToContour.set",
+      "params": {
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.snapToContour.set",
+       "params": {
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "toolOptions.snapToContour"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "toolOptions.snapToContour"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Tool options › Pencil: fixed thickness",
+   "spec": "spec/02_drawing.md:1368; 02 §7.7",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "the value typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.pencil.options.set",
+      "params": {
+       "thicknessSource": "fixed",
+       "thickness": 3.5
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.pencil.options.set",
+       "params": {
+        "thicknessSource": "fixed",
+        "thickness": 3.5
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Pencil: fixed thickness (invalid)",
+   "spec": "02 §7.7; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Pencil: fixed thickness (out of range)",
+   "spec": "02 §7.7; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'101' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Polyline: snap radius (invalid)",
+   "spec": "02 §7.7; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Polyline: snap radius (out of range)",
+   "spec": "02 §7.7; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'51' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Polyline: snap radius",
+   "spec": "spec/02_drawing.md:1369; 02 §7.7",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "the value typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.polyline.options.set",
+      "params": {
+       "snapRadius": 12
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.polyline.options.set",
+       "params": {
+        "snapRadius": 12
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "toolOptions.snapRadius"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "toolOptions.snapRadius"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Text panel › bold",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "dom",
+    "text.bold"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "bold": true
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "bold": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "bold": false
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "bold": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › italic",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "dom",
+    "text.italic"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "italic": true
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "italic": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "italic": false
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "italic": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › autoKern",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "dom",
+    "text.autoKern"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "autoKern": false
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "autoKern": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "autoKern": true
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "autoKern": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › align",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "select",
+    "text.align",
+    "centre"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 1 arrow keys and Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "align": "centre"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "align": "centre"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › baseline",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "select",
+    "text.baseline",
+    "superscript"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 2 arrow keys and Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "baseline": "superscript"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "baseline": "superscript"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › Remove outline",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "dom",
+    "text.removeOutline"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "outlineColourId": null
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "outlineColourId": null
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › size (typed)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'48' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "size": 48
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "size": 48
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › font (typed)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'Arial' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "font": "Arial"
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "font": "Arial"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › kerning (typed)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'5' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "kerning": 5
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "kerning": 5
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "text.kerning"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "text.kerning"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Text panel › leftMargin (typed)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'12' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "leftMargin": 12
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "leftMargin": 12
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "text.leftMargin"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "text.leftMargin"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Text panel › rightMargin (typed)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'8' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "rightMargin": 8
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "rightMargin": 8
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "text.rightMargin"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "text.rightMargin"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Text panel › indent (typed)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'4' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "indent": 4
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "indent": 4
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "text.indent"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "text.indent"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Text panel › lineSpacing (typed)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'3' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "tool.text.options.set",
+      "params": {
+       "lineSpacing": 3
+      }
+     },
+     "sent": [
+      {
+       "command": "tool.text.options.set",
+       "params": {
+        "lineSpacing": 3
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "text.lineSpacing"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "text.lineSpacing"
+    ],
+    "ok": true,
+    "note": "gone with the project"
+   }
+  },
+  {
+   "name": "Text panel › size (invalid)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › size (out of range)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'513' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › kerning (invalid)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › kerning (out of range)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'61' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › leftMargin (invalid)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › leftMargin (out of range)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'-1' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › rightMargin (invalid)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › rightMargin (out of range)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'1001' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › indent (invalid)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › indent (out of range)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'-100' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › lineSpacing (invalid)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'abc' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel › lineSpacing (out of range)",
+   "spec": "spec/02_drawing.md:1371; 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'1001' typed in the focused field, then a real Enter",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Contour Editor › Snap to Contour on, then a drag",
+   "spec": "spec/02_drawing.md:1338; 02 §7.1.2 lines 450, 461; §8.9 (SI-187: the setting made explicit)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "contourEditor",
+    "<function build_and_run.<locals>.anchor_pts.<locals>.pts at 0x00000259036147C0>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.point.move",
+      "params": "points [square, 0], delta (14, 5) du, snap true"
+     },
+     "sent": [
+      {
+       "command": "draw.point.move",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "points": [
+         {
+          "strokeId": "st_01K7JJN800G78Z6VDV4PM0500J",
+          "anchor": 0
+         }
+        ],
+        "delta": {
+         "x": 14,
+         "y": 5
+        },
+        "snap": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Contour Editing",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Contour Editor › Delete",
+   "spec": "spec/02_drawing.md:1340; 02 §7.1.2 line 457 (SI-184)",
+   "action": [
+    "key",
+    46,
+    "Delete"
+   ],
+   "clicks": [
+    {
+     "input": "the real key Delete",
+     "expected": {
+      "command": "draw.point.delete",
+      "params": {}
+     },
+     "sent": [
+      {
+       "command": "draw.point.delete",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Contour Editing",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Contour Editor › Delete in the Camera view, element locked",
+   "spec": "spec/02_drawing.md:1340; 05 §6.6, 04 §10.4; D-80; D-83 item 3 (refused, nothing sent, nothing changes)",
+   "action": [
+    "key",
+    46,
+    "Delete",
+    "cameraView"
+   ],
+   "clicks": [
+    {
+     "input": "the real key Delete",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Contour Editor › Delete by key in the Camera view, element locked: the status line says why",
+   "spec": "spec/02_drawing.md:1340; D-83 item 3; D-87 (the refusal's reason on the status line)",
+   "action": [
+    "key",
+    46,
+    "Delete",
+    "cameraView"
+   ],
+   "clicks": [
+    {
+     "input": "the real key Delete",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Edit › Delete (native menu) in the Camera view, element locked: the status line says why",
+   "spec": "spec/01_application_shell.md:1098; SI-148 (the drawing tools act on the drawing's selection); D-83 item 3; D-87",
+   "action": [
+    "menu",
+    [
+     "Edit",
+     "Delete"
+    ]
+   ],
+   "clicks": [
+    {
+     "input": "real native menu clicks (the item enabled before: True)",
+     "expected": {
+      "command": "edit.delete",
+      "params": "the drawing's selection; refused"
+     },
+     "sent": [
+      {
+       "command": "edit.delete",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Contour Editor › Delete with no anchor selected",
+   "spec": "spec/02_drawing.md:1340; 02 §7.1.2 line 457; C41-R2-09 (a refused key is consumed silently)",
+   "action": [
+    "key",
+    46,
+    "Delete"
+   ],
+   "clicks": [
+    {
+     "input": "the real key Delete",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Perspective › corner drag",
+   "spec": "spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473 (SI-188)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.corner_pts.<locals>.pts at 0x0000025903615620>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.envelope.apply",
+      "params": "the top-right corner 20 du left, the others kept, mapping auto"
+     },
+     "sent": [
+      {
+       "command": "draw.envelope.apply",
+       "params": {
+        "corners": [
+         {
+          "x": -61,
+          "y": -41
+         },
+         {
+          "x": 61,
+          "y": -41
+         },
+         {
+          "x": 41,
+          "y": 41
+         },
+         {
+          "x": -61,
+          "y": 41
+         }
+        ],
+        "mapping": "auto"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Perspective Tool",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Perspective › alternate side drag",
+   "spec": "spec/02_drawing.md:1335; 02 §7.1.3 line 470 (SI-188: symmetric about the side's middle)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.side_pts.<locals>.pts at 0x0000025903615940>",
+    [
+     "alt"
+    ]
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points with alt held",
+     "expected": {
+      "command": "draw.envelope.apply",
+      "params": "the top corners spread 15 du each way and rise 4 du"
+     },
+     "sent": [
+      {
+       "command": "draw.envelope.apply",
+       "params": {
+        "corners": [
+         {
+          "x": -61,
+          "y": -41
+         },
+         {
+          "x": 61,
+          "y": -41
+         },
+         {
+          "x": 76,
+          "y": 45
+         },
+         {
+          "x": -76,
+          "y": 45
+         }
+        ],
+        "mapping": "auto"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Perspective Tool",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Perspective › a missed press, then a marquee and a corner drag",
+   "spec": "spec/02_drawing.md:1335; 02 §7.1.3 lines 468-473; SI-188 (a drag off the handles selects); D-76 item 3",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.corner_pts.<locals>.pts at 0x0000025903615D00>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.envelope.apply",
+      "params": "after the miss emptied the selection and the marquee selected the square again: the corner drag"
+     },
+     "sent": [
+      {
+       "command": "draw.envelope.apply",
+       "params": {
+        "corners": [
+         {
+          "x": -75.53059597368947,
+          "y": -41.15618465497829
+         },
+         {
+          "x": 75.53059597368947,
+          "y": -41.15618465497829
+         },
+         {
+          "x": 55.53059597368947,
+          "y": 44.697229419972096
+         },
+         {
+          "x": -75.53059597368947,
+          "y": 44.697229419972096
+         }
+        ],
+        "mapping": "auto"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Perspective Tool",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Perspective › locked drawing",
+   "spec": "spec/02_drawing.md:1335; 02 line 414; design note 4 §7 (grey handles, the kernel's refusal)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "perspective",
+    "<function build_and_run.<locals>.corner_pts.<locals>.pts at 0x0000025903615F80>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Reposition All Drawings › offset drag",
+   "spec": "spec/02_drawing.md:1336; 02 §7.1.4 lines 478-481 (SI-189)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "repositionAll",
+    "<function build_and_run.<locals>.inside_pts.<locals>.pts at 0x0000025903616200>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.repositionAll.apply",
+      "params": "translate (30, 10) du"
+     },
+     "sent": [
+      {
+       "command": "draw.repositionAll.apply",
+       "params": {
+        "translate": {
+         "x": 30,
+         "y": 10
+        }
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Reposition All Drawings",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Reposition All Drawings › rotation drag",
+   "spec": "spec/02_drawing.md:1336; 02 §7.1.4 line 479 (SI-141 item 3: the rotation zone)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "repositionAll",
+    "<function build_and_run.<locals>.corner_pts.<locals>.pts at 0x0000025903616480>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": {
+      "command": "draw.repositionAll.apply",
+      "params": "rotate about the box's centre"
+     },
+     "sent": [
+      {
+       "command": "draw.repositionAll.apply",
+       "params": {
+        "rotate": 20.276125022052298,
+        "pivot": {
+         "x": 15,
+         "y": 6.914143039490696
+        }
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Reposition All Drawings",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Reposition All Drawings › every drawing locked",
+   "spec": "spec/02_drawing.md:1336; 02 line 414; SI-189 (refused only when nothing can move)",
+   "action": [
+    "gesture",
+    "drawingView",
+    "repositionAll",
+    "<function build_and_run.<locals>.inside_pts.<locals>.pts at 0x0000025903616700>",
+    []
+   ],
+   "clicks": [
+    {
+     "input": "a real drag through 3 points",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Contour Editor: line invisible",
+   "spec": "spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196)",
+   "action": [
+    "dom",
+    "toolOptions.selectedLine.invisible"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.stroke.set",
+      "params": {
+       "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN8003PNY0W3499Y2VFSQ",
+       "kind": "invisible"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.stroke.set",
+       "params": {
+        "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN8003PNY0W3499Y2VFSQ",
+        "kind": "invisible"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Edit Stroke",
+       "user"
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.stroke.set",
+      "params": {
+       "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN8003PNY0W3499Y2VFSQ",
+       "kind": "pencil"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.stroke.set",
+       "params": {
+        "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN8003PNY0W3499Y2VFSQ",
+        "kind": "pencil"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Edit Stroke",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Contour Editor: line thickness",
+   "spec": "spec/02_drawing.md:1326 (label \"Edit Stroke\"); 02 §8 line properties (SI-196); D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'4.5' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.stroke.set",
+      "params": {
+       "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN800XFYWE19ZJ0R2N6AN",
+       "thickness": 4.5
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.stroke.set",
+       "params": {
+        "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN800XFYWE19ZJ0R2N6AN",
+        "thickness": 4.5
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Edit Stroke",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Tool options › Contour Editor: line invisible in the Camera view, element locked",
+   "spec": "spec/02_drawing.md:1326; 05 §6.6, 04 §10.4; D-80; D-83 item 3 (refused, no undo step, nothing changes)",
+   "action": [
+    "dom",
+    "toolOptions.selectedLine.invisible"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.stroke.set",
+      "params": {
+       "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN8009XB7RQJJHAWR9BHG",
+       "kind": "invisible"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.stroke.set",
+       "params": {
+        "strokeId": "dr_01K7JJN800KB4J5P9KAPQZDSKP/st_01K7JJN8009XB7RQJJHAWR9BHG",
+        "kind": "invisible"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › bold",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1 lines 677-678",
+   "action": [
+    "dom",
+    "text.bold"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800ATFKXHFKC68XYX8R",
+       "start": 0,
+       "length": 5,
+       "bold": true
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800ATFKXHFKC68XYX8R",
+        "start": 0,
+        "length": 5,
+        "bold": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800ATFKXHFKC68XYX8R",
+       "start": 0,
+       "length": 5,
+       "bold": false
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800ATFKXHFKC68XYX8R",
+        "start": 0,
+        "length": 5,
+        "bold": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › italic",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1 lines 677-678",
+   "action": [
+    "dom",
+    "text.italic"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800ZQRP3ZFQXFHW7VRX",
+       "start": 0,
+       "length": 5,
+       "italic": true
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800ZQRP3ZFQXFHW7VRX",
+        "start": 0,
+        "length": 5,
+        "italic": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800ZQRP3ZFQXFHW7VRX",
+       "start": 0,
+       "length": 5,
+       "italic": false
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800ZQRP3ZFQXFHW7VRX",
+        "start": 0,
+        "length": 5,
+        "italic": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › autoKern",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1 lines 677-678",
+   "action": [
+    "dom",
+    "text.autoKern"
+   ],
+   "clicks": [
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN8007P057QE08JPCBGR2",
+       "start": 0,
+       "length": 5,
+       "autoKern": false
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN8007P057QE08JPCBGR2",
+        "start": 0,
+        "length": 5,
+        "autoKern": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    },
+    {
+     "input": "real OS click",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN8007P057QE08JPCBGR2",
+       "start": 0,
+       "length": 5,
+       "autoKern": true
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN8007P057QE08JPCBGR2",
+        "start": 0,
+        "length": 5,
+        "autoKern": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › align",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1",
+   "action": [
+    "select",
+    "text.align",
+    "right"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 1 arrow keys and Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800D400ZPYQHE5BGJV5",
+       "start": 0,
+       "length": 5,
+       "align": "right"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800D400ZPYQHE5BGJV5",
+        "start": 0,
+        "length": 5,
+        "align": "right"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › baseline",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1",
+   "action": [
+    "select",
+    "text.baseline",
+    "subscript"
+   ],
+   "clicks": [
+    {
+     "input": "real click, 1 arrow keys and Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800VQEKBFKNF82THA88",
+       "start": 0,
+       "length": 5,
+       "baseline": "subscript"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800VQEKBFKNF82THA88",
+        "start": 0,
+        "length": 5,
+        "baseline": "subscript"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › size (typed)",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'52' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800WFM1GRC1PC538K9Z",
+       "start": 0,
+       "length": 5,
+       "size": 52
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800WFM1GRC1PC538K9Z",
+        "start": 0,
+        "length": 5,
+        "size": 52
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › font (typed)",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'Verdana' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800ASJE2BJJ4B2SNHSG",
+       "start": 0,
+       "length": 5,
+       "font": "Verdana"
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800ASJE2BJJ4B2SNHSG",
+        "start": 0,
+        "length": 5,
+        "font": "Verdana"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › kerning (typed)",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'7' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN8009ZXKJZ4GW7K97E9J",
+       "start": 0,
+       "length": 5,
+       "kerning": 7
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN8009ZXKJZ4GW7K97E9J",
+        "start": 0,
+        "length": 5,
+        "kerning": 7
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › leftMargin (typed)",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'14' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800MSZB1D6412NTM6X2",
+       "start": 0,
+       "length": 5,
+       "leftMargin": 14
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800MSZB1D6412NTM6X2",
+        "start": 0,
+        "length": 5,
+        "leftMargin": 14
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › rightMargin (typed)",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'9' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800G2SDCGSMCHGX17M9",
+       "start": 0,
+       "length": 5,
+       "rightMargin": 9
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800G2SDCGSMCHGX17M9",
+        "start": 0,
+        "length": 5,
+        "rightMargin": 9
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › indent (typed)",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'6' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN8001ZBC3XFJH3NZ3SCG",
+       "start": 0,
+       "length": 5,
+       "indent": 6
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN8001ZBC3XFJH3NZ3SCG",
+        "start": 0,
+        "length": 5,
+        "indent": 6
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › lineSpacing (typed)",
+   "spec": "spec/02_drawing.md:1325 (\"Text Property Modified\"); 02 §7.6.1; D-61",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'5' typed in the focused field, then a real Enter",
+     "expected": {
+      "command": "draw.textFormat.set",
+      "params": {
+       "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+       "textId": "nd_01K7JJN800TNPWA34JHNXEY9ZY",
+       "start": 0,
+       "length": 5,
+       "lineSpacing": 5
+      }
+     },
+     "sent": [
+      {
+       "command": "draw.textFormat.set",
+       "params": {
+        "drawingId": "dr_01K7JJN800KB4J5P9KAPQZDSKP",
+        "textId": "nd_01K7JJN800TNPWA34JHNXEY9ZY",
+        "start": 0,
+        "length": 5,
+        "lineSpacing": 5
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Text Property Modified",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (caret) › bold",
+   "spec": "spec/02_drawing.md:1325; 02 §7.6.1 lines 677-679 (SI-195: no step; the next keystroke)",
+   "ok": true,
+   "notRun": "the pending field belongs to the session's own origin (the table's agent connection opened it); the person's own session is the three-way script's"
+  },
+  {
+   "name": "Text panel (caret) › opened while editing, then Bold, then a keystroke",
+   "spec": "spec/02_drawing.md:1325; 02 §7.6.1 lines 677-679; D-85 item 2 (C44B-R2-02: a panel that mounts after the session began reads it)",
+   "ok": true,
+   "notRun": "the pending field belongs to the session's own origin (the table's agent connection opened it); the person's own session is the three-way script's"
+  },
+  {
+   "name": "Text tool › click, then typing in the editor",
+   "spec": "spec/02_drawing.md:1324 (\"Typing\"); 02 §7.6 lines 669-670; design note 5 §4; SI-191",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "'Hi' typed by real keys into the focused editor (focus: canvas.textEditor)",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [
+      [
+       "Typing",
+       "user"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text tool › Primary+Z in the editor undoes the typing (the document's undo)",
+   "spec": "SI-193 (Primary+Z is the document's undo while text is edited in a view); 01 §8.4; finding C44B-R1S-04",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "Ctrl+Z pressed by real keys in the focused editor (focus: canvas.textEditor)",
+     "expected": {
+      "command": "edit.undo",
+      "params": "the document's undo, sent by the keymap"
+     },
+     "sent": [
+      {
+       "command": "edit.undo",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › a range over two runs shows Mixed",
+   "spec": "02 §7.6.1; design note 5 §6 (a field that differs over the range is Mixed)",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "no input",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Text panel (selected text) › an agent's change is shown",
+   "spec": "02 §7.6.1; D-40 (an agent's draw.textFormat.set shows in the panel)",
+   "action": [
+    "none"
+   ],
+   "clicks": [
+    {
+     "input": "no input",
+     "expected": null,
+     "sent": [],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "dock tab menu › functionEditor",
+   "spec": "spec/01_application_shell.md:1120; 01 §5.4 lines 387-388",
+   "action": [
+    "context",
+    "tab.cameraView",
+    "panelChecklist.functionEditor"
+   ],
+   "clicks": [
+    {
+     "input": "a real secondary click on tab.cameraView, then real OS click on the item",
+     "expected": {
+      "command": "window.panel.set",
+      "params": {
+       "panelId": "functionEditor",
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "window.panel.set",
+       "params": {
+        "panelId": "functionEditor",
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "a real secondary click on tab.cameraView, then real OS click on the item",
+     "expected": {
+      "command": "window.panel.set",
+      "params": {
+       "panelId": "functionEditor",
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "window.panel.set",
+       "params": {
+        "panelId": "functionEditor",
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "dock tab menu › soundEditor",
+   "spec": "spec/01_application_shell.md:1120; 01 §5.4 lines 387-388",
+   "action": [
+    "context",
+    "tab.cameraView",
+    "panelChecklist.soundEditor"
+   ],
+   "clicks": [
+    {
+     "input": "a real secondary click on tab.cameraView, then real OS click on the item",
+     "expected": {
+      "command": "window.panel.set",
+      "params": {
+       "panelId": "soundEditor",
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "window.panel.set",
+       "params": {
+        "panelId": "soundEditor",
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    },
+    {
+     "input": "a real secondary click on tab.cameraView, then real OS click on the item",
+     "expected": {
+      "command": "window.panel.set",
+      "params": {
+       "panelId": "soundEditor",
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "window.panel.set",
+       "params": {
+        "panelId": "soundEditor",
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "status bar › jobs",
+   "spec": "spec/11_agent_interface_mcp.md:636; 01 §9.1 (status bar: running jobs)",
+   "runningPerKernel": [
+    1,
+    1
+   ],
+   "jobId": "job-2",
+   "shownWhileRunning": [
+    "1 job running"
+   ],
+   "afterEnd": "",
+   "ok": true
+  },
+  {
+   "name": "File › Open Recent › an entry's full path",
+   "spec": "01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\")",
+   "form": "os",
+   "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-yzz__xc0\\D39-recent.animpkg",
+   "shownWhileHighlighted": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-yzz__xc0\\D39-recent.animpkg",
+   "before": "Edit stroke: the element is locked: a scene view does not edit it (05 §6.6); unlock it, or address it by id",
+   "afterClose": "Edit stroke: the element is locked: a scene view does not edit it (05 §6.6); unlock it, or address it by id",
+   "sent": [],
+   "ok": true
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 134,
+   "sha256": "15b6d0ffc9c9b956095fced9cb48c12b26407a5f123e19702e1ecb1548b4ad92"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 1146482,
+   "sha256": "04500854c828e0af376b3eb23eda0681567eb75ef783aea97cc08cb9690c920f"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 122579,
+   "sha256": "0d27a6955cf6af21b8d27bf67cea3a14d7692e332deba0f5aedd53afed860d77"
+  }
+ ]
+}

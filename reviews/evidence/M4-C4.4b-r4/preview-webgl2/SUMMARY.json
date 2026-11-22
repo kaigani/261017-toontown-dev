@@ -1,0 +1,715 @@
+{
+ "receipt": "C:/Users/kaiga/.t3/worktrees/261017-toontown-dev/m4-desktop-shell/reviews/evidence/M4-C4.4b-r4/preview-webgl2",
+ "verdict": "pass",
+ "regenerate": "python scripts/c44b-preview-e2e.py target/release/toontown.exe <out> --backend webgl2",
+ "manifest": {
+  "kind": "toontown.c44b.preview-e2e",
+  "platform": "win32",
+  "backend": "webgl2",
+  "seconds": 68.9,
+  "rows": 12,
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "the drawingView canvas is located and calibrated"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Contour Editor › anchor drag (drawingView): every previewed anchor within 1.0 view px of its committed place"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Contour Editor › two selected anchors (drawingView): every previewed anchor within 1.0 view px of its committed place"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective keystone (drawingView): the preview's map is projective"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective keystone (drawingView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective concave corner (drawingView): the preview's map is bilinear"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective concave corner (drawingView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition rotation (drawingView): the preview's map is affine"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition rotation (drawingView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition alternate corner (drawingView): the preview's map is None"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition alternate corner (drawingView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  },
+  {
+   "ok": true,
+   "check": "the cameraView canvas is located and calibrated"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Contour Editor › anchor drag (cameraView): every previewed anchor within 1.0 view px of its committed place"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Contour Editor › two selected anchors (cameraView): every previewed anchor within 1.0 view px of its committed place"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective keystone (cameraView): the preview's map is projective"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective keystone (cameraView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective concave corner (cameraView): the preview's map is bilinear"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Perspective concave corner (cameraView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition rotation (cameraView): the preview's map is affine"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition rotation (cameraView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition alternate corner (cameraView): the preview's map is None"
+  },
+  {
+   "ok": true,
+   "check": "PV2 Reposition alternate corner (cameraView): the held preview and the committed drawing within 1.0 view px (Hausdorff)"
+  }
+ ],
+ "rows": [
+  {
+   "name": "Contour Editor › anchor drag (drawingView)",
+   "previewed": [
+    [
+     135,
+     117.49999999999999
+    ]
+   ],
+   "committed": [
+    [
+     135.0,
+     117.49999999999999
+    ],
+    [
+     210.0,
+     125.5
+    ],
+    [
+     210.0,
+     35.5
+    ],
+    [
+     120.0,
+     35.5
+    ]
+   ],
+   "worstPx": 0.0,
+   "times": {
+    "press": 260986.2715437,
+    "release": 260988.3724664
+   }
+  },
+  {
+   "name": "Contour Editor › two selected anchors (drawingView)",
+   "previewed": [
+    [
+     221,
+     113.5
+    ],
+    [
+     221,
+     23.5
+    ]
+   ],
+   "committed": [
+    [
+     120.0,
+     125.5
+    ],
+    [
+     221.0,
+     113.5
+    ],
+    [
+     221.0,
+     23.5
+    ],
+    [
+     120.0,
+     35.5
+    ]
+   ],
+   "worstPx": 0.0,
+   "times": {
+    "press": 260991.0008634,
+    "release": 260993.1016554
+   }
+  },
+  {
+   "name": "Perspective keystone (drawingView)",
+   "mapKind": "projective",
+   "map": {
+    "kind": "projective",
+    "h": [
+     0.7525773195876289,
+     0.3680667973076595,
+     22.268041237113405,
+     0,
+     1,
+     14.969072164948455,
+     0,
+     0.004089631081196217
+    ]
+   },
+   "mapping": [
+    0.75,
+    0.0,
+    0.0,
+    -0.75,
+    97.5,
+    80.5
+   ],
+   "scale": 1.0,
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    32,
+    21
+   ],
+   "captureA": "ecbe3d5a40464f97e753b1bd46ef9fbe34df0e5d80188a6867bca6d3445db83a",
+   "captureB": "dad5a2e3c651f3ded57f5fb5cb585f67986b8d67610e79d168dcfa563e55e64b",
+   "times": {
+    "press": 260995.7661376,
+    "release": 260997.8674776
+   },
+   "expectedKind": "projective"
+  },
+  {
+   "name": "Perspective concave corner (drawingView)",
+   "mapKind": "bilinear",
+   "map": {
+    "kind": "bilinear",
+    "min": [
+     29.5,
+     -60.5
+    ],
+    "max": [
+     150.5,
+     60.5
+    ],
+    "corners": [
+     [
+      29.5,
+      -60.5
+     ],
+     [
+      150.5,
+      -60.5
+     ],
+     [
+      59.83333333333334,
+      11.166666666666671
+     ],
+     [
+      29.5,
+      60.5
+     ]
+    ]
+   },
+   "mapping": [
+    0.75,
+    0.0,
+    0.0,
+    -0.75,
+    97.5,
+    80.5
+   ],
+   "scale": 1.0,
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    31,
+    27
+   ],
+   "captureA": "35e1bb2a97f51b0bdbd18a170ac6cef6e18262609592590676c335a3169ace83",
+   "captureB": "46a3849df8ffd9a90e72f5dddb7f987b495131cad33f11dde78ea3ee72c3b967",
+   "times": {
+    "press": 261000.8495081,
+    "release": 261002.9505267
+   },
+   "expectedKind": "bilinear"
+  },
+  {
+   "name": "Reposition rotation (drawingView)",
+   "mapKind": "affine",
+   "map": {
+    "kind": "affine",
+    "m": [
+     0.9105419592604249,
+     0.4134166668461575,
+     -0.4134166668461575,
+     0.9105419592604249,
+     8.051223666561754,
+     -37.20750001615418
+    ]
+   },
+   "mapping": [
+    0.75,
+    0.0,
+    0.0,
+    -0.75,
+    97.5,
+    80.5
+   ],
+   "scale": 1.0,
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    56,
+    41
+   ],
+   "captureA": "e7867497501dd34c9a53b0fa60a06909d28e72ea61596b6b55b4a1a2740fd9fc",
+   "captureB": "b515878f59f4ce0db8eb626e5b448c1bd482fd0a59e658ddde1d54f00f672b62",
+   "times": {
+    "press": 261005.6848074,
+    "release": 261007.7855465
+   },
+   "expectedKind": "affine"
+  },
+  {
+   "name": "Reposition alternate corner (drawingView)",
+   "mapKind": "projective",
+   "map": {
+    "kind": "projective",
+    "h": [
+     0.8219136829759243,
+     -0.041145610448068665,
+     3.984578320891383,
+     0.08821897833357109,
+     0.9569841345315646,
+     -7.70765378092656,
+     -0.0014581649311334068,
+     -0.0013947664558667354
+    ]
+   },
+   "mapping": [
+    0.75,
+    0.0,
+    0.0,
+    -0.75,
+    97.5,
+    80.5
+   ],
+   "scale": 1.0,
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    68,
+    36
+   ],
+   "captureA": "abfbee29456882451d02295a2c6c65a325be28505f98b1216116eeecbbc56166",
+   "captureB": "9b31200e386f27ba0ea596d412ae6cc41ab239efc2a4eb4faa7b986b1a16dd1d",
+   "times": {
+    "press": 261010.5160585,
+    "release": 261012.6172474
+   },
+   "expectedKind": null
+  },
+  {
+   "name": "Contour Editor › anchor drag (cameraView)",
+   "previewed": [
+    [
+     497,
+     301.5
+    ]
+   ],
+   "committed": [
+    [
+     497.0,
+     301.5
+    ],
+    [
+     657.0,
+     317.5
+    ],
+    [
+     657.0,
+     125.50000000000001
+    ],
+    [
+     465.0,
+     125.50000000000001
+    ]
+   ],
+   "worstPx": 0.0,
+   "times": {
+    "press": 261019.3342191,
+    "release": 261021.4353234
+   }
+  },
+  {
+   "name": "Contour Editor › two selected anchors (cameraView)",
+   "previewed": [
+    [
+     681,
+     293.5
+    ],
+    [
+     681,
+     101.50000000000001
+    ]
+   ],
+   "committed": [
+    [
+     465.0,
+     317.5
+    ],
+    [
+     681.0,
+     293.5
+    ],
+    [
+     681.0,
+     101.50000000000001
+    ],
+    [
+     465.0,
+     125.50000000000001
+    ]
+   ],
+   "worstPx": 0.0,
+   "times": {
+    "press": 261024.0388941,
+    "release": 261026.1397162
+   }
+  },
+  {
+   "name": "Perspective keystone (cameraView)",
+   "mapKind": "projective",
+   "map": {
+    "kind": "projective",
+    "h": [
+     0.7477360931435963,
+     0.37526862176985665,
+     22.70375161707632,
+     0,
+     1,
+     15.261966364812421,
+     0,
+     0.004169651352998407
+    ]
+   },
+   "mapping": [
+    1.5999999999999999,
+    0.0,
+    0.0,
+    -1.5999999999999999,
+    417.0,
+    221.5
+   ],
+   "scale": 1.0,
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    566,
+    479
+   ],
+   "captureA": "46f5bafda19722a6d6f17937db2f5426d0520bde29c3b0f7e145553aeb18d21e",
+   "captureB": "d740a8e4db7a69699d45b38eda821440a16c878fcd32a4a16476f72fa6c86c44",
+   "times": {
+    "press": 261028.7503394,
+    "release": 261030.8516096
+   },
+   "expectedKind": "projective"
+  },
+  {
+   "name": "Perspective concave corner (cameraView)",
+   "mapKind": "bilinear",
+   "map": {
+    "kind": "bilinear",
+    "min": [
+     29.5,
+     -60.5
+    ],
+    "max": [
+     150.5,
+     60.5
+    ],
+    "corners": [
+     [
+      29.5,
+      -60.5
+     ],
+     [
+      150.5,
+      -60.5
+     ],
+     [
+      60.5,
+      10.5
+     ],
+     [
+      29.5,
+      60.5
+     ]
+    ]
+   },
+   "mapping": [
+    1.5999999999999999,
+    0.0,
+    0.0,
+    -1.5999999999999999,
+    417.0,
+    221.5
+   ],
+   "scale": 1.0,
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    235,
+    303
+   ],
+   "captureA": "e461b14a74e93e4558ad90c4e418d27b058f050e37897e22da552c8f951897c5",
+   "captureB": "1a55d5fe9a4bcf394bd9055fb19238caddba4c2bc9177558c4b9cc52a5caf5f3",
+   "times": {
+    "press": 261033.7384943,
+    "release": 261035.8392411
+   },
+   "expectedKind": "bilinear"
+  },
+  {
+   "name": "Reposition rotation (cameraView)",
+   "mapKind": "affine",
+   "map": {
+    "kind": "affine",
+    "m": [
+     0.8974359628655096,
+     0.44114475238367695,
+     -0.44114475238367695,
+     0.8974359628655096,
+     9.230763342104126,
+     -39.703027714530926
+    ]
+   },
+   "mapping": [
+    1.5999999999999999,
+    0.0,
+    0.0,
+    -1.5999999999999999,
+    417.0,
+    221.5
+   ],
+   "scale": 1.0,
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    1467,
+    1193
+   ],
+   "captureA": "e9115e6d135e3bbb940d9625c4912f2d544485845d05068749f1abd1135a5df7",
+   "captureB": "628efddb9fb2d70f5db06a7a5df42e5a698c89685aacbdfdee168165784fcf55",
+   "times": {
+    "press": 261038.603748,
+    "release": 261040.7040693
+   },
+   "expectedKind": "affine"
+  },
+  {
+   "name": "Reposition alternate corner (cameraView)",
+   "mapKind": "projective",
+   "map": {
+    "kind": "projective",
+    "h": [
+     0.8290496399790187,
+     -0.04220113490057704,
+     3.79810214105193,
+     0.08654809021982732,
+     0.9577988650994231,
+     -7.789328119784464,
+     -0.0014305469457822708,
+     -0.0014305469457822708
+    ]
+   },
+   "mapping": [
+    1.5999999999999999,
+    0.0,
+    0.0,
+    -1.5999999999999999,
+    417.0,
+    221.5
+   ],
+   "scale": 1.0,
+   "handles": [
+    [
+     464.86831877829087,
+     317.63168122170913
+    ],
+    [
+     657.0,
+     317.5
+    ],
+    [
+     704.3096585099856,
+     78.19034149001433
+    ],
+    [
+     465.0,
+     125.50000000000001
+    ],
+    [
+     552.3188181954063,
+     317.57174530417024
+    ],
+    [
+     678.0697589703115,
+     210.92140732195983
+    ],
+    [
+     571.5785926780402,
+     104.43024102968856
+    ],
+    [
+     464.9282546958298,
+     230.1811818045937
+    ]
+   ],
+   "hausdorffPx": 1.0,
+   "inkPoints": [
+    1073,
+    647
+   ],
+   "captureA": "c8fc1ff0993292650e59a86920033d720c19e9e35425c16449dbb5e1e7f95625",
+   "captureB": "e206ed0a0680a577053ed32ff07f272b7f084694fc4bafed557d2aabc84f6a2b",
+   "times": {
+    "press": 261043.526237,
+    "release": 261045.6270421
+   },
+   "expectedKind": null
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "discovery.json",
+   "bytes": 4096,
+   "sha256": "9530e13c13728fefd0489d5ef734e9ea5ccc9af7d890ae4f1f72ab720a36d18c"
+  },
+  {
+   "file": "discovery.log",
+   "bytes": 53,
+   "sha256": "17669797f2c0c042348e77b749d57ec2c51d1085df8b446ca2b3938e6f397044"
+  },
+  {
+   "file": "manifest.json",
+   "bytes": 145,
+   "sha256": "021b5cefa32b7b2cebff0911f5278f99bdaf5396a5748a221a092bc7a5b0a72b"
+  },
+  {
+   "file": "Perspective-concave-corner-cameraView-committed.png",
+   "bytes": 4253,
+   "sha256": "1a55d5fe9a4bcf394bd9055fb19238caddba4c2bc9177558c4b9cc52a5caf5f3"
+  },
+  {
+   "file": "Perspective-concave-corner-cameraView-held.png",
+   "bytes": 4587,
+   "sha256": "e461b14a74e93e4558ad90c4e418d27b058f050e37897e22da552c8f951897c5"
+  },
+  {
+   "file": "Perspective-concave-corner-drawingView-committed.png",
+   "bytes": 1715,
+   "sha256": "46a3849df8ffd9a90e72f5dddb7f987b495131cad33f11dde78ea3ee72c3b967"
+  },
+  {
+   "file": "Perspective-concave-corner-drawingView-held.png",
+   "bytes": 1873,
+   "sha256": "35e1bb2a97f51b0bdbd18a170ac6cef6e18262609592590676c335a3169ace83"
+  },
+  {
+   "file": "Perspective-keystone-cameraView-committed.png",
+   "bytes": 4361,
+   "sha256": "d740a8e4db7a69699d45b38eda821440a16c878fcd32a4a16476f72fa6c86c44"
+  },
+  {
+   "file": "Perspective-keystone-cameraView-held.png",
+   "bytes": 4540,
+   "sha256": "46f5bafda19722a6d6f17937db2f5426d0520bde29c3b0f7e145553aeb18d21e"
+  },
+  {
+   "file": "Perspective-keystone-drawingView-committed.png",
+   "bytes": 1804,
+   "sha256": "dad5a2e3c651f3ded57f5fb5cb585f67986b8d67610e79d168dcfa563e55e64b"
+  },
+  {
+   "file": "Perspective-keystone-drawingView-held.png",
+   "bytes": 2031,
+   "sha256": "ecbe3d5a40464f97e753b1bd46ef9fbe34df0e5d80188a6867bca6d3445db83a"
+  },
+  {
+   "file": "Reposition-alternate-corner-cameraView-committed.png",
+   "bytes": 4292,
+   "sha256": "e206ed0a0680a577053ed32ff07f272b7f084694fc4bafed557d2aabc84f6a2b"
+  },
+  {
+   "file": "Reposition-alternate-corner-cameraView-held.png",
+   "bytes": 4786,
+   "sha256": "c8fc1ff0993292650e59a86920033d720c19e9e35425c16449dbb5e1e7f95625"
+  },
+  {
+   "file": "Reposition-alternate-corner-drawingView-committed.png",
+   "bytes": 1855,
+   "sha256": "9b31200e386f27ba0ea596d412ae6cc41ab239efc2a4eb4faa7b986b1a16dd1d"
+  },
+  {
+   "file": "Reposition-alternate-corner-drawingView-held.png",
+   "bytes": 2410,
+   "sha256": "abfbee29456882451d02295a2c6c65a325be28505f98b1216116eeecbbc56166"
+  },
+  {
+   "file": "Reposition-rotation-cameraView-committed.png",
+   "bytes": 5707,
+   "sha256": "628efddb9fb2d70f5db06a7a5df42e5a698c89685aacbdfdee168165784fcf55"
+  },
+  {
+   "file": "Reposition-rotation-cameraView-held.png",
+   "bytes": 6000,
+   "sha256": "e9115e6d135e3bbb940d9625c4912f2d544485845d05068749f1abd1135a5df7"
+  },
+  {
+   "file": "Reposition-rotation-drawingView-committed.png",
+   "bytes": 2079,
+   "sha256": "b515878f59f4ce0db8eb626e5b448c1bd482fd0a59e658ddde1d54f00f672b62"
+  },
+  {
+   "file": "Reposition-rotation-drawingView-held.png",
+   "bytes": 2841,
+   "sha256": "e7867497501dd34c9a53b0fa60a06909d28e72ea61596b6b55b4a1a2740fd9fc"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 14282,
+   "sha256": "316d179a33ee10b3937c2c9dedf4b77cd34f73dc32b9f4ddf9c866605b9205d0"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 32746,
+   "sha256": "6243d763d13df2b74d12119305ef87b7ffafdf48d4b862550261075149a74ef3"
+  }
+ ]
+}

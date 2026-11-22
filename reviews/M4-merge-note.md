@@ -17,28 +17,29 @@ panels and agent surfaces of C4.4a and the four drawing tools of C4.4b.
 | C4.3a | the Camera view: composition, coordinates, scene tools | passed (`reviews/M4-C4.3-plan.md`) |
 | C4.3b | the parity gate over every surface, the flow table, the preview lifecycle | passed on product head `f5eb9e84`, run 44286651371 (36 of 36), handoff `df8fe594` (`reviews/M4-C4.3b-handoff-r5.md`); three full rounds and one closure check, rulings D-30 to D-54 |
 | C4.4a | panels and settings, agent surfaces (`reviews/M4-C4.4-plan.md`, D-40) | passed on product head `87f63b5f`, run 44861150241 (36 of 36 on the first attempt), handoff `7dad9a7e` (`reviews/M4-C4.4a-handoff-r5.md`); three full rounds and two closure checks, rulings D-55 to D-74; findings 12 + 2 + 2 + 5, all closed (including the P1 on the agent token in agent captures) |
-| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; round 2 on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`: seven items (C44B-R2S-01 to -04, C44B-R2L-01, C44B-R2-01, -02) and D-82's grapheme clusters, rulings D-82 to D-85, all fixed; **round 3 (the last full round) handed off** on product head `a67edbb1`, run 44977394689, `reviews/M4-C4.4b-handoff-r3.md` |
+| C4.4b | the Contour Editor, Perspective, Reposition All Drawings, the Text tool; no M4 deferred entry | handed off on product head `e6f71489`, run 44916529274 (36 of 36 on the first attempt), `reviews/M4-C4.4b-handoff.md` (`57bad5ee`); round 1: fifteen findings (one P1, the lock takeover, §6; twelve P2; one P3 and the D-81 P3 observations), rulings D-75 to D-81, all fixed; round 2 on product head `bf2b2195`, run 44951926851, `reviews/M4-C4.4b-handoff-r2.md`: seven items (C44B-R2S-01 to -04, C44B-R2L-01, C44B-R2-01, -02) and D-82's grapheme clusters, rulings D-82 to D-85, all fixed; round 3 (the last full round) on product head `a67edbb1`, run 44977394689, `reviews/M4-C4.4b-handoff-r3.md`: two static findings (C44B-R3S-01, the lock's bound; C44B-R3S-02, the agent-acting snapshot) and one live (C44B-R3-01, refusals reported for keys and native menus), rulings D-86 and D-87, all fixed; **closure handoff** on product head `a7f8554a`, run 45014999591, `reviews/M4-C4.4b-handoff-r4.md`, for one scoped closure check |
 
-Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-85), recorded in
+Rulings across M4: the O series during C4.1 (to O-24) and the D series from C4.2 on (to D-87), recorded in
 `reviews/M4-C4.1-plan.md`, `reviews/M4-C4.2-plan.md` and `reviews/M4-C4.3-plan.md` §15.
 
 ## 2. Inventory and counts (final build)
 
-- **Final product head:** `a67edbb1`, run 44977394689, 36 of 36 green (C4.4b round 3; round 2's head was `bf2b2195`, run
-  44951926851; round 1's `e6f71489`, run 44916529274).
+- **Final product head:** `a7f8554a`, run 45014999591, 36 of 36 green (the C4.4b closure handoff; round 3's head was
+  `a67edbb1`, run 44977394689; round 2's `bf2b2195`, run 44951926851; round 1's `e6f71489`, run 44916529274).
 - **Commands in the parity gate:** 347 = 161 action + 41 read + 59 agent-only + 86 deferred
   (`tests/adversarial/c43b-r2s-static.py`; C4.3b ended at 154 bound, 61 agent-only, 132 deferred).
-- **Availability inventory:** 288 commands in scope, 1,229 (command, code) pairs: 13 asks-user, 1 deferred, 256
-  execution, 716 parameter, 219 precheck, 24 unreachable (`scripts/check-availability-inventory.py`,
+- **Availability inventory:** 288 commands in scope, 1,230 (command, code) pairs: 13 asks-user, 1 deferred, 257
+  execution, 716 parameter, 219 precheck, 24 unreachable (the 257th execution pair: a project command refused because a
+  program outside the lock protocol keeps a lock file open, D-86 item 1) (`scripts/check-availability-inventory.py`,
   `docs/availability-inventory.md`).
-- **D-39 table** (one row per control: its command and parameters, its effect, its undo steps): 307 rows, the whole
+- **D-39 table** (one row per control: its command and parameters, its effect, its undo steps): 309 rows, the whole
   table green in the MCP form on the final build (and in every CI run's `desktop gui`); the OS form (real input) run on
   each checkpoint's rows, C4.4b's on the final build.
 - **D-44 table** (one row per choice of every dialog or message box): 73 rows (66 flows and the confirmation sheet's
   7), green on the final build, 5 named (recovery open's three choices, the engine restart's two: covered by Vitest).
 - **Gesture equivalence three ways** (the window, the headless replay of its samples, the commands sent directly):
   C4.2's drawing tools, C4.3's scene tools in the Camera view, C4.4b's 20 rows (the four tools in both views).
-- **Vitest** 96 files, 812 tests. **Reviewer Python suites** 85 of 85. **Allowed lints** 96 in 40 product files (the
+- **Vitest** 99 files, 820 tests. **Reviewer Python suites** 86 of 86. **Allowed lints** 96 in 40 product files (the
   count `scripts/check-product-allows.py` gates); no new `unsafe` in C4.4b.
 
 ## 3. The deferred list by owner (D-31): none owned by M4
@@ -75,6 +76,10 @@ what was done (ruling D-74's request):
 | `c41-r2-desktop-floats` initial geometry (reviewer probe) | 44668936063 | a product defect: the float is built hidden (C4.4a r2) |
 | `c13_r1_persistence` `concurrent_stale_lock_takeover_has_only_one_owner` (reviewer, M1) | 44894231140 (macOS `check`) | **not a margin: a product defect** in the lock takeover (removal by name after the protection was released could leave every contender told "held by another"); diagnosed in the C4.4b handoff §6, fixed under D-77 (§6 below) |
 
+A security advisory published during the closure: RUSTSEC-2026-0592 (`url` 2.5.8, a stack overflow in `Url::origin()`
+on nested `blob:` URLs, through `tauri` and `wry`) failed `cargo deny` in run 45009040573; the lock file moved to `url`
+2.5.9 (`a7f8554a`), nothing else changed.
+
 Failures that were not reruns but deterministic on CI's machines, fixed on the next commit: `c21_example_results`
 (a pending confirmation's `expiresInMs` differed by 1 ms; now a time key, `dfe9cea7`); `c14-r3-measurements.py` on
 Windows (a non-ASCII test literal read as cp1252); the C4.4b three-way script on CI's Windows runner (its window
@@ -100,8 +105,9 @@ The retired margins:
 - **Opening a project can wait while another program holds its old lock file open** (Windows). When a stale lock is
   taken over, the old file is renamed `<project>.lock.removed-<code>` and deleted as soon as every other program that
   had it open (a virus scanner, an indexer, a backup tool) closes it; the project opens at once. If such a program
-  keeps the project's arbitration file open while it is being removed, the open waits until it closes, rather than
-  wrongly saying the project is held by someone else or cannot be written (D-84).
+  keeps the project's arbitration file open while it is being removed, the open waits up to 12 seconds and then says
+  which file is in use, changing nothing; the person can try again once that program lets go, and an agent gets
+  `fs.ioError` with `reason: "lockFileInUse"` and the file's path (D-84, D-86; SI-200).
 - **A very large stroke is slow to edit.** A pencil stroke of 50,000 points drawn as straight segments, on its own
   layer, makes a 17.3 MB drawing for the canvas, which takes the kernel 4.0 s to build. After an edit of that stroke
   the window shows the result 19 to 36 s after the mouse is released (Contour Editor 35.9 s and 18.7 s, Perspective
@@ -159,8 +165,15 @@ pending deletion or sharing error is contention, never "not writable" (reported 
 written); "held by another" is answered only when true at that moment. The 200-run receipt above is of round 1's
 code. **Round 2's receipts** (`reviews/evidence/M4-C4.4b-r3/lock-loops-idle.json`, `lock-loops-busy.json`, on `50e9ed28`): the randomised lock
 test and the M1 test each looped 2,000 times with every core busy (one CPU burner per logical core, 32, and eight
-loops at once): 2,000 of 2,000 each, zero failures; and 2,000 times each on an idle machine: 2,000 of 2,000 each, zero failures. Every run's seed
-is printed with its verdict.
+loops at once): 2,000 of 2,000 each, zero failures; and 2,000 times each on an idle machine: 2,000 of 2,000 each, zero
+failures. Every run's seed is printed with its verdict.
+
+Round 3 (ruling D-86 item 1; finding C44B-R3S-01): an open always answers within a bound. When a program outside the
+protocol keeps a lock file open so that a stale lock cannot be replaced, the opener decides for at most 12 s
+(`ACQUIRE_BOUND`, `TAKEOVER_STALE` plus a round), then answers that the file is in use (`Locked::InUse`, its path),
+changing nothing; a cancelled opener answers at once. I3 is stated with its condition (no program outside the protocol
+keeps a lock file open); the next open after that program lets go proceeds. **Closure receipts**
+(`reviews/evidence/M4-C4.4b-r4/`, on `3e5d5605`): the randomised lock test and the M1 test each 2,000 runs idle and 2,000 with every core busy: 8,000 runs, zero failures.
 
 ## 7. Questions for the user, in one place
 
@@ -211,6 +224,7 @@ Interim defaults are built and stated in `plan/spec-issues.md`; each line is the
 | SI-196 | `draw.stroke.set` on the Contour Editor's Tool options (as built), or a Line section for every selection tool? |
 | SI-198 | Confirm `element.hidden` as the code of a gesture on an element the Camera view does not draw, and that an outline drawn by "Show outline on selection" is not editable. |
 | SI-199 | Should the kernel refuse an envelope apply that carries geometry onto or beyond a perspective map's vanishing line, instead of clamping it to a very large coordinate? |
+| SI-200 | Should a lock file kept open by a program outside the lock protocol have a dedicated error code (for example `project.lockFileInUse`) instead of `fs.ioError` with `reason: "lockFileInUse"`? |
 | Spec A | The additions M4 proposes (`plan/spec-issues.md`, "Spec A additions proposed by M4, for the user"): `draw.text.layout.get`, `tool.perspective.options.set`, `draw.font.list`, `job.outputs.list`, `agent.activity.recorded`, `agent.activity.list {afterSeq}`, the `ActivityEntry` members, `agent.session.changed`, `agent.confirmation.resolved`. |
 
 SI-184, SI-185, SI-191 and SI-193 to SI-195 are interim decisions without a question of their own (confirm or
