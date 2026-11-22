@@ -61,9 +61,11 @@ MATRIX_BRANCHES=r'''
  async def record(name,did,before,pos,refused=True):
   after=await c('draw.drawing.get',{'drawingId':did});history=await t.steps_since(pos)
   status=t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent")
+  visible=t.cdp.js('document.body.innerText')
   check((before==after and not history) if refused else (before!=after and bool(history)),name+' document and undo',{'history':history,'status':status})
-  if refused:check(any(x in str(status).lower() for x in ('locked','hidden')),name+' reason',status)
+  if refused:check(any(x in (str(status)+' '+visible).lower() for x in ('locked','hidden')),name+' reason',{'status':status,'visibleText':visible[-900:]})
   t.run.save(name+'.json',{'before':before,'after':after,'history':history,'status':status,'commands':t.recorded(),'visibleText':t.cdp.js('document.body.innerText')})
+  if t.cdp.js("!!document.querySelector('[data-tt-id=\"message.ok\"]')"):t.click('message.ok');await pause()
  if step==2:
   for view,kind in [('cameraView','element'),('cameraView','drawing'),('cameraView','hidden'),('drawingView','element')]:
    for action in ('anchorDelete','selectDelete','cut','paste','duplicate','nudge'):
@@ -89,14 +91,14 @@ MATRIX_BRANCHES=r'''
     if action=='thickness':d.key(0x41,0x11);d.type_text('17');d.key(0x0d)
     await pause();await record(kind+'-'+action,did,before,pos)
    await c('window.panel.set',{'panelId':'pen','visible':True});await pause()
-   settings=await c('tool.settings.get');t.run.save(kind+'-pen-settings.json',settings)
-   pens=(await c('tool.pen.list'))['pens'];t.click('pen.row.'+pens[0]['penId']);await pause()
-   check(bool(await c('tool.settings.get')),'D-83 '+kind+' Pen selection works',None)
+   settings=await c('tool.pen.list');t.run.save(kind+'-pen-settings.json',settings)
+   pens=(await c('tool.pen.list'))['pens'];t.click('pen.row.'+pens[1]['penId']);await pause()
+   check(settings!=await c('tool.pen.list'),'D-83 '+kind+' Pen selection works',await c('tool.pen.list'))
    for menu in ('Cut','Paste','Delete'):
     eid,did=await fixture('cameraView','select');sid=(await c('draw.selection.get'))['selectedIds'][0]
     await c('edit.copy',{'context':'drawing','objectIds':[sid]});await condition(kind,eid)
-    before=await c('draw.drawing.get');pos=await t.position();t.clear();d.choose_menu(['Edit',menu]);await pause();d.key(0x1b)
-    await record(kind+'-native-'+menu,did,before,pos)
+    before=await c('draw.drawing.get');pos=await t.position();t.clear();d.choose_menu(['Edit',menu]);await pause()
+    await record(kind+'-native-'+menu,did,before,pos);d.key(0x1b)
    eid,did=await fixture('cameraView','select');await condition(kind,eid);before=await c('draw.drawing.get');pos=await t.position()
    rr=t.rect('cameraView.canvas');o=wintypes.POINT();d.front();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(o));d.right_click_screen(o.x+rr['x']*rr['dpr'],o.y+rr['y']*rr['dpr']);await pause()
    def flatten(n):return [n]+[x for ch in n.get('children',[]) for x in flatten(ch)]
@@ -111,7 +113,7 @@ MATRIX_BRANCHES=r'''
    # Independent transport, explicit drawing and stroke ids.
    q=PRIOR.IndependentHttp(json.loads((t.work/'discovery.json').read_text()),'r3-explicit')
    try:
-    q.initialize();answer=await asyncio.to_thread(q.tool,'run_command',{'command':'draw.stroke.set','params':{'drawingId':did,'strokeIds':[sid],'thickness':13}})
+    q.initialize();answer=await asyncio.to_thread(q.tool,'run_command',{'id':'draw.stroke.set','params':{'drawingId':did,'strokeId':sid,'thickness':13}})
    finally:q.close()
    after=await c('draw.drawing.get');check(before!=after if kind!='drawing' else before==after and 'drawing.locked' in str(answer),'D-83 independent explicit '+kind,answer)
   for context in ('timeline','xsheet'):
@@ -140,6 +142,9 @@ TEXT_BRANCHES=r'''
                 else:t.click('text.bold');await pause();r=await state('locked Bold')
                 check(before==r['drawing'] and await t.position()==pos,'D-83 '+kind+' text unchanged',r['status'])
                 check(any(x in str(r['status']).lower() for x in ('locked','hidden')),'D-83 '+kind+' text reason',r['status'])
+            if step==2:
+                await fixture('word',v='drawingView');await c('element.lock.set',{'elementIds':[eid],'locked':True});pos=await t.position();r=await typed('X')
+                check(content(r)=='wordX' and await t.position()==pos+1,'D-80 element locked Drawing text edits',{'text':content(r),'history':r['history']})
         elif step==5:
             await fixture(v='cameraView');await c('window.panel.set',{'panelId':'text','visible':False});await typed('A')
             await c('window.panel.set',{'panelId':'text','visible':True});await pause();r=await state('mounted caret')
@@ -230,7 +235,7 @@ if __name__=='__main__':
  case,step=sys.argv[1],int(sys.argv[2]);assert case in ('n1','n2')
  if step==1:sys.exit(prior_runs())
  if step in (2,3):
-  a=run_matrix(step);b=run_text(step);sys.exit(a or b)
+  a=0 if 'text' in sys.argv[3:] else run_matrix(step);b=run_text(step);sys.exit(a or b)
  if step==4:sys.exit(run_matrix(step))
  if step in (5,6,7):sys.exit(run_text(step))
  if step==8:

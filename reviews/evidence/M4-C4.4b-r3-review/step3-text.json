@@ -1,0 +1,52 @@
+{
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-ucye4uxw",
+  "checks": [
+    {
+      "check": "D-83 element text unchanged",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "D-83 element text reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "D-83 drawing text unchanged",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "D-83 drawing text reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "D-83 hidden text unchanged",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "check": "D-83 hidden text reason",
+      "ok": false,
+      "detail": ""
+    }
+  ],
+  "failures": [
+    {
+      "check": "D-83 element text reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "D-83 drawing text reason",
+      "ok": false,
+      "detail": ""
+    },
+    {
+      "check": "D-83 hidden text reason",
+      "ok": false,
+      "detail": ""
+    }
+  ]
+}
