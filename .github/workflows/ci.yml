@@ -291,13 +291,13 @@ jobs:
           $PY -I scripts/check-addressing-params.py
 
       # Product code (libraries, binaries, examples) is linted with every warning denied. All targets, tests included,
-      # likewise except two style lints of reviewer-owned files, which are not edited: blank lines after doc comments in
-      # `c24_r4_closure.rs` (M2 merge candidate, declared CI edit) and collapsible `if`s in `c51a_r1_part2.rs` (M5
-      # C5.1a round 1, declared CI edit). Drop each `-A` once its file is fixed; the first line keeps product code under
-      # every lint.
+      # likewise except three style lints of reviewer-owned files, which are not edited: blank lines after doc comments in
+      # `c24_r4_closure.rs` (M2 merge candidate, declared CI edit), collapsible `if`s in `c51a_r1_part2.rs` (M5 C5.1a
+      # round 1) and a useless `.into()` in `c51a_r2_panics.rs` (M5 C5.1a round 2), both declared CI edits. Drop each
+      # `-A` once its file is fixed; the first line keeps product code under every lint.
       - run: |
           cargo clippy --workspace --lib --bins --examples --locked -- -D warnings
-          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments -A clippy::collapsible_if
+          cargo clippy --workspace --all-targets --locked -- -D warnings -A clippy::empty_line_after_doc_comments -A clippy::collapsible_if -A clippy::useless_conversion
 
   # The headless release binary on both product platforms (moved out of `check` in M2 C2.1: on a cold cache the
   # release build pushed `check` past its 60-minute budget, run 41105899189 on main). Its own budget, so neither job's
