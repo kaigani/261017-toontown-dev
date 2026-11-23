@@ -24,6 +24,9 @@
     "dialog:Set Current Frame",
     "dialog:Set Playback Start Frame",
     "dialog:Set Playback End Frame",
+    "dialog:Paste Special",
+    "dialog:Cut Special",
+    "dialog:Drag and Drop Options",
     "confirmSheet",
     "loadReport",
     "dialog:About Toontown",
@@ -179,6 +182,20 @@
       ]
     },
     {
+      "id": "timelineTransfer.submit",
+      "surface": "dialog:Cut Special",
+      "commands": [
+        "timeline.transferOptions.set"
+      ]
+    },
+    {
+      "id": "timelineTransfer.submit",
+      "surface": "dialog:Drag and Drop Options",
+      "commands": [
+        "timeline.transferOptions.set"
+      ]
+    },
+    {
       "id": "timelineNote.submit",
       "surface": "dialog:Element Note",
       "commands": [
@@ -238,6 +255,13 @@
       "surface": "dialog:Opening project",
       "commands": [
         "job.cancel"
+      ]
+    },
+    {
+      "id": "timelineTransfer.submit",
+      "surface": "dialog:Paste Special",
+      "commands": [
+        "timeline.transferOptions.set"
       ]
     },
     {
@@ -2862,6 +2886,16 @@
       }
     },
     {
+      "id": "timeline.dragOptions",
+      "surface": "main",
+      "commands": [
+        "timeline.transferOptions.set"
+      ],
+      "params": {
+        "operation": "dragDrop"
+      }
+    },
+    {
       "id": "timeline.row.el_bob.collapsed",
       "surface": "main",
       "commands": [
@@ -4121,8 +4155,8 @@
         "elementIds": [
           "el_peg"
         ],
-        "marker": null,
-        "background": null
+        "marker": "",
+        "background": ""
       }
     },
     {
@@ -4770,8 +4804,8 @@
         "elementIds": [
           "el_bob"
         ],
-        "marker": null,
-        "background": null
+        "marker": "",
+        "background": ""
       }
     },
     {
@@ -5538,6 +5572,136 @@
       "reason": "typing"
     },
     {
+      "id": "timelineTransfer.autoExtend",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.boundaryKeys",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.cancel",
+      "surface": "dialog:Cut Special",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineTransfer.exposure",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.keyframeSubstitution",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.overwriteDrawings",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.motion",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.pivot",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.rotation",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.scale",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.skew",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.velocity",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.updateColours",
+      "surface": "dialog:Cut Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.autoExtend",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.boundaryKeys",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.cancel",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineTransfer.exposure",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.keyframeSubstitution",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.overwriteDrawings",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.motion",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.pivot",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.rotation",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.scale",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.skew",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.velocity",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.updateColours",
+      "surface": "dialog:Drag and Drop Options",
+      "reason": "typing"
+    },
+    {
       "id": "timelineNote.cancel",
       "surface": "dialog:Element Note",
       "reason": "dismiss"
@@ -5616,6 +5780,71 @@
       "id": "openBackup.cancel",
       "surface": "dialog:Open Backup",
       "reason": "dismiss"
+    },
+    {
+      "id": "timelineTransfer.autoExtend",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.boundaryKeys",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.cancel",
+      "surface": "dialog:Paste Special",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineTransfer.exposure",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.keyframeSubstitution",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.overwriteDrawings",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.motion",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.pivot",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.rotation",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.scale",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.skew",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.pegKeys.velocity",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineTransfer.updateColours",
+      "surface": "dialog:Paste Special",
+      "reason": "typing"
     },
     {
       "id": "projectInfo.cancel",
@@ -18986,8 +19215,8 @@
         "element.colour.set"
       ],
       "params": {
-        "marker": null,
-        "background": null
+        "marker": "",
+        "background": ""
       }
     },
     {
@@ -21068,6 +21297,22 @@
       "file": "desktop/src/timeline/TimelinePanel.tsx"
     },
     {
+      "command": "timeline.transferOptions.get",
+      "file": "desktop/src/shell/makeActions.tsx"
+    },
+    {
+      "command": "timeline.transferOptions.get",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "timeline.transferOptions.set",
+      "file": "desktop/src/shell/makeActions.tsx"
+    },
+    {
+      "command": "timeline.transferOptions.set",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
       "command": "timeline.view.set",
       "file": "desktop/src/timeline/TimelinePanel.tsx"
     },
@@ -21302,6 +21547,14 @@
       "query": "window.toolbar.list"
     },
     {
+      "surface": "dialog:Cut Special",
+      "query": "timeline.transferOptions.get"
+    },
+    {
+      "surface": "dialog:Drag and Drop Options",
+      "query": "timeline.transferOptions.get"
+    },
+    {
       "surface": "dialog:Help",
       "query": "ui.help.get"
     },
@@ -21312,6 +21565,10 @@
     {
       "surface": "dialog:Opening project",
       "query": "job.wait"
+    },
+    {
+      "surface": "dialog:Paste Special",
+      "query": "timeline.transferOptions.get"
     },
     {
       "surface": "dialog:Project Info",
@@ -23599,6 +23856,12 @@
       ]
     },
     {
+      "command": "edit.cutSpecial",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
       "command": "edit.delete",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -23635,6 +23898,12 @@
       "files": [
         "desktop/src/canvas/viewMenus.ts",
         "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "edit.pasteSpecial",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
       ]
     },
     {
@@ -25135,6 +25404,12 @@
       ]
     },
     {
+      "command": "timeline.dragOptions",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
       "command": "timeline.effectParameterRows.set",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -25515,6 +25790,21 @@
       ]
     },
     {
+      "command": "timeline.transferOptions.get",
+      "files": [
+        "desktop/src/shell/makeActions.tsx",
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.transferOptions.set",
+      "files": [
+        "desktop/src/shell/makeActions.tsx",
+        "desktop/src/timeline/TimelinePanel.tsx",
+        "desktop/src/timeline/dialogs.tsx"
+      ]
+    },
+    {
       "command": "timeline.view.set",
       "files": [
         "desktop/src/shell/makeActions.tsx",
@@ -25559,6 +25849,12 @@
     },
     {
       "command": "timelineNewElements.type",
+      "files": [
+        "desktop/src/timeline/dialogs.tsx"
+      ]
+    },
+    {
+      "command": "timelineTransfer.loading",
       "files": [
         "desktop/src/timeline/dialogs.tsx"
       ]

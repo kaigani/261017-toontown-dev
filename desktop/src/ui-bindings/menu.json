@@ -1063,8 +1063,8 @@
           "command": "element.colour.set",
           "label": "Default Colour",
           "params": {
-            "marker": null,
-            "background": null
+            "marker": "",
+            "background": ""
           },
           "enabledWithoutProject": false
         },

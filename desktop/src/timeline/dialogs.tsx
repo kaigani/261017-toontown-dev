@@ -1,11 +1,12 @@
 // The Timeline's dialogs (reviews/M5-design-timeline-view.md section 7), on the shared modal manager (D-44, D-49):
 // each collects the value its menu item needs and answers the command reference it completes; Cancel answers nothing
 // and nothing is sent. Every choice of every dialog is a D-44 row.
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { Dialog } from '../shell/dialogs';
 import { ADD_TYPES } from './menus';
 import { wholeIn, type CompletedRef } from './dialogOpen';
+import type { TransferOptions } from './model';
 
 /** One whole-number field (D-61): OK is disabled while the value is outside the range. */
 export function NumberDialog(props: {
@@ -252,6 +253,104 @@ export function ColoursDialog(props: { onDone: (params: Record<string, unknown> 
         <p className="field-problem" role="alert">
           {problem}
         </p>
+      )}
+    </Dialog>
+  );
+}
+
+const PEG_KEYS = [
+  ['motion', 'Motion'],
+  ['rotation', 'Rotation'],
+  ['scale', 'Scale'],
+  ['pivot', 'Pivot'],
+  ['velocity', 'Velocity'],
+  ['skew', 'Skew'],
+] as const;
+
+/** The transfer-options dialog shared by Paste Special, Cut Special and drag and drop (04 §11.14's two groups): the
+ *  stored set is read when it opens (`load`), OK answers the set chosen. */
+export function TransferOptionsDialog(props: {
+  title: string;
+  load: () => Promise<TransferOptions | null>;
+  onDone: (options: TransferOptions | null) => void;
+}) {
+  const [o, setO] = useState<TransferOptions | null>(null);
+  // Read once, when the dialog opens: `load` is a new function at every render of the caller.
+  const load = useRef(props.load);
+  useEffect(() => {
+    let live = true;
+    void load.current().then((v) => {
+      if (live) setO(v);
+    });
+    return () => {
+      live = false;
+    };
+  }, []);
+  const check = (id: string, label: string, value: boolean, set: (v: boolean) => void) => (
+    <label key={id}>
+      <input
+        type="checkbox"
+        checked={value}
+        data-tt-role="checkbox"
+        data-tt-id={`timelineTransfer.${id}`}
+        data-tt-gui-only="typing"
+        onChange={(e) => {
+          set(e.target.checked);
+        }}
+      />{' '}
+      {label}
+    </label>
+  );
+  return (
+    <Dialog
+      id="timelineTransfer"
+      title={props.title}
+      onCancel={() => {
+        props.onDone(null);
+      }}
+      onSubmit={() => {
+        props.onDone(o);
+      }}
+      submitLabel="OK"
+      submitDisabled={o === null}
+      command="timeline.transferOptions.set"
+    >
+      {o === null ? (
+        <p data-tt-role="text" data-tt-id="timelineTransfer.loading">
+          Reading the options...
+        </p>
+      ) : (
+        <>
+          <fieldset>
+            <legend>Drawings</legend>
+            {check('overwriteDrawings', 'Overwrite existing drawings', o.overwriteDrawings, (v) => {
+              setO({ ...o, overwriteDrawings: v });
+            })}
+            {check('updateColours', 'Update colours from the source palette', o.updateColours, (v) => {
+              setO({ ...o, updateColours: v });
+            })}
+            {check('exposure', 'Create and delete exposure', o.exposure, (v) => {
+              setO({ ...o, exposure: v });
+            })}
+            {check('autoExtend', 'Extend the exposure automatically', o.autoExtend, (v) => {
+              setO({ ...o, autoExtend: v });
+            })}
+          </fieldset>
+          <fieldset>
+            <legend>Keyframes</legend>
+            {check('keyframeSubstitution', 'Substitute keyframes', o.keyframeSubstitution, (v) => {
+              setO({ ...o, keyframeSubstitution: v });
+            })}
+            {check('boundaryKeys', 'Keyframes at the boundaries', o.boundaryKeys, (v) => {
+              setO({ ...o, boundaryKeys: v });
+            })}
+            {PEG_KEYS.map(([k, label]) =>
+              check(`pegKeys.${k}`, `${label} keys`, o.pegKeys[k], (v) => {
+                setO({ ...o, pegKeys: { ...o.pegKeys, [k]: v } });
+              }),
+            )}
+          </fieldset>
+        </>
       )}
     </Dialog>
   );

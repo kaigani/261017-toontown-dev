@@ -696,6 +696,24 @@
     "float:text:selection": {
       "description": "the Text panel in a floating window formatting the text the Text tool highlights (02 §7.6.1; design note 5 §6)",
       "reads": {}
+    },
+    "dialog:Paste Special": {
+      "description": "the Paste Special options dialog (04 §11.14; M5 C5.1b)",
+      "reads": {
+        "timeline.transferOptions.get": ["desktop/src/shell/makeActions.tsx"]
+      }
+    },
+    "dialog:Cut Special": {
+      "description": "the Cut Special options dialog (04 §11.14; M5 C5.1b)",
+      "reads": {
+        "timeline.transferOptions.get": ["desktop/src/shell/makeActions.tsx"]
+      }
+    },
+    "dialog:Drag and Drop Options": {
+      "description": "the Drag and Drop Options options dialog (04 §11.14; M5 C5.1b)",
+      "reads": {
+        "timeline.transferOptions.get": ["desktop/src/timeline/TimelinePanel.tsx"]
+      }
     }
   },
   "plumbing": {

@@ -33,6 +33,7 @@ import {
   parseExposures,
   parseRows,
   parseSelection,
+  parseTransferOptions,
   parseView,
   shownRows,
   type RowDisplay,
@@ -40,9 +41,11 @@ import {
   type Run,
   type SelectionAnswer,
   type TimelineRow,
+  type TransferOptions,
   type ViewAnswer,
 } from './model';
 import { dialogCommand, openTimelineDialog } from './dialogOpen';
+import { TransferOptionsDialog } from './dialogs';
 import { useDialogs } from '../shell/dialogsApi';
 
 /** The layer list's width (CSS pixels). */
@@ -143,10 +146,11 @@ export function TimelinePanel() {
   const rangeGate = useReadGate();
 
   const shown = useMemo(() => shownRows(rows?.rows ?? []), [rows]);
-  const position: ViewPosition = useMemo(
-    () => ({ zoomLevel: view?.zoomLevel ?? LAYOUT.defaultZoomLevel, firstFrame: view?.firstFrame ?? 1 }),
-    [view],
-  );
+  // Memoised on the values, not on the answer object: a read answering the same view keeps every callback that depends
+  // on the position (each read sets a new object; depending on it re-read without end).
+  const zoomLevel = view?.zoomLevel ?? LAYOUT.defaultZoomLevel;
+  const firstFrame = view?.firstFrame ?? 1;
+  const position: ViewPosition = useMemo(() => ({ zoomLevel, firstFrame }), [zoomLevel, firstFrame]);
   const tracksHeight = Math.max(0, size.height - LAYOUT.rulerHeight);
   // The preview holds until a read at the committed revision has arrived (D-53).
   const shownPreview = preview && (committed === null || rowsRev < committed) ? preview : null;
@@ -593,6 +597,36 @@ export function TimelinePanel() {
           }
         >
           Show All
+        </button>
+        <button
+          type="button"
+          disabled={!open}
+          title="The options a cell drag uses (timeline.transferOptions.set)"
+          data-tt-role="button"
+          data-tt-id="timeline.dragOptions"
+          data-tt-command="timeline.transferOptions.set"
+          data-tt-params={JSON.stringify({ operation: 'dragDrop' })}
+          onClick={() => {
+            const render = (close: (o: TransferOptions | null) => void) => (
+              <TransferOptionsDialog
+                title="Drag and Drop Options"
+                load={() =>
+                  engine
+                    .run('timeline.transferOptions.get', { operation: 'dragDrop' })
+                    .done.then((env) => (env.status === 'ok' ? parseTransferOptions(env.result) : null))
+                }
+                onDone={close}
+              />
+            );
+            // The title written where the dialog opens (the D-44 inventory, scripts/c43_d44_coverage.py).
+            const chosen = dialogs.open<TransferOptions>('Drag and Drop Options', render);
+            void chosen.then((options) => {
+              if (options)
+                void actions.run('timeline.transferOptions.set', { operation: 'dragDrop', options });
+            });
+          }}
+        >
+          Drag Options
         </button>
         <label className="timeline-zoom" data-tt-role="text" data-tt-id="timeline.zoomLabel">
           Zoom

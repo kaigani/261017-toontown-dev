@@ -192,6 +192,18 @@ function host(project: boolean): ScriptedHost {
       }),
     'element.get': () =>
       ok({ effectiveMarkerColour: '#FF8800FF', backgroundColour: null, note: 'redraw the hands' }),
+    'timeline.transferOptions.get': () =>
+      ok({
+        options: {
+          overwriteDrawings: false,
+          exposure: true,
+          autoExtend: false,
+          updateColours: false,
+          keyframeSubstitution: false,
+          boundaryKeys: false,
+          pegKeys: { motion: true, rotation: true, scale: true, pivot: true, velocity: true, skew: true },
+        },
+      }),
     'timeline.frameLabel.get': (p) =>
       ok({ labels: (Array.isArray(p['frames']) ? (p['frames'] as unknown[]) : []).map(String) }),
   });
@@ -480,6 +492,44 @@ async function surfaces(): Promise<Surface[]> {
         expect(screen.queryByRole('dialog')).toBeNull();
       });
     }
+  }
+
+  // The transfer-options dialogs (04 §11.14): Paste Special and Cut Special in a cell context, the Timeline's Drag
+  // Options.
+  const transfer: [string, () => void][] = [
+    [
+      'Paste Special',
+      () => {
+        h.menu('edit.pasteSpecial', { context: 'timeline' });
+      },
+    ],
+    [
+      'Cut Special',
+      () => {
+        h.menu('edit.cutSpecial', { context: 'timeline' });
+      },
+    ],
+    [
+      'Drag and Drop Options',
+      () => {
+        document.querySelector<HTMLElement>('[data-tt-id="timeline.dragOptions"]')?.click();
+      },
+    ],
+  ];
+  for (const [title, open] of transfer) {
+    mark(h);
+    act(open);
+    const d = await screen.findByRole('dialog', { name: title });
+    await waitFor(() => {
+      expect(d.querySelector('[data-tt-id="timelineTransfer.boundaryKeys"]')).not.toBeNull();
+    });
+    out.push(await settled(`dialog:${title}`, d));
+    act(() => {
+      d.querySelector<HTMLElement>('[data-tt-id$=".cancel"]')?.click();
+    });
+    await waitFor(() => {
+      expect(screen.queryByRole('dialog')).toBeNull();
+    });
   }
 
   // The confirmation sheet (M4 C4.4a, D-58): an agent's request asked in the app, two queued.

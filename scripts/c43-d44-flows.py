@@ -67,6 +67,11 @@ FLOW_COMMANDS = {
     "window.toolbar.items.set", "window.toolbar.items.reset", "agent.token.regenerate",
     # The Activity panel's Undo back to before an entry; the confirmation sheet (D-58).
     "edit.history.move", "agent.confirmation.respond",
+    # M5 C5.1b: the Timeline's dialogs (the Element and Play menus, the Timeline's context menus and toolbar, Edit's
+    # Paste Special and Cut Special in a cell context).
+    "element.create", "element.rename", "element.note.set", "element.colour.set", "element.timing.set",
+    "element.childExposure.apply", "app.frame.set", "playback.range.set", "timeline.currentFrame.set",
+    "timeline.playbackRange.set", "timeline.transferOptions.set", "edit.pasteSpecial", "edit.cutSpecial",
 }
 
 
@@ -1377,6 +1382,354 @@ def jobs_row(t: Flows) -> dict:
 
 # ----- sessions --------------------------------------------------------------------------------------------------------
 
+def timeline_rows(t: Flows) -> list:
+    """The Timeline's dialogs (M5 C5.1b; reviews/M5-design-timeline-view.md section 7), each choice of each: opened from
+    the Element and Play menus (real native menu clicks), from the Timeline's row, cell and ruler context menus (a real
+    secondary click, then a real click on the item), from Edit with the Timeline focused, and from the Timeline's
+    toolbar; a typed value or a toggled option, then a real click on OK or Cancel. OK sends exactly the command the
+    dialog completes; Cancel sends nothing and changes nothing."""
+    rows = []
+    cmd = t.cmd
+
+    async def find(name):
+        f = await cmd("doc.object.find", {"type": "element", "name": name})
+        items = f.get("items") or f.get("matches") or []
+        return items[0].get("id") if items else None
+
+    async def base(ctx):
+        await t.prepare_dirty()
+        ctx["bob"] = await find("Bob")
+        peg = await find("FlowPeg")
+        if peg is None:
+            peg = ((await cmd("element.create", {"type": "peg", "name": "FlowPeg"})).get("elementIds") or [None])[0]
+        ctx["peg"] = peg
+        await cmd("app.context.set", {"elementId": ctx["bob"], "frame": 1})
+        await cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+        if not await t.wait_for(f"timeline.row.{ctx['bob']}"):
+            raise RuntimeError("the Timeline does not show Bob's row")
+        await asyncio.sleep(0.6)
+
+    def menu(path):
+        async def open_(ctx):
+            choose_menu(path)
+            return "real native menu " + " › ".join(path)
+        return open_
+
+    def right_click_at(x, y):
+        h = d39.front()
+        origin = d39.wintypes.POINT(0, 0)
+        d39.u32.ClientToScreen(h, d39.ctypes.byref(origin))
+        dpr = t.cdp.js("window.devicePixelRatio || 1")
+        d39.right_click_screen(origin.x + x * dpr, origin.y + y * dpr)
+
+    def context(target, menu_id, item_id):
+        """A real secondary click on `target(ctx)` (a CSS pixel point in the page), then a real click on the item."""
+        async def open_(ctx):
+            x, y = target(ctx)
+            right_click_at(x, y)
+            ident = f"{menu_id}.{item_id}"
+            if not await t.wait_for(ident, 5):
+                raise RuntimeError(f"the context menu has no {ident}")
+            await asyncio.sleep(0.3)
+            t.click(ident)
+            return f"a real secondary click in the Timeline, a real click on {item_id}"
+        return open_
+
+    def centre_of(ident_of):
+        def at(ctx):
+            ident = ident_of(ctx)
+            r = t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                         " if (!e) return null; e.scrollIntoView({block: 'center'}); const b = e.getBoundingClientRect();"
+                         " return [b.x + Math.min(60, b.width / 2), b.y + b.height / 2]; })()" % json.dumps(ident))
+            if not r:
+                raise RuntimeError(f"absent: {ident}")
+            return r
+        return at
+
+    def track_of(key):
+        """A point in the tracks on the row of `ctx[key]`, a few frames in."""
+        def at(ctx):
+            r = t.cdp.js("(() => { const row = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                         " const tracks = document.querySelector('[data-tt-id=\"timeline.tracks\"]');"
+                         " if (!row || !tracks) return null; const a = row.getBoundingClientRect();"
+                         " const b = tracks.getBoundingClientRect(); return [b.x + 40, a.y + a.height / 2]; })()"
+                         % json.dumps(f"timeline.row.{ctx[key]}"))
+            if not r:
+                raise RuntimeError("the Timeline's tracks or row are absent")
+            return r
+        return at
+
+    def row(name, spec, path, open_, dialog, set_value, expect, state, effect, setup=base, cleanup=None):
+        """One dialog, both choices: `set_value(ctx)` types or toggles in the dialog; `expect(ctx)` the commands OK sends."""
+        for choice, button in (("submit", "OK"), ("cancel", "Cancel")):
+            async def flow(ctx, choice=choice, button=button):
+                how = await open_(ctx)
+                if not await t.wait_for(dialog, 8):
+                    raise RuntimeError(f"the dialog {dialog} did not open")
+                await asyncio.sleep(0.4)
+                await set_value(ctx)
+                await asyncio.sleep(0.4)
+                t.click(f"{dialog}.{choice}")
+                await asyncio.sleep(1.0)
+                return f"{how}, a real click on {button}"
+
+            rows.append({"name": f"{name} › {button}", "spec": spec, "path": path, "choice": button, "setup": setup,
+                         "state": state, "flow": flow,
+                         "expect": (lambda c: (lambda ctx: expect(ctx)) if c == "submit" else (lambda ctx: []))(choice),
+                         "effect": (lambda c: lambda b, a, ctx: effect(b, a, ctx, c == "submit"))(choice),
+                         "cleanup": cleanup})
+
+    def typed(field, value):
+        async def set_(ctx):
+            t.click(field)
+            select_field()
+            type_text(value(ctx) if callable(value) else value)
+        return set_
+
+    def toggled(box):
+        async def set_(ctx):
+            if not await t.wait_for(box, 8):
+                raise RuntimeError(f"the options did not load ({box})")
+            t.click(box)
+        return set_
+
+    async def el(ctx, key="bob"):
+        return await cmd("element.get", {"elementId": ctx[key]})
+
+    def changed_to(get, want):
+        return lambda b, a, ctx, ok: (get(a) == want) == ok and (ok or get(a) == get(b))
+
+    # ----- the Element menu ---------------------------------------------------------------------------------------
+    async def names(ctx):
+        return sorted(e.get("name") for e in (await cmd("element.list", {})).get("elements", []))
+
+    async def drop_flow_el():
+        while (fid := await find("FlowEl")) is not None:
+            await cmd("element.delete", {"elementIds": [fid]})
+
+    row("New Elements", f"04 §3.2; {spec_line('element.create')}", ["Element", "New Elements"],
+        menu(["Element", "New Elements"]), "timelineNewElements", typed("timelineNewElements.name", "FlowEl"),
+        lambda ctx: [("element.create", {"type": "drawing", "count": 1, "name": "FlowEl"}, [])],
+        names, lambda b, a, ctx, ok: ("FlowEl" in a) == ok, cleanup=drop_flow_el)
+
+    async def name_of(ctx):
+        return (await el(ctx)).get("name")
+
+    async def rename_back():
+        bob = await find("FlowBob")
+        if bob:
+            await cmd("element.rename", {"elementId": bob, "name": "Bob"})
+
+    for label, path, open_ in (
+        ("Rename Element", ["Element", "Rename"], menu(["Element", "Rename"])),
+        ("Rename Element (Timeline row)", ["Timeline", "row", "Rename"],
+         context(centre_of(lambda ctx: f"timeline.row.{ctx['bob']}"), "timeline.rowMenu", "timeline.row.rename")),
+    ):
+        row(label, f"04 §9.6; {spec_line('element.rename')}", path, open_, "timelineRename",
+            typed("timelineRename.value", "FlowBob"),
+            lambda ctx: [("element.rename", {"elementId": ctx["bob"], "name": "FlowBob"}, [])],
+            name_of, changed_to(lambda v: v, "FlowBob"), cleanup=rename_back)
+
+    async def note_of(ctx):
+        return (await el(ctx)).get("note") or ""
+
+    async def clear_note():
+        bob = await find("Bob")
+        await cmd("element.note.set", {"elementId": bob, "text": ""})
+
+    for label, path, open_ in (
+        ("Element Note", ["Element", "Element Note"], menu(["Element", "Element Note"])),
+        ("Element Note (Timeline row)", ["Timeline", "row", "Element Note"],
+         context(centre_of(lambda ctx: f"timeline.row.{ctx['bob']}"), "timeline.rowMenu", "timeline.row.note")),
+    ):
+        row(label, f"04 §9.7; {spec_line('element.note.set')}", path, open_, "timelineNote",
+            typed("timelineNote.value", "flow note"),
+            lambda ctx: [("element.note.set", {"elementId": ctx["bob"], "text": "flow note"}, [])],
+            note_of, changed_to(lambda v: v, "flow note"), cleanup=clear_note)
+
+    async def colours_of(ctx):
+        e = await el(ctx)
+        return {"marker": e.get("markerColour"), "background": e.get("backgroundColour")}
+
+    async def default_colours():
+        bob = await find("Bob")
+        await cmd("element.colour.set", {"elementIds": [bob], "marker": "", "background": ""})
+
+    async def select_bob(ctx):
+        await base(ctx)
+        await cmd("element.select", {"elementIds": [ctx["bob"]]})
+
+    row("Element Colours", f"04 §9.6; {spec_line('element.colour.set')}", ["Element", "Element Colours"],
+        menu(["Element", "Element Colours"]), "timelineColours", typed("timelineColours.marker", "#FF0000"),
+        lambda ctx: [("element.colour.set", {"marker": "#FF0000"}, ["background"])],
+        colours_of, lambda b, a, ctx, ok: (str(a["marker"] or "").upper().startswith("#FF0000")) == ok,
+        setup=select_bob, cleanup=default_colours)
+    row("Marker Colour (Timeline row)", f"04 §9.6; {spec_line('element.colour.set')}", ["Timeline", "row", "Marker Colour"],
+        context(centre_of(lambda ctx: f"timeline.row.{ctx['bob']}"), "timeline.rowMenu", "timeline.row.markerColour"),
+        "timelineMarkerColour", typed("timelineMarkerColour.value", "#00FF00"),
+        lambda ctx: [("element.colour.set", {"elementIds": [ctx["bob"]], "marker": "#00FF00"}, ["background"])],
+        colours_of, lambda b, a, ctx, ok: (str(a["marker"] or "").upper().startswith("#00FF00")) == ok,
+        cleanup=default_colours)
+    row("Background Colour (Timeline row)", f"04 §9.6; {spec_line('element.colour.set')}",
+        ["Timeline", "row", "Background Colour"],
+        context(centre_of(lambda ctx: f"timeline.row.{ctx['bob']}"), "timeline.rowMenu", "timeline.row.backgroundColour"),
+        "timelineBackgroundColour", typed("timelineBackgroundColour.value", "#0000FF"),
+        lambda ctx: [("element.colour.set", {"elementIds": [ctx["bob"]], "background": "#0000FF"}, ["marker"])],
+        colours_of, lambda b, a, ctx, ok: (str(a["background"] or "").upper().startswith("#0000FF")) == ok,
+        cleanup=default_colours)
+
+    # ----- the row's timing (a peg's bar) -------------------------------------------------------------------------
+    async def timing_of(ctx):
+        e = await el(ctx, "peg")
+        return {"start": e.get("start"), "duration": e.get("duration"), "loops": e.get("loops")}
+
+    async def peg_timing(ctx):
+        await base(ctx)
+        await cmd("element.timing.set", {"elementIds": [ctx["peg"]], "start": 1, "duration": 24, "loops": 1})
+
+    async def reset_peg():
+        peg = await find("FlowPeg")
+        if peg:
+            await cmd("element.timing.set", {"elementIds": [peg], "start": 1, "duration": 24, "loops": 1})
+
+    for label, item, dialog, value, key, want in (
+        ("Change Start Frame", "timeline.row.changeStart", "timelineStart", "5", "start", 5),
+        ("Change Duration", "timeline.row.changeDuration", "timelineDuration", "30", "duration", 30),
+        ("Change Loops", "timeline.row.changeLoops", "timelineLoops", "2", "loops", 2),
+    ):
+        row(label, f"04 §10.2; {spec_line('element.timing.set')}", ["Timeline", "row", label],
+            context(centre_of(lambda ctx: f"timeline.row.{ctx['peg']}"), "timeline.rowMenu", item), dialog,
+            typed(f"{dialog}.value", value),
+            (lambda k, w: lambda ctx: [("element.timing.set", {"elementIds": [ctx["peg"]], k: w}, [])])(key, want),
+            timing_of, (lambda k, w: lambda b, a, ctx, ok: (a[k] == w) == ok and (ok or a == b))(key, want),
+            setup=peg_timing, cleanup=reset_peg)
+
+    async def last_exposed(ctx):
+        sheet = await cmd("xsheet.exposures.get", {"elementIds": [ctx["bob"]]})
+        runs = [r for c in sheet.get("columns", []) for r in c.get("exposures", [])]
+        return max((r.get("to", 0) for r in runs), default=0)
+
+    async def bob_under_peg(ctx):
+        await peg_timing(ctx)
+        await cmd("element.parent.set", {"elementIds": [ctx["bob"]], "parentId": ctx["peg"]})
+        await asyncio.sleep(0.6)
+
+    async def bob_back():
+        with contextlib.suppress(Exception):
+            await cmd("edit.undo", {})
+        bob = await find("Bob")
+        with contextlib.suppress(Exception):
+            await cmd("element.parent.remove", {"elementIds": [bob]})
+
+    row("Extend Children Exposure", f"04 §13.8; {spec_line('element.childExposure.apply')}",
+        ["Timeline", "cells", "Extend Children Exposure"],
+        context(track_of("peg"), "timeline.cellMenu", "timeline.cell.extendChildren"), "timelineExtendChildren",
+        typed("timelineExtendChildren.value", "30"),
+        lambda ctx: [("element.childExposure.apply", {"pegId": ctx["peg"], "toFrame": 30}, [])],
+        last_exposed, lambda b, a, ctx, ok: (a >= 30) == ok and (ok or a == b), setup=bob_under_peg, cleanup=bob_back)
+
+    # ----- the current frame and the playback range ---------------------------------------------------------------
+    async def frame_of(_ctx):
+        return (await cmd("app.state.get", {})).get("frame")
+
+    async def frame_one():
+        await cmd("app.frame.set", {"frame": 1})
+
+    row("Change Current Frame", f"09 §2.2; {spec_line('app.frame.set')}", ["Play", "Change Current Frame"],
+        menu(["Play", "Change Current Frame"]), "timelineCurrentFrame", typed("timelineCurrentFrame.value", "6"),
+        lambda ctx: [("app.frame.set", {"frame": 6}, [])], frame_of, changed_to(lambda v: v, 6), cleanup=frame_one)
+    row("Set Current Frame (Timeline ruler)", f"04 §11.9; {spec_line('timeline.currentFrame.set')}",
+        ["Timeline", "ruler", "Set Current Frame"],
+        context(centre_of(lambda ctx: "timeline.ruler"), "timeline.rulerMenu", "timeline.ruler.currentFrame"),
+        "timelineCurrentFrame", typed("timelineCurrentFrame.value", "7"),
+        lambda ctx: [("timeline.currentFrame.set", {"frame": 7}, [])], frame_of, changed_to(lambda v: v, 7),
+        cleanup=frame_one)
+
+    async def range_of(_ctx):
+        r = await cmd("playback.range.get", {})
+        return {"start": r.get("start"), "end": r.get("end")}
+
+    async def auto_range():
+        await cmd("playback.range.mode.set", {"mode": "auto"})
+
+    for label, path, open_, dialog, command, key, value in (
+        ("Change Playback Start Frame", ["Play", "Playback Range", "Change Playback Start Frame"],
+         menu(["Play", "Playback Range", "Change Playback Start Frame"]), "timelineRangeStart", "playback.range.set",
+         "start", 3),
+        ("Change Playback End Frame", ["Play", "Playback Range", "Change Playback End Frame"],
+         menu(["Play", "Playback Range", "Change Playback End Frame"]), "timelineRangeEnd", "playback.range.set", "end", 10),
+        ("Set Playback Start Frame (Timeline ruler)", ["Timeline", "ruler", "Set Playback Start Frame"],
+         context(centre_of(lambda ctx: "timeline.ruler"), "timeline.rulerMenu", "timeline.ruler.rangeStart"),
+         "timelineRangeStart", "timeline.playbackRange.set", "start", 4),
+        ("Set Playback End Frame (Timeline ruler)", ["Timeline", "ruler", "Set Playback End Frame"],
+         context(centre_of(lambda ctx: "timeline.ruler"), "timeline.rulerMenu", "timeline.ruler.rangeEnd"),
+         "timelineRangeEnd", "timeline.playbackRange.set", "end", 12),
+    ):
+        row(label, f"09 §2.6; {spec_line(command)}", path, open_, dialog, typed(f"{dialog}.value", str(value)),
+            (lambda c, k, v: lambda ctx: [(c, {k: v}, [])])(command, key, value),
+            range_of, (lambda k, v: lambda b, a, ctx, ok: (a[k] == v) == ok and (ok or a == b))(key, value),
+            cleanup=auto_range)
+
+    # ----- the transfer options (04 §11.14) ------------------------------------------------------------------------
+    def options_of(operation):
+        async def get(_ctx):
+            return (await cmd("timeline.transferOptions.get", {"operation": operation})).get("options") or {}
+        return get
+
+    def restore(operation):
+        async def back():
+            # The defaults of the 04 family (SI-201): the boundary-keys and auto-extend options off.
+            o = (await cmd("timeline.transferOptions.get", {"operation": operation})).get("options") or {}
+            o.update({"boundaryKeys": False, "autoExtend": False})
+            await cmd("timeline.transferOptions.set", {"operation": operation, "options": o})
+        return back
+
+    async def cells_copied(ctx):
+        await base(ctx)
+        await cmd("cell.select", {"elementIds": [ctx["bob"]], "from": 1, "to": 2})
+        await cmd("edit.copy", {"context": "timeline"})
+        await cmd("cell.select", {"elementIds": [ctx["bob"]], "from": 30, "to": 30})
+        await cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+
+    async def cells_selected(ctx):
+        await base(ctx)
+        await cmd("cell.select", {"elementIds": [ctx["bob"]], "from": 20, "to": 21})
+        await cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+
+    def undo_then(back):
+        async def run_():
+            with contextlib.suppress(Exception):
+                await back()
+        return run_
+
+    async def undo_cut_and_restore():
+        with contextlib.suppress(Exception):
+            await cmd("edit.undo", {})
+        await restore("cut")()
+
+    toggle_effect = (lambda key: lambda b, a, ctx, ok: (a.get(key) != b.get(key)) == ok)
+    row("Paste Special", f"04 §11.14; {spec_line('edit.pasteSpecial')}", ["Edit", "Paste Special"],
+        menu(["Edit", "Paste Special"]), "timelineTransfer", toggled("timelineTransfer.boundaryKeys"),
+        lambda ctx: [("timeline.transferOptions.set", {"operation": "paste"}, []), ("edit.pasteSpecial", {}, ["options"])],
+        options_of("paste"), toggle_effect("boundaryKeys"), setup=cells_copied,
+        cleanup=undo_then(restore("paste")))
+    row("Cut Special", f"04 §11.14; {spec_line('edit.cutSpecial')}", ["Edit", "Cut Special"],
+        menu(["Edit", "Cut Special"]), "timelineTransfer", toggled("timelineTransfer.boundaryKeys"),
+        lambda ctx: [("timeline.transferOptions.set", {"operation": "cut"}, []), ("edit.cutSpecial", {}, ["options"])],
+        options_of("cut"), toggle_effect("boundaryKeys"), setup=cells_selected, cleanup=undo_cut_and_restore)
+
+    async def click_drag_options(_ctx):
+        t.click("timeline.dragOptions")
+        return "a real click on the Timeline toolbar's Drag Options"
+
+    row("Drag and Drop Options", f"04 §11.14; {spec_line('timeline.transferOptions.set')}",
+        ["Timeline", "toolbar", "Drag Options"], click_drag_options, "timelineTransfer",
+        toggled("timelineTransfer.autoExtend"),
+        lambda ctx: [("timeline.transferOptions.set", {"operation": "dragDrop"}, [])],
+        options_of("dragDrop"), toggle_effect("autoExtend"), cleanup=restore("dragDrop"))
+    return rows
+
+
 async def fixture(t: Flows) -> None:
     cmd = t.cmd
     flow, other = t.work / "Flow.animpkg", t.work / "Other.animpkg"
@@ -1435,7 +1788,7 @@ async def session(app: str, run, out: Path, work: Path, group: str, only: set, s
             await fixture(t)
             if group == "main":
                 rows = [*unsaved_rows(t, None), *save_as_rows(t), *keymap_rows(t), *workspace_rows(t), *toolbar_rows(t), *undo_back_rows(t), *preferences_rows(t),
-                        *form_rows(t), *dismiss_rows(t), *default_rows(t), *modal_kind_rows(t), jobs_row(t)]
+                        *form_rows(t), *dismiss_rows(t), *default_rows(t), *modal_kind_rows(t), *timeline_rows(t), jobs_row(t)]
             elif group == "token":
                 rows = token_rows(t)
             elif group == "confirm":

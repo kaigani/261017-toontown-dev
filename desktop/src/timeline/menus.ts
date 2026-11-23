@@ -228,7 +228,7 @@ export function rowMenu(
           id: 'timeline.row.defaultColour',
           label: 'Default Colour',
           command: 'element.colour.set',
-          params: { ...ids, marker: null, background: null },
+          params: { ...ids, marker: '', background: '' },
         },
       ],
     },

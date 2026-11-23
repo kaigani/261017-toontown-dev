@@ -14,7 +14,14 @@ import type { MessagesApi } from './messagesApi';
 import { AboutDialog, BackupsDialog, CheckProjectDialog, ProjectInfoDialog } from './infoDialogs';
 import { JobProgress, NewProjectDialog, ProjectPropertiesDialog } from './projectForms';
 import { ToolbarSheet } from './toolbarSheet';
-import { ColoursDialog, NewElementsDialog, NumberDialog, TextDialog } from '../timeline/dialogs';
+import {
+  ColoursDialog,
+  NewElementsDialog,
+  NumberDialog,
+  TextDialog,
+  TransferOptionsDialog,
+} from '../timeline/dialogs';
+import { parseTransferOptions, type TransferOptions } from '../timeline/model';
 import type { CompletedRef } from '../timeline/dialogOpen';
 
 /** The file a refusal names when a program outside the lock protocol keeps a lock file open (ruling D-86 item 1;
@@ -279,7 +286,7 @@ export function makeActions(
           if (!id) return run(command, p);
           const rename = command === 'element.rename';
           const title = rename ? 'Rename Element' : 'Element Note';
-          const text = await dialogs.open<string>(title, (close) => (
+          const render = (close: (t: string | null) => void) => (
             <TextDialog
               id={rename ? 'timelineRename' : 'timelineNote'}
               title={title}
@@ -290,7 +297,11 @@ export function makeActions(
               required={rename}
               onDone={close}
             />
-          ));
+          );
+          // Each title written where the dialog opens (the D-44 inventory, scripts/c43_d44_coverage.py).
+          const text = rename
+            ? await dialogs.open<string>('Rename Element', render)
+            : await dialogs.open<string>('Element Note', render);
           if (text === null) return null;
           p['elementId'] = id;
           p[key] = text;
@@ -334,7 +345,7 @@ export function makeActions(
               : field === 'start'
                 ? 'Change Playback Start Frame'
                 : 'Change Playback End Frame';
-          const n = await dialogs.open<number>(title, (close) => (
+          const render = (close: (n: number | null) => void) => (
             <NumberDialog
               id={
                 field === 'frame'
@@ -351,7 +362,13 @@ export function makeActions(
               command={command}
               onDone={close}
             />
-          ));
+          );
+          const n =
+            field === 'frame'
+              ? await dialogs.open<number>('Change Current Frame', render)
+              : field === 'start'
+                ? await dialogs.open<number>('Change Playback Start Frame', render)
+                : await dialogs.open<number>('Change Playback End Frame', render);
           if (n === null) return null;
           p[field] = n;
         }
@@ -363,6 +380,36 @@ export function makeActions(
           const id = state()?.element?.id;
           if (id) p['revealElementId'] = id;
           else delete p['revealElementId'];
+        }
+        return run(command, p);
+      }
+      // Paste Special and Cut Special in a cell context open the transfer-options dialog (04 §11.14; view note section 7):
+      // OK stores the set for the operation (`timeline.transferOptions.set`) and runs it; Paste Special Again (`useLast`)
+      // and an explicit set skip the dialog.
+      case 'edit.pasteSpecial':
+      case 'edit.cutSpecial': {
+        const ctx = typeof p['context'] === 'string' ? p['context'] : state()?.focusedPanel;
+        if (p['options'] === undefined && p['useLast'] !== true && (ctx === 'timeline' || ctx === 'xsheet')) {
+          const operation = command === 'edit.pasteSpecial' ? 'paste' : 'cut';
+          const title = command === 'edit.pasteSpecial' ? 'Paste Special' : 'Cut Special';
+          const render = (close: (o: TransferOptions | null) => void) => (
+            <TransferOptionsDialog
+              title={title}
+              load={() =>
+                services.engine
+                  .run('timeline.transferOptions.get', { operation })
+                  .done.then((env) => (env.status === 'ok' ? parseTransferOptions(env.result) : null))
+              }
+              onDone={close}
+            />
+          );
+          const options =
+            operation === 'paste'
+              ? await dialogs.open<TransferOptions>('Paste Special', render)
+              : await dialogs.open<TransferOptions>('Cut Special', render);
+          if (!options) return null;
+          const stored = await run('timeline.transferOptions.set', { operation, options });
+          if (stored.status !== 'ok') return stored;
         }
         return run(command, p);
       }

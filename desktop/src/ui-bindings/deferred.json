@@ -296,16 +296,6 @@
       "section": "04 §11.11 (Sound rows)",
       "location": "Timeline row and ruler context: Sound Waveforms (ruling E-9: shown with its owner until sound rows exist)"
     },
-    "timeline.transferOptions.get": {
-      "owner": "M5 C5.1",
-      "section": "04 §11.14 (Transfer options (paste special, cut special, drag and drop))",
-      "location": "the paste special, cut special and drag-and-drop options dialog (declared read)"
-    },
-    "timeline.transferOptions.set": {
-      "owner": "M5 C5.1",
-      "section": "04 §11.14 (Transfer options (paste special, cut special, drag and drop))",
-      "location": "Edit › Paste Special / Cut Special with the Timeline focused: the options dialog; drag-and-drop options"
-    },
     "xsheet.exposures.set": {
       "owner": "M5 C5.2",
       "section": "04 §17.4 (Command table)",

@@ -67,6 +67,26 @@ NO_COMMAND = "no command: dismissing it sends nothing"
 
 #: Every inventory item: {"rows": [row names of scripts/c43-d44-flows.py]} or {"reason": why it has no row}.
 COVERAGE: dict[str, dict] = {
+    # M5 C5.1b: the Timeline's dialogs (scripts/c43-d44-flows.py `timeline_rows`).
+    "dialog:New Elements": {"rows": ["New Elements › OK", "New Elements › Cancel"]},
+    "dialog:Rename Element": {"rows": ["Rename Element › OK", "Rename Element › Cancel", "Rename Element (Timeline row) › OK", "Rename Element (Timeline row) › Cancel"]},
+    "dialog:Element Note": {"rows": ["Element Note › OK", "Element Note › Cancel", "Element Note (Timeline row) › OK", "Element Note (Timeline row) › Cancel"]},
+    "dialog:Element Colours": {"rows": ["Element Colours › OK", "Element Colours › Cancel"]},
+    "dialog:Marker Colour": {"rows": ["Marker Colour (Timeline row) › OK", "Marker Colour (Timeline row) › Cancel"]},
+    "dialog:Background Colour": {"rows": ["Background Colour (Timeline row) › OK", "Background Colour (Timeline row) › Cancel"]},
+    "dialog:Change Start Frame": {"rows": ["Change Start Frame › OK", "Change Start Frame › Cancel"]},
+    "dialog:Change Duration": {"rows": ["Change Duration › OK", "Change Duration › Cancel"]},
+    "dialog:Change Loops": {"rows": ["Change Loops › OK", "Change Loops › Cancel"]},
+    "dialog:Extend Children Exposure": {"rows": ["Extend Children Exposure › OK", "Extend Children Exposure › Cancel"]},
+    "dialog:Change Current Frame": {"rows": ["Change Current Frame › OK", "Change Current Frame › Cancel"]},
+    "dialog:Set Current Frame": {"rows": ["Set Current Frame (Timeline ruler) › OK", "Set Current Frame (Timeline ruler) › Cancel"]},
+    "dialog:Change Playback Start Frame": {"rows": ["Change Playback Start Frame › OK", "Change Playback Start Frame › Cancel"]},
+    "dialog:Change Playback End Frame": {"rows": ["Change Playback End Frame › OK", "Change Playback End Frame › Cancel"]},
+    "dialog:Set Playback Start Frame": {"rows": ["Set Playback Start Frame (Timeline ruler) › OK", "Set Playback Start Frame (Timeline ruler) › Cancel"]},
+    "dialog:Set Playback End Frame": {"rows": ["Set Playback End Frame (Timeline ruler) › OK", "Set Playback End Frame (Timeline ruler) › Cancel"]},
+    "dialog:Paste Special": {"rows": ["Paste Special › OK", "Paste Special › Cancel"]},
+    "dialog:Cut Special": {"rows": ["Cut Special › OK", "Cut Special › Cancel"]},
+    "dialog:Drag and Drop Options": {"rows": ["Drag and Drop Options › OK", "Drag and Drop Options › Cancel"]},
     "dialog:Preferences": {"rows": ["Preferences › OK", "Preferences › Cancel"]},
     "kind:message box": {"rows": ["modal (message box) › Tab past the last control, Escape"]},
     "kind:form": {"rows": ["modal (form) › Tab past the last control, Escape"]},

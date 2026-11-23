@@ -221,3 +221,49 @@ export function cssColour(hex: string | null | undefined, fallback = '#808080'):
   const rgb = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
   return `rgba(${rgb.join(', ')}, ${a.toFixed(3)})`;
 }
+
+/** The transfer options of one operation (04 §11.14; `timeline.transferOptions.get`'s answer, 04's names). */
+export interface TransferOptions {
+  overwriteDrawings: boolean;
+  updateColours: boolean;
+  exposure: boolean;
+  autoExtend: boolean;
+  keyframeSubstitution: boolean;
+  boundaryKeys: boolean;
+  pegKeys: {
+    motion: boolean;
+    rotation: boolean;
+    scale: boolean;
+    pivot: boolean;
+    velocity: boolean;
+    skew: boolean;
+  };
+}
+
+/** A transfer-options answer, checked (`null` for an answer of the wrong shape). */
+export function parseTransferOptions(v: unknown): TransferOptions | null {
+  const o = typeof v === 'object' && v !== null ? (v as Record<string, unknown>)['options'] : null;
+  if (typeof o !== 'object' || o === null) return null;
+  const r = o as Record<string, unknown>;
+  const pk = (typeof r['pegKeys'] === 'object' && r['pegKeys'] !== null ? r['pegKeys'] : {}) as Record<
+    string,
+    unknown
+  >;
+  const b = (x: unknown, d: boolean) => (typeof x === 'boolean' ? x : d);
+  return {
+    overwriteDrawings: b(r['overwriteDrawings'], false),
+    updateColours: b(r['updateColours'], false),
+    exposure: b(r['exposure'], true),
+    autoExtend: b(r['autoExtend'], false),
+    keyframeSubstitution: b(r['keyframeSubstitution'], false),
+    boundaryKeys: b(r['boundaryKeys'], false),
+    pegKeys: {
+      motion: b(pk['motion'], true),
+      rotation: b(pk['rotation'], true),
+      scale: b(pk['scale'], true),
+      pivot: b(pk['pivot'], true),
+      velocity: b(pk['velocity'], true),
+      skew: b(pk['skew'], true),
+    },
+  };
+}
