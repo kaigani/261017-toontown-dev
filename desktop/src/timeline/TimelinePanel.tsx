@@ -158,7 +158,8 @@ export function TimelinePanel() {
   const zoomLevel = view?.zoomLevel ?? LAYOUT.defaultZoomLevel;
   const firstFrame = view?.firstFrame ?? 1;
   const position: ViewPosition = useMemo(() => ({ zoomLevel, firstFrame }), [zoomLevel, firstFrame]);
-  const tracksHeight = Math.max(0, size.height - LAYOUT.rulerHeight);
+  // The tracks area's own size (the observed box holds the tracks canvas alone: no ruler, no scroll bar).
+  const tracksHeight = Math.max(0, size.height);
   // The preview holds until a read at the committed revision has arrived (D-53).
   const shownPreview = preview && (committed === null || rowsRev < committed) ? preview : null;
   // The last frame in view: the kernel's answer for the reported viewport width (`timeline.view.set`), else the local
@@ -502,6 +503,11 @@ export function TimelinePanel() {
   const soloAvailability = useAvailability(soloRefs);
   const soloRef = soloRefs[0];
   const solo = soloRef ? soloAvailability(soloRef) : undefined;
+  // The parameters as the kernel completes them (`enabled`, the next state), as the main toolbar sends them (O-10).
+  const soloRun: Record<string, unknown> =
+    solo && solo.params !== null && typeof solo.params === 'object'
+      ? (solo.params as Record<string, unknown>)
+      : (soloRef?.params ?? {});
   const rowAtY = (y: number): TimelineRow | undefined =>
     shown[Math.floor((y + scrollTop) / LAYOUT.rowHeight)];
   const frameAtX = (x: number): number => {
@@ -568,7 +574,14 @@ export function TimelinePanel() {
   const list = rowWindow(shown.length, scrollTop, tracksHeight);
 
   return (
-    <div className="timeline-panel" data-tt-role="panel" data-tt-id="timeline" data-tt-label="Timeline">
+    <div
+      className="timeline-panel"
+      data-tt-role="panel"
+      data-tt-id="timeline"
+      data-tt-label="Timeline"
+      // A column that fills its dock area: the layout, not the canvases' pixel sizes, sizes every box.
+      style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, overflow: 'hidden' }}
+    >
       <div className="timeline-toolbar" role="toolbar" data-tt-role="toolbar" data-tt-id="timeline.toolbar">
         <button
           type="button"
@@ -602,8 +615,8 @@ export function TimelinePanel() {
           data-tt-role="button"
           data-tt-id="timeline.solo"
           data-tt-command="element.solo.set"
-          data-tt-params={JSON.stringify(soloRef?.params ?? {})}
-          onClick={() => void actions.perform('element.solo.set', soloRef?.params ?? {})}
+          data-tt-params={JSON.stringify(soloRun)}
+          onClick={() => void actions.perform('element.solo.set', soloRun)}
         >
           Solo
         </button>
@@ -734,7 +747,6 @@ export function TimelinePanel() {
           </div>
         </div>
         <div
-          ref={boxRef}
           className="timeline-tracks-box"
           style={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column', position: 'relative' }}
           onWheel={onWheel}
@@ -748,18 +760,33 @@ export function TimelinePanel() {
             onContextMenu={openRulerMenu}
             {...pointerHandlers('ruler')}
           />
-          <canvas
-            ref={tracksRef}
-            className="timeline-tracks"
-            data-tt-role="canvas"
-            data-tt-id="timeline.tracks"
-            data-tt-first-frame={position.firstFrame}
-            data-tt-zoom={position.zoomLevel}
-            data-tt-rows={shown.length}
-            style={{ width: '100%', flex: 1, minHeight: 0, display: 'block', touchAction: 'none' }}
-            onContextMenu={openTracksMenu}
-            {...pointerHandlers('tracks')}
-          />
+          {/* The tracks canvas fills its area and never sizes it: a canvas's pixel height as its layout height grew the
+              box at every resize, which the size observer fed back without end. */}
+          <div
+            ref={boxRef}
+            className="timeline-tracks-area"
+            style={{ flex: 1, minHeight: 0, position: 'relative' }}
+          >
+            <canvas
+              ref={tracksRef}
+              className="timeline-tracks"
+              data-tt-role="canvas"
+              data-tt-id="timeline.tracks"
+              data-tt-first-frame={position.firstFrame}
+              data-tt-zoom={position.zoomLevel}
+              data-tt-rows={shown.length}
+              style={{
+                position: 'absolute',
+                inset: 0,
+                width: '100%',
+                height: '100%',
+                display: 'block',
+                touchAction: 'none',
+              }}
+              onContextMenu={openTracksMenu}
+              {...pointerHandlers('tracks')}
+            />
+          </div>
           <input
             type="range"
             className="timeline-hscroll"
