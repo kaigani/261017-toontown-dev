@@ -90,6 +90,9 @@ pub struct State {
     /// Effect-parameter rows hidden by default, and per effect element.
     pub parameter_rows_hidden: bool,
     pub parameter_rows: BTreeMap<String, bool>,
+    /// The drag-and-drop option set in effect (04's names): a cell drag carries the set resolved at its press, inline
+    /// in its `cell.range.move` (ruling E-32).
+    pub drag_options: serde_json::Map<String, Value>,
 }
 
 impl State {
@@ -127,6 +130,10 @@ impl State {
             range_free,
             parameter_rows_hidden: s.timeline.parameter_rows_hidden,
             parameter_rows: s.timeline.parameter_rows.clone(),
+            drag_options: crate::commands::transfer_options::cell_base_in(
+                s,
+                crate::commands::transfer_options::Operation::DragDrop,
+            ),
         }
     }
 }
@@ -213,8 +220,10 @@ pub enum Target {
 pub fn frame_at(l: &Layout, g: &GestureLayout, x: f64) -> u32 {
     let z = l.zoom(g.zoom_level);
     let cell = (x / f64::from(z.cell_width.max(1))).floor();
+    // `as` saturates a finite float at the integer range; the arithmetic after it saturates too, so no coordinate can
+    // wrap (ruling E-31; the entry points also refuse coordinates beyond [`COORDINATE_BOUND`]).
     let cell = if cell.is_finite() { cell as i64 } else { 0 };
-    let f = i64::from(g.first_frame) + cell * i64::from(z.frames_per_cell.max(1));
+    let f = i64::from(g.first_frame).saturating_add(cell.saturating_mul(i64::from(z.frames_per_cell.max(1))));
     u32::try_from(f.clamp(1, i64::from(u32::MAX))).unwrap_or(1)
 }
 
@@ -304,6 +313,61 @@ fn keyed(doc: &Document, id: &Id) -> Vec<u32> {
     crate::commands::timeline::keyed_frames(doc, id, &mut budget).unwrap_or_default()
 }
 
+/// What a press in a row of the tracks hits (ruling E-35; the rule is stated in `timeline-layout.json`).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
+#[serde(rename_all = "camelCase", tag = "zone")]
+pub enum Zone {
+    /// A keyframe symbol (its scene frame).
+    Keyframe {
+        /// The keyed frame.
+        frame: u32,
+    },
+    /// The end column's upper half of a loopable bar.
+    LoopHandle,
+    /// The end column elsewhere.
+    BarEnd,
+    /// The start handle.
+    BarStart,
+    /// Strictly between the bar's edges.
+    BarBody,
+    /// Anywhere else: a cell.
+    Cell,
+}
+
+/// The zone under `x` in a row (ruling E-35), in priority order, each zone including its edge pixels: a keyframe symbol
+/// (`keys` holds the keyed frames in the row's keyframe band, empty outside it; the earliest within `keyframeRadius`),
+/// the end column (`endHandleWidth`: the loop handle in the upper half of a loopable bar, else the end handle), the start
+/// handle (`startHandleWidth`), the body, a cell. `bar` is the bar's first and last frame (its first cycle).
+#[must_use]
+pub fn zone_at(
+    l: &Layout,
+    g: &GestureLayout,
+    x: f64,
+    upper: bool,
+    bar: Option<(u32, u32)>,
+    loopable: bool,
+    keys: &[u32],
+) -> Zone {
+    let cw = f64::from(l.zoom(g.zoom_level).cell_width);
+    let radius = f64::from(l.keyframe_radius);
+    if let Some(k) = keys.iter().find(|k| (x - (x_of(l, g, **k) + cw / 2.0)).abs() <= radius) {
+        return Zone::Keyframe { frame: *k };
+    }
+    if let Some((start, end)) = bar {
+        let (xs, xe) = (x_of(l, g, start), x_of(l, g, end) + cw);
+        if (x - xe).abs() <= f64::from(l.end_handle_width) {
+            return if upper && loopable { Zone::LoopHandle } else { Zone::BarEnd };
+        }
+        if (x - xs).abs() <= f64::from(l.start_handle_width) {
+            return Zone::BarStart;
+        }
+        if x > xs && x < xe {
+            return Zone::BarBody;
+        }
+    }
+    Zone::Cell
+}
+
 // ----- the press -----------------------------------------------------------------------------------------------------------
 
 /// What is under a press (design note §5.2).
@@ -340,37 +404,22 @@ pub fn classify(doc: &Document, state: &State, g: &GestureLayout, s: &Sample) ->
             let row = &rows[r];
             let element = row.id.as_str().to_owned();
             let frame = frame_at(l, g, s.x);
-            let radius = f64::from(l.keyframe_radius);
             let top_half = (s.y + g.scroll_top) - (r as f64) * f64::from(l.row_height) < f64::from(l.row_height) / 2.0;
             let selected =
                 state.cells.as_ref().is_some_and(|(els, a, b)| els.contains(&row.id) && (*a..=*b).contains(&frame));
             // A cell-based row draws its keyframe symbols in the upper half, its drawing symbols in the lower half; a
             // press inside the cell selection drags the cells (design note §5.2).
             let key_band = !row.ty.is_cell_based() || (top_half && !selected);
-            if key_band
-                && let Some(k) =
-                    keyed(doc, &row.id).into_iter().find(|k| (s.x - (x_of(l, g, *k) + cw / 2.0)).abs() <= radius)
-            {
-                return Target::Keyframe { row: r, element, frame: k };
+            let keys = if key_band { keyed(doc, &row.id) } else { Vec::new() };
+            let bar = bar_of(doc, &row.id).map(|(start, end, ..)| (start, end));
+            match zone_at(l, g, s.x, top_half, bar, loopable(row.ty), &keys) {
+                Zone::Keyframe { frame: k } => Target::Keyframe { row: r, element, frame: k },
+                Zone::LoopHandle => Target::LoopHandle { row: r, element },
+                Zone::BarEnd => Target::BarEnd { row: r, element },
+                Zone::BarStart => Target::BarStart { row: r, element },
+                Zone::BarBody => Target::BarBody { row: r, element, frame },
+                Zone::Cell => Target::Cell { row: r, element, frame, selected },
             }
-            if let Some((start, end, ..)) = bar_of(doc, &row.id) {
-                let (xs, xe) = (x_of(l, g, start), x_of(l, g, end) + cw);
-                let handle = f64::from(l.bar_handle_width);
-                if (s.x - xe).abs() <= handle.max(f64::from(l.loop_handle_width)) {
-                    return if top_half && loopable(row.ty) {
-                        Target::LoopHandle { row: r, element }
-                    } else {
-                        Target::BarEnd { row: r, element }
-                    };
-                }
-                if (s.x - xs).abs() <= handle {
-                    return Target::BarStart { row: r, element };
-                }
-                if s.x > xs && s.x < xe {
-                    return Target::BarBody { row: r, element, frame };
-                }
-            }
-            Target::Cell { row: r, element, frame, selected }
         }
     }
 }
@@ -478,7 +527,8 @@ pub fn plan(doc: &Document, state: &State, g: &GestureLayout, samples: &[Sample]
         Target::Cell { row, frame, .. } if !dragged => cell_click(state, &rows, row, frame, first, &mods, len),
         Target::Cell { row, frame, selected: true, .. } => {
             let Some((els, from, to)) = &state.cells else { return Plan::Nothing };
-            let drows = row_at(l, g, last.y, usize::MAX).map_or(0, |r| r as i64 - row as i64);
+            let as_i64 = |r: usize| i64::try_from(r).unwrap_or(i64::MAX);
+            let drows = row_at(l, g, last.y, usize::MAX).map_or(0, |r| as_i64(r).saturating_sub(as_i64(row)));
             let delta = delta.max(1 - i64::from(*from));
             if delta == 0 && drows == 0 {
                 return cell_click(state, &rows, row, frame, first, &mods, len);
@@ -490,16 +540,19 @@ pub fn plan(doc: &Document, state: &State, g: &GestureLayout, samples: &[Sample]
             } else {
                 "move"
             };
+            // The drag-and-drop set resolved at the press, inline: a change of the stored set while the drag is in
+            // progress does not change what the preview showed (ruling E-32).
             let mut params = json!({
                 "sourceElementIds": ids_json(els),
                 "from": from,
                 "to": to,
                 "targetFrame": i64::from(*from) + delta,
                 "mode": mode,
+                "options": Value::Object(state.drag_options.clone()),
             });
             if drows != 0 {
                 let base = els.first().and_then(|e| rows.iter().position(|r| &r.id == e)).unwrap_or(row);
-                let t = base as i64 + drows;
+                let t = i64::try_from(base).unwrap_or(i64::MAX).saturating_add(drows);
                 let Some(target) = usize::try_from(t).ok().and_then(|t| rows.get(t)) else { return Plan::Nothing };
                 params["targetElementId"] = json!(target.id.as_str());
             }
@@ -733,6 +786,33 @@ pub enum Request {
     },
 }
 
+/// The largest coordinate a gesture's sample or scroll position may have, in pixels (ruling E-31): 100 000 frames at the
+/// widest cell (48 px) is 4.8 million pixels; anything beyond is not a pointer position and is refused (`arg.invalid`).
+pub const COORDINATE_BOUND: f64 = 10_000_000.0;
+
+fn bounded(v: f64, pointer: &str) -> Result<(), CommandError> {
+    if v.is_finite() && v.abs() <= COORDINATE_BOUND {
+        return Ok(());
+    }
+    Err(CommandError::with_details(
+        tt_registry::codes::ARG_INVALID,
+        format!("a gesture coordinate must be a number within ±{COORDINATE_BOUND} pixels"),
+        json!({ "pointer": pointer, "allowed": { "minimum": -COORDINATE_BOUND, "maximum": COORDINATE_BOUND } }),
+    ))
+}
+
+/// Refuses a layout or a sample with a coordinate beyond [`COORDINATE_BOUND`] (the window's entry and `timing_replay`).
+pub(crate) fn check_input(layout: Option<&GestureLayout>, samples: &[Sample], at: &str) -> Result<(), CommandError> {
+    if let Some(g) = layout {
+        bounded(g.scroll_top, "/layout/scrollTop")?;
+    }
+    for (i, s) in samples.iter().enumerate() {
+        bounded(s.x, &format!("{at}/{i}/x"))?;
+        bounded(s.y, &format!("{at}/{i}/y"))?;
+    }
+    Ok(())
+}
+
 /// The most grabs kept at once (a window has one gesture in progress; older grabs are abandoned).
 const MAX_GRABS: usize = 8;
 
@@ -745,6 +825,7 @@ pub(crate) fn run(
 ) -> Result<Value, CommandError> {
     match req {
         Request::Press { layout: g, sample } => {
+            check_input(Some(&g), std::slice::from_ref(&sample), "/sample")?;
             let s = core.session_mut().ok_or_else(crate::cx::no_project)?;
             let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
             let doc = p.doc.clone();
@@ -767,6 +848,7 @@ pub(crate) fn run(
             Ok(json!({ "aborted": true }))
         }
         Request::Release { grab_id, samples } => {
+            check_input(None, &samples, "/samples")?;
             let s = core.session_mut().ok_or_else(crate::cx::no_project)?;
             let grab = s.timeline.grabs.remove(&grab_id).ok_or_else(|| {
                 CommandError::with_details(
@@ -943,7 +1025,7 @@ fn resolved_values(doc: &Document, command: &str, p: &Value) -> Value {
                 dest_ids.iter().map(|e| json!([e.as_str(), frames(target, target + span, e)])).collect();
             json!({
                 "command": command, "targetFrame": target, "targetElementId": p["targetElementId"],
-                "mode": p["mode"], "grabbed": grabbed, "destination": destination,
+                "mode": p["mode"], "options": p["options"], "grabbed": grabbed, "destination": destination,
             })
         }
         // `element.order.set` names the whole level's order; the selection and position commands are absolute.
@@ -998,6 +1080,7 @@ pub(crate) fn replay(
     samples: &[Sample],
     execute: bool,
 ) -> Result<Value, CommandError> {
+    check_input(Some(g), samples, "/samples")?;
     let s = core.session_mut().ok_or_else(crate::cx::no_project)?;
     let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
     let doc = p.doc.clone();
@@ -1037,6 +1120,26 @@ mod tests {
         for c in cases["xOf"].as_array().cloned().unwrap_or_default() {
             let got = x_of(l, &g(n(&c["zoomLevel"]), n(&c["firstFrame"])), u32::try_from(n(&c["frame"])).unwrap_or(1));
             assert!((got - f(&c["xLeft"])).abs() < 1e-9, "{c}");
+        }
+        // The hit zones (ruling E-35).
+        let zone_cases = cases["zones"].as_array().cloned().unwrap_or_default();
+        assert!(zone_cases.len() > 40);
+        for c in &zone_cases {
+            let bar = c["bar"]
+                .as_array()
+                .map(|b| (u32::try_from(n(&b[0])).unwrap_or(1), u32::try_from(n(&b[1])).unwrap_or(1)));
+            let keys: Vec<u32> =
+                c["keys"].as_array().into_iter().flatten().filter_map(|k| u32::try_from(n(k)).ok()).collect();
+            let got = zone_at(
+                l,
+                &g(n(&c["zoomLevel"]), n(&c["firstFrame"])),
+                f(&c["x"]),
+                c["upper"] == true,
+                bar,
+                c["loopable"] == true,
+                &keys,
+            );
+            assert_eq!(serde_json::to_value(got).unwrap_or_default(), c["zone"], "{c}");
         }
         for c in cases["rowAt"].as_array().cloned().unwrap_or_default() {
             let mut gl = g(6, 1);

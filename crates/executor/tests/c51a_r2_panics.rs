@@ -72,23 +72,33 @@ fn e2_atomic_second_step_and_expect_rev_and_retry() {
     }
 }
 #[test]
-fn e2_requested_retry_oracle() {
+fn e2_requested_retry_returns_the_original_internal_answer_without_running_again() {
+    // Ruling E-34: a repeated `requestId` returns the original result instead of executing again (spec/11 lines
+    // 300-301), so a retry after a contained panic answers the same `internal` and the handler does not run a second time.
     let _guard = SERIAL.lock().unwrap_or_else(|e| e.into_inner());
     let h = injected();
     let before = state(&h);
     let options = InvokeOptions { request_id: Some("r2-panic-retry".into()), ..Default::default() };
-    for _ in 0..2 {
-        let n = CALLS.load(Ordering::SeqCst);
-        let out = h.invoke(Invocation {
+    let call = || {
+        h.invoke(Invocation {
             command: "colour.palette.create".into(),
             params: json!({}),
             options: options.clone(),
             origin: Origin::User,
-        });
-        assert_eq!(out.error.unwrap().details["reason"], "handlerPanicked");
-        assert_eq!(CALLS.load(Ordering::SeqCst), n + 1, "retry executes handler");
-        assert_eq!(state(&h), before);
-    }
+        })
+    };
+    let n = CALLS.load(Ordering::SeqCst);
+    let first = call().error.unwrap();
+    assert_eq!(first.details["reason"], "handlerPanicked");
+    assert_eq!(CALLS.load(Ordering::SeqCst), n + 1, "the first call runs the handler");
+    assert_eq!(state(&h), before);
+    let retry = call().error.unwrap();
+    assert_eq!(
+        (retry.code.as_str(), &retry.message, &retry.details),
+        (first.code.as_str(), &first.message, &first.details)
+    );
+    assert_eq!(CALLS.load(Ordering::SeqCst), n + 1, "the retry does not run the handler again");
+    assert_eq!(state(&h), before);
     for _ in 0..20 {
         ok(&h, "timeline.rows.list", json!({}));
     }

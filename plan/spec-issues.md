@@ -2564,7 +2564,12 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   range both rules apply where they do not conflict: a start past the end moves the end (and the reverse), then values
   are clamped to 1..scene length, and the clamped values are returned. Which command each surface sends:
   `reviews/M5-C5.1-plan.md` §3 and §6.3 (the Timeline sends the 04 commands; the keymap and toolbar keep `app.frame.*`).
-- **Question:** confirm, or name one canonical command per state.
+- **One difference the pair keeps (rulings E-27, E-30):** out of range, `timeline.currentFrame.set {frame}` clamps any
+  integer to 1..scene length and answers `clamped: true` (09 line 139; spec A line 478: "clamped to 1..scene length"),
+  while `app.frame.set {frame}` refuses with `arg.invalid` (spec A line 57 states its range, `frame: int (1–scene
+  length)`; M1's builder tests `c12_policy` and `c12_kernel_state` pin the refusal). In range the two write the same
+  state and raise the same events.
+- **Question:** confirm, or name one canonical command per state (and whether `app.frame.set` should clamp too).
 
 ## SI-203 — the 04 Timeline settings and the 01 §7.3 preference keys (found in M5 C5.1 planning; interim)
 
@@ -2715,4 +2720,5 @@ Ruling D-57 as above: none is built.
 | Proposed row (A's columns: id, kind, label, parameters, result, undo) | Why | Without it |
 |---|---|---|
 | `doc.state.get` result member `caughtPanics: int` | how many handler panics the engine contained since it started (ruling E-29): an agent or a test can tell that a call failed unexpectedly without reading stderr | stderr (`toontown: contained handler panic #n ...`), the host-only `shell.handlerPanicked` notice (window only), and `ExecutorHandle::caught_panics` for embedding code and tests |
+| `timeline.rows.list` row member `shownInTimeline: bool` | whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's setting hides (04 §2.9, §9.4); the window draws exactly the rows the timing-gesture interpreter hit-tests (built in C5.1a round 1, kept pending the ruling: `reviews/M5-C5.1a-r2-response.md` §1) | the collapsed part can be derived from `depth` and `collapsed`; the hidden effect-parameter rows cannot, since no query reads `timeline.effectParameterRows.set`'s state, so the window's row order could differ from the interpreter's and a press would hit another row |
 | `engine.degraded` \| event \| The engine stopped serving after an unexpected failure \| — \| `{message}` \| n/a | an MCP client learns of a degraded engine from an event rather than from its next call's `internal` (ruling E-29) | the host-only `shell.engineDegraded` notice (window only); an agent sees `internal` with reason `engineStopped` and the hint on its next call |

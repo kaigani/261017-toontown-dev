@@ -530,20 +530,54 @@ fn e25_the_e5_equality_holds_for_every_member_with_clones_and_locked_drawings() 
             }
         }
     }
-    // One difference, sent to the orchestrator under E-17 item 4 and changed nowhere (the response, E-25): with the
-    // exposure option off a paste overwrites the destination cells; `cell.clipboard.apply` refuses when a destination
-    // cell exposes a locked drawing (its M3 rule), `edit.pasteSpecial` refuses only when it would overwrite a locked
-    // drawing's content (`c12_r3_contracts::fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit`) and
-    // here reuses the same drawings, so it pastes.
-    let expected: Vec<String> = ["xsheet", "timeline"]
-        .iter()
-        .map(|c| {
-            format!(
-                "noExposure / locked / {c} / -1: edit.pasteSpecial vs cell.clipboard.apply: [\"status\", \"error\"] (null / \"drawing.locked\")"
-            )
-        })
-        .collect();
-    assert_eq!(differences, expected, "special = structured with every member stored, but for the stated difference");
+    // Ruling E-30 removed the one difference this test pinned before: with the exposure option off, `edit.pasteSpecial`
+    // refuses over cells exposing locked drawings, as `cell.clipboard.apply` does (04 line 1074, ruling D-80).
+    assert!(differences.is_empty(), "special = structured with every member stored:\n{}", differences.join("\n"));
+}
+
+/// Ruling E-30: with the exposure option off, a special paste, `cell.range.move` and the Timeline's cell drag over cells
+/// exposing a locked drawing are refused with `drawing.locked` before anything changes.
+#[test]
+fn e30_writing_over_cells_of_locked_drawings_is_refused_in_every_form() {
+    let off = members(&[("createDeleteExposure", false)]);
+    let setup = |h: &ExecutorHandle| {
+        ok(h, "prefs.set", json!({"values": {"edit.pasteSpecial.timeline": off, "edit.dragDrop.timeline": off}}));
+        let drawings = ok(h, "element.drawing.list", json!({"elementId": BOB}));
+        let ids: Vec<Value> = drawings["drawings"].as_array().unwrap().iter().map(|d| d["id"].clone()).collect();
+        ok(h, "element.drawingLock.set", json!({"drawingIds": ids, "locked": true}));
+    };
+    let unchanged = |h: &ExecutorHandle, before: &Value, rev_before: u64| {
+        assert_eq!(&ok(h, "xsheet.exposures.get", json!({})), before);
+        assert_eq!(rev(h), rev_before);
+    };
+    // Paste special over Bob's own last run.
+    let h = fixture();
+    setup(&h);
+    ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 1, "to": 2}));
+    ok(&h, "edit.copy", json!({"context": "xsheet"}));
+    let dest = bob_end(&h) - 1;
+    ok(&h, "cell.select", json!({"elementIds": [BOB], "from": dest, "to": dest}));
+    ok(&h, "xsheet.currentCell.set", json!({"elementId": BOB, "frame": dest}));
+    let (before, r) = (ok(&h, "xsheet.exposures.get", json!({})), rev(&h));
+    assert_eq!(err(&h, "edit.pasteSpecial", json!({"context": "xsheet"})).code, "drawing.locked");
+    unchanged(&h, &before, r);
+    // `cell.range.move` (the drag-and-drop set) onto the same cells.
+    let move_params = json!({"sourceElementIds": [BOB], "from": 1, "to": 2, "targetFrame": dest, "mode": "copy"});
+    assert_eq!(err(&h, "cell.range.move", move_params).code, "drawing.locked");
+    unchanged(&h, &before, r);
+    // The Timeline's drag of the selected cells: the interpreter commits `cell.range.move`, refused the same way.
+    ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 1, "to": 2}));
+    let row = visible_row(&h, "Bob");
+    let samples =
+        json!([at(row, 8.0, false), at(row, f64::from(i32::try_from(dest - 1).unwrap()) * 16.0 + 8.0, false)]);
+    let press =
+        h.timing_gesture(Origin::User, json!({"phase": "press", "layout": layout(), "sample": samples[0]})).unwrap();
+    let out = h
+        .timing_gesture(Origin::User, json!({"phase": "release", "grabId": press["grabId"], "samples": samples}))
+        .unwrap();
+    let envelopes = out["envelopes"].as_array().cloned().unwrap_or_default();
+    assert_eq!(envelopes.last().map(|e| e["error"]["code"].clone()), Some(json!("drawing.locked")), "{out}");
+    unchanged(&h, &before, r);
 }
 
 // ----- the `xsheet` composition: pixels and the camera (the observation on SI-107) --------------------------------------
@@ -660,4 +694,36 @@ fn remembered_paste_special_members_survive_a_restart_and_govern_both_families()
     assert_eq!(ok(&h, "timeline.transferOptions.get", json!({"operation": "dragDrop"})), drag, "drag untouched");
     drop(h);
     std::fs::remove_dir_all(root).unwrap();
+}
+
+/// Ruling E-32 (C51A-R2S-02, the reviewer's input on the fixture): a cell drag carries the drag-and-drop set resolved at
+/// its press, inline in its `cell.range.move`; the stored set changed between press and release (the document unchanged)
+/// does not change what is committed, for move, copy and link.
+#[test]
+fn e32_a_cell_drag_commits_the_option_set_of_its_press() {
+    for (mode, mods) in [("move", json!([])), ("copy", json!(["ctrl"])), ("link", json!(["shift", "ctrl"]))] {
+        let h = fixture();
+        ok(&h, "timeline.transferOptions.set", json!({"operation": "dragDrop", "options": {"exposure": true}}));
+        ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 1, "to": 1}));
+        let r = visible_row(&h, "Bob");
+        let release_at = json!({"x": 2.0 * 16.0 + 8.0, "y": r as f64 * 22.0 + 16.0, "modifiers": mods});
+        let samples = json!([at(r, 8.0, false), release_at]);
+        let press = h
+            .timing_gesture(Origin::User, json!({"phase": "press", "layout": layout(), "sample": samples[0]}))
+            .unwrap();
+        // The stored set changes while the drag is in progress; the document does not.
+        ok(&h, "timeline.transferOptions.set", json!({"operation": "dragDrop", "options": {"exposure": false}}));
+        let out = h
+            .timing_gesture(Origin::User, json!({"phase": "release", "grabId": press["grabId"], "samples": samples}))
+            .unwrap();
+        assert!(out.get("cancelled").is_none(), "{mode}: {out}");
+        let sent = &out["plan"]["commands"][0][1];
+        assert_eq!(sent["mode"], mode);
+        assert_eq!(sent["options"]["exposure"], true, "{mode}: the press-time set travels with the command: {sent}");
+        // The same as the direct command with the press-time set, on a fresh fixture.
+        let g = fixture();
+        let direct = json!({"sourceElementIds": [BOB], "from": 1, "to": 1, "targetFrame": 3, "mode": mode, "options": {"exposure": true}});
+        ok(&g, "cell.range.move", direct);
+        assert_eq!(ok(&h, "xsheet.exposures.get", json!({})), ok(&g, "xsheet.exposures.get", json!({})), "{mode}");
+    }
 }

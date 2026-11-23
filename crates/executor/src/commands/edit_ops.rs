@@ -1338,6 +1338,16 @@ fn paste(
                     })
                     .collect();
                 let width = block.iter().map(|(o, _)| *o + 1).max().unwrap_or(0) as usize;
+                // Ruling E-30: with the exposure option off a special paste writes over the destination cells; a cell
+                // exposing a locked drawing refuses it before anything is staged (04 line 1074, ruling D-80), as
+                // `cell.clipboard.apply` refuses. (The plain paste's rule is E-17's, as built.)
+                if topts.is_some() && !insert {
+                    let existing = frames_of(&doc, t.as_str());
+                    let lo = (start as usize).saturating_sub(1);
+                    for d in existing.iter().skip(lo).take(width).flatten() {
+                        check_drawing_unlocked(&doc, d)?;
+                    }
+                }
                 let mut placed: Vec<Option<String>> = vec![None; width];
                 for (offset, d) in &block {
                     let resolved = match d {

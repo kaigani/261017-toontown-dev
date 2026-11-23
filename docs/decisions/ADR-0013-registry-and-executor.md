@@ -130,7 +130,10 @@ state commands (§5, §12).
    (restart the engine, then `project.recovery.list`), the same answer as a document thread that died outright. The
    desktop watchdog marks a heartbeat answered that way as not responding at once, so the restart and its recovery are
    offered; before this amendment a dead thread's immediate `internal` answers were counted as neither a miss nor an
-   answer and the restart was never offered (an M4 defect found by M5).
+   answer and the restart was never offered (an M4 defect found by M5). "Nothing was changed" covers the session and
+   the document; a job the call started that already finished and published its result is not reversed (cancellation
+   cannot undo it, and loses to a job past its commit point), and a retry with the same `requestId` is answered from
+   the request cache with the same failure (ruling E-33).
 
 4. **Transactions and revisions.** A handler stages changes through `Cx` (`patch_objects` for property edits,
    `patch_entries` for structural edits from M2 on); staging commits through `Document::with_patched_entries_undo_only`

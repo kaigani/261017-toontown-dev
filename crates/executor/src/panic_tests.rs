@@ -91,6 +91,12 @@ fn panics(cx: &mut Cx, p: PanicParams) -> Result<Value, CommandError> {
         }
         "timeline" => cx.session_mut().timeline.reveal_count += 1,
         "events" => cx.emit("test.half", json!({})),
+        "jobDone" => {
+            // A job that runs to its end and publishes its result before the handler panics (ruling E-33).
+            let jobs = cx.session().jobs.clone();
+            let id = jobs.submit("colour.palette.create", "", |_| Ok(json!({ "outputs": ["out.png"] })))?;
+            let _ = jobs.wait(&id, Duration::from_secs(30));
+        }
         other => std::panic::panic_any(format!("test: unknown point {other}")),
     }
     std::panic::panic_any(format!("test: the handler panics after `{}`", p.at));
@@ -160,6 +166,68 @@ fn every_session_field_is_classified_against_the_rollback() {
         planar: _,
         selection_checked: _,
     } = Session::default();
+}
+
+/// Ruling E-33: the same for the two structures inside the session whose fields a handler can reach, the open project
+/// and the agent hub, so a field added to either stops the build until it is classified. (The session's other fields are
+/// restored whole, as values, by the `Rollback`, so their inner fields are covered by construction: the application
+/// context, the UI state, the Timeline state, the clipboard and the edit options are cloned and put back entire.)
+#[test]
+fn every_project_and_agent_hub_field_is_classified_against_the_rollback() -> Outcome {
+    let doc = tt_model::fixture::sample_document(1).map_err(why)?;
+    let OpenProject {
+        // Never changed by a failed call: the staged document lives in the call's `Cx` until `accept`.
+        doc: _,
+        // Changed only by `accept` (commit, undo step, revision log, the saved revision and dirty state).
+        history: _,
+        log: _,
+        saved_rev: _,
+        permanent_dirty: _,
+        // Restored by the `Rollback`.
+        checkpoints: _,
+        // Set by opening and saving (their own requests, not a handler's staging).
+        path: _,
+        form: _,
+        read_only: _,
+        store: _,
+    } = OpenProject::new(doc, None, false);
+    let crate::agents::AgentHub {
+        // Restored by the `Rollback`.
+        sessions: _,
+        limits: _,
+        next_session: _,
+        persist: _,
+        typed_tools: _,
+        typed_tools_version: _,
+        ttl: _,
+        server_enabled: _,
+        serving: _,
+        // Kept on purpose: a refused call's confirmation requests and activity entries are records (11 §6.3, §11).
+        pending: _,
+        activity: _,
+        next_seq: _,
+    } = crate::agents::AgentHub::default();
+    Ok(())
+}
+
+/// Ruling E-33: what "nothing was changed" does not cover. A job the call started that ran to its end and published its
+/// result before the handler panicked is not reversed (cancellation cannot undo a finished job, and loses to a job past
+/// its commit point): the caller sees the call answered `internal`, and the job listed as finished with its result.
+#[test]
+fn a_job_that_finished_before_the_panic_is_not_reversed() -> Outcome {
+    let mut core = core()?;
+    let env = core.invoke(&Invocation::user("colour.palette.create", json!({ "at": "jobDone" })));
+    let e = env.error.ok_or("the call succeeded")?;
+    assert_eq!((e.code.as_str(), e.details["reason"].clone()), ("internal", json!(HANDLER_PANICKED)));
+    let jobs = core.session().ok_or("no session")?.jobs.list(None, None);
+    let job = jobs.last().ok_or("no job")?;
+    assert!(job.state.is_final(), "{job:?}");
+    assert_eq!(job.result.as_ref().map(|r| r["outputs"].clone()), Some(json!(["out.png"])), "{job:?}");
+    // The notice names no cancelled job: there was nothing left to cancel.
+    let events = core.take_events();
+    let notice = events.iter().find(|e| e.name == "shell.handlerPanicked").ok_or("no notice")?;
+    assert_eq!(notice.payload["cancelledJobIds"], json!([]), "the job was already final: nothing to cancel");
+    Ok(())
 }
 
 /// Ruling E-29 item 1, condition 2: the handler panics before staging, after staging, after starting a job and after

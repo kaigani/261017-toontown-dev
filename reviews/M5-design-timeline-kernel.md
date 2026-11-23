@@ -336,3 +336,28 @@ the difference goes to the orchestrator before either changes (E-5).
   applied.
 - **Rows shown (C5.1b):** `timeline.rows.list` rows carry `shownInTimeline`, the interpreter's `visible_rows` (not
   under a collapsed parent, not a hidden effect-parameter row), so the window's row order is the kernel's.
+
+## 12. After round 2 (rulings E-30 to E-35)
+
+- **Hit zones (E-35).** In a row of the tracks the zones are decided in this order, the first that holds wins, and
+  every zone includes its edge pixels (`<=`): (1) a keyframe symbol in its band (a bar row: the whole row; a cell-based
+  row: the upper half, outside the cell selection), `|x − centre| <= keyframeRadius` (5), the earliest keyed frame when
+  two qualify; (2) the **end column**, `|x − end edge| <= endHandleWidth` (6): the loop handle in the upper half of a
+  loopable bar, else the end handle; (3) the start handle, `|x − start edge| <= startHandleWidth` (5); (4) the body,
+  strictly between the edges; (5) a cell. The upper half is `y_in_row < rowHeight / 2`. So a keyframe on the start frame
+  wins over the start handle, the end column wins over the start handle on a short bar, and the end handle is 6 px
+  either side because the end column is one zone shared by the end handle (lower half) and the loop handle (upper
+  half): the constant was renamed for what it is (`loopHandleWidth` → `endHandleWidth`, `barHandleWidth` →
+  `startHandleWidth`), and the reviewer's pinned pixels of `f2_pixel_zone_matrix` hold unchanged. In the ruler a free
+  range's start marker wins over its end marker (`|x − centre| <= rangeMarkerHalfWidth`), else the ruler; in the layer
+  list `y = k × rowHeight` is row k, and a drop is onto a parent-capable row when `dropZoneBetween < fraction <
+  1 − dropZoneBetween`, else between (above when `fraction < 0.5`). The rule is in `timeline-layout.json`'s comment;
+  `timing_gesture::zone_at` is the one function, and the shared case table's `zones` section (322 cases, written by
+  `scripts/gen-timeline-zone-cases.py`) is checked by the kernel's unit test and by the window's Vitest.
+- **Coordinates (E-31).** A gesture sample, or a layout's scroll position, beyond ±`COORDINATE_BOUND` (10 000 000 px)
+  is `arg.invalid` at the window's entry and at `timing_replay`; `frame_at` and the row arithmetic saturate, so no input
+  wraps.
+- **The drag-and-drop set (E-32).** A cell drag's `cell.range.move` carries the set resolved at the press (`options`,
+  04's names), so a change of the stored set while the drag is in progress does not change what is committed.
+- **A paste over locked drawings (E-30).** `edit.pasteSpecial` with the exposure option off refuses over cells exposing
+  locked drawings (`drawing.locked`), as `cell.clipboard.apply` and `cell.range.move` do.

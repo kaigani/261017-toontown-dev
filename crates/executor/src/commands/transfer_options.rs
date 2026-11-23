@@ -159,13 +159,25 @@ fn unknown_member(pointer: &str) -> CommandError {
 
 /// The members stored for an operation (01's names), each a boolean: what was set, field by field.
 pub(crate) fn stored_members(cx: &Cx, op: Operation) -> Map<String, Value> {
+    members_of(cx.pref_raw(op.key()))
+}
+
+/// The known boolean members of a stored value.
+fn members_of(raw: Option<Value>) -> Map<String, Value> {
     let known: Vec<&str> = EDIT_DEFAULTS.iter().map(|(k, _)| *k).collect();
-    cx.pref_raw(op.key())
-        .and_then(|v| v.as_object().cloned())
+    raw.and_then(|v| v.as_object().cloned())
         .unwrap_or_default()
         .into_iter()
         .filter(|(k, v)| v.is_boolean() && known.contains(&k.as_str()))
         .collect()
+}
+
+/// [`cell_base`] read from a committed session (no call in progress): the set the 04 family applies, in 04's names. The
+/// timing-gesture interpreter resolves the drag-and-drop set with it at the press (ruling E-32).
+pub(crate) fn cell_base_in(s: &crate::session::Session, op: Operation) -> Map<String, Value> {
+    let mut m = table(&CELL_DEFAULTS);
+    m.extend(members_of(s.env.settings.prefs.get(op.key()).cloned()));
+    to_04(&m)
 }
 
 /// The `edit.*` family's set of an operation (01's names): the stored members over 01 §6.3's defaults.

@@ -219,3 +219,19 @@ the unverified path of §1.2.
 
 The argument sweep (`c51_argument_sweep`) still fails on a contained panic: no call may answer `internal` (nor
 `handlerPanicked`), and each fixture's `caught_panics` must be 0 at the end.
+
+### 4.5 What "nothing was changed" covers, and its limits (ruling E-33)
+
+- **Jobs.** A contained panic cancels the jobs its call started that have not finished. A job that already ran to its end
+  and published its result (its outputs written, `job.finished` raised) is **not reversed**: cancellation cannot undo a
+  finished job, and a job past its commit point completes (`JobTable::cancel`). The caller then sees the call answered
+  `internal` (`handlerPanicked`) and the job listed as finished with its result; the notice's `cancelledJobIds` names
+  only the jobs whose cancellation was requested. Test: `panic_tests::a_job_that_finished_before_the_panic_is_not_reversed`.
+- **The field tests.** `every_session_field_is_classified_against_the_rollback` names the session's top-level fields;
+  `every_project_and_agent_hub_field_is_classified_against_the_rollback` names the fields of the open project and the
+  agent hub, the two structures inside the session whose parts a handler reaches and the `Rollback` treats field by
+  field. The other session values (application context, UI state, Timeline state, clipboard, edit options) are
+  restored whole, as cloned values, so a field added inside them is covered by construction.
+- **A retry with the same `requestId`.** The request cache keeps the first envelope of an id, whatever it was (C12-R3-03),
+  so a retry after a contained panic is answered with the same `internal` failure, not run again. That is the cache's
+  rule for every failure; a caller that wants the command run again sends a new `requestId`.

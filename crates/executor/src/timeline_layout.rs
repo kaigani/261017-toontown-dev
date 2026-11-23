@@ -51,9 +51,9 @@ pub struct Layout {
     /// The viewport width of a session without a window.
     pub headless_viewport_width: u32,
     /// Width of a bar's start and end handles.
-    pub bar_handle_width: u32,
+    pub start_handle_width: u32,
     /// Width of a bar's loop handle.
-    pub loop_handle_width: u32,
+    pub end_handle_width: u32,
     /// Radius of a keyframe glyph's hit area.
     pub keyframe_radius: u32,
     /// Pointer travel below which a press and release is a click.
@@ -90,8 +90,8 @@ impl Default for Layout {
             ],
             default_zoom_level: 6,
             headless_viewport_width: 960,
-            bar_handle_width: 5,
-            loop_handle_width: 6,
+            start_handle_width: 5,
+            end_handle_width: 6,
             keyframe_radius: 5,
             drag_threshold: 4,
             drop_zone_between: 0.25,

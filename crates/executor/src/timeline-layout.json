@@ -1,5 +1,5 @@
 {
-  "$comment": "The Timeline's geometry (M5 C5.1; reviews/M5-design-timeline-kernel.md section 5.1). One source: the kernel's timing-gesture interpreter (crates/executor/src/timing_gesture.rs) and the window (desktop/src/timeline/geometry.ts) read this file. Lengths in CSS pixels. Modifier roles: SI-211.",
+  "$comment": "The Timeline's geometry (M5 C5.1; reviews/M5-design-timeline-kernel.md section 5.1). One source: the kernel's timing-gesture interpreter (crates/executor/src/timing_gesture.rs) and the window (desktop/src/timeline/geometry.ts) read this file. Lengths in CSS pixels. Modifier roles: SI-211. Hit zones in a row of the tracks (ruling E-35), decided in this order, the first that holds wins: (1) a keyframe symbol, in its band (a bar row: the whole row; a cell-based row: the upper half, outside the cell selection), when |x - the symbol's centre| <= keyframeRadius, the earliest keyed frame when two qualify; (2) the end column, |x - the bar's end edge| <= endHandleWidth: the loop handle in the upper half of a loopable bar, else the end handle; (3) the start handle, |x - the bar's start edge| <= startHandleWidth; (4) the bar body, strictly between the two edges; (5) a cell. Every zone includes its edge pixels (<=); the upper half of a row is y_in_row < rowHeight / 2. In the ruler, a free range's start marker, then its end marker, |x - the frame's centre| <= rangeMarkerHalfWidth, else the ruler. In the layer list a press on y = k * rowHeight is row k; dropping onto a parent-capable row is dropZoneBetween < fraction < 1 - dropZoneBetween, else between (above when fraction < 0.5).",
   "version": 1,
   "rowHeight": 22,
   "rulerHeight": 24,
@@ -17,8 +17,8 @@
   ],
   "defaultZoomLevel": 6,
   "headlessViewportWidth": 960,
-  "barHandleWidth": 5,
-  "loopHandleWidth": 6,
+  "startHandleWidth": 5,
+  "endHandleWidth": 6,
   "keyframeRadius": 5,
   "dragThreshold": 4,
   "dropZoneBetween": 0.25,

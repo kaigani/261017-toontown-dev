@@ -64,6 +64,8 @@ mod themes;
 mod time;
 pub mod timeline_layout;
 mod timing_gesture;
+/// The largest coordinate a Timeline gesture's sample may have (ruling E-31).
+pub use timing_gesture::COORDINATE_BOUND as TIMING_COORDINATE_BOUND;
 mod types;
 mod ui;
 

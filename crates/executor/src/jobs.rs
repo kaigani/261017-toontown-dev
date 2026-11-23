@@ -308,15 +308,19 @@ impl JobTable {
         self.lock().next
     }
 
-    /// Requests cancellation of every job submitted after `mark` (an invocation that failed unexpectedly started them;
-    /// ruling E-29); returns their ids.
+    /// Requests cancellation of every job submitted after `mark` that has not finished (an invocation that failed
+    /// unexpectedly started them; ruling E-29); returns their ids. A finished job is not reversed (ruling E-33), and a job
+    /// past its commit point completes (`cancel`).
     pub(crate) fn cancel_since(&self, mark: u64) -> Vec<String> {
         let ids: Vec<String> = self
             .lock()
             .jobs
-            .keys()
-            .filter(|id| id.strip_prefix("job-").and_then(|n| n.parse::<u64>().ok()).is_some_and(|n| n > mark))
-            .cloned()
+            .iter()
+            .filter(|(id, r)| {
+                !r.state.is_final()
+                    && id.strip_prefix("job-").and_then(|n| n.parse::<u64>().ok()).is_some_and(|n| n > mark)
+            })
+            .map(|(id, _)| id.clone())
             .collect();
         for id in &ids {
             let _ = self.cancel(id);

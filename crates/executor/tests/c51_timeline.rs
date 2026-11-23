@@ -699,16 +699,18 @@ fn d23_cell_clicks_and_selection_drags() {
         ]),
         &off,
     );
-    // 04 line 751: selected cells dragged move (the copy modifier copies), one undo step.
+    // 04 line 751: selected cells dragged move (the copy modifier copies), one undo step; the command carries the
+    // drag-and-drop set resolved at the press (04 line 1366; ruling E-32).
     let selected = |h: &ExecutorHandle| {
         ok(h, "cell.select", json!({"elementIds": [BOB], "from": 1, "to": 2}));
     };
+    let drag_set = ok(&h, "timeline.transferOptions.get", json!({"operation": "dragDrop"}))["options"].clone();
     three_way(
         "tracks",
         json!([at(bob_row, 1, false, &[]), at(bob_row, 31, false, &[])]),
         cmds(&[(
             "cell.range.move",
-            json!({"sourceElementIds": [bob], "from": 1, "to": 2, "targetFrame": 31, "mode": "move"}),
+            json!({"sourceElementIds": [bob], "from": 1, "to": 2, "targetFrame": 31, "mode": "move", "options": drag_set}),
         )]),
         &selected,
     );
@@ -717,7 +719,7 @@ fn d23_cell_clicks_and_selection_drags() {
         json!([at(bob_row, 1, false, &[]), at(bob_row, 31, false, &["ctrl"])]),
         cmds(&[(
             "cell.range.move",
-            json!({"sourceElementIds": [bob], "from": 1, "to": 2, "targetFrame": 31, "mode": "copy"}),
+            json!({"sourceElementIds": [bob], "from": 1, "to": 2, "targetFrame": 31, "mode": "copy", "options": drag_set}),
         )]),
         &selected,
     );
