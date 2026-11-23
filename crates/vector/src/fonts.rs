@@ -215,6 +215,9 @@ static READY: (Mutex<bool>, Condvar) = (Mutex::new(false), Condvar::new());
 static STARTED: Once = Once::new();
 /// How long the read took.
 static SCAN_TIME: OnceLock<Duration> = OnceLock::new();
+/// Set when a caller found the list unread (it waited, or skipped text): only then is the read announced, so a process
+/// in which nothing missed the list sees no event from it.
+static MISSED: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
 /// Called with `true` when a caller starts waiting for the list and `false` when it stops (the window's status line).
 type Observer = Box<dyn Fn(bool) + Send + Sync>;
 static OBSERVERS: Mutex<Vec<Observer>> = Mutex::new(Vec::new());
@@ -348,8 +351,9 @@ fn mark_ready() {
         }
         _ => false,
     };
-    // The list is read: observers learn that nothing waits any more (the window reads its views again).
-    if first {
+    // The list is read: if a caller missed it, observers learn that nothing waits any more (the window reads its views
+    // again, recovering what its state reads skipped).
+    if first && MISSED.swap(false, std::sync::atomic::Ordering::AcqRel) {
         tell(false);
     }
 }
@@ -376,8 +380,17 @@ pub fn scan_time() -> Option<Duration> {
     SCAN_TIME.get().copied()
 }
 
+/// Records that a caller found the list unread and skipped text without waiting (the window's state reads): the read is
+/// announced when it ends, or at once if it ended meanwhile.
+pub fn note_skipped() {
+    MISSED.store(true, std::sync::atomic::Ordering::Release);
+    if is_ready() && MISSED.swap(false, std::sync::atomic::Ordering::AcqRel) {
+        tell(false);
+    }
+}
+
 /// Registers a function told when a caller starts (`true`) and stops (`false`) waiting for the list, and (`false`) when
-/// the list has been read.
+/// the list has been read after a caller missed it.
 pub fn add_wait_observer(f: impl Fn(bool) + Send + Sync + 'static) {
     if let Ok(mut list) = OBSERVERS.lock() {
         list.push(Box::new(f));
@@ -403,6 +416,7 @@ pub fn ready_within(bound: Duration) -> Result<(), FontsLoading> {
         return Ok(());
     }
     warm();
+    MISSED.store(true, std::sync::atomic::Ordering::Release);
     tell(true);
     let out = wait_ready(bound);
     tell(false);

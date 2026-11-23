@@ -107,7 +107,12 @@ pub(crate) fn read() -> Result<Read, CommandError> {
 /// The proof without waiting, when the list is already read (paths that must never wait: the window's state reads and
 /// the document thread's housekeeping after a call; they skip text until the list is read).
 pub(crate) fn now() -> Option<Read> {
-    tt_vector::fonts::is_ready().then_some(Read(()))
+    if tt_vector::fonts::is_ready() {
+        return Some(Read(()));
+    }
+    // The caller skips text: the window is told when the list is read, and reads again.
+    tt_vector::fonts::note_skipped();
+    None
 }
 
 impl Read {
