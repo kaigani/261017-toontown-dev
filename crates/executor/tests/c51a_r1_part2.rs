@@ -286,3 +286,21 @@ fn d2_row_insert_above_bar_commits_by_id() {
  assert!(out.get("error").is_none(),"E-10 target {id} still exists: {out}");
  assert_eq!(ok(&h,"timeline.rows.list",json!({}))["rows"].as_array().unwrap().iter().find(|r|r["elementId"]==id).unwrap()["bar"]["start"],4);
 }
+
+#[test]
+fn d3_alternating_pairs_share_state_and_events() {
+ let a=fixture();let b=fixture();let peg="scene:\"Intro\"/element:\"Bob-P\"";
+ for (i,id) in ["scene:\"Intro\"/element:\"Bob\"",peg,"scene:\"Intro\"/element:\"Background\"",peg].iter().enumerate() {
+  for (left,right,p,q) in [
+   ("app.currentElement.set","element.current.set",json!({"elementId":id}),json!({"elementId":id})),
+   ("playback.range.set","timeline.playbackRange.set",json!({"start":i+2,"end":20+i}),json!({"start":i+2,"end":20+i})),
+   ("anim.loop.set","element.timing.set",json!({"nodeId":peg,"loops":i+2}),json!({"elementIds":[peg],"loops":i+2}))] {
+   let ra=a.subscribe();let rb=b.subscribe();
+   if i%2==0 {ok(&a,left,p.clone());ok(&b,right,q.clone());}else {ok(&a,right,q);ok(&b,left,p);}
+   assert_eq!(state(&a),state(&b),"E-3/E-4 {left}/{right}");
+   let normalize=|v:&mut Value| {for k in ["label","lastLabel"] {if let Some(m)=v.as_object_mut(){if m.contains_key(k){m.insert(k.into(),json!("label"));}}}};
+   let ea:Vec<_>=ra.try_iter().filter(|e|e.name!="agent.activity.recorded").map(|mut e|{normalize(&mut e.payload);(e.name,e.payload)}).collect();
+   let eb:Vec<_>=rb.try_iter().filter(|e|e.name!="agent.activity.recorded").map(|mut e|{normalize(&mut e.payload);(e.name,e.payload)}).collect();assert_eq!(ea,eb);
+  }
+ }
+}
