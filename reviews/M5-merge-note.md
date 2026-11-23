@@ -7,7 +7,7 @@ M5; until then only the table of §4 is kept current.
 
 | Checkpoint | Scope | Closure |
 |---|---|---|
-| C5.1a | Timeline kernel: `timeline.*`, interactive playback, the timing-gesture interpreter, the `xsheet` composition | handed off on `ba8e1946` (run 45100267389, 36 of 36); round 2 on `908088c3` (run 45124085313, 36 of 36), `reviews/M5-C5.1a-handoff-r2.md` |
+| C5.1a | Timeline kernel: `timeline.*`, interactive playback, the timing-gesture interpreter, the `xsheet` composition | handed off on `ba8e1946` (run 45100267389, 36 of 36); round 2 on `908088c3` (run 45124085313, 36 of 36), `reviews/M5-C5.1a-handoff-r2.md`; round 3 on `658cc6ed` (run 45163891820, 36 of 36), `reviews/M5-C5.1a-handoff-r3.md` |
 | C5.1b | the Timeline view | in progress |
 | C5.2 | the Exposure Sheet, cell commands, the Properties and Cells panels | not started |
 
