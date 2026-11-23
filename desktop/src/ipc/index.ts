@@ -22,6 +22,10 @@ export {
   type RunOptions,
   type Running,
   type ShellReport,
+  type TimingGestureAnswer,
+  type TimingGestureRequest,
+  type TimingLayout,
+  type TimingSample,
   type TokenDelivery,
   type TokenRect,
 } from './engine';

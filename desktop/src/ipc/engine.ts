@@ -146,6 +146,11 @@ export interface EngineApi {
     text?: string;
     keys?: string;
   }): Promise<Envelope>;
+  /** `timing_gesture` (M5 C5.1b; reviews/M5-design-timeline-view.md section 3): a press, release or abort in the
+   *  Timeline, through the kernel's timing-gesture interpreter on the generation the window follows (D-7b). The press
+   *  answers `{grabId, target}`; the release `{plan, envelopes}` or `{cancelled: true, error}` (E-10, E-23, E-28); the
+   *  abort `{aborted: true}`. A refusal (no project, a stale generation, an unknown grab) is `{ok: false, error}`. */
+  timingGesture(request: TimingGestureRequest): Promise<TimingGestureAnswer>;
   /** `canvas_presence`: this window's canvas for `viewId` is at `rect` (view pixels), or (`null`) went away. */
   canvasPresence(
     viewId: string,
@@ -177,6 +182,31 @@ export interface EngineApi {
   /** `token-rect`: the host asks where the token field is, just before and just after a capture of the main window. */
   onTokenRect(handler: (request: number) => void): Promise<Unlisten>;
 }
+
+/** One pointer sample of a Timeline gesture, in the surface's own pixels, with the modifiers held (kernel names). */
+export interface TimingSample {
+  readonly x: number;
+  readonly y: number;
+  readonly modifiers: readonly string[];
+}
+
+/** A Timeline gesture's layout, captured at the press (the kernel's `GestureLayout`). */
+export interface TimingLayout {
+  readonly surface: 'layers' | 'tracks' | 'ruler';
+  readonly zoomLevel: number;
+  readonly firstFrame: number;
+  readonly scrollTop: number;
+  readonly platform: 'windows' | 'macos' | 'linux';
+}
+
+export type TimingGestureRequest =
+  | { readonly phase: 'press'; readonly layout: TimingLayout; readonly sample: TimingSample }
+  | { readonly phase: 'release'; readonly grabId: number; readonly samples: readonly TimingSample[] }
+  | { readonly phase: 'abort'; readonly grabId: number };
+
+export type TimingGestureAnswer =
+  | { readonly ok: true; readonly value: Readonly<Record<string, unknown>> }
+  | { readonly ok: false; readonly error: CommandFailure };
 
 /** The token field's rectangle in the window's CSS pixels (D-69 item 1). */
 export interface TokenRect {
@@ -420,6 +450,26 @@ export function createEngineApi(transport: HostTransport): EngineApi {
         );
       } catch (error) {
         return failureOf(error);
+      }
+    },
+    async timingGesture(request) {
+      try {
+        const v = decode(
+          await transport.invoke('timing_gesture', { json: gestureJson({ ...request, generation }) }),
+        );
+        if (typeof v === 'object' && v !== null && !Array.isArray(v)) {
+          return { ok: true, value: v as Record<string, unknown> };
+        }
+        return {
+          ok: false,
+          error: {
+            code: 'ipc.invalidResponse',
+            message: 'the answer to a Timeline gesture is not an object',
+          },
+        };
+      } catch (error) {
+        const failure = failureOf(error).error;
+        return { ok: false, error: failure ?? { code: 'ipc.failed', message: String(error) } };
       }
     },
     async canvasPresence(viewId, rect, dpr) {

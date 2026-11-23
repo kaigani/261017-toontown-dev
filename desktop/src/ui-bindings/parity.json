@@ -20168,6 +20168,36 @@
       ]
     },
     {
+      "command": "anim.key.add",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "anim.key.remove",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "anim.reset.apply",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "anim.segment.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "anim.segment.uniform.apply",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "anim.tool.changed",
       "files": [
         "desktop/src/canvas/CanvasView.tsx",
@@ -20803,13 +20833,21 @@
     {
       "command": "edit.copy",
       "files": [
-        "desktop/src/canvas/viewMenus.ts"
+        "desktop/src/canvas/viewMenus.ts",
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
       "command": "edit.cut",
       "files": [
-        "desktop/src/canvas/viewMenus.ts"
+        "desktop/src/canvas/viewMenus.ts",
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "edit.delete",
+      "files": [
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
@@ -20841,7 +20879,8 @@
     {
       "command": "edit.paste",
       "files": [
-        "desktop/src/canvas/viewMenus.ts"
+        "desktop/src/canvas/viewMenus.ts",
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
@@ -20871,9 +20910,51 @@
       ]
     },
     {
+      "command": "element.annotation.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.clone",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.collapsed.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.colour.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.create",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.delete",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "element.drawing.list",
       "files": [
         "desktop/src/panels/DrawingInspectorPage.tsx"
+      ]
+    },
+    {
+      "command": "element.duplicate",
+      "files": [
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
@@ -20883,9 +20964,51 @@
       ]
     },
     {
+      "command": "element.hierarchy.select",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.lock.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "element.locked",
       "files": [
         "desktop/src/shell/refusals.ts"
+      ]
+    },
+    {
+      "command": "element.order.move",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.parent.remove",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.parent.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.parentPeg.create",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.visibility.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
@@ -22024,6 +22147,366 @@
       "command": "textEdit.viewId",
       "files": [
         "desktop/src/canvas/scene.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.addKey",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.constant",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.copy",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.cut",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.delete",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.extendChildren",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.nonConstant",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.paste",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.removeKey",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.uniformLeft",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.uniformRight",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.effectParameterRows.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.playbackRange.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.addParentPeg",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.annotation",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.attachNext",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.backgroundColour",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.changeDuration",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.changeLoops",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.changeStart",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.clone",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.collapse",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.copy",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.cut",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.defaultColour",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.delete",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.detach",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.duplicate",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.effectParameters",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.expand",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.hideAll",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.hideAllParameters",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.hideAnnotations",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.hideOthers",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.lock",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.lockAll",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.lockOthers",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.markerColour",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.note",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.paste",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.pegReset",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.removeKeys",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.rename",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.showAll",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.showAllParameters",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.showAnnotations",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.showHide",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.showOthers",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.unlockAll",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.waveforms",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.currentFrame",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.endHere",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.rangeAuto",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.rangeEnd",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.rangeFree",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.rangeStart",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.startHere",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.waveforms",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.soundWaveforms.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.targetChanged",
+      "files": [
+        "desktop/src/timeline/gesture.ts"
       ]
     },
     {

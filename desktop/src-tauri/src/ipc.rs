@@ -450,6 +450,36 @@ pub async fn text_input(app: AppHandle, json: String) -> Result<Response, String
     respond(&env)
 }
 
+/// A Timeline press, release or abort (M5 C5.1b; `reviews/M5-design-timeline-view.md` §3) through the kernel's
+/// timing-gesture interpreter, with the user's origin, on the generation the window follows: a request of a replaced
+/// engine is refused and nothing runs (D-7b). The answer is the interpreter's value (`ExecutorHandle::timing_gesture`).
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a request that is not JSON or lacks its generation, of the interpreter's refusal
+/// (`project.none`, `timeline.targetChanged` for an unknown grab), or of a stale generation.
+#[tauri::command]
+pub async fn timing_gesture(app: AppHandle, json: String) -> Result<Response, String> {
+    let mut request: Value = parse(&json)?;
+    let generation = generation_of(&mut request)?;
+    let answer = tauri::async_runtime::spawn_blocking(move || {
+        let host = app.state::<Host>();
+        if generation != host.generation() {
+            return Err(tt_executor::CommandError::with_details(
+                "command.timeout",
+                "the engine was restarted while this gesture was made; nothing of it was committed",
+                json!({ "reason": "engineRestarted", "generation": generation, "currentGeneration": host.generation() }),
+            ));
+        }
+        host.exec().timing_gesture(tt_executor::Origin::User, request)
+    })
+    .await
+    .map_err(|e| internal(e.to_string()))?;
+    match answer {
+        Ok(v) => respond(&v),
+        Err(e) => Err(error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: *e.details })),
+    }
+}
+
 /// The window keeps a record of a gesture of more than this many events by count, its commands by id (SI-141 item 9);
 /// the canvas's `RECORD_EVENTS`.
 const RECORD_EVENTS: usize = 4096;

@@ -70,6 +70,7 @@ command_registry![
     ipc::token_field,
     ipc::token_rect,
     ipc::text_input,
+    ipc::timing_gesture,
     ipc::agent_acting,
 ];
 
@@ -96,6 +97,7 @@ command_registry![
     ipc::token_field,
     ipc::token_rect,
     ipc::text_input,
+    ipc::timing_gesture,
     ipc::agent_acting,
     diagnostics::bench_plan,
     diagnostics::bench_report,
@@ -311,6 +313,8 @@ mod tests {
                 "token_rect",
                 // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
                 "text_input",
+                // M5 C5.1b (view note §3): the Timeline's presses and releases through the timing-gesture interpreter.
+                "timing_gesture",
                 // D-86 item 2: the agents' running requests, for a window that mounts while one acts.
                 "agent_acting"
             ]
@@ -326,7 +330,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..22],
+            &names[..23],
             [
                 "ping",
                 "app_info",
@@ -352,6 +356,8 @@ mod tests {
                 "token_rect",
                 // M4 C4.4b (design note 5 §4): the Text tool's editor feeds the kernel's input path.
                 "text_input",
+                // M5 C5.1b (view note §3): the Timeline's presses and releases through the timing-gesture interpreter.
+                "timing_gesture",
                 // D-86 item 2: the agents' running requests, for a window that mounts while one acts.
                 "agent_acting"
             ]
