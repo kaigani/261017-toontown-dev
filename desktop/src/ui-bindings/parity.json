@@ -19887,6 +19887,66 @@
         "anim.tool.set",
         "view.zoom.set"
       ]
+    },
+    {
+      "view": "timeline",
+      "tool": "ruler:scrub",
+      "commands": [
+        "timeline.currentFrame.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "ruler:rangeMarker",
+      "commands": [
+        "timeline.playbackRange.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "layers:select",
+      "commands": [
+        "element.select",
+        "element.current.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "layers:drag",
+      "commands": [
+        "element.order.set",
+        "element.parent.set",
+        "element.parent.remove"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:bar",
+      "commands": [
+        "element.timing.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:keyframe",
+      "commands": [
+        "anim.key.move"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:cells",
+      "commands": [
+        "cell.select",
+        "xsheet.currentCell.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:moveCells",
+      "commands": [
+        "cell.range.move"
+      ]
     }
   ],
   "windowGestures": [

@@ -51,11 +51,6 @@
       "section": "05 §19.3 (Command table)",
       "location": "Animation menu, Timeline: Add Keyframe"
     },
-    "anim.key.move": {
-      "owner": "M5 C5.1",
-      "section": "05 §19.3 (Command table)",
-      "location": "Timeline: drag keyframes; function editor: timing modifier"
-    },
     "anim.key.remove": {
       "owner": "M6 C6.2",
       "section": "05 §19.3 (Command table)",
@@ -176,16 +171,6 @@
       "section": "04 §17.4 (Command table)",
       "location": "Edit > Delete with cells selected in the Exposure Sheet or Timeline"
     },
-    "cell.range.move": {
-      "owner": "M5 C5.1",
-      "section": "04 §17.4 (Command table)",
-      "location": "Exposure Sheet and Timeline: drag selected cells"
-    },
-    "cell.select": {
-      "owner": "M5 C5.1",
-      "section": "04 §17.4 (Command table)",
-      "location": "Exposure Sheet and Timeline: click and drag over cells"
-    },
     "colour.fillMapping.get": {
       "owner": "M7 C7.1",
       "section": "03 §6.6, §8.7 (texture properties, the edit texture tool)",
@@ -256,11 +241,6 @@
       "section": "04 §17.4 (Command table)",
       "location": "Keyboard: Previous / Next Element (in the Exposure Sheet)"
     },
-    "element.current.set": {
-      "owner": "M5 C5.1",
-      "section": "04 §17.4 (Command table)",
-      "location": "Timeline and Exposure Sheet: click a row name or column header"
-    },
     "element.drawing.create": {
       "owner": "M5 C5.2",
       "section": "04 §17.4 (Command table)",
@@ -296,20 +276,10 @@
       "section": "04 §17.4 (Command table)",
       "location": "Exposure Sheet media cell context: Reset Media"
     },
-    "element.order.set": {
-      "owner": "M5 C5.1",
-      "section": "04 §17.4 (Command table)",
-      "location": "Timeline: drag rows between rows; Exposure Sheet: drag column headers; element list panel drag"
-    },
     "element.properties.set": {
       "owner": "M5 C5.2",
       "section": "04 §17.4 (Command table)",
       "location": "Properties view: Element panel, Type and Deformable"
-    },
-    "element.select": {
-      "owner": "M5 C5.1",
-      "section": "04 §17.4 (Command table)",
-      "location": "Timeline: click row names (with extend/toggle modifiers); Exposure Sheet: click a column header"
     },
     "playback.forceRate.set": {
       "owner": "M5 C5.1",
@@ -370,11 +340,6 @@
       "owner": "M5 C5.1",
       "section": "04 §11.14 (Transfer options (paste special, cut special, drag and drop))",
       "location": "Edit › Paste Special / Cut Special with the Timeline focused: the options dialog; drag-and-drop options"
-    },
-    "xsheet.currentCell.set": {
-      "owner": "M5 C5.1",
-      "section": "04 §11.6 (Current frame and playback range)",
-      "location": "Timeline and Exposure Sheet: click a cell"
     },
     "xsheet.exposures.set": {
       "owner": "M5 C5.2",

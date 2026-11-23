@@ -259,6 +259,9 @@ fn the_gesture_table_is_the_drivers_both_ways() {
         .as_array()
         .unwrap()
         .iter()
+        // The Timeline's rows (view `timeline`, M5 C5.1b) are the timing-gesture interpreter's, verified both ways by
+        // `c51b_timeline_gesture_table.rs`; this battery drives the canvas.
+        .filter(|r| r["view"] != "timeline")
         .map(|r| {
             let cmds = r["commands"].as_array().unwrap().iter().map(|c| c.as_str().unwrap().to_owned()).collect();
             ((r["view"].as_str().unwrap().to_owned(), r["tool"].as_str().unwrap().to_owned()), cmds)

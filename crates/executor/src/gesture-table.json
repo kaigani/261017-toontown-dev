@@ -1,5 +1,5 @@
 {
-  "$comment": "The gesture driver's table (M4 C4.3b; parity note \u00a72, ruling D-25): for each view type and tool, every command its gestures can end in (gesture.rs, scene_gesture.rs). Data, not prose: crates/executor/tests/c43/parity.rs verifies it against the driver both ways, and the parity manifest (desktop/src/ui-bindings/parity.json) copies it as the canvas surface.",
+  "$comment": "The gesture driver's table (M4 C4.3b; parity note \u00a72, ruling D-25): for each view type and tool, every command its gestures can end in (gesture.rs, scene_gesture.rs). Data, not prose: crates/executor/tests/c43/parity.rs verifies it against the driver both ways, and the parity manifest (desktop/src/ui-bindings/parity.json) copies it as the canvas surface. The rows of view `timeline` (M5 C5.1b) are the Timeline's gestures, the gesture's id as `tool`, and the commands the timing-gesture interpreter (timing_gesture.rs) commits for them; crates/executor/tests/c51b_timeline_gesture_table.rs verifies those rows against the interpreter both ways.",
   "rows": [
     {
       "view": "drawing",
@@ -374,6 +374,66 @@
         "tool.active.set",
         "anim.tool.set",
         "view.zoom.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "ruler:scrub",
+      "commands": [
+        "timeline.currentFrame.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "ruler:rangeMarker",
+      "commands": [
+        "timeline.playbackRange.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "layers:select",
+      "commands": [
+        "element.select",
+        "element.current.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "layers:drag",
+      "commands": [
+        "element.order.set",
+        "element.parent.set",
+        "element.parent.remove"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:bar",
+      "commands": [
+        "element.timing.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:keyframe",
+      "commands": [
+        "anim.key.move"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:cells",
+      "commands": [
+        "cell.select",
+        "xsheet.currentCell.set"
+      ]
+    },
+    {
+      "view": "timeline",
+      "tool": "tracks:moveCells",
+      "commands": [
+        "cell.range.move"
       ]
     }
   ]
