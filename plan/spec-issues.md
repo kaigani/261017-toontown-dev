@@ -2713,6 +2713,20 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   involves no text never waits. The window shows that the system fonts are being read on its status line.
 - **Question:** confirm, or define a dedicated code (for example `fonts.notReady`) in 11 §10.
 
+## SI-216 — Show Timeline Selection as one reference for the menu, the key and an agent (M5 C5.1b; interim)
+
+- **Sections:** 04 line 581 and line 655 (Show Timeline selection scrolls so the selected element is visible), 04 §16
+  line 1256 (a single-key default for it), the `timeline.view.set` row (`revealElementId?: id`), 01 §8.4 (keys), 11
+  §7.6 (an agent's `key` dispatches as a person's key does).
+- **Problem:** the item reveals "the element selected in any view", which a fixed key binding or menu reference cannot
+  name. The window filled in the current element before sending, so the menu declared one reference and sent another
+  (D-38), and an agent's `key` (the kernel runs the binding) revealed nothing.
+- **Interim decision:** `revealElementId: null` reveals the current element's row; absent still only reads the view.
+  The Element menu item and the default key `/` (global) both send `{revealElementId: null}`, and the window sends what
+  it declares. No new member: `null` was already accepted (the parameter is optional) and meant "absent".
+- **Question:** confirm `null`, or add an explicit form to the `timeline.view.set` row (for example
+  `reveal: enum "selection"`); and confirm the key.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row

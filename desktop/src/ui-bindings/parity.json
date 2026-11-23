@@ -20148,6 +20148,16 @@
       }
     },
     {
+      "id": "key:/@global",
+      "surface": "keymap",
+      "commands": [
+        "timeline.view.set"
+      ],
+      "params": {
+        "revealElementId": null
+      }
+    },
+    {
       "id": "key:Enter@global",
       "surface": "keymap",
       "commands": [
@@ -25805,7 +25815,6 @@
     {
       "command": "timeline.view.set",
       "files": [
-        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },

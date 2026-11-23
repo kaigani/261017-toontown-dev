@@ -35,6 +35,7 @@
     { "commandId": "app.frame.move", "params": { "direction": "next", "unit": "drawing" }, "keys": "Shift+.", "context": "global" },
     { "commandId": "app.currentElement.move", "params": { "direction": "previous" }, "keys": "Alt+,", "context": "global" },
     { "commandId": "app.currentElement.move", "params": { "direction": "next" }, "keys": "Alt+.", "context": "global" },
+    { "commandId": "timeline.view.set", "params": { "revealElementId": null }, "keys": "/", "context": "global" },
     { "commandId": "playback.start", "keys": "Enter", "context": "global" },
     { "commandId": "playback.stop", "keys": "Shift+Enter", "context": "global" },
 

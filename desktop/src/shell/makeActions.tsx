@@ -374,15 +374,6 @@ export function makeActions(
         }
         return run(command, p);
       }
-      case 'timeline.view.set': {
-        // Show Timeline Selection (04 §11.7): reveal the current element's row.
-        if ('revealElementId' in p && p['revealElementId'] === null) {
-          const id = state()?.element?.id;
-          if (id) p['revealElementId'] = id;
-          else delete p['revealElementId'];
-        }
-        return run(command, p);
-      }
       // Paste Special and Cut Special in a cell context open the transfer-options dialog (04 §11.14; view note section 7):
       // OK stores the set for the operation (`timeline.transferOptions.set`) and runs it; Paste Special Again (`useLast`)
       // and an explicit set skip the dialog.

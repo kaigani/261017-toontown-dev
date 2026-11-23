@@ -1011,9 +1011,15 @@ pub(crate) struct ViewSetParams {
     /// First frame shown: any integer, clamped to 1..(scene length + the empty margin).
     #[serde(default)]
     first_frame: Option<i64>,
-    /// Scroll so this element's row is shown (Show Timeline Selection).
-    #[serde(default)]
-    reveal_element_id: Option<String>,
+    /// Scroll so this element's row is shown (Show Timeline Selection); `null`: the current element's row (the menu
+    /// item's and the key's reference, so the window and an agent's key reveal the same row).
+    #[serde(default, deserialize_with = "given")]
+    reveal_element_id: Option<Option<String>>,
+}
+
+/// Distinguishes a member given as `null` (`Some(None)`) from an absent one (`None`, by `#[serde(default)]`).
+fn given<'de, D: serde::Deserializer<'de>>(d: D) -> Result<Option<Option<String>>, D::Error> {
+    Option::<String>::deserialize(d).map(Some)
 }
 
 /// `{zoomLevel, firstFrame, lastFrame}`.
@@ -1071,8 +1077,14 @@ pub(crate) fn timeline_view_set(cx: &mut Cx, p: ViewSetParams) -> Result<ViewRes
     if let Some(f) = p.first_frame {
         v.first_frame = u32::try_from(f.clamp(1, i64::from(last_start))).unwrap_or(1);
     }
-    if let Some(r) = &p.reveal_element_id {
-        let id = element_id(cx, r, "/revealElementId")?;
+    // Show Timeline Selection (04 line 581): the element named, or with `null` the current element (none: nothing to
+    // reveal, the view is read).
+    let reveal = match &p.reveal_element_id {
+        Some(Some(r)) => Some(element_id(cx, r, "/revealElementId")?),
+        Some(None) => cx.app().element.clone(),
+        None => None,
+    };
+    if let Some(id) = reveal {
         let doc = cx.document()?;
         if doc.scene_of(&id) != Some(&scene) {
             return Err(err(
