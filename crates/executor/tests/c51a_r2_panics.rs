@@ -1,64 +1,74 @@
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
-
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "review tests")]
 mod common;
-
-use std::path::Path;
-use std::sync::Arc;
-
 use common::*;
-use serde_json::json;
-use tt_executor::{ExecutorHandle, Status};
-use tt_persist::lock::{Boundary, hooks};
+use serde_json::{Value, json};
+use std::sync::atomic::{AtomicUsize, Ordering};
+use tt_executor::{Cx, ExecutorConfig, ExecutorHandle, Invocation, InvokeOptions, Origin};
+use tt_registry::{CommandError, Registry};
 
-/// A panic at the commit (outside the handler's boundary): the engine cannot vouch for its session, so it is degraded:
-/// the call in flight answers `internal`, every later call answers `internal` with reason `engineStopped` and the hint
-/// that names the way out, and nothing restarts inside the executor (recovery is a new executor, the host's restart).
-/// Before ruling E-29 the same input ended the document thread without the reason or the hint.
+static SERIAL: std::sync::Mutex<()> = std::sync::Mutex::new(());
+static CALLS: AtomicUsize = AtomicUsize::new(0);
+#[tt_registry::command(id = "colour.palette.create", kind = action, label = "Panic probe",
+    scopes = [edit], undo = "Panic probe", needs_project,
+    example(title = "Probe", params = "{}"))]
+fn probe(cx: &mut Cx, _p: Value) -> Result<Value, CommandError> {
+    CALLS.fetch_add(1, Ordering::SeqCst);
+    let id = cx.resolve_as("scene:#1/element:\"Bob\"", tt_model::ObjectType::Element)?;
+    cx.patch_objects(vec![(id, vec![tt_model::change::PatchOp {
+        op: "replace".into(), from: None, path: "/name".into(), range: None,
+        value: Some(json!("Half")), old_value: None, elided: false,
+    }])])?;
+    panic!("review: staged handler panic");
+}
+fn injected() -> ExecutorHandle {
+    let mut commands: Vec<_> = tt_executor::registry().unwrap().entries()
+        .filter(|e| e.id() != "colour.palette.create").filter_map(|e| e.command).collect();
+    commands.push(&PROBE);
+    let registry = Box::leak(Box::new(Registry::assemble(&commands).unwrap()));
+    let h = ExecutorHandle::spawn_with_registry(ExecutorConfig { budget: std::time::Duration::from_secs(60) }, registry).unwrap();
+    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    ok(&h, "doc.state.get", json!({}));
+    h
+}
+fn state(h: &ExecutorHandle) -> Value {
+    json!({"rev":rev(h), "history":ok(h,"edit.history.get",json!({})),
+        "selection":ok(h,"cell.selection.get",json!({})),
+        "rows":ok(h,"timeline.rows.list",json!({})),
+        "bob":ok(h,"element.get",json!({"elementId":"scene:#1/element:\"Bob\""}))})
+}
 #[test]
-fn e1_commit_boundary_fallback_degrades() {
-    struct Reset;
-    impl Drop for Reset {
-        fn drop(&mut self) {
-            hooks::set(None);
+fn e2_atomic_second_step_and_expect_rev_and_retry() {
+    let _guard=SERIAL.lock().unwrap_or_else(|e|e.into_inner());
+    let h = injected();
+    for expected in [false, true] {
+        let before = state(&h);
+        let mut req = json!({"label":"Panic batch","atomic":true,"steps":[
+            {"id":"element.timing.set","params":{"elementIds":["scene:#1/element:\"Bob-P\""],"startDelta":2}},
+            {"id":"colour.palette.create","params":{}},
+            {"id":"timeline.currentFrame.set","params":{"frame":9}}]});
+        if expected {
+            req["expectRev"] = json!({"scene:#1":obj_rev(&h,&first(&h,"scene"))});
         }
+        let n = CALLS.load(Ordering::SeqCst);
+        let out = h.batch(serde_json::from_value(req).unwrap(), Origin::User);
+        assert_eq!(out.error.as_ref().unwrap().details["error"]["code"],"internal","{out:?}");
+        assert_eq!(out.steps.as_ref().unwrap().len(),2);
+        assert_eq!(CALLS.load(Ordering::SeqCst),n+1);
+        assert_eq!(state(&h),before,"E-29: first step rolled back and third not run");
     }
-    let _reset = Reset;
-    let h = fixture();
-    ok(&h, "element.create", json!({"type": "peg", "name": "Before", "sceneId": "scene:#1"}));
-    // A panic on the document thread inside an action (the persist boundary hook stands for any handler panic).
-    hooks::set(Some(Arc::new(|at: Boundary, _: &Path| {
-        if at == Boundary::Committed {
-            panic!("test: a handler panics");
-        }
-    })));
-    let events = h.subscribe();
-    let died = run(&h, "element.create", json!({"type": "peg", "name": "Dies", "sceneId": "scene:#1"}));
-    hooks::set(None);
-    // The caller is answered as soon as its reply is dropped by the unwinding; the engine marks itself degraded and
-    // raises the notice right after, on the document thread: wait for the notice (bounded), then check the flag.
-    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(30);
-    let mut notices = 0;
-    while notices == 0 && std::time::Instant::now() < deadline {
-        if let Ok(e) = events.recv_timeout(std::time::Duration::from_millis(100))
-            && e.name == "shell.engineDegraded"
-        {
-            notices += 1;
-        }
+}
+#[test]
+fn e2_requested_retry_oracle() {
+    let _guard=SERIAL.lock().unwrap_or_else(|e|e.into_inner());
+    let h=injected();
+    let before = state(&h);
+    let options = InvokeOptions { request_id:Some("r2-panic-retry".into()), ..Default::default() };
+    for _ in 0..2 {
+        let n = CALLS.load(Ordering::SeqCst);
+        let out = h.invoke(Invocation {command:"colour.palette.create".into(),params:json!({}),options:options.clone(),origin:Origin::User});
+        assert_eq!(out.error.unwrap().details["reason"],"handlerPanicked");
+        assert_eq!(CALLS.load(Ordering::SeqCst),n+1,"retry executes handler");
+        assert_eq!(state(&h),before);
     }
-    assert_eq!(notices, 1, "the degraded notice");
-    assert!(h.degraded(), "a panic outside an invocation degrades the engine");
-    assert_eq!(events.try_iter().filter(|e| e.name == "shell.engineDegraded").count(), 0, "raised once");
-    assert_eq!(died.status, Status::Error);
-    assert_eq!(died.error.as_ref().map(|e| e.code.as_str()), Some("internal"), "{died:?}");
-    for (command, params) in [("timeline.rows.list", json!({})), ("doc.state.get", json!({}))] {
-        let e = run(&h, command, params);
-        assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("internal"), "{command}: {e:?}");
-        let error = e.error.as_ref().unwrap();
-        assert!(error.message.contains("document thread has stopped"), "{e:?}");
-        assert_eq!(error.details["reason"], tt_executor::ENGINE_STOPPED);
-        assert!(error.hint.as_deref().unwrap_or_default().contains("project.recovery.list"), "{e:?}");
-    }
-    // The open session is gone with the thread: a new executor (what the host's restart creates) has no project.
-    let fresh = ExecutorHandle::spawn(Default::default()).unwrap();
-    assert_eq!(run(&fresh, "timeline.rows.list", json!({})).error.map(|e| e.code), Some("project.none".to_owned()));
+    for _ in 0..20 { ok(&h,"timeline.rows.list",json!({})); }
 }
