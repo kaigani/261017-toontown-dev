@@ -84,6 +84,7 @@ import {
 import { editorPlace, textCursor, textOverlay } from './text';
 import { TextEditor, type EditorSession } from './TextEditor';
 import type { Renderer } from './renderer';
+import { readGate } from '../state/readGate';
 
 export interface CanvasHandle {
   /** The overlay's triangles for the next frames (layer 9); `null` clears it. */
@@ -454,12 +455,17 @@ export function CanvasView({
         })
         .catch(() => undefined);
     };
+    // Reads answered out of order (the D-89 rule; macOS byte gate, run 45082297045): the mapping read at mount can answer
+    // after the read that followed the canvas's size report, leaving the canvas on the old size's mapping until the next
+    // view change. Only the newest read's answer applies.
+    const mappingGate = readGate();
     const refreshMapping = () => {
+      const newest = mappingGate();
       void engine
         .run('draw.viewMapping.get', { view: viewId })
         .done.then((env) => {
           const m = asAffine((env.result as Record<string, unknown> | undefined)?.['drawingToView']);
-          if (m && !stopped) {
+          if (m && !stopped && newest()) {
             d2v = m;
             viewVersion++;
             model?.setBucket(bucketOf(scaleOf(m)));

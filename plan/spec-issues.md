@@ -2524,9 +2524,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Interim decision (ruling E-13):** one store per operation, the 01 §7.3 preference key (persisted per user, as 04
   line 759 requires); `timeline.transferOptions.*` and `edit.*Special` read and write it, each in its own names (a fixed
   mapping). One default table, **04 §11.14 and §17.3's values** (overwrite existing drawings off, update colours off;
-  the other members agree in both tables), in `prefs.json` alone: a ruling changes that one table. `edit.paste`,
-  `edit.pasteSpecial`, `cell.clipboard.apply`, `cell.range.move`, `timeline.transferOptions.get` and the dialogs read
-  it when nothing is stored (a plain paste overwrites same-named drawings only when the stored paste set says so).
+  the other members agree in both tables), in `prefs.json` alone: a ruling changes that one table. The special and
+  structured commands read it when nothing is stored (`edit.cutSpecial`, `edit.pasteSpecial`, paste special again,
+  `cell.clipboard.set`, `cell.clipboard.apply`, `cell.range.move`, `timeline.transferOptions.*`, the drag-and-drop set);
+  the plain commands do not read it (ruling E-17, SI-213).
   01 §6.3's table (overwrite on, update colours on) is recorded here for the user.
 - **Question:** which defaults hold, 01 §6.3's or 04 §11.14's?
 
@@ -2628,17 +2629,33 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `crates/executor/src/timeline-layout.json`, read by the kernel and the window.
 - **Question:** confirm or specify.
 
-## SI-212 — Delete on cells: 01 §6.2 against 04 §13.17 for the Timeline (found in M5 C5.1a; ruling E-14; interim)
+## SI-212 — Delete on cells: 01 §6.2 against 04 §13.17 for the Timeline (found in M5 C5.1a; superseded)
 
-- **Sections:** 01 §6.2 line 523 ("in cell context it clears the cells"); 04 §13.17 and §18 #8 (in the Exposure Sheet
-  Delete clears; in the Timeline it follows the cut-special "create/delete exposure" option); 04 §13.16 (Cut follows
-  the same option).
-- **Interim decision (ruling E-14):** 04 is the rule. `edit.delete` with cells selected clears them in the Exposure
-  Sheet and, in the Timeline, removes them and shifts the following cells earlier while the cut-special exposure option
-  is on (the default), clearing them when it is off; `cell.range.delete` keeps its explicit `shift`, and with its
-  target and `shift` omitted answers as `edit.delete` does in the focused cell context. `edit.cut` is to follow 04
-  §13.16 the same way; a reviewer test pins its present clearing, so it is unchanged until the orchestrator rules.
-- **Question:** confirm 04, or correct 01 §6.2.
+- **Superseded by SI-213** (ruling E-17 withdrew ruling E-14: the plain commands stay as built since M3).
+
+## SI-213 — plain Cut, Paste and the Timeline's Delete: 04 against 01 (found in M5 C5.1a; ruling E-17; a question for the user)
+
+- **Sections:** 04 §13.16 (Cut removes the cells and shifts the following ones earlier when the cut-special
+  "create/delete exposure" option is on; Paste inserts per the paste-special options and overwrites same-named drawings
+  only with "overwrite existing drawings"), §13.17 and §18 #8 (the Timeline's Delete follows the cut-special option),
+  §11.14; 01 §6.2 lines 519-523 (Cut removes the selection and places it on the clipboard; Delete in cell context clears
+  the cells).
+- **As built since M3 (ruling E-17):** the plain commands follow 01 with fixed behaviour: `edit.cut` clears the cut
+  cells, `edit.paste` writes over the destination cells and overwrites same-named drawings, `edit.delete` on cells
+  clears them in both views; none reads the option sets. The special and structured commands follow 04's option sets
+  (`edit.cutSpecial`, `edit.pasteSpecial`, paste special again, `cell.clipboard.set`, `cell.clipboard.apply`,
+  `cell.range.move`, `cell.range.delete {shift}`), with the one default table of SI-201.
+- **Pinned by reviewer tests:** `c12_r2_contracts::cross_bank_cell_paste_cannot_overwrite_a_locked_drawing`,
+  `c31_r1_contract::generic_paste_bridge_overwrites_opaque_drawing_properties`,
+  `c31_r2_variants::r13_generic_overwrite_clone_group_preserves_full_drawing_and_locked_refusal`,
+  `c31_r2_variants::r05_generic_cut_clears_notes_and_retimes_remaining_notes`,
+  `c12_r3_contracts::fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit`; and the builder's
+  `crates/executor/tests/c51_timeline.rs::e5_special_commands_equal_the_cell_forms_and_plain_ones_differ_as_stated`
+  states the differences.
+- **What a person does today for 04's behaviour:** Edit › Cut Special and Paste Special (their options dialog), whose
+  results equal the structured commands'.
+- **Question:** should the plain commands follow 04's options, or does 01 §6.2's fixed behaviour stand (and 04 §13.16-
+  §13.17 change)?
 
 ## Spec A additions proposed by M4, for the user
 

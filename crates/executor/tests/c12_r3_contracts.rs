@@ -428,7 +428,6 @@ fn fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit() {
     let before_rev = rev(&h);
     let clip = json!({"kind":"cells","itemCount":1,"items":[{"elementId":new_element,"frameOffset":0,"drawingRef":get(&h,&new_element)["exposure"][0][0]}]});
     ok(&h, "edit.clipboard.set", json!({"content":clip}));
-    ok(&h, "timeline.transferOptions.set", json!({"operation":"paste","options":{"overwriteDrawings":true}}));
     for command in ["edit.paste", "edit.pasteSpecial"] {
         let e = run(&h, command, json!({"context":"xsheet","destination":{"elementId":bob,"frame":1}}));
         assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("drawing.locked"), "{command}: {e:?}");

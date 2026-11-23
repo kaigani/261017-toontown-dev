@@ -1696,19 +1696,9 @@ pub(crate) fn edit_delete(cx: &mut Cx, p: ObjectsParams) -> Result<DeleteResult,
     let context = resolve_edit_context(cx, p.context);
     let picked = pick(cx, context, p.object_ids)?;
     report_picked(cx, context, &picked);
-    let shift = matches!(picked, Picked::Cells(_)) && delete_shifts(cx, context);
-    let deleted_ids = delete(cx, &picked, shift, false)?;
+    // Plain Delete clears cells in both views (01 §6.2, as built since M3; ruling E-17).
+    let deleted_ids = delete(cx, &picked, false, false)?;
     Ok(DeleteResult { deleted_ids })
-}
-
-/// Whether Delete removes cells and shifts the following cells earlier in `context` (04 §13.17's design decision; ruling
-/// E-14): in the Timeline it follows the cut-special "create/delete exposure" option, in the Exposure Sheet it clears.
-pub(crate) fn delete_shifts(cx: &Cx, context: EditContext) -> bool {
-    context == EditContext::Timeline
-        && super::transfer_options::stored(cx, super::transfer_options::Operation::Cut)
-            .get("createDeleteExposure")
-            .and_then(Value::as_bool)
-            .unwrap_or(true)
 }
 
 /// The cell context a selection-based cell command acts in: the focused panel's (`timeline` or `xsheet`), the

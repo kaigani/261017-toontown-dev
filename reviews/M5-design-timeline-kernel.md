@@ -276,15 +276,14 @@ the difference goes to the orchestrator before either changes (E-5).
 
 ## 10. After rulings E-13 to E-16
 
-- **One transfer-option table (E-13):** `prefs.json`'s `edit.*.timeline` defaults hold 04 §11.14's values (overwrite
-  existing drawings off, update colours off); the per-family overlay of §4 is gone; a plain `edit.paste` overwrites
-  same-named drawings as the stored paste set says (it used to always overwrite). A unit test keeps the Rust
-  fallbacks (`TimelineEditOptions::default`, `TransferOptions::default`) equal to the table.
-- **Delete (E-14, SI-212):** `edit.delete` on cells clears in the Exposure Sheet and follows the cut-special exposure
-  option in the Timeline; `cell.range.delete` with target and `shift` omitted answers as `edit.delete` in the focused
-  cell context (its schema's `shift` default is therefore no longer `false` but absent: omitted means "the focused
-  context's rule"). Cut stays as built until the orchestrator rules on the reviewer test that pins it
-  (`c31_r2_variants::r05_generic_cut_clears_notes_and_retimes_remaining_notes`).
+- **One transfer-option table (E-13, narrowed by E-17):** `prefs.json`'s `edit.*.timeline` defaults hold 04
+  §11.14's values (overwrite existing drawings off, update colours off); the per-family overlay of §4 is gone; the
+  special and structured commands read the table, the plain commands do not. A unit test keeps the Rust fallbacks
+  (`TimelineEditOptions::default`, `TransferOptions::default`) equal to the table.
+- **Plain Cut, Paste and Delete (E-17, SI-213; E-14 withdrawn):** as built since M3 and 01 §6.2: Cut clears, Paste
+  writes over and overwrites same-named drawings, Delete clears in both views. `cell.range.delete` keeps its explicit
+  `shift` (default `false`), so with its target omitted it equals `edit.delete`. The E-5 test proves the special forms
+  equal the structured forms and pins the plain ones' differences.
 - **`sourceContext` (E-15):** `cell.clipboard.set` with its target omitted records the focused cell context
   (`timeline` or `xsheet`), an explicit target `xsheet`. No paste rule reads the label: `paste` dispatches on the
   clipboard's `kind` and the destination context only (`crates/executor/src/commands/edit_ops.rs`); the label is

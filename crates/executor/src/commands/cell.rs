@@ -543,12 +543,9 @@ pub(crate) struct RangeDeleteParams {
     /// Last frame.
     #[serde(default)]
     to: Option<i64>,
-    /// Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`, the default).
-    /// With the target omitted and `shift` omitted, the command answers as `edit.delete` does in the focused cell
-    /// context (ruling E-14: the Timeline follows the cut-special create/delete exposure option).
+    /// Remove the cells and shift the following cells earlier (`true`), or clear them to blanks (`false`).
     #[serde(default)]
-    #[schemars(with = "bool")]
-    shift: Option<bool>,
+    shift: bool,
 }
 
 #[command(
@@ -564,22 +561,16 @@ pub(crate) struct RangeDeleteParams {
     gui = "Edit > Delete with cells selected in the Exposure Sheet or Timeline (M5 C5.2)",
 )]
 pub(crate) fn cell_range_delete(cx: &mut Cx, p: RangeDeleteParams) -> Result<ChangedResult, CommandError> {
-    let omitted = p.element_ids.is_none() && p.from.is_none() && p.to.is_none();
-    let shift = match p.shift {
-        Some(s) => s,
-        None if omitted => super::edit_ops::delete_shifts(cx, super::edit_ops::focused_cell_context(cx)),
-        None => false,
-    };
     let t = cell_target(cx, p.element_ids.as_deref(), p.from, p.to)?;
     let mut budget = Budget::new("deleting cells");
     let changed = per_element(cx, &t, "cell.range.delete", BLANKS, &mut budget, &mut |c, b| {
         b.spend(c.frames.len())?;
-        let notes = if shift {
+        let notes = if p.shift {
             NoteEdit::moved(x::remove_map(t.from, t.to))
         } else {
             NoteEdit { clear_old: vec![(t.from, t.to)], ..NoteEdit::none() }
         };
-        Ok((x::delete_range(&c.frames, t.from, t.to, shift), notes))
+        Ok((x::delete_range(&c.frames, t.from, t.to, p.shift), notes))
     })?;
     Ok(ChangedResult { changed })
 }

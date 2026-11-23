@@ -315,16 +315,18 @@ fn after_edit(context: &str, op: (&str, Value)) -> Value {
 }
 
 #[test]
-fn e5_edit_commands_equal_the_cell_forms_with_the_target_omitted() {
-    // Ruling E-5: each `edit.*` command must give exactly the document, clipboard and selection of the matching
-    // `cell.*` command with its target omitted, in both contexts. The differences found are brought to the orchestrator
-    // before either command changes; until the ruling this test pins exactly them, so any other difference fails.
+fn e5_special_commands_equal_the_cell_forms_and_plain_ones_differ_as_stated() {
+    // Ruling E-17 item 4 (E-5 restated): the special commands with the stored set equal the 04 structured commands with
+    // their targets omitted, in both cell contexts, and plain Delete equals `cell.range.delete`; the plain commands follow
+    // 01 §6.2 as built since M3 and differ from the option-set commands exactly as stated below (SI-213).
     let mut differences = Vec::new();
     for context in ["xsheet", "timeline"] {
         for (a, b) in [
+            (("edit.cutSpecial", json!({})), ("cell.clipboard.set", json!({"cut": true}))),
+            (("edit.pasteSpecial", json!({})), ("cell.clipboard.apply", json!({}))),
+            (("edit.delete", json!({})), ("cell.range.delete", json!({}))),
             (("edit.copy", json!({})), ("cell.clipboard.set", json!({}))),
             (("edit.cut", json!({})), ("cell.clipboard.set", json!({"cut": true}))),
-            (("edit.delete", json!({})), ("cell.range.delete", json!({}))),
             (("edit.paste", json!({})), ("cell.clipboard.apply", json!({}))),
         ] {
             let (x, y) = (after_edit(context, a.clone()), after_edit(context, b.clone()));
@@ -345,19 +347,19 @@ fn e5_edit_commands_equal_the_cell_forms_with_the_target_omitted() {
         }
     }
     let expected = vec![
-        // Ruling E-14: Cut is to follow 04 §13.16 (`cell.clipboard.set {cut: true}`: removed and shifted with the
-        // cut-special exposure option on); `edit.cut` still clears, because the reviewer test
-        // `c31_r2_variants::r05_generic_cut_clears_notes_and_retimes_remaining_notes` pins its clearing: left as it is
-        // until the orchestrator answers.
+        // Found under ruling E-17 item 4 and reported before either changes: `edit.cutSpecial` records its option set in
+        // the clipboard's `options`, `cell.clipboard.set` records `null`; document and selection are equal.
+        "xsheet edit.cutSpecial / cell.clipboard.set: clipboard options".to_owned(),
+        // 01 §6.2 (plain Cut clears) against 04 §13.16 (Cut removes and shifts with the cut-special exposure option on).
         "xsheet edit.cut / cell.clipboard.set: sheet".to_owned(),
-        // A plain paste overwrites the destination cells; `cell.clipboard.apply` inserts them (the stored paste set's
-        // create/delete exposure option, on by default, 04 §11.14). Brought to the orchestrator with the E-13 report.
+        // 01 §6.2 (plain Paste writes over the destination cells) against 04 §13.16 / §11.14 (Paste inserts with the
+        // paste-special exposure option on).
         "xsheet edit.paste / cell.clipboard.apply: sheet".to_owned(),
+        "timeline edit.cutSpecial / cell.clipboard.set: clipboard options".to_owned(),
         "timeline edit.cut / cell.clipboard.set: sheet".to_owned(),
         "timeline edit.paste / cell.clipboard.apply: sheet".to_owned(),
     ];
-
-    assert_eq!(differences, expected, "E-5 differences (to the orchestrator before either changes)");
+    assert_eq!(differences, expected, "special = structured; plain differs only as stated (E-17)");
 }
 
 // ----- the read model ---------------------------------------------------------------------------------------------------
@@ -753,7 +755,7 @@ fn the_xsheet_composition_follows_column_order_and_exposure_sheet_visibility() {
 // ----- E-14: Delete on cells; E-16: category colours --------------------------------------------------------------------
 
 #[test]
-fn e14_delete_clears_in_the_exposure_sheet_and_follows_the_cut_option_in_the_timeline() {
+fn e17_plain_delete_clears_in_both_views_whatever_the_cut_option() {
     let sheet = |context: &str, cut_exposure: Option<bool>| {
         let h = fixture();
         if let Some(on) = cut_exposure {
@@ -764,12 +766,11 @@ fn e14_delete_clears_in_the_exposure_sheet_and_follows_the_cut_option_in_the_tim
         ok(&h, "edit.delete", json!({"context": context}));
         ok(&h, "xsheet.exposures.get", json!({"elementIds": [BOB]}))["columns"][0]["exposures"][0].clone()
     };
-    // Bob: drawing 1 on frames 1-6. The Exposure Sheet clears frames 1-2 (04 §13.17, §18 #8).
-    assert_eq!(sheet("xsheet", None)["from"], 3);
-    // The Timeline follows the cut-special create/delete exposure option: on (the default) removes and shifts.
-    let shifted = sheet("timeline", None);
-    assert_eq!((shifted["from"].clone(), shifted["to"].clone()), (json!(1), json!(4)));
-    assert_eq!(sheet("timeline", Some(false))["from"], 3, "off: cleared");
+    // Bob: drawing 1 on frames 1-6; plain Delete clears frames 1-2 (01 §6.2 line 523, ruling E-17).
+    for (context, option) in [("xsheet", None), ("timeline", None), ("timeline", Some(true)), ("timeline", Some(false))]
+    {
+        assert_eq!(sheet(context, option)["from"], 3, "{context} {option:?}");
+    }
 }
 
 #[test]

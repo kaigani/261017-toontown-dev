@@ -1,0 +1,17 @@
+{
+  "kind": "toontown.m5.e18-event-stream",
+  "ruling": "E-18",
+  "test": "crates/executor/tests/c42b_r2_review.rs::seeded_script_profile_receipt",
+  "oldHash": "39ed54c599dece98a21f1cc65a3910679a5fdd7d86ab76150d83a39e36cb0d1b",
+  "newHash": "e65adfa722c2a55f6f5d47c6938b527227459a3f101a0f2996c9aaac5eed9b42",
+  "events": 1133,
+  "added": 20,
+  "addedName": "timeline.currentFrame.changed",
+  "addedPayloads": "frames alternating 1 and 9, source command, one per app.context.set that changed the frame (every 16th step of the 320-step script)",
+  "proof": "the new stream with its 20 timeline.currentFrame.changed events removed hashes (SHA-256 of serde_json::to_vec(&events), the test's own computation) to exactly the committed old hash: every other event is present in the same order with the same payload",
+  "method": "a temporary copy of the test's seeded script (not committed) printed the full hash, the hash without the added events and the added payloads; run on 869a18e4 plus the E-17 working tree, debug profile; the test's hashes are profile-independent (the committed debug and release receipts were equal)",
+  "edited": [
+    "reviews/evidence/M4-C4.2b-r2/A2-debug-events.sha256",
+    "reviews/evidence/M4-C4.2b-r2/A2-release-events.sha256"
+  ]
+}
