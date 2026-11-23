@@ -122,6 +122,8 @@ export function TimelinePanel() {
   const [display, setDisplay] = useState<ReadonlyMap<string, RowDisplay>>(new Map());
   const [background, setBackground] = useState<string>('#ffffff');
   const [labels, setLabels] = useState<ReadonlyMap<number, string>>(new Map());
+  // Counts the preference changes: the ruler's labels follow `interface.timeMeasurement` (an agent's change too, E-6).
+  const [prefsRev, setPrefsRev] = useState(0);
   const [range, setRange] = useState<RowsAnswer['playbackRange'] | null>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -298,7 +300,16 @@ export function TimelinePanel() {
         setLabels(m);
       })
       .catch(() => undefined);
-  }, [open, engine, labelGate, position.firstFrame, position.zoomLevel, lastFrame, rows?.sceneLength]);
+  }, [
+    open,
+    engine,
+    labelGate,
+    position.firstFrame,
+    position.zoomLevel,
+    lastFrame,
+    rows?.sceneLength,
+    prefsRev,
+  ]);
 
   // Subscribe, then read (D-85, D-86): nothing between the first read and the subscription is lost.
   useEffect(() => {
@@ -311,6 +322,7 @@ export function TimelinePanel() {
           const v = parseView(obj(e.payload)['view']);
           if (v) setView(v);
         }
+        if (e.name === 'prefs.changed') setPrefsRev((r) => r + 1);
         if (REREAD.has(e.name)) readAll();
       })
       .then((u) => {
@@ -756,6 +768,7 @@ export function TimelinePanel() {
             className="timeline-ruler"
             data-tt-role="canvas"
             data-tt-id="timeline.ruler"
+            data-tt-labels={JSON.stringify([...labels.values()].slice(0, 8))}
             style={{ width: '100%', height: LAYOUT.rulerHeight, display: 'block', touchAction: 'none' }}
             onContextMenu={openRulerMenu}
             {...pointerHandlers('ruler')}
@@ -775,6 +788,7 @@ export function TimelinePanel() {
               data-tt-first-frame={position.firstFrame}
               data-tt-zoom={position.zoomLevel}
               data-tt-rows={shown.length}
+              data-tt-background={background}
               style={{
                 position: 'absolute',
                 inset: 0,
