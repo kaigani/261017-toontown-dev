@@ -233,6 +233,12 @@ jobs:
       - run: pnpm install --frozen-lockfile
 
       # The front-end gates (moved from `check` in M4 C4.1 round 1, ruling O-4).
+      # The front-end tests include reviewer suites that run cargo (`cargo tree --locked` in
+      # tests/adversarial/c03-r1-tooling.py) inside a 60 s limit; on this job's cold runner (no Rust cache, ruling O-4) the
+      # crate downloads raced that limit (run 45151994419). The crates the later steps need anyway are fetched first.
+      - name: Fetch the locked crates
+        run: cargo fetch --locked
+
       - name: Front end — lint, type-check, test, format, licences
         run: |
           pnpm lint
