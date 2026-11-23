@@ -555,8 +555,9 @@ pub(crate) struct Row {
     visible_in_scene: bool,
     hidden_by_parent: bool,
     locked: bool,
-    /// Whether the Timeline shows the row: no ancestor collapsed (ruling E-37, `timing_gesture::shown_rows`, which the
-    /// window applies to `depth` and `collapsed` itself). Kept only while a reviewer test reads it: E-37 removes it.
+    // Ruling E-37 removes this member; it stays while the reviewer test `c51a_r2_fixes::row` reads it.
+    /// Whether the Timeline shows the row: no ancestor is collapsed (the rule the Timeline applies to `depth` and
+    /// `collapsed`).
     shown_in_timeline: bool,
     /// `null` for a cell-based row with no exposed cell.
     bar: Option<RowBar>,

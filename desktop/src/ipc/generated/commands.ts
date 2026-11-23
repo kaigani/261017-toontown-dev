@@ -79610,7 +79610,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         type: "boolean",
       },
       shownInTimeline: {
-        description: "Whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's\nsetting hides (04 §2.9, §9.4; the rows the timing-gesture interpreter hit-tests, in the same order).",
+        description: "Whether the Timeline shows the row: no ancestor is collapsed (the rule the Timeline applies to `depth` and\n`collapsed`).",
         type: "boolean",
       },
       bar: {
@@ -105324,7 +105324,7 @@ export interface timeline_rows_list_Row {
   visibleInScene: boolean;
   hiddenByParent: boolean;
   locked: boolean;
-  /** Whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's setting hides (04 §2.9, §9.4; the rows the timing-gesture interpreter hit-tests, in the same order). */
+  /** Whether the Timeline shows the row: no ancestor is collapsed (the rule the Timeline applies to `depth` and `collapsed`). */
   shownInTimeline: boolean;
   /** `null` for a cell-based row with no exposed cell. */
   bar?: timeline_rows_list_RowBar | null;
