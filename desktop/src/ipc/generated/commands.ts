@@ -79609,10 +79609,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       locked: {
         type: "boolean",
       },
-      shownInTimeline: {
-        description: "Whether the Timeline shows the row: no ancestor is collapsed (the rule the Timeline applies to `depth` and\n`collapsed`).",
-        type: "boolean",
-      },
       bar: {
         description: "`null` for a cell-based row with no exposed cell.",
         anyOf: [
@@ -79656,7 +79652,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "visibleInScene",
       "hiddenByParent",
       "locked",
-      "shownInTimeline",
       "keyframes",
       "childKeyframeFrames",
     ],
@@ -105324,8 +105319,6 @@ export interface timeline_rows_list_Row {
   visibleInScene: boolean;
   hiddenByParent: boolean;
   locked: boolean;
-  /** Whether the Timeline shows the row: no ancestor is collapsed (the rule the Timeline applies to `depth` and `collapsed`). */
-  shownInTimeline: boolean;
   /** `null` for a cell-based row with no exposed cell. */
   bar?: timeline_rows_list_RowBar | null;
   keyframes: timeline_rows_list_RowKeyframe[];

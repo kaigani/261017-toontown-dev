@@ -335,9 +335,16 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
                 run.check(False, f"three-way {label}: the window committed and recorded the gesture", row)
                 results.append(row)
                 continue
+            # D-32 per gesture (`c43.geometry_at_gesture`): exact view-space replay only when engine 2's view maps as the
+            # window's did at this gesture; otherwise through the recorded mapping, named in the receipt.
+            m2 = (await h2.result("draw.viewMapping.get", {"view": view})).get("drawingToView")
+            geometry = c43.geometry_at_gesture(same[view], rec, m2)
+            if same[view] and not geometry:
+                row["geometryChanged"] = {"recorded": rec.get("drawingToView"), "engine2": m2,
+                                          "windowSize": (await window_sizes()).get(view), "engine2Size": sizes[view]}
             events = [dict(ev) for ev in rec["events"]]
             req2 = {"view": view, "tool": tool, "space": "view", "pointerType": rec.get("pointerType", "mouse"), "events": events}
-            if not same[view]:
+            if not geometry:
                 to_d = eq.inverse(rec["drawingToView"])
                 for ev in events:
                     ev["x"], ev["y"] = c42.apply(to_d, ev["x"], ev["y"])
@@ -351,7 +358,7 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
             statuses = [rec.get("status"), env2.get("status"), "ok" if all(d.get("status") == "ok" for d in direct) else "error"]
             cmds_ok, cmds_exact, cmds_diff = c43.replay_agrees(win_cmds, h2_cmds)
             content_ok, content_exact, content_diff = c43.replay_agrees(contents[0], contents[1])
-            if same[view]:
+            if geometry:
                 cmds_ok, content_ok = cmds_exact, content_exact
             same_content = content_ok and contents[0] == contents[2]
             same_labels = labels[0] == labels[1] == labels[2]
@@ -483,7 +490,8 @@ def run_main() -> int:
         shutil.rmtree(work, ignore_errors=True)
     manifest = {"kind": "toontown.c44b.gesture-equivalence", "platform": sys.platform, "seconds": round(time.monotonic() - started, 1),
                 "rows": len(rows), "input": sorted({r.get("input") for r in rows if r.get("input")}),
-                "replayNotExact": [r["name"] for r in rows if r.get("replayExact") is False], "failures": run.failures}
+                "replayNotExact": [r["name"] for r in rows if r.get("replayExact") is False],
+                "geometryChanged": [r["name"] for r in rows if r.get("geometryChanged")], "failures": run.failures}
     if rows:
         run.save("rows.json", rows)
     run.save("transcript.json", run.transcript)

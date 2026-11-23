@@ -555,10 +555,6 @@ pub(crate) struct Row {
     visible_in_scene: bool,
     hidden_by_parent: bool,
     locked: bool,
-    // Ruling E-37 removes this member; it stays while the reviewer test `c51a_r2_fixes::row` reads it.
-    /// Whether the Timeline shows the row: no ancestor is collapsed (the rule the Timeline applies to `depth` and
-    /// `collapsed`).
-    shown_in_timeline: bool,
     /// `null` for a cell-based row with no exposed cell.
     bar: Option<RowBar>,
     keyframes: Vec<RowKeyframe>,
@@ -669,7 +665,6 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
         ));
     }
     let mut budget = Budget::new("listing Timeline rows");
-    let shown: BTreeSet<Id> = crate::timing_gesture::visible_rows(&doc, &scene).into_iter().map(|r| r.id).collect();
     let placed = h::placed(sc.tree());
     budget.spend(placed.len())?;
     // Once for all the rows' key reads: the scene length walks every element of the scene (computed per row, the read
@@ -719,7 +714,6 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
             visible_in_scene: *e.visible_in_scene(),
             hidden_by_parent: parent_hidden,
             locked: *e.locked(),
-            shown_in_timeline: shown.contains(&q.id),
             bar,
             keyframes,
             child_keyframe_frames: Vec::new(),

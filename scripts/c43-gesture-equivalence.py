@@ -96,6 +96,24 @@ def replay_agrees(window, replay) -> tuple:
     return d is not None and d <= REPLAY_TOLERANCE, False, d
 
 
+def same_mapping(a, b) -> bool:
+    """Two view mappings (`drawingToView`, six numbers) are the same."""
+    if not isinstance(a, list) or not isinstance(b, list) or len(a) != len(b):
+        return False
+    return all(abs(float(x) - float(y)) <= 1e-9 for x, y in zip(a, b))
+
+
+def geometry_at_gesture(same_size: bool, rec: dict, engine2_mapping) -> bool:
+    """D-32 per gesture: engine 2 replays the window's samples in view space, compared exactly, only when its view maps as
+    the window's view did at this gesture (the mapping the window recorded with it). Reading the window's size once
+    before the rows is not enough: the window's layout can change afterwards (run 45174410122 on macOS: the Camera view
+    read 920 px wide, stable over two reads 0.5 s apart, then narrowed to 861 px before the first gesture, so every
+    replay mapped 29.5 px off). Engine 2's size cannot follow it without breaking the rows' lockstep (a restarted engine
+    has another revision and id stream), so a row whose mapping differs replays through the recorded mapping, compared
+    within the stated tolerance, and the receipt names it (`geometryChanged`)."""
+    return same_size and same_mapping(rec.get("drawingToView"), engine2_mapping)
+
+
 def normalised(cmds: list) -> list:
     return [{"commandId": c.get("commandId"), "params": c.get("params")} for c in cmds if c.get("commandId") not in TOOL_CHOICE]
 
@@ -392,10 +410,15 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
             results.append(row)
             run.save("rows.json", results)
             continue
-        # 2. Engine 2: the recorded samples, as collected when its view has the window's geometry (D-32), else in a
-        # size-independent space.
+        # 2. Engine 2: the recorded samples, as collected when its view maps as the window's did at this gesture (D-32,
+        # checked per gesture), else in a size-independent space through the recorded mapping.
+        m2 = (await h2.result("draw.viewMapping.get", {"view": "cameraView"})).get("drawingToView")
+        geometry = geometry_at_gesture(same_geometry, rec, m2)
+        if same_geometry and not geometry:
+            row["geometryChanged"] = {"recorded": rec.get("drawingToView"), "engine2": m2,
+                                      "windowSize": await camera_size(), "engine2Size": head_size}
         events = [dict(ev) for ev in rec["events"]]
-        if same_geometry:
+        if geometry:
             req2 = {"view": "cameraView", "space": "view", "pointerType": rec.get("pointerType", "mouse"), "events": events}
             if family == "drawing" and tool == "select":
                 await h2.run("tool.active.set", {"toolId": "select"})
@@ -430,7 +453,7 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
         cmds_ok, cmds_exact, cmds_diff = replay_agrees(win_cmds, h2_cmds)
         content_ok, content_exact, content_diff = replay_agrees(contents[0], contents[1])
         # D-32: with the window's geometry the replay is exact, no tolerance.
-        if same_geometry:
+        if geometry:
             cmds_ok, content_ok = cmds_exact, content_exact
         # The window and the commands sent directly: exactly.
         same_cmds = cmds_ok
@@ -529,7 +552,8 @@ def run_main() -> int:
         shutil.rmtree(work, ignore_errors=True)
     manifest = {"kind": "toontown.c43.gesture-equivalence", "platform": sys.platform, "seconds": round(time.monotonic() - started, 1),
                 "rows": len(rows), "input": sorted({r.get("input") for r in rows if r.get("input")}),
-                "replayNotExact": [r["name"] for r in rows if r.get("replayExact") is False], "failures": run.failures}
+                "replayNotExact": [r["name"] for r in rows if r.get("replayExact") is False],
+                "geometryChanged": [r["name"] for r in rows if r.get("geometryChanged")], "failures": run.failures}
     run.save("rows.json", rows)
     run.save("transcript.json", run.transcript)
     run.save("manifest.json", manifest)

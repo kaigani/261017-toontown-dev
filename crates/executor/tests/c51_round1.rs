@@ -175,11 +175,20 @@ fn e22_every_navigation_form_stops_playback_even_without_moving() {
 // ----- E-23 ------------------------------------------------------------------------------------------------------------
 
 fn visible_row(h: &ExecutorHandle, name: &str) -> usize {
+    // The rows shown (ruling E-37): no ancestor collapsed, from `depth` and `collapsed` (the shared case table's rule).
+    let mut hidden_under: Option<u64> = None;
     ok(h, "timeline.rows.list", json!({}))["rows"]
         .as_array()
         .unwrap()
         .iter()
-        .filter(|r| r["shownInTimeline"] == true)
+        .filter(|r| {
+            let depth = r["depth"].as_u64().unwrap();
+            if hidden_under.is_some_and(|d| depth > d) {
+                return false;
+            }
+            hidden_under = (r["collapsed"] == true).then_some(depth);
+            true
+        })
         .position(|r| r["name"] == name)
         .unwrap()
 }

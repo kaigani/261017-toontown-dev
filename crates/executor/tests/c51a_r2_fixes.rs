@@ -59,11 +59,20 @@ fn f1_window_and_label_boundaries() {
     }
 }
 fn row(h: &tt_executor::ExecutorHandle, name: &str) -> usize {
+    // Ruling E-39: the rows shown, derived from `depth` and `collapsed` (no ancestor collapsed), as the shared case table.
+    let mut hidden_under: Option<u64> = None;
     ok(h, "timeline.rows.list", json!({}))["rows"]
         .as_array()
         .unwrap()
         .iter()
-        .filter(|r| r["shownInTimeline"] == true)
+        .filter(|r| {
+            let depth = r["depth"].as_u64().unwrap();
+            if hidden_under.is_some_and(|d| depth > d) {
+                return false;
+            }
+            hidden_under = (r["collapsed"] == true).then_some(depth);
+            true
+        })
         .position(|r| r["name"] == name)
         .unwrap()
 }

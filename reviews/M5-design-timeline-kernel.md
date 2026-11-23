@@ -377,8 +377,9 @@ the difference goes to the orchestrator before either changes (E-5).
   collapsed combination, longer hand-written trees; written by `scripts/gen-timeline-rows-cases.py`, whose oracle walks
   each row's ancestors, and copied byte for byte to the window). Effect-parameter rows are rows like any other until
   M7: `timeline.effectParameterRows.set` stores its setting (reported by the view notice) and hides nothing in the
-  Timeline; the window binding is deferred to M7. `shownInTimeline` is removed from `timeline.rows.list` once the
-  reviewer test that reads it is ruled on (the E-37 addendum); it is on the list of spec A additions for M7's question.
+  Timeline; the window binding is deferred to M7. `shownInTimeline` is removed from `timeline.rows.list` (ruling E-39
+  authorised the one reviewer helper that read it, `c51a_r2_fixes::row`, to derive the rows by this rule); it stays on
+  the list of spec A additions for M7's question.
 - **The argument sweep (E-38).** Each member is varied on a valid base call: the other required members take their
   valid values (each enumerated value; the product of them up to 12 bases, else one base per value index), so a
   boundary value is refused only by its own member's schema, which the sweep asserts (every violation points at the
