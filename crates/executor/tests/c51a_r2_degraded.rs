@@ -23,22 +23,26 @@ fn e1_commit_boundary_fallback_degrades() {
         }
     }
     let _reset = Reset;
-    let dir = std::env::temp_dir().join(format!("tt-r2-degraded-{}",std::process::id()));
+    let dir = std::env::temp_dir().join(format!("tt-r2-degraded-{}", std::process::id()));
     let options = || tt_executor::ExecutorOptions {
-        config:tt_executor::ExecutorConfig { budget:std::time::Duration::from_secs(60) },
-        persist:tt_executor::PersistOptions {
-            user_dirs:Some(tt_executor::UserDirs::under(&dir)),
-            maintenance:tt_executor::Maintenance { tick:std::time::Duration::from_millis(100), autosave:Some(std::time::Duration::ZERO), ..Default::default() },
+        config: tt_executor::ExecutorConfig { budget: std::time::Duration::from_secs(60) },
+        persist: tt_executor::PersistOptions {
+            user_dirs: Some(tt_executor::UserDirs::under(&dir)),
+            maintenance: tt_executor::Maintenance {
+                tick: std::time::Duration::from_millis(100),
+                autosave: Some(std::time::Duration::ZERO),
+                ..Default::default()
+            },
             ..Default::default()
         },
     };
     let h = ExecutorHandle::spawn_with_options(options()).unwrap();
-    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(),None,false).is_ok());
+    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
     ok(&h, "element.create", json!({"type": "peg", "name": "Before", "sceneId": "scene:#1"}));
     h.run_maintenance(true).unwrap();
-    let deadline = std::time::Instant::now()+std::time::Duration::from_secs(60);
-    while !files(&dir).keys().any(|x|x.ends_with("recovery.json")) {
-        assert!(std::time::Instant::now()<deadline,"autosave not produced");
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(60);
+    while !files(&dir).keys().any(|x| x.ends_with("recovery.json")) {
+        assert!(std::time::Instant::now() < deadline, "autosave not produced");
         std::thread::sleep(std::time::Duration::from_millis(100));
     }
     // A panic on the document thread inside an action (the persist boundary hook stands for any handler panic).
@@ -75,55 +79,67 @@ fn e1_commit_boundary_fallback_degrades() {
         assert!(error.hint.as_deref().unwrap_or_default().contains("project.recovery.list"), "{e:?}");
     }
     let before = files(&dir);
-    let until = std::time::Instant::now()+std::time::Duration::from_secs(3);
-    while std::time::Instant::now()<until {
+    let until = std::time::Instant::now() + std::time::Duration::from_secs(3);
+    while std::time::Instant::now() < until {
         let _ = h.run_maintenance(true);
         std::thread::sleep(std::time::Duration::from_millis(100));
     }
-    assert_eq!(files(&dir),before,"E-29 no snapshot after degradation");
-    for (command,params) in [
-        ("element.create",json!({"type":"peg","name":"Refused"})),
-        ("timeline.currentFrame.set",json!({"frame":9})),
-        ("project.recovery.list",json!({})),
-        ("edit.undo",json!({})),
-        ("playback.start",json!({})),
+    assert_eq!(files(&dir), before, "E-29 no snapshot after degradation");
+    for (command, params) in [
+        ("element.create", json!({"type":"peg","name":"Refused"})),
+        ("timeline.currentFrame.set", json!({"frame":9})),
+        ("project.recovery.list", json!({})),
+        ("edit.undo", json!({})),
+        ("playback.start", json!({})),
     ] {
-        let e=run(&h,command,params).error.unwrap();
-        assert_eq!(e.code,"internal");
-        assert_eq!(e.details["reason"],"engineStopped");
+        let e = run(&h, command, params).error.unwrap();
+        assert_eq!(e.code, "internal");
+        assert_eq!(e.details["reason"], "engineStopped");
         assert!(e.hint.unwrap().contains("project.recovery.list"));
     }
     for entry in tt_executor::registry().unwrap().entries() {
-        let out=run(&h,entry.id(),json!({}));
-        let e=out.error.unwrap();
-        assert_eq!(e.code,"internal","{}",entry.id());
-        assert_eq!(e.details["reason"],"engineStopped","{}",entry.id());
+        let out = run(&h, entry.id(), json!({}));
+        let e = out.error.unwrap();
+        assert_eq!(e.code, "internal", "{}", entry.id());
+        assert_eq!(e.details["reason"], "engineStopped", "{}", entry.id());
         assert!(e.hint.unwrap().contains("project.recovery.list"));
     }
-    let replay=h.timing_replay(tt_executor::Origin::User,
-        json!({"surface":"tracks","zoomLevel":6,"firstFrame":1,"scrollTop":0,"platform":"windows"}),
-        json!([{"x":160,"y":16,"modifiers":[]},{"x":192,"y":16,"modifiers":[]}]),false).unwrap_err();
-    assert_eq!(replay.code,"internal");
-    assert_eq!(replay.details["reason"],"engineStopped");
+    let replay = h
+        .timing_replay(
+            tt_executor::Origin::User,
+            json!({"surface":"tracks","zoomLevel":6,"firstFrame":1,"scrollTop":0,"platform":"windows"}),
+            json!([{"x":160,"y":16,"modifiers":[]},{"x":192,"y":16,"modifiers":[]}]),
+            false,
+        )
+        .unwrap_err();
+    assert_eq!(replay.code, "internal");
+    assert_eq!(replay.details["reason"], "engineStopped");
     assert!(replay.hint.unwrap().contains("project.recovery.list"));
-    let fresh=ExecutorHandle::spawn_with_options(options()).unwrap();
-    let owner=h.abandon();
-    assert!(fresh.release_recovery_of(&owner).unwrap()>0);
-    let listed=ok(&fresh,"project.recovery.list",json!({}));
-    assert!(!listed.as_array().unwrap().is_empty(),"{listed}");
+    let fresh = ExecutorHandle::spawn_with_options(options()).unwrap();
+    let owner = h.abandon();
+    assert!(fresh.release_recovery_of(&owner).unwrap() > 0);
+    let listed = ok(&fresh, "project.recovery.list", json!({}));
+    assert!(!listed.as_array().unwrap().is_empty(), "{listed}");
     drop(fresh);
     drop(h);
     std::fs::remove_dir_all(dir).unwrap();
 }
-fn files(root:&Path)->std::collections::BTreeMap<String,u64> {
-    fn visit(root:&Path, at:&Path, out:&mut std::collections::BTreeMap<String,u64>) {
-        if let Ok(rd)=std::fs::read_dir(at) {
+fn files(root: &Path) -> std::collections::BTreeMap<String, u64> {
+    fn visit(root: &Path, at: &Path, out: &mut std::collections::BTreeMap<String, u64>) {
+        if let Ok(rd) = std::fs::read_dir(at) {
             for entry in rd {
-                let e=entry.unwrap(); let p=e.path(); let m=e.metadata().unwrap();
-                if m.is_dir() { visit(root,&p,out); }
-                else { out.insert(p.strip_prefix(root).unwrap().to_string_lossy().into_owned(),m.len()); }
+                let e = entry.unwrap();
+                let p = e.path();
+                let m = e.metadata().unwrap();
+                if m.is_dir() {
+                    visit(root, &p, out);
+                } else {
+                    out.insert(p.strip_prefix(root).unwrap().to_string_lossy().into_owned(), m.len());
+                }
             }
         }
     }
-    let mut out=Default::default(); visit(root,root,&mut out); out
+    let mut out = Default::default();
+    visit(root, root, &mut out);
+    out
 }
