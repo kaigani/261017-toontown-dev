@@ -1,0 +1,5 @@
+Product ba8e1946; review branch review/m5-c51a-r1.
+Executor c51a_r1_part2: 9 passed, 2 failed (D2 cell exposure change and row insertion).
+MCP c51a_r1_notices: 1 passed.
+C2: 33 playback frame events, ceiling 45, final frame 96.
+C1/C2/C3 PASS. D1 partial NOT DONE. D2 FINDING 03/04 (P2). D3 partial NOT DONE.
