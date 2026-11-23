@@ -87,9 +87,6 @@ pub struct State {
     /// The current scene's effective playback range.
     pub range: (u32, u32),
     pub range_free: bool,
-    /// Effect-parameter rows hidden by default, and per effect element.
-    pub parameter_rows_hidden: bool,
-    pub parameter_rows: BTreeMap<String, bool>,
     /// The drag-and-drop option set in effect (04's names): a cell drag carries the set resolved at its press, inline
     /// in its `cell.range.move` (ruling E-32).
     pub drag_options: serde_json::Map<String, Value>,
@@ -128,8 +125,6 @@ impl State {
             single_cell: single,
             range,
             range_free,
-            parameter_rows_hidden: s.timeline.parameter_rows_hidden,
-            parameter_rows: s.timeline.parameter_rows.clone(),
             drag_options: crate::commands::transfer_options::cell_base_in(
                 s,
                 crate::commands::transfer_options::Operation::DragDrop,
@@ -255,37 +250,42 @@ pub(crate) struct VisibleRow {
     pub ty: ElementType,
 }
 
-/// The Timeline's visible rows in order: Timeline order, without the descendants of collapsed rows and without hidden
-/// effect-parameter rows (04 §2.9, §9.4).
-pub(crate) fn visible_rows(doc: &Document, scene: &Id, state: &State) -> Vec<VisibleRow> {
-    let Some(sc) = doc.scene(scene) else { return Vec::new() };
+/// The rows the Timeline shows, as indices into rows given in Timeline order as `(depth, collapsed)` (ruling E-37): a row
+/// is shown unless one of its ancestors is collapsed. The rule reads only members `timeline.rows.list` declares (`depth`,
+/// `collapsed`), so the window draws the rows the interpreter hit-tests by the same rule
+/// (`desktop/src/timeline/rows.ts`); both check the shared case table `timeline-rows-cases.json`. Effect-parameter rows
+/// (04 §2.9) are rows like any other until effect elements exist (M7, with `timeline.effectParameterRows.set`).
+pub(crate) fn shown_rows(rows: impl IntoIterator<Item = (usize, bool)>) -> Vec<usize> {
     let mut out = Vec::new();
     let mut hidden_under: Option<usize> = None;
-    for q in h::placed(sc.tree()) {
+    for (i, (depth, collapsed)) in rows.into_iter().enumerate() {
         if let Some(d) = hidden_under {
-            if q.depth > d {
+            if depth > d {
                 continue;
             }
             hidden_under = None;
         }
-        let Some(e) = doc.element(&q.id) else { continue };
-        let ty = *e.element_type();
-        if ty == ElementType::EffectParameter {
-            let shown = q
-                .parent
-                .as_ref()
-                .and_then(|p| state.parameter_rows.get(p.as_str()).copied())
-                .unwrap_or(!state.parameter_rows_hidden);
-            if !shown {
-                continue;
-            }
+        if collapsed {
+            hidden_under = Some(depth);
         }
-        if *e.collapsed() {
-            hidden_under = Some(q.depth);
-        }
-        out.push(VisibleRow { id: q.id.clone(), parent: q.parent.clone(), index: q.index, ty });
+        out.push(i);
     }
     out
+}
+
+/// The Timeline's visible rows in order: Timeline order, by the rule of [`shown_rows`].
+pub(crate) fn visible_rows(doc: &Document, scene: &Id) -> Vec<VisibleRow> {
+    let Some(sc) = doc.scene(scene) else { return Vec::new() };
+    let rows: Vec<(h::Placed, ElementType, bool)> = h::placed(sc.tree())
+        .into_iter()
+        .filter_map(|q| doc.element(&q.id).map(|e| (*e.element_type(), *e.collapsed())).map(|(t, c)| (q, t, c)))
+        .collect();
+    let shown = shown_rows(rows.iter().map(|(q, _, c)| (q.depth, *c)));
+    shown
+        .into_iter()
+        .filter_map(|i| rows.get(i))
+        .map(|(q, ty, _)| VisibleRow { id: q.id.clone(), parent: q.parent.clone(), index: q.index, ty: *ty })
+        .collect()
 }
 
 /// A row's bar: `(start, end, loops, duration)` for a bar element, `None` for a cell-based row.
@@ -392,14 +392,14 @@ pub fn classify(doc: &Document, state: &State, g: &GestureLayout, s: &Sample) ->
             Target::Ruler { frame: frame_at(l, g, s.x) }
         }
         Surface::Layers => {
-            let rows = visible_rows(doc, scene, state);
+            let rows = visible_rows(doc, scene);
             match row_at(l, g, s.y, rows.len()) {
                 Some(r) => Target::Row { row: r, element: rows[r].id.as_str().to_owned() },
                 None => Target::Nothing,
             }
         }
         Surface::Tracks => {
-            let rows = visible_rows(doc, scene, state);
+            let rows = visible_rows(doc, scene);
             let Some(r) = row_at(l, g, s.y, rows.len()) else { return Target::Nothing };
             let row = &rows[r];
             let element = row.id.as_str().to_owned();
@@ -445,7 +445,7 @@ pub fn plan(doc: &Document, state: &State, g: &GestureLayout, samples: &[Sample]
     let dragged = travel(samples) >= f64::from(l.drag_threshold);
     let len = length_of(doc, scene);
     let target = classify(doc, state, g, first);
-    let rows = visible_rows(doc, scene, state);
+    let rows = visible_rows(doc, scene);
     let delta = i64::from(frame_at(l, g, last.x)) - i64::from(frame_at(l, g, first.x));
     match target {
         Target::Nothing => Plan::Nothing,
@@ -1100,6 +1100,30 @@ mod tests {
             first_frame: u32::try_from(first).unwrap_or(1),
             scroll_top: 0.0,
             platform: "windows".to_owned(),
+        }
+    }
+
+    /// The rows shown (ruling E-37): every case of the shared table, which the window's `rows.ts` checks too.
+    #[test]
+    fn the_rows_shown_follow_the_shared_case_table() {
+        let table: serde_json::Value =
+            serde_json::from_str(include_str!("timeline-rows-cases.json")).unwrap_or_default();
+        let cases = table["cases"].as_array().cloned().unwrap_or_default();
+        assert!(cases.len() > 1000, "{} cases", cases.len());
+        for c in &cases {
+            let rows: Vec<(usize, bool)> = c["rows"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .map(|r| (usize::try_from(r[0].as_u64().unwrap_or(0)).unwrap_or(0), r[1].as_bool().unwrap_or(false)))
+                .collect();
+            let want: Vec<usize> = c["shown"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .map(|i| usize::try_from(i.as_u64().unwrap_or(0)).unwrap_or(0))
+                .collect();
+            assert_eq!(shown_rows(rows), want, "{c}");
         }
     }
 

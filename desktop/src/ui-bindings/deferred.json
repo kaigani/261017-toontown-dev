@@ -452,9 +452,9 @@
       "location": "Timeline: click or drag in the frame ruler; ruler context: Set Current Frame"
     },
     "timeline.effectParameterRows.set": {
-      "owner": "M5 C5.1",
+      "owner": "M7 C7.1",
       "section": "04 §2.9 (Effect elements and effect-parameter rows)",
-      "location": "Timeline row context: Show Effect Parameters (on a clipping effect), Show All / Hide All Effect Parameters (ruling E-9: a clipping effect's mask row exists today)"
+      "location": "Timeline row context: Show Effect Parameters (on an effect), Show All / Hide All Effect Parameters (ruling E-37: until M7 the Timeline shows and hit-tests effect-parameter rows by the depth and collapsed rule; the kernel command stores the setting)"
     },
     "timeline.playbackRange.get": {
       "owner": "M5 C5.1",

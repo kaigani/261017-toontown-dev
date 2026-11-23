@@ -1338,10 +1338,12 @@ fn paste(
                     })
                     .collect();
                 let width = block.iter().map(|(o, _)| *o + 1).max().unwrap_or(0) as usize;
-                // Ruling E-30: with the exposure option off a special paste writes over the destination cells; a cell
-                // exposing a locked drawing refuses it before anything is staged (04 line 1074, ruling D-80), as
-                // `cell.clipboard.apply` refuses. (The plain paste's rule is E-17's, as built.)
-                if topts.is_some() && !insert {
+                // Rulings E-30 and E-36: a paste that writes over the destination cells (the plain paste, and a special
+                // paste with the exposure option off) refuses with `drawing.locked` when a destination cell exposes a
+                // locked drawing (04 lines 1074 and 1123, ruling D-80), as `cell.clipboard.apply` refuses. The check runs
+                // per column, before this column places anything; the local changes of the columns before it are then
+                // discarded with the refusal, and nothing reaches the document.
+                if !insert {
                     let existing = frames_of(&doc, t.as_str());
                     let lo = (start as usize).saturating_sub(1);
                     for d in existing.iter().skip(lo).take(width).flatten() {

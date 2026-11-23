@@ -3,15 +3,19 @@
 //! the largest integers; one valid value for a patterned string; reversed pairs; empty arrays; objects with every member
 //! set; missing optional members; ids that do not exist), on the fixture, on a scene of length 1 and on an empty scene.
 //! Each call answers with a result or a structured error other than `internal`, and a read sent after it answers (the
-//! document thread is alive). Per command it counts the calls that passed validation and reached the handler, prints
-//! the table, and fails when a callable command has none. The gesture entry (`timing_gesture`, `timing_replay`) gets its
-//! own sweep of coordinates (ruling E-31). C5.1b and C5.2 extend [`COMMANDS`] with their commands.
+//! document thread is alive). A member is varied on a valid base call: the other required members take valid values,
+//! each enumerated value in turn (ruling E-38), so a boundary value is refused only by its own member's schema. Per
+//! command it counts the calls that passed validation and reached the handler, and per numeric member the boundary
+//! values that reached it; it prints the table and fails when a callable command, or a numeric member of one, has none.
+//! The gesture entry (`timing_gesture`, `timing_replay`) gets its own sweep of coordinates (ruling E-31). C5.1b and C5.2
+//! extend [`COMMANDS`] with their commands.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 mod common;
 
 use common::*;
 use serde_json::{Map, Value, json};
+use std::collections::{BTreeMap, BTreeSet};
 use tt_executor::{ExecutorHandle, Status};
 
 const BOB: &str = "scene:\"Intro\"/element:\"Bob\"";
@@ -233,8 +237,12 @@ fn enum_values(node: &Value, root: &Value) -> Vec<Value> {
     out
 }
 
-/// A plausible value for a required member (the first candidate a handler is likely to accept).
+/// A plausible value for a member (the first candidate a handler is likely to accept): an enumerated member's first
+/// value (ruling E-38), a patterned string's sample, else the likeliest candidate.
 fn plausible(node: &Value, root: &Value) -> Value {
+    if let Some(first) = enum_values(node, root).into_iter().next() {
+        return first;
+    }
     let resolved = resolve(node, root);
     if let Some(pattern) = resolved.get("pattern").and_then(Value::as_str) {
         return json!(sample(pattern));
@@ -248,26 +256,94 @@ fn plausible(node: &Value, root: &Value) -> Value {
         .unwrap_or(Value::Null)
 }
 
+/// The valid values of a required member: each enumerated value, or one plausible value (ruling E-38).
+fn valid_values(node: &Value, root: &Value) -> Vec<Value> {
+    let values = enum_values(node, root);
+    if values.is_empty() { vec![plausible(node, root)] } else { values }
+}
+
+/// Whether a member is numeric (`integer` or `number`, directly or in a branch).
+fn numeric(node: &Value, root: &Value) -> bool {
+    let node = resolve(node, root);
+    let typed = match node.get("type") {
+        Some(Value::String(t)) => t == "integer" || t == "number",
+        Some(Value::Array(a)) => a.iter().any(|t| t == "integer" || t == "number"),
+        _ => false,
+    };
+    typed
+        || ["anyOf", "oneOf", "allOf"]
+            .iter()
+            .any(|k| node.get(*k).and_then(Value::as_array).is_some_and(|b| b.iter().any(|b| numeric(b, root))))
+}
+
+/// The most valid base calls kept: the product of the required members' valid values when it is no larger, otherwise
+/// one base per value index, each member taking its values in turn.
+const BASE_CAP: usize = 12;
+
+/// The valid base calls: the required members' valid values combined (ruling E-38).
+fn bases(schema: &Value, props: &Map<String, Value>, required: &[String]) -> Vec<Map<String, Value>> {
+    let lists: Vec<(String, Vec<Value>)> =
+        required.iter().filter_map(|r| props.get(r).map(|p| (r.clone(), valid_values(p, schema)))).collect();
+    let product: usize = lists.iter().map(|(_, v)| v.len().max(1)).product();
+    let mut out: Vec<Map<String, Value>> = Vec::new();
+    if product <= BASE_CAP {
+        out.push(Map::new());
+        for (k, values) in &lists {
+            out = out
+                .iter()
+                .flat_map(|b| {
+                    values.iter().map(move |v| {
+                        let mut m = b.clone();
+                        m.insert(k.clone(), v.clone());
+                        m
+                    })
+                })
+                .collect();
+        }
+    } else {
+        let longest = lists.iter().map(|(_, v)| v.len()).max().unwrap_or(1);
+        for i in 0..longest {
+            out.push(lists.iter().map(|(k, v)| (k.clone(), v[i % v.len()].clone())).collect());
+        }
+    }
+    out
+}
+
+/// One boundary call, and the member it varies with the value it gives it.
+struct Call {
+    params: Value,
+    varied: Option<(String, Value)>,
+}
+
 /// The boundary calls of one command.
-fn calls(schema: &Value) -> Vec<Value> {
+fn calls(schema: &Value) -> Vec<Call> {
     let props = schema.get("properties").and_then(Value::as_object).cloned().unwrap_or_default();
     let required: Vec<String> = schema
         .get("required")
         .and_then(Value::as_array)
         .map(|a| a.iter().filter_map(Value::as_str).map(str::to_owned).collect())
         .unwrap_or_default();
-    let mut base = Map::new();
-    for r in &required {
-        if let Some(p) = props.get(r) {
-            base.insert(r.clone(), plausible(p, schema));
-        }
-    }
-    let mut out = vec![json!({}), Value::Object(base.clone())];
+    let all_bases = bases(schema, &props, &required);
+    let base = all_bases.first().cloned().unwrap_or_default();
+    let plain = |v: Value| Call { params: v, varied: None };
+    let mut out = vec![plain(json!({}))];
+    out.extend(all_bases.iter().cloned().map(|b| plain(Value::Object(b))));
     for (k, p) in &props {
+        // The bases that differ in the other members (a varied member's own base value is replaced).
+        let mut others: Vec<Map<String, Value>> = Vec::new();
+        for b in &all_bases {
+            let mut m = b.clone();
+            m.remove(k);
+            if !others.contains(&m) {
+                others.push(m);
+            }
+        }
         for c in candidates(p, schema, 0) {
-            let mut m = base.clone();
-            m.insert(k.clone(), c);
-            out.push(Value::Object(m));
+            for b in &others {
+                let mut m = b.clone();
+                m.insert(k.clone(), c.clone());
+                out.push(Call { params: Value::Object(m), varied: Some((k.clone(), c.clone())) });
+            }
         }
     }
     // Every pair of enumerated members, value by value (Next Drawing is `direction: next` with `unit: drawing`).
@@ -280,7 +356,7 @@ fn calls(schema: &Value) -> Vec<Value> {
                     let mut m = base.clone();
                     m.insert((*ka).clone(), a.clone());
                     m.insert((*kb).clone(), b.clone());
-                    out.push(Value::Object(m));
+                    out.push(plain(Value::Object(m)));
                 }
             }
         }
@@ -291,7 +367,7 @@ fn calls(schema: &Value) -> Vec<Value> {
                 let mut m = base.clone();
                 m.insert(a.to_owned(), json!(x));
                 m.insert(b.to_owned(), json!(y));
-                out.push(Value::Object(m));
+                out.push(plain(Value::Object(m)));
             }
         }
     }
@@ -370,13 +446,20 @@ fn every_m5_command_answers_every_boundary_call_and_the_engine_stays_alive() {
     let one_frame_len = ok(&fixtures[1].1, "timeline.rows.list", json!({}))["sceneLength"].clone();
     assert_eq!(one_frame_len, 1, "the one-frame scene");
     let mut total = 0;
-    let mut table: Vec<(&str, usize, usize)> = Vec::new();
+    let mut table: Vec<(&str, usize, usize, String)> = Vec::new();
+    // Per numeric member of a callable command: its boundary values, and those that reached the handler (ruling E-38).
+    let mut numeric_unreached: Vec<String> = Vec::new();
     for id in &ids {
         let schema = registry.get(id).unwrap().params_schema();
         let list = calls(&schema);
+        let props = schema.get("properties").and_then(Value::as_object).cloned().unwrap_or_default();
+        let numeric_members: Vec<&String> = props.iter().filter(|(_, p)| numeric(p, &schema)).map(|(k, _)| k).collect();
+        let mut tried: BTreeMap<&str, BTreeSet<String>> = BTreeMap::new();
+        let mut hit: BTreeMap<&str, BTreeSet<String>> = BTreeMap::new();
         let mut reached = 0;
         for (name, h) in &fixtures {
-            for params in &list {
+            for call in &list {
+                let params = &call.params;
                 total += 1;
                 let env = run(h, id, params.clone());
                 // Reached the handler: answered, or refused by anything but parameter validation, the project check,
@@ -389,6 +472,31 @@ fn every_m5_command_answers_every_boundary_call_and_the_engine_stays_alive() {
                 });
                 if !refused_before {
                     reached += 1;
+                }
+                if let Some((member, value)) = &call.varied
+                    && value.is_number()
+                    && let Some(m) = numeric_members.iter().find(|m| **m == member)
+                {
+                    tried.entry(m.as_str()).or_default().insert(value.to_string());
+                    if !refused_before {
+                        hit.entry(m.as_str()).or_default().insert(value.to_string());
+                    } else if let Some(e) = env.error.as_ref().filter(|e| e.code.starts_with("arg.")) {
+                        // On a valid base only the member's own schema may refuse its value (ruling E-38); enablement
+                        // and the project check refuse the command, not the value.
+                        let own = format!("/{m}");
+                        let pointers: Vec<&str> = e.details["violations"]
+                            .as_array()
+                            .into_iter()
+                            .flatten()
+                            .filter_map(|v| v["pointer"].as_str())
+                            .collect();
+                        assert!(
+                            e.code == "arg.invalid"
+                                && !pointers.is_empty()
+                                && pointers.iter().all(|p| *p == own || p.starts_with(&format!("{own}/"))),
+                            "{name}: {id} {params}: refused by more than `{m}`'s schema: {e:?}"
+                        );
+                    }
                 }
                 match env.status {
                     Status::Ok => {}
@@ -412,22 +520,39 @@ fn every_m5_command_answers_every_boundary_call_and_the_engine_stays_alive() {
             // Leave the clock still for the next command.
             run(h, "playback.stop", json!({}));
         }
-        table.push((id, list.len() * fixtures.len(), reached));
+        let callable = registry.get(id).is_some_and(|e| e.spec.kind != tt_registry::Kind::Event);
+        let mut column = Vec::new();
+        for m in &numeric_members {
+            let (t, r) = (tried.get(m.as_str()).map_or(0, BTreeSet::len), hit.get(m.as_str()).map_or(0, BTreeSet::len));
+            column.push(format!("{m} {r}/{t}"));
+            if callable && r == 0 {
+                numeric_unreached.push(format!("{id} {m}"));
+            }
+        }
+        table.push((id, list.len() * fixtures.len(), reached, column.join(", ")));
     }
-    println!("{:<40} {:>6} {:>8}", "command", "calls", "reached");
-    for (id, calls, reached) in &table {
-        println!("{id:<40} {calls:>6} {reached:>8}");
+    println!(
+        "{:<40} {:>6} {:>8}  numeric members: boundary values that reached the handler",
+        "command", "calls", "reached"
+    );
+    for (id, calls, reached, numeric) in &table {
+        println!("{id:<40} {calls:>6} {reached:>8}  {numeric}");
     }
     // Ruling E-33: a callable command (not an event) none of whose calls reached its handler is a sweep that proves
     // nothing about it.
     let unreached: Vec<&str> = table
         .iter()
-        .filter(|(id, _, reached)| {
+        .filter(|(id, _, reached, _)| {
             *reached == 0 && registry.get(id).is_some_and(|e| e.spec.kind != tt_registry::Kind::Event)
         })
         .map(|(id, ..)| *id)
         .collect();
     assert!(unreached.is_empty(), "no call reached the handler of {unreached:?}");
+    // Ruling E-38: a numeric member none of whose boundary values reached the handler was not swept.
+    assert!(
+        numeric_unreached.is_empty(),
+        "no boundary value of these numeric members reached the handler: {numeric_unreached:?}"
+    );
     // Ruling E-29 item 5: containment is the last line, not the fix: no handler panicked, contained or not.
     for (name, h) in &fixtures {
         assert_eq!(h.caught_panics().unwrap(), 0, "{name}: a handler panicked and was contained");

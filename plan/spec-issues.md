@@ -2667,7 +2667,10 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   the cells).
 - **As built since M3 (ruling E-17):** the plain commands follow 01 with fixed behaviour: `edit.cut` clears the cut
   cells, `edit.paste` writes over the destination cells and overwrites same-named drawings, `edit.delete` on cells
-  clears them in both views; none reads the option sets. The special and structured commands follow 04's option sets
+  clears them in both views; none reads the option sets. The drawing lock applies to them all the same (ruling E-36,
+  04 lines 1074 and 1123, ruling D-80): `edit.paste` refuses with `drawing.locked` when a destination cell exposes a
+  locked drawing, as the special form with the exposure option off does; Cut and Delete remove exposures, for which the
+  spec states no lock rule. The special and structured commands follow 04's option sets
   (`edit.cutSpecial`, `edit.pasteSpecial`, paste special again, `cell.clipboard.set`, `cell.clipboard.apply`,
   `cell.range.move`, `cell.range.delete {shift}`), with the 04 family's default table of SI-201 (ruling E-19).
 - **Pinned by reviewer tests:** `c12_r2_contracts::cross_bank_cell_paste_cannot_overwrite_a_locked_drawing`,
@@ -2720,5 +2723,5 @@ Ruling D-57 as above: none is built.
 | Proposed row (A's columns: id, kind, label, parameters, result, undo) | Why | Without it |
 |---|---|---|
 | `doc.state.get` result member `caughtPanics: int` | how many handler panics the engine contained since it started (ruling E-29): an agent or a test can tell that a call failed unexpectedly without reading stderr | stderr (`toontown: contained handler panic #n ...`), the host-only `shell.handlerPanicked` notice (window only), and `ExecutorHandle::caught_panics` for embedding code and tests |
-| `timeline.rows.list` row member `shownInTimeline: bool` | whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's setting hides (04 §2.9, §9.4); the window draws exactly the rows the timing-gesture interpreter hit-tests (built in C5.1a round 1, kept pending the ruling: `reviews/M5-C5.1a-r2-response.md` §1) | the collapsed part can be derived from `depth` and `collapsed`; the hidden effect-parameter rows cannot, since no query reads `timeline.effectParameterRows.set`'s state, so the window's row order could differ from the interpreter's and a press would hit another row |
+| `timeline.rows.list` row member `shownInTimeline: bool` | whether the Timeline shows the row once effect-parameter rows can be hidden (04 §2.9, §9.4: `timeline.effectParameterRows.set` hides them, and no query reads that setting). Ruling E-37 removes the built member: until M7 the window and the interpreter derive the rows shown from `depth` and `collapsed` by one rule (`timing_gesture::shown_rows`, `desktop/src/timeline/rows.ts`, the shared table `timeline-rows-cases.json`), so effect-parameter rows (a clipping effect's mask, a particle effect's sprites, a skeleton's bones and skin, created with their element) are shown and hit-tested whatever the setting; the setting is stored and reported by the view notice. The question returns with M7's effect elements and the deferred window binding | M7 decides how the setting reaches the window: this member, a read of the setting (also an addition), or `timeline.rows.list` leaving the hidden rows out |
 | `engine.degraded` \| event \| The engine stopped serving after an unexpected failure \| — \| `{message}` \| n/a | an MCP client learns of a degraded engine from an event rather than from its next call's `internal` (ruling E-29) | the host-only `shell.engineDegraded` notice (window only); an agent sees `internal` with reason `engineStopped` and the hint on its next call |

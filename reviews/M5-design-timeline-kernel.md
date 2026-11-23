@@ -105,8 +105,9 @@ stays agent-only (the Preferences dialog reads `prefs.list`).
 
 Session state (§1). `elementId` must be an effect element (`element.notFound`; another type `arg.invalid` with the
 reason); omitted sets every effect element's flag and the default for new ones. E-9: the window binds these only when
-they have something to show (no sound rows until M8; effect-parameter rows exist only under clipping effects, which
-can be created today, so that toggle has something to show).
+they have something to show (no sound rows until M8; effect-parameter rows exist under clipping effects today).
+Ruling E-37 moves the effect-parameter toggle's window binding to M7: until then the setting is stored and reported by
+the view notice, and does not hide rows in the Timeline (§13).
 
 ### 2.9 `timeline.view.set {zoomLevel?, firstFrame?, revealElementId?}` → `{zoomLevel, firstFrame, lastFrame}`
 
@@ -334,8 +335,8 @@ the difference goes to the orchestrator before either changes (E-5).
 - **Automatic extension (E-25):** `cell.clipboard.apply` holds the column's last drawing up to a block pasted past the
   last exposed frame when `autoExtend` is on, as `edit.pasteSpecial` does; it no longer warns that the option was not
   applied.
-- **Rows shown (C5.1b):** `timeline.rows.list` rows carry `shownInTimeline`, the interpreter's `visible_rows` (not
-  under a collapsed parent, not a hidden effect-parameter row), so the window's row order is the kernel's.
+- **Rows shown (C5.1b):** ~~`timeline.rows.list` rows carry `shownInTimeline`~~; superseded by ruling E-37 (§13): the
+  window and the interpreter apply one rule to `depth` and `collapsed`.
 
 ## 12. After round 2 (rulings E-30 to E-35)
 
@@ -361,3 +362,25 @@ the difference goes to the orchestrator before either changes (E-5).
   04's names), so a change of the stored set while the drag is in progress does not change what is committed.
 - **A paste over locked drawings (E-30).** `edit.pasteSpecial` with the exposure option off refuses over cells exposing
   locked drawings (`drawing.locked`), as `cell.clipboard.apply` and `cell.range.move` do.
+
+## 13. After the closure check (rulings E-36 to E-38)
+
+- **The plain paste and the drawing lock (E-36).** Plain `edit.paste` writes over the destination cells (E-17) and
+  refuses with `drawing.locked` when a destination cell exposes a locked drawing, in both cell contexts, by the same
+  check as the special form with the exposure option off (04 lines 1074 and 1123, ruling D-80). The check runs per
+  column, before that column places anything; the local changes of earlier columns are discarded with the refusal and
+  nothing reaches the document. Plain Cut and Delete are unchanged.
+- **Rows shown (E-37).** Rows come in Timeline order with `depth` and `collapsed`; a row is shown unless one of its
+  ancestors is collapsed (a collapsed row itself is shown). The interpreter hit-tests the rows `timing_gesture::shown_rows`
+  keeps; the window draws the rows `desktop/src/timeline/rows.ts` keeps; both check every case of
+  `crates/executor/src/timeline-rows-cases.json` (1,623 cases: every well-formed tree of up to five rows with every
+  collapsed combination, longer hand-written trees; written by `scripts/gen-timeline-rows-cases.py`, whose oracle walks
+  each row's ancestors, and copied byte for byte to the window). Effect-parameter rows are rows like any other until
+  M7: `timeline.effectParameterRows.set` stores its setting (reported by the view notice) and hides nothing in the
+  Timeline; the window binding is deferred to M7. `shownInTimeline` is removed from `timeline.rows.list` once the
+  reviewer test that reads it is ruled on (the E-37 addendum); it is on the list of spec A additions for M7's question.
+- **The argument sweep (E-38).** Each member is varied on a valid base call: the other required members take their
+  valid values (each enumerated value; the product of them up to 12 bases, else one base per value index), so a
+  boundary value is refused only by its own member's schema, which the sweep asserts (every violation points at the
+  varied member). Per numeric member the table counts the boundary values that reached the handler; the test fails on
+  a numeric member of a callable command with none.

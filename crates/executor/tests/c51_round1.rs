@@ -535,8 +535,8 @@ fn e25_the_e5_equality_holds_for_every_member_with_clones_and_locked_drawings() 
     assert!(differences.is_empty(), "special = structured with every member stored:\n{}", differences.join("\n"));
 }
 
-/// Ruling E-30: with the exposure option off, a special paste, `cell.range.move` and the Timeline's cell drag over cells
-/// exposing a locked drawing are refused with `drawing.locked` before anything changes.
+/// Rulings E-30 and E-36: the plain paste, and with the exposure option off a special paste, `cell.range.move` and the
+/// Timeline's cell drag, over cells exposing a locked drawing are refused with `drawing.locked` before anything changes.
 #[test]
 fn e30_writing_over_cells_of_locked_drawings_is_refused_in_every_form() {
     let off = members(&[("createDeleteExposure", false)]);
@@ -561,6 +561,11 @@ fn e30_writing_over_cells_of_locked_drawings_is_refused_in_every_form() {
     let (before, r) = (ok(&h, "xsheet.exposures.get", json!({})), rev(&h));
     assert_eq!(err(&h, "edit.pasteSpecial", json!({"context": "xsheet"})).code, "drawing.locked");
     unchanged(&h, &before, r);
+    // Ruling E-36: the plain paste refuses the same way, in both cell contexts (04 lines 1074 and 1123, ruling D-80).
+    for context in ["xsheet", "timeline"] {
+        assert_eq!(err(&h, "edit.paste", json!({"context": context})).code, "drawing.locked", "{context}");
+        unchanged(&h, &before, r);
+    }
     // `cell.range.move` (the drag-and-drop set) onto the same cells.
     let move_params = json!({"sourceElementIds": [BOB], "from": 1, "to": 2, "targetFrame": dest, "mode": "copy"});
     assert_eq!(err(&h, "cell.range.move", move_params).code, "drawing.locked");

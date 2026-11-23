@@ -555,8 +555,8 @@ pub(crate) struct Row {
     visible_in_scene: bool,
     hidden_by_parent: bool,
     locked: bool,
-    /// Whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's
-    /// setting hides (04 §2.9, §9.4; the rows the timing-gesture interpreter hit-tests, in the same order).
+    /// Whether the Timeline shows the row: no ancestor collapsed (ruling E-37, `timing_gesture::shown_rows`, which the
+    /// window applies to `depth` and `collapsed` itself). Kept only while a reviewer test reads it: E-37 removes it.
     shown_in_timeline: bool,
     /// `null` for a cell-based row with no exposed cell.
     bar: Option<RowBar>,
@@ -668,13 +668,12 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
         ));
     }
     let mut budget = Budget::new("listing Timeline rows");
-    let gesture_state = crate::timing_gesture::State::of(&doc, cx.session());
-    let shown: BTreeSet<Id> =
-        crate::timing_gesture::visible_rows(&doc, &scene, &gesture_state).into_iter().map(|r| r.id).collect();
+    let shown: BTreeSet<Id> = crate::timing_gesture::visible_rows(&doc, &scene).into_iter().map(|r| r.id).collect();
     let placed = h::placed(sc.tree());
     budget.spend(placed.len())?;
-    // Once for the whole read: the scene length walks every element of the scene (computed per row, the read grew with
-    // the square of the rows; the CI ratio of 1,000 to 10 elements caught it on macOS, run 45139823182).
+    // Once for all the rows' key reads: the scene length walks every element of the scene (computed per row, the read
+    // grew with the square of the rows; the CI ratio of 1,000 to 10 elements caught it on macOS, run 45139823182). With
+    // the reported `len` above that is two walks per query, a constant.
     let scene_length = doc.scene_length(sc);
     let mut hidden: BTreeMap<Id, bool> = BTreeMap::new();
     let mut parent_of: BTreeMap<Id, Option<Id>> = BTreeMap::new();

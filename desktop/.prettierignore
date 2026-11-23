@@ -11,3 +11,5 @@ src/test/c41-r1s-toolbar.test.tsx
 src/canvas/testdata
 # The parity manifest is written by its generator (pnpm parity:gen, src/ui-bindings/parity.test.tsx), compared byte for byte.
 src/ui-bindings/parity.json
+# Byte copy of the kernel's case table of the rows shown (crates/executor/src), kept equal by src/timeline/rows.test.ts.
+src/timeline/timeline-rows-cases.json
