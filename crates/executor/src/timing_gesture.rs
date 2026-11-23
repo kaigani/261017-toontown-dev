@@ -7,10 +7,11 @@
 //! layout constants come from `timeline-layout.json` ([`crate::timeline_layout`]); the visible rows are derived from
 //! the document, never sent by the window.
 //!
-//! **A change under the drag (E-10).** The press keeps a snapshot of the document and of the selection state. At the
-//! release the plan is computed twice, against the snapshot (what the preview showed) and against the present state;
-//! the present plan is committed only when the two are equal, otherwise the gesture is cancelled with
-//! `timeline.targetChanged`, which the window shows on the status line. Escape, a lost capture or an engine restart
+//! **A change under the drag (E-10, E-23).** The press keeps a snapshot of the document and of the selection state. At
+//! the release the plan is computed twice, against the snapshot (what the preview showed) and against the present
+//! state, and each is resolved to its outcome in absolute values ([`outcome`]); the present plan is committed only when
+//! the two outcomes are equal, otherwise the gesture is cancelled with `timeline.targetChanged`, which the window shows
+//! on the status line. Escape, a lost capture or an engine restart
 //! abort the grab: nothing is sent (01 line 495).
 
 use std::collections::{BTreeMap, BTreeSet};
@@ -444,7 +445,8 @@ pub fn plan(doc: &Document, state: &State, g: &GestureLayout, samples: &[Sample]
         }
         Target::BarStart { row, .. } => {
             let Some((start, end, ..)) = bar_of(doc, &rows[row].id) else { return Plan::Nothing };
-            let new_start = (i64::from(start) + delta).clamp(1, i64::from(end));
+            // `max(1)`: a clamp whose maximum is below its minimum panics (ruling E-21's sweep).
+            let new_start = (i64::from(start) + delta).clamp(1, i64::from(end).max(1));
             if !dragged || new_start == i64::from(start) {
                 return Plan::Nothing;
             }
@@ -775,26 +777,177 @@ pub(crate) fn run(
             })?;
             let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
             let doc = p.doc.clone();
-            let present = State::of(&doc, s);
             // The samples run from the press (the window sends it first; it is put back if it was left out).
             let mut samples = samples;
             if samples.first() != Some(&grab.press) {
                 samples.insert(0, grab.press.clone());
             }
-            let then = plan(&grab.doc, &grab.state, &grab.layout, &samples);
-            let now = plan(&doc, &present, &grab.layout, &samples);
-            if then != now {
+            // Rulings E-23 and E-28: the plan is made once, against the press-time snapshot, so its targets are the ids
+            // resolved at the press (never a second hit test of the press position). It commits only when its outcome
+            // in absolute values against the present document equals its outcome against the snapshot: the targets
+            // still exist, their state and the content grabbed are unchanged.
+            let planned = plan(&grab.doc, &grab.state, &grab.layout, &samples);
+            let previewed = outcome(&grab.doc, &planned);
+            let present = outcome(&doc, &planned);
+            if previewed != present {
                 return Ok(json!({
                     "cancelled": true,
                     "error": {
                         "code": "timeline.targetChanged",
                         "message": "what the gesture acted on changed while it was in progress; nothing was done",
-                        "details": { "previewed": then, "present": now },
+                        "details": { "plan": planned, "previewed": previewed, "present": present },
                     },
                 }));
             }
-            Ok(commit(core, origin, &now))
+            Ok(commit(core, origin, &planned))
         }
+    }
+}
+
+/// What a plan does to `doc`, in absolute values for every target (ruling E-23): a bar's resolved start, duration and
+/// loops with the element's keyed frames; a keyframe move's frames with the element's keyed frames; a parent's child
+/// order after a reparenting; a cell move's destination and the content of the grabbed and destination cells; the
+/// absolute parameters of the selection and position commands.
+pub(crate) fn outcome(doc: &Document, plan: &Plan) -> Value {
+    let steps: Vec<&(String, Value)> = match plan {
+        Plan::Nothing => Vec::new(),
+        Plan::Commands { commands } => commands.iter().collect(),
+        Plan::Batch { steps, .. } => steps.iter().collect(),
+    };
+    json!(steps.into_iter().map(|(c, p)| resolved(doc, c, p)).collect::<Vec<_>>())
+}
+
+fn id_list(v: &Value) -> Vec<Id> {
+    v.as_array()
+        .map(|a| a.iter().filter_map(|x| x.as_str().and_then(|k| Id::parse(k).ok())).collect())
+        .unwrap_or_default()
+}
+
+/// The element ids a command names that the document no longer holds.
+fn missing(doc: &Document, p: &Value) -> Vec<String> {
+    let mut out = Vec::new();
+    for k in ["elementIds", "elementId", "nodeId", "nodeIds", "sourceElementIds", "targetElementId", "parentId"] {
+        let ids: Vec<&str> = match &p[k] {
+            Value::String(s) => vec![s.as_str()],
+            Value::Array(a) => a.iter().filter_map(Value::as_str).collect(),
+            _ => Vec::new(),
+        };
+        out.extend(
+            ids.into_iter()
+                .filter(|s| Id::parse(s).ok().is_none_or(|id| doc.element(&id).is_none()))
+                .map(str::to_owned),
+        );
+    }
+    out
+}
+
+fn resolved(doc: &Document, command: &str, p: &Value) -> Value {
+    let mut v = resolved_values(doc, command, p);
+    if let Some(m) = v.as_object_mut() {
+        m.insert("missing".to_owned(), json!(missing(doc, p)));
+    }
+    v
+}
+
+fn resolved_values(doc: &Document, command: &str, p: &Value) -> Value {
+    let int = |k: &str| p.get(k).and_then(Value::as_i64);
+    match command {
+        "element.timing.set" => {
+            let targets: Vec<Value> = id_list(&p["elementIds"])
+                .iter()
+                .map(|id| {
+                    let Some(e) = doc.element(id) else { return json!({ "elementId": id.as_str(), "missing": true }) };
+                    let start = i64::from(e.start().unwrap_or(1));
+                    let duration = i64::from(e.duration().unwrap_or(1));
+                    let loops = int("loops").unwrap_or_else(|| i64::from(*e.loops()));
+                    let (start, duration) = match (int("startDelta"), int("duration"), p["anchor"].as_str()) {
+                        (Some(d), _, _) => (start + d, duration),
+                        (None, Some(n), Some("end")) => (start + duration - n, n),
+                        (None, Some(n), _) => (start, n),
+                        (None, None, _) => (int("start").unwrap_or(start), duration),
+                    };
+                    json!({
+                        "elementId": id.as_str(), "start": start, "duration": duration, "loops": loops,
+                        "keyed": keyed(doc, id),
+                    })
+                })
+                .collect();
+            json!({ "command": command, "targets": targets })
+        }
+        "anim.key.move" => {
+            let node = p["nodeId"].as_str().and_then(|k| Id::parse(k).ok());
+            json!({
+                "command": command, "nodeId": p["nodeId"], "fromFrame": p["fromFrame"], "toFrame": p["toFrame"],
+                "keyed": node.map(|n| keyed(doc, &n)),
+            })
+        }
+        "element.parent.set" => {
+            let moving = id_list(&p["elementIds"]);
+            let parent = p["parentId"].as_str().and_then(|k| Id::parse(k).ok());
+            let scene = moving.first().and_then(|m| doc.scene_of(m)).and_then(|s| doc.scene(s));
+            let children = match (scene, &parent) {
+                (Some(sc), Some(par)) => {
+                    let mut order: Vec<Id> =
+                        h::level_ids(sc.tree(), Some(par)).into_iter().filter(|c| !moving.contains(c)).collect();
+                    let at = int("index").and_then(|i| usize::try_from(i).ok()).unwrap_or(order.len()).min(order.len());
+                    for (k, m) in moving.iter().enumerate() {
+                        order.insert(at + k, m.clone());
+                    }
+                    ids_json(&order)
+                }
+                _ => Value::Null,
+            };
+            json!({ "command": command, "parentId": p["parentId"], "children": children })
+        }
+        "element.order.set" => {
+            // The order names the whole level: the level's present children (as a set) are part of the outcome.
+            let ids = id_list(&p["elementIds"]);
+            let parent = p["parentId"].as_str().and_then(|k| Id::parse(k).ok());
+            let scene = ids.first().and_then(|m| doc.scene_of(m)).and_then(|s| doc.scene(s));
+            let mut level: Vec<String> = scene
+                .map(|sc| h::level_ids(sc.tree(), parent.as_ref()).iter().map(|x| x.as_str().to_owned()).collect())
+                .unwrap_or_default();
+            level.sort();
+            json!({ "command": command, "params": p, "level": level })
+        }
+        "cell.range.move" => {
+            let sources = id_list(&p["sourceElementIds"]);
+            let (from, to) = (int("from").unwrap_or(1).max(1), int("to").unwrap_or(1).max(1));
+            let target = int("targetFrame").unwrap_or(1).max(1);
+            let frames = |a: i64, b: i64, e: &Id| -> Vec<Option<String>> {
+                (a..=b)
+                    .filter_map(|f| u32::try_from(f).ok())
+                    .map(|f| crate::app::AppContext::exposed_drawing(doc, e, f).map(|d| d.as_str().to_owned()))
+                    .collect()
+            };
+            let span = (to - from).max(0);
+            // The content grabbed: the source cells' drawings and their notes (E-28).
+            let notes = |e: &Id| -> Vec<(u32, String)> {
+                doc.element(e)
+                    .map(|x| {
+                        x.cell_notes()
+                            .iter()
+                            .filter(|(f, _)| (from..=to).contains(&i64::from(**f)))
+                            .map(|(f, t)| (*f, t.clone()))
+                            .collect()
+                    })
+                    .unwrap_or_default()
+            };
+            let grabbed: Vec<Value> =
+                sources.iter().map(|e| json!([e.as_str(), frames(from, to, e), notes(e)])).collect();
+            let dest_ids: Vec<Id> = match p["targetElementId"].as_str().and_then(|k| Id::parse(k).ok()) {
+                Some(t) => vec![t],
+                None => sources.clone(),
+            };
+            let destination: Vec<Value> =
+                dest_ids.iter().map(|e| json!([e.as_str(), frames(target, target + span, e)])).collect();
+            json!({
+                "command": command, "targetFrame": target, "targetElementId": p["targetElementId"],
+                "mode": p["mode"], "grabbed": grabbed, "destination": destination,
+            })
+        }
+        // `element.order.set` names the whole level's order; the selection and position commands are absolute.
+        _ => json!({ "command": command, "params": p }),
     }
 }
 

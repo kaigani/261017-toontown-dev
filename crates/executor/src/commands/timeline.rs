@@ -10,6 +10,7 @@
 //! same state raise the same events.
 
 use std::collections::{BTreeMap, BTreeSet};
+use std::ops::Bound;
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -173,14 +174,19 @@ pub(crate) fn frame_source(cx: &mut Cx, source: &'static str) {
     cx.session_mut().timeline.frame_source = Some(source);
 }
 
+/// Marks a navigation command (09 §2.4: First, Previous, Next, Last, the drawing steps, Change Current Frame, in every
+/// command form, SI-202): playback stops at settle even when the frame does not change (09 line 138; ruling E-22).
+pub(crate) fn navigated(cx: &mut Cx) {
+    cx.session_mut().timeline.navigated = true;
+}
+
 // ----- timeline.currentFrame.* ------------------------------------------------------------------------------------------
 
 /// `timeline.currentFrame.set` parameters.
 #[derive(Debug, Deserialize, JsonSchema)]
 #[serde(deny_unknown_fields, rename_all = "camelCase")]
 pub(crate) struct CurrentFrameSetParams {
-    /// Frame (clamped to 1..scene length).
-    #[schemars(range(min = 1))]
+    /// Frame: any integer, clamped to 1..scene length (09 line 139; ruling E-27).
     frame: i64,
     /// The scene (the current scene only).
     #[serde(default)]
@@ -224,6 +230,7 @@ pub(crate) fn timeline_current_frame_set(
     let (_, len) = current_scene_only(cx, p.scene_id.as_deref(), "/sceneId")?;
     let frame = u32::try_from(p.frame.clamp(1, i64::from(len))).unwrap_or(1);
     frame_source(cx, "command");
+    navigated(cx);
     put_frame(cx, frame);
     Ok(CurrentFrameSetResult { frame, clamped: i64::from(frame) != p.frame })
 }
@@ -270,9 +277,8 @@ pub(crate) struct CurrentFrameMoveParams {
     /// element, 09 line 132).
     #[serde(default)]
     element_id: Option<String>,
-    /// How many steps.
+    /// How many steps (spec A: `int = 1`; below 1 counts as 1, the observation of round 1).
     #[serde(default = "one")]
-    #[schemars(range(min = 1, max = 100_000))]
     count: i64,
     /// Limit movement to the playback range.
     #[serde(default)]
@@ -339,7 +345,15 @@ pub(crate) fn drawing_step(
     let marks = changes(&doc, &elements, 1, len);
     let mut f = now;
     for _ in 0..count {
-        let step = if next { marks.range(f + 1..=hi).next().copied() } else { marks.range(lo..f).next_back().copied() };
+        // At or past the end (or the start) nothing follows: the frame stays (09 line 135; ruling E-21). The guard comes
+        // before `range`, which panics on a start after its end.
+        let step = if next {
+            if f >= hi { None } else { marks.range((Bound::Excluded(f), Bound::Included(hi))).next().copied() }
+        } else if f <= lo {
+            None
+        } else {
+            marks.range(lo..f).next_back().copied()
+        };
         match step {
             Some(s) => f = s,
             None => break,
@@ -371,7 +385,7 @@ pub(crate) fn timeline_current_frame_move(
         (1, len)
     };
     let now = cx.app().frame.clamp(1, len);
-    let count = u32::try_from(p.count).unwrap_or(1);
+    let count = u32::try_from(p.count.clamp(1, i64::from(u32::MAX))).unwrap_or(1);
     let frame = match (p.direction, p.unit) {
         (MoveDirection::First, _) => lo,
         (MoveDirection::Last, _) => hi,
@@ -382,6 +396,7 @@ pub(crate) fn timeline_current_frame_move(
         }
     };
     frame_source(cx, "navigation");
+    navigated(cx);
     put_frame(cx, frame);
     Ok(CurrentFrameMoveResult { frame, moved: frame != now })
 }
@@ -540,6 +555,9 @@ pub(crate) struct Row {
     visible_in_scene: bool,
     hidden_by_parent: bool,
     locked: bool,
+    /// Whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's
+    /// setting hides (04 §2.9, §9.4; the rows the timing-gesture interpreter hit-tests, in the same order).
+    shown_in_timeline: bool,
     /// `null` for a cell-based row with no exposed cell.
     bar: Option<RowBar>,
     keyframes: Vec<RowKeyframe>,
@@ -630,9 +648,25 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
     let doc = cx.document()?.clone();
     let sc = doc.scene(&scene).ok_or_else(|| internal("scene not in the document"))?;
     let len = u32::try_from(doc.scene_length(sc)).unwrap_or(u32::MAX).max(1);
-    let from = u32::try_from(p.from.unwrap_or(1).max(1)).unwrap_or(1);
-    let to = u32::try_from(p.to.unwrap_or_else(|| i64::from(len)).max(1)).unwrap_or(u32::MAX);
+    let from = u32::try_from(p.from.unwrap_or(1).max(1)).unwrap_or(u32::MAX);
+    let to = match p.to {
+        Some(t) => u32::try_from(t.max(1)).unwrap_or(u32::MAX),
+        None => len.max(from),
+    };
+    // A reversed window is refused as `xsheet.exposures.get` refuses it (04 line 26: a range `from..to` is inclusive;
+    // line 1306 item 11: a failed command changes nothing; ruling E-26). The check also keeps `range` below from a
+    // start after its end, which panics.
+    if to < from {
+        return Err(CommandError::with_details(
+            codes::ARG_INVALID,
+            "`to` is before `from`",
+            json!({ "pointer": "/to" }),
+        ));
+    }
     let mut budget = Budget::new("listing Timeline rows");
+    let gesture_state = crate::timing_gesture::State::of(&doc, cx.session());
+    let shown: BTreeSet<Id> =
+        crate::timing_gesture::visible_rows(&doc, &scene, &gesture_state).into_iter().map(|r| r.id).collect();
     let placed = h::placed(sc.tree());
     budget.spend(placed.len())?;
     let mut hidden: BTreeMap<Id, bool> = BTreeMap::new();
@@ -678,6 +712,7 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
             visible_in_scene: *e.visible_in_scene(),
             hidden_by_parent: parent_hidden,
             locked: *e.locked(),
+            shown_in_timeline: shown.contains(&q.id),
             bar,
             keyframes,
             child_keyframe_frames: Vec::new(),
@@ -957,9 +992,8 @@ pub(crate) struct ViewSetParams {
     #[serde(default)]
     #[schemars(range(min = 0))]
     zoom_level: Option<i64>,
-    /// First frame shown (clamped).
+    /// First frame shown: any integer, clamped to 1..(scene length + the empty margin).
     #[serde(default)]
-    #[schemars(range(min = 1))]
     first_frame: Option<i64>,
     /// Scroll so this element's row is shown (Show Timeline Selection).
     #[serde(default)]

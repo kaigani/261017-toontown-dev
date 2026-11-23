@@ -681,6 +681,9 @@ pub(crate) struct TimelineState {
     pub parameter_rows_hidden: bool,
     /// How the current frame is about to change (`timeline.currentFrame.changed`'s `source`), taken by `settle`.
     pub frame_source: Option<&'static str>,
+    /// A navigation command ran (09 line 138: it stops playback first, whether or not the frame moves; ruling E-22),
+    /// taken by `settle`.
+    pub navigated: bool,
     /// Interactive playback (09 §2).
     pub playback: super::playback::Playback,
     /// The window's Timeline presses awaiting their release, by grab id (the timing-gesture interpreter, E-10).

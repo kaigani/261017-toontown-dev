@@ -300,3 +300,39 @@ the difference goes to the orchestrator before either changes (E-5).
 - **Category colours (E-16):** §1's table is now built: `CATEGORY_KEYS` maps 04's categories to the 01 keys
   ("skeletons" writes the skeleton and bone keys together; a bone element's colour is the bone key); the session map
   `TimelineState.type_colours` is removed.
+
+## 11. After round 1 (rulings E-21 to E-28)
+
+- **A gesture's targets and outcome (E-10, E-23, E-28): one rule for every gesture kind.** At the press the kernel
+  keeps the document snapshot and the selection state. At the release the interpreter makes the plan **once, against
+  the snapshot**: its targets are the ids resolved at the press and the content it grabbed is the snapshot's; the press
+  position is never hit-tested again against the present document. The plan is then resolved to its **outcome in
+  absolute values** twice, against the snapshot (what the preview showed) and against the present document
+  (`timing_gesture::outcome`): for a bar, the resolved start, duration and loops with the element's keyed frames; for a
+  keyframe move, its frames with the element's keyed frames; for a reparenting, the parent's child order after it; for
+  a reorder, the order and the level's present children; for a cell move, the destination, the drawings and notes of
+  the grabbed cells and the destination cells' contents; for every command, the ids it names that no longer exist;
+  the selection and position commands are absolute. **Equal outcomes commit the plan; different outcomes cancel**
+  with `timeline.targetChanged` (details: the plan and both outcomes), and nothing changes. So a row inserted above a
+  grabbed bar commits (same id, same timing; C51A-R1-04), and a drawing replaced in a grabbed cell cancels
+  (C51A-R1-03), as does a relative command on a target changed meanwhile (C51A-R1S-02).
+- **Drawing steps at an end (E-21):** `drawing_step` stops before it asks for a range past the end or before the
+  start, so Next Drawing at the last frame (or past the range's end) and Previous Drawing at the first frame (or before
+  the range's start) leave the frame where it is, `moved: false`, for any `count` (09 line 135).
+- **Navigation stops playback (E-22):** every navigation form (`timeline.currentFrame.set`, `.move`, `app.frame.set`,
+  `.move`, `xsheet.currentCell.set`) marks the session navigated; settle stops playback with reason `navigation` even
+  when the frame does not change (09 line 138). The event's `source` values are unchanged.
+- **Another scene's range (E-24):** `playback.range.set` and `.mode.set` with a `sceneId` that is not the current
+  scene raise `playback.range.changed` (with that `sceneId`) and `timeline.playbackRange.changed` (A's payload, no
+  scene: SI-214) when that scene's effective range changes, without navigating or touching the selection.
+- **Reversed windows (E-26):** `timeline.rows.list` refuses `to` before `from` with `arg.invalid` at `/to`, as
+  `xsheet.exposures.get` has since M3 (04 line 26, line 1306 item 11); `to` omitted defaults to the scene length or
+  `from`, whichever is later.
+- **Clamping (E-27):** `timeline.currentFrame.set {frame}` accepts any integer and clamps it to 1..scene length (09
+  line 139); `timeline.currentFrame.move {count}` below 1 counts as 1; `timeline.view.set {firstFrame}` and
+  `playback.start {fromFrame}` accept any integer and clamp. `app.frame.set` keeps its stated range (spec A line 57).
+- **Automatic extension (E-25):** `cell.clipboard.apply` holds the column's last drawing up to a block pasted past the
+  last exposed frame when `autoExtend` is on, as `edit.pasteSpecial` does; it no longer warns that the option was not
+  applied.
+- **Rows shown (C5.1b):** `timeline.rows.list` rows carry `shownInTimeline`, the interpreter's `visible_rows` (not
+  under a collapsed parent, not a hidden effect-parameter row), so the window's row order is the kernel's.

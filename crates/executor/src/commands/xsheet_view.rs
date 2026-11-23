@@ -52,6 +52,7 @@ pub(crate) fn xsheet_current_cell_set(cx: &mut Cx, p: CurrentCellParams) -> Resu
     })?;
     super::element_read::put_current_element(cx, &id)?;
     super::timeline::frame_source(cx, "command");
+    super::timeline::navigated(cx);
     super::timeline::put_frame(cx, frame);
     Ok(CurrentCellResult { element_id: id.as_str().to_owned(), frame })
 }

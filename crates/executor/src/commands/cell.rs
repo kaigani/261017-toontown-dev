@@ -656,7 +656,12 @@ impl TransferOptions {
 }
 
 fn warn_options(cx: &mut Cx, o: &TransferOptions) {
-    for name in o.not_applied() {
+    warn_options_but(cx, o, &[]);
+}
+
+/// [`warn_options`] for a command that applies some of those options itself (`cell.clipboard.apply`: `autoExtend`).
+fn warn_options_but(cx: &mut Cx, o: &TransferOptions, applied: &[&str]) {
+    for name in o.not_applied().into_iter().filter(|n| !applied.contains(n)) {
         cx.warn(
             "cell.optionNotApplied",
             format!(
@@ -1667,7 +1672,7 @@ pub(crate) struct ClipboardApplyResult {
 pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Result<ClipboardApplyResult, CommandError> {
     let opts =
         super::transfer_options::cell_options(cx, super::transfer_options::Operation::Paste, p.options.as_ref())?;
-    warn_options(cx, &opts);
+    warn_options_but(cx, &opts, &["autoExtend"]);
     let clip = super::edit_ops::clipboard_cells(cx)?;
     let doc = cx.document()?.clone();
     let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
@@ -1750,11 +1755,15 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
             }
         }
         budget.spend(col.frames.len() + w)?;
-        let after = if opts.exposure {
-            x::insert(&col.frames, t.from, &values)
-        } else {
-            x::overwrite(&col.frames, t.from, &values)
-        };
+        // Extend exposure automatically (01 line 543, 04 §11.14; ruling E-25): a paste past the column's last exposed
+        // frame first holds that drawing up to the pasted block, as `edit.pasteSpecial` does.
+        let mut base = col.frames.clone();
+        if opts.auto_extend && base.len() < t.from.saturating_sub(1) {
+            let fill = base.last().cloned().flatten();
+            base.resize(t.from.saturating_sub(1), fill);
+        }
+        let after =
+            if opts.exposure { x::insert(&base, t.from, &values) } else { x::overwrite(&base, t.from, &values) };
         write_column(&col, &after, &mut changes, &mut out)?;
         // Pasted cells carry their notes and overwrite the destination's in the pasted range (SI-093).
         let carried: Vec<(usize, String)> = payload

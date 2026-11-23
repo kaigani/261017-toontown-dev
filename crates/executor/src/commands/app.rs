@@ -291,6 +291,7 @@ pub(crate) fn app_frame_set(cx: &mut Cx, p: FrameSetParams) -> Result<FrameResul
             json!({ "pointer": "/frame", "allowed": { "minimum": 1, "maximum": len } }),
         ));
     }
+    crate::commands::timeline::navigated(cx);
     let app = cx.app_mut();
     app.frame = p.frame;
     app.drawing = None;
@@ -357,6 +358,7 @@ pub(crate) fn app_frame_move(cx: &mut Cx, p: FrameMoveParams) -> Result<FrameRes
         }
     }
     crate::commands::timeline::frame_source(cx, "navigation");
+    crate::commands::timeline::navigated(cx);
     let app = cx.app_mut();
     app.frame = frame;
     app.drawing = None;

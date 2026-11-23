@@ -2670,12 +2670,26 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `c31_r2_variants::r13_generic_overwrite_clone_group_preserves_full_drawing_and_locked_refusal`,
   `c31_r2_variants::r05_generic_cut_clears_notes_and_retimes_remaining_notes`,
   `c12_r3_contracts::fresh_cell_paste_checks_target_type_and_locked_drawing_before_commit`; and the builder's
-  `crates/executor/tests/c51_timeline.rs::e5_special_commands_equal_the_cell_forms_and_plain_ones_differ_as_stated`
-  states the differences.
+  `crates/executor/tests/c51_timeline.rs::e5_with_every_member_stored_the_special_commands_equal_the_cell_forms` and
+  `::e5_with_nothing_stored_the_two_family_default_members_are_the_stated_difference` state the differences.
 - **What a person does today for 04's behaviour:** Edit › Cut Special and Paste Special (their options dialog), whose
   results equal the structured commands'.
 - **Question:** should the plain commands follow 04's options, or does 01 §6.2's fixed behaviour stand (and 04 §13.16-
   §13.17 change)?
+
+## SI-214 — `timeline.playbackRange.changed` names no scene (found in M5 C5.1a round 1; ruling E-24; interim)
+
+- **Sections:** spec A line 481 and 04 line 1467 (`timeline.playbackRange.changed` payload `{mode, start, end}`);
+  spec A line 886 and 09 §11 (`playback.range.changed` payload `{sceneId, mode, start, end}`); 09 lines 175, 185-188
+  (a range per scene); SI-202 (one state, the same events).
+- **Problem:** ruling E-24 raises both range events when `playback.range.set` or `.mode.set` changes a scene that is
+  not the current one. `playback.range.changed` names that scene; `timeline.playbackRange.changed` cannot, so a
+  subscriber reading it alone takes another scene's range for the current scene's.
+- **Interim decision:** both events are raised with the payloads spec A defines; the Timeline (which shows the current
+  scene) reads `timeline.playbackRange.get` again on the Timeline event, which answers the current scene's range, so it
+  draws nothing wrong; agents are pointed at `playback.range.changed` for the scene.
+- **Question (a spec A addition, D-57):** should `timeline.playbackRange.changed` carry `sceneId`, or be raised for the
+  current scene only?
 
 ## Spec A additions proposed by M4, for the user
 

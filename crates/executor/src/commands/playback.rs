@@ -123,7 +123,7 @@ pub(crate) struct Step {
 pub(crate) fn advance(now: u32, range: (u32, u32), run: &Run, tick: Tick) -> Step {
     let Tick { loop_on, force_rate, fps, elapsed_ms, waiting } = tick;
     let (lo, hi) = (range.0.min(range.1), range.1.max(range.0));
-    let n = u64::from(hi - lo + 1);
+    let n = u64::from(hi - lo) + 1;
     if !(lo..=hi).contains(&now) {
         return Step { frame: Some(lo), dropped: 0, ends: false };
     }
@@ -133,8 +133,8 @@ pub(crate) fn advance(now: u32, range: (u32, u32), run: &Run, tick: Tick) -> Ste
             if frames.is_finite() && frames >= 0.0 { frames as u64 } else { 0 }
         };
         let base = u64::from(run.start_frame.clamp(lo, hi) - lo);
-        let before = base + index(run.elapsed_ms);
-        let target = base + index(elapsed_ms);
+        let before = base.saturating_add(index(run.elapsed_ms));
+        let target = base.saturating_add(index(elapsed_ms));
         if target <= before {
             return Step { frame: None, dropped: 0, ends: false };
         }
@@ -169,7 +169,10 @@ pub(crate) fn clock_thread(control: &Receiver<ClockControl>, tick: &dyn Fn(u64, 
         let wait = match active {
             None => None,
             Some((_, period, began, n)) => {
-                let due = began + Duration::from_secs_f64(period * (n + 1) as f64 / 1000.0);
+                // The fallible forms: a non-finite or huge offset never panics (ruling E-21's sweep).
+                let offset =
+                    Duration::try_from_secs_f64(period * n.saturating_add(1) as f64 / 1000.0).unwrap_or(Duration::ZERO);
+                let due = began.checked_add(offset).unwrap_or_else(Instant::now);
                 Some(due.saturating_duration_since(Instant::now()))
             }
         };
@@ -179,7 +182,7 @@ pub(crate) fn clock_thread(control: &Receiver<ClockControl>, tick: &dyn Fn(u64, 
                 Ok(m) => Some(m),
                 Err(RecvTimeoutError::Timeout) => {
                     if let Some((generation, period, began, n)) = active.as_mut() {
-                        *n += 1;
+                        *n = n.saturating_add(1);
                         let ms = began.elapsed().as_secs_f64() * 1000.0;
                         let _ = period;
                         if !tick(*generation, ms) {
@@ -252,7 +255,7 @@ pub(crate) fn on_tick(s: &mut crate::session::Session, ms: f64) {
             s.app.frame = f;
             s.app.drawing = None;
         }
-        s.timeline.playback.run.shown += 1;
+        s.timeline.playback.run.shown = s.timeline.playback.run.shown.saturating_add(1);
         s.timeline.playback.run.dropped += step.dropped;
         s.timeline.frame_source = Some("playback");
         s.emit("shell.playbackFrame", json!({ "sceneId": scene.as_str(), "frame": f, "playing": true }));
@@ -283,11 +286,13 @@ pub(crate) fn settle_timeline(
     view_before: &Value,
 ) {
     let source = s.timeline.frame_source.take().unwrap_or("command");
+    let navigated = std::mem::take(&mut s.timeline.navigated);
     let scene = s.app.scene.clone();
     let frame = s.app.frame;
     let scene_changed = scene.as_ref() != scene_before;
     let frame_changed = frame != frame_before || scene_changed;
-    if s.timeline.playback.playing && (scene_changed || (frame_changed && source != "playback") || s.project.is_none())
+    if s.timeline.playback.playing
+        && (scene_changed || navigated || (frame_changed && source != "playback") || s.project.is_none())
     {
         let reason = if scene_changed || s.project.is_none() { "sceneChanged" } else { "navigation" };
         let stopped_scene = s.timeline.playback.scene.clone().or_else(|| scene.clone());
@@ -352,9 +357,8 @@ pub(crate) struct StartParams {
     /// The scene (the current scene only).
     #[serde(default)]
     scene_id: Option<String>,
-    /// Start here instead of the current frame.
+    /// Start here instead of the current frame: any integer, clamped to 1..scene length, then into the playback range.
     #[serde(default)]
-    #[schemars(range(min = 1))]
     from_frame: Option<i64>,
 }
 
@@ -644,6 +648,30 @@ pub(crate) struct RangeGetResult {
     scene_length: f64,
 }
 
+/// Sets a scene's range and, for a scene that is not the current one, raises the range events now with that scene's
+/// values (ruling E-24; `settle` raises them for the current scene). Nothing navigates and the selection is untouched.
+fn set_scene_range(
+    cx: &mut Cx,
+    scene: &Id,
+    len: u32,
+    mode: Option<RangeMode>,
+    start: Option<i64>,
+    end: Option<i64>,
+) -> super::timeline::RangeSet {
+    let before = effective_range(&cx.session().timeline.ranges, scene, len);
+    let r = set_range(cx, scene, len, mode, start, end);
+    let after = effective_range(&cx.session().timeline.ranges, scene, len);
+    if cx.app().scene.as_ref() != Some(scene) && after != before {
+        let (mode, start, end) = after;
+        cx.emit("timeline.playbackRange.changed", json!({ "mode": mode, "start": start, "end": end }));
+        cx.emit(
+            "playback.range.changed",
+            json!({ "sceneId": scene.as_str(), "mode": mode, "start": start, "end": end }),
+        );
+    }
+    r
+}
+
 fn scene_and_length(cx: &Cx, r: Option<&str>) -> Result<(Id, u32), CommandError> {
     let scene = scene_id(cx, r)?;
     let len = super::timeline::length_of(cx.document()?, &scene);
@@ -688,7 +716,7 @@ pub(crate) struct RangeModeParams {
 )]
 pub(crate) fn playback_range_mode_set(cx: &mut Cx, p: RangeModeParams) -> Result<RangeResult, CommandError> {
     let (scene, len) = scene_and_length(cx, p.scene_id.as_deref())?;
-    let r = set_range(cx, &scene, len, Some(p.mode), None, None);
+    let r = set_scene_range(cx, &scene, len, Some(p.mode), None, None);
     Ok(RangeResult { mode: r.mode, start: r.start, end: r.end })
 }
 
@@ -728,7 +756,7 @@ pub(crate) struct RangeSetResult {
 )]
 pub(crate) fn playback_range_set(cx: &mut Cx, p: RangeSetParams) -> Result<RangeSetResult, CommandError> {
     let (scene, len) = scene_and_length(cx, p.scene_id.as_deref())?;
-    let r = set_range(cx, &scene, len, Some(RangeMode::Free), p.start, p.end);
+    let r = set_scene_range(cx, &scene, len, Some(RangeMode::Free), p.start, p.end);
     Ok(RangeSetResult { mode: r.mode, start: r.start, end: r.end, adjusted: r.adjusted })
 }
 

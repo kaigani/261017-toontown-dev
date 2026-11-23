@@ -10314,6 +10314,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10332,6 +10333,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10369,6 +10371,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 44,
@@ -10412,6 +10415,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10430,6 +10434,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": null,
             "keyframes": [],
             "childKeyframeFrames": []
@@ -10444,6 +10449,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": null,
             "keyframes": [],
             "childKeyframeFrames": [],
@@ -10459,6 +10465,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": null,
             "keyframes": [],
             "childKeyframeFrames": []
@@ -10473,6 +10480,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10493,6 +10501,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10513,6 +10522,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10539,6 +10549,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10557,6 +10568,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10575,6 +10587,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10593,6 +10606,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10611,6 +10625,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10629,6 +10644,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10647,6 +10663,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10665,6 +10682,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10683,6 +10701,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10701,6 +10720,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10735,6 +10755,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10753,6 +10774,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10783,6 +10805,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 44,
@@ -10826,6 +10849,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10844,6 +10868,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": null,
             "keyframes": [],
             "childKeyframeFrames": []
@@ -10858,6 +10883,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": null,
             "keyframes": [],
             "childKeyframeFrames": [],
@@ -10873,6 +10899,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": null,
             "keyframes": [],
             "childKeyframeFrames": []
@@ -10887,6 +10914,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10907,6 +10935,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10927,6 +10956,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10953,6 +10983,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10971,6 +11002,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -10989,6 +11021,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -11007,6 +11040,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -11025,6 +11059,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -11043,6 +11078,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -11061,6 +11097,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -11079,6 +11116,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -11097,6 +11135,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,
@@ -11115,6 +11154,7 @@
             "visibleInScene": true,
             "hiddenByParent": false,
             "locked": false,
+            "shownInTimeline": true,
             "bar": {
               "start": 1,
               "end": 48,

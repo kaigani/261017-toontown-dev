@@ -70745,14 +70745,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       fromFrame: {
-        description: "Start here instead of the current frame.",
+        description: "Start here instead of the current frame: any integer, clamped to 1..scene length, then into the playback range.",
         type: [
           "integer",
           "null",
         ],
         maximum: 9223372036854775807n,
-        minimum: 1,
         default: null,
+        minimum: -9223372036854775808n,
       },
     },
     additionalProperties: false,
@@ -79156,11 +79156,11 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       count: {
-        description: "How many steps.",
+        description: "How many steps (spec A: `int = 1`; below 1 counts as 1, the observation of round 1).",
         type: "integer",
+        maximum: 9223372036854775807n,
         default: 1,
-        minimum: 1,
-        maximum: 100000,
+        minimum: -9223372036854775808n,
       },
       withinRange: {
         description: "Limit movement to the playback range.",
@@ -79200,10 +79200,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       frame: {
-        description: "Frame (clamped to 1..scene length).",
+        description: "Frame: any integer, clamped to 1..scene length (09 line 139; ruling E-27).",
         type: "integer",
         maximum: 9223372036854775807n,
-        minimum: 1,
+        minimum: -9223372036854775808n,
       },
       sceneId: {
         description: "The scene (the current scene only).",
@@ -79609,6 +79609,10 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       locked: {
         type: "boolean",
       },
+      shownInTimeline: {
+        description: "Whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's\nsetting hides (04 §2.9, §9.4; the rows the timing-gesture interpreter hit-tests, in the same order).",
+        type: "boolean",
+      },
       bar: {
         description: "`null` for a cell-based row with no exposed cell.",
         anyOf: [
@@ -79652,6 +79656,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "visibleInScene",
       "hiddenByParent",
       "locked",
+      "shownInTimeline",
       "keyframes",
       "childKeyframeFrames",
     ],
@@ -80147,14 +80152,14 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       firstFrame: {
-        description: "First frame shown (clamped).",
+        description: "First frame shown: any integer, clamped to 1..(scene length + the empty margin).",
         type: [
           "integer",
           "null",
         ],
         maximum: 9223372036854775807n,
-        minimum: 1,
         default: null,
+        minimum: -9223372036854775808n,
       },
       revealElementId: {
         description: "Scroll so this element's row is shown (Show Timeline Selection).",
@@ -102843,7 +102848,7 @@ export interface playback_rate_set_result {
 export interface playback_start_params {
   /** The scene (the current scene only). */
   sceneId?: string | null;
-  /** Start here instead of the current frame. */
+  /** Start here instead of the current frame: any integer, clamped to 1..scene length, then into the playback range. */
   fromFrame?: number | bigint | null;
 }
 
@@ -105175,8 +105180,8 @@ export interface timeline_currentFrame_move_params {
   unit?: timeline_currentFrame_move_MoveUnit;
   /** The element whose drawing changes count (default the current element; with none, every visible cell-based element, 09 line 132). */
   elementId?: string | null;
-  /** How many steps. */
-  count?: number;
+  /** How many steps (spec A: `int = 1`; below 1 counts as 1, the observation of round 1). */
+  count?: number | bigint;
   /** Limit movement to the playback range. */
   withinRange?: boolean;
 }
@@ -105191,7 +105196,7 @@ export interface timeline_currentFrame_move_result {
 
 /** `timeline.currentFrame.set` parameters. */
 export interface timeline_currentFrame_set_params {
-  /** Frame (clamped to 1..scene length). */
+  /** Frame: any integer, clamped to 1..scene length (09 line 139; ruling E-27). */
   frame: number | bigint;
   /** The scene (the current scene only). */
   sceneId?: string | null;
@@ -105319,6 +105324,8 @@ export interface timeline_rows_list_Row {
   visibleInScene: boolean;
   hiddenByParent: boolean;
   locked: boolean;
+  /** Whether the Timeline shows the row: not under a collapsed parent, and not an effect-parameter row its effect's setting hides (04 §2.9, §9.4; the rows the timing-gesture interpreter hit-tests, in the same order). */
+  shownInTimeline: boolean;
   /** `null` for a cell-based row with no exposed cell. */
   bar?: timeline_rows_list_RowBar | null;
   keyframes: timeline_rows_list_RowKeyframe[];
@@ -105499,7 +105506,7 @@ export interface timeline_transferOptions_set_result {
 export interface timeline_view_set_params {
   /** Zoom level: an index into the zoom ladder (0 = narrowest cells). */
   zoomLevel?: number | bigint | null;
-  /** First frame shown (clamped). */
+  /** First frame shown: any integer, clamped to 1..(scene length + the empty margin). */
   firstFrame?: number | bigint | null;
   /** Scroll so this element's row is shown (Show Timeline Selection). */
   revealElementId?: string | null;

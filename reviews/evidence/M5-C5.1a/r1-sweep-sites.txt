@@ -1,0 +1,117 @@
+crates/executor/src/commands/playback.rs:86: [clamp] if fps.is_finite() { fps.clamp(1.0, 120.0) } else { 24.0 }
+crates/executor/src/commands/playback.rs:132: [div/rem] let frames = (ms.max(0.0) * fps / 1000.0).floor();
+crates/executor/src/commands/playback.rs:135: [clamp] let base = u64::from(run.start_frame.clamp(lo, hi) - lo);
+crates/executor/src/commands/playback.rs:143: [div/rem] let f = lo + u32::try_from(target % n).unwrap_or(0);
+crates/executor/src/commands/playback.rs:174: [div/rem] Duration::try_from_secs_f64(period * n.saturating_add(1) as f64 / 1000.0).unwrap_or(Duration::ZERO);
+crates/executor/src/commands/playback.rs:224: [div/rem] cx.defer(Effect::Playback(ClockControl::Start { generation, period_ms: 1000.0 / fps }));
+crates/executor/src/commands/playback.rs:399: [clamp] let wanted = p.from_frame.map_or(cx.app().frame, |f| u32::try_from(f.clamp(1, i64::from(len))).unwrap_or(1));
+crates/executor/src/commands/playback.rs:496: [div/rem] if pb.playing && pb.run.elapsed_ms > 0.0 { (pb.run.shown as f64) * 1000.0 / pb.run.elapsed_ms } else { 0.0 };
+crates/executor/src/commands/playback.rs:508: [div/rem] measured_fps: (measured * 10.0).round() / 10.0,
+crates/executor/src/commands/playback.rs:715: [div/rem] gui = "Play menu: Playback Range > Automatic Fit / Free (M5 C5.1)",
+crates/executor/src/commands/playback.rs:755: [div/rem] gui = "Play menu: Change Playback Start / End Frame (M5 C5.1)",
+crates/executor/src/commands/timeline.rs:74: [clamp] let end = r.end.clamp(1, len);
+crates/executor/src/commands/timeline.rs:75: [clamp] (RangeMode::Free, r.start.clamp(1, end), end)
+crates/executor/src/commands/timeline.rs:154: [clamp] let clamp = |v: i64| u32::try_from(v.clamp(1, i64::from(len))).unwrap_or(1);
+crates/executor/src/commands/timeline.rs:166: [vec index op] cx.session_mut().timeline.ranges.insert(scene.as_str().to_owned(), r);
+crates/executor/src/commands/timeline.rs:231: [clamp] let frame = u32::try_from(p.frame.clamp(1, i64::from(len))).unwrap_or(1);
+crates/executor/src/commands/timeline.rs:306: [vec index op] out.insert(f);
+crates/executor/src/commands/timeline.rs:351: [range] if f >= hi { None } else { marks.range((Bound::Excluded(f), Bound::Included(hi))).next().copied() }
+crates/executor/src/commands/timeline.rs:355: [range] marks.range(lo..f).next_back().copied()
+crates/executor/src/commands/timeline.rs:387: [clamp] let now = cx.app().frame.clamp(1, len);
+crates/executor/src/commands/timeline.rs:388: [clamp] let count = u32::try_from(p.count.clamp(1, i64::from(u32::MAX))).unwrap_or(1);
+crates/executor/src/commands/timeline.rs:466: [div/rem] gui = "Timeline: drag a playback-range marker; ruler context: Playback Range, Set Playback Start / End Frame (M5 C5.1)",
+crates/executor/src/commands/timeline.rs:605: [vec index op] e.0.insert(ch);
+crates/executor/src/commands/timeline.rs:612: [index/slice] put(f, "position", q["constantSegment"] == json!(true));
+crates/executor/src/commands/timeline.rs:623: [index/slice] put(f, ch, key["constantSegment"] == json!(true));
+crates/executor/src/commands/timeline.rs:679: [vec index op] hidden.insert(q.id.clone(), parent_hidden || !*e.visible_in_scene());
+crates/executor/src/commands/timeline.rs:680: [vec index op] parent_of.insert(q.id.clone(), q.parent.clone());
+crates/executor/src/commands/timeline.rs:692: [vec index op] keyed.insert(q.id.clone(), keys.keys().copied().collect());
+crates/executor/src/commands/timeline.rs:694: [range] .range(from..=to)
+crates/executor/src/commands/timeline.rs:734: [vec index op] && let Some(set) = child.remove(&id)
+crates/executor/src/commands/timeline.rs:743: [clamp] current_frame: cx.app().frame.clamp(1, len),
+crates/executor/src/commands/timeline.rs:769: [div/rem] if feet && frame >= 0 { format!("{}+{:02}", frame / 16, frame % 16) } else { frame.to_string() }
+crates/executor/src/commands/timeline.rs:805: [vec index op] m.insert("pointer".into(), json!(pointer));
+crates/executor/src/commands/timeline.rs:810: [vec index op] values.insert(key.to_owned(), v.clone());
+crates/executor/src/commands/timeline.rs:948: [div/rem] gui = "Timeline row context: Show Effect Parameters, Show All / Hide All Effect Parameters (M5 C5.1)",
+crates/executor/src/commands/timeline.rs:974: [vec index op] cx.session_mut().timeline.parameter_rows.insert(id.as_str().to_owned(), p.visible);
+crates/executor/src/commands/timeline.rs:1037: [div/rem] gui = "Timeline: zoom control, horizontal scroll, View > Zoom In / Out with the Timeline focused, Show Timeline Selection (M5 C5.1)",
+crates/executor/src/commands/timeline.rs:1056: [clamp] v.first_frame = u32::try_from(f.clamp(1, i64::from(last_start))).unwrap_or(1);
+crates/executor/src/commands/timeline.rs:1084: [vec index op] cx.session_mut().timeline.views.insert(scene.as_str().to_owned(), v);
+crates/executor/src/commands/transfer_options.rs:108: [vec index op] out.insert(a.to_owned(), v.clone());
+crates/executor/src/commands/transfer_options.rs:114: [vec index op] peg.insert(a.to_owned(), v.clone());
+crates/executor/src/commands/transfer_options.rs:118: [vec index op] out.insert("pegKeys".to_owned(), Value::Object(peg));
+crates/executor/src/commands/transfer_options.rs:134: [vec index op] out.insert((*b).to_owned(), boolean(pv, &format!("{pointer}/pegKeys/{pk}"))?);
+crates/executor/src/commands/transfer_options.rs:139: [vec index op] out.insert((*b).to_owned(), boolean(v, &format!("{pointer}/{k}"))?);
+crates/executor/src/commands/transfer_options.rs:234: [vec index op] values.insert(op.key().to_owned(), Value::Object(raw));
+crates/executor/src/commands/transfer_options.rs:258: [vec index op] peg.insert(pk.clone(), pv.clone());
+crates/executor/src/commands/transfer_options.rs:261: [vec index op] base.insert("pegKeys".to_owned(), Value::Object(peg));
+crates/executor/src/commands/transfer_options.rs:263: [vec index op] base.insert(k.clone(), v.clone());
+crates/executor/src/timeline_layout.rs:145: [div/rem] (width / z.cell_width.max(1)).max(1).saturating_mul(z.frames_per_cell.max(1))
+crates/executor/src/timing_gesture.rs:104: [index/slice] let elements = ids(&sel["elementIds"]);
+crates/executor/src/timing_gesture.rs:105: [index/slice] let rows_selected = sel["rowsSelected"].as_u64().unwrap_or(0) > 0;
+crates/executor/src/timing_gesture.rs:106: [index/slice] let from = sel["from"].as_u64().and_then(|f| u32::try_from(f).ok()).unwrap_or(0);
+crates/executor/src/timing_gesture.rs:107: [index/slice] let to = sel["to"].as_u64().and_then(|f| u32::try_from(f).ok()).unwrap_or(0);
+crates/executor/src/timing_gesture.rs:215: [div/rem] let cell = (x / f64::from(z.cell_width.max(1))).floor();
+crates/executor/src/timing_gesture.rs:218: [clamp] u32::try_from(f.clamp(1, i64::from(u32::MAX))).unwrap_or(1)
+crates/executor/src/timing_gesture.rs:225: [div/rem] let cells = (i64::from(frame) - i64::from(g.first_frame)).div_euclid(i64::from(z.frames_per_cell.max(1)));
+crates/executor/src/timing_gesture.rs:231: [div/rem] let r = ((y + g.scroll_top) / f64::from(l.row_height.max(1))).floor();
+crates/executor/src/timing_gesture.rs:320: [div/rem] let centre = |f: u32| x_of(l, g, f) + cw / 2.0;
+crates/executor/src/timing_gesture.rs:333: [index/slice] Some(r) => Target::Row { row: r, element: rows[r].id.as_str().to_owned() },
+crates/executor/src/timing_gesture.rs:340: [index/slice] let row = &rows[r];
+crates/executor/src/timing_gesture.rs:344: [div/rem] let top_half = (s.y + g.scroll_top) - (r as f64) * f64::from(l.row_height) < f64::from(l.row_height) / 2.0;
+crates/executor/src/timing_gesture.rs:352: [div/rem] keyed(doc, &row.id).into_iter().find(|k| (s.x - (x_of(l, g, *k) + cw / 2.0)).abs() <= radius)
+crates/executor/src/timing_gesture.rs:404: [clamp] let f = frame_at(l, g, last.x).clamp(1, len);
+crates/executor/src/timing_gesture.rs:417: [index/slice] let pressed = rows[row].id.clone();
+crates/executor/src/timing_gesture.rs:435: [index/slice] let Some((start, end, ..)) = bar_of(doc, &rows[row].id) else { return Plan::Nothing };
+crates/executor/src/timing_gesture.rs:447: [index/slice] let Some((start, end, ..)) = bar_of(doc, &rows[row].id) else { return Plan::Nothing };
+crates/executor/src/timing_gesture.rs:449: [clamp] let new_start = (i64::from(start) + delta).clamp(1, i64::from(end).max(1));
+crates/executor/src/timing_gesture.rs:460: [index/slice] let Some((start, end, loops, duration)) = bar_of(doc, &rows[row].id) else { return Plan::Nothing };
+crates/executor/src/timing_gesture.rs:461: [div/rem] let cycle = f64::from((duration / loops).max(1));
+crates/executor/src/timing_gesture.rs:463: [div/rem] let n = ((new_end - i64::from(start) + 1) as f64 / cycle).round().max(1.0);
+crates/executor/src/timing_gesture.rs:476: [index/slice] one("anim.key.move", json!({ "nodeId": rows[row].id.as_str(), "fromFrame": frame, "toFrame": to }))
+crates/executor/src/timing_gesture.rs:504: [index/slice] params["targetElementId"] = json!(target.id.as_str());
+crates/executor/src/timing_gesture.rs:512: [index/slice] let ids: Vec<Id> = rows[a..=b].iter().map(|r| r.id.clone()).collect();
+crates/executor/src/timing_gesture.rs:521: [index/slice] json!({ "elementId": rows[row].id.as_str(), "frame": frame }),
+crates/executor/src/timing_gesture.rs:538: [index/slice] let id = &rows[row].id;
+crates/executor/src/timing_gesture.rs:546: [index/slice] (true, Some(anchor)) => rows[anchor.min(row)..=anchor.max(row)].iter().map(|r| r.id.clone()).collect(),
+crates/executor/src/timing_gesture.rs:568: [index/slice] let id = &rows[row].id;
+crates/executor/src/timing_gesture.rs:572: [index/slice] let ids: Vec<Id> = rows[anchor.min(row)..=anchor.max(row)].iter().map(|r| r.id.clone()).collect();
+crates/executor/src/timing_gesture.rs:595: [index/slice] let pressed = rows[row].id.clone();
+crates/executor/src/timing_gesture.rs:614: [div/rem] let pos = (s.y + g.scroll_top) / rh;
+crates/executor/src/timing_gesture.rs:622: [index/slice] let r = &rows[t];
+crates/executor/src/timing_gesture.rs:651: [vec index op] order.insert(at + k, m.clone());
+crates/executor/src/timing_gesture.rs:660: [index/slice] params["parentId"] = json!(p.as_str());
+crates/executor/src/timing_gesture.rs:690: [vec index op] root.insert(at + k, m.clone());
+crates/executor/src/timing_gesture.rs:756: [vec index op] t.grabs.insert(id, Grab { layout: g, press: sample, doc, state });
+crates/executor/src/timing_gesture.rs:759: [vec index op] t.grabs.remove(&oldest);
+crates/executor/src/timing_gesture.rs:765: [vec index op] s.timeline.grabs.remove(&grab_id);
+crates/executor/src/timing_gesture.rs:771: [vec index op] let grab = s.timeline.grabs.remove(&grab_id).ok_or_else(|| {
+crates/executor/src/timing_gesture.rs:783: [vec index op] samples.insert(0, grab.press.clone());
+crates/executor/src/timing_gesture.rs:830: [index/slice] let ids: Vec<&str> = match &p[k] {
+crates/executor/src/timing_gesture.rs:847: [vec index op] m.insert("missing".to_owned(), json!(missing(doc, p)));
+crates/executor/src/timing_gesture.rs:856: [index/slice] let targets: Vec<Value> = id_list(&p["elementIds"])
+crates/executor/src/timing_gesture.rs:863: [index/slice] let (start, duration) = match (int("startDelta"), int("duration"), p["anchor"].as_str()) {
+crates/executor/src/timing_gesture.rs:878: [index/slice] let node = p["nodeId"].as_str().and_then(|k| Id::parse(k).ok());
+crates/executor/src/timing_gesture.rs:880: [index/slice] "command": command, "nodeId": p["nodeId"], "fromFrame": p["fromFrame"], "toFrame": p["toFrame"],
+crates/executor/src/timing_gesture.rs:885: [index/slice] let moving = id_list(&p["elementIds"]);
+crates/executor/src/timing_gesture.rs:886: [index/slice] let parent = p["parentId"].as_str().and_then(|k| Id::parse(k).ok());
+crates/executor/src/timing_gesture.rs:894: [vec index op] order.insert(at + k, m.clone());
+crates/executor/src/timing_gesture.rs:900: [index/slice] json!({ "command": command, "parentId": p["parentId"], "children": children })
+crates/executor/src/timing_gesture.rs:904: [index/slice] let ids = id_list(&p["elementIds"]);
+crates/executor/src/timing_gesture.rs:905: [index/slice] let parent = p["parentId"].as_str().and_then(|k| Id::parse(k).ok());
+crates/executor/src/timing_gesture.rs:914: [index/slice] let sources = id_list(&p["sourceElementIds"]);
+crates/executor/src/timing_gesture.rs:938: [index/slice] let dest_ids: Vec<Id> = match p["targetElementId"].as_str().and_then(|k| Id::parse(k).ok()) {
+crates/executor/src/timing_gesture.rs:945: [index/slice] "command": command, "targetFrame": target, "targetElementId": p["targetElementId"],
+crates/executor/src/timing_gesture.rs:946: [index/slice] "mode": p["mode"], "grabbed": grabbed, "destination": destination,
+crates/executor/src/commands/edit_ops.rs:228: [vec index op] values.insert(k.to_owned(), Value::Object(options.clone()));
+crates/executor/src/commands/edit_ops.rs:233: [vec index op] cx.session_mut().edit_options.insert(operation.into(), options);
+crates/executor/src/commands/element_read.rs:426: [vec index op] colours.insert(c.to_owned(), json!(keys.first().map_or_else(String::new, |k| key_colour(cx, k))));
+crates/executor/src/commands/element_read.rs:499: [vec index op] m.insert("pointer".into(), json!("/colour"));
+crates/executor/src/commands/element_read.rs:503: [vec index op] values.insert((*k).to_owned(), v);
+crates/executor/src/commands/prefs.rs:285: [vec index op] staged.remove(k);
+crates/executor/src/commands/prefs.rs:366: [vec index op] empty.insert(k.clone(), Value::Object(Map::new()));
+crates/executor/src/commands/render.rs:878: [div/rem] let s = f64::from(w) / 1200.0;
+crates/executor/src/commands/render.rs:879: [div/rem] let d2p = [s, 0.0, 0.0, -s, f64::from(w) / 2.0, f64::from(h) / 2.0];
+crates/executor/src/commands/render.rs:883: [div/rem] super::draw_render::Builder::in_drawing_units(doc, blobs, styles, u64::from(w) * u64::from(h) / 1024);
+crates/executor/src/persistence.rs:119: [vec index op] timeline.ranges.insert(
+crates/executor/src/store.rs:419: [vec index op] self.settings.last_used.insert(k, v);
