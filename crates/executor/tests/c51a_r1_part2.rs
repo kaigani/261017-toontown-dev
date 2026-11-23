@@ -35,3 +35,26 @@ fn c1_scene_and_project_lifecycle() {
     drop(h);
     std::fs::remove_dir_all(dir).unwrap();
 }
+
+#[test]
+fn c2_throttle_and_final_frame() {
+    let h=fixture();
+    ok(&h,"element.timing.set",json!({"elementIds":["scene:\"Intro\"/element:\"Bob-P\""],"duration":96}));
+    ok(&h,"timeline.playbackRange.set",json!({"start":1,"end":96}));
+    ok(&h,"timeline.currentFrame.set",json!({"frame":1}));
+    ok(&h,"playback.rate.set",json!({"fps":24}));
+    ok(&h,"playback.loop.set",json!({"enabled":false}));
+    let rx=h.subscribe();
+    ok(&h,"playback.start",json!({}));
+    let deadline=Instant::now()+Duration::from_secs(60);
+    let mut frames=Vec::new();
+    loop {
+        let e=rx.recv_timeout(deadline.saturating_duration_since(Instant::now())).unwrap();
+        if e.name=="timeline.currentFrame.changed" { frames.push(e.payload["frame"].clone()); }
+        if e.name=="playback.stopped" { assert_eq!(e.payload["frame"],96); break; }
+    }
+    assert_eq!(ok(&h,"playback.state.get",json!({}))["playing"],false);
+    assert_eq!(frames.last(),Some(&json!(96)),"04:1466 final event");
+    assert!(!frames.is_empty() && frames.len()<=45,"04:1466 nominal four seconds: {} events",frames.len());
+    println!("C2 frame events: {} final: 96",frames.len());
+}
