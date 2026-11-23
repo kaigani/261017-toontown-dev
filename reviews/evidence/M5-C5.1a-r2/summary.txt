@@ -1,0 +1,6 @@
+Headless round 2 dynamic review
+executor c51a_r2_panics: 1 passed, 1 failed (requested retry; spec conflict O1)
+executor c51a_r2_degraded: 1 passed
+mcp c51a_r2_degraded with tt-persist/test-hooks: 1 passed
+executor c51a_r2_fixes: 4 passed
+No product edits. No qualifying findings.
