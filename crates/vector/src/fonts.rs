@@ -9,7 +9,9 @@
 //! font file through the dev-only `test-hooks` feature ([`register_test_font`]); products never have it.
 
 use std::collections::BTreeMap;
-use std::sync::{Arc, Mutex, OnceLock};
+use std::io::Write as _;
+use std::sync::{Arc, Condvar, Mutex, Once, OnceLock};
+use std::time::{Duration, Instant};
 
 /// Metrics of one face, scaled to 1 em = 1.0.
 #[derive(Debug, Clone)]
@@ -205,26 +207,223 @@ pub fn register_test_font(data: Vec<u8>) {
     }
 }
 
-fn fonts() -> &'static Fonts {
-    static F: OnceLock<Fonts> = OnceLock::new();
-    F.get_or_init(|| {
-        let mut db = fontdb::Database::new();
-        db.load_system_fonts();
-        #[cfg(feature = "test-hooks")]
-        if let Ok(list) = TEST_FONTS.lock() {
-            for data in list.iter() {
-                db.load_font_data(data.clone());
+/// The font list, read once per process.
+static FONTS: OnceLock<Fonts> = OnceLock::new();
+/// Set once the list is read, with the condition variable a bounded wait sleeps on (ruling E-43).
+static READY: (Mutex<bool>, Condvar) = (Mutex::new(false), Condvar::new());
+/// The background read is started once per process.
+static STARTED: Once = Once::new();
+/// How long the read took.
+static SCAN_TIME: OnceLock<Duration> = OnceLock::new();
+/// Called with `true` when a caller starts waiting for the list and `false` when it stops (the window's status line).
+type Observer = Box<dyn Fn(bool) + Send + Sync>;
+static OBSERVERS: Mutex<Vec<Observer>> = Mutex::new(Vec::new());
+
+/// How long a command waits for the font list before it answers that the fonts are still being read (ruling E-43).
+pub const WAIT_BOUND: Duration = Duration::from_secs(20);
+
+/// The font list was not read within the bound (ruling E-43): the caller answers that the system fonts are still being
+/// read, before it changes anything, and a later retry succeeds. Text is never laid out with a partial list.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct FontsLoading;
+
+#[cfg(feature = "test-hooks")]
+mod hold {
+    //! Dev-only (`test-hooks`): holds the font read until released, and shortens the bounded wait, so tests can reach
+    //! every caller while the list is not ready (ruling E-43). Products never have it (the release-features gate).
+    use std::sync::{Condvar, Mutex};
+    use std::time::Duration;
+
+    pub(super) static HELD: (Mutex<bool>, Condvar) = (Mutex::new(false), Condvar::new());
+    pub(super) static BOUND: Mutex<Option<Duration>> = Mutex::new(None);
+    pub(super) static EAGER: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+    pub(super) fn wait_released() {
+        let (lock, cv) = &HELD;
+        let Ok(mut held) = lock.lock() else { return };
+        while *held {
+            match cv.wait(held) {
+                Ok(g) => held = g,
+                Err(_) => return,
             }
         }
-        Fonts { db, cache: Mutex::new(BTreeMap::new()) }
-    })
+    }
 }
 
-/// Starts reading the system font list on a background thread, so the first text command does not pay for it.
+/// Holds the font read (dev-only `test-hooks`): a read that has not started yet waits until [`release_scan`]. Call it
+/// before anything in the process reads the list.
+#[cfg(feature = "test-hooks")]
+pub fn hold_scan() {
+    if let Ok(mut held) = hold::HELD.0.lock() {
+        *held = true;
+    }
+}
+
+/// Releases a held font read (dev-only `test-hooks`).
+#[cfg(feature = "test-hooks")]
+pub fn release_scan() {
+    let (lock, cv) = &hold::HELD;
+    if let Ok(mut held) = lock.lock() {
+        *held = false;
+        cv.notify_all();
+    }
+}
+
+/// Replaces [`WAIT_BOUND`] for tests (dev-only `test-hooks`); `None` restores it.
+#[cfg(feature = "test-hooks")]
+pub fn set_wait_bound(bound: Option<Duration>) {
+    if let Ok(mut b) = hold::BOUND.lock() {
+        *b = bound;
+    }
+}
+
+/// Makes the render list compute every entry's text bounds eagerly, as before ruling E-43 (b) (dev-only `test-hooks`),
+/// so a test compares the two.
+#[cfg(feature = "test-hooks")]
+pub fn set_eager_text_bounds(on: bool) {
+    hold::EAGER.store(on, std::sync::atomic::Ordering::Release);
+}
+
+/// Whether the render list computes every entry's text bounds eagerly ([`set_eager_text_bounds`]); always `false` in a
+/// product (the dev-only `test-hooks` feature is absent, which the release-features gate proves).
+#[must_use]
+pub fn eager_text_bounds() -> bool {
+    #[cfg(feature = "test-hooks")]
+    {
+        hold::EAGER.load(std::sync::atomic::Ordering::Acquire)
+    }
+    #[cfg(not(feature = "test-hooks"))]
+    {
+        false
+    }
+}
+
+/// The bound a wait uses: [`WAIT_BOUND`], or a test's.
+#[must_use]
+pub fn wait_bound() -> Duration {
+    #[cfg(feature = "test-hooks")]
+    if let Ok(b) = hold::BOUND.lock()
+        && let Some(d) = *b
+    {
+        return d;
+    }
+    WAIT_BOUND
+}
+
+fn scan() -> Fonts {
+    #[cfg(feature = "test-hooks")]
+    hold::wait_released();
+    let started = Instant::now();
+    let mut db = fontdb::Database::new();
+    db.load_system_fonts();
+    #[cfg(feature = "test-hooks")]
+    if let Ok(list) = TEST_FONTS.lock() {
+        for data in list.iter() {
+            db.load_font_data(data.clone());
+        }
+    }
+    let elapsed = started.elapsed();
+    let _ = SCAN_TIME.set(elapsed);
+    // The scan's duration, for the application log (the host's stderr; ruling E-43 item 4).
+    let _ =
+        writeln!(std::io::stderr(), "toontown: system fonts read in {} ms ({} faces)", elapsed.as_millis(), db.len());
+    Fonts { db, cache: Mutex::new(BTreeMap::new()) }
+}
+
+/// The font list, reading it on the caller's thread if no read has finished: callers that may run before the list is
+/// read wait for it with [`ready_within`] first, which bounds the wait.
+fn fonts() -> &'static Fonts {
+    let f = FONTS.get_or_init(scan);
+    mark_ready();
+    f
+}
+
+fn mark_ready() {
+    let (lock, cv) = &READY;
+    let first = match lock.lock() {
+        Ok(mut ready) if !*ready => {
+            *ready = true;
+            cv.notify_all();
+            true
+        }
+        _ => false,
+    };
+    // The list is read: observers learn that nothing waits any more (the window reads its views again).
+    if first {
+        tell(false);
+    }
+}
+
+/// Starts reading the system font list on a background thread (once per process), so the first text command does not
+/// pay for it. If no thread can be started the list is read on first use.
 pub fn warm() {
-    std::thread::spawn(|| {
-        let _ = fonts();
+    STARTED.call_once(|| {
+        let _ = std::thread::Builder::new().name("tt-fonts".to_owned()).spawn(|| {
+            let _ = fonts();
+        });
     });
+}
+
+/// Whether the font list has been read.
+#[must_use]
+pub fn is_ready() -> bool {
+    FONTS.get().is_some()
+}
+
+/// How long the read took, once it has finished.
+#[must_use]
+pub fn scan_time() -> Option<Duration> {
+    SCAN_TIME.get().copied()
+}
+
+/// Registers a function told when a caller starts (`true`) and stops (`false`) waiting for the list, and (`false`) when
+/// the list has been read.
+pub fn add_wait_observer(f: impl Fn(bool) + Send + Sync + 'static) {
+    if let Ok(mut list) = OBSERVERS.lock() {
+        list.push(Box::new(f));
+    }
+}
+
+fn tell(waiting: bool) {
+    if let Ok(list) = OBSERVERS.lock() {
+        for f in list.iter() {
+            f(waiting);
+        }
+    }
+}
+
+/// Waits for the font list at most `bound` (ruling E-43): `Ok` once it is read (at once when it already is), else
+/// [`FontsLoading`]. After `Ok` every layout reads the full list without waiting.
+///
+/// # Errors
+///
+/// [`FontsLoading`] when the list is not read within `bound`.
+pub fn ready_within(bound: Duration) -> Result<(), FontsLoading> {
+    if is_ready() {
+        return Ok(());
+    }
+    warm();
+    tell(true);
+    let out = wait_ready(bound);
+    tell(false);
+    out
+}
+
+fn wait_ready(bound: Duration) -> Result<(), FontsLoading> {
+    let deadline = Instant::now() + bound;
+    let (lock, cv) = &READY;
+    let Ok(mut ready) = lock.lock() else { return if is_ready() { Ok(()) } else { Err(FontsLoading) } };
+    while !*ready {
+        let now = Instant::now();
+        if now >= deadline {
+            return if is_ready() { Ok(()) } else { Err(FontsLoading) };
+        }
+        match cv.wait_timeout(ready, deadline - now) {
+            Ok((g, _)) => ready = g,
+            Err(_) => return if is_ready() { Ok(()) } else { Err(FontsLoading) },
+        }
+    }
+    Ok(())
 }
 
 /// The installed family names (as the fonts name them), sorted and unique.

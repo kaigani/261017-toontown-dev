@@ -182,7 +182,10 @@ fn selectables(cx: &Cx, d: &Drawing, with_zones: bool) -> Result<Vec<(String, Op
                 tt_vector::drawing::stroke_at(d, &o.pointer).and_then(tt_vector::drawing::stroke_bounds)
             }
             tt_vector::drawing::ObjectKind::Text | tt_vector::drawing::ObjectKind::Bitmap => {
-                tt_vector::drawing::node_at(d, &o.pointer).and_then(|n| tt_vector::drawing::node_bounds(n, false))
+                match tt_vector::drawing::node_at(d, &o.pointer) {
+                    Some(n) => crate::fonts_gate::node_bounds(n, false)?,
+                    None => None,
+                }
             }
             _ => continue,
         };
@@ -230,8 +233,8 @@ pub(crate) fn selection_bounds(cx: &Cx, d: &Drawing, ids: &[String]) -> Result<O
         charge(&mut work, objects)?;
         if let Some(l) = tt_vector::drawing::locate(d, id)
             && matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
-            && let Some(b) =
-                tt_vector::drawing::node_at(d, &l.pointer).and_then(|n| tt_vector::drawing::node_bounds(n, false))
+            && let Some(n) = tt_vector::drawing::node_at(d, &l.pointer)
+            && let Some(b) = crate::fonts_gate::node_bounds(n, false)?
         {
             acc = Some(match acc {
                 Some(a) => a.with(P::new(b.min_x, b.min_y)).with(P::new(b.max_x, b.max_y)),
@@ -266,14 +269,14 @@ pub(crate) fn selection_geometry(cx: &Cx, d: &Drawing) -> Result<Option<Selectio
         selectables(cx, d, ids.iter().any(|i| i.starts_with("zn_")))?.into_iter().collect();
     let mut objects = Vec::with_capacity(ids.len());
     for id in &ids {
-        let b = all.get(id).copied().flatten().or_else(|| {
-            let l = tt_vector::drawing::locate(d, id)?;
-            matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
-                .then(|| {
-                    tt_vector::drawing::node_at(d, &l.pointer).and_then(|n| tt_vector::drawing::node_bounds(n, false))
-                })
-                .flatten()
-        });
+        let mut b = all.get(id).copied().flatten();
+        if b.is_none()
+            && let Some(l) = tt_vector::drawing::locate(d, id)
+            && matches!(l.kind, tt_vector::drawing::ObjectKind::Layer | tt_vector::drawing::ObjectKind::Group)
+            && let Some(n) = tt_vector::drawing::node_at(d, &l.pointer)
+        {
+            b = crate::fonts_gate::node_bounds(n, false)?;
+        }
         if let Some(b) = b {
             objects.push([b.min_x, b.min_y, b.max_x, b.max_y]);
         }
@@ -654,7 +657,7 @@ pub(crate) fn draw_bounds_get(cx: &mut Cx, p: BoundsParams) -> Result<BoundsResu
     let doc = cx.document()?.clone();
     let d = t.drawing(&doc)?.into_owned();
     let b = match &p.ids {
-        None => tt_vector::drawing::drawing_bounds(&d, p.include_invisible),
+        None => crate::fonts_gate::drawing_bounds(&d, p.include_invisible)?,
         Some(ids) => {
             let local: Vec<String> =
                 ids.iter().map(|i| tt_vector::drawing::local_id(d.id().as_str(), i).unwrap_or(i).to_owned()).collect();

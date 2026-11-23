@@ -35,6 +35,7 @@ mod contour_gesture;
 mod cx;
 mod drawing;
 mod envelope_gesture;
+mod fonts_gate;
 pub mod gesture;
 mod help;
 mod history;
@@ -339,6 +340,19 @@ impl ExecutorHandle {
         tt_vector::fonts::warm();
         let (tx, rx) = mpsc::channel::<Request>();
         let subscribers: Arc<host::Bus> = Arc::new(host::Bus::default());
+        // While a call waits for the font list the window says so on its status line (ruling E-43; host-only).
+        let font_subs = Arc::downgrade(&subscribers);
+        tt_vector::fonts::add_wait_observer(move |waiting| {
+            if let Some(bus) = font_subs.upgrade() {
+                broadcast(
+                    &bus,
+                    &[Event {
+                        name: "shell.fontsLoading".to_owned(),
+                        payload: serde_json::json!({ "waiting": waiting }),
+                    }],
+                );
+            }
+        });
         let job_subs = subscribers.clone();
         let jobs = Arc::new(JobTable::with_notifier(Box::new(move |e| broadcast(&job_subs, std::slice::from_ref(&e)))));
         let mut env = store::Env::new(&persist);

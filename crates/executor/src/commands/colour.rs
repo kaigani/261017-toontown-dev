@@ -390,7 +390,7 @@ fn hits_in(
                 }
             }
             NodeKind::Text | NodeKind::Bitmap => {
-                if let Some(b) = tt_vector::drawing::node_bounds(n, false)
+                if let Some(b) = crate::fonts_gate::node_bounds(n, false)?
                     && p.x >= b.min_x
                     && p.x <= b.max_x
                     && p.y >= b.min_y
@@ -683,9 +683,10 @@ fn resolved_of(h: &Hit) -> Option<Resolved> {
 }
 
 /// Whether a point lies within the artwork of a layer (its strokes' bounds): an open region rather than empty canvas.
-fn in_artwork(d: &Drawing, p: P) -> bool {
-    tt_vector::drawing::drawing_bounds(d, true)
-        .is_some_and(|b| p.x >= b.min_x && p.x <= b.max_x && p.y >= b.min_y && p.y <= b.max_y)
+/// A drawing with text waits for the font list within the bound (ruling E-43).
+fn in_artwork(d: &Drawing, p: P) -> Result<bool, CommandError> {
+    Ok(crate::fonts_gate::drawing_bounds(d, true)?
+        .is_some_and(|b| p.x >= b.min_x && p.x <= b.max_x && p.y >= b.min_y && p.y <= b.max_y))
 }
 
 /// The objects a list of point targets hits (`zones_only`: the zone under each point, lines ignored).
@@ -703,8 +704,13 @@ fn resolve_points(
         let first = if zones_only { hs.iter().find(|h| matches!(h.kind, HitKind::Zone(..))) } else { hs.first() };
         match first.and_then(resolved_of) {
             Some(r) => out.targets.push((label, r)),
-            None if in_artwork(d, *p) => out.open.push((label, *p)),
-            None => out.skipped.push(Skipped { target: label, reason: "colour.noTarget".into() }),
+            None => {
+                if in_artwork(d, *p)? {
+                    out.open.push((label, *p));
+                } else {
+                    out.skipped.push(Skipped { target: label, reason: "colour.noTarget".into() });
+                }
+            }
         }
     }
     Ok(())
@@ -820,7 +826,7 @@ fn resolve_path(
             }
             NodeKind::Text => {
                 work.spend_n(path.len()).map_err(|e| crate::planar::geom_error(&e))?;
-                if let Some(b) = tt_vector::drawing::node_bounds(n, false)
+                if let Some(b) = crate::fonts_gate::node_bounds(n, false)?
                     && path.windows(2).any(|w| segment_meets_box(w[0], w[1], &b))
                 {
                     out.targets.push(("path".into(), Resolved::Text { id: n.id().as_str().to_owned() }));

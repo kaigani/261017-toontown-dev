@@ -9,7 +9,7 @@ import { App } from '../App';
 import { createHostApi, HostProvider } from '../ipc';
 import { createScriptedHost, fail, NO_PROJECT_STATE, ok } from '../test-support/scriptedHost';
 import { commandLabel } from './commandLabel';
-import { refusalLine } from './refusals';
+import { FONTS_READING_LINE, fontsNoticeLine, refusalLine } from './refusals';
 
 afterEach(cleanup);
 
@@ -125,5 +125,28 @@ describe('a refused person action is reported on the status line (D-87)', () => 
       expect(statusLine()).toBe(`${commandLabel('edit.delete')}: failed unexpectedly; nothing was changed`);
     });
     expect(screen.queryByRole('alertdialog')).toBeNull();
+  });
+});
+
+describe('the system fonts still being read (ruling E-43)', () => {
+  it('a call refused past the bound says so on the status line, naming the command', () => {
+    const refused = {
+      code: 'command.timeout',
+      message: 'the system fonts are still being read',
+      details: { reason: 'fontsLoading', boundMs: 20000 },
+    };
+    expect(refusalLine(refused, 'draw.text.add')).toBe(
+      `${commandLabel('draw.text.add')}: the system fonts are still being read; nothing was changed, try again in a moment`,
+    );
+    // Another timeout reason is not this line (a cancelled call is the person's choice, SI-111).
+    expect(
+      refusalLine({ code: 'command.timeout', details: { reason: 'cancelled' } }, 'draw.text.add'),
+    ).toBeNull();
+  });
+
+  it('the notice shows the line while a call waits and nothing once the list is read', () => {
+    expect(fontsNoticeLine({ waiting: true })).toBe(FONTS_READING_LINE);
+    expect(fontsNoticeLine({ waiting: false })).toBeNull();
+    expect(fontsNoticeLine(null)).toBeNull();
   });
 });

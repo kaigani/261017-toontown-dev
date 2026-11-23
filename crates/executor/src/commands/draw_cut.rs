@@ -59,7 +59,9 @@ fn run_cut(
     let mut skipped: Vec<SkippedNode> = Vec::new();
     if nodes && closed {
         for o in vd::objects(&d).into_iter().filter(|o| matches!(o.kind, ObjectKind::Text | ObjectKind::Bitmap)) {
-            let Some(b) = vd::node_at(&d, &o.pointer).and_then(|n| vd::node_bounds(n, true)) else { continue };
+            let Some(n) = vd::node_at(&d, &o.pointer) else { continue };
+            // A text node waits for the font list within the bound, before anything changes (ruling E-43).
+            let Some(b) = crate::fonts_gate::node_bounds(n, true)? else { continue };
             let corners = [
                 P::new(b.min_x, b.min_y),
                 P::new(b.max_x, b.min_y),
@@ -85,7 +87,8 @@ fn run_cut(
         if layers.is_some_and(|l| !l.contains(&lid)) || n.strokes().is_none() {
             continue;
         }
-        if !vd::node_bounds(n, true).is_some_and(|b| meets(&b, &bb)) {
+        // A layer holds no text: this never waits.
+        if !crate::fonts_gate::node_bounds(n, true)?.is_some_and(|b| meets(&b, &bb)) {
             continue;
         }
         let bid = cx.new_id(ObjectType::Stroke)?.as_str().to_owned();

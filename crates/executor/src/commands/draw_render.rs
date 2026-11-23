@@ -430,11 +430,13 @@ impl<'a> Builder<'a> {
             .then(|| n.width().unwrap_or(0.0));
         let t = n.transform().map_or(Affine::IDENTITY, Affine);
         let to_px = self.d2p.then_after(&t);
-        for g in tt_vector::ops::glyphs::shapes(&content, fixed) {
+        // Glyphs need the font list: waited for within the bound (ruling E-43).
+        let fonts = crate::fonts_gate::read()?;
+        for g in fonts.shapes(&content, fixed) {
             let Some(path) = tt_vector::ops::glyphs::bridge_paths(&g.contours) else { continue };
             self.spend(path.anchors.len())?;
             let Some(colour) = g.colour_id.clone() else { continue };
-            let b = vd::node_bounds(n, true);
+            let b = fonts.node_bounds(n, true);
             if let Some(paint) = self.paint(n.id().as_str(), &colour, None, b) {
                 self.push(Item::Fill { path: els(&path, &to_px), rule: Rule::NonZero, paint }, Tag::Colour(colour));
             }
@@ -525,7 +527,7 @@ fn default_unit(kind: SwatchKind, b: &Rect) -> Option<[f64; 6]> {
 fn region_rect(cx: &Cx, d: &Drawing, r: RegionIn) -> Result<Rect, CommandError> {
     let field12 = Rect { min_x: -600.0, min_y: -450.0, max_x: 600.0, max_y: 450.0 };
     Ok(match r {
-        RegionIn::Named(RegionName::Bounds) => vd::drawing_bounds(d, false).unwrap_or(field12),
+        RegionIn::Named(RegionName::Bounds) => crate::fonts_gate::drawing_bounds(d, false)?.unwrap_or(field12),
         RegionIn::Named(RegionName::Field12) => field12,
         RegionIn::Named(RegionName::Field16) => Rect { min_x: -800.0, min_y: -600.0, max_x: 800.0, max_y: 600.0 },
         RegionIn::Named(RegionName::Camera) => {

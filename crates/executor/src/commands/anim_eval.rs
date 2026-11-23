@@ -239,14 +239,26 @@ fn hidden(doc: &Document, e: &Element) -> bool {
 }
 
 /// Visible content of a node at a frame: the drawing exposed there (02 §3: drawing space in du).
-fn content_box(doc: &Document, e: &Element, frame: f64, memo: &mut BTreeMap<Id, Option<Rect>>) -> Option<Rect> {
+/// A drawing with text waits for the font list within the bound (ruling E-43).
+fn content_box(
+    doc: &Document,
+    e: &Element,
+    frame: f64,
+    memo: &mut BTreeMap<Id, Option<Rect>>,
+) -> Result<Option<Rect>, CommandError> {
     if !e.element_type().is_cell_based() {
-        return None;
+        return Ok(None);
     }
-    let cell = AppContext::exposed_drawing(doc, e.id(), frame.floor() as u32)?;
-    *memo
-        .entry(cell.clone())
-        .or_insert_with(|| doc.drawing(&cell).and_then(|d| tt_vector::drawing::drawing_bounds(d, false)))
+    let Some(cell) = AppContext::exposed_drawing(doc, e.id(), frame.floor() as u32) else { return Ok(None) };
+    if let Some(b) = memo.get(&cell) {
+        return Ok(*b);
+    }
+    let b = match doc.drawing(&cell) {
+        Some(d) => crate::fonts_gate::drawing_bounds(d, false)?,
+        None => None,
+    };
+    memo.insert(cell, b);
+    Ok(b)
 }
 
 /// The world box of a drawing box under `world` (05 §1.3: 1 field = 100 du; the box of the four transformed corners).
@@ -342,7 +354,7 @@ fn node_eval(
     let want_bounds = wants(parts, IncludePart::Bounds);
     let want_screen = wants(parts, IncludePart::Screen);
     let corners = if want_bounds || want_screen {
-        content_box(doc, e, frame, memo).map(|r| world_corners(&world, &r))
+        content_box(doc, e, frame, memo)?.map(|r| world_corners(&world, &r))
     } else {
         None
     };
@@ -517,7 +529,7 @@ pub(crate) fn anim_projection_get(cx: &mut Cx, p: ProjectionParams) -> Result<Pr
         evaluable(&doc, &id)?;
         let e = node(&doc, &id)?;
         let world = ev.world(&id, frame).map_err(eval_error)?;
-        let corners = content_box(&doc, e, frame, &mut memo).map(|c| world_corners(&world, &c));
+        let corners = content_box(&doc, e, frame, &mut memo)?.map(|c| world_corners(&world, &c));
         let shown = if e.element_type().is_cell_based() {
             corners.is_some() && !hidden(&doc, e) && *e.element_type() != ElementType::Annotation
         } else {

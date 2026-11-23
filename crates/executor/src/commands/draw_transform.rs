@@ -67,13 +67,25 @@ fn objects_of(cx: &Cx, d: &Drawing, ids: Option<&Vec<String>>, what: &str) -> Re
     Ok(found)
 }
 
-/// The bounds of located objects.
-fn bounds_of(d: &Drawing, objs: &[Located]) -> Option<Rect> {
+/// The bounds of located objects. A text object waits for the font list within the bound (ruling E-43).
+fn bounds_of(d: &Drawing, objs: &[Located]) -> Result<Option<Rect>, CommandError> {
+    bounds_with(d, objs, |n| crate::fonts_gate::node_bounds(n, true))
+}
+
+/// The bounds of located objects, a node's bounds by `node`.
+fn bounds_with(
+    d: &Drawing,
+    objs: &[Located],
+    node: impl Fn(&tt_model::entities::drawing::DrawingNode) -> Result<Option<Rect>, CommandError>,
+) -> Result<Option<Rect>, CommandError> {
     let mut acc: Option<Rect> = None;
     for o in objs {
         let b = match o.kind {
             ObjectKind::Stroke => vd::stroke_at(d, &o.pointer).and_then(vd::stroke_bounds),
-            _ => vd::node_at(d, &o.pointer).and_then(|n| vd::node_bounds(n, true)),
+            _ => match vd::node_at(d, &o.pointer) {
+                Some(n) => node(n)?,
+                None => None,
+            },
         };
         if let Some(b) = b {
             acc = Some(match acc {
@@ -82,13 +94,17 @@ fn bounds_of(d: &Drawing, objs: &[Located]) -> Option<Rect> {
             });
         }
     }
-    acc
+    Ok(acc)
 }
 
 /// Perspective's box (design note 4 §2): the bounds of what `draw.envelope.apply` maps with no `ids` (the selection),
 /// `None` when nothing is selected.
+/// The window's overlay reads it: it never waits for the font list (no box while a selected text's bounds are unknown).
 pub(crate) fn envelope_box(cx: &Cx, d: &Drawing) -> Option<Rect> {
-    objects_of(cx, d, None, "distort").ok().and_then(|o| bounds_of(d, &o))
+    let objs = objects_of(cx, d, None, "distort").ok()?;
+    bounds_with(d, &objs, |n| crate::fonts_gate::node_bounds_now(n, true).ok_or_else(crate::fonts_gate::loading))
+        .ok()
+        .flatten()
 }
 
 fn centre(r: &Rect) -> P {
@@ -407,8 +423,10 @@ pub(crate) fn draw_transform_apply(cx: &mut Cx, p: TransformParams) -> Result<Tr
         return move_anchors(cx, &t.id, &d, &pts, |pivot| affine_of(&p, pivot), p.pivot);
     }
     let objs = objects_of(cx, &d, p.ids.as_ref(), "transform")?;
-    let pivot =
-        p.pivot.map(|q| P::new(q.x, q.y)).or_else(|| bounds_of(&d, &objs).map(|b| centre(&b))).unwrap_or_default();
+    let pivot = match p.pivot {
+        Some(q) => P::new(q.x, q.y),
+        None => bounds_of(&d, &objs)?.map(|b| centre(&b)).unwrap_or_default(),
+    };
     let m = affine_of(&p, pivot)?;
     // 02 §13.5 writes the label "Move/Scale/Rotate Object": the three labels of 02 §7.1.1, one per operation
     // ("Move Object", "Scale Object", "Rotate Object"); a transform combining them, a skew or a matrix keeps the
@@ -552,7 +570,7 @@ pub(crate) fn draw_flip_apply(cx: &mut Cx, p: FlipParams) -> Result<TransformRes
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
     let objs = objects_of(cx, &d, p.ids.as_ref(), "flip")?;
-    let pivot = bounds_of(&d, &objs).map(|b| centre(&b)).unwrap_or_default();
+    let pivot = bounds_of(&d, &objs)?.map(|b| centre(&b)).unwrap_or_default();
     let (s, label) = match p.axis {
         Axis::Horizontal => (tf::scale(-1.0, 1.0), "Flip Horizontal"),
         Axis::Vertical => (tf::scale(1.0, -1.0), "Flip Vertical"),
@@ -608,7 +626,7 @@ pub(crate) fn draw_rotate_apply(cx: &mut Cx, p: RotateParams) -> Result<Transfor
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
     let objs = objects_of(cx, &d, p.ids.as_ref(), "rotate")?;
-    let pivot = bounds_of(&d, &objs).map(|b| centre(&b)).unwrap_or_default();
+    let pivot = bounds_of(&d, &objs)?.map(|b| centre(&b)).unwrap_or_default();
     let (deg, label) = match p.by {
         Step::Cw90 => (-90.0, "Rotate 90° CW"),
         Step::Ccw90 => (90.0, "Rotate 90° CCW"),
@@ -716,7 +734,7 @@ pub(crate) fn draw_envelope_apply(cx: &mut Cx, p: EnvelopeParams) -> Result<Tran
     let d = t.drawing(&doc)?.into_owned();
     check_editable(&d, None)?;
     let objs = objects_of(cx, &d, p.ids.as_ref(), "distort")?;
-    let b = bounds_of(&d, &objs).ok_or_else(|| nothing_to_do("distort"))?;
+    let b = bounds_of(&d, &objs)?.ok_or_else(|| nothing_to_do("distort"))?;
     let m = envelope_of(&b, &p.corners, p.mapping)?;
     let a = map_objects(cx, &t.id, &objs, &m, false, &mut changes)?;
     Ok(TransformResult { drawing_id: t.id.as_str().to_owned(), ids: a.ids, changed: a.changed, rev: a.rev })
@@ -776,15 +794,19 @@ pub(crate) fn reposition_reference(
     element: &Id,
     frame: u32,
 ) -> Result<Rect, CommandError> {
-    crate::app::AppContext::exposed_drawing(doc, element, frame.max(1))
-        .and_then(|id| doc.drawing(&id).and_then(|d| vd::drawing_bounds(d, true)))
-        .ok_or_else(|| {
-            err(
-                "drawing.noTarget",
-                "envelope corners need a drawing with content at the current frame: its bounds are the reference box",
-                json!({ "pointer": "/corners" }),
-            )
-        })
+    // A drawing with text waits for the font list within the bound (ruling E-43).
+    let drawing = crate::app::AppContext::exposed_drawing(doc, element, frame.max(1)).and_then(|id| doc.drawing(&id));
+    let bounds = match drawing {
+        Some(d) => crate::fonts_gate::drawing_bounds(d, true)?,
+        None => None,
+    };
+    bounds.ok_or_else(|| {
+        err(
+            "drawing.noTarget",
+            "envelope corners need a drawing with content at the current frame: its bounds are the reference box",
+            json!({ "pointer": "/corners" }),
+        )
+    })
 }
 
 #[command(
@@ -1613,18 +1635,34 @@ pub(crate) fn precheck_reposition_all(cx: &Cx, v: &Value) -> Result<(), CommandE
     if v.get("corners").is_some_and(|x| !x.is_null()) {
         let frame =
             v.get("frame").and_then(Value::as_u64).and_then(|f| u32::try_from(f).ok()).unwrap_or(cx.app().frame);
+        // A precheck never waits for the font list (ruling E-43): it also decides the enablement the window reads.
+        let exposed =
+            crate::app::AppContext::exposed_drawing(doc, &element, frame.max(1)).and_then(|id| doc.drawing(&id));
+        if exposed.is_some_and(crate::fonts_gate::drawing_has_text) && crate::fonts_gate::now().is_none() {
+            return Err(crate::fonts_gate::loading());
+        }
         reposition_reference(doc, &element, frame)?;
     }
     // Something to move: an unlocked drawing with content (with corners, with bounds), as the handler's loop finds;
     // read once per document revision (`memo`).
     let corners = v.get("corners").is_some_and(|x| !x.is_null());
+    if corners
+        && crate::fonts_gate::now().is_none()
+        && doc.bank(&bank).is_some_and(|b| {
+            b.drawings().ids().iter().filter_map(|id| doc.drawing(id)).any(crate::fonts_gate::drawing_has_text)
+        })
+    {
+        // Not memoised: the answer changes once the list is read.
+        return Err(crate::fonts_gate::loading());
+    }
     let (project, rev) = crate::memo::document_version(cx);
     crate::memo::memo_rev(&format!("reposition:{project}:{bank}:{corners}"), rev, || {
         let ids: Vec<Id> = doc.bank(&bank).map(|b| b.drawings().ids().to_vec()).unwrap_or_default();
-        let movable = ids
-            .iter()
-            .filter_map(|id| doc.drawing(id))
-            .any(|d| !*d.locked() && !d.nodes().is_empty() && (!corners || vd::drawing_bounds(d, true).is_some()));
+        let movable = ids.iter().filter_map(|id| doc.drawing(id)).any(|d| {
+            !*d.locked()
+                && !d.nodes().is_empty()
+                && (!corners || crate::fonts_gate::drawing_bounds_now(d, true).flatten().is_some())
+        });
         if movable { Ok(()) } else { Err(nothing_to_do("reposition")) }
     })
 }

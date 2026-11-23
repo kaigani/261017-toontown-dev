@@ -179,7 +179,16 @@ fn frame_list(
     let doc = cx.document()?.clone();
     let camera = camera.map(|r| super::anim_common::node_id(cx, r)).transpose()?;
     let (w, h) = render::output_size(&doc, None, None, 1.0)?;
-    let req = Request { scene: &scene, frame, camera: camera.as_ref(), width: w, height: h, only: None, overrides };
+    let req = Request {
+        scene: &scene,
+        frame,
+        camera: camera.as_ref(),
+        width: w,
+        height: h,
+        only: None,
+        overrides,
+        never_wait: false,
+    };
     let mut ev = super::anim_common::evaluator(&doc, "describing a frame");
     let list = render_list::build(&doc, &req, &mut ev)?;
     drop(ev);
@@ -1044,6 +1053,7 @@ pub(crate) fn inspect_contact_sheet_render(cx: &mut Cx, p: ContactSheetParams) -
             height: ch,
             only: None,
             overrides: &overrides,
+            never_wait: false,
         };
         let r = render::render_frame(&doc, blobs, &cache, &req, bg, &|| false)?;
         for w in r.warnings {
@@ -1477,6 +1487,7 @@ fn virtual_screenshot(cx: &Cx, p: &ScreenshotParams) -> Result<ScreenshotResult,
             height: chain.height,
             only: None,
             overrides: &overrides,
+            never_wait: false,
         };
         let docr = cx.document()?;
         let mut ev = super::anim_common::evaluator(docr, "capturing the Camera view");

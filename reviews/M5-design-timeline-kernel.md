@@ -385,3 +385,11 @@ the difference goes to the orchestrator before either changes (E-5).
   boundary value is refused only by its own member's schema, which the sweep asserts (every violation points at the
   varied member). Per numeric member the table counts the boundary values that reached the handler; the test fails on
   a numeric member of a callable command with none.
+- **Effect-parameter rows (E-40, correcting E-37's premise).** They exist today (a clipping effect's mask, the particle
+  effects' sprites, a skeleton's bones and skin, created with their element). A parameter row the setting hides (its
+  effect's own flag, else the flag for all; `timing_gesture::parameter_row_shown`) is left out of `timeline.rows.list`
+  and of the rows the interpreter hit-tests, so the window, which applies the depth-and-collapsed rule to the rows it is
+  given, draws exactly the rows hit. Parameter rows are leaves, so nothing else moves with them; their keys still count
+  in the effect's child markers, as a collapsed row's do. They stay readable through `element.list` and `element.get`.
+  `timeline.effectParameterRows.set` changes the view notice (`shell.timelineView`), on which the window reads its rows
+  again; its three menu forms are bound in C5.1b. Tests: `c51b_parameter_rows`.

@@ -555,13 +555,14 @@ fn run_checks(cx: &Cx, checks: &BTreeSet<&str>) -> Result<Vec<super::doc_io::Iss
     };
     let refs = super::doc_io::asset_refs(doc);
     if checks.contains("missingFonts") {
-        // 02 §3.7: a text run whose font is not installed keeps its name and is displayed with a fallback font.
+        // 02 §3.7: a text run whose font is not installed keeps its name and is displayed with a fallback font. A text run
+        // waits for the font list within the bound (ruling E-43).
         for d in doc.drawings() {
             for o in tt_vector::drawing::objects(d) {
                 let Some(n) = tt_vector::drawing::node_at(d, &o.pointer) else { continue };
                 let mut seen: Vec<&str> = Vec::new();
                 for r in n.runs().iter().flatten() {
-                    if seen.contains(&r.font.as_str()) || tt_vector::fonts::is_installed(&r.font) {
+                    if seen.contains(&r.font.as_str()) || crate::fonts_gate::read()?.is_installed(&r.font) {
                         continue;
                     }
                     seen.push(&r.font);

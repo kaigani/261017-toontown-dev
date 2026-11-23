@@ -168,7 +168,7 @@ fn check_width(w: f64, pointer: &str) -> Result<(), CommandError> {
 }
 
 /// The persisted text node JSON.
-fn node_json(id: &str, transform: [f64; 6], width: Option<f64>, c: &Content) -> Value {
+fn text_node_json(id: &str, transform: [f64; 6], width: Option<f64>, c: &Content) -> Value {
     let mut v = json!({
         "id": id, "type": "drawingNode", "rev": 0, "kind": "text", "transform": transform,
         "widthMode": if width.is_some() { "fixed" } else { "auto" },
@@ -180,8 +180,15 @@ fn node_json(id: &str, transform: [f64; 6], width: Option<f64>, c: &Content) -> 
     v
 }
 
-fn bounds_and_fonts(cx: &mut Cx, c: &Content, width: Option<f64>, transform: [f64; 6], object: &str) -> Bounds {
-    let l = text::layout(c, width);
+fn bounds_and_fonts(
+    cx: &mut Cx,
+    fonts: crate::fonts_gate::Read,
+    c: &Content,
+    width: Option<f64>,
+    transform: [f64; 6],
+    object: &str,
+) -> Bounds {
+    let l = fonts.layout(c, width);
     for f in &l.missing_fonts {
         cx.warn(
             "text.fontMissing",
@@ -265,6 +272,8 @@ pub(crate) struct TextResult {
     gui = "Drawing view: Text tool (M4 C4.2)",
 )]
 pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult, CommandError> {
+    // Text needs the font list: waited for within the bound before anything changes (ruling E-43).
+    let fonts = crate::fonts_gate::read()?;
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view);
     check_position(p.position, "/position")?;
@@ -288,7 +297,7 @@ pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult,
     }
     let id = cx.new_id(ObjectType::DrawingNode)?;
     let transform = [1.0, 0.0, 0.0, 1.0, p.position.x, p.position.y];
-    let node = node_json(id.as_str(), transform, p.width, &c);
+    let node = text_node_json(id.as_str(), transform, p.width, &c);
     if t.created {
         if let Some((_, first)) = changes.iter_mut().find(|(k, _)| *k == EntryKey::Drawing(t.id.clone()))
             && let Some(o) = first.first_mut()
@@ -301,7 +310,7 @@ pub(crate) fn draw_text_add(cx: &mut Cx, p: TextAddParams) -> Result<TextResult,
     }
     cx.patch_entries(changes)?;
     let object = format!("{}/{}", t.id.as_str(), id.as_str());
-    let bounds = bounds_and_fonts(cx, &c, p.width, transform, &object);
+    let bounds = bounds_and_fonts(cx, fonts, &c, p.width, transform, &object);
     let mut created_ids = vec![id.as_str().to_owned()];
     if t.created {
         created_ids.push(t.id.as_str().to_owned());
@@ -433,6 +442,8 @@ fn text_node(
     gui = "Drawing view: Text tool typing, box width and move (M4 C4.2)",
 )]
 pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult, CommandError> {
+    // Text needs the font list: waited for within the bound before anything changes (ruling E-43).
+    let fonts = crate::fonts_gate::read()?;
     // The pipeline converted view-space points (crate::addressing).
     let _ = (&p.space, &p.view);
     let content_edit = p.text.is_some() || p.insert.is_some() || p.delete.is_some();
@@ -496,7 +507,7 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
         }
         (Some(WidthModeParam::Fixed), None) => {
             if width.is_none() {
-                let l = text::layout(&c, None);
+                let l = fonts.layout(&c, None);
                 width = Some(l.width.max(1.0));
             }
         }
@@ -508,7 +519,7 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
         transform[4] = pos.x;
         transform[5] = pos.y;
     }
-    let node = node_json(n.id().as_str(), transform, width, &c);
+    let node = text_node_json(n.id().as_str(), transform, width, &c);
     let mut merged = tt_model::canonical::to_value(&n)?;
     // Keep the envelope (name, meta, ext) and replace the text fields.
     if let (Some(m), Some(src)) = (merged.as_object_mut(), node.as_object()) {
@@ -535,7 +546,7 @@ pub(crate) fn draw_text_set(cx: &mut Cx, p: TextSetParams) -> Result<TextResult,
         "Move Text Object"
     });
     let object = format!("{}/{}", d.id().as_str(), l.id);
-    let bounds = bounds_and_fonts(cx, &c, width, transform, &object);
+    let bounds = bounds_and_fonts(cx, fonts, &c, width, transform, &object);
     let changed = super::draw::Changed { modified_ids: vec![l.id.clone()], ..super::draw::Changed::default() };
     Ok(TextResult { drawing_id: d.id().as_str().to_owned(), text_id: l.id, bounds, changed, rev: committed_rev(cx)? })
 }
@@ -647,6 +658,8 @@ pub(crate) struct TextFormatResult {
     gui = "Text panel (M4 C4.2)",
 )]
 pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<TextFormatResult, CommandError> {
+    // Text needs the font list: waited for within the bound before anything changes (ruling E-43).
+    let fonts = crate::fonts_gate::read()?;
     let addr = Addr { drawing_id: p.drawing_id.as_deref(), element_id: p.element_id.as_deref(), frame: p.frame };
     let (doc, did, l, n) = text_node(cx, &p.text_id, addr)?;
     let d = drawing_in(&doc, &did)?;
@@ -713,7 +726,7 @@ pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<T
             let width = if *n.width_mode() == Some(WidthMode::Fixed) { *n.width() } else { None };
             let transform = n.transform().unwrap_or(tt_model::value::IDENTITY);
             let object = format!("{}/{}", d.id().as_str(), l.id);
-            let bounds = bounds_and_fonts(cx, &c, width, transform, &object);
+            let bounds = bounds_and_fonts(cx, fonts, &c, width, transform, &object);
             return Ok(TextFormatResult {
                 drawing_id: d.id().as_str().to_owned(),
                 text_id: l.id,
@@ -733,7 +746,7 @@ pub(crate) fn draw_text_format_set(cx: &mut Cx, p: TextFormatParams) -> Result<T
     let width = if *n.width_mode() == Some(WidthMode::Fixed) { *n.width() } else { None };
     let transform = n.transform().unwrap_or(tt_model::value::IDENTITY);
     let object = format!("{}/{}", d.id().as_str(), l.id);
-    let bounds = bounds_and_fonts(cx, &c, width, transform, &object);
+    let bounds = bounds_and_fonts(cx, fonts, &c, width, transform, &object);
     let changed = super::draw::Changed { modified_ids: vec![l.id.clone()], ..super::draw::Changed::default() };
     Ok(TextFormatResult {
         drawing_id: d.id().as_str().to_owned(),

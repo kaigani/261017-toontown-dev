@@ -2699,6 +2699,20 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Question (a spec A addition, D-57):** should `timeline.playbackRange.changed` carry `sceneId`, or be raised for the
   current scene only?
 
+## SI-215 — a command that needs the system fonts before they are read (found in M5 C5.1a CI; ruling E-43; interim)
+
+- **Sections:** 11 §10 (generic codes), 11 P5 (never block), 02 §3.7 lines 215-216 (a missing font displays with a
+  fallback and keeps its name), SI-020 (`command.timeout`), SI-111 and SI-120 (reasons on it),
+  `reviews/M5-design-font-scan.md`.
+- **Problem:** text layout needs the list of the machine's fonts, read once per process from the font folders. On a
+  slow disk the read can outlast a command's budget; a command that lays out text then waited without bound and was
+  cancelled by the watchdog with an answer that named no cause.
+- **Interim decision (ruling E-43):** a command that needs the font list waits for it at most 20 s, then answers
+  `command.timeout` with `details.reason: "fontsLoading"` and a hint to retry in a few seconds, before it changes
+  anything; a retry after the read succeeds. A command never lays out text with a partial list, and a command that
+  involves no text never waits. The window shows that the system fonts are being read on its status line.
+- **Question:** confirm, or define a dedicated code (for example `fonts.notReady`) in 11 §10.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
@@ -2723,5 +2737,5 @@ Ruling D-57 as above: none is built.
 | Proposed row (A's columns: id, kind, label, parameters, result, undo) | Why | Without it |
 |---|---|---|
 | `doc.state.get` result member `caughtPanics: int` | how many handler panics the engine contained since it started (ruling E-29): an agent or a test can tell that a call failed unexpectedly without reading stderr | stderr (`toontown: contained handler panic #n ...`), the host-only `shell.handlerPanicked` notice (window only), and `ExecutorHandle::caught_panics` for embedding code and tests |
-| `timeline.rows.list` row member `shownInTimeline: bool` | whether the Timeline shows the row once effect-parameter rows can be hidden (04 §2.9, §9.4: `timeline.effectParameterRows.set` hides them, and no query reads that setting). Ruling E-37 removes the built member: until M7 the window and the interpreter derive the rows shown from `depth` and `collapsed` by one rule (`timing_gesture::shown_rows`, `desktop/src/timeline/rows.ts`, the shared table `timeline-rows-cases.json`), so effect-parameter rows (a clipping effect's mask, a particle effect's sprites, a skeleton's bones and skin, created with their element) are shown and hit-tested whatever the setting; the setting is stored and reported by the view notice. The question returns with M7's effect elements and the deferred window binding | M7 decides how the setting reaches the window: this member, a read of the setting (also an addition), or `timeline.rows.list` leaving the hidden rows out |
+| `timeline.rows.list` row member `shownInTimeline: bool`, or a read of the effect-parameter setting | the window cannot read the effect-parameter setting (04 §2.9; `timeline.effectParameterRows.set` answers only what it was given). Ruling E-40: the rows the setting hides are left out of `timeline.rows.list` (and of the rows the interpreter hit-tests), so the window draws what it is given by the depth-and-collapsed rule and needs neither; `shownInTimeline` was removed (E-37, E-39) | without a read of the setting the window cannot show the menu's check marks from the kernel alone; it follows `shell.timelineView` (host-only), and an agent sees the setting only by the rows it hides |
 | `engine.degraded` \| event \| The engine stopped serving after an unexpected failure \| — \| `{message}` \| n/a | an MCP client learns of a degraded engine from an event rather than from its next call's `internal` (ruling E-29) | the host-only `shell.engineDegraded` notice (window only); an agent sees `internal` with reason `engineStopped` and the hint on its next call |

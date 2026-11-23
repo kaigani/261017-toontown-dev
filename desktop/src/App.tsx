@@ -20,6 +20,7 @@ import { useDialogs } from './shell/dialogsApi';
 import { MessageHost } from './shell/messages';
 import { useMessages } from './shell/messagesApi';
 import { StatusBar } from './shell/StatusBar';
+import { fontsNoticeLine } from './shell/refusals';
 import { MainToolbar, ToolPaletteRail } from './shell/Toolbars';
 import {
   useEngineMirror,
@@ -288,6 +289,11 @@ function Window() {
         if (e.name === 'shell.preferences')
           void openPreferences(typeof p['category'] === 'string' ? p['category'] : undefined);
         if (e.name === 'shell.help') void openHelp(typeof p['topic'] === 'string' ? p['topic'] : undefined);
+        // A call waits for the system font list (ruling E-43): the status line says so (the one notice path, D-87).
+        if (e.name === 'shell.fontsLoading') {
+          const line = fontsNoticeLine(e.payload);
+          if (line !== null) messages.status(line, 'info');
+        }
         if (e.name === 'ui.message.shown' && p['source'] === 'agent') {
           // Agent-originated messages are non-modal (01 §12.1 rule 6).
           messages.notify({

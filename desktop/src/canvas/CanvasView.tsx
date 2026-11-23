@@ -634,6 +634,13 @@ export function CanvasView({
           if (typeof ended === 'object' && ended !== null)
             messagesRef.current?.refused(ended, 'draw.text.set');
         }
+        // The system font list was read (ruling E-43): the text boxes and bounds the state reads left out until then.
+        if (
+          event.name === 'shell.fontsLoading' &&
+          (event.payload as Record<string, unknown> | null)?.['waiting'] === false
+        ) {
+          model?.markDirty();
+        }
         if (event.name === 'colour.current.changed') {
           const c = (event.payload as Record<string, unknown> | null)?.['colourId'];
           if (typeof c === 'string') currentColour = c;

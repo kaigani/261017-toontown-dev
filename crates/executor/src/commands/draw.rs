@@ -430,20 +430,25 @@ pub(crate) fn draw_drawing_get(cx: &mut Cx, p: DrawingGetParams) -> Result<Drawi
             }
             let found = locate_all(&d, &objects, "/ids")?;
             let wanted: Vec<String> = found.into_iter().map(|l| l.id).collect();
-            let mut list = vd::select_ids(vd::flat_json(&d, inc), &wanted);
+            let mut list = vd::select_ids(crate::fonts_gate::flat_json(&d, inc)?, &wanted);
             list.extend(zone_objects);
             list
         }
-        (None, true) => vd::flat_json(&d, inc),
-        (None, false) => d.nodes().iter().map(|n| vd::node_json(n, inc)).collect(),
+        (None, true) => crate::fonts_gate::flat_json(&d, inc)?,
+        (None, false) => {
+            d.nodes().iter().map(|n| crate::fonts_gate::node_json(n, inc)).collect::<Result<Vec<_>, _>>()?
+        }
     };
     if with_zones {
         let only_objects: BTreeMap<String, crate::planar::LayerZones> = zones;
         crate::planar::annotate(&mut list, &only_objects);
     }
     let nodes = Value::Array(list);
-    let bounds =
-        if inc.bounds { vd::drawing_bounds(&d, false).map_or(Value::Null, |r| r.to_json()) } else { Value::Null };
+    let bounds = if inc.bounds {
+        crate::fonts_gate::drawing_bounds(&d, false)?.map_or(Value::Null, |r| r.to_json())
+    } else {
+        Value::Null
+    };
     let out = json!({
         "drawingId": d.id().as_str(),
         "elementId": element.as_ref().map(Id::as_str),

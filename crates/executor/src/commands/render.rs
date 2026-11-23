@@ -580,6 +580,7 @@ pub(crate) fn render_frame_run(cx: &mut Cx, p: FrameParams) -> Result<RenderResu
         height,
         only: only.as_ref(),
         overrides: &overrides,
+        never_wait: false,
     };
     let blobs = cx.project().ok().map(|pr| &pr.store.blobs);
     let rendered = render_frame(&doc, blobs, &cx.planar_cache(), &req, bg, &|| false)?;
@@ -808,7 +809,8 @@ fn drawing_space(cx: &mut Cx, p: &FrameParams, doc: &Document, frame: u32) -> Re
         &cx.resolve_as(r, ObjectType::Drawing).map_err(|_| invalid("/drawingId", format!("no drawing `{r}`")))?,
     )?;
     let d = doc.drawing(&id).ok_or_else(|| invalid("/drawingId", format!("no drawing `{r}`")))?;
-    let b = tt_vector::drawing::drawing_bounds(d, false).ok_or_else(|| {
+    // A drawing with text waits for the font list within the bound (ruling E-43).
+    let b = crate::fonts_gate::drawing_bounds(d, false)?.ok_or_else(|| {
         err("render.emptyDrawing", "the drawing has no visible geometry", json!({ "drawingId": id.as_str() }))
     })?;
     if !(p.scale.is_finite() && (0.05..=8.0).contains(&p.scale)) {
@@ -1252,6 +1254,7 @@ impl RangeJob {
                 height: self.height,
                 only: self.only.as_ref(),
                 overrides: &self.overrides,
+                never_wait: false,
             };
             // A frame stopped by this job's cancellation is the job's cancellation, not a watchdog timeout (C33-R3-01).
             let (pixels, frame_warnings) = if self.xsheet {

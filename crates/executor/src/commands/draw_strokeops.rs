@@ -450,13 +450,15 @@ pub(crate) fn draw_break_apart_apply(cx: &mut Cx, p: BreakApartParams) -> Result
         let Some(content) = vd::text_content(n) else { continue };
         let fixed = (n.width_mode().as_ref().map(|w| format!("{w:?}").to_lowercase()).as_deref() == Some("fixed"))
             .then(|| n.width().unwrap_or(0.0));
-        let shapes = tt_vector::ops::glyphs::shapes(&content, fixed);
+        // Glyphs need the font list: the first text waits for it within the bound, before any id is taken (ruling E-43).
+        let fonts = crate::fonts_gate::read()?;
+        let shapes = fonts.shapes(&content, fixed);
         let visible = content.chars.iter().filter(|c| !c.is_whitespace()).count();
         if shapes.len() < visible {
             return Err(err(
                 "text.glyphsUnavailable",
                 "the text's font has no outlines for every character on this machine",
-                json!({ "id": l.id, "missingFonts": vd::text_layout(n).map(|l| l.missing_fonts).unwrap_or_default() }),
+                json!({ "id": l.id, "missingFonts": fonts.text_layout(n).map(|l| l.missing_fonts).unwrap_or_default() }),
             ));
         }
         let m = n.transform().map_or(tt_vector::geom::Affine::IDENTITY, tt_vector::geom::Affine);

@@ -97,8 +97,11 @@ impl TextBox {
     }
 }
 
-/// The text objects of `d`, back to front.
+/// The text objects of `d`, back to front. They need the font list and never wait for it (ruling E-43): none until it
+/// is read. The Text tool's gesture and typing wait for it first ([`commands`], [`input`]); the window's state reads
+/// show no boxes until it is read and read again then.
 pub(crate) fn boxes(d: &Drawing) -> Vec<TextBox> {
+    let Some(fonts) = crate::fonts_gate::now() else { return Vec::new() };
     vd::objects(d)
         .into_iter()
         .filter(|o| o.kind == ObjectKind::Text)
@@ -108,7 +111,7 @@ pub(crate) fn boxes(d: &Drawing) -> Vec<TextBox> {
             let width =
                 if *n.width_mode() == Some(tt_model::entities::drawing::WidthMode::Fixed) { *n.width() } else { None };
             let t = n.transform().unwrap_or(tt_model::value::IDENTITY);
-            let l = text::layout(&content, width);
+            let l = fonts.layout(&content, width);
             Some(TextBox { id: o.id, transform: Affine(t), width, content, size: (l.width, l.height) })
         })
         .collect()
@@ -232,6 +235,8 @@ fn pt(p: Point) -> Value {
 /// # Errors
 /// The view's refusal; `arg.invalid` for a gesture without samples.
 pub(crate) fn commands(cx: &Cx, g: &Gesture) -> Result<Vec<(String, Value)>, CommandError> {
+    // The Text tool lays out text: it waits for the font list within the bound before anything changes (ruling E-43).
+    crate::fonts_gate::read()?;
     let Some(st) = g.strokes.first() else {
         return Err(CommandError::with_details(
             "arg.invalid",
@@ -357,6 +362,8 @@ fn place_after(core: &mut Core, origin: &Origin, g: &Gesture, answered: &[(Strin
     let Some(st) = g.strokes.first() else { return };
     let (Some(p0), Some(pn)) = (st.samples.first().copied(), st.samples.last().copied()) else { return };
     let placed = core.with_lent_session(|cx| {
+        // After the Text tool's gesture, which waited for the font list ([`commands`]).
+        let fonts = crate::fonts_gate::now()?;
         let d = current(cx)?;
         let all = boxes(&d);
         let view = view_of(cx, g).ok()?;
@@ -370,8 +377,8 @@ fn place_after(core: &mut Core, origin: &Origin, g: &Gesture, answered: &[(Strin
         {
             {
                 let b = all.iter().find(|b| b.id == id)?;
-                let a = text::caret_at(&b.content, b.width, b.local(P::new(p0.d.x, p0.d.y)));
-                let c = text::caret_at(&b.content, b.width, b.local(P::new(pn.d.x, pn.d.y)));
+                let a = fonts.caret_at(&b.content, b.width, b.local(P::new(p0.d.x, p0.d.y)));
+                let c = fonts.caret_at(&b.content, b.width, b.local(P::new(pn.d.x, pn.d.y)));
                 let (a, c) = if g.double_click { text::word_at(&b.content, a) } else { (a, c) };
                 Some((d.id().as_str().to_owned(), id, a, c))
             }
@@ -605,6 +612,8 @@ pub(crate) fn input(
     i: Input,
 ) -> Result<Vec<(String, Value, Envelope)>, CommandError> {
     session_of(core, origin)?;
+    // Typing lays out text: it waits for the font list within the bound before anything changes (ruling E-43).
+    crate::fonts_gate::read()?;
     // The indices are valid for the text as it is now, whatever changed it since the last call (C44B-R1S-02).
     reconcile(core);
     let s = session_of(core, origin)?;
@@ -847,12 +856,14 @@ fn key(core: &mut Core, origin: &Origin, s: &TextEdit, k: &str, out: &mut Vec<(S
         "Up" | "Down" | "Home" | "End" => {
             let geo = core.with_lent_session(|cx| content_of(cx, s)).flatten();
             let Some((bx, _)) = geo else { return };
-            let goal = s.goal_x.map(f64::from_bits).unwrap_or_else(|| text::caret_x(&bx.content, bx.width, s.caret));
+            // Typing waited for the font list ([`input`]).
+            let Some(fonts) = crate::fonts_gate::now() else { return };
+            let goal = s.goal_x.map(f64::from_bits).unwrap_or_else(|| fonts.caret_x(&bx.content, bx.width, s.caret));
             let c = match base {
-                "Up" => text::line_move(&bx.content, bx.width, s.caret, goal, -1),
-                "Down" => text::line_move(&bx.content, bx.width, s.caret, goal, 1),
+                "Up" => fonts.line_move(&bx.content, bx.width, s.caret, goal, -1),
+                "Down" => fonts.line_move(&bx.content, bx.width, s.caret, goal, 1),
                 _ => {
-                    let stops = text::carets(&bx.content, bx.width);
+                    let stops = fonts.carets(&bx.content, bx.width);
                     let line = stops.iter().find(|c| c.index == s.caret).map_or(0, |c| c.line);
                     let on: Vec<usize> = stops.iter().filter(|c| c.line == line).map(|c| c.index).collect();
                     if base == "Home" { on.first().copied().unwrap_or(0) } else { on.last().copied().unwrap_or(n) }
@@ -983,6 +994,8 @@ pub(crate) fn scene_text(cx: &Cx) -> (Option<crate::canvas::SceneTextEdit>, Opti
         return (None, None);
     }
     let Some(d) = current(cx) else { return (None, None) };
+    // The window's state never waits for the font list (ruling E-43): no boxes until it is read.
+    let Some(fonts) = crate::fonts_gate::now() else { return (None, None) };
     let all = boxes(&d);
     let list: Vec<crate::canvas::SceneTextBox> = all
         .iter()
@@ -990,7 +1003,7 @@ pub(crate) fn scene_text(cx: &Cx) -> (Option<crate::canvas::SceneTextEdit>, Opti
         .collect();
     let edit = cx.app().text_edit.as_ref().filter(|s| s.drawing == d.id().as_str()).and_then(|s| {
         let b = all.iter().find(|b| b.id == s.text)?;
-        let stops = text::carets(&b.content, b.width);
+        let stops = fonts.carets(&b.content, b.width);
         let at = |i: usize| stops.iter().find(|c| c.index == i).copied();
         let k = at(s.caret)?;
         let caret = [b.transform.apply(P::new(k.x, k.top)), b.transform.apply(P::new(k.x, k.bottom))];

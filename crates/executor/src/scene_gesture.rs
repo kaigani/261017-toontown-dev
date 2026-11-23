@@ -74,6 +74,7 @@ fn render_list(cx: &Cx, chain: &Chain) -> Result<RenderList, CommandError> {
         height: chain.height,
         only: None,
         overrides: &overrides,
+        never_wait: false,
     };
     let mut ev = evaluator(doc, "picking in the Camera view");
     render_list::build(doc, &req, &mut ev)

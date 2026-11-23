@@ -32,8 +32,10 @@ and keeps its name). Its callers:
 
 **A frame without visible text still waits** when the scene holds a text node anywhere in a displayed drawing element:
 the render list computes `drawing_bounds` for every displayed drawing element **before** it decides the element's
-verdict (hidden, excluded, out of frame), because `inspect.frame.describe` (detail `full`) reports the bounds of hidden
-entries too (`inspect.rs:265`). That is what CI hit: the sample fixture's text node "Caption" sits in Bob's drawing;
+verdict (hidden, excluded, out of frame). (Corrected while building E-43: no reader uses the bounds of an entry that
+cannot be drawn. `inspect.frame.describe` reports `drawingBounds` for drawn entries only and lists the others in
+`omitted` without bounds; the hit test and the scene gestures read drawn and out-of-frame entries only. So (b) needs no
+lazy computation for the full detail; see §5.) That is what CI hit: the sample fixture's text node "Caption" sits in Bob's drawing;
 `c33_bitmap` hides Bob, yet its first `render.frame.run` and `inspect.hitTest` blocked. Reproduced locally by holding
 the scan 70 s (both tests fail with `command.timeout`, exactly as on CI).
 
@@ -93,3 +95,31 @@ note's table only once the change is in a green run.
 2. The reason's name (`fontsLoading`) on `command.timeout`, recorded as an SI beside SI-111 and SI-120?
 3. Which checkpoint: C5.1b (it touches the render list the Timeline's thumbnails and the views use), or a separate fix
    at C5.1b's handoff?
+
+## 5. As built (ruling E-43)
+
+- **One gate** (`crates/executor/src/fonts_gate.rs`) between the engine and the font list. A path that involves no text
+  never waits (`drawing_has_text`, `node_has_text`); one that does waits at most `tt_vector::fonts::WAIT_BOUND` (20 s,
+  `ready_within`) and answers `command.timeout` with `details.reason: "fontsLoading"`, `details.boundMs` and the hint,
+  before anything changes. Text layout, carets, glyphs and the installed-font check are methods of a `Read` proof that
+  only the waiting `read()` or the non-waiting `now()` hands out, so the compiler refuses a layout without one; the
+  bounds helpers wait only for a drawing or node with text. A unit test
+  (`fonts_gate::tests::no_product_file_reads_the_font_list_past_the_gate`) fails on any product file calling the layout,
+  bounds, glyph or installed-font functions directly (it found 38 calls in 15 files, all now behind the gate).
+- **Paths that must never wait** use `now()` and skip text until the list is read: the window's state reads (the Camera
+  view's render list, `never_wait`; the Drawing view's selection geometry, text boxes and tool boxes) and the document
+  thread's housekeeping after a call (the Text tool's caret placement and keys, which run after its gesture or typing
+  waited). Prechecks never wait (they also feed the enablement the window reads): while the list is not read they answer
+  the same refusal, outside the precheck's memo. When the list is read the window is told (`shell.fontsLoading
+  {waiting: false}`) and reads its views again.
+- **(b):** the render list computes an entry's bounds for every entry once the list is read (so every answer is the one
+  before the change, `c51b_render_identity`), and before that only for an entry that may be drawn (waiting within the
+  bound, or unknown in a state read), never for one that cannot be drawn.
+- **The window:** `shell.fontsLoading {waiting}` (host-only) puts "Reading the system fonts..." on the status line while a
+  call waits, and a `fontsLoading` refusal names the command and says nothing was changed (`desktop/src/shell/refusals.ts`,
+  the D-87 path).
+- **Measured:** the scan writes its duration to stderr (`toontown: system fonts read in N ms (F faces)`), which is the
+  application log (the host has no other log). On this workstation, warm: 14 ms, 169 faces.
+- **Tests:** `c51b_font_scan` (the hold; one case per entry of §1.2, 33 rows: waits and answers `fontsLoading`, or does
+  not wait; the window's state reads do not wait; retries succeed; the notices), `c51b_render_identity`, the gate's static
+  test. The hold, the test bound and the eager switch are under `tt-vector/test-hooks` only (release-features gate).

@@ -36,10 +36,10 @@ pub(crate) fn perspective_box(cx: &Cx, d: &Drawing) -> Option<Rect> {
     crate::commands::draw_transform::envelope_box(cx, d)
 }
 
-/// Reposition All's box: the current drawing's bounds, invisible strokes included (SI-189); `None` when it is empty.
-#[must_use]
-pub(crate) fn reposition_box(d: &Drawing) -> Option<Rect> {
-    tt_vector::drawing::drawing_bounds(d, true)
+/// Reposition All's box: the current drawing's bounds, invisible strokes included (SI-189); `None` when it is empty. A
+/// drawing with text waits for the font list within the bound (ruling E-43).
+pub(crate) fn reposition_box(d: &Drawing) -> Result<Option<Rect>, CommandError> {
+    crate::fonts_gate::drawing_bounds(d, true)
 }
 
 /// The scene answer's `toolBox` (design note 4 §2): the active tool's box and whether its command is refused now
@@ -51,7 +51,8 @@ pub(crate) fn scene_tool_box(cx: &Cx) -> Option<crate::canvas::SceneToolBox> {
         PERSPECTIVE => (perspective_box(cx, &d)?, *d.locked()),
         REPOSITION => {
             let refused = crate::commands::draw_transform::precheck_reposition_all(cx, &json!({})).is_err();
-            (reposition_box(&d)?, refused)
+            // The scene answer never waits for the font list (ruling E-43): no box until it is read.
+            (crate::fonts_gate::drawing_bounds_now(&d, true).flatten()?, refused)
         }
         _ => return None,
     };
@@ -167,7 +168,11 @@ pub(crate) fn reposition_all(
     }
     let delta = Point { x: pn.d.x - p0.d.x, y: pn.d.y - p0.d.y };
     let offset = || Ok(Some(("draw.repositionAll.apply".into(), json!({ "translate": pt(delta) }))));
-    let Some(b) = current(cx).and_then(|d| reposition_box(&d)) else { return offset() };
+    let b = match current(cx) {
+        Some(d) => reposition_box(&d)?,
+        None => None,
+    };
+    let Some(b) = b else { return offset() };
     let view = view_of(cx, g)?;
     let Some(h) = crate::gesture::handle_at(&view, &b, p0, true) else { return offset() };
     if st.mods.alternate {

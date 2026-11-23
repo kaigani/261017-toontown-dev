@@ -675,8 +675,14 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
     let mut parent_of: BTreeMap<Id, Option<Id>> = BTreeMap::new();
     let mut keyed: BTreeMap<Id, Vec<u32>> = BTreeMap::new();
     let mut rows = Vec::with_capacity(placed.len());
+    // Ruling E-40: an effect-parameter row the setting hides is left out (it stays readable through `element.list` and
+    // `element.get`); its keys still count in its effect's child markers, as a collapsed row's do.
+    let (param_rows, param_hidden) =
+        (&cx.session().timeline.parameter_rows, cx.session().timeline.parameter_rows_hidden);
     for q in &placed {
         let e = element(&doc, &q.id)?;
+        let listed =
+            crate::timing_gesture::parameter_row_shown(param_rows, param_hidden, *e.element_type(), q.parent.as_ref());
         let parent_hidden = q.parent.as_ref().is_some_and(|p| hidden.get(p).copied().unwrap_or(false));
         hidden.insert(q.id.clone(), parent_hidden || !*e.visible_in_scene());
         parent_of.insert(q.id.clone(), q.parent.clone());
@@ -704,6 +710,9 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
                 segment_after: if *constant { "constant" } else { "interpolated" }.to_owned(),
             })
             .collect();
+        if !listed {
+            continue;
+        }
         rows.push(Row {
             element_id: q.id.as_str().to_owned(),
             name: e.name().clone(),

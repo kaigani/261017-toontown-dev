@@ -124,6 +124,9 @@ pub(crate) struct Request<'a> {
     pub only: Option<&'a BTreeSet<Id>>,
     /// Render-time visibility overrides (11 §7.5 `include`/`exclude`); never written to the document.
     pub overrides: &'a Overrides,
+    /// Never wait for the system font list (the window's state reads; ruling E-43): while it is not read, a drawing with
+    /// text that would be drawn has unknown bounds (verdict `empty`) until the window reads again.
+    pub never_wait: bool,
 }
 
 /// Render-time visibility overrides (11 §7.5; C33-R1-05): `exclude` leaves out the listed elements and their
@@ -239,6 +242,28 @@ pub(crate) fn map_rect(m: &Affine, r: &Rect) -> Rect {
     c.iter().skip(1).fold(Rect::of(m.apply(c[0])), |acc, p| acc.with(m.apply(*p)))
 }
 
+/// An entry's bounds and extent (see [`build`]).
+fn entry_bounds(
+    d: Option<&tt_model::entities::drawing::Drawing>,
+    may_draw: bool,
+    never_wait: bool,
+) -> Result<(Option<Rect>, Option<Rect>), CommandError> {
+    let Some(d) = d else { return Ok((None, None)) };
+    // The pre-(b) render list, for the before-and-after test (dev-only; always off in a product).
+    if tt_vector::fonts::eager_text_bounds() {
+        return Ok((crate::fonts_gate::drawing_bounds(d, false)?, crate::fonts_gate::drawing_bounds(d, true)?));
+    }
+    if let (Some(b), Some(e)) =
+        (crate::fonts_gate::drawing_bounds_now(d, false), crate::fonts_gate::drawing_bounds_now(d, true))
+    {
+        return Ok((b, e));
+    }
+    if !may_draw || never_wait {
+        return Ok((None, None));
+    }
+    Ok((crate::fonts_gate::drawing_bounds(d, false)?, crate::fonts_gate::drawing_bounds(d, true)?))
+}
+
 /// Builds the render list of a frame.
 ///
 /// # Errors
@@ -290,14 +315,20 @@ pub(crate) fn build(
         let world = ev.world(id, f).map_err(eval_error)?;
         let drawing = shown_drawing(doc, e, req.frame, length);
         let shown = drawing.as_ref().and_then(|d| doc.drawing(d));
-        let bounds = shown.and_then(|d| tt_vector::drawing::drawing_bounds(d, false));
-        let extent = shown.and_then(|d| tt_vector::drawing::drawing_bounds(d, true));
+        let included = req.overrides.include.contains(id);
+        // Ruling E-43 (b): a text node's bounds need the font list. They are computed for every entry once it is read
+        // (the list is then what it always was); before that only for an entry that may be drawn, waiting for the list
+        // within the bound, and never for one that cannot be drawn, whose bounds no reader uses.
+        let may_draw = !excluded.contains(id)
+            && (included || !hidden.contains(id))
+            && (included || kind != ElementType::Annotation)
+            && drawing.is_some();
+        let (bounds, extent) = entry_bounds(shown, may_draw, req.never_wait)?;
         let to_pixel = plane_to_pixel(&view, &world);
         let pixel_box = match (&to_pixel, &bounds) {
             (Some(m), Some(b)) => Some(map_rect(m, b)),
             _ => None,
         };
-        let included = req.overrides.include.contains(id);
         let verdict = if excluded.contains(id) {
             Verdict::Excluded
         } else if !included && hidden.contains(id) {

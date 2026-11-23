@@ -2,8 +2,19 @@
 // (a pointer gesture, a key, a native menu item, a context-menu item, a Tool options or Properties control). A refusal
 // by the interactive-target rule (`drawing.locked`, `element.locked`, `element.hidden`) or a disabled command
 // (`command.disabled`) puts the command's label and the refusal's reason on the status line; no message box (01 §8.4).
-// A handler panic the engine contained (ruling E-29) is reported the same way.
+// A handler panic the engine contained (ruling E-29) is reported the same way, and so is a call that waited for the
+// system fonts past its bound (ruling E-43, SI-215), with the line shown while a call waits for them.
 import { commandLabel } from './commandLabel';
+
+/** The status line while a call waits for the system font list (`shell.fontsLoading {waiting: true}`; ruling E-43). */
+export const FONTS_READING_LINE = 'Reading the system fonts...';
+
+/** The status line for the `shell.fontsLoading` notice, or null when nothing waits (the list was read). */
+export function fontsNoticeLine(payload: unknown): string | null {
+  const waiting =
+    typeof payload === 'object' && payload !== null && (payload as Record<string, unknown>)['waiting'];
+  return waiting === true ? FONTS_READING_LINE : null;
+}
 
 /** The refusals the status line reports. */
 export const REFUSALS: ReadonlySet<string> = new Set([
@@ -33,6 +44,11 @@ export function refusalLine(error: Refusal | undefined, commandId: string): stri
   if (error?.code === 'internal' && d['reason'] === 'handlerPanicked') {
     const named = typeof d['commandId'] === 'string' ? d['commandId'] : commandId;
     return `${commandLabel(named)}: failed unexpectedly; nothing was changed`;
+  }
+  // The system fonts were still being read past the call's bound (ruling E-43): nothing was changed; a retry works.
+  if (error?.code === 'command.timeout' && d['reason'] === 'fontsLoading') {
+    const named = typeof d['commandId'] === 'string' ? d['commandId'] : commandId;
+    return `${commandLabel(named)}: the system fonts are still being read; nothing was changed, try again in a moment`;
   }
   if (!error?.code || !REFUSALS.has(error.code)) return null;
   const named = [d['refusedCommandId'], d['commandId']].find((v): v is string => typeof v === 'string');

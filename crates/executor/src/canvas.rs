@@ -720,6 +720,7 @@ pub(crate) fn camera_scene(cx: &crate::cx::Cx, view_id: &str) -> Result<Scene, C
         height: chain.height,
         only: None,
         overrides: &overrides,
+        never_wait: true,
     };
     let mut ev = crate::commands::anim_common::evaluator(doc, "composing the Camera view");
     let list = render_list::build(doc, &req, &mut ev)?;
@@ -843,6 +844,11 @@ pub(crate) fn selection(cx: &crate::cx::Cx) -> Result<Option<SceneSelection>, Co
     let Ok(doc) = cx.document() else { return Ok(None) };
     let Some(id) = cx.app().current_drawing(doc) else { return Ok(None) };
     let Some(d) = doc.drawing(&id) else { return Ok(None) };
+    // A state read never waits for the font list (ruling E-43): no selection geometry of a drawing with text until it
+    // is read (the window reads again then).
+    if crate::fonts_gate::drawing_has_text(d) && crate::fonts_gate::now().is_none() {
+        return Ok(None);
+    }
     let g = crate::commands::draw_select::selection_geometry(cx, d)?;
     Ok(g.map(|g| SceneSelection {
         pivot: g.bounds.map(|b| [(b[0] + b[2]) / 2.0, (b[1] + b[3]) / 2.0]),

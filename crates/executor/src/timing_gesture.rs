@@ -87,6 +87,9 @@ pub struct State {
     /// The current scene's effective playback range.
     pub range: (u32, u32),
     pub range_free: bool,
+    /// The effect-parameter setting (ruling E-40): per effect element, and the default for every effect.
+    pub parameter_rows: BTreeMap<String, bool>,
+    pub parameter_rows_hidden: bool,
     /// The drag-and-drop option set in effect (04's names): a cell drag carries the set resolved at its press, inline
     /// in its `cell.range.move` (ruling E-32).
     pub drag_options: serde_json::Map<String, Value>,
@@ -125,6 +128,8 @@ impl State {
             single_cell: single,
             range,
             range_free,
+            parameter_rows: s.timeline.parameter_rows.clone(),
+            parameter_rows_hidden: s.timeline.parameter_rows_hidden,
             drag_options: crate::commands::transfer_options::cell_base_in(
                 s,
                 crate::commands::transfer_options::Operation::DragDrop,
@@ -273,12 +278,29 @@ pub(crate) fn shown_rows(rows: impl IntoIterator<Item = (usize, bool)>) -> Vec<u
     out
 }
 
-/// The Timeline's visible rows in order: Timeline order, by the rule of [`shown_rows`].
-pub(crate) fn visible_rows(doc: &Document, scene: &Id) -> Vec<VisibleRow> {
+/// Whether the effect-parameter setting shows an effect-parameter row (ruling E-40; 04 line 74, §2.9): its effect's own
+/// setting, else the setting for every effect. Other rows are never hidden by it. Parameter rows are leaves (nothing is
+/// parented under them), so leaving one out hides exactly that row.
+pub(crate) fn parameter_row_shown(
+    rows: &BTreeMap<String, bool>,
+    hidden_by_default: bool,
+    ty: ElementType,
+    parent: Option<&Id>,
+) -> bool {
+    ty != ElementType::EffectParameter
+        || parent.and_then(|p| rows.get(p.as_str()).copied()).unwrap_or(!hidden_by_default)
+}
+
+/// The Timeline's visible rows in order: the rows `timeline.rows.list` lists (without the effect-parameter rows the
+/// setting hides, ruling E-40), by the rule of [`shown_rows`].
+pub(crate) fn visible_rows(doc: &Document, scene: &Id, state: &State) -> Vec<VisibleRow> {
     let Some(sc) = doc.scene(scene) else { return Vec::new() };
     let rows: Vec<(h::Placed, ElementType, bool)> = h::placed(sc.tree())
         .into_iter()
         .filter_map(|q| doc.element(&q.id).map(|e| (*e.element_type(), *e.collapsed())).map(|(t, c)| (q, t, c)))
+        .filter(|(q, t, _)| {
+            parameter_row_shown(&state.parameter_rows, state.parameter_rows_hidden, *t, q.parent.as_ref())
+        })
         .collect();
     let shown = shown_rows(rows.iter().map(|(q, _, c)| (q.depth, *c)));
     shown
@@ -392,14 +414,14 @@ pub fn classify(doc: &Document, state: &State, g: &GestureLayout, s: &Sample) ->
             Target::Ruler { frame: frame_at(l, g, s.x) }
         }
         Surface::Layers => {
-            let rows = visible_rows(doc, scene);
+            let rows = visible_rows(doc, scene, state);
             match row_at(l, g, s.y, rows.len()) {
                 Some(r) => Target::Row { row: r, element: rows[r].id.as_str().to_owned() },
                 None => Target::Nothing,
             }
         }
         Surface::Tracks => {
-            let rows = visible_rows(doc, scene);
+            let rows = visible_rows(doc, scene, state);
             let Some(r) = row_at(l, g, s.y, rows.len()) else { return Target::Nothing };
             let row = &rows[r];
             let element = row.id.as_str().to_owned();
@@ -445,7 +467,7 @@ pub fn plan(doc: &Document, state: &State, g: &GestureLayout, samples: &[Sample]
     let dragged = travel(samples) >= f64::from(l.drag_threshold);
     let len = length_of(doc, scene);
     let target = classify(doc, state, g, first);
-    let rows = visible_rows(doc, scene);
+    let rows = visible_rows(doc, scene, state);
     let delta = i64::from(frame_at(l, g, last.x)) - i64::from(frame_at(l, g, first.x));
     match target {
         Target::Nothing => Plan::Nothing,
