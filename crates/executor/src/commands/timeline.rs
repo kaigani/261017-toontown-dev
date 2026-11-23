@@ -66,11 +66,17 @@ pub(crate) enum RangeMode {
     Free,
 }
 
+/// A scene's playback range mode: the mode `effective_range` reports, without the scene length (the Play menu's
+/// check marks read it in every availability pass, so it must not scale with the scene).
+pub(crate) fn range_mode(ranges: &BTreeMap<String, PlaybackRange>, scene: &Id) -> RangeMode {
+    if ranges.get(scene.as_str()).is_some_and(|r| r.free) { RangeMode::Free } else { RangeMode::Auto }
+}
+
 /// A scene's effective playback range: `(mode, start, end)`, the free values clamped to the present scene length.
 pub(crate) fn effective_range(ranges: &BTreeMap<String, PlaybackRange>, scene: &Id, len: u32) -> (RangeMode, u32, u32) {
     let len = len.max(1);
-    match ranges.get(scene.as_str()) {
-        Some(r) if r.free => {
+    match (range_mode(ranges, scene), ranges.get(scene.as_str())) {
+        (RangeMode::Free, Some(r)) => {
             let end = r.end.clamp(1, len);
             (RangeMode::Free, r.start.clamp(1, end), end)
         }

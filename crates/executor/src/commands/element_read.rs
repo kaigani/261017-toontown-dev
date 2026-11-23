@@ -620,9 +620,11 @@ pub(crate) struct HierarchySelectParams {
 /// Element menu's items are disabled exactly when they would refuse (rulings O-10, D-79: prechecks equal handlers).
 fn hierarchy_targets(doc: &tt_model::document::Document, id: &Id, relation: Relation) -> Result<Vec<Id>, CommandError> {
     let sc = scene_of(doc, id)?;
-    let placed = h::placed(sc.tree());
-    let q = placed.iter().find(|q| &q.id == id).ok_or_else(|| internal("element not in the tree"))?;
-    let level = h::level_ids(sc.tree(), q.parent.as_ref());
+    // The element's own path, not a copy of the whole tree: the precheck runs in every availability pass (C41 budgets).
+    let path = h::path(sc.tree(), id).ok_or_else(|| internal("element not in the tree"))?;
+    let at = |k: usize| path.get(k).and_then(|(level, i)| level.get(*i));
+    let (level, index) = path.last().copied().ok_or_else(|| internal("element not in the tree"))?;
+    let node = level.get(index).ok_or_else(|| internal("element not in the tree"))?;
     let none = || {
         err(
             tt_registry::codes::COMMAND_DISABLED,
@@ -639,31 +641,27 @@ fn hierarchy_targets(doc: &tt_model::document::Document, id: &Id, relation: Rela
             json!({ "elementId": id.as_str(), "reason": "noTarget" }),
         )
     };
+    let id_of = |n: &tt_model::entities::scene::TreeNode| n.id.clone();
     Ok(match relation {
-        Relation::Parent => vec![q.parent.clone().ok_or_else(none)?],
+        Relation::Parent => vec![path.len().checked_sub(2).and_then(at).map(id_of).ok_or_else(none)?],
         Relation::Children => {
-            let kids = h::descendants(sc.tree(), id);
-            if kids.is_empty() {
+            if node.children.is_empty() {
                 return Err(none());
             }
-            std::iter::once(id.clone()).chain(kids).collect()
+            std::iter::once(id.clone()).chain(h::placed(&node.children).into_iter().map(|p| p.id)).collect()
         }
-        Relation::FirstChild => vec![h::level_ids(sc.tree(), Some(id)).first().cloned().ok_or_else(none)?],
-        Relation::PreviousSibling => vec![q.index.checked_sub(1).and_then(|i| level.get(i)).cloned().ok_or_else(none)?],
-        Relation::NextSibling => vec![level.get(q.index + 1).cloned().ok_or_else(none)?],
-        Relation::SkeletonRoot => {
-            let ps = h::parents(sc.tree());
-            let mut cur = Some(id.clone());
-            let mut root = None;
-            while let Some(c) = cur {
-                if doc.element(&c).is_some_and(|e| *e.element_type() == ElementType::Skeleton) {
-                    root = Some(c.clone());
-                    break;
-                }
-                cur = ps.get(&c).cloned().flatten();
-            }
-            vec![root.ok_or_else(none)?]
-        }
+        Relation::FirstChild => vec![node.children.first().map(id_of).ok_or_else(none)?],
+        Relation::PreviousSibling => vec![index.checked_sub(1).and_then(|i| level.get(i)).map(id_of).ok_or_else(none)?],
+        Relation::NextSibling => vec![level.get(index + 1).map(id_of).ok_or_else(none)?],
+        // The nearest skeleton from the element up (the element itself first).
+        Relation::SkeletonRoot => vec![
+            (0..path.len())
+                .rev()
+                .filter_map(at)
+                .find(|n| doc.element(&n.id).is_some_and(|e| *e.element_type() == ElementType::Skeleton))
+                .map(id_of)
+                .ok_or_else(none)?,
+        ],
     })
 }
 

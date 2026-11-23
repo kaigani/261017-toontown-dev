@@ -562,8 +562,7 @@ fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String
     if command_id == "playback.range.mode.set" {
         let want = params.get("mode").and_then(Value::as_str)?;
         let scene = s.app.scene.as_ref()?;
-        let len = s.project.as_ref().map_or(1, |p| crate::commands::timeline::length_of(&p.doc, scene));
-        let (mode, _, _) = crate::commands::timeline::effective_range(&s.timeline.ranges, scene, len);
+        let mode = crate::commands::timeline::range_mode(&s.timeline.ranges, scene);
         let name = serde_json::to_value(mode).ok()?;
         return Some(name.as_str() == Some(want));
     }

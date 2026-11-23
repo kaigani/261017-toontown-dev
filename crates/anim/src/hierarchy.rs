@@ -54,6 +54,23 @@ pub fn find<'a>(tree: &'a [TreeNode], id: &Id) -> Option<&'a TreeNode> {
     None
 }
 
+/// The path from the root level to an element: for each level down to the element's own, the sibling list and the
+/// index in it (the element's own level last), or `None` when absent. Nothing is copied; the work is the nodes visited
+/// before the element is found, so a read of one element's relations stays cheap in a large scene.
+#[must_use]
+pub fn path<'a>(tree: &'a [TreeNode], id: &Id) -> Option<Vec<(&'a [TreeNode], usize)>> {
+    for (index, n) in tree.iter().enumerate() {
+        if &n.id == id {
+            return Some(vec![(tree, index)]);
+        }
+        if let Some(mut rest) = path(&n.children, id) {
+            rest.insert(0, (tree, index));
+            return Some(rest);
+        }
+    }
+    None
+}
+
 /// The sibling list containing an element's level: the children of `parent` (the root list for `None`).
 #[must_use]
 pub fn level<'a>(tree: &'a [TreeNode], parent: Option<&Id>) -> Option<&'a [TreeNode]> {
