@@ -81,6 +81,66 @@ AGENT_ACCESS = ["port", "maxJobs", "maxBatchSteps", "maxInlineImagePx", "maxInli
                 "highlightAgentChanges", "typedTools", "persist"]
 PEN_SLIDERS = {"minSize": "Minimum size", "maxSize": "Maximum size", "smoothness": "Smoothness", "tipAngle": "Tip angle"}
 
+#: M5 C5.1b: the Timeline's context menus' command items (each a D-39 row in the OS form) and dialog items (the D-44
+#: rows of scripts/c43-d44-flows.py `timeline_rows`, which open each dialog from the same menu).
+TL_ROW_MENU = {**{f"add.{t}": f"Add {label}" for t, label in (
+    ("drawing", "Drawing"), ("annotation", "Annotation"), ("image", "Image"), ("sound", "Sound"), ("media", "Media"),
+    ("peg", "Peg"), ("camera", "Camera"), ("skeleton", "Skeleton"), ("colourTransform", "Colour Transform"),
+    ("clipping", "Clipping"), ("dropShadow", "Drop Shadow"), ("blur", "Blur"), ("shake", "Shake"),
+    ("particleNature", "Particle Nature"), ("particleImpact", "Particle Impact"))},
+    "addParentPeg": "Add Parent Peg", "cut": "Cut", "copy": "Copy", "paste": "Paste", "delete": "Delete",
+    "arrange.front": "Bring to Front", "arrange.forward": "Bring Forward", "arrange.backward": "Send Backward",
+    "arrange.back": "Send to Back", "collapse": "Collapse", "select.parent": "Select Parent",
+    "select.children": "Select Children", "select.firstChild": "Select Child",
+    "select.previousSibling": "Select Previous Sibling", "select.nextSibling": "Select Next Sibling",
+    "select.skeletonRoot": "Select Skeleton Root", "attachNext": "Attach to Next Object",
+    "detach": "Detach from Parent", "showHide": "Hide", "showAll": "Show All", "hideOthers": "Hide All Others",
+    "showOthers": "Show All Others", "hideAll": "Hide All", "showAnnotations": "Show All Annotation Elements",
+    "hideAnnotations": "Hide All Annotation Elements", "defaultColour": "Default Colour",
+    "showAllParameters": "Show All Effect Parameters", "hideAllParameters": "Hide All Effect Parameters",
+    "annotation": "Set as Annotation", "lock": "Lock", "lockOthers": "Lock All Others", "lockAll": "Lock All",
+    "unlockAll": "Unlock All", "clone": "Clone", "duplicate": "Duplicate"}
+TL_CELL_MENU = {"cut": "Cut", "copy": "Copy", "paste": "Paste", "delete": "Delete"}
+TL_RULER_MENU = {"rangeAuto": "Automatic Fit", "rangeFree": "Free", "startHere": "Set Playback Start Here",
+                 "endHere": "Set Playback End Here"}
+
+
+def d44_both(name: str) -> list[str]:
+    """A dialog's two D-44 rows (OK and Cancel)."""
+    return [f"{name} › OK", f"{name} › Cancel"]
+
+
+TL_DIALOG_ITEMS = {
+    "timeline.rowMenu.timeline.row.rename": d44_both("Rename Element (Timeline row)"),
+    "timeline.rowMenu.timeline.row.note": d44_both("Element Note (Timeline row)"),
+    "timeline.rowMenu.timeline.row.markerColour": d44_both("Marker Colour (Timeline row)"),
+    "timeline.rowMenu.timeline.row.backgroundColour": d44_both("Background Colour (Timeline row)"),
+    "timeline.rowMenu.timeline.row.changeStart": d44_both("Change Start Frame"),
+    "timeline.rowMenu.timeline.row.changeDuration": d44_both("Change Duration"),
+    "timeline.rowMenu.timeline.row.changeLoops": d44_both("Change Loops"),
+    "timeline.cellMenu.timeline.cell.extendChildren": d44_both("Extend Children Exposure"),
+    "timeline.rulerMenu.timeline.ruler.currentFrame": d44_both("Set Current Frame (Timeline ruler)"),
+    "timeline.rulerMenu.timeline.ruler.rangeStart": d44_both("Set Playback Start Frame (Timeline ruler)"),
+    "timeline.rulerMenu.timeline.ruler.rangeEnd": d44_both("Set Playback End Frame (Timeline ruler)"),
+    "timeline.dragOptions": d44_both("Drag and Drop Options"),
+}
+#: Each Timeline dialog's OK button: the D-44 rows that click it.
+TL_SUBMITS = {
+    "timelineStart.submit": ["Change Start Frame › OK"],
+    "timelineDuration.submit": ["Change Duration › OK"],
+    "timelineLoops.submit": ["Change Loops › OK"],
+    "timelineRename.submit": ["Rename Element › OK", "Rename Element (Timeline row) › OK"],
+    "timelineNote.submit": ["Element Note › OK", "Element Note (Timeline row) › OK"],
+    "timelineMarkerColour.submit": ["Marker Colour (Timeline row) › OK"],
+    "timelineBackgroundColour.submit": ["Background Colour (Timeline row) › OK"],
+    "timelineExtendChildren.submit": ["Extend Children Exposure › OK"],
+    "timelineCurrentFrame.submit": ["Change Current Frame › OK", "Set Current Frame (Timeline ruler) › OK"],
+    "timelineRangeStart.submit": ["Change Playback Start Frame › OK",
+                                  "Set Playback Start Frame (Timeline ruler) › OK"],
+    "timelineRangeEnd.submit": ["Change Playback End Frame › OK", "Set Playback End Frame (Timeline ruler) › OK"],
+    "timelineTransfer.submit": ["Paste Special › OK", "Cut Special › OK", "Drag and Drop Options › OK"],
+}
+
 #: Every commanded control: {"rows": [D-39 row names]}, {"d44": [D-44 row names]} or {"reason": why it has no row}.
 COVERAGE: dict[str, dict] = {
     # Preferences › Agent access (C4.4a).
@@ -209,6 +269,26 @@ COVERAGE: dict[str, dict] = {
     "agent.*.pause": {"rows": ["agent indicator › Pause"]},
     "agent.*.resume": {"rows": ["agent indicator › Resume"]},
     "agent.*.stop": {"rows": ["agent indicator › Stop"]},
+    # M5 C5.1b: the Timeline panel (its toolbar, its rows' controls, its context menus, its dialogs' OK) and the main
+    # toolbar's playback items.
+    "mainToolbar.playStop": {"rows": ["main toolbar › playStop"]},
+    "mainToolbar.lastFrame": {"rows": ["main toolbar › lastFrame"]},
+    "timeline.add": {"rows": ["Timeline › toolbar Add"]},
+    "timeline.addParentPeg": {"rows": ["Timeline › toolbar Parent Peg"]},
+    "timeline.solo": {"rows": ["Timeline › toolbar Solo"]},
+    "timeline.showAll": {"rows": ["Timeline › toolbar Show All"]},
+    "timeline.zoom": {"rows": ["Timeline › toolbar Zoom"]},
+    "timeline.scroll": {"rows": ["Timeline › scroll bar"]},
+    "timeline.row.*.collapsed": {"rows": ["Timeline › row disclosure"]},
+    "timeline.row.*.visible": {"rows": ["Timeline › row visibility"]},
+    **{f"timeline.rowMenu.timeline.row.{i}": {"rows": [f"Timeline row menu › {label}"]} for i, label in TL_ROW_MENU.items()},
+    **{f"timeline.cellMenu.timeline.cell.{i}": {"rows": [f"Timeline cell menu › {label}"]} for i, label in TL_CELL_MENU.items()},
+    **{f"timeline.rulerMenu.timeline.ruler.{i}": {"rows": [f"Timeline ruler menu › {label}"]}
+       for i, label in TL_RULER_MENU.items()},
+    "timeline.rowMenu.timeline.row.pegReset": {"reason": "anim.reset.apply arrives with M6 C6.1 (registered, not "
+                                                         "implemented): the item is disabled with that reason"},
+    **{c: {"d44": names} for c, names in TL_DIALOG_ITEMS.items()},
+    **{c: {"d44": names} for c, names in TL_SUBMITS.items()},
 }
 
 

@@ -546,6 +546,17 @@ class Table:
             r = self.rect(action[1])
             if not r or r.get("hidden"):
                 raise RuntimeError(f"control absent or hidden: {action[1]}")
+            if len(action) > 3 and action[3]:
+                # M5 C5.1b: a point in a canvas, where the item depends on what lies under the click (the Timeline's
+                # cells and ruler): `x` pixels in from the left of `x_of`, at the vertical centre of `y_of`.
+                at = self.cdp.js(
+                    "(() => { const box = id => document.querySelector('[data-tt-id=' + JSON.stringify(id) + ']')"
+                    "?.getBoundingClientRect(); const a = box(%s), b = box(%s); if (!a || !b) return null;"
+                    " return {x: a.x + %s, y: b.y + b.height / 2}; })()"
+                    % (json.dumps(action[3]["x_of"]), json.dumps(action[3]["y_of"]), json.dumps(action[3]["x"])))
+                if not at:
+                    raise RuntimeError(f"the point's controls are absent: {action[3]}")
+                r = {**r, **at}
             h = front()
             origin = wintypes.POINT(0, 0)
             u32.ClientToScreen(h, ctypes.byref(origin))
@@ -561,7 +572,20 @@ class Table:
                     break
                 await asyncio.sleep(0.1)
             if state != "false":
-                raise RuntimeError(f"menu item absent or disabled after the secondary click: {action[2]} ({state})")
+                # Which menu opened, and its items, if any (a click that landed elsewhere names what it opened).
+                shown_menu = self.cdp.js(
+                    "(() => { const m = document.querySelector('[role=menu]'); return m ? {id: m.dataset.ttId ?? null,"
+                    " items: [...m.querySelectorAll('[data-tt-id]')].map(e => e.dataset.ttId).slice(0, 12)} : null; })()")
+                where = None
+                if len(action) > 3 and action[3]:
+                    where = self.cdp.js(
+                        "[...document.querySelectorAll('[data-tt-id=' + JSON.stringify(%s) + ']')].map(e => {"
+                        " const b = e.getBoundingClientRect(); return [e.tagName, Math.round(b.x), Math.round(b.y),"
+                        " Math.round(b.width), Math.round(b.height), e.closest('[data-tt-id=timeline]') ? 'timeline' : 'other']; })"
+                        % json.dumps(action[3]["y_of"]))
+                raise RuntimeError(f"menu item absent or disabled after the secondary click at {r.get('x')}, "
+                                   f"{r.get('y')}: {action[2]} ({state}); the menu shown: {shown_menu}; the point's "
+                                   f"row: {where}")
             # The menu is placed again while the kernel's availability answers change its size (D-60 item 1): the item
             # is clicked once its box reads the same twice in a row (a wait for a state, D-45).
             box = None
@@ -742,11 +766,17 @@ class Table:
     async def mark(self) -> None:
         self.clear()
 
+    #: References the page sends as reads (M5 C5.1b): `timeline.view.set {}` answers the Timeline's view (SI-210), which
+    #: the Timeline panel reads after every change; no person's action.
+    PAGE_READS = (("timeline.view.set", {}),)
+
     async def observed(self, want) -> list:
         if self.gesture_record is not None:
             return self.gesture_commands()
         wanted = want[0] if want else None
-        return [c for c in self.recorded() if self.kinds.get(c.get("command")) != "query" or c.get("command") == wanted]
+        read = lambda c: (c.get("command"), c.get("params") or {}) in self.PAGE_READS  # noqa: E731
+        return [c for c in self.recorded() if not read(c)
+                and (self.kinds.get(c.get("command")) != "query" or c.get("command") == wanted)]
 
     gesture_record = None
     #: The commands that choose a tool: not the gesture's (the person chose the tool before; an agent's `pointer` names it).
@@ -3237,6 +3267,9 @@ async def build_and_run(t: Table, only: set) -> None:
                  "setup": live_second, "state": second_gone, "effect": lambda b, a, k: b is True and a is False,
                  "disabled": None, "osOnly": True, "mcpReason": APP_SCOPE, "after": forget_second})
 
+    # M5 C5.1b: the Timeline panel and the main toolbar's playback items, last (each row makes its own elements).
+    rows.extend(await timeline_rows(t, bob))
+
     for r in rows:
         if r.get("skip"):
             await r["setup"]()
@@ -3277,6 +3310,9 @@ async def build_and_run(t: Table, only: set) -> None:
 
     if not only or any("context menus" in o for o in only):
         await menu_bounds_row(t, bob)
+    if not only or any("Timeline" in o for o in only):
+        await e2e.run_cmd(t.s, "window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+        await timeline_layout_row(t)
     if not only or any("browser" in o for o in only):
         await browser_chrome_row(t)
     await jobs_row(t)
@@ -3305,6 +3341,410 @@ async def build_and_run(t: Table, only: set) -> None:
     # A test-only session a failed row left open is closed here, in the task that opened it (left open, it ends the
     # table's own session with an error at its exit).
     await close_second()
+
+
+# ----- M5 C5.1b: the Timeline panel (04 §9-§13, lines 600-710; reviews/M5-design-timeline-view.md) -----------------
+
+TL_CONTEXT_ONLY = ("the item's reference names the row and frame the person's secondary click chose: an agent has no "
+                   "secondary click, and the parity manifest's reference was collected on the collector's fixture (its "
+                   "element ids), so only the OS form exercises the item")
+TL_SLIDER = ("a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared "
+             "reference is the current value)")
+TL_LAYOUT = json.loads((ROOT / "desktop/src/timeline/timeline-layout.json").read_text(encoding="utf-8"))
+
+
+async def timeline_rows(t: Table, bob: str) -> list:
+    """Every commanded control of the Timeline panel and the main toolbar's playback items (M5 C5.1b): the layer list's
+    toolbar and row controls (both forms), and each command item of the row, cell and ruler context menus (a real
+    secondary click on the row, the cell or the ruler, then a real click on the item: the OS form). The dialog items are
+    the D-44 rows' (scripts/c43-d44-flows.py `timeline_rows`). Each row starts from Bob alone with the row's own
+    elements (TlA, TlP, ...), and the last row leaves Bob alone again."""
+    rows: list = []
+    cmd = t.cmd
+    ctx: dict = {}
+    mcp = isinstance(t, McpTable)
+    default_zoom = TL_LAYOUT.get("defaultZoomLevel", 0)
+
+    async def run(n, p):  # a step tolerated when it has nothing to do
+        return await e2e.run_cmd(t.s, n, p)
+
+    async def elements():
+        return (await cmd("element.list", {})).get("elements") or []
+
+    async def shown(ident, timeout=10.0):
+        start = time.monotonic()
+        while time.monotonic() - start < timeout:
+            if mcp:
+                if McpTable.node(await t.tree(), ident) is not None:
+                    return True
+            elif t.cdp.js("!!document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')" % json.dumps(ident)):
+                return True
+            await asyncio.sleep(0.2)
+        raise RuntimeError(f"the Timeline does not show {ident}")
+
+    async def create(type_, name, **extra):
+        res = await cmd("element.create", {"type": type_, "name": name, **extra})
+        return (res.get("elementIds") or [None])[0]
+
+    async def bob_alone():
+        # One at a time: the scene's last camera is not deletable (01 §3), and one refusal would refuse a batch. A
+        # deleted element's children move to its level (an effect's sprite drawing, a peg's children): again until
+        # none is left.
+        for _ in range(6):
+            top = [e["id"] for e in await elements() if e["id"] != bob and not e.get("parentId") and e.get("type") != "camera"]
+            if not top:
+                break
+            for i in top:
+                await run("element.delete", {"elementIds": [i]})
+        cameras = [e["id"] for e in await elements() if e.get("type") == "camera"]
+        for c in cameras[1:]:
+            await run("element.delete", {"elementIds": [c]})
+        left = [e.get("name") for e in await elements() if e["id"] != bob and e.get("type") not in ("camera",)
+                and not e.get("parentId")]
+        if left:
+            raise RuntimeError(f"the Timeline rows' elements were not removed: {left}")
+        await run("element.parent.remove", {"elementIds": [bob]})
+        await run("element.visibility.set", {"elementIds": [bob], "scope": "scene", "visible": True})
+        await run("element.lock.set", {"elementIds": [bob], "locked": False})
+        await run("element.colour.set", {"elementIds": [bob], "marker": "", "background": ""})
+        await run("element.solo.set", {"enabled": False})
+        await run("playback.stop", {})
+        await run("playback.loop.set", {"enabled": False})
+        await run("timeline.playbackRange.set", {"mode": "auto"})
+        await run("timeline.effectParameterRows.set", {"visible": True})
+        await run("timeline.view.set", {"zoomLevel": default_zoom, "firstFrame": 1})
+        await run("edit.selection.set", {"context": "timeline", "ids": []})
+        await cmd("app.context.set", {"elementId": bob, "frame": 1})
+
+    async def fixture(kind):
+        """The row's elements: `a` TlA (a drawing exposed on 1-12); `three` TlA between Bob and TlB; `hier` TlP (a peg)
+        with TlC1 and TlC2; `next` TlA directly above TlP; `skeleton` TlS; `annotation` TlA and TlN (an annotation);
+        `effect` TlE (a clipping, whose mask is an effect-parameter row)."""
+        await bob_alone()
+        ctx.clear()
+        if kind in ("a", "three", "annotation"):
+            ctx["a"] = await create("drawing", "TlA")
+            await cmd("element.drawing.create", {"elementId": ctx["a"], "name": "1", "exposeFrom": 1, "exposeTo": 12})
+        if kind == "three":
+            ctx["b"] = await create("drawing", "TlB")
+            order = [e["id"] for e in await elements() if not e.get("parentId")]
+            rest = [i for i in order if i != ctx["a"]]
+            await cmd("element.order.set", {"order": "timeline", "elementIds": [rest[0], ctx["a"], *rest[1:]]})
+        if kind in ("hier", "next"):
+            ctx["p"] = await create("peg", "TlP")
+        if kind == "hier":
+            ctx["c1"] = await create("drawing", "TlC1", parentId=ctx["p"])
+            ctx["c2"] = await create("drawing", "TlC2", parentId=ctx["p"])
+            kids = [e["id"] for e in await elements() if e.get("parentId") == ctx["p"]]
+            ctx["first"], ctx["second"] = kids[0], kids[1]
+        if kind == "next":
+            ctx["a"] = await create("drawing", "TlA", above=ctx["p"])
+        if kind == "skeleton":
+            ctx["s"] = await create("skeleton", "TlS")
+        if kind == "annotation":
+            ctx["n"] = await create("annotation", "TlN")
+        if kind == "effect":
+            ctx["e"] = await create("clipping", "TlE")
+        await cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+
+    def setup(kind, target, *steps):
+        async def go():
+            await fixture(kind)
+            for s in steps:
+                await s()
+            await shown(f"timeline.row.{ctx[target]}")
+            await asyncio.sleep(0.5)
+        return go
+
+    def select(key):
+        async def go():
+            await cmd("element.select", {"elementIds": [ctx[key]]})
+        return go
+
+    def hide(*keys):
+        async def go():
+            for k in keys:
+                await cmd("element.visibility.set", {"elementIds": [bob if k == "bob" else ctx[k]], "scope": "scene",
+                                                     "visible": False})
+        return go
+
+    async def state():
+        els = []
+        for e in await elements():
+            g = await cmd("element.get", {"elementId": e["id"]})
+            els.append({"type": g.get("elementType"),
+                        **{k: g.get(k) for k in ("id", "name", "parentId", "timelineIndex", "visibleInScene", "locked",
+                                                 "collapsed", "markerColour", "backgroundColour", "annotation")}})
+        sel = await cmd("edit.selection.get", {"context": "timeline"})
+        clip = (await run("edit.clipboard.get", {})).get("result") or {}
+        listed = (await run("timeline.rows.list", {"from": 1, "to": 24})).get("result") or {}
+        view = (await run("timeline.view.set", {})).get("result") or {}
+        play = await cmd("playback.state.get", {})
+        cells = ""
+        if ctx.get("a"):
+            got = (await run("xsheet.exposures.get", {"elementIds": [ctx["a"]], "from": 1, "to": 24})).get("result")
+            cells = json.dumps(got, sort_keys=True)[:3000]
+        return {"els": els, "sel": sorted(i for i in sel.get("ids") or [] if str(i).startswith("el_")),
+                "clip": json.dumps(clip, sort_keys=True)[:3000], "range": await cmd("timeline.playbackRange.get", {}),
+                "rows": len(listed.get("rows") or []), "zoom": view.get("zoomLevel"), "first": view.get("firstFrame"),
+                "playing": play.get("playing"), "frame": play.get("frame"), "cells": cells}
+
+    def el(s, key):
+        want = bob if key == "bob" else ctx.get(key)
+        return next((e for e in s["els"] if e["id"] == want), None)
+
+    def new_of(b, a, type_=None):
+        old = {e["id"] for e in b["els"]}
+        return [e for e in a["els"] if e["id"] not in old and (type_ is None or e["type"] == type_)]
+
+    def others(s, key):
+        return [e for e in s["els"] if e["id"] != ctx[key] and e["type"] != "effectParameter"]
+
+    def menu_row(menu, item, label, command, params, kind, target, effect, *steps, point=None, step=None):
+        surface = {"row": lambda: f"timeline.row.{ctx[target]}", "cell": lambda: "timeline.tracks",
+                   "ruler": lambda: "timeline.ruler"}[menu]
+        where = {"cell": lambda: {"x_of": "timeline.tracks", "x": 40, "y_of": f"timeline.row.{ctx[target]}"},
+                 "ruler": lambda: {"x_of": "timeline.ruler", "x": 60, "y_of": "timeline.ruler"}}.get(menu, lambda: None)
+        rows.append({"name": f"Timeline {menu} menu › {label}",
+                     "spec": f"{spec_line(command)}; 04 lines 704-706; 09 line 85",
+                     "action": lambda: ("context", surface(), f"timeline.{menu}Menu.timeline.{menu}.{item}", where()),
+                     "expect": lambda b: (command, params() if callable(params) else params),
+                     **({"label": step} if step else {"undoOf": command}), "setup": setup(kind, target, *steps),
+                     "state": state, "effect": effect, "disabled": None, "osOnly": True, "mcpReason": TL_CONTEXT_ONLY,
+                     **({"match": point} if point else {})})
+
+    ids = lambda key: (lambda: {"elementIds": [ctx[key]]})  # noqa: E731
+
+    # The row menu (04 line 704): Add, the edit items, Arrange, Collapse, Select, Attach and Detach, Visibility,
+    # Default Colour, the effect-parameter display, Set as Annotation, Lock, Clone and Duplicate, Peg Reset.
+    for type_, label in (("drawing", "Drawing"), ("annotation", "Annotation"), ("image", "Image"), ("sound", "Sound"),
+                         ("media", "Media"), ("peg", "Peg"), ("camera", "Camera"), ("skeleton", "Skeleton"),
+                         ("colourTransform", "Colour Transform"), ("clipping", "Clipping"),
+                         ("dropShadow", "Drop Shadow"), ("blur", "Blur"), ("shake", "Shake"),
+                         ("particleNature", "Particle Nature"), ("particleImpact", "Particle Impact")):
+        menu_row("row", f"add.{type_}", f"Add {label}", "element.create",
+                 (lambda ty: lambda: {"type": ty, "above": ctx["a"]})(type_), "a", "a",
+                 (lambda ty: lambda b, a, k: len(new_of(b, a, ty)) == 1)(type_))
+    menu_row("row", "addParentPeg", "Add Parent Peg", "element.parentPeg.create", ids("a"), "a", "a",
+             lambda b, a, k: any(e["id"] == el(a, "a")["parentId"] and e["type"] == "peg" for e in new_of(b, a)))
+    menu_row("row", "cut", "Cut", "edit.cut", {"context": "timeline"}, "a", "a",
+             lambda b, a, k: el(a, "a") is None and a["clip"] != b["clip"], select("a"))
+    async def cells_on_clipboard():
+        await cmd("cell.select", {"elementIds": [ctx["a"]], "from": 2, "to": 3})
+        await cmd("edit.copy", {"context": "timeline"})
+    menu_row("row", "copy", "Copy", "edit.copy", {"context": "timeline"}, "a", "a",
+             lambda b, a, k: el(a, "a") is not None and a["clip"] != b["clip"], cells_on_clipboard, select("a"))
+
+    async def copied_a():
+        await cmd("element.select", {"elementIds": [ctx["a"]]})
+        await cmd("edit.copy", {"context": "timeline"})
+    menu_row("row", "paste", "Paste", "edit.paste", {"context": "timeline"}, "a", "a",
+             lambda b, a, k: len(new_of(b, a)) >= 1, copied_a)
+    menu_row("row", "delete", "Delete", "element.delete", ids("a"), "a", "a", lambda b, a, k: el(a, "a") is None)
+    for to, label in (("front", "Bring to Front"), ("forward", "Bring Forward"), ("backward", "Send Backward"),
+                      ("back", "Send to Back")):
+        menu_row("row", f"arrange.{to}", label, "element.order.move",
+                 (lambda to_: lambda: {"elementIds": [ctx["a"]], "to": to_, "order": "timeline"})(to), "three", "a",
+                 lambda b, a, k: el(a, "a")["timelineIndex"] != el(b, "a")["timelineIndex"])
+    menu_row("row", "collapse", "Collapse", "element.collapsed.set",
+             lambda: {"elementIds": [ctx["p"]], "collapsed": True}, "hier", "p",
+             lambda b, a, k: el(b, "p")["collapsed"] is False and el(a, "p")["collapsed"] is True)
+    for rel, label, target, want in (("parent", "Select Parent", "c1", ["p"]),
+                                     ("children", "Select Children", "p", ["p", "c1", "c2"]),
+                                     ("firstChild", "Select Child", "p", ["first"]),
+                                     ("previousSibling", "Select Previous Sibling", "second", ["first"]),
+                                     ("nextSibling", "Select Next Sibling", "first", ["second"]),
+                                     ("skeletonRoot", "Select Skeleton Root", "s", ["s"])):
+        menu_row("row", f"select.{rel}", label, "element.hierarchy.select",
+                 (lambda r, tg: lambda: {"relation": r, "elementId": ctx[tg]})(rel, target),
+                 "skeleton" if rel == "skeletonRoot" else "hier", target,
+                 (lambda w: lambda b, a, k: a["sel"] == sorted(ctx[x] for x in w))(want))
+    menu_row("row", "attachNext", "Attach to Next Object", "element.parent.set",
+             lambda: {"elementIds": [ctx["a"]], "parentId": ctx["p"]}, "next", "a",
+             lambda b, a, k: el(a, "a")["parentId"] == ctx["p"])
+    menu_row("row", "detach", "Detach from Parent", "element.parent.remove", ids("c1"), "hier", "c1",
+             lambda b, a, k: el(b, "c1")["parentId"] == ctx["p"] and el(a, "c1")["parentId"] is None)
+    vis = lambda s, key: el(s, key)["visibleInScene"]  # noqa: E731
+    menu_row("row", "showHide", "Hide", "element.visibility.set",
+             lambda: {"elementIds": [ctx["a"]], "scope": "scene", "visible": False}, "a", "a",
+             lambda b, a, k: vis(b, "a") and not vis(a, "a"))
+    menu_row("row", "showAll", "Show All", "element.visibility.set", {"scope": "scene", "visible": True, "apply": "all"},
+             "a", "a", lambda b, a, k: not vis(b, "bob") and all(e["visibleInScene"] for e in a["els"]), hide("bob"))
+    menu_row("row", "hideOthers", "Hide All Others", "element.visibility.set",
+             lambda: {"elementIds": [ctx["a"]], "scope": "scene", "visible": False, "apply": "others"}, "a", "a",
+             lambda b, a, k: vis(a, "a") and not any(e["visibleInScene"] for e in others(a, "a")))
+    menu_row("row", "showOthers", "Show All Others", "element.visibility.set",
+             lambda: {"elementIds": [ctx["a"]], "scope": "scene", "visible": True, "apply": "others"}, "a", "a",
+             lambda b, a, k: not vis(b, "bob") and vis(a, "bob"), hide("bob"))
+    menu_row("row", "hideAll", "Hide All", "element.visibility.set", {"scope": "scene", "visible": False, "apply": "all"},
+             "a", "a", lambda b, a, k: not any(e["visibleInScene"] for e in a["els"] if e["type"] != "effectParameter"))
+    menu_row("row", "showAnnotations", "Show All Annotation Elements", "element.visibility.set",
+             {"scope": "scene", "visible": True, "apply": "all", "types": ["annotation"]}, "annotation", "a",
+             lambda b, a, k: not vis(b, "n") and vis(a, "n"), hide("n"))
+    menu_row("row", "hideAnnotations", "Hide All Annotation Elements", "element.visibility.set",
+             {"scope": "scene", "visible": False, "apply": "all", "types": ["annotation"]}, "annotation", "a",
+             lambda b, a, k: vis(b, "n") and not vis(a, "n") and vis(a, "a"))
+
+    async def coloured():
+        await cmd("element.colour.set", {"elementIds": [ctx["a"]], "marker": "#FF0000", "background": "#00FF00"})
+    menu_row("row", "defaultColour", "Default Colour", "element.colour.set",
+             lambda: {"elementIds": [ctx["a"]], "marker": "", "background": ""}, "a", "a",
+             lambda b, a, k: el(b, "a")["markerColour"] and not el(a, "a")["markerColour"]
+             and not el(a, "a")["backgroundColour"], coloured)
+
+    async def parameters_hidden():
+        await cmd("timeline.effectParameterRows.set", {"visible": False})
+    menu_row("row", "showAllParameters", "Show All Effect Parameters", "timeline.effectParameterRows.set",
+             {"visible": True}, "effect", "e", lambda b, a, k: a["rows"] > b["rows"], parameters_hidden)
+    menu_row("row", "hideAllParameters", "Hide All Effect Parameters", "timeline.effectParameterRows.set",
+             {"visible": False}, "effect", "e", lambda b, a, k: a["rows"] < b["rows"])
+    menu_row("row", "annotation", "Set as Annotation", "element.annotation.set",
+             lambda: {"elementId": ctx["a"], "annotation": True}, "a", "a",
+             lambda b, a, k: el(a, "a")["type"] == "annotation" or el(a, "a")["annotation"] is True)
+    locked = lambda s, key: el(s, key)["locked"]  # noqa: E731
+    menu_row("row", "lock", "Lock", "element.lock.set", lambda: {"elementIds": [ctx["a"]], "locked": True}, "a", "a",
+             lambda b, a, k: not locked(b, "a") and locked(a, "a"))
+    menu_row("row", "lockOthers", "Lock All Others", "element.lock.set",
+             lambda: {"elementIds": [ctx["a"]], "locked": True, "apply": "others"}, "a", "a",
+             lambda b, a, k: not locked(a, "a") and locked(a, "bob"))
+    menu_row("row", "lockAll", "Lock All", "element.lock.set", {"locked": True, "apply": "all"}, "a", "a",
+             lambda b, a, k: locked(a, "a") and locked(a, "bob"))
+
+    async def all_locked():
+        await cmd("element.lock.set", {"locked": True, "apply": "all"})
+    menu_row("row", "unlockAll", "Unlock All", "element.lock.set", {"locked": False, "apply": "all"}, "a", "a",
+             lambda b, a, k: locked(b, "a") and not locked(a, "a") and not locked(a, "bob"), all_locked,
+             step="Unlock Elements")
+    menu_row("row", "clone", "Clone", "element.clone", lambda: {"elementId": ctx["a"]}, "a", "a",
+             lambda b, a, k: len(new_of(b, a)) == 1)
+    menu_row("row", "duplicate", "Duplicate", "element.duplicate", ids("a"), "a", "a",
+             lambda b, a, k: len(new_of(b, a)) == 1)
+
+    # The cell menu (04 line 705): the edit items on the cells selected in TlA's track (frames 2-3).
+    async def cells_selected():
+        await cmd("cell.select", {"elementIds": [ctx["a"]], "from": 2, "to": 3})
+
+    async def cells_copied():
+        await cmd("cell.select", {"elementIds": [ctx["a"]], "from": 2, "to": 3})
+        await cmd("edit.copy", {"context": "timeline"})
+        # Pasted at the current frame: 15, past TlA's exposure (1-12), so the paste changes the track.
+        await cmd("app.context.set", {"elementId": ctx["a"], "frame": 15})
+        await cmd("cell.select", {"elementIds": [ctx["a"]], "from": 15, "to": 15})
+
+    async def element_on_clipboard_then_cells():
+        await cmd("element.select", {"elementIds": [ctx["a"]]})
+        await cmd("edit.copy", {"context": "timeline"})
+        await cells_selected()
+    cells_changed = lambda b, a, k: a["cells"] != b["cells"]  # noqa: E731
+    menu_row("cell", "cut", "Cut", "edit.cut", {"context": "timeline"}, "a", "a",
+             lambda b, a, k: cells_changed(b, a, k) and a["clip"] != b["clip"], cells_selected)
+    menu_row("cell", "copy", "Copy", "edit.copy", {"context": "timeline"}, "a", "a",
+             lambda b, a, k: a["clip"] != b["clip"] and a["cells"] == b["cells"], element_on_clipboard_then_cells)
+    menu_row("cell", "paste", "Paste", "edit.paste", {"context": "timeline"}, "a", "a", cells_changed, cells_copied)
+    menu_row("cell", "delete", "Delete", "edit.delete", {"context": "timeline"}, "a", "a", cells_changed,
+             cells_selected)
+
+    # The ruler menu (04 line 706; 09 line 85): the playback range's mode and its ends at the clicked frame (60 pixels
+    # in: the frame there is the window's, so the parameters are a predicate: one frame of the scene).
+    async def range_free():
+        await cmd("timeline.playbackRange.set", {"mode": "free", "start": 2, "end": 20})
+    menu_row("ruler", "rangeAuto", "Automatic Fit", "timeline.playbackRange.set", {"mode": "auto"}, "a", "a",
+             lambda b, a, k: b["range"]["mode"] == "free" and a["range"]["mode"] == "auto", range_free)
+    menu_row("ruler", "rangeFree", "Free", "timeline.playbackRange.set", {"mode": "free"}, "a", "a",
+             lambda b, a, k: b["range"]["mode"] == "auto" and a["range"]["mode"] == "free")
+    for item, label, end in (("startHere", "Set Playback Start Here", "start"), ("endHere", "Set Playback End Here", "end")):
+        menu_row("ruler", item, label, "timeline.playbackRange.set", {end: "the clicked frame"}, "a", "a",
+                 (lambda e: lambda b, a, k: a["range"][e] != b["range"][e])(end), range_free,
+                 point=(lambda e: lambda p, b: set(p) == {e} and isinstance(p[e], int) and 1 <= p[e] <= 24)(end))
+
+    # The layer list's toolbar (04 line 604) and each row's disclosure and visibility controls (04 line 605).
+    def dom_row(name, ident, command, params, kind, target, effect, *steps, toggle=False, disabled=True):
+        rows.append({"name": f"Timeline › {name}", "spec": f"{spec_line(command)}; 04 lines 604-605",
+                     "action": lambda: ("dom", ident() if callable(ident) else ident),
+                     "expect": lambda b: (command, params(b) if callable(params) else params),
+                     "undoOf": command, "setup": setup(kind, target, *steps), "state": state,
+                     "effect": effect, "toggle": toggle,
+                     "disabled": ("dom", ident) if disabled and not callable(ident) else None})
+
+    dom_row("toolbar Add", "timeline.add", "element.create", {"type": "drawing"}, "a", "a",
+            lambda b, a, k: len(new_of(b, a, "drawing")) == 1)
+    dom_row("toolbar Parent Peg", "timeline.addParentPeg", "element.parentPeg.create",
+            lambda b: {"elementIds": [ctx["a"]]}, "a", "a",
+            lambda b, a, k: any(e["id"] == el(a, "a")["parentId"] and e["type"] == "peg" for e in new_of(b, a)),
+            select("a"))
+
+    async def solo_state():
+        """The state, and whether the Solo button shows solo on (aria-pressed; the window tree's `checked`)."""
+        s = await state()
+        if mcp:
+            answer = await e2e.call(t.s, "inspect_ui", {"target": "window", "depth": 32})
+            node = McpTable.node((answer.get("result") or answer).get("root") or {}, "timeline.solo") or {}
+            s["solo"] = node.get("checked") is True
+        else:
+            s["solo"] = t.cdp.js("document.querySelector('[data-tt-id=\"timeline.solo\"]')?.getAttribute('aria-pressed')") == "true"
+        return s
+    dom_row("toolbar Solo", "timeline.solo", "element.solo.set",
+            lambda b: {"elementIds": [ctx["a"]], "enabled": not b["solo"]}, "a", "a",
+            lambda b, a, k: a["solo"] != b["solo"], select("a"), toggle=True)
+    rows[-1]["state"] = solo_state
+    dom_row("toolbar Show All", "timeline.showAll", "element.visibility.set",
+            {"scope": "scene", "visible": True, "apply": "all"}, "a", "a",
+            lambda b, a, k: not vis(b, "a") and all(e["visibleInScene"] for e in a["els"]), hide("a"))
+    dom_row("row disclosure", lambda: f"timeline.row.{ctx['p']}.collapsed", "element.collapsed.set",
+            lambda b: {"elementIds": [ctx["p"]], "collapsed": not el(b, "p")["collapsed"]}, "hier", "p",
+            lambda b, a, k: el(a, "p")["collapsed"] != el(b, "p")["collapsed"], toggle=True)
+    dom_row("row visibility", lambda: f"timeline.row.{ctx['a']}.visible", "element.visibility.set",
+            lambda b: {"elementIds": [ctx["a"]], "scope": "scene", "visible": not vis(b, "a")}, "a", "a",
+            lambda b, a, k: vis(a, "a") != vis(b, "a"), toggle=True)
+
+    def slider_flow(ident):
+        async def flow():
+            front()
+            t.cdp.js("document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']').focus()" % json.dumps(ident))
+            key(0x27)  # Right arrow: one step
+            return "focus, then a real Right arrow key"
+        return flow
+
+    for name, ident, member, effect in (("toolbar Zoom", "timeline.zoom", "zoomLevel", "zoom"),
+                                        ("scroll bar", "timeline.scroll", "firstFrame", "first")):
+        rows.append({"name": f"Timeline › {name}", "spec": f"{spec_line('timeline.view.set')}; 04 lines 600-610",
+                     "action": ("none",), "custom": slider_flow(ident),
+                     "expect": (lambda m, e: lambda b: ("timeline.view.set", {m: b[e] + 1}))(member, effect),
+                     "label": None, "setup": setup("a", "a"), "state": state,
+                     "effect": (lambda e: lambda b, a, k: a[e] == b[e] + 1)(effect), "disabled": ("dom", ident),
+                     "mcpReason": TL_SLIDER})
+
+    # The main toolbar's playback items (01 §5.7; 09 §2.2): Play/Stop (clicked twice; Loop on, so playback runs until
+    # the second click) and Last frame.
+    async def looping():
+        await cmd("playback.loop.set", {"enabled": True})
+
+    rows.append({"name": "main toolbar › playStop", "spec": f"{spec_line('playback.start')}; {spec_line('playback.stop')}; 09 §2.2",
+                 "action": ("dom", "mainToolbar.playStop"),
+                 "expect": lambda b: ("playback.stop" if b["playing"] else "playback.start", {}), "label": None,
+                 "setup": setup("a", "a", looping), "state": state, "toggle": True,
+                 "effect": lambda b, a, k: a["playing"] is (not b["playing"]), "disabled": ("dom", "mainToolbar.playStop")})
+    rows.append({"name": "main toolbar › lastFrame", "spec": f"{spec_line('timeline.currentFrame.move')}; 09 §2.2",
+                 "action": ("dom", "mainToolbar.lastFrame"),
+                 "expect": ("timeline.currentFrame.move", {"direction": "last", "withinRange": True}), "label": None,
+                 "setup": setup("a", "a"), "state": state,
+                 "effect": lambda b, a, k: a["frame"] == a["range"]["end"] and a["frame"] != b["frame"],
+                 "disabled": ("dom", "mainToolbar.lastFrame")})
+
+    # The undo step each command makes: its label as the kernel declares it (`describe_command`'s `undoLabel`; none
+    # for UI state, selections and view settings).
+    labels: dict = {}
+    for r in rows:
+        command = r.pop("undoOf", None)
+        if command is not None:
+            if command not in labels:
+                d = await e2e.call(t.s, "describe_command", {"id": command})
+                labels[command] = (d.get("result") or d).get("undoLabel")
+            r["label"] = labels[command]
+
+    # Bob alone again, for whatever runs after the table.
+    rows.append({"name": "Timeline › fixture back to Bob alone", "spec": "D-60 item 3", "skip": True, "setup": bob_alone})
+    return rows
 
 
 async def load_report_row(t: Table, clean: Path) -> None:
@@ -3503,6 +3943,37 @@ def resize_client(w: int, h: int, dpr: float) -> None:
     frame_w = (outer.right - outer.left) - client.right
     frame_h = (outer.bottom - outer.top) - client.bottom
     u32.MoveWindow(handle, 30, 30, int(w * dpr) + frame_w, int(h * dpr) + frame_h, True)
+
+
+async def timeline_layout_row(t: Table) -> None:
+    """M5 C5.1b: the Timeline's tracks canvas fills the area the layout gives it and the layout settles. The canvas once
+    sized its own box (its pixel height was its layout height, and the size observer fed each resize back): it grew by
+    about 1,500 pixels a second without end, from start-up, re-rendering every frame (the likely cause of the bundle job's
+    IPC benchmark timing out, runs 45258623690 and 45262565711). Sampled three times over two seconds: unchanged, and
+    inside the panel."""
+    rec = {"name": "Timeline › the layout settles", "spec": "04 lines 600-610; M5 C5.1b"}
+    if isinstance(t, McpTable):
+        reason = "the canvas's size is the window's layout, read through the webview's debugging port in the OS form"
+        rec.update({"ok": True, "notRun": reason})
+        t.run.check(True, f"D-39 {rec['name']}: runs in the OS form only ({reason})", None)
+        t.rows.append(rec)
+        t.run.save("rows.json", t.rows)
+        return
+    js = ("(() => { const c = document.querySelector('[data-tt-id=\"timeline.tracks\"]');"
+          " const p = document.querySelector('[data-tt-id=\"timeline\"]'); if (!c || !p) return null;"
+          " const a = c.getBoundingClientRect(), b = p.getBoundingClientRect();"
+          " return {canvas: [Math.round(a.height), c.height], panel: [Math.round(b.top), Math.round(b.bottom)],"
+          " canvasBottom: Math.round(a.bottom), scroll: p.scrollHeight - p.clientHeight}; })()")
+    samples = []
+    for _ in range(3):
+        samples.append(t.cdp.js(js))
+        await asyncio.sleep(1.0)
+    ok = (all(x is not None for x in samples) and len({json.dumps(x["canvas"]) for x in samples}) == 1
+          and all(x["canvasBottom"] <= x["panel"][1] and x["scroll"] <= 0 for x in samples))
+    rec.update({"samples": samples, "ok": ok})
+    t.run.check(ok, f"D-39 {rec['name']}: the tracks canvas keeps its size and stays inside the panel", rec)
+    t.rows.append(rec)
+    t.run.save("rows.json", t.rows)
 
 
 async def menu_bounds_row(t: Table, bob) -> None:
