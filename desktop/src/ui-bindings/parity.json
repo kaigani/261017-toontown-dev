@@ -20352,7 +20352,8 @@
         "desktop/src-tauri/src/attached.rs",
         "desktop/src-tauri/src/host.rs",
         "desktop/src-tauri/src/ipc.rs",
-        "desktop/src/ipc/engine.ts"
+        "desktop/src/ipc/engine.ts",
+        "desktop/src/shell/refusals.ts"
       ]
     },
     {
@@ -21745,6 +21746,13 @@
       "files": [
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/prefs/AgentAccessPage.tsx"
+      ]
+    },
+    {
+      "command": "shell.fontsLoading",
+      "files": [
+        "desktop/src/App.tsx",
+        "desktop/src/canvas/CanvasView.tsx"
       ]
     },
     {
