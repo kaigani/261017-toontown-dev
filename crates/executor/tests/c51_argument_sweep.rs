@@ -264,6 +264,11 @@ fn every_m5_command_answers_every_boundary_call_and_the_engine_stays_alive() {
                     _ => {
                         let e = env.error.as_ref().unwrap_or_else(|| panic!("{name}: {id} {params}: no error"));
                         assert!(!e.code.is_empty(), "{name}: {id} {params}");
+                        // A panic the engine contained (ruling E-29) is still a defect here: no call may answer it.
+                        assert_ne!(
+                            e.details["reason"], "handlerPanicked",
+                            "{name}: {id} {params}: contained panic {e:?}"
+                        );
                         assert_ne!(e.code, "internal", "{name}: {id} {params}: {e:?}");
                     }
                 }
@@ -276,6 +281,10 @@ fn every_m5_command_answers_every_boundary_call_and_the_engine_stays_alive() {
             // Leave the clock still for the next command.
             run(h, "playback.stop", json!({}));
         }
+    }
+    // Ruling E-29 item 5: containment is the last line, not the fix: no handler panicked, contained or not.
+    for (name, h) in &fixtures {
+        assert_eq!(h.caught_panics().unwrap(), 0, "{name}: a handler panicked and was contained");
     }
     println!("{} commands, {total} boundary calls", ids.len());
 }

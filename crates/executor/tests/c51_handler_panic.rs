@@ -1,5 +1,6 @@
-//! M5 C5.1a round 1 (builder; ruling E-21): what the executor does today when a handler panics. Its own test binary,
-//! since the persist boundary hook it sets is process-wide (`reviews/M5-design-handler-panics.md`).
+//! M5 C5.1a rounds 1 and 2 (builder; rulings E-21, E-29): a panic outside the invocation boundary (here at the commit,
+//! after the handler returned) degrades the engine. Its own test binary, since the persist boundary hook it sets is
+//! process-wide (`reviews/M5-design-handler-panics.md`). A handler's own panic is contained: `src/panic_tests.rs`.
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
 
 mod common;
@@ -12,11 +13,12 @@ use serde_json::json;
 use tt_executor::{ExecutorHandle, Status};
 use tt_persist::lock::{Boundary, hooks};
 
-/// What the executor does today when a handler panics (the response's E-21 section; the handler-panic design note):
-/// the call in flight answers `internal`, the document thread is gone with the session it held, every later call
-/// answers `internal`, and nothing restarts inside the executor (recovery is a new executor, the host's restart).
+/// A panic at the commit (outside the handler's boundary): the engine cannot vouch for its session, so it is degraded:
+/// the call in flight answers `internal`, every later call answers `internal` with reason `engineStopped` and the hint
+/// that names the way out, and nothing restarts inside the executor (recovery is a new executor, the host's restart).
+/// Before ruling E-29 the same input ended the document thread without the reason or the hint.
 #[test]
-fn e21_a_handler_panic_today_stops_the_document_thread() {
+fn e29_a_panic_at_the_commit_degrades_the_engine() {
     struct Reset;
     impl Drop for Reset {
         fn drop(&mut self) {
@@ -32,14 +34,20 @@ fn e21_a_handler_panic_today_stops_the_document_thread() {
             panic!("test: a handler panics");
         }
     })));
+    let events = h.subscribe();
     let died = run(&h, "element.create", json!({"type": "peg", "name": "Dies", "sceneId": "scene:#1"}));
     hooks::set(None);
+    assert!(h.degraded(), "a panic outside an invocation degrades the engine");
+    assert_eq!(events.try_iter().filter(|e| e.name == "shell.engineDegraded").count(), 1);
     assert_eq!(died.status, Status::Error);
     assert_eq!(died.error.as_ref().map(|e| e.code.as_str()), Some("internal"), "{died:?}");
     for (command, params) in [("timeline.rows.list", json!({})), ("doc.state.get", json!({}))] {
         let e = run(&h, command, params);
         assert_eq!(e.error.as_ref().map(|e| e.code.as_str()), Some("internal"), "{command}: {e:?}");
-        assert!(e.error.as_ref().unwrap().message.contains("document thread has stopped"), "{e:?}");
+        let error = e.error.as_ref().unwrap();
+        assert!(error.message.contains("document thread has stopped"), "{e:?}");
+        assert_eq!(error.details["reason"], tt_executor::ENGINE_STOPPED);
+        assert!(error.hint.as_deref().unwrap_or_default().contains("project.recovery.list"), "{e:?}");
     }
     // The open session is gone with the thread: a new executor (what the host's restart creates) has no project.
     let fresh = ExecutorHandle::spawn(Default::default()).unwrap();

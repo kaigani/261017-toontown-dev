@@ -3,8 +3,11 @@
 //! A heartbeat query runs off the main thread on a fixed [`PERIOD`] cadence measured with a monotonic clock: tick `n`
 //! is due at `start + n * PERIOD`, whatever the previous tick did. A heartbeat still unanswered at a tick is one miss;
 //! while it stays unanswered no new one is sent and each further tick is another miss. [`STRIKES`] misses mark the
-//! engine not responding (about 15 s); any answer clears the mark at once, also one that arrives late. The front end
-//! shows the mark and offers Wait or Restart; a restart is never automatic.
+//! engine not responding (about 15 s); any answer clears the mark at once, also one that arrives late. A heartbeat
+//! answered by an engine whose document thread has ended (`internal` with reason `engineStopped`: it died, or it
+//! stopped itself after a panic outside an invocation) marks it at once (ruling E-29 item 3: before, such an answer
+//! counted as neither a miss nor an answer, so the restart was never offered). The front end shows the mark and offers
+//! Wait or Restart; a restart is never automatic.
 
 use std::sync::{Mutex, PoisonError};
 use std::time::{Duration, Instant};
@@ -47,6 +50,17 @@ impl Watchdog {
         None
     }
 
+    /// Records a heartbeat answered by a stopped engine (ruling E-29 item 3): marked at once; returns `Some(true)` when
+    /// the mark changed. Only a real answer (the restarted engine's) clears it.
+    pub fn stopped(&mut self) -> Option<bool> {
+        self.missed = self.missed.max(STRIKES);
+        if self.not_responding {
+            return None;
+        }
+        self.not_responding = true;
+        Some(true)
+    }
+
     /// Whether the engine is marked not responding.
     #[must_use]
     pub fn not_responding(&self) -> bool {
@@ -76,6 +90,22 @@ fn record(app: &AppHandle, answered: bool) {
     if let Some(state) = changed {
         emit(app, state, host.generation());
     }
+}
+
+fn record_stopped(app: &AppHandle) {
+    let host = app.state::<Host>();
+    let changed = host.watchdog.lock().unwrap_or_else(PoisonError::into_inner).stopped();
+    if let Some(state) = changed {
+        emit(app, state, host.generation());
+    }
+}
+
+/// Whether an envelope is a stopped engine's answer (`internal`, reason `engineStopped`; ruling E-29).
+#[must_use]
+pub fn is_stopped(env: &tt_executor::Envelope) -> bool {
+    env.error.as_ref().is_some_and(|e| {
+        e.code == "internal" && e.details.get("reason").and_then(|r| r.as_str()) == Some(tt_executor::ENGINE_STOPPED)
+    })
 }
 
 /// Starts the heartbeat thread for the life of the application.
@@ -115,8 +145,12 @@ pub fn start(app: &AppHandle) {
                     *slot = None;
                     drop(slot);
                     // Misses are counted by the ticks; the reply side records answers only (a timeout is no answer).
-                    if env.is_ok() && a.state::<Host>().generation() == generation {
-                        record(&a, true);
+                    if a.state::<Host>().generation() == generation {
+                        if env.is_ok() {
+                            record(&a, true);
+                        } else if is_stopped(&env) {
+                            record_stopped(&a);
+                        }
                     }
                 }
             });
@@ -142,6 +176,42 @@ mod tests {
         assert_eq!(w.record(true), Some(false));
         assert_eq!(w.record(false), None, "the count starts again");
         assert_eq!(w.record(true), None);
+    }
+
+    /// Ruling E-29 item 3: a heartbeat answered by a stopped engine marks it at once (no three strikes); further such
+    /// answers change nothing; the restarted engine's first answer clears it; ordinary errors are neither.
+    #[test]
+    fn a_stopped_engine_is_marked_at_once_and_a_real_answer_clears_it() {
+        let mut w = Watchdog::default();
+        assert_eq!(w.stopped(), Some(true));
+        assert!(w.not_responding());
+        assert_eq!(w.stopped(), None, "already marked");
+        assert_eq!(w.record(false), None, "a miss after it changes nothing");
+        assert_eq!(w.record(true), Some(false), "the restarted engine answers");
+        assert!(!w.not_responding());
+        // After one miss, a stopped answer still marks at once.
+        assert_eq!(w.record(false), None);
+        assert_eq!(w.stopped(), Some(true));
+    }
+
+    #[test]
+    fn only_the_stopped_internal_counts_as_a_stopped_engine() {
+        let stopped = tt_executor::Envelope::error(
+            tt_executor::CommandError::with_details(
+                "internal",
+                "the document thread has stopped",
+                json!({ "reason": tt_executor::ENGINE_STOPPED }),
+            ),
+            None,
+        );
+        assert!(is_stopped(&stopped));
+        let contained = tt_executor::Envelope::error(
+            tt_executor::CommandError::with_details("internal", "failed", json!({ "reason": "handlerPanicked" })),
+            None,
+        );
+        assert!(!is_stopped(&contained), "a contained panic is one failed call: the engine keeps serving");
+        let refused = tt_executor::Envelope::error(tt_executor::CommandError::new("project.none", "no project"), None);
+        assert!(!is_stopped(&refused));
     }
 
     #[test]

@@ -153,3 +153,69 @@ restart and the recovery data. This is a host change of a few lines plus a unit 
 4. Keep the sweeps (§2): containment is the last line, not the fix.
 
 Until the ruling, nothing in this section is built.
+
+## 4. Ruling E-29: what was built
+
+The recommendation was approved with conditions (`reviews/M5-C5.1-plan.md` §15, E-29) and is built in C5.1a round 2.
+
+### 4.1 The invocation boundary (item 1)
+
+`run::run_step` runs the handler and its settle inside `catch_unwind`. A caught panic is the call's failure: `internal`,
+"`<id>` failed unexpectedly; nothing was changed", `details: {commandId, reason: "handlerPanicked", panic}`, with a hint.
+The caller's failure path (`Core::run_staged`, `Core::batch_atomic`) drops the staged transaction and the deferred
+effects, restores the `Rollback`, and then `Core::contained` counts the panic, cancels the jobs the call started (job ids
+are numbered: `JobTable::watermark` before the call, `cancel_since` after), writes a line to stderr and raises the
+host-only `shell.handlerPanicked` notice (after the rollback, so it is the one event the call leaves). The count is read
+with `ExecutorHandle::caught_panics`; it is not a member of any spec A result (D-57; the spec A addition is on the
+user's list, `plan/spec-issues.md`). The person sees the failure once, on the status line (D-87's path,
+`desktop/src/shell/refusals.ts`): "<command>: failed unexpectedly; nothing was changed"; no message box.
+
+Tests (`crates/executor/src/panic_tests.rs`, a dev-only registry with a handler that panics where the call says):
+`every_session_field_is_classified_against_the_rollback` (an exhaustive pattern over `Session`: a new field stops the
+build with its name until classified); `a_panicking_handler_fails_its_call_and_changes_nothing` (before staging, after
+staging, after starting a job, after changing each kind of state the `Rollback` covers: the document, history,
+checkpoints, application context, UI, clipboard, edit options, agent sessions and policy, Timeline state and event list
+equal their state before the call; the started job is cancelled; the next call is served);
+`a_panicking_step_fails_its_atomic_batch_and_changes_nothing`. The claims of §3.2: `memo::tests::a_computation_that_panics_leaves_no_entry`,
+`jobs::tests::a_poisoned_table_lock_is_still_served`.
+
+### 4.2 The request boundary (item 2)
+
+`document_thread` serves each request inside `catch_unwind`. A panic there marks the engine degraded
+(`ExecutorHandle::degraded`): stderr, the host-only `shell.engineDegraded` notice once, and the thread leaves its loop
+without another tick, so it writes no snapshot of a session it cannot vouch for (its last autosave stays on disk). Every
+later call answers `internal`, "the document thread has stopped", `details.reason: "engineStopped"`, with the hint that
+names the way out (restart the engine; then `project.recovery.list`), the same answer as a thread that died outright.
+
+**What runs outside an invocation, and why it cannot use the inner boundary.** The inner boundary can contain a panic
+because a call's effects are staged in its `Cx` and the `Rollback` restores the session; these requests change state
+with no such staging, or after it:
+
+| Request | What it does | Why not the inner boundary |
+|---|---|---|
+| `Invoke`, `Batch`: the request cache, `expectRev`, context repair, acceptance (`Core::accept`: commit, history, effects, revision log), settle and observation | the parts of a call around its handler | acceptance applies the transaction and its effects to the session and the project in place; a panic half-way leaves a half-committed state no `Rollback` describes |
+| `Open` (`Core::load`) | installs a loaded project into the session | it replaces the session's project and context wholesale, with no prior state to roll back to |
+| `WaitBegin`, `WaitFinish` (`job.wait`'s two halves) | the request cache and the waited job's envelope | bookkeeping of the request cache, outside any handler |
+| `Snapshot`, `List` | a copy of the document; `list_commands` (enablement read on a lent session) | reads, but `List` takes the session out of the core while it runs |
+| `Run` | work posted by job threads (installing a loaded project, finishing a save) and by the host: the timing-gesture interpreter (`timing_gesture::run` hit-tests and plans before it invokes), the Text tool's input path, the pointer gesture drivers, canvas reads, availability, key resolution, recovery release | each changes or reads session state directly (a grab inserted, a text session moved, a save's result installed) without a `Cx` of its own |
+| `Tick`, `Maintenance` | autosave, lock and recovery heartbeats, external-change detection | writes to disk and to the session's persistence state |
+| `PlaybackTick` | advances the playback clock and the current frame | changes the session's frame and playback state in place |
+
+### 4.3 The watchdog (item 3) and headless engines (item 4)
+
+The desktop watchdog marks the engine not responding at once when a heartbeat is answered with the stopped `internal`
+(`Watchdog::stopped`; `watchdog::is_stopped`), so the banner offers Restart and the recovery data; a contained panic
+(`handlerPanicked`) is one failed call and does not mark it. Unit tests: `a_stopped_engine_is_marked_at_once_and_a_real_answer_clears_it`,
+`only_the_stopped_internal_counts_as_a_stopped_engine`. The live check (a dev-only hook kills the document thread, the
+banner appears, Restart, Recover) joins the C5.1b rows and its manual script.
+
+Headless and MCP: the stopped answer's hint tells an agent to restart the engine process, then call
+`project.recovery.list`. `panic_tests::after_the_document_thread_died_a_new_executor_lists_the_last_autosave`: an
+autosave is written, the document thread dies, a new executor over the same folders lists that recovery data (in one
+process the dead engine is named first, as the desktop's restart does; a new process finds the old one gone). This was
+the unverified path of §1.2.
+
+### 4.4 The sweeps stay (item 5)
+
+The argument sweep (`c51_argument_sweep`) still fails on a contained panic: no call may answer `internal` (nor
+`handlerPanicked`), and each fixture's `caught_panics` must be 0 at the end.

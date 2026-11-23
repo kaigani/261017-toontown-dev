@@ -119,6 +119,19 @@ state commands (§5, §12).
    never beyond the remaining watchdog budget of the batch call (C12-R2-07); in an atomic batch it only polls.
    Snapshots handed out are immutable `Document` values.
 
+   *Amendment (M5 C5.1a round 2, ruling E-29; `reviews/M5-design-handler-panics.md` §4).* A handler that **panics**
+   is contained at the invocation boundary (`run::run_step`): the call fails with `internal` naming the command
+   (`details.reason: "handlerPanicked"`), its staged commit and effects are discarded, the `Rollback` is restored, jobs
+   it started are cancelled, and the next call is served; the count is reported on stderr, by the host-only
+   `shell.handlerPanicked` notice and by `ExecutorHandle::caught_panics` (never in a spec A result). A panic while
+   serving a request **outside** an invocation (acceptance, loading, posted work, maintenance, playback ticks) marks
+   the engine **degraded**: the host-only `shell.engineDegraded` notice once, no further work and no snapshot of that
+   session, and every later call answers `internal` with `details.reason: "engineStopped"` and a hint naming the way out
+   (restart the engine, then `project.recovery.list`), the same answer as a document thread that died outright. The
+   desktop watchdog marks a heartbeat answered that way as not responding at once, so the restart and its recovery are
+   offered; before this amendment a dead thread's immediate `internal` answers were counted as neither a miss nor an
+   answer and the restart was never offered (an M4 defect found by M5).
+
 4. **Transactions and revisions.** A handler stages changes through `Cx` (`patch_objects` for property edits,
    `patch_entries` for structural edits from M2 on); staging commits through `Document::with_patched_entries_undo_only`
    — the C1.1 staged commit with the full input path of each touched entry and the complete `issues()` of the staged

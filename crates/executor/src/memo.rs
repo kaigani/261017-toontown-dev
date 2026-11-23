@@ -125,3 +125,29 @@ pub(crate) fn selections(cx: &crate::cx::Cx, contexts: &[&str]) -> Vec<Arc<dyn A
         })
         .collect()
 }
+
+#[cfg(test)]
+mod tests {
+    #![allow(clippy::panic, reason = "test")]
+
+    use super::*;
+
+    /// Ruling E-29 (the handler-panic note §3.2): an entry is written only after its value is complete, so a computation
+    /// that panics leaves no entry, and the next call with the same key computes its value afresh (never a wrong one).
+    #[test]
+    fn a_computation_that_panics_leaves_no_entry() {
+        let value: Arc<dyn Any + Send + Sync> = Arc::new(vec![1u8, 2, 3]);
+        let values = [value.clone()];
+        let entries = || TABLE.with(|t| t.borrow().iter().filter(|e| e.tag == "e29").count());
+        enabled(|| {
+            let caught = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
+                memo_many::<u32>("e29", &values, 7, || panic!("test: a fact computation panics"))
+            }));
+            assert!(caught.is_err());
+            assert_eq!(entries(), 0, "no entry for the panicked computation");
+            assert_eq!(memo_many("e29", &values, 7, || 42u32), 42, "computed afresh");
+            assert_eq!(entries(), 1);
+            assert_eq!(memo_many("e29", &values, 7, || 0u32), 42, "then served from the entry");
+        });
+    }
+}

@@ -365,6 +365,9 @@ pub(crate) struct Core {
     /// The text object the next staged invocation types into (design note 5 §3): set by the Text tool's input path
     /// around one keystroke's commands, copied onto the invocation's step transaction, taken by [`Core::run_staged`].
     typing: Option<String>,
+    /// Handler panics contained since the executor started (ruling E-29): stderr, the host-only `shell.handlerPanicked`
+    /// notice and [`crate::ExecutorHandle::caught_panics`] report it; never a member of a spec A result (D-57).
+    caught_panics: u64,
 }
 
 fn unknown(id: &str, registry: &Registry) -> CommandError {
@@ -451,11 +454,43 @@ pub(crate) fn run_step(cx: &mut Cx, entry: &Entry, params: Value, opts: &InvokeO
             Err(_) => return Err(CommandError::internal(format!("the precheck of `{id}` failed unexpectedly"))),
         }
     }
-    let result = (command.handler)(cx, params)?;
-    // 02 §3.12 item 1: the layers the call changed are settled (re-noded, zones and fills updated) before the next
-    // step of a batch reads them; handlers that report stroke or zone IDs settle earlier themselves.
-    cx.settle()?;
-    Ok(result)
+    // Ruling E-29: a panicking handler (or its settle) is contained here: the call fails with `internal` naming the
+    // command, and the caller's failure path discards the staged commit and restores the `Rollback`
+    // ([`Core::contained`] counts it and cancels the jobs the call started).
+    let out = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| -> Result<Value, CommandError> {
+        let result = (command.handler)(cx, params)?;
+        // 02 §3.12 item 1: the layers the call changed are settled (re-noded, zones and fills updated) before the next
+        // step of a batch reads them; handlers that report stroke or zone IDs settle earlier themselves.
+        cx.settle()?;
+        Ok(result)
+    }));
+    match out {
+        Ok(r) => r,
+        Err(payload) => Err(caught_panic(id, payload.as_ref())),
+    }
+}
+
+/// The `details.reason` of a contained handler panic (ruling E-29).
+pub(crate) const HANDLER_PANICKED: &str = "handlerPanicked";
+
+/// The failure a contained panic of `id`'s handler answers (ruling E-29): `internal`, naming the command.
+fn caught_panic(id: &str, payload: &(dyn std::any::Any + Send)) -> CommandError {
+    let message = payload
+        .downcast_ref::<&str>()
+        .map(|m| (*m).to_owned())
+        .or_else(|| payload.downcast_ref::<String>().cloned())
+        .unwrap_or_default();
+    CommandError::with_details(
+        codes::INTERNAL,
+        format!("`{id}` failed unexpectedly; nothing was changed"),
+        json!({ "commandId": id, "reason": HANDLER_PANICKED, "panic": message }),
+    )
+    .hint("This is a defect in the engine, not in the request; the engine keeps serving. Report the command and the message.")
+}
+
+/// Whether a failure is a contained handler panic.
+pub(crate) fn is_caught_panic(e: &CommandError) -> bool {
+    e.code == codes::INTERNAL && e.details.get("reason").and_then(Value::as_str) == Some(HANDLER_PANICKED)
 }
 
 /// REV-05 (C12-R1-07): every listed object must still have the expected `rev`; a mismatch is `rev.conflict` with
@@ -1066,7 +1101,31 @@ impl Core {
             call_start: None,
             label_override: None,
             typing: None,
+            caught_panics: 0,
         }
+    }
+
+    /// Handler panics contained so far (ruling E-29).
+    pub(crate) fn caught_panics(&self) -> u64 {
+        self.caught_panics
+    }
+
+    /// After a contained handler panic and the restored `Rollback` (ruling E-29): counts it, cancels the jobs the call
+    /// started (submitted after `jobs_mark`), reports it on stderr and raises the host-only notice, which the person
+    /// sees as the call's failure on the status line (D-87).
+    fn contained(&mut self, session: &mut Session, e: &CommandError, jobs_mark: u64) {
+        self.caught_panics = self.caught_panics.saturating_add(1);
+        let cancelled = session.jobs.cancel_since(jobs_mark);
+        let command = e.details.get("commandId").and_then(Value::as_str).unwrap_or_default().to_owned();
+        let panic = e.details.get("panic").and_then(Value::as_str).unwrap_or_default().to_owned();
+        eprintln!(
+            "toontown: contained handler panic #{n} in `{command}`: {panic}; the call failed and nothing was changed",
+            n = self.caught_panics
+        );
+        session.emit(
+            "shell.handlerPanicked",
+            json!({ "commandId": command, "count": self.caught_panics, "cancelledJobIds": cancelled }),
+        );
     }
 
     /// The enqueue instant of the caller's request about to run (none for internal work).
@@ -1498,6 +1557,7 @@ impl Core {
         let session = self.take_session();
         let before = observe(&session);
         let rollback = Rollback::take(&session);
+        let jobs_mark = session.jobs.watermark();
         let mut cx = Cx::new(session, origin.clone(), id, dry);
         let outcome = step(&mut cx).and_then(|result| {
             let label = forced
@@ -1523,6 +1583,9 @@ impl Core {
         let env = match outcome {
             Err(e) => {
                 rollback.apply(&mut session);
+                if is_caught_panic(&e) {
+                    self.contained(&mut session, &e, jobs_mark);
+                }
                 let mut env = needs_confirmation(&mut session, e, rev_before);
                 env.warnings = warnings;
                 env
@@ -1813,6 +1876,7 @@ impl Core {
         let session = self.take_session();
         let before = observe(&session);
         let rollback = Rollback::take(&session);
+        let jobs_mark = session.jobs.watermark();
         let rev_before = session.project.as_ref().map(|p| p.doc.document_rev());
         let mut cx = Cx::new(session, origin.clone(), "batch", req.dry_run);
         cx.set_atomic_batch(true);
@@ -1880,6 +1944,7 @@ impl Core {
         {
             failed = Some((req.steps.len().saturating_sub(1), e));
         }
+        let panicked = failed.as_ref().and_then(|(_, e)| is_caught_panic(e).then(|| e.clone()));
         let committed = match (precondition, failed) {
             (Err(e), _) => Err(e),
             (Ok(()), Some((i, e))) => Err(step_failed(i, &req.steps[i].id, e)),
@@ -1898,6 +1963,9 @@ impl Core {
         let env = match committed {
             Err(e) => {
                 rollback.apply(&mut session);
+                if let Some(p) = &panicked {
+                    self.contained(&mut session, p, jobs_mark);
+                }
                 let mut env = Envelope::error(e, rev_before);
                 env.steps = Some(steps);
                 env.dry_run = req.dry_run;

@@ -2707,3 +2707,12 @@ below is written as it would appear in spec A, with what the window does without
 | `ActivityEntry` members `batchId?: string; changedIds?: [id]; changedIdsTruncated?: bool` | grouping a script's calls; highlighting what an entry changed (SI-175) | the panel groups by entry; selecting an entry highlights nothing |
 | `agent.session.changed` \| event \| A session's grant, pause or resume changed \| — \| `{sessionId}` \| n/a | the sessions strip and the indicator (SI-176) | `agent.paused` and `agent.resumed` exist; a grant is the host-only `shell.agentSession` |
 | `agent.confirmation.resolved` \| event \| A pending confirmation was decided, expired or used \| — \| `{confirmationId, outcome: accepted \| declined \| expired \| used}` \| n/a | the confirmation sheet drops a request decided elsewhere (SI-177) | the host-only `shell.agentConfirmation` and a re-read of `agent.server.status` |
+
+## Spec A additions proposed by M5, for the user
+
+Ruling D-57 as above: none is built.
+
+| Proposed row (A's columns: id, kind, label, parameters, result, undo) | Why | Without it |
+|---|---|---|
+| `doc.state.get` result member `caughtPanics: int` | how many handler panics the engine contained since it started (ruling E-29): an agent or a test can tell that a call failed unexpectedly without reading stderr | stderr (`toontown: contained handler panic #n ...`), the host-only `shell.handlerPanicked` notice (window only), and `ExecutorHandle::caught_panics` for embedding code and tests |
+| `engine.degraded` \| event \| The engine stopped serving after an unexpected failure \| — \| `{message}` \| n/a | an MCP client learns of a degraded engine from an event rather than from its next call's `internal` (ruling E-29) | the host-only `shell.engineDegraded` notice (window only); an agent sees `internal` with reason `engineStopped` and the hint on its next call |

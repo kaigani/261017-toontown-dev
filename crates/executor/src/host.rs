@@ -37,6 +37,8 @@ pub(crate) struct ShellShared {
     wait_for_user_ms: AtomicU64,
     /// A host window renders the UI (attached mode).
     attached: std::sync::atomic::AtomicBool,
+    /// The document thread stopped itself after a panic outside an invocation (ruling E-29): set once, never cleared.
+    pub(crate) degraded: std::sync::atomic::AtomicBool,
     /// The panels the kernel shows as floating windows, published by the document thread after every request and
     /// before its reply (round 3, C41-R3-06): a tree reported after a command was answered is judged against the
     /// arrangement that command left.
@@ -169,6 +171,7 @@ impl Default for ShellShared {
             rendered: Mutex::new(None),
             wait_for_user_ms: AtomicU64::new(10_000),
             attached: std::sync::atomic::AtomicBool::new(false),
+            degraded: std::sync::atomic::AtomicBool::new(false),
             floats: Mutex::new(Vec::new()),
             captures: Mutex::new((0, 0)),
             attached_io: Mutex::new(None),

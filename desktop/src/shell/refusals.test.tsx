@@ -98,4 +98,32 @@ describe('a refused person action is reported on the status line (D-87)', () => 
     });
     expect(screen.queryByRole('alertdialog')).toBeNull();
   });
+
+  it('a contained handler panic (E-29): the status line says the command failed unexpectedly, once, no message box', async () => {
+    const panicked = {
+      code: 'internal',
+      message: '`edit.delete` failed unexpectedly; nothing was changed',
+      details: { commandId: 'edit.delete', reason: 'handlerPanicked', panic: 'index out of range' },
+    };
+    expect(refusalLine(panicked, 'Delete')).toBe(
+      `${commandLabel('edit.delete')}: failed unexpectedly; nothing was changed`,
+    );
+    const host = createScriptedHost({
+      'app.state.get': () => ok(PROJECT),
+      'edit.delete': () => fail(panicked.code, panicked.message, panicked.details),
+    });
+    render(
+      <HostProvider api={createHostApi(host)}>
+        <App />
+      </HostProvider>,
+    );
+    await screen.findByRole('toolbar', { name: 'Main toolbar' });
+    act(() => {
+      host.menu('edit.delete', {});
+    });
+    await waitFor(() => {
+      expect(statusLine()).toBe(`${commandLabel('edit.delete')}: failed unexpectedly; nothing was changed`);
+    });
+    expect(screen.queryByRole('alertdialog')).toBeNull();
+  });
 });

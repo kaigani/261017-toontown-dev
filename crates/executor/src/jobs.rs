@@ -301,6 +301,28 @@ impl JobTable {
         }
         self.lock().jobs.get(job_id).cloned().ok_or_else(|| not_found(job_id))
     }
+
+    /// The number of the last job submitted (job ids are `job-<n>`, numbered from 1): a mark taken before an invocation
+    /// names the jobs it starts (ruling E-29).
+    pub(crate) fn watermark(&self) -> u64 {
+        self.lock().next
+    }
+
+    /// Requests cancellation of every job submitted after `mark` (an invocation that failed unexpectedly started them;
+    /// ruling E-29); returns their ids.
+    pub(crate) fn cancel_since(&self, mark: u64) -> Vec<String> {
+        let ids: Vec<String> = self
+            .lock()
+            .jobs
+            .keys()
+            .filter(|id| id.strip_prefix("job-").and_then(|n| n.parse::<u64>().ok()).is_some_and(|n| n > mark))
+            .cloned()
+            .collect();
+        for id in &ids {
+            let _ = self.cancel(id);
+        }
+        ids
+    }
 }
 
 fn not_found(job_id: &str) -> CommandError {
@@ -332,5 +354,47 @@ fn check_final_result(command_id: &str, v: Value) -> Result<Value, CommandError>
             format!("the result of `{command_id}` violates its declared final-result schema"),
             serde_json::json!({ "commandId": command_id, "violations": violations }),
         ))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    #![allow(clippy::unwrap_used, clippy::panic, reason = "test")]
+
+    use super::*;
+
+    /// Ruling E-29 (the handler-panic note §3.2): a panic while the job table's lock is held poisons it; every later use
+    /// still reads it (`PoisonError::into_inner`), so the panic does not cascade into the next call.
+    #[test]
+    fn a_poisoned_table_lock_is_still_served() {
+        let table = Arc::new(JobTable::default());
+        let t = table.clone();
+        let poisoned = std::thread::spawn(move || {
+            let _guard = t.table.lock().unwrap();
+            panic!("test: a panic while the job table is locked");
+        })
+        .join();
+        assert!(poisoned.is_err());
+        assert!(table.table.is_poisoned());
+        let id = table.submit("test.job", "", |_| Ok(Value::Null)).unwrap();
+        assert!(table.list(Some(&id), None).len() == 1);
+        assert_eq!(table.watermark(), 1);
+    }
+
+    /// The jobs submitted after a mark are the ones cancelled.
+    #[test]
+    fn cancel_since_names_only_the_jobs_after_the_mark() {
+        let table = Arc::new(JobTable::default());
+        let slow = |p: &JobProgress| {
+            while !p.cancelled() {
+                std::thread::sleep(std::time::Duration::from_millis(1));
+            }
+            Ok(Value::Null)
+        };
+        let before = table.submit("test.job", "", slow).unwrap();
+        let mark = table.watermark();
+        let after = table.submit("test.job", "", slow).unwrap();
+        assert_eq!(table.cancel_since(mark), vec![after]);
+        let _ = table.cancel(&before);
     }
 }

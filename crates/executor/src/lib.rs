@@ -44,6 +44,8 @@ pub mod keymap;
 mod load_repair;
 mod maintenance;
 mod memo;
+#[cfg(test)]
+mod panic_tests;
 mod persistence;
 /// The interactive-target rule for a person's contextual edits from keys, panels and menus (ruling D-83 item 3).
 pub(crate) mod person;
@@ -283,9 +285,21 @@ fn timeout(what: &str, budget: Duration) -> CommandError {
     .hint("the call was cancelled: unless it had already committed, it changed nothing; read doc.state.get before retrying")
 }
 
+/// The answer of every call once the document thread has ended: it died, or it stopped itself after a panic outside an
+/// invocation left its session in a state it cannot vouch for (degraded; ruling E-29). The hint names the way out.
 fn stopped() -> CommandError {
-    CommandError::internal("the document thread has stopped")
+    CommandError::with_details(codes::INTERNAL, "the document thread has stopped", json!({ "reason": ENGINE_STOPPED }))
+        .hint(STOPPED_HINT)
 }
+
+/// What to do about a stopped engine (ruling E-29 item 4: an agent can act on it).
+const STOPPED_HINT: &str = concat!(
+    "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP ",
+    "client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave.",
+);
+
+/// The `details.reason` of a call answered by an engine whose document thread has ended (ruling E-29).
+pub const ENGINE_STOPPED: &str = "engineStopped";
 
 impl ExecutorHandle {
     /// Starts the document thread.
@@ -398,6 +412,22 @@ impl ExecutorHandle {
             .map_err(|e| CommandError::internal(format!("cannot start the playback clock: {e}")))?;
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
         Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, _guard: guard })
+    }
+
+    /// Handler panics contained so far (ruling E-29; reported on stderr and by the host-only `shell.handlerPanicked`
+    /// notice, never in a spec A result).
+    ///
+    /// # Errors
+    /// `internal` (`engineStopped`) once the document thread has ended; `command.timeout`.
+    pub fn caught_panics(&self) -> Result<u64, CommandError> {
+        Poster(self.tx.clone()).run(self.config.budget, |core| core.caught_panics())
+    }
+
+    /// Whether the engine stopped itself after a panic outside an invocation (ruling E-29): every call then answers
+    /// `internal` with reason `engineStopped` and the hint that names the way out.
+    #[must_use]
+    pub fn degraded(&self) -> bool {
+        self.shell.degraded.load(std::sync::atomic::Ordering::Acquire)
     }
 
     /// The never-block budget of every call (D-68 item 4: the MCP host bounds its own waits by it).
@@ -1034,6 +1064,7 @@ fn document_thread(
         broadcast(subscribers, &core.take_events());
     };
     tt_vector::work::set_cancel_state(Some(cancel.clone()));
+    let mut degraded = false;
     while let Ok(req) = rx.recv() {
         let (token, link, queued, req) = match req {
             Request::Tagged(t, link, at, r) => (t, link, Some(at), *r),
@@ -1061,7 +1092,11 @@ fn document_thread(
         cancel.current.store(token, std::sync::atomic::Ordering::Release);
         core.set_call_start(queued);
         let shutdown = matches!(req, Request::Shutdown);
-        match req {
+        // Ruling E-29: a panic while serving a request, outside the invocation boundary that contains handler panics
+        // (`run::run_step`), leaves the session in a state the engine cannot vouch for. The engine is degraded: it
+        // raises the host-only notice once, stops serving (every later call answers `stopped()`, which names the way
+        // out) and writes no snapshot of that session.
+        let served = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| match req {
             Request::Invoke(inv, reply) => {
                 host::acting(subscribers, &inv.origin, &inv.command, true);
                 let env = core.invoke(&inv);
@@ -1112,6 +1147,22 @@ fn document_thread(
                 let _ = reply.send(timings);
             }
             Request::Shutdown | Request::Tagged(..) => {}
+        }));
+        if let Err(payload) = served {
+            let message = payload
+                .downcast_ref::<&str>()
+                .map(|m| (*m).to_owned())
+                .or_else(|| payload.downcast_ref::<String>().cloned())
+                .unwrap_or_default();
+            eprintln!(
+                "toontown: the engine is degraded after a panic outside an invocation: {message}; it stops serving"
+            );
+            shell.degraded.store(true, std::sync::atomic::Ordering::Release);
+            broadcast(
+                subscribers,
+                &[Event { name: "shell.engineDegraded".to_owned(), payload: json!({ "message": message }) }],
+            );
+            degraded = true;
         }
         // The link is released only after the reply was sent, so a caller woken by its release finds the reply.
         caller::set(None, bound);
@@ -1121,7 +1172,7 @@ fn document_thread(
         if token != 0 {
             cancel.forget(token);
         }
-        if shutdown {
+        if shutdown || degraded {
             break;
         }
         flush(&mut core);
