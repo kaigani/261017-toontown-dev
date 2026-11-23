@@ -7,8 +7,8 @@ M5; until then only the table of §4 is kept current.
 
 | Checkpoint | Scope | Closure |
 |---|---|---|
-| C5.1a | Timeline kernel: `timeline.*`, interactive playback, the timing-gesture interpreter, the `xsheet` composition | not handed off |
-| C5.1b | the Timeline view | not started |
+| C5.1a | Timeline kernel: `timeline.*`, interactive playback, the timing-gesture interpreter, the `xsheet` composition | handed off on `ba8e1946` (run 45100267389, 36 of 36); `reviews/M5-C5.1a-handoff.md` |
+| C5.1b | the Timeline view | in progress |
 | C5.2 | the Exposure Sheet, cell commands, the Properties and Cells panels | not started |
 
 ## 4. Tests that failed on a commit later green on rerun (the M11 list)
