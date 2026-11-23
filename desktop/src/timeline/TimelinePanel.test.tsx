@@ -47,7 +47,10 @@ function feet(f: number): string {
   return `${Math.floor(f / 16)}+${String(f % 16).padStart(2, '0')}`;
 }
 
-async function timeline(prefs: Record<string, string>): Promise<ScriptedHost> {
+async function timeline(
+  prefs: Record<string, string>,
+  rowsNow: () => unknown[] = () => [BOB],
+): Promise<ScriptedHost> {
   const h = createScriptedHost({
     'app.state.get': () => ok({ ...PROJECT }),
     'timeline.rows.list': () =>
@@ -56,7 +59,7 @@ async function timeline(prefs: Record<string, string>): Promise<ScriptedHost> {
         sceneLength: 24,
         currentFrame: 1,
         playbackRange: { mode: 'auto', start: 1, end: 24 },
-        rows: [BOB],
+        rows: rowsNow(),
       }),
     'timeline.view.set': () => ok({ zoomLevel: 6, firstFrame: 1, lastFrame: 40 }),
     'cell.selection.get': () =>
@@ -143,5 +146,43 @@ describe('the Timeline follows an agent’s change of its preferences (E-6)', ()
     await waitFor(() => {
       expect(el('timeline.row.el_bob').style.borderLeft).toContain('rgb(255, 0, 0)');
     });
+  });
+});
+
+// Ruling E-40, the window's side: an agent's change of the effect-parameter setting (`timeline.effectParameterRows.set`)
+// raises `shell.timelineView`, and the Timeline reads its rows again: the hidden parameter row leaves the layer list.
+describe('the Timeline follows an agent’s change of the effect-parameter setting (E-40)', () => {
+  it('a hidden parameter row leaves the layer list', async () => {
+    const clip = {
+      ...BOB,
+      elementId: 'el_clip',
+      name: 'Clip',
+      type: 'clipping',
+      bar: { start: 1, end: 24, loops: 1 },
+    };
+    const mask = {
+      ...BOB,
+      elementId: 'el_mask',
+      name: 'Clip-mask',
+      type: 'effectParameter',
+      depth: 1,
+      parentId: 'el_clip',
+    };
+    let shown = true;
+    const h = await timeline({}, () => (shown ? [clip, mask, BOB] : [clip, BOB]));
+    await waitFor(() => {
+      expect(document.querySelector('[data-tt-id="timeline.row.el_mask"]')).not.toBeNull();
+    });
+    shown = false;
+    h.event('shell.timelineView', {
+      sceneId: 'sc_1',
+      view: { zoomLevel: 6, firstFrame: 1, lastFrame: 40 },
+      effectParameterRowsHidden: true,
+      effectParameterRows: {},
+    });
+    await waitFor(() => {
+      expect(document.querySelector('[data-tt-id="timeline.row.el_mask"]')).toBeNull();
+    });
+    expect(document.querySelector('[data-tt-id="timeline.row.el_clip"]')).not.toBeNull();
   });
 });
