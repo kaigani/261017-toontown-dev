@@ -346,7 +346,7 @@ pub(crate) fn info(cx: &Cx, doc: &Document, id: &Id) -> Result<ElementInfo, Comm
     scopes = [read],
     needs_project,
     example(title = "Bob's state", params = r#"{"elementId": "scene:\"Intro\"/element:\"Bob\""}"#),
-    agent_only = "the Timeline, Exposure Sheet and Properties view show an element's state directly",
+    gui = "Timeline: each visible row's colours and note (M5 C5.1)",
 )]
 pub(crate) fn element_get(cx: &mut Cx, p: ElementParams) -> Result<ElementInfo, CommandError> {
     let id = element_id(cx, &p.element_id, "/elementId")?;

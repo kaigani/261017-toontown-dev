@@ -97,6 +97,7 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `draw.viewMapping.get` | `render.noCamera` | parameter | only when the caller names a Camera view: its scene has no camera to look through (SI-147) |  |
 | `draw.viewMapping.get` | `render.noScene` | parameter | only when the caller names a Camera view: the project has no scene |  |
 | `draw.viewMapping.get` | `view.notFound` | parameter | the view the caller names does not exist |  |
+| `element.get` | `element.notFound` | parameter | an `elementId` the caller names does not exist |  |
 | `ui.statusBar.get` | `project.none` | unreachable | every document read of the handler is guarded (`let Ok(doc) = cx.document() else …`): it always answers |  |
 
 ## By command
@@ -967,6 +968,12 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `workspace.import` | `workspace.invalidFile` | parameter | the file the caller names is not a workspace |  |
 | `xsheet.currentCell.set` | `cell.frameOutOfRange` | parameter | a frame outside 1-100000 |  |
 | `xsheet.currentCell.set` | `element.notFound` | parameter | an `elementId` the caller names does not exist |  |
+| `xsheet.exposures.get` | `arg.invalid` | parameter | `to` before `from`, or another parameter value the caller gives is invalid |  |
+| `xsheet.exposures.get` | `cell.frameOutOfRange` | parameter | a frame outside 1-100000 |  |
+| `xsheet.exposures.get` | `command.disabled` | unreachable | no `sceneId` and no current scene: a project always has a current scene (it is created with one, and no implemented command deletes a scene or clears the current one) |  |
+| `xsheet.exposures.get` | `drawing.noTarget` | parameter | only with `include: ["thumbnails"]`: the thumbnail's drawing render refuses a drawing it cannot target |  |
+| `xsheet.exposures.get` | `drawing.notVectorElement` | parameter | only with `include: ["thumbnails"]`: the thumbnail's drawing render refuses a drawing of an element that is not a drawing or annotation element |  |
+| `xsheet.exposures.get` | `element.notFound` | parameter | an element the caller names in `elementIds` does not exist |  |
 | `xsheet.exposures.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
 | `xsheet.exposures.set` | `cell.drawingNotFound` | parameter | the drawing name the caller gives is not in the column's bank |  |
 | `xsheet.exposures.set` | `command.disabled` | precheck | nothing selected, or no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |

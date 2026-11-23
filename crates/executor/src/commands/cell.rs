@@ -1970,7 +1970,7 @@ pub(crate) struct SelectionResult {
     scopes = [read],
     needs_project,
     example(title = "The current cell selection and position", params = "{}"),
-    agent_only = "the Exposure Sheet and Timeline show the selection directly",
+    gui = "Timeline: the cell selection drawn on the tracks (M5 C5.1)",
 )]
 pub(crate) fn cell_selection_get(cx: &mut Cx, _p: NoParams) -> Result<SelectionResult, CommandError> {
     let doc = cx.document()?;

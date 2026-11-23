@@ -62,6 +62,10 @@ export interface ShellReport {
   description?: string;
   pointer?: string;
   viewSizes?: Record<string, { width: number; height: number }>;
+  /** The Timeline's track viewport width in pixels (`timeline.view.set`'s `lastFrame`; M5 C5.1). */
+  timelineViewport?: number;
+  /** The last frame the window presented during playback (frame-based playback waits for it, 09 line 170). */
+  presentedFrame?: number;
   screens?: { x: number; y: number; width: number; height: number; scale: number }[];
   attached?: boolean;
   uiTree?: unknown;

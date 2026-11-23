@@ -38,6 +38,11 @@ import {
   type MenuPlacement,
 } from './contextMenuModel';
 import { enabledIn, useAvailability } from './useAvailability';
+import deferredTable from '../ui-bindings/deferred.json';
+
+/** The GUI bindings a later checkpoint owns (D-31): an item whose command is still deferred is shown disabled with its
+ *  owner, as a placeholder that sends nothing (SI-155), until its entry leaves the table. */
+const DEFERRED = (deferredTable as { deferred: Record<string, { owner: string }> }).deferred;
 
 const refOf = (i: MenuCommand): CommandRef => ({ commandId: i.command, params: i.params ?? {} });
 
@@ -303,7 +308,8 @@ export function ContextMenu({
             )}
             {g.items.map((item) => {
               const facts = availability(refOf(item));
-              const enabled = enabledIn(facts);
+              const owner = DEFERRED[item.command]?.owner;
+              const enabled = !owner && enabledIn(facts);
               // The parameters as the kernel completes them now (a toggle's next state; O-10).
               const params =
                 facts && facts.params !== null && typeof facts.params === 'object'
@@ -318,17 +324,25 @@ export function ContextMenu({
                   role={item.check ? 'menuitemcheckbox' : 'menuitem'}
                   {...(checked !== undefined ? { 'aria-checked': checked } : {})}
                   aria-disabled={!enabled}
-                  title={!enabled && facts?.reason ? `${text} — ${facts.reason}` : undefined}
+                  title={
+                    owner
+                      ? `${text} — arrives with ${owner}`
+                      : !enabled && facts?.reason
+                        ? `${text} — ${facts.reason}`
+                        : undefined
+                  }
                   tabIndex={-1}
                   data-tt-role="menuitem"
                   data-tt-id={`${id}.${item.id}`}
                   data-tt-label={text}
-                  data-tt-command={item.command}
-                  data-tt-params={JSON.stringify(params)}
+                  {...(owner
+                    ? { 'data-tt-gui-only': 'placeholder' }
+                    : { 'data-tt-command': item.command, 'data-tt-params': JSON.stringify(params) })}
                   onClick={() => {
                     if (!enabled) return;
                     onClose();
-                    void actions.perform(item.command, params);
+                    if (item.onSelect) item.onSelect();
+                    else void actions.perform(item.command, params);
                   }}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
@@ -341,7 +355,11 @@ export function ContextMenu({
                     {checked ? '✓' : ''}
                   </span>
                   {text}
-                  {!enabled && facts?.reason && <span className="context-menu-reason">{facts.reason}</span>}
+                  {owner ? (
+                    <span className="context-menu-reason">{`arrives with ${owner}`}</span>
+                  ) : (
+                    !enabled && facts?.reason && <span className="context-menu-reason">{facts.reason}</span>
+                  )}
                 </button>
               );
             })}

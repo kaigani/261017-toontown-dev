@@ -7,6 +7,9 @@ export interface MenuCommand {
   readonly command: string;
   readonly params?: Readonly<Record<string, unknown>>;
   readonly check?: boolean;
+  /** An item that collects a value first (a dialog): chosen, it runs this instead of performing the reference, which
+   *  stays its availability and its parity binding (the dialog completes it). */
+  readonly onSelect?: () => void;
 }
 
 /** A group of items, with a heading when it has a name (02 §4.4: "Arrange", "Transform"). */

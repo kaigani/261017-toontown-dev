@@ -791,7 +791,7 @@ pub(crate) fn feet_and_frames(cx: &Cx) -> bool {
     scopes = [read],
     needs_project,
     example(title = "Frames 1, 16, 20", params = r#"{"frames": [1, 16, 20]}"#),
-    agent_only = "agents format frame numbers as the time display shows them (04 §11.4); the window formats its ruler from the same preference",
+    gui = "Timeline: the frame ruler's labels in the time display (04 §11.4; M5 C5.1)",
 )]
 pub(crate) fn timeline_frame_label_get(cx: &mut Cx, p: FrameLabelParams) -> Result<FrameLabelResult, CommandError> {
     let feet = feet_and_frames(cx);

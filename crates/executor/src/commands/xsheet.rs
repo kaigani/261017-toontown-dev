@@ -186,7 +186,7 @@ fn continues(before: bool, after: bool) -> Option<String> {
     needs_project,
     example(title = "The Intro scene's exposure sheet, frames 1-24", params = r#"{"sceneId": "scene:\"Intro\"", "from": 1, "to": 24}"#),
     example(title = "Bob's column with notes", params = r#"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "include": ["notes"]}"#),
-    agent_only = "the Exposure Sheet shows the cells directly",
+    gui = "Timeline: the visible cell-based rows' exposures (M5 C5.1)",
 )]
 pub(crate) fn xsheet_exposures_get(cx: &mut Cx, p: GetParams) -> Result<Sheet, CommandError> {
     let picked = match &p.element_ids {

@@ -13,6 +13,7 @@ import { panelInfo } from './catalogue';
 import { PenPanel } from './PenPanel';
 import { PropertiesPanel } from './PropertiesPanel';
 import { TextPanel } from './TextPanel';
+import { TimelinePanel } from '../timeline/TimelinePanel';
 
 export function PanelBody({ panelId }: { panelId: string }) {
   const info = panelInfo(panelId);
@@ -21,6 +22,7 @@ export function PanelBody({ panelId }: { panelId: string }) {
   if (panelId === 'pen') return <PenPanel />;
   if (panelId === 'properties') return <PropertiesPanel />;
   if (panelId === 'text') return <TextPanel />;
+  if (panelId === 'timeline') return <TimelinePanel />;
   if (info?.view) return <ViewPanel panelId={panelId} />;
   return (
     <div

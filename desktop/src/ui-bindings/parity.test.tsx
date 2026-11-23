@@ -174,8 +174,63 @@ function host(project: boolean): ScriptedHost {
     'tool.settings.get': () =>
       ok({ placeBehind: false, drawTopLayer: false, snapToContour: false, symmetry: { mode: 'none' } }),
     'colour.gapClosing.get': () => ok({ mode: 'off', tolerancesPx: { small: 3, medium: 8, large: 16 } }),
+    // The Timeline (M5 C5.1b): a parent peg with a child, a collapsed parent, a clipping effect, a cell selection.
+    'timeline.view.set': () => ok({ zoomLevel: 6, firstFrame: 1, lastFrame: 60 }),
+    'timeline.rows.list': () => ok(TIMELINE_ROWS),
+    'cell.selection.get': () =>
+      ok({
+        elementIds: ['el_bob'],
+        from: 1,
+        to: 4,
+        rowsSelected: 0,
+        currentElementId: 'el_bob',
+        currentFrame: 1,
+      }),
+    'xsheet.exposures.get': () =>
+      ok({
+        columns: [{ elementId: 'el_bob', exposures: [{ drawing: '1', drawingId: 'dr_1', from: 1, to: 12 }] }],
+      }),
+    'element.get': () =>
+      ok({ effectiveMarkerColour: '#FF8800FF', backgroundColour: null, note: 'redraw the hands' }),
+    'timeline.frameLabel.get': (p) =>
+      ok({ labels: (Array.isArray(p['frames']) ? (p['frames'] as unknown[]) : []).map(String) }),
   });
 }
+
+/** The Timeline's rows as `timeline.rows.list` answers them (the parity host's scene). */
+const TIMELINE_ROWS = (() => {
+  const row = (r: Record<string, unknown>) => ({
+    parentId: null,
+    depth: 0,
+    collapsed: false,
+    visibleInScene: true,
+    hiddenByParent: false,
+    locked: false,
+    bar: { start: 1, end: 24, loops: 1 },
+    keyframes: [],
+    childKeyframeFrames: [],
+    ...r,
+  });
+  return {
+    sceneId: 'sc_1',
+    sceneLength: 24,
+    currentFrame: 1,
+    playbackRange: { mode: 'free', start: 1, end: 24 },
+    rows: [
+      row({
+        elementId: 'el_peg',
+        name: 'Bob-P',
+        type: 'peg',
+        keyframes: [{ frame: 1, channels: ['position'], segmentAfter: 'interpolated' }],
+        childKeyframeFrames: [1],
+      }),
+      row({ elementId: 'el_bob', name: 'Bob', type: 'drawing', depth: 1, parentId: 'el_peg' }),
+      row({ elementId: 'el_grp', name: 'Group', type: 'peg', collapsed: true, childKeyframeFrames: [5] }),
+      row({ elementId: 'el_arm', name: 'Arm', type: 'drawing', depth: 1, parentId: 'el_grp' }),
+      row({ elementId: 'el_clip', name: 'Clip', type: 'clipping', locked: true }),
+    ],
+  };
+})();
 
 /** The tools' options as the kernel's defaults give them (`drawing.rs` `default_options`). */
 const TOOL_OPTIONS: Record<string, Record<string, unknown>> = {
@@ -339,6 +394,92 @@ async function surfaces(): Promise<Surface[]> {
     act(() => {
       fireEvent.keyDown(menu, { key: 'Escape' });
     });
+  }
+
+  // The Timeline's context menus (M5 C5.1b; view note §5): a row's, the cells' and the ruler's, each with the dialogs
+  // its items open (view note §7).
+  const timelineMenus: [string, string, () => void, string[]][] = [
+    [
+      'row',
+      'timeline.rowMenu',
+      () => {
+        const r = document.querySelector('[data-tt-id="timeline.row.el_peg"]');
+        if (!r) throw new Error('no Timeline row rendered');
+        fireEvent.contextMenu(r, { clientX: 40, clientY: 300 });
+      },
+      [
+        'timeline.row.markerColour',
+        'timeline.row.backgroundColour',
+        'timeline.row.rename',
+        'timeline.row.note',
+        'timeline.row.changeStart',
+        'timeline.row.changeDuration',
+        'timeline.row.changeLoops',
+      ],
+    ],
+    [
+      'row:drawing',
+      'timeline.rowMenu',
+      () => {
+        const r = document.querySelector('[data-tt-id="timeline.row.el_bob"]');
+        if (!r) throw new Error('no Timeline row rendered');
+        fireEvent.contextMenu(r, { clientX: 40, clientY: 300 });
+      },
+      [],
+    ],
+    [
+      'cells',
+      'timeline.cellMenu',
+      () => {
+        const t = document.querySelector('[data-tt-id="timeline.tracks"]');
+        if (!t) throw new Error('no Timeline tracks rendered');
+        fireEvent.contextMenu(t, { clientX: 40, clientY: 5 });
+      },
+      ['timeline.cell.extendChildren'],
+    ],
+    [
+      'ruler',
+      'timeline.rulerMenu',
+      () => {
+        const t = document.querySelector('[data-tt-id="timeline.ruler"]');
+        if (!t) throw new Error('no Timeline ruler rendered');
+        fireEvent.contextMenu(t, { clientX: 40, clientY: 5 });
+      },
+      ['timeline.ruler.currentFrame', 'timeline.ruler.rangeStart', 'timeline.ruler.rangeEnd'],
+    ],
+  ];
+  for (const [name, menuId, open, dialogItems] of timelineMenus) {
+    mark(h);
+    act(open);
+    const menu = await waitFor(() => {
+      const m = document.querySelector(`[data-tt-id="${menuId}"]`);
+      if (!m) throw new Error(`no Timeline ${name} menu`);
+      return m;
+    });
+    out.push(await settled(`timelineContextMenu:${name}`, menu));
+    act(() => {
+      fireEvent.keyDown(menu, { key: 'Escape' });
+    });
+    for (const item of dialogItems) {
+      act(open);
+      const button = await waitFor(() => {
+        const b = document.querySelector<HTMLElement>(`[data-tt-id="${menuId}.${item}"]`);
+        if (!b || b.getAttribute('aria-disabled') === 'true') throw new Error(`${item} not enabled`);
+        return b;
+      });
+      mark(h);
+      act(() => {
+        button.click();
+      });
+      const d = await screen.findByRole('dialog');
+      out.push(await settled(`dialog:${d.getAttribute('aria-label') ?? item}`, d));
+      act(() => {
+        d.querySelector<HTMLElement>('[data-tt-id$=".cancel"]')?.click();
+      });
+      await waitFor(() => {
+        expect(screen.queryByRole('dialog')).toBeNull();
+      });
+    }
   }
 
   // The confirmation sheet (M4 C4.4a, D-58): an agent's request asked in the app, two queued.

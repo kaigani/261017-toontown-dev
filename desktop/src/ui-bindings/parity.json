@@ -9,6 +9,21 @@
     "dockTabContextMenu",
     "viewContextMenu:scene",
     "viewContextMenu:drawing",
+    "timelineContextMenu:row",
+    "dialog:Marker Colour",
+    "dialog:Background Colour",
+    "dialog:Rename Element",
+    "dialog:Element Note",
+    "dialog:Change Start Frame",
+    "dialog:Change Duration",
+    "dialog:Change Loops",
+    "timelineContextMenu:row:drawing",
+    "timelineContextMenu:cells",
+    "dialog:Extend Children Exposure",
+    "timelineContextMenu:ruler",
+    "dialog:Set Current Frame",
+    "dialog:Set Playback Start Frame",
+    "dialog:Set Playback End Frame",
     "confirmSheet",
     "loadReport",
     "dialog:About Toontown",
@@ -111,6 +126,34 @@
       }
     },
     {
+      "id": "timelineBackgroundColour.submit",
+      "surface": "dialog:Background Colour",
+      "commands": [
+        "element.colour.set"
+      ]
+    },
+    {
+      "id": "timelineDuration.submit",
+      "surface": "dialog:Change Duration",
+      "commands": [
+        "element.timing.set"
+      ]
+    },
+    {
+      "id": "timelineLoops.submit",
+      "surface": "dialog:Change Loops",
+      "commands": [
+        "element.timing.set"
+      ]
+    },
+    {
+      "id": "timelineStart.submit",
+      "surface": "dialog:Change Start Frame",
+      "commands": [
+        "element.timing.set"
+      ]
+    },
+    {
       "id": "checkProject.repair",
       "surface": "dialog:Check Project",
       "commands": [
@@ -133,6 +176,27 @@
       "surface": "dialog:Customize Toolbar",
       "commands": [
         "window.toolbar.items.set"
+      ]
+    },
+    {
+      "id": "timelineNote.submit",
+      "surface": "dialog:Element Note",
+      "commands": [
+        "element.note.set"
+      ]
+    },
+    {
+      "id": "timelineExtendChildren.submit",
+      "surface": "dialog:Extend Children Exposure",
+      "commands": [
+        "element.childExposure.apply"
+      ]
+    },
+    {
+      "id": "timelineMarkerColour.submit",
+      "surface": "dialog:Marker Colour",
+      "commands": [
+        "element.colour.set"
       ]
     },
     {
@@ -184,10 +248,38 @@
       ]
     },
     {
+      "id": "timelineRename.submit",
+      "surface": "dialog:Rename Element",
+      "commands": [
+        "element.rename"
+      ]
+    },
+    {
       "id": "workspaceRename.submit",
       "surface": "dialog:Rename Workspace",
       "commands": [
         "workspace.rename"
+      ]
+    },
+    {
+      "id": "timelineCurrentFrame.submit",
+      "surface": "dialog:Set Current Frame",
+      "commands": [
+        "timeline.currentFrame.set"
+      ]
+    },
+    {
+      "id": "timelineRangeEnd.submit",
+      "surface": "dialog:Set Playback End Frame",
+      "commands": [
+        "timeline.playbackRange.set"
+      ]
+    },
+    {
+      "id": "timelineRangeStart.submit",
+      "surface": "dialog:Set Playback Start Frame",
+      "commands": [
+        "timeline.playbackRange.set"
       ]
     },
     {
@@ -2730,6 +2822,176 @@
       }
     },
     {
+      "id": "timeline.add",
+      "surface": "main",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "drawing"
+      }
+    },
+    {
+      "id": "timeline.addParentPeg",
+      "surface": "main",
+      "commands": [
+        "element.parentPeg.create"
+      ],
+      "params": {
+        "elementIds": []
+      }
+    },
+    {
+      "id": "timeline.row.el_bob.collapsed",
+      "surface": "main",
+      "commands": [
+        "element.collapsed.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "collapsed": true
+      }
+    },
+    {
+      "id": "timeline.row.el_bob.visible",
+      "surface": "main",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "scope": "scene",
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.row.el_clip.collapsed",
+      "surface": "main",
+      "commands": [
+        "element.collapsed.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_clip"
+        ],
+        "collapsed": true
+      }
+    },
+    {
+      "id": "timeline.row.el_clip.visible",
+      "surface": "main",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_clip"
+        ],
+        "scope": "scene",
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.row.el_grp.collapsed",
+      "surface": "main",
+      "commands": [
+        "element.collapsed.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_grp"
+        ],
+        "collapsed": false
+      }
+    },
+    {
+      "id": "timeline.row.el_grp.visible",
+      "surface": "main",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_grp"
+        ],
+        "scope": "scene",
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.row.el_peg.collapsed",
+      "surface": "main",
+      "commands": [
+        "element.collapsed.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "collapsed": true
+      }
+    },
+    {
+      "id": "timeline.row.el_peg.visible",
+      "surface": "main",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "scope": "scene",
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.scroll",
+      "surface": "main",
+      "commands": [
+        "timeline.view.set"
+      ],
+      "params": {
+        "firstFrame": 1
+      }
+    },
+    {
+      "id": "timeline.showAll",
+      "surface": "main",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.solo",
+      "surface": "main",
+      "commands": [
+        "element.solo.set"
+      ],
+      "params": {
+        "elementIds": []
+      }
+    },
+    {
+      "id": "timeline.zoom",
+      "surface": "main",
+      "commands": [
+        "timeline.view.set"
+      ],
+      "params": {
+        "zoomLevel": 6
+      }
+    },
+    {
       "id": "agentAccess.allowRemote",
       "surface": "preferences:agent",
       "commands": [
@@ -3456,6 +3718,1430 @@
       ]
     },
     {
+      "id": "timeline.cellMenu.timeline.cell.copy",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "edit.copy"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.cut",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "edit.cut"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.delete",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "edit.delete"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.extendChildren",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "element.childExposure.apply"
+      ],
+      "params": {
+        "pegId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.paste",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "edit.paste"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.annotation",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "annotation",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.blur",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "blur",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.camera",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "camera",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.clipping",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "clipping",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.colourTransform",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "colourTransform",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.drawing",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "drawing",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.dropShadow",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "dropShadow",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.image",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "image",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.media",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "media",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.particleImpact",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "particleImpact",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.particleNature",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "particleNature",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.peg",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "peg",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.shake",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "shake",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.skeleton",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "skeleton",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.sound",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "sound",
+        "above": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.addParentPeg",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.parentPeg.create"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.back",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "to": "back",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.backward",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "to": "backward",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.forward",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "to": "forward",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.front",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "to": "front",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.backgroundColour",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.changeDuration",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.timing.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.changeLoops",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.timing.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.changeStart",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.timing.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.clone",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.clone"
+      ],
+      "params": {
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.collapse",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.collapsed.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "collapsed": true
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.copy",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "edit.copy"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.cut",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "edit.cut"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.defaultColour",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "marker": null,
+        "background": null
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.delete",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.delete"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.detach",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.parent.remove"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.duplicate",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.duplicate"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideAll",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": false,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideAllParameters",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "timeline.effectParameterRows.set"
+      ],
+      "params": {
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideAnnotations",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": false,
+        "apply": "all",
+        "types": [
+          "annotation"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideOthers",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "scope": "scene",
+        "visible": false,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.lock",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "locked": true
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.lockAll",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": true,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.lockOthers",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "locked": true,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.markerColour",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.note",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.note.set"
+      ],
+      "params": {
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.paste",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "edit.paste"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.pegReset",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "anim.reset.apply"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_peg"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.rename",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.rename"
+      ],
+      "params": {
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.children",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "children",
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.firstChild",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "firstChild",
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.nextSibling",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "nextSibling",
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.parent",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "parent",
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.previousSibling",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "previousSibling",
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.skeletonRoot",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "skeletonRoot",
+        "elementId": "el_peg"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showAll",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showAllParameters",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "timeline.effectParameterRows.set"
+      ],
+      "params": {
+        "visible": true
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showAnnotations",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all",
+        "types": [
+          "annotation"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showHide",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "scope": "scene",
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showOthers",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_peg"
+        ],
+        "scope": "scene",
+        "visible": true,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.unlockAll",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": false,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.annotation",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "annotation",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.blur",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "blur",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.camera",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "camera",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.clipping",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "clipping",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.colourTransform",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "colourTransform",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.drawing",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "drawing",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.dropShadow",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "dropShadow",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.image",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "image",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.media",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "media",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.particleImpact",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "particleImpact",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.particleNature",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "particleNature",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.peg",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "peg",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.shake",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "shake",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.skeleton",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "skeleton",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.add.sound",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "sound",
+        "above": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.addParentPeg",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.parentPeg.create"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.annotation",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.annotation.set"
+      ],
+      "params": {
+        "elementId": "el_bob",
+        "annotation": true
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.back",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "to": "back",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.backward",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "to": "backward",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.forward",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "to": "forward",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.arrange.front",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "to": "front",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.attachNext",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.parent.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "parentId": "el_grp"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.backgroundColour",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.clone",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.clone"
+      ],
+      "params": {
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.collapse",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.collapsed.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "collapsed": true
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.copy",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "edit.copy"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.cut",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "edit.cut"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.defaultColour",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "marker": null,
+        "background": null
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.delete",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.delete"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.detach",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.parent.remove"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.duplicate",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.duplicate"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideAll",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": false,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideAllParameters",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "timeline.effectParameterRows.set"
+      ],
+      "params": {
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideAnnotations",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": false,
+        "apply": "all",
+        "types": [
+          "annotation"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.hideOthers",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "scope": "scene",
+        "visible": false,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.lock",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "locked": true
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.lockAll",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": true,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.lockOthers",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "locked": true,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.markerColour",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.note",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.note.set"
+      ],
+      "params": {
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.paste",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "edit.paste"
+      ],
+      "params": {
+        "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.pegReset",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "anim.reset.apply"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_bob"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.rename",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.rename"
+      ],
+      "params": {
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.children",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "children",
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.firstChild",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "firstChild",
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.nextSibling",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "nextSibling",
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.parent",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "parent",
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.previousSibling",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "previousSibling",
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.select.skeletonRoot",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "skeletonRoot",
+        "elementId": "el_bob"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showAll",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showAllParameters",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "timeline.effectParameterRows.set"
+      ],
+      "params": {
+        "visible": true
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showAnnotations",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all",
+        "types": [
+          "annotation"
+        ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showHide",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "scope": "scene",
+        "visible": false
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.showOthers",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "elementIds": [
+          "el_bob"
+        ],
+        "scope": "scene",
+        "visible": true,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.unlockAll",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": false,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.currentFrame",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "timeline.currentFrame.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.endHere",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "timeline.playbackRange.set"
+      ],
+      "params": {
+        "end": 3
+      }
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.rangeAuto",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "timeline.playbackRange.set"
+      ],
+      "params": {
+        "mode": "auto"
+      }
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.rangeEnd",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "timeline.playbackRange.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.rangeFree",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "timeline.playbackRange.set"
+      ],
+      "params": {
+        "mode": "free"
+      }
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.rangeStart",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "timeline.playbackRange.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.startHere",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "timeline.playbackRange.set"
+      ],
+      "params": {
+        "start": 3
+      }
+    },
+    {
       "id": "cameraView.drawingMenu.arrange.back",
       "surface": "viewContextMenu:drawing",
       "commands": [
@@ -3717,6 +5403,46 @@
       "reason": "dismiss"
     },
     {
+      "id": "timelineBackgroundColour.cancel",
+      "surface": "dialog:Background Colour",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineBackgroundColour.value",
+      "surface": "dialog:Background Colour",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineDuration.cancel",
+      "surface": "dialog:Change Duration",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineDuration.value",
+      "surface": "dialog:Change Duration",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineLoops.cancel",
+      "surface": "dialog:Change Loops",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineLoops.value",
+      "surface": "dialog:Change Loops",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineStart.cancel",
+      "surface": "dialog:Change Start Frame",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineStart.value",
+      "surface": "dialog:Change Start Frame",
+      "reason": "typing"
+    },
+    {
       "id": "checkProject.cancel",
       "surface": "dialog:Check Project",
       "reason": "dismiss"
@@ -3792,9 +5518,39 @@
       "reason": "typing"
     },
     {
+      "id": "timelineNote.cancel",
+      "surface": "dialog:Element Note",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineNote.value",
+      "surface": "dialog:Element Note",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineExtendChildren.cancel",
+      "surface": "dialog:Extend Children Exposure",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineExtendChildren.value",
+      "surface": "dialog:Extend Children Exposure",
+      "reason": "typing"
+    },
+    {
       "id": "help.cancel",
       "surface": "dialog:Help",
       "reason": "dismiss"
+    },
+    {
+      "id": "timelineMarkerColour.cancel",
+      "surface": "dialog:Marker Colour",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineMarkerColour.value",
+      "surface": "dialog:Marker Colour",
+      "reason": "typing"
     },
     {
       "id": "newProject.cancel",
@@ -3872,6 +5628,16 @@
       "reason": "typing"
     },
     {
+      "id": "timelineRename.cancel",
+      "surface": "dialog:Rename Element",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineRename.value",
+      "surface": "dialog:Rename Element",
+      "reason": "typing"
+    },
+    {
       "id": "workspaceRename.cancel",
       "surface": "dialog:Rename Workspace",
       "reason": "dismiss"
@@ -3879,6 +5645,36 @@
     {
       "id": "workspaceRename.name",
       "surface": "dialog:Rename Workspace",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineCurrentFrame.cancel",
+      "surface": "dialog:Set Current Frame",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineCurrentFrame.value",
+      "surface": "dialog:Set Current Frame",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineRangeEnd.cancel",
+      "surface": "dialog:Set Playback End Frame",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineRangeEnd.value",
+      "surface": "dialog:Set Playback End Frame",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineRangeStart.cancel",
+      "surface": "dialog:Set Playback Start Frame",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineRangeStart.value",
+      "surface": "dialog:Set Playback Start Frame",
       "reason": "typing"
     },
     {
@@ -16140,6 +17936,61 @@
       "id": "start.width",
       "surface": "startScreen",
       "reason": "typing"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.addKey",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.constant",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.nonConstant",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.removeKey",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.uniformLeft",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.uniformRight",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.removeKeys",
+      "surface": "timelineContextMenu:row",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.waveforms",
+      "surface": "timelineContextMenu:row",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.removeKeys",
+      "surface": "timelineContextMenu:row:drawing",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.waveforms",
+      "surface": "timelineContextMenu:row:drawing",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.waveforms",
+      "surface": "timelineContextMenu:ruler",
+      "reason": "placeholder"
     }
   ],
   "menu": [
@@ -18166,6 +20017,10 @@
       "file": "desktop/src/state/store.ts"
     },
     {
+      "command": "cell.selection.get",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
       "command": "colour.gapClosing.get",
       "file": "desktop/src/panels/ToolOptionsPage.tsx"
     },
@@ -18246,8 +20101,36 @@
       "file": "desktop/src/canvas/CanvasView.tsx"
     },
     {
+      "command": "element.collapsed.set",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "element.create",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
       "command": "element.drawing.list",
       "file": "desktop/src/panels/DrawingInspectorPage.tsx"
+    },
+    {
+      "command": "element.get",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "element.parentPeg.create",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "element.rename",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "element.solo.set",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "element.visibility.set",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
     },
     {
       "command": "job.cancel",
@@ -18304,6 +20187,10 @@
     {
       "command": "prefs.get",
       "file": "desktop/src/prefs/AgentAccessPage.tsx"
+    },
+    {
+      "command": "prefs.get",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
     },
     {
       "command": "prefs.list",
@@ -18404,6 +20291,22 @@
     {
       "command": "project.saveAs",
       "file": "desktop/src/shell/makeActions.tsx"
+    },
+    {
+      "command": "timeline.currentFrame.set",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "timeline.frameLabel.get",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "timeline.rows.list",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "timeline.view.set",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
     },
     {
       "command": "tool.active.get",
@@ -18608,6 +20511,10 @@
     {
       "command": "workspace.list",
       "file": "desktop/src/state/store.ts"
+    },
+    {
+      "command": "xsheet.exposures.get",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
     }
   ],
   "surfaceReads": [
@@ -19513,6 +21420,10 @@
     },
     {
       "surface": "loadReport",
+      "query": "cell.selection.get"
+    },
+    {
+      "surface": "loadReport",
       "query": "colour.gapClosing.get"
     },
     {
@@ -19533,11 +21444,23 @@
     },
     {
       "surface": "loadReport",
+      "query": "element.get"
+    },
+    {
+      "surface": "loadReport",
+      "query": "prefs.get"
+    },
+    {
+      "surface": "loadReport",
       "query": "project.recent.list"
     },
     {
       "surface": "loadReport",
       "query": "project.recovery.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "timeline.rows.list"
     },
     {
       "surface": "loadReport",
@@ -19572,6 +21495,10 @@
       "query": "view.transform.get"
     },
     {
+      "surface": "loadReport",
+      "query": "xsheet.exposures.get"
+    },
+    {
       "surface": "main",
       "query": "agent.server.status"
     },
@@ -19590,6 +21517,10 @@
     {
       "surface": "main",
       "query": "app.state.get"
+    },
+    {
+      "surface": "main",
+      "query": "cell.selection.get"
     },
     {
       "surface": "main",
@@ -19614,6 +21545,10 @@
     {
       "surface": "main",
       "query": "edit.selection.get"
+    },
+    {
+      "surface": "main",
+      "query": "element.get"
     },
     {
       "surface": "main",
@@ -19642,6 +21577,14 @@
     {
       "surface": "main",
       "query": "project.recovery.list"
+    },
+    {
+      "surface": "main",
+      "query": "timeline.frameLabel.get"
+    },
+    {
+      "surface": "main",
+      "query": "timeline.rows.list"
     },
     {
       "surface": "main",
@@ -19698,6 +21641,10 @@
     {
       "surface": "main",
       "query": "workspace.list"
+    },
+    {
+      "surface": "main",
+      "query": "xsheet.exposures.get"
     },
     {
       "surface": "preferences:agent",
@@ -20168,6 +22115,12 @@
       ]
     },
     {
+      "command": "anim.changed",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
       "command": "anim.key.add",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -20259,7 +22212,8 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/shell/Toolbars.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20332,6 +22286,24 @@
       "command": "canvas.textEditor",
       "files": [
         "desktop/src/canvas/TextEditor.tsx"
+      ]
+    },
+    {
+      "command": "cell.exposures.changed",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "cell.selection.changed",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "cell.selection.get",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20513,7 +22485,8 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/shell/Toolbars.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20529,7 +22502,8 @@
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/shell/Toolbars.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20545,7 +22519,8 @@
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/shell/Toolbars.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20900,7 +22875,8 @@
       "files": [
         "desktop/src-tauri/src/menu.rs",
         "desktop/src/canvas/CanvasView.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20916,6 +22892,12 @@
       ]
     },
     {
+      "command": "element.childExposure.apply",
+      "files": [
+        "desktop/src/timeline/dialogOpen.tsx"
+      ]
+    },
+    {
       "command": "element.clone",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -20924,25 +22906,42 @@
     {
       "command": "element.collapsed.set",
       "files": [
+        "desktop/src/timeline/TimelinePanel.tsx",
         "desktop/src/timeline/menus.ts"
       ]
     },
     {
       "command": "element.colour.set",
       "files": [
+        "desktop/src/timeline/dialogOpen.tsx",
         "desktop/src/timeline/menus.ts"
       ]
     },
     {
       "command": "element.create",
       "files": [
+        "desktop/src/timeline/TimelinePanel.tsx",
+        "desktop/src/timeline/dialogOpen.tsx",
+        "desktop/src/timeline/dialogs.tsx",
         "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.created",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
       "command": "element.delete",
       "files": [
         "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.deleted",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20955,6 +22954,12 @@
       "command": "element.duplicate",
       "files": [
         "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.get",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -20982,6 +22987,12 @@
       ]
     },
     {
+      "command": "element.note.set",
+      "files": [
+        "desktop/src/timeline/dialogOpen.tsx"
+      ]
+    },
+    {
       "command": "element.order.move",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -21002,12 +23013,39 @@
     {
       "command": "element.parentPeg.create",
       "files": [
+        "desktop/src/timeline/TimelinePanel.tsx",
         "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "element.rename",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx",
+        "desktop/src/timeline/dialogOpen.tsx"
+      ]
+    },
+    {
+      "command": "element.solo.set",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "element.state.changed",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "element.timing.set",
+      "files": [
+        "desktop/src/timeline/dialogOpen.tsx"
       ]
     },
     {
       "command": "element.visibility.set",
       "files": [
+        "desktop/src/timeline/TimelinePanel.tsx",
         "desktop/src/timeline/menus.ts"
       ]
     },
@@ -21155,6 +23193,12 @@
       "command": "instance.json",
       "files": [
         "desktop/src-tauri/src/instance.rs"
+      ]
+    },
+    {
+      "command": "interface.background.timeline",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -21561,7 +23605,8 @@
         "desktop/src/panels/DrawingInspectorPage.tsx",
         "desktop/src/panels/ToolOptionsPage.tsx",
         "desktop/src/prefs/AgentAccessPage.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -21572,7 +23617,8 @@
         "desktop/src/App.tsx",
         "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/panels/DrawingInspectorPage.tsx",
-        "desktop/src/prefs/AgentAccessPage.tsx"
+        "desktop/src/prefs/AgentAccessPage.tsx",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -21650,7 +23696,8 @@
         "desktop/src/shell/LoadReportWindow.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -21719,7 +23766,8 @@
         "desktop/src/shell/LoadReportWindow.tsx",
         "desktop/src/shell/Toolbars.tsx",
         "desktop/src/shell/toolbarGroups.tsx",
-        "desktop/src/state/store.ts"
+        "desktop/src/state/store.ts",
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -21901,6 +23949,12 @@
       "files": [
         "desktop/src/canvas/CanvasView.tsx",
         "desktop/src/panels/TextPanel.tsx"
+      ]
+    },
+    {
+      "command": "shell.timelineView",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
@@ -22150,6 +24204,18 @@
       ]
     },
     {
+      "command": "timeline.add",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.addParentPeg",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
       "command": "timeline.cell.addKey",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -22216,14 +24282,58 @@
       ]
     },
     {
+      "command": "timeline.cellMenu",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.currentFrame.changed",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.currentFrame.set",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx",
+        "desktop/src/timeline/dialogOpen.tsx"
+      ]
+    },
+    {
       "command": "timeline.effectParameterRows.set",
       "files": [
         "desktop/src/timeline/menus.ts"
       ]
     },
     {
+      "command": "timeline.frameLabel.get",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.gesture",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.layers",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.playbackRange.changed",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
       "command": "timeline.playbackRange.set",
       "files": [
+        "desktop/src/timeline/dialogOpen.tsx",
         "desktop/src/timeline/menus.ts"
       ]
     },
@@ -22450,6 +24560,24 @@
       ]
     },
     {
+      "command": "timeline.rowMenu",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.rows.list",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.ruler",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
       "command": "timeline.ruler.currentFrame",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -22498,6 +24626,30 @@
       ]
     },
     {
+      "command": "timeline.rulerMenu",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.scroll",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.showAll",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.solo",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
       "command": "timeline.soundWaveforms.set",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -22507,6 +24659,54 @@
       "command": "timeline.targetChanged",
       "files": [
         "desktop/src/timeline/gesture.ts"
+      ]
+    },
+    {
+      "command": "timeline.toolbar",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.tracks",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.view.set",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.zoom",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.zoomLabel",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timelineNewElements.count",
+      "files": [
+        "desktop/src/timeline/dialogs.tsx"
+      ]
+    },
+    {
+      "command": "timelineNewElements.name",
+      "files": [
+        "desktop/src/timeline/dialogs.tsx"
+      ]
+    },
+    {
+      "command": "timelineNewElements.type",
+      "files": [
+        "desktop/src/timeline/dialogs.tsx"
       ]
     },
     {
@@ -23024,6 +25224,12 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src-tauri/src/menu_model.rs",
         "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "xsheet.exposures.get",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     }
   ]
