@@ -235,3 +235,54 @@ fn d1_exact_threshold_and_between_rows() {
     let mut order:Vec<String>=root.into_iter().filter(|r|r!=&bg_id).collect(); let at=order.iter().position(|r|r==&peg_id).unwrap();order.insert(at,bg_id);
     three_way("layers",json!([s(40.0,bg as f64*RH+11.0),s(40.0,peg as f64*RH)]),one("element.order.set",json!({"order":"timeline","elementIds":order})));
 }
+
+#[test]
+fn d2_cell_exposure_change_cancels() {
+ let h=fixture(); let (i,id)=row(&h,"Bob");
+ ok(&h,"cell.select",json!({"elementIds":[id],"from":1,"to":6}));
+ let samples=json!([s(24.0,i as f64*RH+16.0),s(184.0,i as f64*RH+16.0)]);
+ let p=h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("tracks"),"sample":samples[0]})).unwrap();
+ ok(&h,"cell.label.set",json!({"elementIds":[id],"from":1,"to":6,"drawing":"2"}));
+ let before=state(&h);
+ let out=h.timing_gesture(Origin::User,json!({"phase":"release","grabId":p["grabId"],"samples":samples})).unwrap();
+ assert_eq!(out["error"]["code"],"timeline.targetChanged","E-10: {out}");
+ assert_eq!(state(&h),before,"cancel changes nothing");
+}
+
+#[test]
+fn d2_deleted_destination_parent_cancels() {
+ let h=fixture(); let (i,id)=row(&h,"Background"); let (dest,parent)=row(&h,"Bob-P");
+ let samples=json!([s(40.0,i as f64*RH+11.0),s(40.0,dest as f64*RH+11.0)]);
+ let p=h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("layers"),"sample":samples[0]})).unwrap();
+ ok(&h,"element.delete",json!({"elementIds":[parent]}));
+ let before=rev(&h); let sheet=ok(&h,"timeline.rows.list",json!({}));
+ let out=h.timing_gesture(Origin::User,json!({"phase":"release","grabId":p["grabId"],"samples":samples})).unwrap();
+ assert_eq!(out["error"]["code"],"timeline.targetChanged","E-10: {id}: {out}");
+ assert_eq!(rev(&h),before); assert_eq!(ok(&h,"timeline.rows.list",json!({})),sheet);
+}
+
+#[test]
+fn d2_deleted_key_cancels() {
+ let h=fixture(); let (i,id)=row(&h,"Bob-P");
+ let samples=json!([s(760.0,i as f64*RH+11.0),s(600.0,i as f64*RH+11.0)]);
+ let p=h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("tracks"),"sample":samples[0]})).unwrap();
+ ok(&h,"anim.key.remove",json!({"nodeIds":[id],"frame":48}));
+ let before=state(&h);
+ let out=h.timing_gesture(Origin::User,json!({"phase":"release","grabId":p["grabId"],"samples":samples})).unwrap();
+ assert_eq!(out["error"]["code"],"timeline.targetChanged","E-10: {out}");assert_eq!(state(&h),before);
+}
+
+#[test]
+fn d2_row_insert_above_bar_commits_by_id() {
+ let h=fixture(); let (i,id)=row(&h,"Bob-P");
+ let samples=json!([s(152.0,i as f64*RH+16.0),s(200.0,i as f64*RH+16.0)]);
+ let p=h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("tracks"),"sample":samples[0]})).unwrap();
+ let created=ok(&h,"element.create",json!({"type":"peg","name":"Inserted"}));
+ println!("inserted: {created}");
+ let all=rows(&h);let new=all.iter().find(|(_,n)|n=="Inserted").unwrap().0.clone();
+ let mut root:Vec<String>=ok(&h,"timeline.rows.list",json!({}))["rows"].as_array().unwrap().iter().filter(|r|r["depth"]==0).map(|r|r["elementId"].as_str().unwrap().to_owned()).filter(|r|r!=&new).collect();root.insert(0,new);
+ ok(&h,"element.order.set",json!({"order":"timeline","elementIds":root}));
+ let out=h.timing_gesture(Origin::User,json!({"phase":"release","grabId":p["grabId"],"samples":samples})).unwrap();
+ assert!(out.get("error").is_none(),"E-10 target {id} still exists: {out}");
+ assert_eq!(ok(&h,"timeline.rows.list",json!({}))["rows"].as_array().unwrap().iter().find(|r|r["elementId"]==id).unwrap()["bar"]["start"],4);
+}
