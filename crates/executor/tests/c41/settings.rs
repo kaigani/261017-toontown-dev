@@ -168,13 +168,12 @@ fn a_partial_object_is_merged_over_the_present_value() {
         let e = h.invoke(Invocation::user("prefs.set", json!({ "values": { key: members } })));
         assert_eq!(e.status, Status::Ok, "{e:?}");
     };
-    // The table's default is off (04 §11.14; ruling E-13): a member set on, then another member.
-    set(json!({ "overwriteDrawings": true }));
+    set(json!({ "overwriteDrawings": false }));
     set(json!({ "extendExposures": true }));
     let v = pref(&h, key);
-    assert_eq!((v["overwriteDrawings"].clone(), v["extendExposures"].clone()), (json!(true), json!(true)));
+    assert_eq!((v["overwriteDrawings"].clone(), v["extendExposures"].clone()), (json!(false), json!(true)));
     let events = h.subscribe();
-    set(json!({ "overwriteDrawings": true }));
+    set(json!({ "overwriteDrawings": false }));
     assert!(events.try_iter().all(|e| e.name != "prefs.changed"), "an unchanged merged value is not a change");
     // A member of the wrong type refuses the whole call and changes nothing.
     let e = h.invoke(Invocation::user("prefs.set", json!({ "values": { key: { "updateColours": 3 } } })));
@@ -187,7 +186,7 @@ fn a_partial_object_is_merged_over_the_present_value() {
     let p = pref(&h, "agent.policy.defaults");
     assert_eq!((p["maxJobs"].clone(), p["maxBatchSteps"].clone()), (json!(7), json!(42)));
     assert_eq!(h.invoke(Invocation::user("prefs.reset", json!({ "keys": [key] }))).status, Status::Ok);
-    assert_eq!(pref(&h, key)["overwriteDrawings"], false);
+    assert_eq!(pref(&h, key)["overwriteDrawings"], true);
 }
 
 /// Ruling O-17: a stored object-typed preference falls back per member: an invalid member takes its default, valid
@@ -210,11 +209,11 @@ fn a_stale_member_falls_back_alone() {
     );
     let h = over(&r);
     let paste = pref(&h, "edit.pasteSpecial.timeline");
-    assert_eq!((paste["overwriteDrawings"].clone(), paste["extendExposures"].clone()), (json!(false), json!(true)));
+    assert_eq!((paste["overwriteDrawings"].clone(), paste["extendExposures"].clone()), (json!(true), json!(true)));
     assert!(paste.get("gone").is_none());
     let cut = pref(&h, "edit.cutSpecial.timeline");
     assert_eq!((cut["boundaryKeys"].clone(), cut["pivotKeys"].clone()), (json!(true), json!(true)));
-    assert_eq!(pref(&h, "edit.dragDrop.timeline")["overwriteDrawings"], false);
+    assert_eq!(pref(&h, "edit.dragDrop.timeline")["overwriteDrawings"], true);
     let motion = pref(&h, "edit.pasteSpecial.motionPoint");
     assert_eq!((motion["x"].clone(), motion["y"].clone()), (json!(false), json!(true)));
     let policy = pref(&h, "agent.policy.defaults");

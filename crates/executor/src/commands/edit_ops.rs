@@ -108,15 +108,15 @@ pub(crate) struct TimelineEditOptions {
     boundary_keys: bool,
 }
 
-/// The defaults are the one table of `prefs.json` (`edit.*.timeline`; 04 §11.14's values, ruling E-13): a test keeps
-/// them equal.
+/// The `edit.*` family's defaults: 01 §6.3's table (`transfer_options::EDIT_DEFAULTS`, the `prefs.json` defaults of
+/// `edit.*.timeline`; ruling E-19): a test keeps them equal.
 impl Default for TimelineEditOptions {
     fn default() -> Self {
         Self {
-            overwrite_drawings: false,
+            overwrite_drawings: true,
             create_delete_exposure: true,
             extend_exposures: false,
-            update_colours: false,
+            update_colours: true,
             keyframe_substitution: false,
             motion_keys: true,
             rotation_keys: true,
@@ -204,12 +204,31 @@ fn stored_key(operation: &str) -> Option<&'static str> {
     }
 }
 
-/// Remembers an operation's options in its store (and that it ran this session, for paste special again).
-fn remember(cx: &mut Cx, operation: &str, options: Map<String, Value>) -> Result<(), CommandError> {
-    if let Some(k) = stored_key(operation) {
-        let mut values = Map::new();
-        values.insert(k.to_owned(), Value::Object(options.clone()));
-        super::prefs::stage(cx, values)?;
+/// Remembers an operation's options (and that it ran this session, for paste special again): the members the caller
+/// gave are stored in the one store (ruling E-19: the dialog gives every member it shows, so confirming it stores them
+/// all); the motion-point set is stored whole.
+fn remember(
+    cx: &mut Cx,
+    operation: &str,
+    options: Map<String, Value>,
+    given: Option<&Map<String, Value>>,
+) -> Result<(), CommandError> {
+    match operation {
+        "cutSpecial" | "pasteSpecial" => {
+            let op = if operation == "cutSpecial" {
+                super::transfer_options::Operation::Cut
+            } else {
+                super::transfer_options::Operation::Paste
+            };
+            super::transfer_options::store_members(cx, op, given.cloned().unwrap_or_default(), "/options")?;
+        }
+        _ => {
+            if let Some(k) = stored_key(operation) {
+                let mut values = Map::new();
+                values.insert(k.to_owned(), Value::Object(options.clone()));
+                super::prefs::stage(cx, values)?;
+            }
+        }
     }
     cx.session_mut().edit_options.insert(operation.into(), options);
     Ok(())
@@ -220,8 +239,18 @@ fn merged<T: Default + Serialize + for<'de> Deserialize<'de>>(
     operation: &str,
     given: Option<&Map<String, Value>>,
 ) -> Result<T, CommandError> {
-    // One store (SI-201, ruling E-8): the operation's 01 §7.3 preference key.
-    let mut base = match stored_key(operation).and_then(|k| cx.pref(k)).filter(Value::is_object) {
+    // One store (SI-201, rulings E-8 and E-19): the members stored under the operation's 01 §7.3 key, else the `edit.*`
+    // family's defaults (01 §6.3).
+    let op = match operation {
+        "cutSpecial" => Some(super::transfer_options::Operation::Cut),
+        "pasteSpecial" => Some(super::transfer_options::Operation::Paste),
+        _ => None,
+    };
+    let stored = match op {
+        Some(op) => Some(Value::Object(super::transfer_options::edit_set(cx, op))),
+        None => stored_key(operation).and_then(|k| cx.pref(k)).filter(Value::is_object),
+    };
+    let mut base = match stored {
         Some(v) => v,
         None => to_json(&T::default())?,
     };
@@ -1754,7 +1783,8 @@ pub(crate) struct CutSpecialParams {
     /// Objects or cells (default: the selection).
     #[serde(default)]
     object_ids: Option<Vec<String>>,
-    /// `TimelineEditOptions` (01 §12.4); omitted fields take the remembered values.
+    /// `TimelineEditOptions` (01 §12.4). Omitted fields: those stored for cut special, else 01 §6.3's defaults
+    /// (overwrite existing drawings and update colours on; ruling E-19, SI-201).
     #[serde(default)]
     options: Option<Map<String, Value>>,
     /// Remember the options.
@@ -1796,7 +1826,7 @@ pub(crate) fn edit_cut_special(cx: &mut Cx, p: CutSpecialParams) -> Result<ClipR
         cx.warn("edit.optionNotApplied", format!("option {name} is not applied yet"), Vec::new());
     }
     if p.remember {
-        remember(cx, "cutSpecial", obj(to_json(&opts)?))?;
+        remember(cx, "cutSpecial", obj(to_json(&opts)?), p.options.as_ref())?;
     }
     let clipboard = store(cx, &clip)?;
     Ok(ClipResult { clipboard })
@@ -1812,7 +1842,9 @@ pub(crate) struct PasteSpecialParams {
     /// Where to paste (as `edit.paste`).
     #[serde(default)]
     destination: Option<Destination>,
-    /// `TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content.
+    /// `TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content. Omitted timeline fields:
+    /// those stored for paste special, else 01 §6.3's defaults (overwrite existing drawings and update colours on;
+    /// ruling E-19, SI-201).
     #[serde(default)]
     options: Option<Map<String, Value>>,
     /// Paste special again: the last options of this session.
@@ -1857,7 +1889,7 @@ pub(crate) fn edit_paste_special(cx: &mut Cx, p: PasteSpecialParams) -> Result<P
     };
     let out = paste(cx, context, &clip, &dest, special)?;
     if p.remember || p.use_last {
-        remember(cx, operation, remembered)?;
+        remember(cx, operation, remembered, given)?;
     }
     Ok(out)
 }
@@ -2071,6 +2103,7 @@ pub(crate) fn store_cells(
     cells: &[(Id, usize, Option<Id>)],
     notes: &[(Id, usize, String)],
     source: EditContext,
+    options: Option<Map<String, Value>>,
 ) -> Result<ClipboardSummary, CommandError> {
     let doc = cx.document()?.clone();
     let mut payload = super::transfer::ArtPayload::of(&doc);
@@ -2099,7 +2132,7 @@ pub(crate) fn store_cells(
         source_project_id: Some(doc.project().id().as_str().to_owned()),
         item_count: u32::try_from(items.len()).unwrap_or(u32::MAX),
         items: Some(items),
-        options: None,
+        options,
         payload: Some(payload),
     };
     store(cx, &clip)

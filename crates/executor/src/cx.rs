@@ -377,6 +377,16 @@ impl Cx {
         })
     }
 
+    /// A preference's stored value as this call sees it, before any default fills it (a value it set, else what the
+    /// settings file holds; `None` when nothing is stored): the transfer options' per-field store (ruling E-19).
+    pub(crate) fn pref_raw(&self, key: &str) -> Option<Value> {
+        let staged = self.effects.iter().rev().find_map(|e| match e {
+            Effect::Prefs(m) => m.get(key).cloned(),
+            _ => None,
+        });
+        staged.or_else(|| self.session.env.settings.prefs.get(key).cloned())
+    }
+
     /// A preference as this call sees it (M4 C4.1): a value it set (pending `Effect::Prefs`), else the stored value,
     /// else the default. `None` for a key the catalogue does not know.
     pub(crate) fn pref(&self, key: &str) -> Option<Value> {

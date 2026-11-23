@@ -273,6 +273,47 @@ fn one_store_serves_both_vocabularies_and_omitted_cell_members() {
     assert_eq!(ok(&h, "xsheet.exposures.get", json!({})), ok(&g, "xsheet.exposures.get", json!({})));
 }
 
+/// Ruling E-19: each family reads its own default for a member never stored; a member stored through either family
+/// (even at the other family's default) governs both; `prefs.reset` returns each family to its own default.
+#[test]
+fn e19_a_stored_member_governs_both_families_and_reset_returns_each_to_its_own() {
+    let h = fixture();
+    let cell =
+        |h: &ExecutorHandle| ok(h, "timeline.transferOptions.get", json!({"operation": "paste"}))["options"].clone();
+    let edit = |h: &ExecutorHandle| {
+        ok(h, "prefs.get", json!({"keys": ["edit.pasteSpecial.timeline"]}))["values"]["edit.pasteSpecial.timeline"]
+            .clone()
+    };
+    let pair = |h: &ExecutorHandle| {
+        let (c, e) = (cell(h), edit(h));
+        [
+            c["overwriteDrawings"].clone(),
+            c["updateColours"].clone(),
+            e["overwriteDrawings"].clone(),
+            e["updateColours"].clone(),
+        ]
+    };
+    let f = json!(false);
+    let t = json!(true);
+    assert_eq!(pair(&h), [f.clone(), f.clone(), t.clone(), t.clone()], "04 §11.14 and 01 §6.3 with nothing stored");
+    // Stored at the edit family's value through prefs.set: the 04 family follows it; the other member keeps its default.
+    ok(&h, "prefs.set", json!({"values": {"edit.pasteSpecial.timeline": {"overwriteDrawings": true}}}));
+    assert_eq!(pair(&h), [t.clone(), f.clone(), t.clone(), t.clone()]);
+    // Stored at the 04 family's value through the 04 command: the edit family follows it.
+    ok(&h, "timeline.transferOptions.set", json!({"operation": "paste", "options": {"updateColours": false}}));
+    assert_eq!(pair(&h), [t.clone(), f.clone(), t.clone(), f.clone()]);
+    ok(&h, "prefs.reset", json!({"keys": ["edit.pasteSpecial.timeline"]}));
+    assert_eq!(pair(&h), [f.clone(), f.clone(), t.clone(), t], "reset stores no member");
+    // Confirming the dialog stores every member it shows: `edit.pasteSpecial` with every member and `remember`.
+    ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 1, "to": 1}));
+    ok(&h, "xsheet.currentCell.set", json!({"elementId": BOB, "frame": 1}));
+    ok(&h, "edit.copy", json!({"context": "xsheet"}));
+    ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 30, "to": 30}));
+    ok(&h, "xsheet.currentCell.set", json!({"elementId": BOB, "frame": 30}));
+    ok(&h, "edit.pasteSpecial", json!({"context": "xsheet", "options": every_member(), "remember": true}));
+    assert_eq!(cell(&h)["overwriteDrawings"], true, "the confirmed set governs the 04 family");
+}
+
 #[test]
 fn edit_special_remembers_into_the_store() {
     let h = fixture();
@@ -287,9 +328,23 @@ fn edit_special_remembers_into_the_store() {
 
 // ----- E-5: the window's `edit.*` against the explicit-target `cell.*` forms -------------------------------------------
 
-/// The document, clipboard and selection after `op` from the same cell selection in `context`.
-fn after_edit(context: &str, op: (&str, Value)) -> Value {
+/// Every member of an option set, as stored when the user confirms the dialog (ruling E-19 item 4): 01 §6.3's values.
+fn every_member() -> Value {
+    json!({
+        "overwriteDrawings": true, "createDeleteExposure": true, "extendExposures": false, "updateColours": true,
+        "keyframeSubstitution": false, "motionKeys": true, "rotationKeys": true, "scaleKeys": true, "pivotKeys": true,
+        "velocityKeys": true, "skewKeys": true, "boundaryKeys": false
+    })
+}
+
+/// The document, clipboard and selection after `op` from the same cell selection in `context`; with `stored`, every
+/// member of the cut and paste sets is stored first.
+fn after_edit(context: &str, op: (&str, Value), stored: bool) -> Value {
     let h = fixture();
+    if stored {
+        let all = every_member();
+        ok(&h, "prefs.set", json!({"values": {"edit.cutSpecial.timeline": all, "edit.pasteSpecial.timeline": all}}));
+    }
     ok(&h, "cell.select", json!({"elementIds": [BOB], "from": 1, "to": 3}));
     ok(&h, "xsheet.currentCell.set", json!({"elementId": BOB, "frame": 1}));
     let focus = if context == "xsheet" { "xsheet" } else { "timeline" };
@@ -314,11 +369,8 @@ fn after_edit(context: &str, op: (&str, Value)) -> Value {
     })
 }
 
-#[test]
-fn e5_special_commands_equal_the_cell_forms_and_plain_ones_differ_as_stated() {
-    // Ruling E-17 item 4 (E-5 restated): the special commands with the stored set equal the 04 structured commands with
-    // their targets omitted, in both cell contexts, and plain Delete equals `cell.range.delete`; the plain commands follow
-    // 01 §6.2 as built since M3 and differ from the option-set commands exactly as stated below (SI-213).
+/// Where each `edit.*` command's result differs from its structured `cell.*` form, in both cell contexts.
+fn edit_against_cell_forms(stored: bool) -> Vec<String> {
     let mut differences = Vec::new();
     for context in ["xsheet", "timeline"] {
         for (a, b) in [
@@ -329,37 +381,70 @@ fn e5_special_commands_equal_the_cell_forms_and_plain_ones_differ_as_stated() {
             (("edit.cut", json!({})), ("cell.clipboard.set", json!({"cut": true}))),
             (("edit.paste", json!({})), ("cell.clipboard.apply", json!({}))),
         ] {
-            let (x, y) = (after_edit(context, a.clone()), after_edit(context, b.clone()));
+            let (x, y) = (after_edit(context, a.clone(), stored), after_edit(context, b.clone(), stored));
             for key in ["status", "error", "sheet", "clipboard", "selection"] {
-                if x[key] != y[key] {
-                    let what = if key == "clipboard" {
-                        let fields: Vec<String> = x[key]
-                            .as_object()
-                            .map(|m| m.keys().filter(|k| x[key][k.as_str()] != y[key][k.as_str()]).cloned().collect())
-                            .unwrap_or_default();
+                if x[key] == y[key] {
+                    continue;
+                }
+                let what = if key == "clipboard" {
+                    let fields: Vec<String> = x[key]
+                        .as_object()
+                        .map(|m| m.keys().filter(|k| x[key][k.as_str()] != y[key][k.as_str()]).cloned().collect())
+                        .unwrap_or_default();
+                    let members: Vec<String> = match (x[key]["options"].as_object(), y[key]["options"].as_object()) {
+                        (Some(m), Some(n)) => {
+                            m.keys().filter(|k| m.get(k.as_str()) != n.get(k.as_str())).cloned().collect()
+                        }
+                        _ => Vec::new(),
+                    };
+                    if members.is_empty() {
                         format!("clipboard {}", fields.join(","))
                     } else {
-                        key.to_owned()
-                    };
-                    differences.push(format!("{context} {} / {}: {what}", a.0, b.0));
-                }
+                        format!("clipboard {} ({})", fields.join(","), members.join(","))
+                    }
+                } else {
+                    key.to_owned()
+                };
+                differences.push(format!("{context} {} / {}: {what}", a.0, b.0));
             }
         }
     }
-    let expected = vec![
-        // Found under ruling E-17 item 4 and reported before either changes: `edit.cutSpecial` records its option set in
-        // the clipboard's `options`, `cell.clipboard.set` records `null`; document and selection are equal.
-        "xsheet edit.cutSpecial / cell.clipboard.set: clipboard options".to_owned(),
-        // 01 §6.2 (plain Cut clears) against 04 §13.16 (Cut removes and shifts with the cut-special exposure option on).
-        "xsheet edit.cut / cell.clipboard.set: sheet".to_owned(),
-        // 01 §6.2 (plain Paste writes over the destination cells) against 04 §13.16 / §11.14 (Paste inserts with the
-        // paste-special exposure option on).
-        "xsheet edit.paste / cell.clipboard.apply: sheet".to_owned(),
-        "timeline edit.cutSpecial / cell.clipboard.set: clipboard options".to_owned(),
-        "timeline edit.cut / cell.clipboard.set: sheet".to_owned(),
-        "timeline edit.paste / cell.clipboard.apply: sheet".to_owned(),
-    ];
-    assert_eq!(differences, expected, "special = structured; plain differs only as stated (E-17)");
+    differences
+}
+
+/// The two differences of the plain commands (SI-213), in both contexts: 01 §6.2 (plain Cut clears; plain Paste writes
+/// over the destination cells and records no option set) against 04 §13.16 / §11.14 (Cut removes and shifts, Paste
+/// inserts, with the exposure option on, and a cut records the set it applied, ruling E-20).
+fn plain_differences(context: &str) -> Vec<String> {
+    vec![
+        format!("{context} edit.cut / cell.clipboard.set: sheet"),
+        format!("{context} edit.cut / cell.clipboard.set: clipboard options"),
+        format!("{context} edit.paste / cell.clipboard.apply: sheet"),
+    ]
+}
+
+#[test]
+fn e5_with_every_member_stored_the_special_commands_equal_the_cell_forms() {
+    // Rulings E-17 item 4 and E-19 item 5: with every member stored, the special commands equal the 04 structured
+    // commands with their targets omitted, in both cell contexts, and plain Delete equals `cell.range.delete`; the plain
+    // commands differ only as stated.
+    let expected: Vec<String> = ["xsheet", "timeline"].into_iter().flat_map(plain_differences).collect();
+    assert_eq!(edit_against_cell_forms(true), expected, "special = structured; plain differs only as stated");
+}
+
+#[test]
+fn e5_with_nothing_stored_the_two_family_default_members_are_the_stated_difference() {
+    // Ruling E-19 item 5: with nothing stored, each family reads its own defaults (01 §6.3 for `edit.*`, 04 §11.14 for
+    // the `cell.*` forms); they differ in overwrite existing drawings and update colours (SI-201), which the cut records
+    // in the clipboard's option set (ruling E-20). Nothing else differs beyond the plain commands' stated differences.
+    let mut expected = Vec::new();
+    for context in ["xsheet", "timeline"] {
+        expected.push(format!(
+            "{context} edit.cutSpecial / cell.clipboard.set: clipboard options (overwriteDrawings,updateColours)"
+        ));
+        expected.extend(plain_differences(context));
+    }
+    assert_eq!(edit_against_cell_forms(false), expected, "the family defaults differ only in the two SI-201 members");
 }
 
 // ----- the read model ---------------------------------------------------------------------------------------------------

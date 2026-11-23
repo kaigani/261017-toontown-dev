@@ -274,16 +274,25 @@ the difference goes to the orchestrator before either changes (E-5).
 - Availability: every new handler's (command, code) pairs in `docs/availability-inventory.md`
   (`scripts/check-availability-inventory.py`).
 
-## 10. After rulings E-13 to E-16
+## 10. After rulings E-13 to E-20
 
-- **One transfer-option table (E-13, narrowed by E-17):** `prefs.json`'s `edit.*.timeline` defaults hold 04
-  §11.14's values (overwrite existing drawings off, update colours off); the per-family overlay of §4 is gone; the
-  special and structured commands read the table, the plain commands do not. A unit test keeps the Rust fallbacks
-  (`TimelineEditOptions::default`, `TransferOptions::default`) equal to the table.
+- **One store, per-field family defaults (E-13, narrowed by E-17, replaced by E-19):** the store keeps the members
+  that were set, field by field, as a partial object under the 01 key (`transfer_options::store_members`, the one
+  write path of `prefs.set` on the three keys, `timeline.transferOptions.set` and the special commands' `remember`).
+  A member never set reads its family's default: `EDIT_DEFAULTS` (01 §6.3, = `prefs.json`) for `edit.*Special`,
+  `CELL_DEFAULTS` (04 §11.14) for the `cell.*` forms and `timeline.transferOptions.get`. The store applies a set object
+  even at `prefs.json`'s values (it still governs the 04 family); `prefs.reset` stages the empty set, which removes the
+  key. `prefs.changed` names a key when its effective (01-side) value changes. A unit test prints the two members in
+  which the tables differ and keeps `prefs.json`, `TimelineEditOptions::default` and `TransferOptions::default` equal to
+  their tables; the plain commands do not read the store.
+- **A cut records its set (E-20):** `cell.clipboard.set {cut: true}` records the option set it applied (01's names) in
+  the clipboard's `options`, as `edit.cutSpecial` does; a copy records none. The reviewer suite has no pin on the
+  `null` it recorded before.
 - **Plain Cut, Paste and Delete (E-17, SI-213; E-14 withdrawn):** as built since M3 and 01 §6.2: Cut clears, Paste
   writes over and overwrites same-named drawings, Delete clears in both views. `cell.range.delete` keeps its explicit
-  `shift` (default `false`), so with its target omitted it equals `edit.delete`. The E-5 test proves the special forms
-  equal the structured forms and pins the plain ones' differences.
+  `shift` (default `false`), so with its target omitted it equals `edit.delete`. The E-5 tests prove the special forms
+  equal the structured forms with every member stored, name the two SI-201 members as the only difference with nothing
+  stored, and pin the plain ones' differences.
 - **`sourceContext` (E-15):** `cell.clipboard.set` with its target omitted records the focused cell context
   (`timeline` or `xsheet`), an explicit target `xsheet`. No paste rule reads the label: `paste` dispatches on the
   clipboard's `kind` and the destination context only (`crates/executor/src/commands/edit_ops.rs`); the label is

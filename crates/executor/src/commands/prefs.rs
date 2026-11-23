@@ -218,15 +218,23 @@ pub(crate) fn stage_stored(cx: &mut Cx, values: Map<String, Value>) -> Result<()
 /// and the commands that write a preference key, such as `ui.statusBar.set`). Only keys whose effective value changes
 /// are staged and listed (C41-R1-10): a call that changes nothing writes nothing and emits nothing.
 pub(crate) fn stage(cx: &mut Cx, values: Map<String, Value>) -> Result<(), CommandError> {
+    stage_also(cx, values, Vec::new())
+}
+
+/// [`stage`], listing in the one `prefs.changed` also keys already staged by their own path (`also`).
+fn stage_also(cx: &mut Cx, values: Map<String, Value>, also: Vec<String>) -> Result<(), CommandError> {
     let values: Map<String, Value> =
         values.into_iter().filter(|(k, v)| cx.pref(k).is_none_or(|now| !same(&now, v))).collect();
-    if values.is_empty() {
+    if values.is_empty() && also.is_empty() {
         return Ok(());
     }
     apply_consequences(cx, &values)?;
-    let keys: Vec<String> = values.keys().cloned().collect();
+    let mut keys: Vec<String> = values.keys().cloned().chain(also).collect();
+    keys.sort();
     let src = source(cx);
-    cx.defer(Effect::Prefs(values));
+    if !values.is_empty() {
+        cx.defer(Effect::Prefs(values));
+    }
     cx.emit("prefs.changed", json!({ "keys": keys, "source": src }));
     Ok(())
 }
@@ -269,7 +277,19 @@ pub(crate) fn prefs_set(cx: &mut Cx, p: SetParams) -> Result<SetResult, CommandE
         .cloned()
         .collect();
     let applied = staged.keys().cloned().collect();
-    stage(cx, staged)?;
+    // The three transfer-option keys store the members given, field by field (ruling E-19), so a member never set keeps
+    // following its family's default.
+    let mut also = Vec::new();
+    for (k, v) in &p.values {
+        if let (Some(op), Some(given)) = (super::transfer_options::operation_of_key(k), v.as_object()) {
+            staged.remove(k);
+            let pointer = format!("/values/{}", k.replace('~', "~0").replace('/', "~1"));
+            if super::transfer_options::stage_members(cx, op, given.clone(), &pointer)? {
+                also.push(k.clone());
+            }
+        }
+    }
+    stage_also(cx, staged, also)?;
     Ok(SetResult { applied, restart_required })
 }
 
@@ -336,12 +356,24 @@ pub(crate) fn prefs_reset(cx: &mut Cx, p: ResetParams) -> Result<ResetResult, Co
         keys.retain(|k| !prefs::agent_restricted(k));
     }
     let mut values = Map::new();
+    let mut also = Vec::new();
     for k in &keys {
-        if let Some(d) = prefs::default_of(k) {
+        if super::transfer_options::operation_of_key(k).is_some() {
+            // A transfer-option key is reset by storing no member (ruling E-19); it is listed when its value changes.
+            if cx.pref_raw(k).is_some() {
+                let before = cx.pref(k);
+                let mut empty = Map::new();
+                empty.insert(k.clone(), Value::Object(Map::new()));
+                cx.defer(Effect::Prefs(empty));
+                if cx.pref(k) != before {
+                    also.push(k.clone());
+                }
+            }
+        } else if let Some(d) = prefs::default_of(k) {
             values.insert(k.clone(), d);
         }
     }
-    stage(cx, values)?;
+    stage_also(cx, values, also)?;
     Ok(ResetResult { reset: keys })
 }
 

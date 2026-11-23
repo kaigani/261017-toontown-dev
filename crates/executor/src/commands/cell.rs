@@ -709,7 +709,8 @@ pub(crate) struct RangeMoveParams {
     /// Move, copy, link or copy as new drawings.
     #[serde(default)]
     mode: MoveMode,
-    /// Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was the drag-and-drop defaults of 11.14).
+    /// Transfer options (04 §17.3). Omitted members: those stored for drag and drop, else 04 §11.14's defaults
+    /// (overwrite existing drawings and update colours off; ruling E-19, SI-201).
     #[serde(default)]
     #[schemars(with = "Option<TransferOptions>")]
     options: Option<Value>,
@@ -1506,7 +1507,8 @@ pub(crate) struct ClipboardSetParams {
     /// Cut (an undoable removal, by the cut-special `exposure` option: remove and shift, or clear).
     #[serde(default)]
     cut: bool,
-    /// Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's cut-special defaults).
+    /// Transfer options (04 §17.3). Omitted members: those stored for cut special, else 04 §11.14's defaults
+    /// (overwrite existing drawings and update colours off; ruling E-19, SI-201). A cut records the set it applies.
     #[serde(default)]
     #[schemars(with = "Option<TransferOptions>")]
     options: Option<Value>,
@@ -1570,7 +1572,16 @@ pub(crate) fn cell_clipboard_set(cx: &mut Cx, p: ClipboardSetParams) -> Result<C
     // Exposure Sheet's (ruling E-15).
     let omitted = p.element_ids.is_none() && p.from.is_none() && p.to.is_none();
     let source = if omitted { super::edit_ops::focused_cell_context(cx) } else { super::common::EditContext::Xsheet };
-    super::edit_ops::store_cells(cx, &items, &notes, source)?;
+    // A cut records the option set it applies, in 01's names, as `edit.cutSpecial` does; a copy records none (ruling
+    // E-20).
+    let recorded = if p.cut {
+        let applied = serde_json::to_value(opts).map_err(|e| err(codes::INTERNAL, e.to_string(), json!({})))?;
+        let applied = applied.as_object().cloned().unwrap_or_default();
+        Some(super::transfer_options::to_01(&applied, "/options")?)
+    } else {
+        None
+    };
+    super::edit_ops::store_cells(cx, &items, &notes, source, recorded)?;
     if p.cut {
         let mut changes = Changes::default();
         let mut out = Vec::new();
@@ -1620,7 +1631,8 @@ pub(crate) struct ClipboardApplyParams {
     /// Paste or paste as new drawings.
     #[serde(default)]
     mode: PasteMode,
-    /// Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's paste-special defaults).
+    /// Transfer options (04 §17.3). Omitted members: those stored for paste special, else 04 §11.14's defaults
+    /// (overwrite existing drawings and update colours off; ruling E-19, SI-201).
     #[serde(default)]
     #[schemars(with = "Option<TransferOptions>")]
     options: Option<Value>,

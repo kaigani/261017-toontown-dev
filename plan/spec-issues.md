@@ -2521,14 +2521,34 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   and different defaults: 01 has *Overwrite existing drawings* and *Update colours* on, 04 has both off. The kernel
   holds three stores: the 01 preference keys, the session memory of `edit.cutSpecial` / `edit.pasteSpecial`
   (`edit_options`), and the defaults of `cell.range.move` / `cell.clipboard.*` (04's).
-- **Interim decision (ruling E-13):** one store per operation, the 01 §7.3 preference key (persisted per user, as 04
-  line 759 requires); `timeline.transferOptions.*` and `edit.*Special` read and write it, each in its own names (a fixed
-  mapping). One default table, **04 §11.14 and §17.3's values** (overwrite existing drawings off, update colours off;
-  the other members agree in both tables), in `prefs.json` alone: a ruling changes that one table. The special and
-  structured commands read it when nothing is stored (`edit.cutSpecial`, `edit.pasteSpecial`, paste special again,
-  `cell.clipboard.set`, `cell.clipboard.apply`, `cell.range.move`, `timeline.transferOptions.*`, the drag-and-drop set);
-  the plain commands do not read it (ruling E-17, SI-213).
-  01 §6.3's table (overwrite on, update colours on) is recorded here for the user.
+- **Interim decision (rulings E-13 and E-19):** one store per operation, the 01 §7.3 preference key (persisted per
+  user, as 04 line 759 requires), kept **field by field**: the members that were set (by `prefs.set`,
+  `timeline.transferOptions.set`, or a special command with `remember`; confirming the dialog sets every member it
+  shows). `timeline.transferOptions.*` and `edit.*Special` read and write it, each in its own names (a fixed mapping).
+  A member never set is read from its family's default, two named tables side by side in
+  `crates/executor/src/commands/transfer_options.rs`:
+
+  | Member | `EDIT_DEFAULTS`: 01 §6.3, read by `edit.cutSpecial`, `edit.pasteSpecial`, paste special again, `prefs.get` | `CELL_DEFAULTS`: 04 §11.14 / §17.3, read by `cell.clipboard.set`, `cell.clipboard.apply`, `cell.range.move`, `timeline.transferOptions.get`, the drag-and-drop set |
+  |---|---|---|
+  | overwrite existing drawings | on | off |
+  | update colours | on | off |
+  | the other ten members | as 04 | as 01 (the two tables agree) |
+
+  A member set by either family governs both (setting *overwrite existing drawings* on through `prefs.set` turns it
+  on for `cell.clipboard.apply` too); `prefs.reset` sets no member, so each family returns to its own default. With
+  nothing stored the two families differ in exactly those two members (`c51_timeline`
+  `e5_with_nothing_stored_the_two_family_default_members_are_the_stated_difference`); with every member stored the
+  special and structured commands are equal (`e5_with_every_member_stored_the_special_commands_equal_the_cell_forms`).
+  The plain commands do not read the store (ruling E-17, SI-213). `cell.clipboard.set {cut: true}` records the set it
+  applied on the clipboard, as `edit.cutSpecial` does (ruling E-20).
+- **Reviewer tests on each side (unchanged; none edited):** 01's defaults are pinned by
+  `c12_r3_contracts` (the fresh `edit.pasteSpecial` pass: overwrite on), `c41/settings.rs`
+  `a_partial_object_is_merged_over_the_present_value` (reset returns *overwrite existing drawings* to on) and
+  `c41_r3_review` `composites_atomic_roundtrip_and_stale_members` (the `prefs.json` defaults). 04's are pinned by the
+  `cell.*` tests that paste without options and expect new drawings: `c31_r2_persistence` r04, `c31_r3_binary`
+  `three_distinct_blobs…`, `c31_r4_closure` `colliding_projects…`, and the builder's `c31_round2` r06 and
+  `c31_round3` r02. The user's answer changes one of the two constants (and, for 04's, `prefs.json`'s defaults with
+  it); the test `the_two_default_tables_differ_in_two_members_and_the_fallbacks_follow_them` prints the two members.
 - **Question:** which defaults hold, 01 §6.3's or 04 §11.14's?
 
 ## SI-202 — one state reached by two or three commands (found in M5 C5.1 planning; interim)
@@ -2644,7 +2664,7 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   cells, `edit.paste` writes over the destination cells and overwrites same-named drawings, `edit.delete` on cells
   clears them in both views; none reads the option sets. The special and structured commands follow 04's option sets
   (`edit.cutSpecial`, `edit.pasteSpecial`, paste special again, `cell.clipboard.set`, `cell.clipboard.apply`,
-  `cell.range.move`, `cell.range.delete {shift}`), with the one default table of SI-201.
+  `cell.range.move`, `cell.range.delete {shift}`), with the 04 family's default table of SI-201 (ruling E-19).
 - **Pinned by reviewer tests:** `c12_r2_contracts::cross_bank_cell_paste_cannot_overwrite_a_locked_drawing`,
   `c31_r1_contract::generic_paste_bridge_overwrites_opaque_drawing_properties`,
   `c31_r2_variants::r13_generic_overwrite_clone_group_preserves_full_drawing_and_locked_refusal`,

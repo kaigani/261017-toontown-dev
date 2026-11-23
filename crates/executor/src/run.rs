@@ -905,9 +905,17 @@ fn apply_effects(
                 }
             }
             Effect::Prefs(values) => {
-                // Only values that differ from the defaults are stored (01 §11; C13-R1-15).
+                // Only values that differ from the defaults are stored (01 §11; C13-R1-15). A transfer-option key stores
+                // the members that were set, even at the `edit.*` family's values, since they also govern the 04 family
+                // (ruling E-19); its empty set is "nothing stored".
                 for (k, v) in values {
-                    if crate::store::pref_default(&k).is_some_and(|d| same_value(&d, &v)) {
+                    let transfer = crate::commands::transfer_options::operation_of_key(&k).is_some();
+                    let unset = if transfer {
+                        v.as_object().is_some_and(serde_json::Map::is_empty)
+                    } else {
+                        crate::store::pref_default(&k).is_some_and(|d| same_value(&d, &v))
+                    };
+                    if unset {
                         s.env.settings.prefs.shift_remove(&k);
                     } else {
                         s.env.settings.prefs.insert(k, v);

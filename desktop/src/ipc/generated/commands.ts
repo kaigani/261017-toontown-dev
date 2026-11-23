@@ -23627,7 +23627,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/cell.clipboard.apply.PasteMode",
       },
       options: {
-        description: "Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's paste-special defaults).",
+        description: "Transfer options (04 §17.3). Omitted members: those stored for paste special, else 04 §11.14's defaults\n(overwrite existing drawings and update colours off; ruling E-19, SI-201).",
         anyOf: [
           {
             $ref: "#/$defs/cell.clipboard.apply.TransferOptions",
@@ -23813,7 +23813,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: false,
       },
       options: {
-        description: "Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's cut-special defaults).",
+        description: "Transfer options (04 §17.3). Omitted members: those stored for cut special, else 04 §11.14's defaults\n(overwrite existing drawings and update colours off; ruling E-19, SI-201). A cut records the set it applies.",
         anyOf: [
           {
             $ref: "#/$defs/cell.clipboard.set.TransferOptions",
@@ -25093,7 +25093,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/cell.range.move.MoveMode",
       },
       options: {
-        description: "Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was the drag-and-drop defaults of 11.14).",
+        description: "Transfer options (04 §17.3). Omitted members: those stored for drag and drop, else 04 §11.14's defaults\n(overwrite existing drawings and update colours off; ruling E-19, SI-201).",
         anyOf: [
           {
             $ref: "#/$defs/cell.range.move.TransferOptions",
@@ -45159,7 +45159,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         default: null,
       },
       options: {
-        description: "`TimelineEditOptions` (01 §12.4); omitted fields take the remembered values.",
+        description: "`TimelineEditOptions` (01 §12.4). Omitted fields: those stored for cut special, else 01 §6.3's defaults\n(overwrite existing drawings and update colours on; ruling E-19, SI-201).",
         type: [
           "object",
           "null",
@@ -45964,7 +45964,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         ],
       },
       options: {
-        description: "`TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content.",
+        description: "`TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content. Omitted timeline fields:\nthose stored for paste special, else 01 §6.3's defaults (overwrite existing drawings and update colours on;\nruling E-19, SI-201).",
         type: [
           "object",
           "null",
@@ -79979,7 +79979,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     type: "object",
     properties: {
       options: {
-        description: "The stored set (04 §17.3).",
+        description: "The set the 04 family applies (04 §17.3): stored members, else 04 §11.14's defaults (ruling E-19).",
         $ref: "#/$defs/timeline.transferOptions.get.TransferOptions",
       },
     },
@@ -80103,7 +80103,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         $ref: "#/$defs/timeline.transferOptions.set.Operation",
       },
       options: {
-        description: "The options to store (04 §17.3; omitted members keep their stored value).",
+        description: "The options to store (04 §17.3; omitted members keep their stored value, or 04 §11.14's default when never\nstored).",
         $ref: "#/$defs/timeline.transferOptions.set.TransferOptions",
       },
     },
@@ -90398,7 +90398,7 @@ export interface cell_clipboard_apply_params {
   frame?: number | bigint | null;
   /** Paste or paste as new drawings. */
   mode?: cell_clipboard_apply_PasteMode;
-  /** Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's paste-special defaults). */
+  /** Transfer options (04 §17.3). Omitted members: those stored for paste special, else 04 §11.14's defaults (overwrite existing drawings and update colours off; ruling E-19, SI-201). */
   options?: cell_clipboard_apply_TransferOptions | null;
 }
 
@@ -90460,7 +90460,7 @@ export interface cell_clipboard_set_params {
   wholeElements?: boolean;
   /** Cut (an undoable removal, by the cut-special `exposure` option: remove and shift, or clear). */
   cut?: boolean;
-  /** Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was 11.14's cut-special defaults). */
+  /** Transfer options (04 §17.3). Omitted members: those stored for cut special, else 04 §11.14's defaults (overwrite existing drawings and update colours off; ruling E-19, SI-201). A cut records the set it applies. */
   options?: cell_clipboard_set_TransferOptions | null;
 }
 
@@ -90861,7 +90861,7 @@ export interface cell_range_move_params {
   targetFrame: number | bigint;
   /** Move, copy, link or copy as new drawings. */
   mode?: cell_range_move_MoveMode;
-  /** Transfer options (omitted members: the stored set of 04 §17.3 (SI-201); was the drag-and-drop defaults of 11.14). */
+  /** Transfer options (04 §17.3). Omitted members: those stored for drag and drop, else 04 §11.14's defaults (overwrite existing drawings and update colours off; ruling E-19, SI-201). */
   options?: cell_range_move_TransferOptions | null;
 }
 
@@ -96547,7 +96547,7 @@ export interface edit_cutSpecial_params {
   context?: edit_cutSpecial_EditContext;
   /** Objects or cells (default: the selection). */
   objectIds?: string[] | null;
-  /** `TimelineEditOptions` (01 §12.4); omitted fields take the remembered values. */
+  /** `TimelineEditOptions` (01 §12.4). Omitted fields: those stored for cut special, else 01 §6.3's defaults (overwrite existing drawings and update colours on; ruling E-19, SI-201). */
   options?: Record<string, unknown> | null;
   /** Remember the options. */
   remember?: boolean;
@@ -96759,7 +96759,7 @@ export interface edit_pasteSpecial_params {
   context?: edit_pasteSpecial_EditContext;
   /** Where to paste (as `edit.paste`). */
   destination?: edit_pasteSpecial_Destination | null;
-  /** `TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content. */
+  /** `TimelineEditOptions` or `MotionPointPasteOptions` (01 §12.4), by clipboard content. Omitted timeline fields: those stored for paste special, else 01 §6.3's defaults (overwrite existing drawings and update colours on; ruling E-19, SI-201). */
   options?: Record<string, unknown> | null;
   /** Paste special again: the last options of this session. */
   useLast?: boolean;
@@ -105439,7 +105439,7 @@ export interface timeline_transferOptions_get_PegKeys {
 
 /** `{options}`. */
 export interface timeline_transferOptions_get_result {
-  /** The stored set (04 §17.3). */
+  /** The set the 04 family applies (04 §17.3): stored members, else 04 §11.14's defaults (ruling E-19). */
   options: timeline_transferOptions_get_TransferOptions;
 }
 
@@ -105484,7 +105484,7 @@ export interface timeline_transferOptions_set_PegKeys {
 export interface timeline_transferOptions_set_params {
   /** Paste special, cut special or drag and drop. */
   operation: timeline_transferOptions_set_Operation;
-  /** The options to store (04 §17.3; omitted members keep their stored value). */
+  /** The options to store (04 §17.3; omitted members keep their stored value, or 04 §11.14's default when never stored). */
   options: timeline_transferOptions_set_TransferOptions;
 }
 

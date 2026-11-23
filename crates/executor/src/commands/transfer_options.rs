@@ -2,14 +2,17 @@
 //! `reviews/M5-design-timeline-kernel.md` §4).
 //!
 //! Each operation (paste special, cut special, drag and drop) has one stored option set: its 01 §7.3 preference key, in
-//! 01's member names, persisted per user (04 line 759). The defaults are one table, the keys' defaults in
-//! `prefs.json`. `timeline.transferOptions.*` reads and writes the store in 04's names through a fixed mapping;
-//! `edit.cutSpecial` and `edit.pasteSpecial` read it in 01's names and write it back when they remember; the `cell.*`
-//! commands take their omitted members from it (04 line 1366).
+//! 01's member names, persisted per user (04 line 759). `timeline.transferOptions.*` reads and writes the store in
+//! 04's names through a fixed mapping; `edit.cutSpecial` and `edit.pasteSpecial` read it in 01's names and store the
+//! members they are given when they remember; the `cell.*` commands take their omitted members from it (04 line 1366).
 //!
-//! **One default table (ruling E-13).** 01 §6.3 turns *Overwrite existing drawings* and *Update colours* on, 04 §11.14
-//! and §17.3 off; the table is 04's (interim until the user rules on SI-201), in `prefs.json` alone, so a ruling changes
-//! it in one place.
+//! **Per field, two families of defaults (ruling E-19).** The store keeps the members that were set, field by field (a
+//! partial object under the key; the preference's effective value fills the others from its default by the per-member
+//! rule O-17). A member never stored is read from its family's documented default: the `edit.*` family from 01 §6.3
+//! ([`EDIT_DEFAULTS`], the `prefs.json` defaults), the 04 family (`cell.clipboard.*`, `cell.range.move`,
+//! `timeline.transferOptions.get`, the drag-and-drop set) from 04 §11.14 ([`CELL_DEFAULTS`]). They differ in two members
+//! (overwrite existing drawings, update colours); a member stored by either family governs both. The user's answer to
+//! SI-201 changes one of the two constants.
 
 use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
@@ -60,6 +63,42 @@ const PEG: [(&str, &str); 6] = [
     ("velocity", "velocityKeys"),
     ("skew", "skewKeys"),
 ];
+
+/// The `edit.*` family's defaults, 01 §6.3 (in 01's names; equal to `prefs.json`'s `edit.*.timeline` defaults).
+pub(crate) const EDIT_DEFAULTS: [(&str, bool); 12] = [
+    ("overwriteDrawings", true),
+    ("createDeleteExposure", true),
+    ("extendExposures", false),
+    ("updateColours", true),
+    ("keyframeSubstitution", false),
+    ("motionKeys", true),
+    ("rotationKeys", true),
+    ("scaleKeys", true),
+    ("pivotKeys", true),
+    ("velocityKeys", true),
+    ("skewKeys", true),
+    ("boundaryKeys", false),
+];
+
+/// The 04 family's defaults, 04 §11.14 and §17.3 (in 01's names).
+pub(crate) const CELL_DEFAULTS: [(&str, bool); 12] = [
+    ("overwriteDrawings", false),
+    ("createDeleteExposure", true),
+    ("extendExposures", false),
+    ("updateColours", false),
+    ("keyframeSubstitution", false),
+    ("motionKeys", true),
+    ("rotationKeys", true),
+    ("scaleKeys", true),
+    ("pivotKeys", true),
+    ("velocityKeys", true),
+    ("skewKeys", true),
+    ("boundaryKeys", false),
+];
+
+fn table(t: &[(&str, bool); 12]) -> Map<String, Value> {
+    t.iter().map(|(k, v)| ((*k).to_owned(), json!(v))).collect()
+}
 
 /// A set in 01's names as 04's object.
 pub(crate) fn to_04(v01: &Map<String, Value>) -> Map<String, Value> {
@@ -118,20 +157,88 @@ fn unknown_member(pointer: &str) -> CommandError {
     )
 }
 
-/// The stored set of an operation, in 01's names (the table's default when nothing was stored).
-pub(crate) fn stored(cx: &Cx, op: Operation) -> Map<String, Value> {
-    cx.pref(op.key()).and_then(|v| v.as_object().cloned()).unwrap_or_default()
+/// The members stored for an operation (01's names), each a boolean: what was set, field by field.
+pub(crate) fn stored_members(cx: &Cx, op: Operation) -> Map<String, Value> {
+    let known: Vec<&str> = EDIT_DEFAULTS.iter().map(|(k, _)| *k).collect();
+    cx.pref_raw(op.key())
+        .and_then(|v| v.as_object().cloned())
+        .unwrap_or_default()
+        .into_iter()
+        .filter(|(k, v)| v.is_boolean() && known.contains(&k.as_str()))
+        .collect()
 }
 
-/// The table's default set of an operation, in 01's names.
-#[cfg(test)]
-pub(crate) fn table_default(op: Operation) -> Map<String, Value> {
-    crate::store::pref_default(op.key()).and_then(|v| v.as_object().cloned()).unwrap_or_default()
+/// The `edit.*` family's set of an operation (01's names): the stored members over 01 §6.3's defaults.
+pub(crate) fn edit_set(cx: &Cx, op: Operation) -> Map<String, Value> {
+    let mut m = table(&EDIT_DEFAULTS);
+    m.extend(stored_members(cx, op));
+    m
 }
 
-/// The base a `cell.*` command overlays its given members on: the stored set in 04's names.
+/// The 04 family's set of an operation (01's names): the stored members over 04 §11.14's defaults.
+pub(crate) fn cell_set(cx: &Cx, op: Operation) -> Map<String, Value> {
+    let mut m = table(&CELL_DEFAULTS);
+    m.extend(stored_members(cx, op));
+    m
+}
+
+/// The base a `cell.*` command overlays its given members on: the 04 family's set in 04's names.
 pub(crate) fn cell_base(cx: &Cx, op: Operation) -> Map<String, Value> {
-    to_04(&stored(cx, op))
+    to_04(&cell_set(cx, op))
+}
+
+/// Stores the given members of an operation's set (01's names), keeping the members stored before: the one write path
+/// of `prefs.set` on the three keys, `timeline.transferOptions.set` and the special commands' memory. The effective
+/// value is validated as `prefs.set` validates it; `prefs.changed` names the key when the effective value changes.
+pub(crate) fn store_members(
+    cx: &mut Cx,
+    op: Operation,
+    given: Map<String, Value>,
+    pointer: &str,
+) -> Result<(), CommandError> {
+    if stage_members(cx, op, given, pointer)? {
+        let src = if matches!(cx.origin(), crate::Origin::Agent { .. }) { "agent" } else { "user" };
+        cx.emit("prefs.changed", json!({ "keys": [op.key()], "source": src }));
+    }
+    Ok(())
+}
+
+/// [`store_members`] without the event: stages the members and answers whether the key's effective value changed
+/// (`prefs.set` lists the key in its own `prefs.changed`).
+pub(crate) fn stage_members(
+    cx: &mut Cx,
+    op: Operation,
+    given: Map<String, Value>,
+    pointer: &str,
+) -> Result<bool, CommandError> {
+    let known: Vec<&str> = EDIT_DEFAULTS.iter().map(|(k, _)| *k).collect();
+    for (k, v) in &given {
+        if !known.contains(&k.as_str()) {
+            return Err(unknown_member(&format!("{pointer}/{k}")));
+        }
+        if !v.is_boolean() {
+            return Err(invalid(&format!("{pointer}/{k}"), "a boolean"));
+        }
+    }
+    let before_raw = stored_members(cx, op);
+    let mut raw = before_raw.clone();
+    raw.extend(given);
+    if raw.is_empty() || (raw == before_raw && cx.pref_raw(op.key()).is_some()) {
+        return Ok(false);
+    }
+    let before = cx.pref(op.key());
+    let themes = cx.session().env.settings.theme_ids();
+    let full = crate::prefs::overlay(op.key(), &Value::Object(raw.clone()), before.clone());
+    crate::prefs::validate(op.key(), &full, &themes)?;
+    let mut values = Map::new();
+    values.insert(op.key().to_owned(), Value::Object(raw));
+    cx.defer(crate::cx::Effect::Prefs(values));
+    Ok(cx.pref(op.key()) != before)
+}
+
+/// The operation whose set a preference key stores.
+pub(crate) fn operation_of_key(key: &str) -> Option<Operation> {
+    [Operation::Paste, Operation::Cut, Operation::DragDrop].into_iter().find(|o| o.key() == key)
 }
 
 /// A `cell.*` command's options: its given members over [`cell_base`].
@@ -174,7 +281,8 @@ pub(crate) fn cell_options(
 pub(crate) struct SetParams {
     /// Paste special, cut special or drag and drop.
     operation: Operation,
-    /// The options to store (04 §17.3; omitted members keep their stored value).
+    /// The options to store (04 §17.3; omitted members keep their stored value, or 04 §11.14's default when never
+    /// stored).
     #[schemars(with = "super::cell::TransferOptions")]
     options: Value,
 }
@@ -199,13 +307,8 @@ pub(crate) struct SetResult {
 )]
 pub(crate) fn timeline_transfer_options_set(cx: &mut Cx, p: SetParams) -> Result<SetResult, CommandError> {
     let given = p.options.as_object().ok_or_else(|| invalid("/options", "an object"))?;
-    let mut set = stored(cx, p.operation);
-    for (k, v) in to_01(given, "/options")? {
-        set.insert(k, v);
-    }
-    let written = super::timeline::write_pref(cx, p.operation.key(), Value::Object(set), "/options")?;
-    let options = Value::Object(to_04(written.as_object().unwrap_or(&Map::new())));
-    Ok(SetResult { operation: p.operation, options })
+    store_members(cx, p.operation, to_01(given, "/options")?, "/options")?;
+    Ok(SetResult { operation: p.operation, options: Value::Object(cell_base(cx, p.operation)) })
 }
 
 /// `timeline.transferOptions.get` parameters.
@@ -219,7 +322,7 @@ pub(crate) struct GetParams {
 /// `{options}`.
 #[derive(Debug, Serialize, JsonSchema)]
 pub(crate) struct GetResult {
-    /// The stored set (04 §17.3).
+    /// The set the 04 family applies (04 §17.3): stored members, else 04 §11.14's defaults (ruling E-19).
     #[schemars(with = "super::cell::TransferOptions")]
     options: Value,
 }
@@ -234,7 +337,7 @@ pub(crate) struct GetResult {
     gui = "the paste special, cut special and drag-and-drop options dialog: the values it opens with (M5 C5.1)",
 )]
 pub(crate) fn timeline_transfer_options_get(cx: &mut Cx, p: GetParams) -> Result<GetResult, CommandError> {
-    Ok(GetResult { options: Value::Object(to_04(&stored(cx, p.operation))) })
+    Ok(GetResult { options: Value::Object(cell_base(cx, p.operation)) })
 }
 
 #[cfg(test)]
@@ -243,25 +346,28 @@ mod tests {
 
     #[test]
     fn the_mapping_is_a_bijection_over_every_member() {
-        let table = table_default(Operation::Paste);
-        assert_eq!(table.len(), FLAT.len() + PEG.len(), "the table names every member");
-        let there = to_04(&table);
-        let back = to_01(&there, "/options").unwrap_or_default();
-        assert_eq!(back, table);
+        let t = table(&EDIT_DEFAULTS);
+        assert_eq!(t.len(), FLAT.len() + PEG.len(), "the table names every member");
+        let back = to_01(&to_04(&t), "/options").unwrap_or_default();
+        assert_eq!(back, t);
         assert!(to_01(&serde_json::from_value(json!({"nope": true})).unwrap_or_default(), "/options").is_err());
     }
 
+    /// Ruling E-19: two named tables side by side; this test prints the members in which they differ (the user's answer
+    /// to SI-201 changes one constant), and keeps each family's fallbacks and `prefs.json` equal to its table.
     #[test]
-    fn the_rust_defaults_are_the_one_table() {
-        // Ruling E-13: one table (04 §11.14's values), `prefs.json`; the structs' fallbacks equal it.
+    fn the_two_default_tables_differ_in_two_members_and_the_fallbacks_follow_them() {
+        let (edit, cell) = (table(&EDIT_DEFAULTS), table(&CELL_DEFAULTS));
+        let differ: Vec<&String> = edit.keys().filter(|k| edit[k.as_str()] != cell[k.as_str()]).collect();
+        println!("01 section 6.3 and 04 section 11.14 differ in: {differ:?}");
+        assert_eq!(differ, vec!["overwriteDrawings", "updateColours"]);
         for op in [Operation::Paste, Operation::Cut, Operation::DragDrop] {
-            let table = table_default(op);
-            assert_eq!(table["overwriteDrawings"], false, "{op:?}");
-            assert_eq!(table["updateColours"], false, "{op:?}");
-            let edit = serde_json::to_value(super::super::edit_ops::TimelineEditOptions::default()).unwrap_or_default();
-            assert_eq!(edit.as_object(), Some(&table), "{op:?}");
-            let cell = serde_json::to_value(super::super::cell::TransferOptions::default()).unwrap_or_default();
-            assert_eq!(cell.as_object(), Some(&to_04(&table)), "{op:?}");
+            let prefs = crate::store::pref_default(op.key()).and_then(|v| v.as_object().cloned()).unwrap_or_default();
+            assert_eq!(prefs, edit, "{op:?}: prefs.json holds the edit family's defaults");
         }
+        let e = serde_json::to_value(super::super::edit_ops::TimelineEditOptions::default()).unwrap_or_default();
+        assert_eq!(e.as_object(), Some(&edit));
+        let c = serde_json::to_value(super::super::cell::TransferOptions::default()).unwrap_or_default();
+        assert_eq!(c.as_object(), Some(&to_04(&cell)));
     }
 }
