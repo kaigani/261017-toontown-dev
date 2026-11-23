@@ -3031,9 +3031,7 @@
       "commands": [
         "element.solo.set"
       ],
-      "params": {
-        "elementIds": []
-      }
+      "params": {}
     },
     {
       "id": "timeline.zoom",

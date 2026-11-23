@@ -382,6 +382,8 @@ fn toggle_fill(
         // The Play menu's toggles (09 §2.2; M5 C5.1b).
         "playback.loop.set" => ("enabled", !s.timeline.playback.loop_on),
         "playback.forceRate.set" => ("enabled", !s.timeline.playback.force_rate),
+        // The Timeline toolbar's solo mode, a toggle (04 line 604; M5 C5.1b): on when off, off when on.
+        "element.solo.set" => ("enabled", s.timeline.solo.is_none()),
         "window.toolbar.set" => {
             let id = params.get("toolbarId").and_then(Value::as_str)?;
             let l = ui.layout();

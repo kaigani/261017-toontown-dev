@@ -9,6 +9,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ContextMenu } from '../shell/ContextMenu';
 import { menuAt, type MenuAt } from '../shell/contextMenuModel';
 import { useActions } from '../shell/actionsApi';
+import type { CommandRef } from '../shell/availability';
+import { enabledIn, useAvailability } from '../shell/useAvailability';
 import { useMessages } from '../shell/messagesApi';
 import { useShell, useSlice } from '../state/context';
 import { useReadGate } from '../state/readGate';
@@ -146,6 +148,11 @@ export function TimelinePanel() {
   const rangeGate = useReadGate();
 
   const shown = useMemo(() => shownRows(rows?.rows ?? []), [rows]);
+  // The rows with children (every row of the answer, shown or under a collapsed parent): they show the disclosure.
+  const parents = useMemo(
+    () => new Set((rows?.rows ?? []).flatMap((r) => (r.parentId ? [r.parentId] : []))),
+    [rows],
+  );
   // Memoised on the values, not on the answer object: a read answering the same view keeps every callback that depends
   // on the position (each read sets a new object; depending on it re-read without end).
   const zoomLevel = view?.zoomLevel ?? LAYOUT.defaultZoomLevel;
@@ -480,6 +487,21 @@ export function TimelinePanel() {
   // ----- menus --------------------------------------------------------------------------------------------------------
 
   const selectedRows = selection && selection.rowsSelected > 0 ? selection.elementIds : [];
+  // Solo mode, a toggle (04 line 604): the reference names the selected rows (none: the kernel's default, the selected
+  // rows, else the current element); the kernel completes `enabled` to the next state and says whether solo is on.
+  const selectedKey = selectedRows.join('|');
+  const soloRefs = useMemo<readonly CommandRef[]>(
+    () => [
+      {
+        commandId: 'element.solo.set',
+        params: selectedKey === '' ? {} : { elementIds: selectedKey.split('|') },
+      },
+    ],
+    [selectedKey],
+  );
+  const soloAvailability = useAvailability(soloRefs);
+  const soloRef = soloRefs[0];
+  const solo = soloRef ? soloAvailability(soloRef) : undefined;
   const rowAtY = (y: number): TimelineRow | undefined =>
     shown[Math.floor((y + scrollTop) / LAYOUT.rowHeight)];
   const frameAtX = (x: number): number => {
@@ -574,13 +596,14 @@ export function TimelinePanel() {
         </button>
         <button
           type="button"
-          disabled={!open}
+          disabled={!open || !enabledIn(solo)}
+          aria-pressed={solo?.checked === true}
           title="Solo mode: show only the selected rows (element.solo.set)"
           data-tt-role="button"
           data-tt-id="timeline.solo"
           data-tt-command="element.solo.set"
-          data-tt-params={JSON.stringify({ elementIds: selectedRows })}
-          onClick={() => void actions.perform('element.solo.set', { elementIds: selectedRows })}
+          data-tt-params={JSON.stringify(soloRef?.params ?? {})}
+          onClick={() => void actions.perform('element.solo.set', soloRef?.params ?? {})}
         >
           Solo
         </button>
@@ -675,6 +698,7 @@ export function TimelinePanel() {
                   display={display.get(r.elementId)}
                   selected={selectedRows.includes(r.elementId)}
                   current={selection?.currentElementId === r.elementId}
+                  parent={parents.has(r.elementId)}
                   renaming={renaming?.elementId === r.elementId ? renaming.name : null}
                   onRenameChange={(name) => {
                     setRenaming({ elementId: r.elementId, name });
@@ -813,6 +837,8 @@ function LayerRow(props: {
   display: RowDisplay | undefined;
   selected: boolean;
   current: boolean;
+  /** The row has children: it shows the disclosure (04 line 605, "elements with children"). */
+  parent: boolean;
   renaming: string | null;
   onRenameChange: (name: string) => void;
   onRenameStart: () => void;
@@ -822,7 +848,7 @@ function LayerRow(props: {
   onToggleVisible: () => void;
 }) {
   const { row: r } = props;
-  const parent = r.childKeyframeFrames.length > 0 || r.collapsed;
+  const parent = props.parent || r.collapsed;
   const stop = (e: React.PointerEvent) => {
     e.stopPropagation();
   };
