@@ -379,6 +379,9 @@ fn toggle_fill(
             ("enabled", !ui.drawing().aids.onion_skin.enabled)
         }
         "drawAid.autoLightTable.set" => ("enabled", !ui.drawing().aids.auto_light_table),
+        // The Play menu's toggles (09 §2.2; M5 C5.1b).
+        "playback.loop.set" => ("enabled", !s.timeline.playback.loop_on),
+        "playback.forceRate.set" => ("enabled", !s.timeline.playback.force_rate),
         "window.toolbar.set" => {
             let id = params.get("toolbarId").and_then(Value::as_str)?;
             let l = ui.layout();
@@ -545,6 +548,24 @@ fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String
         let mode = params.get("mode").and_then(Value::as_str)?;
         let now = crate::commands::colour::GapMode::of(s.env.pref(crate::commands::colour::GAP_PREF).as_ref());
         return Some(serde_json::to_value(now).ok()?.as_str() == Some(mode));
+    }
+    // The Play menu's radio items (09 §2.2; M5 C5.1b): the playback rate the item names, the current scene's range mode.
+    if command_id == "playback.rate.set" {
+        let want = params.get("fps")?;
+        let now = s.timeline.playback.rate;
+        return Some(match (want.as_str(), want.as_f64(), now) {
+            (Some("project"), _, crate::commands::playback::Rate::Project) => true,
+            (_, Some(f), crate::commands::playback::Rate::Fps(r)) => (f - r).abs() < 1e-9,
+            _ => false,
+        });
+    }
+    if command_id == "playback.range.mode.set" {
+        let want = params.get("mode").and_then(Value::as_str)?;
+        let scene = s.app.scene.as_ref()?;
+        let len = s.project.as_ref().map_or(1, |p| crate::commands::timeline::length_of(&p.doc, scene));
+        let (mode, _, _) = crate::commands::timeline::effective_range(&s.timeline.ranges, scene, len);
+        let name = serde_json::to_value(mode).ok()?;
+        return Some(name.as_str() == Some(want));
     }
     toggle_fill(s, command_id, params).map(|(_, next)| !next)
 }

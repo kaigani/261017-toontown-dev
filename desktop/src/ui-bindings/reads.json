@@ -24,6 +24,7 @@
         "element.get": ["desktop/src/timeline/TimelinePanel.tsx"],
         "job.list": ["desktop/src/shell/StatusBar.tsx"],
         "keymap.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
+        "playback.state.get": ["desktop/src/shell/Toolbars.tsx"],
         "prefs.get": [
           "desktop/src/canvas/CanvasView.tsx",
           "desktop/src/panels/DrawingInspectorPage.tsx",
@@ -35,6 +36,7 @@
         "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
         "project.recovery.list": ["desktop/src/state/store.ts"],
         "timeline.frameLabel.get": ["desktop/src/timeline/TimelinePanel.tsx"],
+        "timeline.playbackRange.get": ["desktop/src/timeline/TimelinePanel.tsx"],
         "timeline.rows.list": ["desktop/src/timeline/TimelinePanel.tsx"],
         "tool.active.get": [
           "desktop/src/canvas/CanvasView.tsx",
@@ -565,9 +567,11 @@
         "drawAid.staticLightTable.list": ["desktop/src/panels/ViewChrome.tsx"],
         "edit.history.get": ["desktop/src/state/store.ts"],
         "element.get": ["desktop/src/timeline/TimelinePanel.tsx"],
+        "playback.state.get": ["desktop/src/shell/Toolbars.tsx"],
         "prefs.get": ["desktop/src/timeline/TimelinePanel.tsx"],
         "project.recent.list": ["desktop/src-tauri/src/menu.rs", "desktop/src/state/store.ts"],
         "project.recovery.list": ["desktop/src/state/store.ts"],
+        "timeline.playbackRange.get": ["desktop/src/timeline/TimelinePanel.tsx"],
         "timeline.rows.list": ["desktop/src/timeline/TimelinePanel.tsx"],
         "tool.active.get": [
           "desktop/src/canvas/CanvasView.tsx",

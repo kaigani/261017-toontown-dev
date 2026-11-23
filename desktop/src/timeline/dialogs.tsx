@@ -196,3 +196,63 @@ export function NewElementsDialog(props: {
     </Dialog>
   );
 }
+
+const HEX_COLOUR = /^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
+
+/** Element Colours (04 §9.6): the marker and the background colour; an empty field leaves that colour as it is. */
+export function ColoursDialog(props: { onDone: (params: Record<string, unknown> | null) => void }) {
+  const [marker, setMarker] = useState('');
+  const [background, setBackground] = useState('');
+  const bad = (t: string) => t.trim() !== '' && !HEX_COLOUR.test(t.trim());
+  const problem =
+    bad(marker) || bad(background) ? 'Type a colour as #RRGGBB or #RRGGBBAA, or leave it empty.' : null;
+  return (
+    <Dialog
+      id="timelineColours"
+      title="Element Colours"
+      onCancel={() => {
+        props.onDone(null);
+      }}
+      onSubmit={() => {
+        const params: Record<string, unknown> = {};
+        if (marker.trim() !== '') params['marker'] = marker.trim();
+        if (background.trim() !== '') params['background'] = background.trim();
+        props.onDone(params);
+      }}
+      submitLabel="OK"
+      submitDisabled={problem !== null || (marker.trim() === '' && background.trim() === '')}
+      command="element.colour.set"
+    >
+      <label>
+        Marker colour{' '}
+        <input
+          autoFocus
+          value={marker}
+          placeholder="#RRGGBB"
+          data-tt-role="field"
+          data-tt-id="timelineColours.marker"
+          onChange={(e) => {
+            setMarker(e.target.value);
+          }}
+        />
+      </label>
+      <label>
+        Background colour{' '}
+        <input
+          value={background}
+          placeholder="#RRGGBB"
+          data-tt-role="field"
+          data-tt-id="timelineColours.background"
+          onChange={(e) => {
+            setBackground(e.target.value);
+          }}
+        />
+      </label>
+      {problem && (
+        <p className="field-problem" role="alert">
+          {problem}
+        </p>
+      )}
+    </Dialog>
+  );
+}

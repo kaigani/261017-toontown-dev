@@ -616,7 +616,59 @@ pub(crate) struct HierarchySelectParams {
     element_id: Option<String>,
 }
 
-/// `element.hierarchy.select`: without `elementId`, a current element.
+/// The elements a hierarchy selection picks from `id` (04 §9.3): one rule for the precheck and the handler, so the
+/// Element menu's items are disabled exactly when they would refuse (rulings O-10, D-79: prechecks equal handlers).
+fn hierarchy_targets(doc: &tt_model::document::Document, id: &Id, relation: Relation) -> Result<Vec<Id>, CommandError> {
+    let sc = scene_of(doc, id)?;
+    let placed = h::placed(sc.tree());
+    let q = placed.iter().find(|q| &q.id == id).ok_or_else(|| internal("element not in the tree"))?;
+    let level = h::level_ids(sc.tree(), q.parent.as_ref());
+    let none = || {
+        err(
+            tt_registry::codes::COMMAND_DISABLED,
+            format!(
+                "the element has no {}",
+                match relation {
+                    Relation::Parent => "parent",
+                    Relation::Children | Relation::FirstChild => "children",
+                    Relation::PreviousSibling => "previous sibling",
+                    Relation::NextSibling => "next sibling",
+                    Relation::SkeletonRoot => "skeleton",
+                }
+            ),
+            json!({ "elementId": id.as_str(), "reason": "noTarget" }),
+        )
+    };
+    Ok(match relation {
+        Relation::Parent => vec![q.parent.clone().ok_or_else(none)?],
+        Relation::Children => {
+            let kids = h::descendants(sc.tree(), id);
+            if kids.is_empty() {
+                return Err(none());
+            }
+            std::iter::once(id.clone()).chain(kids).collect()
+        }
+        Relation::FirstChild => vec![h::level_ids(sc.tree(), Some(id)).first().cloned().ok_or_else(none)?],
+        Relation::PreviousSibling => vec![q.index.checked_sub(1).and_then(|i| level.get(i)).cloned().ok_or_else(none)?],
+        Relation::NextSibling => vec![level.get(q.index + 1).cloned().ok_or_else(none)?],
+        Relation::SkeletonRoot => {
+            let ps = h::parents(sc.tree());
+            let mut cur = Some(id.clone());
+            let mut root = None;
+            while let Some(c) = cur {
+                if doc.element(&c).is_some_and(|e| *e.element_type() == ElementType::Skeleton) {
+                    root = Some(c.clone());
+                    break;
+                }
+                cur = ps.get(&c).cloned().flatten();
+            }
+            vec![root.ok_or_else(none)?]
+        }
+    })
+}
+
+/// `element.hierarchy.select`: without `elementId`, a current element; and a target for the relation (the handler's
+/// rule, `hierarchy_targets`).
 pub(crate) fn precheck_hierarchy_select(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     if v.get("elementId").is_none_or(Value::is_null) && cx.app().element.is_none() {
         return Err(err(
@@ -625,7 +677,25 @@ pub(crate) fn precheck_hierarchy_select(cx: &Cx, v: &Value) -> Result<(), Comman
             json!({ "pointer": "/elementId" }),
         ));
     }
-    Ok(())
+    // An explicit element or a malformed relation is the handler's to refuse (`element.notFound`, `arg.invalid`).
+    let Ok(relation) = serde_json::from_value::<Relation>(v.get("relation").cloned().unwrap_or(Value::Null)) else {
+        return Ok(());
+    };
+    let id = match v.get("elementId").and_then(Value::as_str) {
+        Some(r) => match element_id(cx, r, "/elementId") {
+            Ok(id) => id,
+            Err(_) => return Ok(()),
+        },
+        None => match cx.app().element.clone() {
+            Some(id) => id,
+            None => return Ok(()),
+        },
+    };
+    let doc = cx.document()?;
+    match hierarchy_targets(doc, &id, relation) {
+        Err(e) if e.code == tt_registry::codes::COMMAND_DISABLED => Err(e),
+        _ => Ok(()),
+    }
 }
 
 #[command(
@@ -650,52 +720,7 @@ pub(crate) fn element_hierarchy_select(cx: &mut Cx, p: HierarchySelectParams) ->
         })?,
     };
     let doc = cx.document()?.clone();
-    let sc = scene_of(&doc, &id)?;
-    let placed = h::placed(sc.tree());
-    let q = placed.iter().find(|q| q.id == id).ok_or_else(|| internal("element not in the tree"))?;
-    let level = h::level_ids(sc.tree(), q.parent.as_ref());
-    let none = || {
-        err(
-            tt_registry::codes::COMMAND_DISABLED,
-            format!(
-                "the element has no {}",
-                match p.relation {
-                    Relation::Parent => "parent",
-                    Relation::Children | Relation::FirstChild => "children",
-                    Relation::PreviousSibling => "previous sibling",
-                    Relation::NextSibling => "next sibling",
-                    Relation::SkeletonRoot => "skeleton",
-                }
-            ),
-            json!({ "elementId": id.as_str(), "reason": "noTarget" }),
-        )
-    };
-    let picked: Vec<Id> = match p.relation {
-        Relation::Parent => vec![q.parent.clone().ok_or_else(none)?],
-        Relation::Children => {
-            let kids = h::descendants(sc.tree(), &id);
-            if kids.is_empty() {
-                return Err(none());
-            }
-            std::iter::once(id.clone()).chain(kids).collect()
-        }
-        Relation::FirstChild => vec![h::level_ids(sc.tree(), Some(&id)).first().cloned().ok_or_else(none)?],
-        Relation::PreviousSibling => vec![q.index.checked_sub(1).and_then(|i| level.get(i)).cloned().ok_or_else(none)?],
-        Relation::NextSibling => vec![level.get(q.index + 1).cloned().ok_or_else(none)?],
-        Relation::SkeletonRoot => {
-            let ps = h::parents(sc.tree());
-            let mut cur = Some(id.clone());
-            let mut root = None;
-            while let Some(c) = cur {
-                if doc.element(&c).is_some_and(|e| *e.element_type() == ElementType::Skeleton) {
-                    root = Some(c.clone());
-                    break;
-                }
-                cur = ps.get(&c).cloned().flatten();
-            }
-            vec![root.ok_or_else(none)?]
-        }
-    };
+    let picked = hierarchy_targets(&doc, &id, p.relation)?;
     let strs: Vec<String> = picked.iter().map(|i| i.as_str().to_owned()).collect();
     if let Some(first) = picked.first() {
         cx.app_mut().element = Some(first.clone());

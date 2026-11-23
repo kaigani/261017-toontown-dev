@@ -639,6 +639,10 @@ def keymap_rows(t: Flows) -> list:
     # page), given to a command without one.
     async def conflict_setup(ctx):
         await t.cmd("keymap.reset", {"all": True})
+        # Since M5 every default global binding but the Alt keys and print has a menu item: the holder is a free function
+        # key given to a command on no menu item (Next Element, whose defaults are Alt keys).
+        await t.cmd("keymap.set", {"commandId": "app.currentElement.move", "params": {"direction": "next"},
+                                   "keys": "Shift+F8", "context": "global"})
         menu = json.loads((ROOT / "desktop/src/ui-bindings/menu.json").read_text(encoding="utf-8"))
         in_menu = set()
 
@@ -650,9 +654,14 @@ def keymap_rows(t: Flows) -> list:
         for m in menu["menus"]:
             walk(m.get("items") or [])
         bindings = await t.cmd("keymap.list", {"context": "global"})
-        # Shift+Enter (Stop playback): global, on no menu item, and a key the page receives (Control+P would be the
-        # webview's print, an Alt key the menu bar's).
-        pick = next(b for b in bindings if b.get("keys") == "Shift+Enter" and b.get("commandId") not in in_menu)
+        # A global binding on no menu item, with a key the page receives (Control+P would be the webview's print, an Alt
+        # key the menu bar's): Shift+Enter while Stop had no menu item; the M5 Play menu carries Stop, so the binding the
+        # setup made (view note M5 C5.1b section 6).
+        def receivable(b):
+            k = b.get("keys") or ""
+            return b.get("commandId") not in in_menu and not k.startswith("Alt+") and k not in ("Primary+P", "F11")
+        pick = next((b for b in bindings if b.get("keys") == "Shift+F8" and receivable(b)), None) or next(
+            b for b in bindings if receivable(b))
         ctx["keys"], ctx["holder"] = pick["keys"], pick["commandId"]
         ctx["target"] = "app.info.get"
         await t.open_preferences("keyboard")

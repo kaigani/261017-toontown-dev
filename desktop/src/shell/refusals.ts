@@ -45,6 +45,12 @@ export function refusalLine(error: Refusal | undefined, commandId: string): stri
     const named = typeof d['commandId'] === 'string' ? d['commandId'] : commandId;
     return `${commandLabel(named)}: failed unexpectedly; nothing was changed`;
   }
+  // A Timeline gesture cancelled at its release because what it grabbed changed meanwhile (rulings E-10, E-23, E-28):
+  // nothing was committed.
+  if (error?.code === 'timeline.targetChanged') {
+    const named = typeof d['commandId'] === 'string' ? commandLabel(d['commandId']) : 'Timeline';
+    return `${named}: what you dragged changed meanwhile; nothing was changed`;
+  }
   // The system fonts were still being read past the call's bound (ruling E-43): nothing was changed; a retry works.
   if (error?.code === 'command.timeout' && d['reason'] === 'fontsLoading') {
     const named = typeof d['commandId'] === 'string' ? d['commandId'] : commandId;

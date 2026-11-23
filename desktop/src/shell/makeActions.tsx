@@ -14,6 +14,8 @@ import type { MessagesApi } from './messagesApi';
 import { AboutDialog, BackupsDialog, CheckProjectDialog, ProjectInfoDialog } from './infoDialogs';
 import { JobProgress, NewProjectDialog, ProjectPropertiesDialog } from './projectForms';
 import { ToolbarSheet } from './toolbarSheet';
+import { ColoursDialog, NewElementsDialog, NumberDialog, TextDialog } from '../timeline/dialogs';
+import type { CompletedRef } from '../timeline/dialogOpen';
 
 /** The file a refusal names when a program outside the lock protocol keeps a lock file open (ruling D-86 item 1;
  *  SI-200: `fs.ioError`, `reason: "lockFileInUse"`), or null for any other answer. */
@@ -253,6 +255,114 @@ export function makeActions(
           );
           if (!name) return null;
           p['newName'] = name;
+        }
+        return run(command, p);
+      }
+      // The Element and Play menus' items that collect a value first (M5 C5.1b; view note section 7): the Timeline's
+      // dialogs, for the current element where the item names none.
+      case 'element.create': {
+        if (p['type'] === undefined) {
+          const ref = await dialogs.open<CompletedRef>('New Elements', (close) => (
+            <NewElementsDialog onDone={close} />
+          ));
+          if (!ref) return null;
+          Object.assign(p, ref.params);
+        }
+        return run(command, p);
+      }
+      case 'element.rename':
+      case 'element.note.set': {
+        const key = command === 'element.rename' ? 'name' : 'text';
+        if (p[key] === undefined) {
+          const el = state()?.element;
+          const id = typeof p['elementId'] === 'string' ? p['elementId'] : el?.id;
+          if (!id) return run(command, p);
+          const rename = command === 'element.rename';
+          const title = rename ? 'Rename Element' : 'Element Note';
+          const text = await dialogs.open<string>(title, (close) => (
+            <TextDialog
+              id={rename ? 'timelineRename' : 'timelineNote'}
+              title={title}
+              label={rename ? 'Name' : 'Note (empty removes it)'}
+              initial={rename && el?.id === id ? el.name : ''}
+              command={command}
+              multiline={!rename}
+              required={rename}
+              onDone={close}
+            />
+          ));
+          if (text === null) return null;
+          p['elementId'] = id;
+          p[key] = text;
+        }
+        return run(command, p);
+      }
+      case 'element.clone': {
+        if (p['elementId'] === undefined) {
+          const id = state()?.element?.id;
+          if (id) p['elementId'] = id;
+        }
+        return run(command, p);
+      }
+      case 'element.colour.set': {
+        if (!('marker' in p) && !('background' in p)) {
+          const chosen = await dialogs.open<Record<string, unknown>>('Element Colours', (close) => (
+            <ColoursDialog onDone={close} />
+          ));
+          if (!chosen) return null;
+          Object.assign(p, chosen);
+        }
+        return run(command, p);
+      }
+      case 'app.frame.set':
+      case 'timeline.currentFrame.set':
+      case 'playback.range.set': {
+        const field =
+          command !== 'playback.range.set'
+            ? p['frame'] === undefined
+              ? 'frame'
+              : null
+            : 'start' in p && p['start'] === null
+              ? 'start'
+              : 'end' in p && p['end'] === null
+                ? 'end'
+                : null;
+        if (field) {
+          const title =
+            field === 'frame'
+              ? 'Change Current Frame'
+              : field === 'start'
+                ? 'Change Playback Start Frame'
+                : 'Change Playback End Frame';
+          const n = await dialogs.open<number>(title, (close) => (
+            <NumberDialog
+              id={
+                field === 'frame'
+                  ? 'timelineCurrentFrame'
+                  : field === 'start'
+                    ? 'timelineRangeStart'
+                    : 'timelineRangeEnd'
+              }
+              title={title}
+              label={field === 'frame' ? 'Frame' : field === 'start' ? 'Start frame' : 'End frame'}
+              initial={1}
+              min={1}
+              max={100_000}
+              command={command}
+              onDone={close}
+            />
+          ));
+          if (n === null) return null;
+          p[field] = n;
+        }
+        return run(command, p);
+      }
+      case 'timeline.view.set': {
+        // Show Timeline Selection (04 §11.7): reveal the current element's row.
+        if ('revealElementId' in p && p['revealElementId'] === null) {
+          const id = state()?.element?.id;
+          if (id) p['revealElementId'] = id;
+          else delete p['revealElementId'];
         }
         return run(command, p);
       }

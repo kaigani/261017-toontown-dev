@@ -117,6 +117,7 @@ export function TimelinePanel() {
   const [display, setDisplay] = useState<ReadonlyMap<string, RowDisplay>>(new Map());
   const [background, setBackground] = useState<string>('#ffffff');
   const [labels, setLabels] = useState<ReadonlyMap<number, string>>(new Map());
+  const [range, setRange] = useState<RowsAnswer['playbackRange'] | null>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [preview, setPreview] = useState<Preview | null>(null);
@@ -139,6 +140,7 @@ export function TimelinePanel() {
   const displayGate = useReadGate();
   const prefsGate = useReadGate();
   const labelGate = useReadGate();
+  const rangeGate = useReadGate();
 
   const shown = useMemo(() => shownRows(rows?.rows ?? []), [rows]);
   const position: ViewPosition = useMemo(
@@ -201,13 +203,28 @@ export function TimelinePanel() {
       .catch(() => undefined);
   }, [engine, prefsGate]);
 
+  // The ruler's playback-range markers (`timeline.playbackRange.get`, 04 line 608).
+  const readRange = useCallback(() => {
+    const live = rangeGate();
+    void engine
+      .run('timeline.playbackRange.get', {})
+      .done.then((env) => {
+        if (!live() || env.status !== 'ok') return;
+        const r = obj(env.result);
+        if (typeof r['start'] === 'number' && typeof r['end'] === 'number')
+          setRange({ mode: r['mode'] === 'free' ? 'free' : 'auto', start: r['start'], end: r['end'] });
+      })
+      .catch(() => undefined);
+  }, [engine, rangeGate]);
+
   const readAll = useCallback(() => {
     if (!open) return;
     readView();
     readRows();
     readSelection();
     readPrefs();
-  }, [open, readView, readRows, readSelection, readPrefs]);
+    readRange();
+  }, [open, readView, readRows, readSelection, readPrefs, readRange]);
 
   // The visible rows' cells and display fields, and the ruler's labels: read for the window in view.
   const visible = useMemo(() => {
@@ -362,11 +379,16 @@ export function TimelinePanel() {
     if (!ctx || !rows) return;
     drawRuler(
       ctx,
-      { currentFrame: rows.currentFrame, sceneLength: rows.sceneLength, range: rows.playbackRange, labels },
+      {
+        currentFrame: rows.currentFrame,
+        sceneLength: rows.sceneLength,
+        range: range ?? rows.playbackRange,
+        labels,
+      },
       position,
       size.width,
     );
-  }, [rows, labels, position, size.width]);
+  }, [rows, range, labels, position, size.width]);
 
   // ----- gestures -----------------------------------------------------------------------------------------------------
 

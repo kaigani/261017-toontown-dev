@@ -281,31 +281,6 @@
       "section": "04 §17.4 (Command table)",
       "location": "Properties view: Element panel, Type and Deformable"
     },
-    "playback.forceRate.set": {
-      "owner": "M5 C5.1",
-      "section": "09 §2.2 (Commands and where they are reachable)",
-      "location": "Play menu: Force Frame Rate"
-    },
-    "playback.range.mode.set": {
-      "owner": "M5 C5.1",
-      "section": "09 §2.2 (Commands and where they are reachable)",
-      "location": "Play menu: Playback Range › Automatic Fit / Free"
-    },
-    "playback.range.set": {
-      "owner": "M5 C5.1",
-      "section": "09 §2.2 (Commands and where they are reachable)",
-      "location": "Play menu: Change Playback Start / End Frame"
-    },
-    "playback.rate.set": {
-      "owner": "M5 C5.1",
-      "section": "09 §2.6 (Playback rate)",
-      "location": "Play menu: Playback Rate"
-    },
-    "playback.state.get": {
-      "owner": "M5 C5.1",
-      "section": "09 §2.3 (Play / Stop)",
-      "location": "Play menu and main toolbar: Play/Stop's state, Loop, Rate (declared read)"
-    },
     "render.frame.run": {
       "owner": "M10 C10.1",
       "section": "09 §11.2 (Command table)",
@@ -315,16 +290,6 @@
       "owner": "M10 C10.1",
       "section": "09 §11.2 (Command table)",
       "location": "File > Export > Image Sequence"
-    },
-    "timeline.currentFrame.move": {
-      "owner": "M5 C5.1",
-      "section": "09 §2.4 (Frame navigation)",
-      "location": "Play menu and main toolbar: First / Previous / Next / Last Frame within the playback range"
-    },
-    "timeline.playbackRange.get": {
-      "owner": "M5 C5.1",
-      "section": "04 §11.6 (Current frame and playback range)",
-      "location": "Timeline ruler: the playback-range markers (declared read)"
     },
     "timeline.soundWaveforms.set": {
       "owner": "M8 C8.1",

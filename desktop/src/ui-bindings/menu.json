@@ -653,6 +653,711 @@
       ]
     },
     {
+      "id": "element",
+      "label": "Element",
+      "items": [
+        {
+          "kind": "command",
+          "command": "element.create",
+          "label": "New Elements…",
+          "params": {},
+          "enabledWithoutProject": false,
+          "dialog": "timelineNewElements"
+        },
+        {
+          "kind": "submenu",
+          "id": "elementAdd",
+          "label": "Add",
+          "items": [
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Drawing",
+              "params": {
+                "type": "drawing"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Annotation",
+              "params": {
+                "type": "annotation"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Image",
+              "params": {
+                "type": "image"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Sound",
+              "params": {
+                "type": "sound"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Media",
+              "params": {
+                "type": "media"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Peg",
+              "params": {
+                "type": "peg"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Camera",
+              "params": {
+                "type": "camera"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Skeleton",
+              "params": {
+                "type": "skeleton"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Colour Transform",
+              "params": {
+                "type": "colourTransform"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Clipping",
+              "params": {
+                "type": "clipping"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Drop Shadow",
+              "params": {
+                "type": "dropShadow"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Blur",
+              "params": {
+                "type": "blur"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Shake",
+              "params": {
+                "type": "shake"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Particle Nature",
+              "params": {
+                "type": "particleNature"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.create",
+              "label": "Particle Impact",
+              "params": {
+                "type": "particleImpact"
+              },
+              "enabledWithoutProject": false
+            }
+          ]
+        },
+        {
+          "kind": "command",
+          "command": "element.parentPeg.create",
+          "label": "Add Parent Peg",
+          "params": {},
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "command",
+          "command": "element.rename",
+          "label": "Rename…",
+          "params": {},
+          "enabledWithoutProject": false,
+          "dialog": "timelineRename"
+        },
+        {
+          "kind": "command",
+          "command": "element.clone",
+          "label": "Clone",
+          "params": {},
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "element.duplicate",
+          "label": "Duplicate",
+          "params": {},
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "element.delete",
+          "label": "Delete Element",
+          "params": {},
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "submenu",
+          "id": "elementArrange",
+          "label": "Arrange",
+          "items": [
+            {
+              "kind": "command",
+              "command": "element.order.move",
+              "label": "Bring to Front",
+              "params": {
+                "to": "front",
+                "order": "timeline"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.order.move",
+              "label": "Bring Forward",
+              "params": {
+                "to": "forward",
+                "order": "timeline"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.order.move",
+              "label": "Send Backward",
+              "params": {
+                "to": "backward",
+                "order": "timeline"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.order.move",
+              "label": "Send to Back",
+              "params": {
+                "to": "back",
+                "order": "timeline"
+              },
+              "enabledWithoutProject": false
+            }
+          ]
+        },
+        {
+          "kind": "submenu",
+          "id": "elementSelect",
+          "label": "Select",
+          "items": [
+            {
+              "kind": "command",
+              "command": "element.hierarchy.select",
+              "label": "Parent",
+              "params": {
+                "relation": "parent"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.hierarchy.select",
+              "label": "Children",
+              "params": {
+                "relation": "children"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.hierarchy.select",
+              "label": "Child",
+              "params": {
+                "relation": "firstChild"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.hierarchy.select",
+              "label": "Previous Sibling",
+              "params": {
+                "relation": "previousSibling"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.hierarchy.select",
+              "label": "Next Sibling",
+              "params": {
+                "relation": "nextSibling"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.hierarchy.select",
+              "label": "Skeleton Root",
+              "params": {
+                "relation": "skeletonRoot"
+              },
+              "enabledWithoutProject": false
+            }
+          ]
+        },
+        {
+          "kind": "submenu",
+          "id": "elementVisibility",
+          "label": "Visibility",
+          "items": [
+            {
+              "kind": "command",
+              "command": "element.visibility.set",
+              "label": "Show",
+              "params": {
+                "scope": "scene",
+                "visible": true
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.visibility.set",
+              "label": "Hide",
+              "params": {
+                "scope": "scene",
+                "visible": false
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.visibility.set",
+              "label": "Show All",
+              "params": {
+                "scope": "scene",
+                "visible": true,
+                "apply": "all"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.visibility.set",
+              "label": "Hide All Others",
+              "params": {
+                "scope": "scene",
+                "visible": false,
+                "apply": "others"
+              },
+              "enabledWithoutProject": false
+            }
+          ]
+        },
+        {
+          "kind": "submenu",
+          "id": "elementLock",
+          "label": "Lock",
+          "items": [
+            {
+              "kind": "command",
+              "command": "element.lock.set",
+              "label": "Lock",
+              "params": {
+                "locked": true
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.lock.set",
+              "label": "Unlock",
+              "params": {
+                "locked": false
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.lock.set",
+              "label": "Lock All Others",
+              "params": {
+                "locked": true,
+                "apply": "others"
+              },
+              "enabledWithoutProject": false
+            },
+            {
+              "kind": "command",
+              "command": "element.lock.set",
+              "label": "Unlock All",
+              "params": {
+                "locked": false,
+                "apply": "all"
+              },
+              "enabledWithoutProject": false
+            }
+          ]
+        },
+        {
+          "kind": "command",
+          "command": "element.colour.set",
+          "label": "Element Colours…",
+          "params": {},
+          "enabledWithoutProject": false,
+          "dialog": "timelineColours"
+        },
+        {
+          "kind": "command",
+          "command": "element.colour.set",
+          "label": "Default Colour",
+          "params": {
+            "marker": null,
+            "background": null
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "element.note.set",
+          "label": "Element Note…",
+          "params": {},
+          "enabledWithoutProject": false,
+          "dialog": "timelineNote"
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "command",
+          "command": "timeline.view.set",
+          "label": "Show Timeline Selection",
+          "params": {
+            "revealElementId": null
+          },
+          "enabledWithoutProject": false
+        }
+      ]
+    },
+    {
+      "id": "play",
+      "label": "Play",
+      "items": [
+        {
+          "kind": "command",
+          "command": "playback.start",
+          "label": "Play",
+          "params": {},
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "playback.stop",
+          "label": "Stop",
+          "params": {},
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "command",
+          "command": "timeline.currentFrame.move",
+          "label": "First Frame",
+          "params": {
+            "direction": "first",
+            "withinRange": true
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "timeline.currentFrame.move",
+          "label": "Previous Frame",
+          "params": {
+            "direction": "previous",
+            "withinRange": true
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "timeline.currentFrame.move",
+          "label": "Next Frame",
+          "params": {
+            "direction": "next",
+            "withinRange": true
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "timeline.currentFrame.move",
+          "label": "Last Frame",
+          "params": {
+            "direction": "last",
+            "withinRange": true
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "timeline.currentFrame.move",
+          "label": "Previous Drawing",
+          "params": {
+            "direction": "previous",
+            "unit": "drawing"
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "timeline.currentFrame.move",
+          "label": "Next Drawing",
+          "params": {
+            "direction": "next",
+            "unit": "drawing"
+          },
+          "enabledWithoutProject": false
+        },
+        {
+          "kind": "command",
+          "command": "app.frame.set",
+          "label": "Change Current Frame…",
+          "params": {},
+          "enabledWithoutProject": false,
+          "dialog": "timelineCurrentFrame"
+        },
+        {
+          "kind": "separator"
+        },
+        {
+          "kind": "command",
+          "command": "playback.loop.set",
+          "label": "Loop",
+          "params": {},
+          "enabledWithoutProject": false,
+          "check": "playbackLoop"
+        },
+        {
+          "kind": "command",
+          "command": "playback.forceRate.set",
+          "label": "Force Frame Rate",
+          "params": {},
+          "enabledWithoutProject": false,
+          "check": "playbackForceRate"
+        },
+        {
+          "kind": "submenu",
+          "id": "playbackRate",
+          "label": "Playback Rate",
+          "items": [
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "Project Rate",
+              "params": {
+                "fps": "project"
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "6 fps",
+              "params": {
+                "fps": 6
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "8 fps",
+              "params": {
+                "fps": 8
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "12 fps",
+              "params": {
+                "fps": 12
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "15 fps",
+              "params": {
+                "fps": 15
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "24 fps",
+              "params": {
+                "fps": 24
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "25 fps",
+              "params": {
+                "fps": 25
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "30 fps",
+              "params": {
+                "fps": 30
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "48 fps",
+              "params": {
+                "fps": 48
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            },
+            {
+              "kind": "command",
+              "command": "playback.rate.set",
+              "label": "60 fps",
+              "params": {
+                "fps": 60
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRate"
+            }
+          ]
+        },
+        {
+          "kind": "submenu",
+          "id": "playbackRange",
+          "label": "Playback Range",
+          "items": [
+            {
+              "kind": "command",
+              "command": "playback.range.mode.set",
+              "label": "Automatic Fit",
+              "params": {
+                "mode": "auto"
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRangeMode"
+            },
+            {
+              "kind": "command",
+              "command": "playback.range.mode.set",
+              "label": "Free",
+              "params": {
+                "mode": "free"
+              },
+              "enabledWithoutProject": false,
+              "check": "playbackRangeMode"
+            },
+            {
+              "kind": "separator"
+            },
+            {
+              "kind": "command",
+              "command": "playback.range.set",
+              "label": "Change Playback Start Frame…",
+              "params": {
+                "start": null
+              },
+              "enabledWithoutProject": false,
+              "dialog": "timelineRangeStart"
+            },
+            {
+              "kind": "command",
+              "command": "playback.range.set",
+              "label": "Change Playback End Frame…",
+              "params": {
+                "end": null
+              },
+              "enabledWithoutProject": false,
+              "dialog": "timelineRangeEnd"
+            }
+          ]
+        }
+      ]
+    },
+    {
       "id": "window",
       "label": "Window",
       "items": [

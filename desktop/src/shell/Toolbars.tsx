@@ -46,6 +46,7 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
         if (item === 'workspaceList') return <WorkspaceList key={i} />;
         if (item === 'cameraList') return <CameraList key={i} />;
         if (AID_GROUPS.has(item)) return <AidGroupItem key={i} item={item} />;
+        if (item === 'playStop') return <PlayStopItem key={i} />;
         const ref = itemRef(item);
         const facts = ref ? availability[refKey(ref)] : undefined;
         const owner = ITEM_OWNERS[item];
@@ -89,6 +90,75 @@ export function MainToolbar({ layout, fullScreen }: { layout: Layout | undefined
 }
 
 /** The workspace drop-down: lists the workspaces and switches on selection (01 §5.7). */
+const PLAY_STOP_REFS = [
+  { commandId: 'playback.start', params: {} },
+  { commandId: 'playback.stop', params: {} },
+];
+
+/** Play/Stop (09 §2.2; M5 C5.1b): Stop while playing, Play otherwise, from `playback.state.get`, read again when
+ *  playback starts or stops. */
+function PlayStopItem() {
+  const { engine } = useShell();
+  const actions = useActions();
+  const gate = useReadGate();
+  const [playing, setPlaying] = useState(false);
+  const app = useSlice('appState') as { project?: unknown } | undefined;
+  const open = Boolean(app?.project);
+  useEffect(() => {
+    let off: (() => void) | null = null;
+    let stopped = false;
+    const read = () => {
+      if (!open) return;
+      const live = gate();
+      void engine
+        .run('playback.state.get', {})
+        .done.then((env) => {
+          const p = env.result as { playing?: unknown } | undefined;
+          if (live() && env.status === 'ok') setPlaying(p?.playing === true);
+        })
+        .catch(() => undefined);
+    };
+    read();
+    void engine
+      .onEvent((e) => {
+        if (e.name === 'playback.started' || e.name === 'playback.stopped' || e.name === 'project.opened')
+          read();
+      })
+      .then((u) => {
+        if (stopped) u();
+        else {
+          off = u;
+          read();
+        }
+      });
+    return () => {
+      stopped = true;
+      off?.();
+    };
+  }, [engine, gate, open]);
+  const command = playing ? 'playback.stop' : 'playback.start';
+  const label = playing ? 'Stop' : 'Play';
+  // Enabled as the kernel says (ruling O-10), for the reference the button shows now.
+  const availability = useAvailability(PLAY_STOP_REFS);
+  const enabled = enabledIn(availability({ commandId: command, params: {} }));
+  return (
+    <button
+      type="button"
+      disabled={!enabled}
+      aria-pressed={playing}
+      title={`${label} (${command})`}
+      data-tt-role="button"
+      data-tt-id="mainToolbar.playStop"
+      data-tt-label={label}
+      data-tt-command={command}
+      data-tt-params="{}"
+      onClick={() => void actions.perform(command, {})}
+    >
+      {label}
+    </button>
+  );
+}
+
 function WorkspaceList() {
   const actions = useActions();
   const workspaces = (useSlice('workspaces') as readonly WorkspaceEntry[] | undefined) ?? [];

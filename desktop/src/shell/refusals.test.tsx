@@ -150,3 +150,17 @@ describe('the system fonts still being read (ruling E-43)', () => {
     expect(fontsNoticeLine(null)).toBeNull();
   });
 });
+
+describe('a Timeline gesture cancelled at its release (rulings E-10, E-28)', () => {
+  it('says what happened on the status line, and that nothing was changed', () => {
+    expect(
+      refusalLine({ code: 'timeline.targetChanged', message: 'changed', details: {} }, 'timeline.gesture'),
+    ).toBe('Timeline: what you dragged changed meanwhile; nothing was changed');
+    expect(
+      refusalLine(
+        { code: 'timeline.targetChanged', details: { commandId: 'element.timing.set' } },
+        'timeline.gesture',
+      ),
+    ).toBe(`${commandLabel('element.timing.set')}: what you dragged changed meanwhile; nothing was changed`);
+  });
+});

@@ -20,13 +20,14 @@ export const ITEM_LABELS: Readonly<Record<string, string>> = {
 };
 
 /** Group items whose behaviour belongs to a later checkpoint (shown disabled with the owner; they run no command): the
- *  owners of their commands (`timeline.currentFrame.move` and playback: M5 C5.1; the scene list: M9). The drawing aids'
- *  group items and the camera list (M4 C4.4a) are built (`toolbarGroups.tsx`, `Toolbars.tsx`). */
+ *  scene list (M9). The drawing aids' group items and the camera list (M4 C4.4a), Play/Stop (M5 C5.1b; `Toolbars.tsx`,
+ *  from `playback.state.get`) are built. */
 export const ITEM_OWNERS: Readonly<Record<string, string>> = {
-  playStop: 'M5 C5.1',
-  lastFrame: 'M5 C5.1',
   sceneList: 'M9',
 };
+
+/** Items drawn by their own component (not one command reference). */
+export const OWN_ITEMS: ReadonlySet<string> = new Set(['playStop']);
 
 /** The drawing aids' group items: each member is its own reference (`toolbarGroups.tsx`). */
 export const AID_GROUPS: ReadonlySet<string> = new Set([
@@ -37,14 +38,16 @@ export const AID_GROUPS: ReadonlySet<string> = new Set([
 ]);
 
 const FRAME_STEPS: Readonly<Record<string, CommandRef>> = {
-  firstFrame: { commandId: 'app.frame.set', params: { frame: 1 } },
+  // 09 line 127: the first and last frame of the playback range (M5 C5.1b; it sent `app.frame.set {frame: 1}` before).
+  firstFrame: { commandId: 'timeline.currentFrame.move', params: { direction: 'first', withinRange: true } },
+  lastFrame: { commandId: 'timeline.currentFrame.move', params: { direction: 'last', withinRange: true } },
   previousFrame: { commandId: 'app.frame.move', params: { direction: 'previous' } },
   nextFrame: { commandId: 'app.frame.move', params: { direction: 'next' } },
 };
 
 /** The command reference a toolbar item runs (`null`: a separator, a list or a group item without a command). */
 export function itemRef(item: string): CommandRef | null {
-  if (item in ITEM_OWNERS || AID_GROUPS.has(item)) return null;
+  if (item in ITEM_OWNERS || AID_GROUPS.has(item) || OWN_ITEMS.has(item)) return null;
   if (item.includes('.')) return { commandId: item, params: {} };
   return FRAME_STEPS[item] ?? null;
 }

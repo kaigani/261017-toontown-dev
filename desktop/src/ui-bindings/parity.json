@@ -2515,10 +2515,11 @@
       "id": "mainToolbar.firstFrame",
       "surface": "main",
       "commands": [
-        "app.frame.set"
+        "timeline.currentFrame.move"
       ],
       "params": {
-        "frame": 1
+        "direction": "first",
+        "withinRange": true
       }
     },
     {
@@ -2566,6 +2567,17 @@
       ],
       "params": {
         "type": "normal"
+      }
+    },
+    {
+      "id": "mainToolbar.lastFrame",
+      "surface": "main",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "last",
+        "withinRange": true
       }
     },
     {
@@ -2675,6 +2687,14 @@
       "surface": "main",
       "commands": [
         "playback.loop.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "mainToolbar.playStop",
+      "surface": "main",
+      "commands": [
+        "playback.start"
       ],
       "params": {}
     },
@@ -5911,16 +5931,6 @@
       "id": "agent.toggle",
       "surface": "main",
       "reason": "disclose"
-    },
-    {
-      "id": "mainToolbar.lastFrame",
-      "surface": "main",
-      "reason": "placeholder"
-    },
-    {
-      "id": "mainToolbar.playStop",
-      "surface": "main",
-      "reason": "placeholder"
     },
     {
       "id": "mainToolbar.sceneList",
@@ -18572,6 +18582,679 @@
       }
     },
     {
+      "id": "menu:Element/New Elements…",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Add/Drawing",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "drawing"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Annotation",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "annotation"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Image",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "image"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Sound",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "sound"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Media",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "media"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Peg",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "peg"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Camera",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "camera"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Skeleton",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "skeleton"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Colour Transform",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "colourTransform"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Clipping",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "clipping"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Drop Shadow",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "dropShadow"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Blur",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "blur"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Shake",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "shake"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Particle Nature",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "particleNature"
+      }
+    },
+    {
+      "id": "menu:Element/Add/Particle Impact",
+      "surface": "menu",
+      "commands": [
+        "element.create"
+      ],
+      "params": {
+        "type": "particleImpact"
+      }
+    },
+    {
+      "id": "menu:Element/Add Parent Peg",
+      "surface": "menu",
+      "commands": [
+        "element.parentPeg.create"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Rename…",
+      "surface": "menu",
+      "commands": [
+        "element.rename"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Clone",
+      "surface": "menu",
+      "commands": [
+        "element.clone"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Duplicate",
+      "surface": "menu",
+      "commands": [
+        "element.duplicate"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Delete Element",
+      "surface": "menu",
+      "commands": [
+        "element.delete"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Arrange/Bring to Front",
+      "surface": "menu",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "to": "front",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "menu:Element/Arrange/Bring Forward",
+      "surface": "menu",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "to": "forward",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "menu:Element/Arrange/Send Backward",
+      "surface": "menu",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "to": "backward",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "menu:Element/Arrange/Send to Back",
+      "surface": "menu",
+      "commands": [
+        "element.order.move"
+      ],
+      "params": {
+        "to": "back",
+        "order": "timeline"
+      }
+    },
+    {
+      "id": "menu:Element/Select/Parent",
+      "surface": "menu",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "parent"
+      }
+    },
+    {
+      "id": "menu:Element/Select/Children",
+      "surface": "menu",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "children"
+      }
+    },
+    {
+      "id": "menu:Element/Select/Child",
+      "surface": "menu",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "firstChild"
+      }
+    },
+    {
+      "id": "menu:Element/Select/Previous Sibling",
+      "surface": "menu",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "previousSibling"
+      }
+    },
+    {
+      "id": "menu:Element/Select/Next Sibling",
+      "surface": "menu",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "nextSibling"
+      }
+    },
+    {
+      "id": "menu:Element/Select/Skeleton Root",
+      "surface": "menu",
+      "commands": [
+        "element.hierarchy.select"
+      ],
+      "params": {
+        "relation": "skeletonRoot"
+      }
+    },
+    {
+      "id": "menu:Element/Visibility/Show",
+      "surface": "menu",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": true
+      }
+    },
+    {
+      "id": "menu:Element/Visibility/Hide",
+      "surface": "menu",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": false
+      }
+    },
+    {
+      "id": "menu:Element/Visibility/Show All",
+      "surface": "menu",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "menu:Element/Visibility/Hide All Others",
+      "surface": "menu",
+      "commands": [
+        "element.visibility.set"
+      ],
+      "params": {
+        "scope": "scene",
+        "visible": false,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "menu:Element/Lock/Lock",
+      "surface": "menu",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": true
+      }
+    },
+    {
+      "id": "menu:Element/Lock/Unlock",
+      "surface": "menu",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": false
+      }
+    },
+    {
+      "id": "menu:Element/Lock/Lock All Others",
+      "surface": "menu",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": true,
+        "apply": "others"
+      }
+    },
+    {
+      "id": "menu:Element/Lock/Unlock All",
+      "surface": "menu",
+      "commands": [
+        "element.lock.set"
+      ],
+      "params": {
+        "locked": false,
+        "apply": "all"
+      }
+    },
+    {
+      "id": "menu:Element/Element Colours…",
+      "surface": "menu",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Default Colour",
+      "surface": "menu",
+      "commands": [
+        "element.colour.set"
+      ],
+      "params": {
+        "marker": null,
+        "background": null
+      }
+    },
+    {
+      "id": "menu:Element/Element Note…",
+      "surface": "menu",
+      "commands": [
+        "element.note.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Element/Show Timeline Selection",
+      "surface": "menu",
+      "commands": [
+        "timeline.view.set"
+      ],
+      "params": {
+        "revealElementId": null
+      }
+    },
+    {
+      "id": "menu:Play/Play",
+      "surface": "menu",
+      "commands": [
+        "playback.start"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Play/Stop",
+      "surface": "menu",
+      "commands": [
+        "playback.stop"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Play/First Frame",
+      "surface": "menu",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "first",
+        "withinRange": true
+      }
+    },
+    {
+      "id": "menu:Play/Previous Frame",
+      "surface": "menu",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "previous",
+        "withinRange": true
+      }
+    },
+    {
+      "id": "menu:Play/Next Frame",
+      "surface": "menu",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "next",
+        "withinRange": true
+      }
+    },
+    {
+      "id": "menu:Play/Last Frame",
+      "surface": "menu",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "last",
+        "withinRange": true
+      }
+    },
+    {
+      "id": "menu:Play/Previous Drawing",
+      "surface": "menu",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "previous",
+        "unit": "drawing"
+      }
+    },
+    {
+      "id": "menu:Play/Next Drawing",
+      "surface": "menu",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "next",
+        "unit": "drawing"
+      }
+    },
+    {
+      "id": "menu:Play/Change Current Frame…",
+      "surface": "menu",
+      "commands": [
+        "app.frame.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Play/Loop",
+      "surface": "menu",
+      "commands": [
+        "playback.loop.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Play/Force Frame Rate",
+      "surface": "menu",
+      "commands": [
+        "playback.forceRate.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Play/Playback Rate/Project Rate",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": "project"
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/6 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 6
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/8 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 8
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/12 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 12
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/15 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 15
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/24 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 24
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/25 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 25
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/30 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 30
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/48 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 48
+      }
+    },
+    {
+      "id": "menu:Play/Playback Rate/60 fps",
+      "surface": "menu",
+      "commands": [
+        "playback.rate.set"
+      ],
+      "params": {
+        "fps": 60
+      }
+    },
+    {
+      "id": "menu:Play/Playback Range/Automatic Fit",
+      "surface": "menu",
+      "commands": [
+        "playback.range.mode.set"
+      ],
+      "params": {
+        "mode": "auto"
+      }
+    },
+    {
+      "id": "menu:Play/Playback Range/Free",
+      "surface": "menu",
+      "commands": [
+        "playback.range.mode.set"
+      ],
+      "params": {
+        "mode": "free"
+      }
+    },
+    {
+      "id": "menu:Play/Playback Range/Change Playback Start Frame…",
+      "surface": "menu",
+      "commands": [
+        "playback.range.set"
+      ],
+      "params": {
+        "start": null
+      }
+    },
+    {
+      "id": "menu:Play/Playback Range/Change Playback End Frame…",
+      "surface": "menu",
+      "commands": [
+        "playback.range.set"
+      ],
+      "params": {
+        "end": null
+      }
+    },
+    {
       "id": "menu:Window/Panels/Camera View",
       "surface": "menu",
       "commands": [
@@ -19489,10 +20172,22 @@
       "id": "toolbar:firstFrame",
       "surface": "toolbar",
       "commands": [
-        "app.frame.set"
+        "timeline.currentFrame.move"
       ],
       "params": {
-        "frame": 1
+        "direction": "first",
+        "withinRange": true
+      }
+    },
+    {
+      "id": "toolbar:lastFrame",
+      "surface": "toolbar",
+      "commands": [
+        "timeline.currentFrame.move"
+      ],
+      "params": {
+        "direction": "last",
+        "withinRange": true
       }
     },
     {
@@ -20225,6 +20920,10 @@
       "file": "desktop/src/prefs/PreferencesDialog.tsx"
     },
     {
+      "command": "playback.state.get",
+      "file": "desktop/src/shell/Toolbars.tsx"
+    },
+    {
       "command": "prefs.get",
       "file": "desktop/src-tauri/src/host.rs"
     },
@@ -20358,6 +21057,10 @@
     },
     {
       "command": "timeline.frameLabel.get",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
+      "command": "timeline.playbackRange.get",
       "file": "desktop/src/timeline/TimelinePanel.tsx"
     },
     {
@@ -21508,6 +22211,10 @@
     },
     {
       "surface": "loadReport",
+      "query": "playback.state.get"
+    },
+    {
+      "surface": "loadReport",
       "query": "prefs.get"
     },
     {
@@ -21517,6 +22224,10 @@
     {
       "surface": "loadReport",
       "query": "project.recovery.list"
+    },
+    {
+      "surface": "loadReport",
+      "query": "timeline.playbackRange.get"
     },
     {
       "surface": "loadReport",
@@ -21620,6 +22331,10 @@
     },
     {
       "surface": "main",
+      "query": "playback.state.get"
+    },
+    {
+      "surface": "main",
       "query": "prefs.get"
     },
     {
@@ -21641,6 +22356,10 @@
     {
       "surface": "main",
       "query": "timeline.frameLabel.get"
+    },
+    {
+      "surface": "main",
+      "query": "timeline.playbackRange.get"
     },
     {
       "surface": "main",
@@ -22245,7 +22964,7 @@
     {
       "command": "app.frame.set",
       "files": [
-        "desktop/src/shell/toolbarItems.ts"
+        "desktop/src/shell/makeActions.tsx"
       ]
     },
     {
@@ -22960,6 +23679,7 @@
     {
       "command": "element.clone",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/menus.ts"
       ]
     },
@@ -22973,13 +23693,16 @@
     {
       "command": "element.colour.set",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/dialogOpen.tsx",
+        "desktop/src/timeline/dialogs.tsx",
         "desktop/src/timeline/menus.ts"
       ]
     },
     {
       "command": "element.create",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/TimelinePanel.tsx",
         "desktop/src/timeline/dialogOpen.tsx",
         "desktop/src/timeline/dialogs.tsx",
@@ -23049,6 +23772,7 @@
     {
       "command": "element.note.set",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/dialogOpen.tsx"
       ]
     },
@@ -23080,6 +23804,7 @@
     {
       "command": "element.rename",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/TimelinePanel.tsx",
         "desktop/src/timeline/dialogOpen.tsx"
       ]
@@ -23495,6 +24220,12 @@
       ]
     },
     {
+      "command": "mainToolbar.playStop",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
       "command": "mainToolbar.workspaceList",
       "files": [
         "desktop/src/shell/Toolbars.tsx"
@@ -23636,6 +24367,42 @@
       "command": "permission.denied",
       "files": [
         "desktop/src-tauri/src/ipc.rs"
+      ]
+    },
+    {
+      "command": "playback.range.set",
+      "files": [
+        "desktop/src/shell/makeActions.tsx"
+      ]
+    },
+    {
+      "command": "playback.start",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "playback.started",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "playback.state.get",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "playback.stop",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "playback.stopped",
+      "files": [
+        "desktop/src/shell/Toolbars.tsx"
       ]
     },
     {
@@ -24354,8 +25121,15 @@
       ]
     },
     {
+      "command": "timeline.currentFrame.move",
+      "files": [
+        "desktop/src/shell/toolbarItems.ts"
+      ]
+    },
+    {
       "command": "timeline.currentFrame.set",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/TimelinePanel.tsx",
         "desktop/src/timeline/dialogOpen.tsx"
       ]
@@ -24386,6 +25160,12 @@
     },
     {
       "command": "timeline.playbackRange.changed",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timeline.playbackRange.get",
       "files": [
         "desktop/src/timeline/TimelinePanel.tsx"
       ]
@@ -24718,6 +25498,7 @@
     {
       "command": "timeline.targetChanged",
       "files": [
+        "desktop/src/shell/refusals.ts",
         "desktop/src/timeline/gesture.ts"
       ]
     },
@@ -24736,6 +25517,7 @@
     {
       "command": "timeline.view.set",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
@@ -24749,6 +25531,18 @@
       "command": "timeline.zoomLabel",
       "files": [
         "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "timelineColours.background",
+      "files": [
+        "desktop/src/timeline/dialogs.tsx"
+      ]
+    },
+    {
+      "command": "timelineColours.marker",
+      "files": [
+        "desktop/src/timeline/dialogs.tsx"
       ]
     },
     {
