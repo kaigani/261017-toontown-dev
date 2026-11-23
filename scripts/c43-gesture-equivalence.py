@@ -255,10 +255,25 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
     run.check(env.get("status") == "ok", "the application saves the fixture project", env.get("error"))
     # D-32: the headless engines take the window's Camera view size (read once the window shows the project).
     await rc("view.active.set", {"viewId": "cameraView"})
-    await asyncio.sleep(1.0)
-    listed = await app.result("view.list", {})
-    views = listed.get("views") or [] if isinstance(listed, dict) else listed
-    window_size = next((v.get("size") for v in views if v.get("viewId") == "cameraView"), None) or {}
+
+    async def camera_size() -> dict:
+        listed = await app.result("view.list", {})
+        views = listed.get("views") or [] if isinstance(listed, dict) else listed
+        return next((v.get("size") for v in views if v.get("viewId") == "cameraView"), None) or {}
+
+    # The canvas reports its size after it mounts, asynchronously: wait (bounded) for a reported size, not the headless
+    # virtual default, that two reads 0.5 s apart agree on (a fixed 1 s sleep raced on macOS in the C4.4b script, run
+    # 45114345189).
+    virtual = {"width": 1920.0, "height": 1080.0}
+    t0, prev, window_size = time.monotonic(), None, {}
+    while True:
+        window_size = await camera_size()
+        ready = bool(window_size.get("width")) and window_size != virtual
+        if (ready and window_size == prev) or time.monotonic() - t0 > 30.0:
+            break
+        prev = window_size
+        await asyncio.sleep(0.5)
+    run.check(ready and window_size == prev, "the window reports its Camera view's size", window_size)
     h2, h3 = await start_heads(window_size)
     for engine, copy in ((h2, work / "engine2.animpkg"), (h3, work / "engine3.animpkg")):
         shutil.copyfile(saved, copy)

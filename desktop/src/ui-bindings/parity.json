@@ -21563,6 +21563,7 @@
     {
       "command": "project.none",
       "files": [
+        "desktop/src-tauri/src/watchdog.rs",
         "desktop/src/state/store.ts"
       ]
     },

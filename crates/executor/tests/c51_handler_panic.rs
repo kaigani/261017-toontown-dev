@@ -37,8 +37,20 @@ fn e29_a_panic_at_the_commit_degrades_the_engine() {
     let events = h.subscribe();
     let died = run(&h, "element.create", json!({"type": "peg", "name": "Dies", "sceneId": "scene:#1"}));
     hooks::set(None);
+    // The caller is answered as soon as its reply is dropped by the unwinding; the engine marks itself degraded and
+    // raises the notice right after, on the document thread: wait for the notice (bounded), then check the flag.
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(30);
+    let mut notices = 0;
+    while notices == 0 && std::time::Instant::now() < deadline {
+        if let Ok(e) = events.recv_timeout(std::time::Duration::from_millis(100))
+            && e.name == "shell.engineDegraded"
+        {
+            notices += 1;
+        }
+    }
+    assert_eq!(notices, 1, "the degraded notice");
     assert!(h.degraded(), "a panic outside an invocation degrades the engine");
-    assert_eq!(events.try_iter().filter(|e| e.name == "shell.engineDegraded").count(), 1);
+    assert_eq!(events.try_iter().filter(|e| e.name == "shell.engineDegraded").count(), 0, "raised once");
     assert_eq!(died.status, Status::Error);
     assert_eq!(died.error.as_ref().map(|e| e.code.as_str()), Some("internal"), "{died:?}");
     for (command, params) in [("timeline.rows.list", json!({})), ("doc.state.get", json!({}))] {

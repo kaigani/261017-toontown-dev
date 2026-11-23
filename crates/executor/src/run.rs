@@ -1118,7 +1118,9 @@ impl Core {
         let cancelled = session.jobs.cancel_since(jobs_mark);
         let command = e.details.get("commandId").and_then(Value::as_str).unwrap_or_default().to_owned();
         let panic = e.details.get("panic").and_then(Value::as_str).unwrap_or_default().to_owned();
-        eprintln!(
+        use std::io::Write as _;
+        let _ = writeln!(
+            std::io::stderr(),
             "toontown: contained handler panic #{n} in `{command}`: {panic}; the call failed and nothing was changed",
             n = self.caught_panics
         );

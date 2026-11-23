@@ -256,10 +256,28 @@ def expand(spec, prefix, names, globs, module):
     names[local] = absolute(full, module)
 
 
+TEST_MODULE = re.compile(r"#\[cfg\(test\)\]\s*(?:pub(?:\(crate\))?\s+)?mod\s+(\w+)\s*;")
+
+
+def test_only_files():
+    """The files of modules declared only under `#[cfg(test)]` (`#[cfg(test)] mod name;`): test code, like the inline
+    `#[cfg(test)] mod` blocks `strip_tests` blanks."""
+    out = set()
+    for path in SRC.rglob("*.rs"):
+        for m in TEST_MODULE.finditer(path.read_text(encoding="utf-8", errors="replace")):
+            base = path.parent if path.name in ("lib.rs", "mod.rs") else path.parent / path.stem
+            out.add(base / f"{m.group(1)}.rs")
+            out.add(base / m.group(1) / "mod.rs")
+    return out
+
+
 def build_index():
     consts = registry_constants()
     fns, by_name, by_module, files = [], {}, {}, {}
+    skipped = test_only_files()
     for path in sorted(SRC.rglob("*.rs")):
+        if path in skipped:
+            continue
         text = path.read_text(encoding="utf-8")
         masked, lits = mask(text)
         masked = strip_tests(masked)

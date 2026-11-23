@@ -174,14 +174,27 @@ async def main(app: Engine, start_heads, run, out: Path, work: Path, os_input: b
     saved = work / "tool-equivalence.animpkg"
     env = await eq.job(app, await rc("project.saveAs", {"path": str(saved), "onExists": "overwrite"}))
     run.check(env.get("status") == "ok", "the application saves the fixture project", env.get("error"))
-    sizes = {}
     for view in VIEWS:
         await rc("window.panel.set", {"panelId": view, "visible": True})
-    await asyncio.sleep(1.0)
-    listed = await app.result("view.list", {})
-    views = listed.get("views") or [] if isinstance(listed, dict) else listed
-    for view in VIEWS:
-        sizes[view] = next((v.get("size") for v in views if v.get("viewId") == view), None) or {}
+
+    async def window_sizes() -> dict:
+        listed = await app.result("view.list", {})
+        views = listed.get("views") or [] if isinstance(listed, dict) else listed
+        return {view: next((v.get("size") for v in views if v.get("viewId") == view), None) or {} for view in VIEWS}
+
+    # The canvases report their sizes after they mount, asynchronously: wait (bounded) until every view has a reported
+    # size, not the headless virtual default (SI-069), that two reads 0.5 s apart agree on. A fixed 1 s sleep raced on
+    # macOS (run 45114345189: the Drawing view was still 1920 x 1080, so engine 2 replayed on another mapping).
+    virtual = {"width": 1920.0, "height": 1080.0}
+    t0, prev, sizes = time.monotonic(), None, {}
+    while True:
+        sizes = await window_sizes()
+        ready = all(s.get("width") and s != virtual for s in sizes.values())
+        if (ready and sizes == prev) or time.monotonic() - t0 > 30.0:
+            break
+        prev = sizes
+        await asyncio.sleep(0.5)
+    run.check(ready and sizes == prev, "the window reports its views' sizes", sizes)
     h2, h3 = await start_heads(sizes)
     for engine, copy in ((h2, work / "engine2.animpkg"), (h3, work / "engine3.animpkg")):
         shutil.copyfile(saved, copy)

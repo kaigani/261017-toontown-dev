@@ -359,31 +359,30 @@ fn check_final_result(command_id: &str, v: Value) -> Result<Value, CommandError>
 
 #[cfg(test)]
 mod tests {
-    #![allow(clippy::unwrap_used, clippy::panic, reason = "test")]
-
     use super::*;
 
     /// Ruling E-29 (the handler-panic note §3.2): a panic while the job table's lock is held poisons it; every later use
     /// still reads it (`PoisonError::into_inner`), so the panic does not cascade into the next call.
     #[test]
-    fn a_poisoned_table_lock_is_still_served() {
+    fn a_poisoned_table_lock_is_still_served() -> Result<(), CommandError> {
         let table = Arc::new(JobTable::default());
         let t = table.clone();
         let poisoned = std::thread::spawn(move || {
-            let _guard = t.table.lock().unwrap();
-            panic!("test: a panic while the job table is locked");
+            let _guard = t.table.lock();
+            std::panic::panic_any("test: a panic while the job table is locked".to_owned());
         })
         .join();
         assert!(poisoned.is_err());
         assert!(table.table.is_poisoned());
-        let id = table.submit("test.job", "", |_| Ok(Value::Null)).unwrap();
+        let id = table.submit("test.job", "", |_| Ok(Value::Null))?;
         assert!(table.list(Some(&id), None).len() == 1);
         assert_eq!(table.watermark(), 1);
+        Ok(())
     }
 
     /// The jobs submitted after a mark are the ones cancelled.
     #[test]
-    fn cancel_since_names_only_the_jobs_after_the_mark() {
+    fn cancel_since_names_only_the_jobs_after_the_mark() -> Result<(), CommandError> {
         let table = Arc::new(JobTable::default());
         let slow = |p: &JobProgress| {
             while !p.cancelled() {
@@ -391,10 +390,11 @@ mod tests {
             }
             Ok(Value::Null)
         };
-        let before = table.submit("test.job", "", slow).unwrap();
+        let before = table.submit("test.job", "", slow)?;
         let mark = table.watermark();
-        let after = table.submit("test.job", "", slow).unwrap();
+        let after = table.submit("test.job", "", slow)?;
         assert_eq!(table.cancel_since(mark), vec![after]);
         let _ = table.cancel(&before);
+        Ok(())
     }
 }

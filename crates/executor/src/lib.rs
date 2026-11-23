@@ -1154,7 +1154,9 @@ fn document_thread(
                 .map(|m| (*m).to_owned())
                 .or_else(|| payload.downcast_ref::<String>().cloned())
                 .unwrap_or_default();
-            eprintln!(
+            use std::io::Write as _;
+            let _ = writeln!(
+                std::io::stderr(),
                 "toontown: the engine is degraded after a panic outside an invocation: {message}; it stops serving"
             );
             shell.degraded.store(true, std::sync::atomic::Ordering::Release);

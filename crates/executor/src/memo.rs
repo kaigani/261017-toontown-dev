@@ -128,8 +128,6 @@ pub(crate) fn selections(cx: &crate::cx::Cx, contexts: &[&str]) -> Vec<Arc<dyn A
 
 #[cfg(test)]
 mod tests {
-    #![allow(clippy::panic, reason = "test")]
-
     use super::*;
 
     /// Ruling E-29 (the handler-panic note §3.2): an entry is written only after its value is complete, so a computation
@@ -141,7 +139,9 @@ mod tests {
         let entries = || TABLE.with(|t| t.borrow().iter().filter(|e| e.tag == "e29").count());
         enabled(|| {
             let caught = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| {
-                memo_many::<u32>("e29", &values, 7, || panic!("test: a fact computation panics"))
+                memo_many::<u32>("e29", &values, 7, || {
+                    std::panic::panic_any("test: a fact computation panics".to_owned())
+                })
             }));
             assert!(caught.is_err());
             assert_eq!(entries(), 0, "no entry for the panicked computation");

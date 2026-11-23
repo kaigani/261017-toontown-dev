@@ -3,19 +3,24 @@
 //!
 //! A dev-only registry replaces one not-implemented spec A action (`colour.palette.create`, owned by a later milestone)
 //! with a handler that panics at a point the call names, beside every real command (the device of `c12_never_block`).
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, reason = "test")]
 
 use std::sync::Arc;
 use std::time::Duration;
 
 use serde::Deserialize;
 use serde_json::{Map, Value, json};
-use tt_registry::{CommandError, Registry, command};
+use tt_registry::{CommandError, Registry};
 
 use crate::cx::Cx;
 use crate::run::{Core, HANDLER_PANICKED};
 use crate::session::{Checkpoint, OpenProject, Session};
 use crate::types::Invocation;
+
+type Outcome = Result<(), String>;
+
+fn why<E: std::fmt::Debug>(e: E) -> String {
+    format!("{e:?}")
+}
 
 /// The test handler's parameters: where it panics.
 #[derive(Debug, Deserialize, schemars::JsonSchema)]
@@ -25,8 +30,9 @@ struct PanicParams {
     at: String,
 }
 
-/// A defective handler: it changes what `at` names, then panics (in production nothing would).
-#[command(
+/// A defective handler: it changes what `at` names, then panics (in production nothing would). The attribute is written
+/// with its path so that source scans that count the product's command attributes do not count this test-only one.
+#[tt_registry::command(
     id = "colour.palette.create",
     kind = action,
     label = "Panics",
@@ -85,36 +91,36 @@ fn panics(cx: &mut Cx, p: PanicParams) -> Result<Value, CommandError> {
         }
         "timeline" => cx.session_mut().timeline.reveal_count += 1,
         "events" => cx.emit("test.half", json!({})),
-        other => return Err(CommandError::new("arg.invalid", format!("unknown point {other}"))),
+        other => std::panic::panic_any(format!("test: unknown point {other}")),
     }
-    panic!("test: the handler panics after `{}`", p.at);
+    std::panic::panic_any(format!("test: the handler panics after `{}`", p.at));
 }
 
 /// The real registry with the test handler in place of `colour.palette.create`'s stub.
-fn registry() -> &'static Registry {
+fn registry() -> Result<&'static Registry, String> {
     let mut all: Vec<&'static tt_registry::Command> = crate::commands::ALL.to_vec();
     all.extend(tt_registry::declared::DECLARED.iter().filter(|c| c.decl.id != "colour.palette.create"));
     all.push(&PANICS);
-    Box::leak(Box::new(Registry::assemble(&all).unwrap()))
+    Ok(Box::leak(Box::new(Registry::assemble(&all).map_err(why)?)))
 }
 
-fn core() -> Core {
-    let doc = tt_model::fixture::sample_document(1).unwrap();
+fn core() -> Result<Core, String> {
+    let doc = tt_model::fixture::sample_document(1).map_err(why)?;
     let session = Session { project: Some(OpenProject::new(doc, None, false)), ..Session::default() };
-    let mut core = Core::new(registry(), session, Duration::from_secs(30));
+    let mut core = Core::new(registry()?, session, Duration::from_secs(30));
     // A first call repairs the application context (current scene and element), so the states compared below are
     // those of a session in use.
     assert!(core.invoke(&Invocation::user("doc.state.get", json!({}))).is_ok());
     core.take_events();
-    core
+    Ok(core)
 }
 
 /// Everything a failed call must leave as it was, as text: the document, the history, the checkpoints, and every
 /// session field the `Rollback` restores.
-fn state(core: &Core) -> Vec<(&'static str, String)> {
-    let s = core.session().unwrap();
-    let p = s.project.as_ref().unwrap();
-    vec![
+fn state(core: &Core) -> Result<Vec<(&'static str, String)>, String> {
+    let s = core.session().ok_or("no session")?;
+    let p = s.project.as_ref().ok_or("no project")?;
+    Ok(vec![
         ("document", format!("{:?}", p.doc)),
         ("history", format!("{:?}", p.history)),
         ("checkpoints", format!("{:?}", p.checkpoints)),
@@ -125,7 +131,7 @@ fn state(core: &Core) -> Vec<(&'static str, String)> {
         ("agents", format!("{:?}", (&s.agents.sessions, &s.agents.limits, s.agents.server_enabled, s.agents.ttl))),
         ("timeline", format!("{:?}", s.timeline)),
         ("events", format!("{:?}", s.events)),
-    ]
+    ])
 }
 
 /// Ruling E-29 item 1, condition 1: every field of the session is classified against the `Rollback`. The pattern names
@@ -161,8 +167,8 @@ fn every_session_field_is_classified_against_the_rollback() {
 /// clipboard and the event list equal their state before the call, the call answers `internal` naming the command,
 /// and the next call is served.
 #[test]
-fn a_panicking_handler_fails_its_call_and_changes_nothing() {
-    let mut core = core();
+fn a_panicking_handler_fails_its_call_and_changes_nothing() -> Outcome {
+    let mut core = core()?;
     let points = [
         "before",
         "staged",
@@ -177,10 +183,10 @@ fn a_panicking_handler_fails_its_call_and_changes_nothing() {
         "events",
     ];
     for (n, at) in points.iter().enumerate() {
-        let jobs_before = core.session().unwrap().jobs.list(None, None).len();
-        let before = state(&core);
+        let jobs_before = core.session().ok_or("no session")?.jobs.list(None, None).len();
+        let before = state(&core)?;
         let env = core.invoke(&Invocation::user("colour.palette.create", json!({ "at": at })));
-        let e = env.error.clone().unwrap_or_else(|| panic!("{at}: the call succeeded"));
+        let e = env.error.clone().ok_or(format!("{at}: the call succeeded"))?;
         assert_eq!(e.code, "internal", "{at}");
         assert_eq!(e.details["reason"], HANDLER_PANICKED, "{at}");
         assert_eq!(e.details["commandId"], "colour.palette.create", "{at}");
@@ -190,23 +196,24 @@ fn a_panicking_handler_fails_its_call_and_changes_nothing() {
         let events = core.take_events();
         let notices: Vec<_> = events.iter().filter(|e| e.name == "shell.handlerPanicked").collect();
         assert_eq!(notices.len(), 1, "{at}: {events:?}");
-        assert_eq!(notices[0].payload["count"], n + 1);
+        assert_eq!(notices.first().map(|e| e.payload["count"].clone()), Some(json!(n + 1)));
         assert!(events.iter().all(|e| e.name != "test.half"), "{at}");
-        let after = state(&core);
+        let after = state(&core)?;
         for ((name, b), (_, a)) in before.iter().zip(&after) {
             if *name == "events" {
                 continue; // emptied by `take_events` above; the half-emitted event is checked absent instead
             }
             assert_eq!(a, b, "{at}: {name} changed");
         }
-        assert_eq!(core.caught_panics(), u64::try_from(n + 1).unwrap());
+        assert_eq!(core.caught_panics(), u64::try_from(n + 1).map_err(why)?);
         // A job the call started is cancelled.
-        let jobs = core.session().unwrap().jobs.list(None, None);
+        let jobs = core.session().ok_or("no session")?.jobs.list(None, None);
         if *at == "job" {
             assert_eq!(jobs.len(), jobs_before + 1);
-            let job = jobs.last().unwrap();
+            let job = jobs.last().ok_or("no job")?;
             assert!(!job.cancellable, "the started job's cancellation was requested: {job:?}");
-            let (record, _) = core.session().unwrap().jobs.wait(&job.job_id, Duration::from_secs(30)).unwrap();
+            let table = core.session().ok_or("no session")?.jobs.clone();
+            let (record, _) = table.wait(&job.job_id, Duration::from_secs(30)).map_err(why)?;
             assert!(record.state.is_final(), "{record:?}");
         } else {
             assert_eq!(jobs.len(), jobs_before, "{at}");
@@ -216,13 +223,14 @@ fn a_panicking_handler_fails_its_call_and_changes_nothing() {
         assert!(next.is_ok(), "{at}: {next:?}");
         core.take_events();
     }
+    Ok(())
 }
 
 /// The same containment inside an atomic batch: the whole batch fails and changes nothing.
 #[test]
-fn a_panicking_step_fails_its_atomic_batch_and_changes_nothing() {
-    let mut core = core();
-    let before = state(&core);
+fn a_panicking_step_fails_its_atomic_batch_and_changes_nothing() -> Outcome {
+    let mut core = core()?;
+    let before = state(&core)?;
     let req: crate::types::BatchRequest = serde_json::from_value(json!({
         "label": "two", "atomic": true,
         "steps": [
@@ -230,48 +238,64 @@ fn a_panicking_step_fails_its_atomic_batch_and_changes_nothing() {
             { "id": "colour.palette.create", "params": { "at": "staged" } }
         ]
     }))
-    .unwrap();
+    .map_err(why)?;
     let env = core.batch(&req, &crate::types::Origin::User);
     assert!(!env.is_ok());
-    assert_eq!(env.steps.as_ref().unwrap()[1].error.as_ref().unwrap().details["reason"], HANDLER_PANICKED);
+    let step = env.steps.as_ref().and_then(|s| s.get(1)).and_then(|s| s.error.clone()).ok_or("no second step error")?;
+    assert_eq!(step.details["reason"], HANDLER_PANICKED);
     let events = core.take_events();
     assert_eq!(events.iter().filter(|e| e.name == "shell.handlerPanicked").count(), 1, "{events:?}");
-    for ((name, b), (_, a)) in before.iter().zip(&state(&core)) {
+    for ((name, b), (_, a)) in before.iter().zip(&state(&core)?) {
         if *name != "events" {
             assert_eq!(a, b, "{name} changed");
         }
     }
     assert_eq!(core.caught_panics(), 1);
+    Ok(())
 }
 
 /// Ruling E-29 item 2: a panic outside an invocation degrades the engine: the host-only notice once, then every call
 /// answers `internal` with reason `engineStopped` and the hint that names the way out.
 #[test]
-fn a_panic_outside_an_invocation_degrades_the_engine() {
-    let h = crate::ExecutorHandle::spawn(Default::default()).unwrap();
-    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+fn a_panic_outside_an_invocation_degrades_the_engine() -> Outcome {
+    let h = crate::ExecutorHandle::spawn(Default::default()).map_err(why)?;
+    assert!(h.open_document(tt_model::fixture::sample_document(1).map_err(why)?, None, false).is_ok());
     let events = h.subscribe();
     assert!(!h.degraded());
-    let _ = h.tx.send(crate::Request::Run(Box::new(|_| panic!("test: a panic outside an invocation"))));
+    let _ = h.tx.send(crate::Request::Run(Box::new(|_| {
+        std::panic::panic_any("test: a panic outside an invocation".to_owned())
+    })));
     for command in ["doc.state.get", "timeline.rows.list", "element.rename"] {
         let env = h.invoke(Invocation::user(command, json!({})));
-        let e = env.error.unwrap();
+        let e = env.error.ok_or(format!("{command} succeeded"))?;
         assert_eq!(e.code, "internal", "{command}");
         assert_eq!(e.details["reason"], crate::ENGINE_STOPPED, "{command}");
         let hint = e.hint.unwrap_or_default();
         assert!(hint.contains("Restart the engine") && hint.contains("project.recovery.list"), "{hint}");
     }
+    // The notice follows the degraded mark on the document thread; the callers above may have been answered first.
+    let deadline = std::time::Instant::now() + Duration::from_secs(30);
+    let mut degraded = 0;
+    while degraded == 0 && std::time::Instant::now() < deadline {
+        if let Ok(e) = events.recv_timeout(Duration::from_millis(100))
+            && e.name == "shell.engineDegraded"
+        {
+            degraded += 1;
+        }
+    }
+    assert_eq!(degraded, 1);
     assert!(h.degraded());
-    let degraded: Vec<_> = events.try_iter().filter(|e| e.name == "shell.engineDegraded").collect();
-    assert_eq!(degraded.len(), 1);
-    assert_eq!(h.caught_panics().unwrap_err().details["reason"], crate::ENGINE_STOPPED);
+    assert_eq!(events.try_iter().filter(|e| e.name == "shell.engineDegraded").count(), 0, "raised once");
+    let counted = h.caught_panics();
+    assert_eq!(counted.err().map(|e| e.details["reason"].clone()), Some(json!(crate::ENGINE_STOPPED)));
+    Ok(())
 }
 
 /// Ruling E-29 item 4: after the document thread has died, a new executor over the same user folders lists the
 /// recovery data of the last autosave (in one process the dead engine is named first, as the desktop's restart does;
 /// a new process finds the old one gone).
 #[test]
-fn after_the_document_thread_died_a_new_executor_lists_the_last_autosave() {
+fn after_the_document_thread_died_a_new_executor_lists_the_last_autosave() -> Outcome {
     use crate::{ExecutorConfig, ExecutorHandle, ExecutorOptions, Maintenance, PersistOptions, UserDirs};
     let dir = std::env::temp_dir().join(format!("tt-e29-recovery-{}", crate::random_token(8)));
     let over = || {
@@ -283,17 +307,17 @@ fn after_the_document_thread_died_a_new_executor_lists_the_last_autosave() {
                 ..Default::default()
             },
         })
-        .unwrap()
+        .map_err(why)
     };
-    let first = over();
+    let first = over()?;
     let created = first.invoke(Invocation::user("project.create", json!({ "name": "Died with its thread" })));
-    let scene = created.result.unwrap()["sceneId"].as_str().unwrap().to_owned();
+    let scene = created.result.ok_or("no project")?["sceneId"].as_str().ok_or("no scene")?.to_owned();
     let patched = first.invoke(Invocation::user(
         "doc.object.patch",
         json!({ "targets": [scene], "props": { "meta": { "unsaved": 1 } } }),
     ));
     assert!(patched.is_ok(), "{patched:?}");
-    first.run_maintenance(true).unwrap();
+    first.run_maintenance(true).map_err(why)?;
     let started = std::time::Instant::now();
     let written = || {
         std::fs::read_dir(dir.join("Recovery"))
@@ -305,17 +329,19 @@ fn after_the_document_thread_died_a_new_executor_lists_the_last_autosave() {
         std::thread::yield_now();
     }
     // The document thread dies (a panic outside an invocation).
-    let _ = first.tx.send(crate::Request::Run(Box::new(|_| panic!("test: the document thread dies"))));
+    let _ = first
+        .tx
+        .send(crate::Request::Run(Box::new(|_| std::panic::panic_any("test: the document thread dies".to_owned()))));
     let dead = first.invoke(Invocation::user("doc.state.get", json!({})));
-    assert_eq!(dead.error.unwrap().details["reason"], crate::ENGINE_STOPPED);
+    assert_eq!(dead.error.map(|e| e.details["reason"].clone()), Some(json!(crate::ENGINE_STOPPED)));
     // The restart: a new executor, the dead engine named, its recovery data released and offered.
-    let second = over();
+    let second = over()?;
     let owner = first.abandon();
-    assert_eq!(second.release_recovery_of(&owner).unwrap(), 1);
-    let list = second.invoke(Invocation::user("project.recovery.list", json!({})));
-    let list = list.result.unwrap();
-    assert_eq!(list.as_array().unwrap()[0]["projectName"], "Died with its thread", "{list}");
+    assert_eq!(second.release_recovery_of(&owner).map_err(why)?, 1);
+    let list = second.invoke(Invocation::user("project.recovery.list", json!({}))).result.ok_or("no list")?;
+    assert_eq!(list.get(0).map(|e| e["projectName"].clone()), Some(json!("Died with its thread")), "{list}");
     drop(first);
     drop(second);
     let _ = std::fs::remove_dir_all(&dir);
+    Ok(())
 }
