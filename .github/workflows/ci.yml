@@ -245,14 +245,14 @@ jobs:
         run: pnpm --dir desktop build
 
       # One `cargo fmt -p <package> --check` per workspace package (M3 C3.3 round 1): `--all` reaches the command-line
-      # length limit on Windows (os error 206) and is not used locally either.
+      # length limit on Windows (os error 206) and is not used locally either. The script fails on any file that differs
+      # except the reviewer-owned files it names, merged unchanged and not edited by the builder (M5 C5.1a round 1,
+      # declared CI edit; an entry is dropped once its file is formatted).
       - name: Formatting, per workspace package
         run: |
           PY=python3
           if [ "$RUNNER_OS" = "Windows" ]; then PY=python; fi
-          for p in $(cargo metadata --no-deps --format-version 1 --locked | $PY -c "import json, sys; print(' '.join(p['name'] for p in json.load(sys.stdin)['packages']))" | tr -d '\r'); do
-            cargo fmt -p "$p" --check
-          done
+          $PY -I scripts/check-rust-format.py
 
       # Ruling D-59 (C44A-R1S-03): product code gains no lint `allow` the inventory (`scripts/product-allows.json`) does not
       # name, loses none silently, and the total stays at or below 97; a NEW ALLOW fails this job.
