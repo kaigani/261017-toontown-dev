@@ -162,10 +162,22 @@ pub(crate) fn evaluator<'d>(doc: &'d Document, what: &'static str) -> Evaluator<
 
 /// A node's data, read outside an evaluator.
 pub(crate) fn data_of(doc: &Document, id: &Id, budget: &mut Budget) -> Result<NodeData, CommandError> {
-    let e = node(doc, id)?;
     let scene = super::timing::scene_of(doc, id)?;
+    data_in(doc, scene.tree(), doc.scene_length(scene), id, budget)
+}
+
+/// [`data_of`] with the scene's tree and length given: a read of many nodes of one scene (`timeline.rows.list`)
+/// computes them once, since the scene length walks every element of the scene.
+pub(crate) fn data_in(
+    doc: &Document,
+    tree: &[tt_model::entities::scene::TreeNode],
+    scene_length: u64,
+    id: &Id,
+    budget: &mut Budget,
+) -> Result<NodeData, CommandError> {
+    let e = node(doc, id)?;
     budget.spend(usize::try_from(NodeData::cost(e)).unwrap_or(usize::MAX))?;
-    Ok(NodeData::read(doc, scene.tree(), e, doc.scene_length(scene)))
+    Ok(NodeData::read(doc, tree, e, scene_length))
 }
 
 /// The curve type and easing new keys get (05 §10.2, *create linear spline*: `staging.keyframes.linearVelocity`).

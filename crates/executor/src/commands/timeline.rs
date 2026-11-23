@@ -21,7 +21,7 @@ use tt_model::document::Document;
 use tt_model::entities::element::ElementType;
 use tt_registry::{CommandError, codes, command};
 
-use super::anim_common::{ChannelEdit, data_of, frame_of};
+use super::anim_common::{ChannelEdit, data_in, frame_of};
 use super::common::NoParams;
 use super::timing::{Budget, as_u32, element, element_id, err, internal, scene_id};
 use crate::cx::Cx;
@@ -589,13 +589,16 @@ fn glyph_channel(name: &str) -> Option<&'static str> {
     }
 }
 
-/// The keyed scene frames of one element with their glyph channels and constant flags.
+/// The keyed scene frames of one element with their glyph channels and constant flags. `tree` and `scene_length` are its
+/// scene's, computed once by a caller that reads many rows (the scene length walks every element of the scene).
 fn keys_of(
     doc: &Document,
+    tree: &[tt_model::entities::scene::TreeNode],
+    scene_length: u64,
     id: &Id,
     budget: &mut Budget,
 ) -> Result<BTreeMap<u32, (BTreeSet<&'static str>, bool)>, CommandError> {
-    let data = data_of(doc, id, budget)?;
+    let data = data_in(doc, tree, scene_length, id, budget)?;
     let edit = ChannelEdit::read(doc, id)?;
     let mut map: BTreeMap<u32, (BTreeSet<&'static str>, bool)> = BTreeMap::new();
     let mut put = |local: u32, ch: &'static str, constant: bool| {
@@ -629,7 +632,8 @@ fn keys_of(
 
 /// The keyed scene frames of an element (the Timeline's keyframe symbols; the timing-gesture interpreter's hit test).
 pub(crate) fn keyed_frames(doc: &Document, id: &Id, budget: &mut Budget) -> Result<Vec<u32>, CommandError> {
-    Ok(keys_of(doc, id, budget)?.into_keys().collect())
+    let scene = super::timing::scene_of(doc, id)?;
+    Ok(keys_of(doc, scene.tree(), doc.scene_length(scene), id, budget)?.into_keys().collect())
 }
 
 #[command(
@@ -669,6 +673,9 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
         crate::timing_gesture::visible_rows(&doc, &scene, &gesture_state).into_iter().map(|r| r.id).collect();
     let placed = h::placed(sc.tree());
     budget.spend(placed.len())?;
+    // Once for the whole read: the scene length walks every element of the scene (computed per row, the read grew with
+    // the square of the rows; the CI ratio of 1,000 to 10 elements caught it on macOS, run 45139823182).
+    let scene_length = doc.scene_length(sc);
     let mut hidden: BTreeMap<Id, bool> = BTreeMap::new();
     let mut parent_of: BTreeMap<Id, Option<Id>> = BTreeMap::new();
     let mut keyed: BTreeMap<Id, Vec<u32>> = BTreeMap::new();
@@ -688,7 +695,7 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
                 loops: *e.loops(),
             }),
         };
-        let keys = keys_of(&doc, &q.id, &mut budget)?;
+        let keys = keys_of(&doc, sc.tree(), scene_length, &q.id, &mut budget)?;
         keyed.insert(q.id.clone(), keys.keys().copied().collect());
         let keyframes = keys
             .range(from..=to)

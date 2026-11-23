@@ -178,7 +178,17 @@ fn d23_row_drops_reorder_attach_and_change_level() {
 fn rows_list_stays_linear_at_one_thousand_elements() {
     let h = fixture();
     let small = fixture();
+    let measure = |h: &ExecutorHandle| -> Duration {
+        let mut best = Duration::MAX;
+        for _ in 0..5 {
+            let t = Instant::now();
+            ok(h, "timeline.rows.list", json!({"from": 1, "to": 120}));
+            best = best.min(t.elapsed());
+        }
+        best
+    };
     let mut built = 0;
+    let mut half = Duration::ZERO;
     while built < 990 {
         let n = (990 - built).min(99);
         ok(
@@ -187,16 +197,10 @@ fn rows_list_stays_linear_at_one_thousand_elements() {
             json!({"type": if built % 2 == 0 { "peg" } else { "drawing" }, "count": n, "name": format!("Row{built}")}),
         );
         built += n;
-    }
-    let measure = |h: &ExecutorHandle| -> Duration {
-        let mut best = Duration::MAX;
-        for _ in 0..3 {
-            let t = Instant::now();
-            ok(h, "timeline.rows.list", json!({"from": 1, "to": 120}));
-            best = best.min(t.elapsed());
+        if built == 495 {
+            half = measure(&h);
         }
-        best
-    };
+    }
     let large = measure(&h);
     let base = measure(&small).max(Duration::from_millis(1));
     let rows_large = ok(&h, "timeline.rows.list", json!({}))["rows"].as_array().unwrap().len();
@@ -204,6 +208,11 @@ fn rows_list_stays_linear_at_one_thousand_elements() {
     let ratio = large.as_secs_f64() / base.as_secs_f64();
     eprintln!("timeline.rows.list: {rows_large} rows {large:?}, 20 rows {base:?}, ratio {ratio:.1}");
     assert!(ratio <= 150.0, "rows.list grows faster than the rows: ratio {ratio:.1}");
+    // Twice the rows, about twice the time (linear about 2, quadratic about 4): run 45139823182 found the read growing with
+    // the square of the rows (the scene length computed per row).
+    let doubling = large.as_secs_f64() / half.max(Duration::from_micros(100)).as_secs_f64();
+    eprintln!("timeline.rows.list: about 500 rows {half:?}, 1000 rows {large:?}, doubling ratio {doubling:.2}");
+    assert!(doubling <= 3.0, "rows.list grows faster than the rows when they double: {doubling:.2}");
     assert!(large < Duration::from_secs(2), "a gross regression: {large:?}");
 }
 
