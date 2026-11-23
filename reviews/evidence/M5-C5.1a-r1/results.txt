@@ -1,0 +1,10 @@
+Product: ba8e1946; review base: 07c0a2b0
+All cargo runs: -p tt-executor --locked --test NAME -- --nocapture, wrapped in timeout 530.
+c51_timeline: 23 passed, 0 failed, 0 ignored.
+c51_gestures: 5 passed, 0 failed, 0 ignored.
+c51a_r1_commands: 3 passed, 2 failed, 0 ignored.
+c51a_r1_playback: 5 passed, 0 failed, 0 ignored.
+C51A-R1-01: frame 0 -> arg.invalid, minimum 1.
+C51A-R1-02: from=20,to=3 -> BTreeMap panic; next command -> internal: the document thread has stopped.
+Seed 0x51a: 300 steps; history undo/redo and package roundtrip pass.
+See report for coverage gaps. No raw logs stored in repository.
