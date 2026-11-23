@@ -24,7 +24,8 @@ path = "../../tests/adversarial/c03-r2-encoder.rs"
 m0-diagnostics = []
 # Ruling D-50: dev-only delays of the gesture commit's and the scene's answers (src/delay_hooks.rs). Never in a product
 # build (scripts/check-release-features.py).
-test-hooks = []
+# Ruling E-29 item 3 (M5 C5.1b): the watchdog's live check stops the engine on a trigger file (src/degrade_hook.rs).
+test-hooks = ["dep:tt-persist", "tt-persist/test-hooks"]
 
 [build-dependencies]
 tauri-build.workspace = true
@@ -34,6 +35,8 @@ tt-engine.workspace = true
 # M4 C4.1: the host is a client of the executor (one command entry, events, request cancellation) and serves attached
 # mode over Streamable HTTP (ADR-0021, ADR-0022).
 tt-executor.workspace = true
+# Only with `test-hooks` (the persistence boundary hook the degrade trigger uses); never in a product build.
+tt-persist = { workspace = true, optional = true }
 tt-mcp.workspace = true
 # M4 C4.2b: attached screenshots are cropped and re-encoded with the renderer's PNG codec.
 tt-render.workspace = true

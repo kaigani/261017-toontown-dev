@@ -414,10 +414,13 @@ function Window() {
       </div>
       <StatusBar />
       {appState?.startScreenVisible && <StartScreen />}
-      <EngineBanner />
+      {/* Stacked, so the reads that failed never hide the banner's Restart (they fail too while the engine is stopped). */}
+      <div className="top-notices">
+        <EngineBanner />
+        <RefreshErrors errors={state.errors} />
+      </div>
       <LoadReportWindow />
       <ConfirmationSheet />
-      <RefreshErrors errors={state.errors} />
       <CadenceProbe enabled={measuring} />
     </div>
   );

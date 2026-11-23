@@ -14,6 +14,7 @@
 pub mod attached;
 pub mod bindings;
 pub mod capture;
+pub mod degrade_hook;
 pub mod delay_hooks;
 pub mod diagnostics;
 pub mod floats;
@@ -158,6 +159,8 @@ pub fn run() -> Result<(), DesktopError> {
         discovery: launch.mcp_discovery.clone(),
         open: launch.open.clone(),
     };
+    // Dev-only (`test-hooks`; ruling E-29 item 3): the watchdog's live check stops the engine on a trigger file.
+    degrade_hook::install();
     let host = host::Host::start(options).map_err(DesktopError::Executor)?;
     // 01 §1.1 rule 1: one instance per user session; a second one forwards its documents and exits.
     let settings = host.settings_dir.clone();

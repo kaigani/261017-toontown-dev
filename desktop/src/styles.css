@@ -618,13 +618,26 @@ select:focus-visible {
   border-left-color: var(--tt-warning);
 }
 
-.engine-banner,
-.refresh-errors {
+/* The engine banner and the reads that failed, stacked so neither hides the other (M5 C5.1b: when the engine stopped,
+   the failed reads were drawn over the banner and its Restart button). */
+.top-notices {
   position: fixed;
   left: 50%;
   top: 48px;
   transform: translateX(-50%);
   z-index: 59;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  pointer-events: none;
+}
+
+.top-notices > * {
+  pointer-events: auto;
+}
+
+.engine-banner,
+.refresh-errors {
   display: flex;
   gap: 10px;
   align-items: center;

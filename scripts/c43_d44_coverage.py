@@ -133,8 +133,10 @@ COVERAGE: dict[str, dict] = {
     "message:agent.tokenRegenerate": {"rows": ["Agent access › Regenerate token › Regenerate",
                                                "Agent access › Regenerate token › Cancel",
                                                "Agent access › Regenerate token › Enter (default Cancel)"], "default": "Cancel"},
-    "message:engine.restartConfirm": {"reason": "needs an engine that stops answering; App.test.tsx covers the question "
-                                                "and both choices (named in the table)", "default": "Cancel"},
+    "message:engine.restartConfirm": {"reason": "needs an engine that stops answering: both choices through the real "
+                                                "window in scripts/c51b-engine-restart.py (a test-hooks build stops the "
+                                                "engine; ruling E-29 item 3), and App.test.tsx covers the question",
+                                      "default": "Cancel"},
     "inline:keymap.conflict": {"rows": ["shortcut editor › conflict › Override", "shortcut editor › conflict › Cancel"],
                                "default": "Cancel"},
     "popover:Jobs": {"rows": ["progress window › Cancel"]},
