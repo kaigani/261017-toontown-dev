@@ -59,20 +59,19 @@ const REREAD = new Set([
   'element.created',
   'element.deleted',
   'cell.exposures.changed',
-  'cell.selection.changed',
-  'edit.selection.changed',
   'anim.changed',
   'doc.changed',
   'doc.undone',
   'doc.redone',
-  'timeline.currentFrame.changed',
   'timeline.playbackRange.changed',
   'prefs.changed',
   'shell.timelineView',
   'project.opened',
   'project.closed',
-  'app.state.changed',
 ]);
+
+/** Events that change only the selection (the rows do not depend on it). */
+const SELECTION = new Set(['cell.selection.changed', 'edit.selection.changed']);
 
 /** The arrow keys' steps of the current cell (plan §6.5). */
 const ARROWS: Readonly<Record<string, { readonly rows: number; readonly frames: number }>> = {
@@ -132,6 +131,10 @@ export function TimelinePanel() {
   const [labels, setLabels] = useState<ReadonlyMap<number, string>>(new Map());
   // Counts the preference changes: the ruler's labels follow `interface.timeMeasurement` (an agent's change too, E-6).
   const [prefsRev, setPrefsRev] = useState(0);
+  // The current frame from `timeline.currentFrame.changed` since the last rows read: a frame change (ten a second during
+  // playback) moves the playhead only. Re-reading the rows, the selection and each row's display fields for it
+  // saturated the window during playback on a slow machine (run 45304471459).
+  const [frameNow, setFrameNow] = useState<number | null>(null);
   const [range, setRange] = useState<RowsAnswer['playbackRange'] | null>(null);
   const [scrollTop, setScrollTop] = useState(0);
   const [size, setSize] = useState({ width: 0, height: 0 });
@@ -158,6 +161,7 @@ export function TimelinePanel() {
   const rangeGate = useReadGate();
 
   const shown = useMemo(() => shownRows(rows?.rows ?? []), [rows]);
+  const currentFrame = frameNow ?? rows?.currentFrame ?? 1;
   // The rows with children (every row of the answer, shown or under a collapsed parent): they show the disclosure.
   const parents = useMemo(
     () => new Set((rows?.rows ?? []).flatMap((r) => (r.parentId ? [r.parentId] : []))),
@@ -198,6 +202,7 @@ export function TimelinePanel() {
       .done.then((env) => {
         if (!live()) return;
         setRows(env.status === 'ok' ? parseRows(env.result) : null);
+        setFrameNow(null);
         setRowsRev(Number(env.documentRev ?? 0));
       })
       .catch(() => undefined);
@@ -331,7 +336,21 @@ export function TimelinePanel() {
           if (v) setView(v);
         }
         if (e.name === 'prefs.changed') setPrefsRev((r) => r + 1);
+        if (e.name === 'timeline.currentFrame.changed') {
+          const f = obj(e.payload)['frame'];
+          if (typeof f === 'number') setFrameNow(f);
+        }
         if (REREAD.has(e.name)) readAll();
+        if (SELECTION.has(e.name)) readSelection();
+        // An app-state change of the frame alone (each playback frame) moves the playhead; any other field reads again.
+        if (e.name === 'app.state.changed') {
+          const p = obj(e.payload);
+          const changed = Array.isArray(p['changed']) ? (p['changed'] as unknown[]) : [];
+          const f = obj(p['state'])['frame'];
+          if (changed.length > 0 && changed.every((c) => c === 'frame') && typeof f === 'number')
+            setFrameNow(f);
+          else readAll();
+        }
       })
       .then((u) => {
         if (stopped) u();
@@ -344,7 +363,7 @@ export function TimelinePanel() {
       stopped = true;
       off?.();
     };
-  }, [engine, readAll]);
+  }, [engine, readAll, readSelection]);
 
   // The rows are read again when the window in view changes (a scroll that leaves the read window, a zoom).
   useEffect(() => {
@@ -374,6 +393,7 @@ export function TimelinePanel() {
   useEffect(() => {
     const ctx = prepare(tracksRef.current, size.width, tracksHeight);
     if (!ctx) return;
+    const began = performance.now();
     drawTracks(
       ctx,
       {
@@ -386,18 +406,33 @@ export function TimelinePanel() {
             ? { elementIds: selection.elementIds, from: selection.from, to: selection.to }
             : null,
         currentElementId: selection?.currentElementId ?? null,
-        currentFrame: rows?.currentFrame ?? 1,
+        currentFrame,
         background,
       },
       { view: position, width: size.width, height: tracksHeight, scrollTop },
     );
     if (shownPreview?.dragged) drawPreview(ctx, shownPreview, position, scrollTop, tracksHeight);
+    // M0 diagnostics only (plan §6.2's window budgets, desktop/src/diagnostics/timelineBudgets.ts): each draw's work and
+    // what it showed. Absent from the default build.
+    if (__TT_M0_DIAGNOSTICS__) {
+      const probe = (window as { __ttTimelineDraws?: unknown[] }).__ttTimelineDraws;
+      probe?.push({
+        at: began,
+        ms: performance.now() - began,
+        scrollTop,
+        firstFrame: position.firstFrame,
+        zoomLevel: position.zoomLevel,
+        currentFrame,
+        cells: selection ? `${selection.elementIds.join(',')}:${selection.from}-${selection.to}` : '',
+      });
+    }
   }, [
     shown,
     runs,
     display,
     selection,
     rows,
+    currentFrame,
     background,
     position,
     size.width,
@@ -412,7 +447,7 @@ export function TimelinePanel() {
     drawRuler(
       ctx,
       {
-        currentFrame: rows.currentFrame,
+        currentFrame,
         sceneLength: rows.sceneLength,
         range: range ?? rows.playbackRange,
         labels,
@@ -420,7 +455,7 @@ export function TimelinePanel() {
       position,
       size.width,
     );
-  }, [rows, range, labels, position, size.width]);
+  }, [rows, currentFrame, range, labels, position, size.width]);
 
   // ----- gestures -----------------------------------------------------------------------------------------------------
 
@@ -522,7 +557,7 @@ export function TimelinePanel() {
     const at = shown.findIndex((r) => r.elementId === selection?.currentElementId);
     const row = shown[Math.max(0, Math.min(shown.length - 1, (at < 0 ? 0 : at) + step.rows))];
     if (!row) return;
-    const frame = Math.max(1, (rows?.currentFrame ?? 1) + step.frames);
+    const frame = Math.max(1, currentFrame + step.frames);
     void actions.run('xsheet.currentCell.set', { elementId: row.elementId, frame });
   };
 
@@ -829,6 +864,7 @@ export function TimelinePanel() {
               data-tt-zoom={position.zoomLevel}
               data-tt-rows={shown.length}
               data-tt-background={background}
+              data-tt-current-frame={currentFrame}
               style={{
                 position: 'absolute',
                 inset: 0,

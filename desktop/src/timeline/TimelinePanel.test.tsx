@@ -214,3 +214,35 @@ describe('the arrow keys in the Timeline', () => {
     expect(sent().length).toBe(before);
   });
 });
+
+// A frame change (ten a second during playback) moves the playhead only: re-reading the rows and the visible rows'
+// fields for each one saturated the window during playback on a slow machine (run 45304471459).
+describe('a current-frame change', () => {
+  it('moves the playhead without reading the rows again', async () => {
+    const h = await timeline({});
+    await waitFor(() => {
+      expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('1');
+    });
+    const reads = () =>
+      h.sent.filter((x) => x.command === 'timeline.rows.list' || x.command === 'element.get').length;
+    const before = reads();
+    act(() => {
+      h.event('timeline.currentFrame.changed', { sceneId: 'sc_1', frame: 9, source: 'playback' });
+    });
+    await waitFor(() => {
+      expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('9');
+    });
+    expect(reads()).toBe(before);
+    // The app-state notice of the frame alone, and a selection notice: no rows read.
+    act(() => {
+      // The kernel's notice carries the whole state (the store takes it as the app state).
+      h.event('app.state.changed', { changed: ['frame'], state: { ...PROJECT, frame: 12 } });
+      h.event('cell.selection.changed', {});
+    });
+    await waitFor(() => {
+      expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('12');
+    });
+    await new Promise((r) => setTimeout(r, 300));
+    expect(reads()).toBe(before);
+  });
+});
