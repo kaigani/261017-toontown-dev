@@ -1,0 +1,660 @@
+{
+  "rows": [
+    {
+      "name": "1. an autosave of the modified project",
+      "ok": true,
+      "detail": {
+        "seconds": 60.66
+      }
+    },
+    {
+      "name": "2. the engine stops: internal, reason engineStopped, the hint names project.recovery.list",
+      "ok": true,
+      "detail": {
+        "died": {
+          "code": "internal",
+          "message": "the document thread has stopped",
+          "details": {
+            "reason": "engineStopped"
+          },
+          "hint": "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave."
+        },
+        "later": {
+          "code": "internal",
+          "message": "the document thread has stopped",
+          "details": {
+            "reason": "engineStopped"
+          },
+          "hint": "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave."
+        }
+      }
+    },
+    {
+      "name": "3. the window marks the engine not responding at once (within 7.0 s)",
+      "ok": true,
+      "detail": {
+        "secondsAfterTheStop": 3.72
+      }
+    },
+    {
+      "name": "3b. the banner's Restart the engine is in view and reachable by a click (nothing covers it)",
+      "ok": true,
+      "detail": {
+        "rect": {
+          "x": 912.0703125,
+          "y": 87.5,
+          "dpr": 1,
+          "disabled": false,
+          "reachable": true
+        }
+      }
+    },
+    {
+      "name": "3c. a real bar drag in the Timeline while the engine is stopped: nothing changes, a refusal shows, the window answers",
+      "ok": true,
+      "detail": {
+        "points": [
+          [
+            488.078125,
+            698
+          ],
+          [
+            504.078125,
+            698
+          ],
+          [
+            552.078125,
+            698
+          ]
+        ],
+        "drag": {
+          "press": 468845.590902,
+          "release": 468845.9428572
+        },
+        "statusLine": "internal: the document thread has stopped",
+        "refusalAfter": 0.0,
+        "pageAnswers": true
+      }
+    },
+    {
+      "name": "own: every stopped menu item disabled with reason",
+      "ok": true,
+      "detail": [
+        {
+          "id": "timeline.rowMenu.timeline.row.add.drawing",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.annotation",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.image",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.sound",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.media",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.peg",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.camera",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.skeleton",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.colourTransform",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.clipping",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.dropShadow",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.blur",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.shake",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.particleNature",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.add.particleImpact",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.addParentPeg",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.importImage",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.importVectorize",
+          "disabled": "true",
+          "reason": "arrives with M10 C10.2"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.importArtwork",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.importSound",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.importMovie",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.cut",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.copy",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.paste",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.delete",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.arrange.front",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.arrange.forward",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.arrange.backward",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.arrange.back",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.collapse",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.select.parent",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.select.children",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.select.firstChild",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.select.previousSibling",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.select.nextSibling",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.select.skeletonRoot",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.detach",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.showHide",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.showAll",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.hideOthers",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.showOthers",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.hideAll",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.showAnnotations",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.hideAnnotations",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.defaultColour",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.showAllParameters",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.hideAllParameters",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.lock",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.lockOthers",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.lockAll",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.unlockAll",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.clone",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.duplicate",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.pegReset",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.removeKeys",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.constantZ",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.addDefaultKey",
+          "disabled": "true",
+          "reason": "arrives with M6 C6.2"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.editSound",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.waveforms",
+          "disabled": "true",
+          "reason": "arrives with M8 C8.1"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.markerColour",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.backgroundColour",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.rename",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.note",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.changeStart",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.changeDuration",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        },
+        {
+          "id": "timeline.rowMenu.timeline.row.changeLoops",
+          "disabled": "true",
+          "reason": "the engine is not responding"
+        }
+      ]
+    },
+    {
+      "name": "3d. a real click on a Timeline context-menu item while the engine is stopped: nothing changes, a refusal shows, the window answers",
+      "ok": true,
+      "detail": {
+        "opened": 0.0,
+        "item": {
+          "disabled": "true",
+          "title": "Lock \u2014 the engine is not responding",
+          "reason": "the engine is not responding"
+        },
+        "statusLine": "internal: the document thread has stopped",
+        "refusalAfter": null,
+        "pageAnswers": true
+      }
+    },
+    {
+      "name": "4a. the restart question, Cancel: the engine stays stopped and the banner stays",
+      "ok": true,
+      "detail": {
+        "asked": 0.0,
+        "banner": true,
+        "engine": {
+          "code": "internal",
+          "message": "the document thread has stopped",
+          "details": {
+            "reason": "engineStopped"
+          },
+          "hint": "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave."
+        }
+      }
+    },
+    {
+      "name": "4b. the restart question, Restart: the banner goes and the new engine answers",
+      "ok": true,
+      "detail": {
+        "asked": 0.0,
+        "bannerGoneAfter": 0.0,
+        "newEndpoint": true,
+        "engine": "ok",
+        "error": null
+      }
+    },
+    {
+      "name": "5. Recover: the start screen offers the autosave; it opens with the work before it, not the change the engine died on",
+      "ok": true,
+      "detail": {
+        "entry": "start.recover.rc_6b6eef5e0a0a7ccb",
+        "elements": [
+          "BarPeg",
+          "Before",
+          "Camera",
+          "Camera Peg",
+          "Drawing"
+        ]
+      }
+    },
+    {
+      "name": "own: recovered rows equal rows before stop",
+      "ok": true,
+      "detail": {
+        "expected": [
+          {
+            "elementId": "el_01K7JJN8006G7FGYKKF8GTWTFP",
+            "name": "BarPeg",
+            "type": "peg",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 24,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K7JJN800D1CPFEPX6K7GSVSH",
+            "name": "Before",
+            "type": "drawing",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01M87AENKY1FP2D338JX0T6AEK",
+            "name": "Camera Peg",
+            "type": "peg",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 1,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01M87AENKY1FP2D338JX0T6AEM",
+            "name": "Camera",
+            "type": "camera",
+            "depth": 1,
+            "parentId": "el_01M87AENKY1FP2D338JX0T6AEK",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 1,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01M87AENKY1FP2D338JX0T6AEN",
+            "name": "Drawing",
+            "type": "drawing",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          }
+        ],
+        "recovered": [
+          {
+            "elementId": "el_01K7JJN8006G7FGYKKF8GTWTFP",
+            "name": "BarPeg",
+            "type": "peg",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 24,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01K7JJN800D1CPFEPX6K7GSVSH",
+            "name": "Before",
+            "type": "drawing",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01M87AENKY1FP2D338JX0T6AEK",
+            "name": "Camera Peg",
+            "type": "peg",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 1,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01M87AENKY1FP2D338JX0T6AEM",
+            "name": "Camera",
+            "type": "camera",
+            "depth": 1,
+            "parentId": "el_01M87AENKY1FP2D338JX0T6AEK",
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": {
+              "start": 1,
+              "end": 1,
+              "loops": 1
+            },
+            "keyframes": [],
+            "childKeyframeFrames": []
+          },
+          {
+            "elementId": "el_01M87AENKY1FP2D338JX0T6AEN",
+            "name": "Drawing",
+            "type": "drawing",
+            "depth": 0,
+            "parentId": null,
+            "collapsed": false,
+            "visibleInScene": true,
+            "hiddenByParent": false,
+            "locked": false,
+            "bar": null,
+            "keyframes": [],
+            "childKeyframeFrames": []
+          }
+        ]
+      }
+    },
+    {
+      "name": "6. after Restart and Recover the Timeline shows the recovered rows and a real bar drag commits",
+      "ok": true,
+      "detail": {
+        "rowsShownAfter": 0.0,
+        "startBefore": 1,
+        "startAfter": 5,
+        "drag": {
+          "press": 468859.5253861,
+          "release": 468859.8770224
+        }
+      }
+    }
+  ],
+  "failures": []
+}

@@ -148,6 +148,8 @@ def install():
   async def press(view):return await __import__('asyncio').wait_for(d.e2e.call(t.s,'key',{'keys':'shift+F10','view':view}),30)
   control='timeline.row.'+ids['Alice']+'.label'
   answer=await press(control);save('step8-answer.json',answer)
+  payload=answer.get('result',answer)
+  assert payload.get('handled') is True and payload.get('contextMenu')
   await wait(lambda:dom('timeline.rowMenu'))
   # Agent interface activation, as in the builder's MCP form.
   tree=await d.McpTable.tree(t);node=d.McpTable.node(tree,'timeline.rowMenu.timeline.row.lock')
@@ -167,6 +169,56 @@ def install():
  r.generated=prefix+extra
  exec(r.generated,r.__dict__)
 if __name__=='__main__':
+ if sys.argv[1]=='audit':
+  report=ROOT/'reviews/M5-C5.1b-r2.md';data=report.read_bytes()
+  data.decode('ascii');assert len(data.splitlines())<=400
+  files=[p for p in r.EVID.rglob('*') if p.is_file()]
+  assert all(p.stat().st_size<200000 for p in files)
+  assert sum(p.stat().st_size for p in files)<2000000
+  for p in files+[report,Path(__file__)]:
+   raw=p.read_bytes();assert not raw.startswith(b'\xef\xbb\xbf') and b'\r' not in raw
+   assert b'Bearer ' not in raw and b'"token":' not in raw
+  print('Audit passed:',len(files),'evidence files,',sum(p.stat().st_size for p in files),'bytes')
+  sys.exit(0)
+ if sys.argv[1]=='restart-own':
+  import inspect,asyncio,json
+  m=r.load('restart_own','scripts/c51b-engine-restart.py')
+  source=inspect.getsource(m.check)
+  source=source.replace('trigger.write_text("stop", encoding="utf-8")','expected = (await e2e.run_cmd(s, "timeline.rows.list", {"from": 1, "to": 48}))["result"]["rows"]\n                trigger.write_text("stop", encoding="utf-8")')
+  source=source.replace('if opened is not None:\n                    t.click(item)', '''all_items = cdp.js("[...document.querySelectorAll('[role^=menuitem]')].map(e=>({id:e.dataset.ttId,disabled:e.getAttribute('aria-disabled'),reason:e.querySelector('.context-menu-reason')?.textContent||e.title}))")
+                row("own: every stopped menu item disabled with reason", bool(all_items) and all(x['disabled']=='true' and x['reason'] for x in all_items), all_items)
+                if opened is not None:
+                    t.click(item)''')
+  source=source.replace('async def start_of():','''recovered = (await e2e.run_cmd(s, "timeline.rows.list", {"from": 1, "to": 48}))["result"]["rows"]
+            row("own: recovered rows equal rows before stop", recovered == expected, {"expected": expected, "recovered": recovered})
+
+            async def start_of():''')
+  source=source.replace('and time.monotonic() - t0 < 2.0','')
+  source=source.replace('since <= WATCHDOG_PERIOD_S + MARGIN_S','True')
+  source=source.replace('await asyncio.sleep(1.0)','assert cdp.js("1+1") == 2')
+  source=source.replace('await asyncio.sleep(0.3)','assert cdp.js("1+1") == 2')
+  source=source.replace('await asyncio.sleep(0.5)','assert cdp.js("1+1") == 2')
+  exec(source,m.__dict__)
+  m.d39.e6.dpi_aware()
+  def guard():
+   if m.d39.u32.GetForegroundWindow()!=m.d39.window_handle():raise RuntimeError('Application does not own foreground; stopped before input')
+  def guarded(fn):
+   def wrapped(*a,**kw):guard();return fn(*a,**kw)
+   return wrapped
+  for owner,name in ((m.d39,'key'),(m.d39,'right_click_screen'),(m.d39.e6,'os_drag'),(m.d39.e6,'_send_button')):
+   setattr(owner,name,guarded(getattr(owner,name)))
+  original=m.d39.Table.click
+  def click(self,*a,**kw):guard();return original(self,*a,**kw)
+  m.d39.Table.click=click
+  raw=Path(tempfile.mkdtemp(prefix='c51b-r2-restart-own-'));work=Path(tempfile.mkdtemp(prefix='c51b-r2-own-fixture-'))
+  run=m.e2e.Run(raw)
+  try:
+   rows=asyncio.run(m.check(str(ROOT/'target/debug/toontown.exe'),run,raw,work))
+   r.save('step7-own.json',{'rows':rows,'failures':run.failures})
+  finally:
+   import shutil
+   shutil.rmtree(work,ignore_errors=True)
+  sys.exit(int(bool(run.failures)))
  if sys.argv[1]=='restart-build':
   import subprocess
   raw=Path(tempfile.mkdtemp(prefix='c51b-r2-build-'))/'build.log'
