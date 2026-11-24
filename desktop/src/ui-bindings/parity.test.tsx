@@ -422,7 +422,7 @@ async function surfaces(): Promise<Surface[]> {
       [
         'timeline.row.markerColour',
         'timeline.row.backgroundColour',
-        'timeline.row.rename',
+        // Rename opens the in-place editor, not a dialog (ruling E-50 item 1).
         'timeline.row.note',
         'timeline.row.changeStart',
         'timeline.row.changeDuration',

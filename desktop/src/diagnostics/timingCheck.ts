@@ -41,6 +41,10 @@ interface Case {
   readonly roles?: readonly Role[];
   /** Escape before the release: nothing may be sent or change. */
   readonly escape?: boolean;
+  /** The refusal the plan's command must answer, from the window and run directly; nothing may change (E-50 item 2). */
+  readonly refused?: string;
+  /** Commands run after the case (a preference the case set: the sample document's reopening keeps preferences). */
+  readonly teardown?: (ids: Ids) => [string, Json][];
 }
 
 type Ids = Readonly<Record<string, string>>;
@@ -267,6 +271,58 @@ const CASES: readonly Case[] = [
       { x: g.frame(14), y: g.y('Bob', 'lower') },
     ],
   })),
+  // Ruling E-50 item 2 (04 lines 571-572): a locked element's timing and exposure still change in the Timeline; the
+  // drawing lock refuses a move that overwrites the cells showing that drawing (04 §13.12, §13.16).
+  {
+    name: 'tracks: a locked peg’s bar body dragged',
+    spec: '04 lines 571-572, 717; ruling E-50 item 2',
+    surface: 'tracks',
+    command: 'element.timing.set',
+    scrollRow: 1,
+    setup: (ids) => [['element.lock.set', { elementIds: [ids['Bob-P']], locked: true }]],
+    points: (g) => [
+      { x: g.frame(20), y: g.y('Bob-P', 'middle') },
+      { x: g.frame(21), y: g.y('Bob-P', 'middle') },
+      { x: g.frame(23), y: g.y('Bob-P', 'middle') },
+    ],
+  },
+  {
+    name: 'tracks: a locked drawing element’s selected cells dragged',
+    spec: '04 lines 571-572, §11.13; ruling E-50 item 2',
+    surface: 'tracks',
+    command: 'cell.range.move',
+    scrollRow: 1,
+    setup: (ids) => [
+      ['element.lock.set', { elementIds: [ids['Bob']], locked: true }],
+      ['cell.select', { elementIds: [ids['Bob']], from: 2, to: 3 }],
+    ],
+    points: (g) => [
+      { x: g.frame(2), y: g.y('Bob', 'lower') },
+      { x: g.frame(5), y: g.y('Bob', 'lower') },
+      { x: g.frame(14), y: g.y('Bob', 'lower') },
+    ],
+  },
+  {
+    name: 'tracks: cells dragged over a locked drawing are refused',
+    spec: '04 §13.12, §13.16 (drawing.locked); ruling E-50 item 2',
+    surface: 'tracks',
+    command: 'cell.range.move',
+    refused: 'drawing.locked',
+    scrollRow: 1,
+    // Bob's drawing at frame 10 locked; Drag and Drop with Exposure off overwrites the cells it lands on.
+    setup: (ids) => [
+      ['app.context.set', { elementId: ids['Bob'], frame: 10 }],
+      ['draw.lock.set', { locked: true }],
+      ['timeline.transferOptions.set', { operation: 'dragDrop', options: { exposure: false } }],
+      ['cell.select', { elementIds: [ids['Bob']], from: 2, to: 3 }],
+    ],
+    teardown: () => [['timeline.transferOptions.set', { operation: 'dragDrop', options: { exposure: true } }]],
+    points: (g) => [
+      { x: g.frame(2), y: g.y('Bob', 'lower') },
+      { x: g.frame(6), y: g.y('Bob', 'lower') },
+      { x: g.frame(10), y: g.y('Bob', 'lower') },
+    ],
+  },
   {
     name: 'tracks: Escape during a drag sends and changes nothing',
     spec: '01 §6.1 line 495; plan §6.3 last row',
@@ -431,11 +487,13 @@ export async function maybeRunTimingCheck(host: HostApi): Promise<boolean> {
     for (const t of ['pointercancel', 'lostpointercapture', 'dragstart'])
       document.addEventListener(t, onAny, true);
     const selectedAtStart = String(document.getSelection() ?? '');
+    let caseIds: Ids = {};
     try {
       await host.timingCheckReset();
       await sleep(300);
       const listed = await run('element.list', {});
       const ids: Record<string, string> = {};
+      caseIds = ids;
       for (const e of (listed['elements'] as Json[] | undefined) ?? []) {
         if (typeof e['name'] === 'string' && typeof e['id'] === 'string') ids[e['name']] = e['id'];
       }
@@ -569,7 +627,11 @@ export async function maybeRunTimingCheck(host: HostApi): Promise<boolean> {
           ((windowPlan as Json | undefined)?.['commands'] as [string, Json][] | undefined) ?? [];
         const hits = c.command === null || commands.some(([name]) => name === c.command);
         const envelopes = (value?.['envelopes'] as Json[] | undefined) ?? [];
-        const committed = envelopes.length > 0 && envelopes.every((e) => e['status'] === 'ok');
+        const code = (e: Json) => (e['error'] as Json | undefined)?.['code'];
+        // A refused case: every envelope answers the refusal (nothing committed).
+        const committed = c.refused
+          ? envelopes.length > 0 && envelopes.every((e) => e['status'] !== 'ok' && code(e) === c.refused)
+          : envelopes.length > 0 && envelopes.every((e) => e['status'] === 'ok');
         const windowState = await state();
         // The same start: a document change undone; a UI change's state restored.
         const changedDocument = JSON.stringify(windowState.history) !== JSON.stringify(before.history);
@@ -587,7 +649,12 @@ export async function maybeRunTimingCheck(host: HostApi): Promise<boolean> {
               : { mode: 'auto' },
           );
         }
-        for (const [name, params] of commands) await run(name, params);
+        for (const [name, params] of commands) {
+          if (c.refused) {
+            const env = await engine.run(name, params).done;
+            row['directError'] = env.status === 'ok' ? null : (env.error?.code ?? 'error');
+          } else await run(name, params);
+        }
         const directState = await state();
         row['planEqual'] = planOk;
         row['hitsTheGesture'] = hits;
@@ -595,6 +662,11 @@ export async function maybeRunTimingCheck(host: HostApi): Promise<boolean> {
         row['stateEqual'] = same(windowState, directState);
         if (row['stateEqual'] !== true) row['difference'] = { window: windowState, direct: directState };
         row['ok'] = planOk && hits && committed && row['stateEqual'] === true;
+        if (c.refused) {
+          row['refused'] = c.refused;
+          row['unchanged'] = !changedDocument && same(before.history, windowState.history);
+          row['ok'] = row['ok'] === true && row['directError'] === c.refused && row['unchanged'] === true;
+        }
       }
     } catch (e: unknown) {
       row['ok'] = false;
@@ -606,6 +678,10 @@ export async function maybeRunTimingCheck(host: HostApi): Promise<boolean> {
     row['events'] = seen;
     row['selectedTextAtStart'] = selectedAtStart;
     rows.push(row);
+    // A preference the case set is put back (the sample document's reopening keeps preferences).
+    for (const [command, params] of c.teardown?.(caseIds) ?? []) {
+      await run(command, params).catch(() => undefined);
+    }
     if (external) shared.__ttTimingCheck = { ...(shared.__ttTimingCheck ?? {}), done: index };
     rec = null;
   }

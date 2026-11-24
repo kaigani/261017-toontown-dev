@@ -3775,6 +3775,140 @@ async def timeline_rows(t: Table, bob: str) -> list:
                      "effect": effect, "toggle": toggle,
                      "disabled": ("dom", ident) if disabled and not callable(ident) else None})
 
+    # ----- Ruling E-50 item 1 (04 §4.1): rename in place. A real double click on a row's name opens the editor, prefilled
+    # with the name; Enter commits (and the Play key, Enter, starts no playback), Escape restores; while it is open the
+    # keys the Timeline binds (/, the arrows, Delete) act in the field and send nothing. -----
+    rename_case: dict = {}
+
+    def name_field(ident):
+        return t.cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                        " return e ? {value: e.value, focused: document.activeElement === e} : null; })()"
+                        % json.dumps(ident))
+
+    async def double_click_name(key_):
+        """A real double click at the centre of the row's name; waits for the editor to hold the focus."""
+        front()
+        r = t.rect(f"timeline.row.{ctx[key_]}.label")
+        if not r or r.get("hidden"):
+            raise RuntimeError(f"the row's name is not shown: {key_}")
+        h = front()
+        origin = wintypes.POINT(0, 0)
+        u32.ClientToScreen(h, ctypes.byref(origin))
+        u32.SetCursorPos(int(origin.x + r["x"] * r["dpr"]), int(origin.y + r["y"] * r["dpr"]))
+        time.sleep(0.15)
+        for _ in range(2):
+            e6._send_button(True)
+            time.sleep(0.02)
+            e6._send_button(False)
+            time.sleep(0.05)
+        ident = f"timeline.row.{ctx[key_]}.name"
+        end = time.monotonic() + 5.0
+        while time.monotonic() < end:
+            got = name_field(ident)
+            if got and got["focused"]:
+                return ident, got
+            await asyncio.sleep(0.1)
+        raise RuntimeError(f"a real double click on the row's name did not open the editor: {ident}")
+
+    def rename_flow(case, typed, finish):
+        async def flow():
+            ident, got = await double_click_name("a")
+            rename_case[case] = {"opened": got}
+            t.clear()
+            key(0x41, 0x11)  # Ctrl+A: the editor's text
+            await asyncio.sleep(0.1)
+            type_text(typed)
+            await asyncio.sleep(0.2)
+            rename_case[case]["typed"] = name_field(ident)
+            if case == "keys":
+                # The keys the Timeline binds, typed into the editor: /, the four arrows, Delete.
+                for vk in (0xBF, 0x25, 0x27, 0x26, 0x28, 0x2E):
+                    key(vk)
+                    await asyncio.sleep(0.1)
+                rename_case[case]["afterKeys"] = name_field(ident)
+            key(finish)
+            await asyncio.sleep(0.6)
+            rename_case[case]["after"] = name_field(ident)
+            t.run.save(f"timeline-rename-{case}.json", rename_case[case])
+            return f"a real double click on the row's name, the name typed, {'Enter' if finish == 0x0D else 'Escape'}"
+        return flow
+
+    def name_of_a(s):
+        return (el(s, "a") or {}).get("name")
+
+    async def context_rename():
+        """A real secondary click on the row, a real click on Rename, the name typed in the editor it opens, Enter."""
+        r = t.rect(f"timeline.row.{ctx['a']}.label")
+        h = front()
+        origin = wintypes.POINT(0, 0)
+        u32.ClientToScreen(h, ctypes.byref(origin))
+        right_click_screen(origin.x + r["x"] * r["dpr"], origin.y + r["y"] * r["dpr"])
+        item = "timeline.rowMenu.timeline.row.rename"
+        end = time.monotonic() + 10.0
+        while time.monotonic() < end and t.cdp.js(
+                "document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')?.getAttribute('aria-disabled') ?? null"
+                % json.dumps(item)) != "false":
+            await asyncio.sleep(0.1)
+        t.click(item)
+        ident = f"timeline.row.{ctx['a']}.name"
+        end = time.monotonic() + 5.0
+        got = None
+        while time.monotonic() < end:
+            got = name_field(ident)
+            if got and got["focused"]:
+                break
+            await asyncio.sleep(0.1)
+        if not (got and got["focused"]):
+            raise RuntimeError(f"the row context's Rename did not open the editor: {ident}")
+        rename_case["context"] = {"opened": got, "dialog": bool(t.cdp.js(
+            "!!document.querySelector('[data-tt-id=\"timelineRename\"]')"))}
+        t.clear()
+        key(0x41, 0x11)
+        type_text("TlContext")
+        key(0x0D)
+        await asyncio.sleep(0.6)
+        rename_case["context"]["after"] = name_field(ident)
+        t.run.save("timeline-rename-context.json", rename_case["context"])
+        return "a real secondary click on the row, a real click on Rename, the name typed, Enter"
+
+    rows.append({"name": "Timeline row menu › Rename (in place)", "spec": f"{spec_line('element.rename')}; 04 §4.1",
+                 "action": ("none",), "custom": context_rename,
+                 "expect": lambda b: ("element.rename", {"elementId": ctx["a"], "name": "TlContext"}),
+                 # 04 §4.1: the undo label names the element type.
+                 "label": "Rename Drawing Element", "setup": setup("a", "a"), "state": state,
+                 "effect": lambda b, a, k: (rename_case["context"]["opened"]["value"] == "TlA"
+                                            and not rename_case["context"]["dialog"] and name_of_a(a) == "TlContext"),
+                 "disabled": None, "osOnly": True,
+                 "mcpReason": "the name is typed by the person into the editor the item opens"})
+    rows.append({"name": "Timeline › row rename (double click, Enter)", "spec": f"{spec_line('element.rename')}; 04 §4.1",
+                 "action": ("none",), "custom": rename_flow("enter", "TlRenamed", 0x0D),
+                 "expect": lambda b: ("element.rename", {"elementId": ctx["a"], "name": "TlRenamed"}),
+                 # 04 §4.1: the undo label names the element type.
+                 "label": "Rename Drawing Element", "setup": setup("a", "a"), "state": state,
+                 "effect": lambda b, a, k: (rename_case["enter"]["opened"]["value"] == "TlA"
+                                            and name_of_a(a) == "TlRenamed" and not a["playing"]
+                                            and rename_case["enter"]["after"] is None),
+                 "disabled": None, "osOnly": True,
+                 "mcpReason": "the editor opens on a real double click on the row's name; the typed name is the person's"})
+    rows.append({"name": "Timeline › row rename (Escape)", "spec": "04 §4.1",
+                 "action": ("none",), "custom": rename_flow("escape", "TlNot", 0x1B),
+                 "expect": None, "label": None, "setup": setup("a", "a"), "state": state,
+                 "effect": lambda b, a, k: (a == b and rename_case["escape"]["typed"]["value"] == "TlNot"
+                                            and rename_case["escape"]["after"] is None),
+                 "disabled": None, "osOnly": True,
+                 "mcpReason": "the editor opens on a real double click on the row's name; Escape is the person's"})
+    rows.append({"name": "Timeline › row rename (keys stay in the editor)", "spec": "04 §4.1; 01 §8.4; D-66 item 2",
+                 "action": ("none",), "custom": rename_flow("keys", "TlKeys", 0x1B),
+                 "expect": None, "label": None, "setup": setup("a", "a"), "state": state,
+                 # Nothing sent: the same state after / (Show Timeline Selection), the arrows (the current cell) and
+                 # Delete (edit.delete); the slash typed into the field and Delete acting in it.
+                 "effect": lambda b, a, k: (a == b and (rename_case["keys"]["afterKeys"] or {}).get("focused") is True
+                                            and "/" in (rename_case["keys"]["afterKeys"] or {}).get("value", "")
+                                            and rename_case["keys"]["after"] is None),
+                 "disabled": None, "osOnly": True,
+                 "mcpReason": "real keys typed into the open editor: an agent's `key` tool is refused while a text field has "
+                              "the focus"})
+
     dom_row("toolbar Add", "timeline.add", "element.create", {"type": "drawing"}, "a", "a",
             lambda b, a, k: len(new_of(b, a, "drawing")) == 1)
     dom_row("toolbar Parent Peg", "timeline.addParentPeg", "element.parentPeg.create",

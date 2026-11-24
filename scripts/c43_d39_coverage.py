@@ -116,7 +116,6 @@ def d44_both(name: str) -> list[str]:
 
 
 TL_DIALOG_ITEMS = {
-    "timeline.rowMenu.timeline.row.rename": d44_both("Rename Element (Timeline row)"),
     "timeline.rowMenu.timeline.row.note": d44_both("Element Note (Timeline row)"),
     "timeline.rowMenu.timeline.row.markerColour": d44_both("Marker Colour (Timeline row)"),
     "timeline.rowMenu.timeline.row.backgroundColour": d44_both("Background Colour (Timeline row)"),
@@ -134,8 +133,10 @@ TL_SUBMITS = {
     "timelineStart.submit": ["Change Start Frame › OK"],
     "timelineDuration.submit": ["Change Duration › OK"],
     "timelineLoops.submit": ["Change Loops › OK"],
-    "timelineRename.submit": ["Rename Element › OK", "Rename Element (Timeline row) › OK"],
-    "timelineNote.submit": ["Element Note › OK", "Element Note (Timeline row) › OK"],
+    # timelineRename.submit: the main menu's Rename dialog alone now (the Timeline renames in place, E-50 item 1); the
+    # collector does not render it, and its D-44 rows cover it.
+    "timelineNote.submit": ["Element Note › OK", "Element Note (Timeline row) › OK", "Update Element Note › OK",
+                            "Update Element Note (Timeline row) › OK"],
     "timelineMarkerColour.submit": ["Marker Colour (Timeline row) › OK"],
     "timelineBackgroundColour.submit": ["Background Colour (Timeline row) › OK"],
     "timelineExtendChildren.submit": ["Extend Children Exposure › OK"],
@@ -290,6 +291,8 @@ COVERAGE: dict[str, dict] = {
     **{f"timeline.cellMenu.timeline.cell.{i}": {"rows": [f"Timeline cell menu › {label}"]} for i, label in TL_CELL_MENU.items()},
     **{f"timeline.rulerMenu.timeline.ruler.{i}": {"rows": [f"Timeline ruler menu › {label}"]}
        for i, label in TL_RULER_MENU.items()},
+    # Ruling E-50 item 1: the row context's Rename opens the in-place editor a double click opens (04 §4.1).
+    "timeline.rowMenu.timeline.row.rename": {"rows": ["Timeline row menu › Rename (in place)"]},
     "timeline.rowMenu.timeline.row.pegReset": {"reason": "anim.reset.apply arrives with M6 C6.1 (registered, not "
                                                          "implemented): the item is disabled with that reason"},
     # Ruling E-47: the items 04 lines 704-706 require whose command a later checkpoint implements (registered, not

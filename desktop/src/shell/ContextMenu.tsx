@@ -38,6 +38,7 @@ import {
   type MenuPlacement,
 } from './contextMenuModel';
 import { enabledIn, useAvailability } from './useAvailability';
+import { ENGINE_DOWN_REASON, useEngineNotResponding } from './engineStatus';
 import deferredTable from '../ui-bindings/deferred.json';
 
 /** The GUI bindings a later checkpoint owns (D-31): an item whose command is still deferred is shown disabled with its
@@ -86,6 +87,9 @@ export function ContextMenu({
   // An owner-only item (no command yet) is never asked of the kernel.
   const refs = useMemo(() => groups.flatMap((g) => g.items.filter((i) => !i.owner).map(refOf)), [groups]);
   const availability = useAvailability(refs);
+  // While the engine is not responding every item is disabled and says so (ruling E-50 item 3): its availability cannot
+  // be read, and a command would be refused.
+  const engineDown = useEngineNotResponding();
   const root = useRef<HTMLDivElement | null>(null);
   const opener = useRef<Element | null>(null);
   const close = useRef(onClose);
@@ -309,8 +313,9 @@ export function ContextMenu({
             )}
             {g.items.map((item) => {
               const facts = item.owner ? undefined : availability(refOf(item));
+              const reason = engineDown ? ENGINE_DOWN_REASON : facts?.reason;
               const owner = item.owner ?? DEFERRED[item.command]?.owner;
-              const enabled = !owner && enabledIn(facts);
+              const enabled = !owner && !engineDown && enabledIn(facts);
               // The parameters as the kernel completes them now (a toggle's next state; O-10).
               const params =
                 facts && facts.params !== null && typeof facts.params === 'object'
@@ -328,8 +333,8 @@ export function ContextMenu({
                   title={
                     owner
                       ? `${text} — arrives with ${owner}`
-                      : !enabled && facts?.reason
-                        ? `${text} — ${facts.reason}`
+                      : !enabled && reason
+                        ? `${text} — ${reason}`
                         : undefined
                   }
                   tabIndex={-1}
@@ -359,7 +364,7 @@ export function ContextMenu({
                   {owner ? (
                     <span className="context-menu-reason">{`arrives with ${owner}`}</span>
                   ) : (
-                    !enabled && facts?.reason && <span className="context-menu-reason">{facts.reason}</span>
+                    !enabled && reason && <span className="context-menu-reason">{reason}</span>
                   )}
                 </button>
               );

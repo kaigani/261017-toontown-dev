@@ -733,6 +733,13 @@ export function TimelinePanel() {
     setReveal(null);
   }, [reveal, shown]);
   const runDialog = (item: DialogItem) => {
+    // Rename is one thing in the Timeline (04 §4.1; ruling E-50 item 1): the context item opens the editor a double click
+    // opens, in the row, prefilled with the name (the main menu's Rename keeps its dialog).
+    if (item.dialog === 'rename') {
+      const row = shown.find((r) => r.elementId === item.elementId);
+      if (row) setRenaming({ elementId: row.elementId, name: row.name });
+      return;
+    }
     void openTimelineDialog(dialogs, item, {
       rows: shown,
       selected: selectedRows,
@@ -888,6 +895,17 @@ export function TimelinePanel() {
             data-tt-role="list"
             data-tt-id="timeline.layers"
             tabIndex={0}
+            // Rename in place (04 §4.1; ruling E-50 item 1): a double click on a row. The list's pointer handler captures
+            // the pointer at each press, so the browser sends the click and the double click to the list, not to the row
+            // under the pointer (found by real input only): the row is the one under the pointer.
+            onDoubleClick={(e) => {
+              const t = e.target;
+              if (t instanceof HTMLElement && t.closest('button, input')) return;
+              const box = e.currentTarget.getBoundingClientRect();
+              const row =
+                shown[Math.floor((e.clientY - box.top + e.currentTarget.scrollTop) / LAYOUT.rowHeight)];
+              if (row) setRenaming({ elementId: row.elementId, name: row.name });
+            }}
             // The keyboard on the list itself (the context-menu key, Shift+F10, an agent's `key`; ruling E-48): the row
             // context of the current element's row. A row's own secondary click opens its menu in the row.
             onContextMenu={(e) => {
@@ -922,9 +940,6 @@ export function TimelinePanel() {
                   renaming={renaming?.elementId === r.elementId ? renaming.name : null}
                   onRenameChange={(name) => {
                     setRenaming({ elementId: r.elementId, name });
-                  }}
-                  onRenameStart={() => {
-                    setRenaming({ elementId: r.elementId, name: r.name });
                   }}
                   onRenameEnd={(commit) => {
                     const name = renaming?.name ?? r.name;
@@ -1079,7 +1094,6 @@ function LayerRow(props: {
   parent: boolean;
   renaming: string | null;
   onRenameChange: (name: string) => void;
-  onRenameStart: () => void;
   onRenameEnd: (commit: boolean) => void;
   onContextMenu: (e: React.MouseEvent<HTMLElement>) => void;
   onToggleCollapsed: () => void;
@@ -1087,6 +1101,16 @@ function LayerRow(props: {
 }) {
   const { row: r } = props;
   const parent = props.parent || r.collapsed;
+  // The editor takes the focus once mounted, with the name selected (04 §4.1: prefilled), in an effect rather than with
+  // `autoFocus`: a context menu that opened it gives the focus back to its opener as it closes, which would blur an
+  // editor focused earlier and commit it at once.
+  const editor = useRef<HTMLInputElement | null>(null);
+  const editing = props.renaming !== null;
+  useEffect(() => {
+    if (!editing) return;
+    editor.current?.focus({ preventScroll: true });
+    editor.current?.select();
+  }, [editing]);
   const stop = (e: React.PointerEvent) => {
     e.stopPropagation();
   };
@@ -1110,7 +1134,6 @@ function LayerRow(props: {
         borderLeft: `4px solid ${cssColour(props.display?.markerColour)}`,
       }}
       onContextMenu={props.onContextMenu}
-      onDoubleClick={props.onRenameStart}
     >
       <button
         type="button"
@@ -1147,8 +1170,8 @@ function LayerRow(props: {
       </button>
       {props.renaming !== null ? (
         <input
+          ref={editor}
           className="timeline-rename"
-          autoFocus
           style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
           value={props.renaming}
           aria-label="Element name"

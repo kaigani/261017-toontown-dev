@@ -8,6 +8,7 @@ import { maybeRunIpcBench } from './diagnostics/ipcBench';
 import { maybeRunTimingCheck } from './diagnostics/timingCheck';
 import { DockArea } from './dock/DockArea';
 import { useHost, type Envelope, type SpikeMode } from './ipc';
+import { useEngineStatusMirror } from './shell/engineStatus';
 import { isMac } from './keys/sequence';
 import { LoadReportWindow } from './shell/LoadReportWindow';
 import { ConfirmationSheet } from './shell/ConfirmationSheet';
@@ -134,6 +135,7 @@ function ShellWithActions({ floatPanel }: { floatPanel?: string | undefined }) {
  * into `window.panel.set`; nothing here owns state.
  */
 function FloatWindow({ panelId }: { panelId: string }) {
+  const host = useHost();
   const services = useShell();
   const actions = useActions();
   const state = useStoreState();
@@ -148,6 +150,7 @@ function FloatWindow({ panelId }: { panelId: string }) {
   );
   const title = panelInfo(panelId)?.title ?? panelId;
   useEngineMirror(services, false);
+  useEngineStatusMirror(host);
   useShortcuts(services, actions, keymap, isMac());
   useTextFocusReport(services);
   usePageReady(services);
@@ -208,6 +211,7 @@ function Window() {
   const mac = isMac();
 
   useEngineMirror(services, true);
+  useEngineStatusMirror(host);
 
   // Start-up (01 §1.1 rules 7-8): documents requested before the window existed take precedence over the start-up
   // behaviour preference. Runs once per application (React may mount twice in development).

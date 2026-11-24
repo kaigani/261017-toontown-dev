@@ -1520,10 +1520,9 @@ def timeline_rows(t: Flows) -> list:
         if bob:
             await cmd("element.rename", {"elementId": bob, "name": "Bob"})
 
+    # The Timeline row context's Rename opens the in-place editor (ruling E-50 item 1): its D-39 row.
     for label, path, open_ in (
         ("Rename Element", ["Element", "Rename"], menu(["Element", "Rename"])),
-        ("Rename Element (Timeline row)", ["Timeline", "row", "Rename"],
-         context(centre_of(lambda ctx: f"timeline.row.{ctx['bob']}"), "timeline.rowMenu", "timeline.row.rename")),
     ):
         row(label, f"04 §9.6; {spec_line('element.rename')}", path, open_, "timelineRename",
             typed("timelineRename.value", "FlowBob"),

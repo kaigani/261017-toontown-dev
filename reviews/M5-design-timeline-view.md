@@ -106,7 +106,8 @@ elsewhere are present and disabled with their owner on the control (E-2, E-9):
   Colour…, Default Colour; Show Effect Parameters (on a clipping effect), Show All / Hide All Effect Parameters
   (`timeline.effectParameterRows.set`, E-9); Set as Annotation / Set as Drawing Element; Show / Hide All Annotation
   Elements (`element.visibility.set {types: ["annotation"]}`); Lock, Unlock, Lock All Others, Lock All, Unlock All;
-  Change Start Frame…, Change Duration…, Change Loops…; Clone, Duplicate, Delete, Rename…; Element Note…; Peg Reset,
+  Change Start Frame…, Change Duration…, Change Loops…; Clone, Duplicate, Delete, Rename… (the in-place editor, §6a);
+  Element Note… (Update Element Note… when the element has one); Peg Reset,
   Add Default Keyframe (disabled, owner M6 C6.2); Remove All Keyframes (`anim.key.remove {all: true}`), Toggle Constant
   Z (`anim.path.lockDepth.set`); Edit Sound, Sound Waveforms (disabled, owner M8 C8.1).
 - **Cells:** Cut, Copy, Paste, Delete; Extend Children Exposure… (peg rows); Add / Remove Keyframe (`anim.key.add`,
@@ -133,6 +134,21 @@ cannot serve from that context as built is disabled with owner M6 C6.2 and liste
   `xsheet.currentCell.set`. The in-place rename editor is a text field under the one key rule (D-69, D-73). The Play
   menu's Stop takes Shift+Enter, so the D-44 flow script's conflict holder (`scripts/c43-d44-flows.py` line 655, which
   needs a global key on no menu item) moves to another unmenued key.
+
+## 6a. Rename (04 §4.1; ruling E-50 item 1, C5.1b round 1)
+
+Rename is one thing in the Timeline: **the in-place editor in the row**. A double click on a row's name and the row
+context's Rename… open the same editor, prefilled with the name and the name selected; Enter commits
+(`element.rename`, one undo step labelled with the element type, "Rename Drawing Element"), Escape and an unchanged
+name send nothing, focus loss commits. While it is open the keys the Timeline binds (/, the arrows, Delete, the Play key
+Enter) act in the field (the one key rule). The main menu's Element › Rename… (outside the Timeline) keeps its dialog.
+
+The double click is handled by the layer list, not the row: the list captures the pointer at each press (the timing
+gesture), and the browser then sends the click and the double click to the capturing list; the row is the one under the
+pointer. The editor takes the focus in an effect, not with `autoFocus`: the context menu gives the focus back to its
+opener as it closes, which blurred an editor focused earlier and committed it at once. Found by real input only (the
+round 1 live review); D-39 rows "Timeline › row rename (double click, Enter)", "(Escape)", "(keys stay in the editor)"
+and "Timeline row menu › Rename (in place)".
 
 ## 7. Dialogs (shared modal manager; D-44, D-49)
 

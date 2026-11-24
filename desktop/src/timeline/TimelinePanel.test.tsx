@@ -551,3 +551,87 @@ describe('the fonts-ready notice', () => {
     });
   });
 });
+
+// Ruling E-50 item 1 (04 §4.1): rename is one thing in the Timeline. A double click on a row (which the list receives:
+// it captures the pointer at each press) and the row context's Rename open the same editor, in the row, with the name
+// selected; Enter sends element.rename, Escape sends nothing.
+describe('rename in place', () => {
+  it('opens from a double click on the list at the row', async () => {
+    const h = await timeline({});
+    act(() => {
+      fireEvent.doubleClick(el('timeline.layers'), { clientX: 60, clientY: 5 });
+    });
+    const field = (await waitFor(() => el('timeline.row.el_bob.name'))) as HTMLInputElement;
+    await waitFor(() => {
+      expect(document.activeElement).toBe(field);
+    });
+    expect(field.value).toBe('Bob');
+    expect([field.selectionStart, field.selectionEnd]).toEqual([0, 3]);
+    act(() => {
+      fireEvent.change(field, { target: { value: 'Robert' } });
+      fireEvent.keyDown(field, { key: 'Enter' });
+    });
+    await waitFor(() => {
+      expect(h.actions().find((a) => a.command === 'element.rename')?.params).toEqual({
+        elementId: 'el_bob',
+        name: 'Robert',
+      });
+    });
+  });
+
+  it('opens from the row context as the same editor, not a dialog', async () => {
+    const h = await timeline({});
+    act(() => {
+      fireEvent.contextMenu(el('timeline.row.el_bob'), { clientX: 30, clientY: 30 });
+    });
+    const item = await waitFor(() => el('timeline.rowMenu.timeline.row.rename'));
+    act(() => {
+      item.click();
+    });
+    const field = (await waitFor(() => el('timeline.row.el_bob.name'))) as HTMLInputElement;
+    await waitFor(() => {
+      expect(document.activeElement).toBe(field);
+    });
+    expect(field.value).toBe('Bob');
+    expect(document.querySelector('[data-tt-id="timelineRename"]')).toBeNull();
+    act(() => {
+      fireEvent.keyDown(field, { key: 'Escape' });
+    });
+    await waitFor(() => {
+      expect(document.querySelector('[data-tt-id="timeline.row.el_bob.name"]')).toBeNull();
+    });
+    expect(h.actions().some((a) => a.command === 'element.rename')).toBe(false);
+  });
+});
+
+// Ruling E-50 item 3: while the engine is not responding, a context menu opened in the Timeline shows each item disabled
+// with that reason (a click sends nothing), and the items come back when the engine answers again.
+describe('a context menu while the engine is not responding', () => {
+  it('shows every item disabled with the reason', async () => {
+    const h = await timeline({});
+    act(() => {
+      h.emit('engine-status', { notResponding: true, generation: 0 });
+    });
+    // A floating Timeline has no banner of its own; its menus follow the watchdog all the same.
+    await new Promise((r) => setTimeout(r, 100));
+    act(() => {
+      fireEvent.contextMenu(el('timeline.row.el_bob'), { clientX: 30, clientY: 30 });
+    });
+    const item = await waitFor(() => el('timeline.rowMenu.timeline.row.lock'));
+    await waitFor(() => {
+      expect(item.getAttribute('aria-disabled')).toBe('true');
+    });
+    expect(item.textContent).toContain('the engine is not responding');
+    const sent = h.actions().length;
+    act(() => {
+      item.click();
+    });
+    expect(h.actions().length).toBe(sent);
+    act(() => {
+      h.emit('engine-status', { notResponding: false, generation: 1 });
+    });
+    await waitFor(() => {
+      expect(el('timeline.rowMenu.timeline.row.lock').getAttribute('aria-disabled')).toBe('false');
+    });
+  });
+});

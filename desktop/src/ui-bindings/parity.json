@@ -12,7 +12,6 @@
     "timelineContextMenu:row",
     "dialog:Marker Colour",
     "dialog:Background Colour",
-    "dialog:Rename Element",
     "dialog:Update Element Note",
     "dialog:Change Start Frame",
     "dialog:Change Duration",
@@ -262,13 +261,6 @@
       "surface": "dialog:Project Properties",
       "commands": [
         "project.properties.set"
-      ]
-    },
-    {
-      "id": "timelineRename.submit",
-      "surface": "dialog:Rename Element",
-      "commands": [
-        "element.rename"
       ]
     },
     {
@@ -6109,16 +6101,6 @@
     {
       "id": "projectProperties.width",
       "surface": "dialog:Project Properties",
-      "reason": "typing"
-    },
-    {
-      "id": "timelineRename.cancel",
-      "surface": "dialog:Rename Element",
-      "reason": "dismiss"
-    },
-    {
-      "id": "timelineRename.value",
-      "surface": "dialog:Rename Element",
       "reason": "typing"
     },
     {

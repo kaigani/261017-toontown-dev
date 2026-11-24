@@ -17,6 +17,11 @@ debugging port, the kernel through the attached MCP interface, as `c43-d39-bindi
 5. Recover: the start screen offers the autosave and a real click on its Recover opens it: the element made before the
    autosave is there, the change the engine died on is not.
 
+Ruling E-50 item 3 (steps 3c, 3d, 6): with the banner up, a real drag of a peg's bar in the Timeline and a real click on
+a Timeline context-menu item change nothing, each shows a refusal on the status line, and neither hangs the window (the
+page answers at once afterwards); after Restart and Recover the Timeline shows the recovered rows and a real drag of the
+bar commits.
+
 Output: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c51b.engine-restart`). Exit 0 when every step
 holds. Also a step of the manual script (reviews/manual/M5/).
 """
@@ -63,6 +68,20 @@ async def until(pred, bound: float, step: float = 0.1):
             return round(time.monotonic() - start, 2)
         await asyncio.sleep(step)
     return None
+
+
+def client_of(cdp, ident: str, x: float, y_of: str | None = None) -> tuple[float, float] | None:
+    """A point in the window's client area (device pixels): `x` CSS pixels in from the left of `ident`, at the vertical
+    centre of `y_of` (default `ident`)."""
+    return cdp.js(
+        "(() => { const box = id => document.querySelector('[data-tt-id=' + JSON.stringify(id) + ']')"
+        "?.getBoundingClientRect(); const a = box(%s), b = box(%s); if (!a || !b) return null; const d = devicePixelRatio;"
+        " return [(a.x + %s) * d, (b.y + b.height / 2) * d]; })()"
+        % (json.dumps(ident), json.dumps(y_of or ident), json.dumps(x)))
+
+
+def status_line(cdp) -> str:
+    return cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent ?? ''") or ""
 
 
 async def check(app: str, run, out: Path, work: Path) -> list:
@@ -118,6 +137,12 @@ async def check(app: str, run, out: Path, work: Path) -> list:
                 await t.cmd("project.create", {"name": "Restart", "onUnsaved": "fail"})
                 await t.cmd("project.saveAs", {"path": str(work / "Restart.animpkg"), "onExists": "overwrite"})
                 await t.cmd("element.create", {"type": "drawing", "name": "Before"})
+                # E-50 item 3: a peg with a bar, in a shown Timeline (made before the autosave: Recover brings it back).
+                peg = (await t.cmd("element.create", {"type": "peg", "name": "BarPeg"}))["elementIds"][0]
+                await t.cmd("element.timing.set", {"elementIds": [peg], "start": 1, "duration": 24})
+                await t.cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+                await t.cmd("timeline.view.set", {"zoomLevel": 6, "firstFrame": 1})
+                cell = d39.TL_LAYOUT["zoomLevels"][6]["cellWidth"]
                 saved = await until(lambda: any((user / "Recovery").rglob("*.json")) if (user / "Recovery").exists() else False,
                                     150.0, 1.0)
                 row("1. an autosave of the modified project", saved is not None, {"seconds": saved})
@@ -148,6 +173,52 @@ async def check(app: str, run, out: Path, work: Path) -> list:
                 box = t.rect("engine.restart")
                 row("3b. the banner's Restart the engine is in view and reachable by a click (nothing covers it)",
                     bool(box) and not box.get("hidden") and box.get("reachable") is True, {"rect": box})
+
+                # 3c (E-50 item 3). A real drag of the peg's bar while the engine is stopped: nothing changes, the status
+                # line shows a refusal, and the page still answers.
+                before_line = status_line(cdp)
+                pts = [client_of(cdp, "timeline.tracks", (f - 0.5) * cell, f"timeline.row.{peg}") for f in (10, 11, 14)]
+                times: dict = {}
+                if all(pts):
+                    d39.front()
+                    d39.e6.os_drag(proc.pid, pts, 0.3, 0.05, times)
+                refused = await until(lambda: status_line(cdp) not in ("", before_line), 10.0)
+                t0 = time.monotonic()
+                answered = cdp.js("1 + 1") == 2
+                row("3c. a real bar drag in the Timeline while the engine is stopped: nothing changes, a refusal shows, "
+                    "the window answers", all(pts) and refused is not None and answered and time.monotonic() - t0 < 2.0
+                    and present(cdp, "engineNotResponding"),
+                    {"points": pts, "drag": times, "statusLine": status_line(cdp), "refusalAfter": refused,
+                     "pageAnswers": answered})
+
+                # 3d (E-50 item 3). A real click on a Timeline context-menu item (the row's Lock) while the engine is
+                # stopped: nothing changes, a refusal shows (on the item or the status line), the window answers.
+                before_line = status_line(cdp)
+                at = client_of(cdp, f"timeline.row.{peg}", 60)
+                item = "timeline.rowMenu.timeline.row.lock"
+                if at:
+                    h = d39.front()
+                    origin = d39.wintypes.POINT(0, 0)
+                    d39.u32.ClientToScreen(h, d39.ctypes.byref(origin))
+                    d39.right_click_screen(origin.x + at[0], origin.y + at[1])
+                opened = await until(lambda: present(cdp, item), 5.0)
+                facts = cdp.js("(() => { const e = document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']');"
+                               " return e ? {disabled: e.getAttribute('aria-disabled'), title: e.title,"
+                               " reason: e.querySelector('.context-menu-reason')?.textContent ?? null} : null; })()"
+                               % json.dumps(item))
+                if opened is not None:
+                    t.click(item)
+                refused = await until(lambda: status_line(cdp) not in ("", before_line), 5.0)
+                answered = cdp.js("1 + 1") == 2
+                shown_reason = bool(facts and facts.get("disabled") == "true" and (facts.get("reason") or facts.get("title")))
+                row("3d. a real click on a Timeline context-menu item while the engine is stopped: nothing changes, a "
+                    "refusal shows, the window answers",
+                    opened is not None and (refused is not None or shown_reason) and answered
+                    and present(cdp, "engineNotResponding"),
+                    {"opened": opened, "item": facts, "statusLine": status_line(cdp), "refusalAfter": refused,
+                     "pageAnswers": answered})
+                d39.key(0x1B)
+                await asyncio.sleep(0.3)
 
                 # 4. The restart question: Cancel, then Restart.
                 async def ask():
@@ -207,6 +278,35 @@ async def check(app: str, run, out: Path, work: Path) -> list:
             row("5. Recover: the start screen offers the autosave; it opens with the work before it, not the change the "
                 "engine died on", entry is not None and "Before" in names and "Dies" not in names,
                 {"entry": entry, "elements": names})
+
+            # 6 (E-50 item 3). The Timeline shows the recovered rows, and a real drag of the peg's bar commits.
+            listed = (await e2e.run_cmd(s, "element.list", {})).get("result") or {}
+            ids = {e.get("name"): e.get("id") for e in listed.get("elements") or []}
+            peg2 = ids.get("BarPeg")
+            await e2e.run_cmd(s, "window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+            await e2e.run_cmd(s, "timeline.view.set", {"zoomLevel": 6, "firstFrame": 1})
+            rows_shown = await until(lambda: bool(peg2) and present(cdp, f"timeline.row.{peg2}")
+                                     and present(cdp, f"timeline.row.{ids.get('Before')}"), 15.0)
+            await asyncio.sleep(0.5)
+
+            async def start_of():
+                got = (await e2e.run_cmd(s, "element.get", {"elementId": peg2})).get("result") or {}
+                return got.get("start")
+            start_before = await start_of() if peg2 else None
+            pts = [client_of(cdp, "timeline.tracks", (f - 0.5) * cell, f"timeline.row.{peg2}") for f in (10, 11, 14)]
+            times = {}
+            if rows_shown is not None and all(pts):
+                d39.front()
+                d39.e6.os_drag(proc.pid, pts, 0.3, 0.05, times)
+            moved = None
+            for _ in range(50):
+                moved = await start_of() if peg2 else None
+                if moved is not None and moved != start_before:
+                    break
+                await asyncio.sleep(0.2)
+            row("6. after Restart and Recover the Timeline shows the recovered rows and a real bar drag commits",
+                rows_shown is not None and start_before == 1 and moved == 5,
+                {"rowsShownAfter": rows_shown, "startBefore": start_before, "startAfter": moved, "drag": times})
     finally:
         e2e.stop(proc)
     return rows

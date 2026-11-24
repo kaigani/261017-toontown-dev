@@ -69,7 +69,7 @@ NO_COMMAND = "no command: dismissing it sends nothing"
 COVERAGE: dict[str, dict] = {
     # M5 C5.1b: the Timeline's dialogs (scripts/c43-d44-flows.py `timeline_rows`).
     "dialog:New Elements": {"rows": ["New Elements › OK", "New Elements › Cancel"]},
-    "dialog:Rename Element": {"rows": ["Rename Element › OK", "Rename Element › Cancel", "Rename Element (Timeline row) › OK", "Rename Element (Timeline row) › Cancel"]},
+    "dialog:Rename Element": {"rows": ["Rename Element › OK", "Rename Element › Cancel"]},
     "dialog:Element Note": {"rows": ["Element Note › OK", "Element Note › Cancel", "Element Note (Timeline row) › OK", "Element Note (Timeline row) › Cancel"]},
     "dialog:Update Element Note": {"rows": ["Update Element Note › OK", "Update Element Note › Cancel", "Update Element Note (Timeline row) › OK", "Update Element Note (Timeline row) › Cancel"]},
     "dialog:Element Colours": {"rows": ["Element Colours › OK", "Element Colours › Cancel"]},
