@@ -1,0 +1,13 @@
+{
+  "stopError": {
+    "code": "internal",
+    "message": "the document thread has stopped",
+    "details": {
+      "reason": "engineStopped"
+    },
+    "hint": "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave."
+  },
+  "dragStatus": "<span class=\"status-message status-warning\" data-tt-role=\"text\" data-tt-id=\"status.line\">internal: the document thread has stopped</span>",
+  "itemStatus": "<span class=\"status-message status-warning\" data-tt-role=\"text\" data-tt-id=\"status.line\">internal: the document thread has stopped</span>",
+  "banner": true
+}

@@ -281,11 +281,21 @@ async def body(t,step):
    await c('project.create',{'name':'New','onUnsaved':'fail'});await c('element.create',{'type':'drawing','name':'Only'})
    await wait(lambda:[r['name'] for r in shown()]==['Only']);assert (await c('app.state.get'))['frame']==1
    await c('project.open',{'path':path,'onUnsaved':'discard'});await wait(lambda:[r['name'] for r in shown()]==original)
-  else:raise RuntimeError('Step 14 requires the test-hooks build and separate restart session')
+  elif step==14:
+   trigger=Path(os.environ['TT_TEST_DEGRADE_TRIGGER']);trigger.write_text('stop',encoding='utf-8')
+   result=await asyncio.wait_for(d.e2e.run_cmd(t.s,'element.create',{'type':'drawing','name':'Dies'}),30)
+   await wait(lambda:dom('engineNotResponding'))
+   a=barpoint('Peg-A');await drag(a,(a[0]+round(48*js('devicePixelRatio')),a[1]))
+   status=lambda:dom('status.line')
+   dragStatus=await wait(status)
+   await menu('Bob','timeline.row.lock');itemStatus=await wait(status)
+   save('step14-own.json',{'stopError':result.get('error'),'dragStatus':dragStatus,'itemStatus':itemStatus,'banner':bool(dom('engineNotResponding'))})
+   raise RuntimeError('Stopped-engine attempts exercised; own Restart/Recover and post-recovery drag not exercised')
  t.run.check(True,'Step '+str(step)+' exercised',None)
 def live(step):
  global P
  P=load('prior','tests/adversarial/c44a-r1-live.py');P.EVID=EVID
+ if step==14:P.APP=str(ROOT/'target/debug/toontown.exe')
  P.live_body=body
  return P.live(step)
 if __name__=='__main__':

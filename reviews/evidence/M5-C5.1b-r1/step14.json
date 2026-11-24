@@ -1,0 +1,7 @@
+{
+  "checks": 1,
+  "failures": [
+    "probe completed: \"ExceptionGroup('unhandled errors in a TaskGroup', [ExceptionGroup('unhandled errors in a TaskGroup', [RuntimeError('Stopped-engine attempts exercised; own Restart/Recover and post-recovery drag not exercised')])])\""
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44a-r1-63irseno"
+}
