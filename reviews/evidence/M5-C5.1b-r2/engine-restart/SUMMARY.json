@@ -1,0 +1,189 @@
+{
+ "receipt": "reviews/evidence/M5-C5.1b-r2/engine-restart",
+ "verdict": "pass",
+ "regenerate": "python scripts/c51b-engine-restart.py <test-hooks build> <out>",
+ "manifest": {
+  "kind": "toontown.c51b.engine-restart",
+  "seconds": 84.1,
+  "rows": 10,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "E-29 item 3 1. an autosave of the modified project"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 2. the engine stops: internal, reason engineStopped, the hint names project.recovery.list"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 3. the window marks the engine not responding at once (within 7.0 s)"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 3b. the banner's Restart the engine is in view and reachable by a click (nothing covers it)"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 3c. a real bar drag in the Timeline while the engine is stopped: nothing changes, a refusal shows, the window answers"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 3d. a real click on a Timeline context-menu item while the engine is stopped: nothing changes, a refusal shows, the window answers"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 4a. the restart question, Cancel: the engine stays stopped and the banner stays"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 4b. the restart question, Restart: the banner goes and the new engine answers"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 5. Recover: the start screen offers the autosave; it opens with the work before it, not the change the engine died on"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 6. after Restart and Recover the Timeline shows the recovered rows and a real bar drag commits"
+  }
+ ],
+ "rows": [
+  {
+   "name": "1. an autosave of the modified project",
+   "ok": true,
+   "detail": {
+    "seconds": 60.68
+   }
+  },
+  {
+   "name": "2. the engine stops: internal, reason engineStopped, the hint names project.recovery.list",
+   "ok": true
+  },
+  {
+   "name": "3. the window marks the engine not responding at once (within 7.0 s)",
+   "ok": true,
+   "detail": {
+    "secondsAfterTheStop": 3.72
+   }
+  },
+  {
+   "name": "3b. the banner's Restart the engine is in view and reachable by a click (nothing covers it)",
+   "ok": true,
+   "detail": {
+    "rect": {
+     "x": 912.0703125,
+     "y": 87.5,
+     "dpr": 1,
+     "disabled": false,
+     "reachable": true
+    }
+   }
+  },
+  {
+   "name": "3c. a real bar drag in the Timeline while the engine is stopped: nothing changes, a refusal shows, the window answers",
+   "ok": true,
+   "detail": {
+    "points": [
+     [
+      488.078125,
+      698
+     ],
+     [
+      504.078125,
+      698
+     ],
+     [
+      552.078125,
+      698
+     ]
+    ],
+    "drag": {
+     "press": 451875.5995184,
+     "release": 451875.9512674
+    },
+    "statusLine": "internal: the document thread has stopped",
+    "refusalAfter": 0.0,
+    "pageAnswers": true
+   }
+  },
+  {
+   "name": "3d. a real click on a Timeline context-menu item while the engine is stopped: nothing changes, a refusal shows, the window answers",
+   "ok": true,
+   "detail": {
+    "opened": 0.0,
+    "item": {
+     "disabled": "true",
+     "title": "Lock — the engine is not responding",
+     "reason": "the engine is not responding"
+    },
+    "statusLine": "internal: the document thread has stopped",
+    "refusalAfter": null,
+    "pageAnswers": true
+   }
+  },
+  {
+   "name": "4a. the restart question, Cancel: the engine stays stopped and the banner stays",
+   "ok": true
+  },
+  {
+   "name": "4b. the restart question, Restart: the banner goes and the new engine answers",
+   "ok": true,
+   "detail": {
+    "asked": 0.0,
+    "bannerGoneAfter": 0.0,
+    "newEndpoint": true,
+    "engine": "ok",
+    "error": null
+   }
+  },
+  {
+   "name": "5. Recover: the start screen offers the autosave; it opens with the work before it, not the change the engine died on",
+   "ok": true,
+   "detail": {
+    "entry": "start.recover.rc_549c5d987fb34ee5",
+    "elements": [
+     "BarPeg",
+     "Before",
+     "Camera",
+     "Camera Peg",
+     "Drawing"
+    ]
+   }
+  },
+  {
+   "name": "6. after Restart and Recover the Timeline shows the recovered rows and a real bar drag commits",
+   "ok": true,
+   "detail": {
+    "rowsShownAfter": 0.0,
+    "startBefore": 1,
+    "startAfter": 5,
+    "drag": {
+     "press": 451891.3514438,
+     "release": 451891.7024261
+    }
+   }
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 117,
+   "sha256": "d13676bac94567e39f5d6e25ed46c8b636d831cab4e16c02d75422cb0d58e6d4"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 4315,
+   "sha256": "242c02d7de6db08646b5d98381d05ad1bc8d25824dbda3c6b1e8ff03d9aefb04"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 4445,
+   "sha256": "e140cdf90533219e947a0a0c2eb556bed0803b29f9a0abc746272b6451456cee"
+  }
+ ]
+}

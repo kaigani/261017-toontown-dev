@@ -1,0 +1,2041 @@
+{
+  "host": {
+    "name": "Toontown",
+    "version": "0.0.1",
+    "platform": "windows",
+    "arch": "x86_64",
+    "formatVersion": "1.0",
+    "registryVersion": "0.1.0",
+    "runMode": "attached"
+  },
+  "frontend": {
+    "ok": true,
+    "platform": "windows",
+    "external": true,
+    "rows": [
+      {
+        "name": "ruler: a click sets the current frame",
+        "spec": "04 line 612; plan §6.3 row 1",
+        "surface": "ruler",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 103.921875,
+            "y": 12,
+            "modifiers": []
+          },
+          {
+            "x": 103.921875,
+            "y": 12,
+            "modifiers": []
+          },
+          {
+            "x": 103.921875,
+            "y": 12,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "ruler",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 0,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "timeline.currentFrame.set",
+              {
+                "frame": 7
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "timeline.currentFrame.set",
+              {
+                "frame": 7
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "ruler: a drag scrubs",
+        "spec": "04 line 612; plan §6.3 rows 1-2",
+        "surface": "ruler",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 39.921875,
+            "y": 12,
+            "modifiers": []
+          },
+          {
+            "x": 87.921875,
+            "y": 12,
+            "modifiers": []
+          },
+          {
+            "x": 135.921875,
+            "y": 12,
+            "modifiers": []
+          },
+          {
+            "x": 135.921875,
+            "y": 12,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "ruler",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 0,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "timeline.currentFrame.set",
+              {
+                "frame": 9
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "timeline.currentFrame.set",
+              {
+                "frame": 9
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "ruler: a free range’s start marker dragged",
+        "spec": "04 line 669; plan §6.3 row 3",
+        "surface": "ruler",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 71.921875,
+            "y": 12,
+            "modifiers": []
+          },
+          {
+            "x": 151.921875,
+            "y": 12,
+            "modifiers": []
+          },
+          {
+            "x": 151.921875,
+            "y": 12,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "ruler",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 0,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "timeline.playbackRange.set",
+              {
+                "start": 10
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "timeline.playbackRange.set",
+              {
+                "start": 10
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "layer list: a click on a row name selects it",
+        "spec": "04 §9.3; plan §6.3 row 4",
+        "surface": "layers",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "layers",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 44,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.select",
+              {
+                "elementIds": [
+                  "el_01K742SG12CTMHXEB7TY99G4XV"
+                ],
+                "mode": "replace"
+              }
+            ],
+            [
+              "element.current.set",
+              {
+                "elementId": "el_01K742SG12CTMHXEB7TY99G4XV"
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.select",
+              {
+                "elementIds": [
+                  "el_01K742SG12CTMHXEB7TY99G4XV"
+                ],
+                "mode": "replace"
+              }
+            ],
+            [
+              "element.current.set",
+              {
+                "elementId": "el_01K742SG12CTMHXEB7TY99G4XV"
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "layer list: extend + click",
+        "spec": "04 §16; plan §6.3 row 4",
+        "surface": "layers",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": [
+              "shift"
+            ]
+          },
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": [
+              "shift"
+            ]
+          },
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": [
+              "shift"
+            ]
+          }
+        ],
+        "layout": {
+          "surface": "layers",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 88,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.select",
+              {
+                "elementIds": [
+                  "el_01K742SG0ZZYY8HE4MW501XMJV",
+                  "el_01K742SG101DH4FAEWCWWK4QXC",
+                  "el_01K742SG11W3SGB8Q1H50W74VB",
+                  "el_01K742SG12CTMHXEB7TY99G4XV",
+                  "el_01K742SG16N99XRCS0QEBWMRXY",
+                  "el_01K742SG18FWWKH14N0RFB0V71"
+                ],
+                "mode": "replace"
+              }
+            ],
+            [
+              "element.current.set",
+              {
+                "elementId": "el_01K742SG18FWWKH14N0RFB0V71"
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.select",
+              {
+                "elementIds": [
+                  "el_01K742SG0ZZYY8HE4MW501XMJV",
+                  "el_01K742SG101DH4FAEWCWWK4QXC",
+                  "el_01K742SG11W3SGB8Q1H50W74VB",
+                  "el_01K742SG12CTMHXEB7TY99G4XV",
+                  "el_01K742SG16N99XRCS0QEBWMRXY",
+                  "el_01K742SG18FWWKH14N0RFB0V71"
+                ],
+                "mode": "replace"
+              }
+            ],
+            [
+              "element.current.set",
+              {
+                "elementId": "el_01K742SG18FWWKH14N0RFB0V71"
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "layer list: toggle + click",
+        "spec": "04 §16; plan §6.3 row 4",
+        "surface": "layers",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": [
+              "ctrl"
+            ]
+          },
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": [
+              "ctrl"
+            ]
+          },
+          {
+            "x": 119.921875,
+            "y": 33,
+            "modifiers": [
+              "ctrl"
+            ]
+          }
+        ],
+        "layout": {
+          "surface": "layers",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 66,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.select",
+              {
+                "elementIds": [
+                  "el_01K742SG16N99XRCS0QEBWMRXY"
+                ],
+                "mode": "toggle"
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.select",
+              {
+                "elementIds": [
+                  "el_01K742SG16N99XRCS0QEBWMRXY"
+                ],
+                "mode": "toggle"
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a click on a cell selects it",
+        "spec": "04 §11.1; plan §6.3 row 5",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 55.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 55.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 55.921875,
+            "y": 38,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.select",
+              {
+                "elementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 4,
+                "to": 4
+              }
+            ],
+            [
+              "xsheet.currentCell.set",
+              {
+                "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+                "frame": 4
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.select",
+              {
+                "elementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 4,
+                "to": 4
+              }
+            ],
+            [
+              "xsheet.currentCell.set",
+              {
+                "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+                "frame": 4
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a drag across cells selects them",
+        "spec": "04 §11.1; plan §6.3 row 5",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 39.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 71.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 103.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 103.921875,
+            "y": 38,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.select",
+              {
+                "elementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 3,
+                "to": 7
+              }
+            ],
+            [
+              "xsheet.currentCell.set",
+              {
+                "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+                "frame": 3
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.select",
+              {
+                "elementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 3,
+                "to": 7
+              }
+            ],
+            [
+              "xsheet.currentCell.set",
+              {
+                "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
+                "frame": 3
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "layer list: a row dropped between rows of its level reorders",
+        "spec": "04 line 478; plan §6.3 row 6",
+        "surface": "layers",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 119.921875,
+            "y": 55,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 43,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 2,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 2,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "layers",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.order.set",
+              {
+                "order": "timeline",
+                "elementIds": [
+                  "el_01K742SG0ZZYY8HE4MW501XMJV",
+                  "el_01K742SG12CTMHXEB7TY99G4XV",
+                  "el_01K742SG101DH4FAEWCWWK4QXC",
+                  "el_01K742SG16N99XRCS0QEBWMRXY",
+                  "el_01K742SG18FWWKH14N0RFB0V71",
+                  "el_01K742SG1997BY67AWW1M4Q0ZJ",
+                  "el_01K742SG1AC44Z1PPR4WQ603NH",
+                  "el_01K742SG1E231F7W54P5SD2AAB",
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG",
+                  "el_01K742SG1M9CJZV12YYC0CWB8B",
+                  "el_01K742SG1PHXPEHSG259WYPMBV"
+                ]
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.order.set",
+              {
+                "order": "timeline",
+                "elementIds": [
+                  "el_01K742SG0ZZYY8HE4MW501XMJV",
+                  "el_01K742SG12CTMHXEB7TY99G4XV",
+                  "el_01K742SG101DH4FAEWCWWK4QXC",
+                  "el_01K742SG16N99XRCS0QEBWMRXY",
+                  "el_01K742SG18FWWKH14N0RFB0V71",
+                  "el_01K742SG1997BY67AWW1M4Q0ZJ",
+                  "el_01K742SG1AC44Z1PPR4WQ603NH",
+                  "el_01K742SG1E231F7W54P5SD2AAB",
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG",
+                  "el_01K742SG1M9CJZV12YYC0CWB8B",
+                  "el_01K742SG1PHXPEHSG259WYPMBV"
+                ]
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "layer list: a row dropped onto a peg row is attached",
+        "spec": "04 §9.2 line 487; plan §6.3 row 7",
+        "surface": "layers",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 119.921875,
+            "y": 55,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 43,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 11,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "layers",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.parent.set",
+              {
+                "elementIds": [
+                  "el_01K742SG12CTMHXEB7TY99G4XV"
+                ],
+                "parentId": "el_01K742SG101DH4FAEWCWWK4QXC"
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.parent.set",
+              {
+                "elementIds": [
+                  "el_01K742SG12CTMHXEB7TY99G4XV"
+                ],
+                "parentId": "el_01K742SG101DH4FAEWCWWK4QXC"
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "layer list: a row dropped between rows of another level",
+        "spec": "04 §9.2; plan §6.3 row 7",
+        "surface": "layers",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 119.921875,
+            "y": 55,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 43,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 24,
+            "modifiers": []
+          },
+          {
+            "x": 119.921875,
+            "y": 24,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "layers",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.parent.set",
+              {
+                "elementIds": [
+                  "el_01K742SG12CTMHXEB7TY99G4XV"
+                ],
+                "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.parent.set",
+              {
+                "elementIds": [
+                  "el_01K742SG12CTMHXEB7TY99G4XV"
+                ],
+                "parentId": "el_01K742SG101DH4FAEWCWWK4QXC",
+                "index": 0
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a bar body dragged",
+        "spec": "04 line 717; plan §6.3 row 8",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 311.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 327.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 359.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 359.921875,
+            "y": 11,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 286,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "startDelta": 3
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "startDelta": 3
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a bar’s end dragged",
+        "spec": "04 line 718; plan §6.3 row 9",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 317.921875,
+            "y": 16,
+            "modifiers": []
+          },
+          {
+            "x": 349.921875,
+            "y": 16,
+            "modifiers": []
+          },
+          {
+            "x": 413.921875,
+            "y": 16,
+            "modifiers": []
+          },
+          {
+            "x": 413.921875,
+            "y": 16,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 286,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "duration": 26,
+                "anchor": "start",
+                "keyframes": "scale"
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "duration": 26,
+                "anchor": "start",
+                "keyframes": "scale"
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a bar’s start dragged",
+        "spec": "04 line 719; plan §6.3 row 10",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 1.921875,
+            "y": 16,
+            "modifiers": []
+          },
+          {
+            "x": 33.921875,
+            "y": 16,
+            "modifiers": []
+          },
+          {
+            "x": 65.921875,
+            "y": 16,
+            "modifiers": []
+          },
+          {
+            "x": 65.921875,
+            "y": 16,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 286,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "duration": 44,
+                "anchor": "end",
+                "keyframes": "scale"
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "duration": 44,
+                "anchor": "end",
+                "keyframes": "scale"
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: the loop handle dragged",
+        "spec": "04 line 720; plan §6.3 row 11",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 191.921875,
+            "y": 5,
+            "modifiers": []
+          },
+          {
+            "x": 287.921875,
+            "y": 5,
+            "modifiers": []
+          },
+          {
+            "x": 383.921875,
+            "y": 5,
+            "modifiers": []
+          },
+          {
+            "x": 383.921875,
+            "y": 5,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 286,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "loops": 2
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG1G9A0XG0WHZYSGT4WG"
+                ],
+                "loops": 2
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a keyframe symbol dragged",
+        "spec": "04 line 621; plan §6.3 row 12",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 7.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 39.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 71.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 71.921875,
+            "y": 11,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "anim.key.move",
+              {
+                "nodeId": "el_01K742SG101DH4FAEWCWWK4QXC",
+                "fromFrame": 1,
+                "toFrame": 5
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "anim.key.move",
+              {
+                "nodeId": "el_01K742SG101DH4FAEWCWWK4QXC",
+                "fromFrame": 1,
+                "toFrame": 5
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: selected cells dragged (move)",
+        "spec": "04 §11.13; plan §6.3 row 13",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 23.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 71.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "move",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "move",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: selected cells dragged (copy)",
+        "spec": "04 §11.13; plan §6.3 row 13",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 23.921875,
+            "y": 38,
+            "modifiers": [
+              "ctrl"
+            ]
+          },
+          {
+            "x": 71.921875,
+            "y": 38,
+            "modifiers": [
+              "ctrl"
+            ]
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": [
+              "ctrl"
+            ]
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": [
+              "ctrl"
+            ]
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "copy",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "copy",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: selected cells dragged (link)",
+        "spec": "04 §11.13; plan §6.3 row 13",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 23.921875,
+            "y": 38,
+            "modifiers": [
+              "shift",
+              "ctrl"
+            ]
+          },
+          {
+            "x": 71.921875,
+            "y": 38,
+            "modifiers": [
+              "shift",
+              "ctrl"
+            ]
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": [
+              "shift",
+              "ctrl"
+            ]
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": [
+              "shift",
+              "ctrl"
+            ]
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "link",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "link",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a locked peg’s bar body dragged",
+        "spec": "04 lines 571-572, 717; ruling E-50 item 2",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 311.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 327.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 359.921875,
+            "y": 11,
+            "modifiers": []
+          },
+          {
+            "x": 359.921875,
+            "y": 11,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG101DH4FAEWCWWK4QXC"
+                ],
+                "startDelta": 3
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "element.timing.set",
+              {
+                "elementIds": [
+                  "el_01K742SG101DH4FAEWCWWK4QXC"
+                ],
+                "startDelta": 3
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: a locked drawing element’s selected cells dragged",
+        "spec": "04 lines 571-572, §11.13; ruling E-50 item 2",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 23.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 71.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 215.921875,
+            "y": 38,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "move",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 14,
+                "mode": "move",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": true,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: cells dragged over a locked drawing are refused",
+        "spec": "04 §13.12, §13.16 (drawing.locked); ruling E-50 item 2",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "pressSeen": true,
+        "pressAnswer": {
+          "ok": true
+        },
+        "blurs": 0,
+        "remounted": false,
+        "aborted": false,
+        "samples": [
+          {
+            "x": 23.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 87.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 151.921875,
+            "y": 38,
+            "modifiers": []
+          },
+          {
+            "x": 151.921875,
+            "y": 38,
+            "modifiers": []
+          }
+        ],
+        "layout": {
+          "surface": "tracks",
+          "zoomLevel": 6,
+          "firstFrame": 1,
+          "scrollTop": 22,
+          "platform": "windows"
+        },
+        "windowPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 10,
+                "mode": "move",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": false,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "replayPlan": {
+          "kind": "commands",
+          "commands": [
+            [
+              "cell.range.move",
+              {
+                "sourceElementIds": [
+                  "el_01K742SG11W3SGB8Q1H50W74VB"
+                ],
+                "from": 2,
+                "to": 3,
+                "targetFrame": 10,
+                "mode": "move",
+                "options": {
+                  "overwriteDrawings": false,
+                  "exposure": false,
+                  "autoExtend": false,
+                  "updateColours": false,
+                  "keyframeSubstitution": false,
+                  "boundaryKeys": false,
+                  "pegKeys": {
+                    "motion": true,
+                    "rotation": true,
+                    "scale": true,
+                    "pivot": true,
+                    "velocity": true,
+                    "skew": true
+                  }
+                }
+              }
+            ]
+          ]
+        },
+        "directError": "drawing.locked",
+        "planEqual": true,
+        "hitsTheGesture": true,
+        "committed": true,
+        "stateEqual": true,
+        "ok": true,
+        "refused": "drawing.locked",
+        "unchanged": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      },
+      {
+        "name": "tracks: Escape during a drag sends and changes nothing",
+        "spec": "01 §6.1 line 495; plan §6.3 last row",
+        "surface": "tracks",
+        "focusedAtStart": true,
+        "sent": false,
+        "unchanged": true,
+        "ok": true,
+        "events": [
+          "lostpointercapture"
+        ],
+        "selectedTextAtStart": ""
+      }
+    ],
+    "failed": []
+  }
+}

@@ -1,0 +1,172 @@
+{
+ "kind": "toontown.c51b.timing-three-way",
+ "external": true,
+ "exitCode": 0,
+ "seconds": 143.8,
+ "rows": 23,
+ "failed": [],
+ "error": null,
+ "platform": "windows",
+ "input": [
+  {
+   "index": 0,
+   "name": "ruler: a click sets the current frame",
+   "input": "real OS drag",
+   "press": 451316.2012439,
+   "release": 451316.3116
+  },
+  {
+   "index": 1,
+   "name": "ruler: a drag scrubs",
+   "input": "real OS drag",
+   "press": 451319.2562372,
+   "release": 451319.4266981
+  },
+  {
+   "index": 2,
+   "name": "ruler: a free range\u2019s start marker dragged",
+   "input": "real OS drag",
+   "press": 451322.3729612,
+   "release": 451322.4836109
+  },
+  {
+   "index": 3,
+   "name": "layer list: a click on a row name selects it",
+   "input": "real OS drag",
+   "press": 451325.4264785,
+   "release": 451325.5380862
+  },
+  {
+   "index": 4,
+   "name": "layer list: extend + click",
+   "input": "real OS drag",
+   "press": 451327.3358877,
+   "release": 451327.44628
+  },
+  {
+   "index": 5,
+   "name": "layer list: toggle + click",
+   "input": "real OS drag",
+   "press": 451329.4855901,
+   "release": 451329.5961455
+  },
+  {
+   "index": 6,
+   "name": "tracks: a click on a cell selects it",
+   "input": "real OS drag",
+   "press": 451331.1831471,
+   "release": 451331.2937477
+  },
+  {
+   "index": 7,
+   "name": "tracks: a drag across cells selects them",
+   "input": "real OS drag",
+   "press": 451333.0756738,
+   "release": 451333.2470389
+  },
+  {
+   "index": 8,
+   "name": "layer list: a row dropped between rows of its level reorders",
+   "input": "real OS drag",
+   "press": 451334.5602908,
+   "release": 451334.7316668
+  },
+  {
+   "index": 9,
+   "name": "layer list: a row dropped onto a peg row is attached",
+   "input": "real OS drag",
+   "press": 451336.0533129,
+   "release": 451336.224701
+  },
+  {
+   "index": 10,
+   "name": "layer list: a row dropped between rows of another level",
+   "input": "real OS drag",
+   "press": 451337.5405134,
+   "release": 451337.7140425
+  },
+  {
+   "index": 11,
+   "name": "tracks: a bar body dragged",
+   "input": "real OS drag",
+   "press": 451339.0347794,
+   "release": 451339.2056463
+  },
+  {
+   "index": 12,
+   "name": "tracks: a bar\u2019s end dragged",
+   "input": "real OS drag",
+   "press": 451346.1848276,
+   "release": 451346.3553998
+  },
+  {
+   "index": 13,
+   "name": "tracks: a bar\u2019s start dragged",
+   "input": "real OS drag",
+   "press": 451353.1360104,
+   "release": 451353.3070833
+  },
+  {
+   "index": 14,
+   "name": "tracks: the loop handle dragged",
+   "input": "real OS drag",
+   "press": 451360.0790554,
+   "release": 451360.2501554
+  },
+  {
+   "index": 15,
+   "name": "tracks: a keyframe symbol dragged",
+   "input": "real OS drag",
+   "press": 451367.220488,
+   "release": 451367.3920383
+  },
+  {
+   "index": 16,
+   "name": "tracks: selected cells dragged (move)",
+   "input": "real OS drag",
+   "press": 451368.710373,
+   "release": 451368.8818024
+  },
+  {
+   "index": 17,
+   "name": "tracks: selected cells dragged (copy)",
+   "input": "real OS drag",
+   "press": 451370.2013689,
+   "release": 451370.3720767
+  },
+  {
+   "index": 18,
+   "name": "tracks: selected cells dragged (link)",
+   "input": "real OS drag",
+   "press": 451371.6931295,
+   "release": 451371.8637894
+  },
+  {
+   "index": 19,
+   "name": "tracks: a locked peg\u2019s bar body dragged",
+   "input": "real OS drag",
+   "press": 451373.1774069,
+   "release": 451373.3483861
+  },
+  {
+   "index": 20,
+   "name": "tracks: a locked drawing element\u2019s selected cells dragged",
+   "input": "real OS drag",
+   "press": 451374.6594854,
+   "release": 451374.8304562
+  },
+  {
+   "index": 21,
+   "name": "tracks: cells dragged over a locked drawing are refused",
+   "input": "real OS drag",
+   "press": 451376.144471,
+   "release": 451376.3159296
+  },
+  {
+   "index": 22,
+   "name": "tracks: Escape during a drag sends and changes nothing",
+   "input": "real OS drag"
+  }
+ ],
+ "ok": true
+}
