@@ -13,7 +13,7 @@
     "dialog:Marker Colour",
     "dialog:Background Colour",
     "dialog:Rename Element",
-    "dialog:Element Note",
+    "dialog:Update Element Note",
     "dialog:Change Start Frame",
     "dialog:Change Duration",
     "dialog:Change Loops",
@@ -196,13 +196,6 @@
       ]
     },
     {
-      "id": "timelineNote.submit",
-      "surface": "dialog:Element Note",
-      "commands": [
-        "element.note.set"
-      ]
-    },
-    {
       "id": "timelineExtendChildren.submit",
       "surface": "dialog:Extend Children Exposure",
       "commands": [
@@ -304,6 +297,13 @@
       "surface": "dialog:Set Playback Start Frame",
       "commands": [
         "timeline.playbackRange.set"
+      ]
+    },
+    {
+      "id": "timelineNote.submit",
+      "surface": "dialog:Update Element Note",
+      "commands": [
+        "element.note.set"
       ]
     },
     {
@@ -3770,6 +3770,33 @@
       ]
     },
     {
+      "id": "timeline.cellMenu.timeline.cell.addKey",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "anim.key.add"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_peg"
+        ],
+        "frame": 3
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.constant",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "anim.segment.set"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_peg"
+        ],
+        "frame": 3,
+        "constant": true
+      }
+    },
+    {
       "id": "timeline.cellMenu.timeline.cell.copy",
       "surface": "timelineContextMenu:cells",
       "commands": [
@@ -3800,6 +3827,16 @@
       }
     },
     {
+      "id": "timeline.cellMenu.timeline.cell.editSound",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "sound.editor.open"
+      ],
+      "params": {
+        "elementId": "el_peg"
+      }
+    },
+    {
       "id": "timeline.cellMenu.timeline.cell.extendChildren",
       "surface": "timelineContextMenu:cells",
       "commands": [
@@ -3810,6 +3847,20 @@
       }
     },
     {
+      "id": "timeline.cellMenu.timeline.cell.nonConstant",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "anim.segment.set"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_peg"
+        ],
+        "frame": 3,
+        "constant": false
+      }
+    },
+    {
       "id": "timeline.cellMenu.timeline.cell.paste",
       "surface": "timelineContextMenu:cells",
       "commands": [
@@ -3817,6 +3868,53 @@
       ],
       "params": {
         "context": "timeline"
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.removeKey",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "anim.key.remove"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_peg"
+        ],
+        "frame": 3
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.splitSound",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "sound.placement.split"
+      ],
+      "params": {
+        "frame": 3
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.uniformLeft",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "anim.segment.uniform.apply"
+      ],
+      "params": {
+        "nodeId": "el_peg",
+        "frame": 3,
+        "side": "left"
+      }
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.uniformRight",
+      "surface": "timelineContextMenu:cells",
+      "commands": [
+        "anim.segment.uniform.apply"
+      ],
+      "params": {
+        "nodeId": "el_peg",
+        "frame": 3,
+        "side": "right"
       }
     },
     {
@@ -4124,6 +4222,17 @@
       }
     },
     {
+      "id": "timeline.rowMenu.timeline.row.constantZ",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "anim.path.lockDepth.set"
+      ],
+      "params": {
+        "nodeId": "el_peg",
+        "frame": 1
+      }
+    },
+    {
       "id": "timeline.rowMenu.timeline.row.copy",
       "surface": "timelineContextMenu:row",
       "commands": [
@@ -4194,6 +4303,16 @@
       }
     },
     {
+      "id": "timeline.rowMenu.timeline.row.editSound",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "sound.editor.open"
+      ],
+      "params": {
+        "elementId": "el_peg"
+      }
+    },
+    {
       "id": "timeline.rowMenu.timeline.row.hideAll",
       "surface": "timelineContextMenu:row",
       "commands": [
@@ -4244,6 +4363,38 @@
         "visible": false,
         "apply": "others"
       }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importArtwork",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "import.file.run"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importImage",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "import.file.run"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importMovie",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "import.movie.run"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importSound",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "sound.import"
+      ],
+      "params": {}
     },
     {
       "id": "timeline.rowMenu.timeline.row.lock",
@@ -4325,6 +4476,19 @@
         "nodeIds": [
           "el_peg"
         ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.removeKeys",
+      "surface": "timelineContextMenu:row",
+      "commands": [
+        "anim.key.remove"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_peg"
+        ],
+        "all": true
       }
     },
     {
@@ -4773,6 +4937,18 @@
       }
     },
     {
+      "id": "timeline.rowMenu.timeline.row.constantZ",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "anim.path.lockDepth.set"
+      ],
+      "params": {
+        "nodeId": "el_bob",
+        "frame": 1,
+        "enabled": true
+      }
+    },
+    {
       "id": "timeline.rowMenu.timeline.row.copy",
       "surface": "timelineContextMenu:row:drawing",
       "commands": [
@@ -4843,6 +5019,16 @@
       }
     },
     {
+      "id": "timeline.rowMenu.timeline.row.editSound",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "sound.editor.open"
+      ],
+      "params": {
+        "elementId": "el_bob"
+      }
+    },
+    {
       "id": "timeline.rowMenu.timeline.row.hideAll",
       "surface": "timelineContextMenu:row:drawing",
       "commands": [
@@ -4893,6 +5079,38 @@
         "visible": false,
         "apply": "others"
       }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importArtwork",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "import.file.run"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importImage",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "import.file.run"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importMovie",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "import.movie.run"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importSound",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "sound.import"
+      ],
+      "params": {}
     },
     {
       "id": "timeline.rowMenu.timeline.row.lock",
@@ -4974,6 +5192,19 @@
         "nodeIds": [
           "el_bob"
         ]
+      }
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.removeKeys",
+      "surface": "timelineContextMenu:row:drawing",
+      "commands": [
+        "anim.key.remove"
+      ],
+      "params": {
+        "nodeIds": [
+          "el_bob"
+        ],
+        "all": true
       }
     },
     {
@@ -5180,6 +5411,22 @@
       "surface": "timelineContextMenu:ruler",
       "commands": [
         "timeline.playbackRange.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.soundPlayback",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "sound.playback.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "timeline.rulerMenu.timeline.ruler.soundScrubbing",
+      "surface": "timelineContextMenu:ruler",
+      "commands": [
+        "sound.scrubbing.set"
       ],
       "params": {}
     },
@@ -5700,16 +5947,6 @@
       "reason": "typing"
     },
     {
-      "id": "timelineNote.cancel",
-      "surface": "dialog:Element Note",
-      "reason": "dismiss"
-    },
-    {
-      "id": "timelineNote.value",
-      "surface": "dialog:Element Note",
-      "reason": "typing"
-    },
-    {
       "id": "timelineExtendChildren.cancel",
       "surface": "dialog:Extend Children Exposure",
       "reason": "dismiss"
@@ -5922,6 +6159,16 @@
     {
       "id": "timelineRangeStart.value",
       "surface": "dialog:Set Playback Start Frame",
+      "reason": "typing"
+    },
+    {
+      "id": "timelineNote.cancel",
+      "surface": "dialog:Update Element Note",
+      "reason": "dismiss"
+    },
+    {
+      "id": "timelineNote.value",
+      "surface": "dialog:Update Element Note",
       "reason": "typing"
     },
     {
@@ -18175,37 +18422,87 @@
       "reason": "typing"
     },
     {
-      "id": "timeline.cellMenu.timeline.cell.addKey",
+      "id": "timeline.cellMenu.timeline.cell.addDefaultKey",
       "surface": "timelineContextMenu:cells",
       "reason": "placeholder"
     },
     {
-      "id": "timeline.cellMenu.timeline.cell.constant",
+      "id": "timeline.cellMenu.timeline.cell.addExposure",
       "surface": "timelineContextMenu:cells",
       "reason": "placeholder"
     },
     {
-      "id": "timeline.cellMenu.timeline.cell.nonConstant",
+      "id": "timeline.cellMenu.timeline.cell.columnate",
       "surface": "timelineContextMenu:cells",
       "reason": "placeholder"
     },
     {
-      "id": "timeline.cellMenu.timeline.cell.removeKey",
+      "id": "timeline.cellMenu.timeline.cell.cycle",
       "surface": "timelineContextMenu:cells",
       "reason": "placeholder"
     },
     {
-      "id": "timeline.cellMenu.timeline.cell.uniformLeft",
+      "id": "timeline.cellMenu.timeline.cell.deleteBlank",
       "surface": "timelineContextMenu:cells",
       "reason": "placeholder"
     },
     {
-      "id": "timeline.cellMenu.timeline.cell.uniformRight",
+      "id": "timeline.cellMenu.timeline.cell.duplicateDrawing",
       "surface": "timelineContextMenu:cells",
       "reason": "placeholder"
     },
     {
-      "id": "timeline.rowMenu.timeline.row.removeKeys",
+      "id": "timeline.cellMenu.timeline.cell.exposure1",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.exposure2",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.exposure3",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.exposureN",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.fill",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.fitSound",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.insertBlank",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.insertCells",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.removeExposure",
+      "surface": "timelineContextMenu:cells",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.addDefaultKey",
+      "surface": "timelineContextMenu:row",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importVectorize",
       "surface": "timelineContextMenu:row",
       "reason": "placeholder"
     },
@@ -18215,7 +18512,12 @@
       "reason": "placeholder"
     },
     {
-      "id": "timeline.rowMenu.timeline.row.removeKeys",
+      "id": "timeline.rowMenu.timeline.row.addDefaultKey",
+      "surface": "timelineContextMenu:row:drawing",
+      "reason": "placeholder"
+    },
+    {
+      "id": "timeline.rowMenu.timeline.row.importVectorize",
       "surface": "timelineContextMenu:row:drawing",
       "reason": "placeholder"
     },
@@ -19338,6 +19640,22 @@
       "surface": "menu",
       "commands": [
         "playback.forceRate.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Play/Sound Playback",
+      "surface": "menu",
+      "commands": [
+        "sound.playback.set"
+      ],
+      "params": {}
+    },
+    {
+      "id": "menu:Play/Sound Scrubbing",
+      "surface": "menu",
+      "commands": [
+        "sound.scrubbing.set"
       ],
       "params": {}
     },
@@ -21103,6 +21421,10 @@
     {
       "command": "element.drawing.list",
       "file": "desktop/src/panels/DrawingInspectorPage.tsx"
+    },
+    {
+      "command": "element.get",
+      "file": "desktop/src/shell/makeActions.tsx"
     },
     {
       "command": "element.get",
@@ -23181,6 +23503,12 @@
       ]
     },
     {
+      "command": "anim.path.lockDepth.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "anim.reset.apply",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -23338,9 +23666,69 @@
       ]
     },
     {
+      "command": "cell.blank.add",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.blank.remove",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.columnate.apply",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.cycle.create",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.drawing.duplicate",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.exposure.add",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.exposure.remove",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.exposure.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "cell.exposures.changed",
       "files": [
         "desktop/src/timeline/TimelinePanel.tsx"
+      ]
+    },
+    {
+      "command": "cell.fill.apply",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.range.add",
+      "files": [
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
@@ -23718,6 +24106,12 @@
       ]
     },
     {
+      "command": "draw.vectorize.run",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "draw.viewMapping.get",
       "files": [
         "desktop/src/canvas/CanvasView.tsx"
@@ -24025,6 +24419,7 @@
     {
       "command": "element.get",
       "files": [
+        "desktop/src/shell/makeActions.tsx",
         "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
@@ -24208,6 +24603,18 @@
       "command": "help.text",
       "files": [
         "desktop/src/App.tsx"
+      ]
+    },
+    {
+      "command": "import.file.run",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "import.movie.run",
+      "files": [
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
@@ -25031,10 +25438,17 @@
       ]
     },
     {
+      "command": "shell.contextMenu",
+      "files": [
+        "desktop/src/shell/windowHooks.ts"
+      ]
+    },
+    {
       "command": "shell.fontsLoading",
       "files": [
         "desktop/src/App.tsx",
-        "desktop/src/canvas/CanvasView.tsx"
+        "desktop/src/canvas/CanvasView.tsx",
+        "desktop/src/state/store.ts"
       ]
     },
     {
@@ -25082,6 +25496,36 @@
       "command": "shell.window",
       "files": [
         "desktop/src-tauri/src/shell.rs"
+      ]
+    },
+    {
+      "command": "sound.editor.open",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "sound.import",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "sound.placement.split",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "sound.playback.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "sound.scrubbing.set",
+      "files": [
+        "desktop/src/timeline/menus.ts"
       ]
     },
     {
@@ -25327,7 +25771,25 @@
       ]
     },
     {
+      "command": "timeline.cell.addDefaultKey",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.addExposure",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "timeline.cell.addKey",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.columnate",
       "files": [
         "desktop/src/timeline/menus.ts"
       ]
@@ -25351,13 +25813,67 @@
       ]
     },
     {
+      "command": "timeline.cell.cycle",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "timeline.cell.delete",
       "files": [
         "desktop/src/timeline/menus.ts"
       ]
     },
     {
+      "command": "timeline.cell.deleteBlank",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.duplicateDrawing",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.editSound",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.exposureN",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "timeline.cell.extendChildren",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.fill",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.fitSound",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.insertBlank",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.insertCells",
       "files": [
         "desktop/src/timeline/menus.ts"
       ]
@@ -25375,7 +25891,19 @@
       ]
     },
     {
+      "command": "timeline.cell.removeExposure",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "timeline.cell.removeKey",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.cell.splitSound",
       "files": [
         "desktop/src/timeline/menus.ts"
       ]
@@ -25468,6 +25996,12 @@
       ]
     },
     {
+      "command": "timeline.row.addDefaultKey",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "timeline.row.addParentPeg",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -25522,6 +26056,12 @@
       ]
     },
     {
+      "command": "timeline.row.constantZ",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "timeline.row.copy",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -25558,6 +26098,12 @@
       ]
     },
     {
+      "command": "timeline.row.editSound",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
       "command": "timeline.row.effectParameters",
       "files": [
         "desktop/src/timeline/menus.ts"
@@ -25589,6 +26135,36 @@
     },
     {
       "command": "timeline.row.hideOthers",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.importArtwork",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.importImage",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.importMovie",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.importSound",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.row.importVectorize",
       "files": [
         "desktop/src/timeline/menus.ts"
       ]
@@ -25739,6 +26315,18 @@
     },
     {
       "command": "timeline.ruler.rangeStart",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.soundPlayback",
+      "files": [
+        "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "timeline.ruler.soundScrubbing",
       "files": [
         "desktop/src/timeline/menus.ts"
       ]

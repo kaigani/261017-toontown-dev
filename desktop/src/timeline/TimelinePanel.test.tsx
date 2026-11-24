@@ -395,15 +395,16 @@ describe('a rows answer older than a frame notice', () => {
 // the same row.
 describe('Show Timeline Selection', () => {
   it('scrolls the list to the revealed row, each time', async () => {
-    const many = Array.from({ length: 60 }, (_, i) => ({
-      ...BOB,
-      elementId: `el_r${String(i)}`,
-      name: `R${String(i)}`,
-    }));
+    // Bob first (the harness waits for his row), then 59 more rows.
+    const many = [
+      BOB,
+      ...Array.from({ length: 59 }, (_, n) => ({
+        ...BOB,
+        elementId: `el_r${String(n + 1)}`,
+        name: `R${String(n + 1)}`,
+      })),
+    ];
     const h = await timeline({}, () => many);
-    await waitFor(() => {
-      expect(document.querySelector('[data-tt-id="timeline.row.el_r0"]')).not.toBeNull();
-    });
     const list = el('timeline.layers');
     const notice = (count: number) => ({
       sceneId: 'sc_1',

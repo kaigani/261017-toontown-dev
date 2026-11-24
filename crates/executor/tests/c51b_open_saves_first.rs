@@ -134,6 +134,9 @@ fn a_history_position_away_from_the_saved_one_is_saved_then_reopened() {
 fn session_state_is_saved_then_reopened() {
     let dir = tmp();
     let (h, target, scene) = saved_project(&dir);
+    // A scene of 24 frames (a new project's scene is one frame long, and a free range is clamped to the scene).
+    let drawing = ok(&h, "element.create", json!({ "type": "drawing" }))["elementIds"][0].as_str().unwrap().to_owned();
+    ok(&h, "element.drawing.create", json!({ "elementId": drawing, "name": "1", "exposeFrom": 1, "exposeTo": 24 }));
     ok(&h, "doc.object.patch", json!({ "targets": [scene], "props": { "meta": { "edit": "with session" } } }));
     ok(&h, "timeline.playbackRange.set", json!({ "mode": "free", "start": 3, "end": 9 }));
     ok(&h, "timeline.currentFrame.set", json!({ "frame": 7 }));

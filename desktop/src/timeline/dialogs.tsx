@@ -201,9 +201,14 @@ export function NewElementsDialog(props: {
 const HEX_COLOUR = /^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
 
 /** Element Colours (04 §9.6): the marker and the background colour; an empty field leaves that colour as it is. */
-export function ColoursDialog(props: { onDone: (params: Record<string, unknown> | null) => void }) {
-  const [marker, setMarker] = useState('');
-  const [background, setBackground] = useState('');
+export function ColoursDialog(props: {
+  /** The element's own colours (empty: the default), the values the dialog starts from (C51B-R1S-05). */
+  marker?: string;
+  background?: string;
+  onDone: (params: Record<string, unknown> | null) => void;
+}) {
+  const [marker, setMarker] = useState(props.marker ?? '');
+  const [background, setBackground] = useState(props.background ?? '');
   const bad = (t: string) => t.trim() !== '' && !HEX_COLOUR.test(t.trim());
   const problem =
     bad(marker) || bad(background) ? 'Type a colour as #RRGGBB or #RRGGBBAA, or leave it empty.' : null;

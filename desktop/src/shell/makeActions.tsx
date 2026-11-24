@@ -111,6 +111,16 @@ export function makeActions(
 
   const pick = (kind: 'open' | 'save' | 'folder', title: string, filters = PACKAGE_FILTERS) =>
     services.engine.pickPath({ kind, title, filters }).catch(() => null);
+  /** An element's fields (`element.get`), or none when the read fails: what a dialog that edits them starts from. */
+  const readElement = async (elementId: string): Promise<Record<string, unknown>> => {
+    try {
+      const env = await services.engine.run('element.get', { elementId }).done;
+      const r: unknown = env.status === 'ok' ? env.result : null;
+      return typeof r === 'object' && r !== null ? (r as Record<string, unknown>) : {};
+    } catch {
+      return {};
+    }
+  };
 
   /** Save As with the native location choice; null when the user cancels the choice. */
   const saveAs = async (): Promise<Envelope | null> => {
@@ -285,13 +295,17 @@ export function makeActions(
           const id = typeof p['elementId'] === 'string' ? p['elementId'] : el?.id;
           if (!id) return run(command, p);
           const rename = command === 'element.rename';
-          const title = rename ? 'Rename Element' : 'Element Note';
+          // The value the dialog edits (C51B-R1S-05; 04 lines 405-408): the element's name, or its note, read now.
+          const current = await readElement(id);
+          const note = typeof current['note'] === 'string' ? current['note'] : '';
+          const name = typeof current['name'] === 'string' ? current['name'] : el?.id === id ? el.name : '';
+          const update = !rename && note !== '';
           const render = (close: (t: string | null) => void) => (
             <TextDialog
               id={rename ? 'timelineRename' : 'timelineNote'}
-              title={title}
+              title={rename ? 'Rename Element' : update ? 'Update Element Note' : 'Element Note'}
               label={rename ? 'Name' : 'Note (empty removes it)'}
-              initial={rename && el?.id === id ? el.name : ''}
+              initial={rename ? name : note}
               command={command}
               multiline={!rename}
               required={rename}
@@ -301,7 +315,9 @@ export function makeActions(
           // Each title written where the dialog opens (the D-44 inventory, scripts/c43_d44_coverage.py).
           const text = rename
             ? await dialogs.open<string>('Rename Element', render)
-            : await dialogs.open<string>('Element Note', render);
+            : update
+              ? await dialogs.open<string>('Update Element Note', render)
+              : await dialogs.open<string>('Element Note', render);
           if (text === null) return null;
           p['elementId'] = id;
           p[key] = text;
@@ -317,8 +333,15 @@ export function makeActions(
       }
       case 'element.colour.set': {
         if (!('marker' in p) && !('background' in p)) {
+          // The element's own colours, read now (C51B-R1S-05): the dialog opens with them.
+          const id = typeof p['elementId'] === 'string' ? p['elementId'] : state()?.element?.id;
+          const current = id ? await readElement(id) : {};
+          const own = (k: string): string => {
+            const v = current[k];
+            return typeof v === 'string' ? v : '';
+          };
           const chosen = await dialogs.open<Record<string, unknown>>('Element Colours', (close) => (
-            <ColoursDialog onDone={close} />
+            <ColoursDialog marker={own('markerColour')} background={own('backgroundColour')} onDone={close} />
           ));
           if (!chosen) return null;
           Object.assign(p, chosen);

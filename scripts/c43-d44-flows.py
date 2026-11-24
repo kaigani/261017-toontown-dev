@@ -1547,6 +1547,26 @@ def timeline_rows(t: Flows) -> list:
             lambda ctx: [("element.note.set", {"elementId": ctx["bob"], "text": "flow note"}, [])],
             note_of, changed_to(lambda v: v, "flow note"), cleanup=clear_note)
 
+    # C51B-R1S-05 (04 lines 405-408): with a note, the action is Update Element Note and the editor opens with the note;
+    # OK without typing keeps it (it deleted it before), Cancel changes nothing.
+    async def with_note(ctx):
+        await base(ctx)
+        await cmd("element.note.set", {"elementId": ctx["bob"], "text": "kept note"})
+
+    async def prefilled(ctx):
+        shown = t.cdp.js("document.querySelector('[data-tt-id=\"timelineNote.value\"]')?.value ?? null")
+        if shown != "kept note":
+            raise RuntimeError(f"the editor did not open with the note: {shown!r}")
+
+    for label, path, open_ in (
+        ("Update Element Note", ["Element", "Element Note"], menu(["Element", "Element Note"])),
+        ("Update Element Note (Timeline row)", ["Timeline", "row", "Update Element Note"],
+         context(centre_of(lambda ctx: f"timeline.row.{ctx['bob']}"), "timeline.rowMenu", "timeline.row.note")),
+    ):
+        row(label, f"04 §7.1 lines 405-408; {spec_line('element.note.set')}", path, open_, "timelineNote", prefilled,
+            lambda ctx: [("element.note.set", {"elementId": ctx["bob"], "text": "kept note"}, [])],
+            note_of, lambda b, a, ctx, ok: a == "kept note" and b == "kept note", setup=with_note, cleanup=clear_note)
+
     async def colours_of(ctx):
         e = await el(ctx)
         return {"marker": e.get("markerColour"), "background": e.get("backgroundColour")}

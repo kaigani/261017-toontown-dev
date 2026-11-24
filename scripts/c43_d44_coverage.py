@@ -71,6 +71,7 @@ COVERAGE: dict[str, dict] = {
     "dialog:New Elements": {"rows": ["New Elements › OK", "New Elements › Cancel"]},
     "dialog:Rename Element": {"rows": ["Rename Element › OK", "Rename Element › Cancel", "Rename Element (Timeline row) › OK", "Rename Element (Timeline row) › Cancel"]},
     "dialog:Element Note": {"rows": ["Element Note › OK", "Element Note › Cancel", "Element Note (Timeline row) › OK", "Element Note (Timeline row) › Cancel"]},
+    "dialog:Update Element Note": {"rows": ["Update Element Note › OK", "Update Element Note › Cancel", "Update Element Note (Timeline row) › OK", "Update Element Note (Timeline row) › Cancel"]},
     "dialog:Element Colours": {"rows": ["Element Colours › OK", "Element Colours › Cancel"]},
     "dialog:Marker Colour": {"rows": ["Marker Colour (Timeline row) › OK", "Marker Colour (Timeline row) › Cancel"]},
     "dialog:Background Colour": {"rows": ["Background Colour (Timeline row) › OK", "Background Colour (Timeline row) › Cancel"]},
