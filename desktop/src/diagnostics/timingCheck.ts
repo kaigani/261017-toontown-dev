@@ -16,6 +16,7 @@
 // The report goes to the host, which writes it and exits. Not product code: absent from the default build.
 import type { HostApi, TimingGestureAnswer, TimingGestureRequest } from '../ipc';
 import { LAYOUT, platformOf, type Platform } from '../timeline/geometry';
+import { runTimelineBudgets } from './timelineBudgets';
 
 type Json = Record<string, unknown>;
 interface Point {
@@ -339,6 +340,15 @@ function same(a: unknown, b: unknown): boolean {
 export async function maybeRunTimingCheck(host: HostApi): Promise<boolean> {
   const plan = await host.timingCheckPlan();
   if (!plan) return false;
+  if (plan.budgets) {
+    // Plan §6.2's window budgets instead of the three-way rows.
+    const budgets = await runTimelineBudgets(host, plan.workDir).catch((e: unknown) => ({
+      ok: false,
+      error: e instanceof Error ? e.message : String(e),
+    }));
+    await host.timingCheckReport({ ok: budgets.ok === true, budgets });
+    return true;
+  }
   const engine = host.engine;
   const run = async (command: string, params: Json): Promise<Json> => {
     const env = await engine.run(command, params).done;

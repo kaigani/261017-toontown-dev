@@ -119,6 +119,8 @@ def main() -> int:
     ap.add_argument("app")
     ap.add_argument("out")
     ap.add_argument("--only", default=None, help="only the cases whose name contains this text (a probe's subset)")
+    ap.add_argument("--budgets", action="store_true",
+                    help="the window's budgets of the plan's section 6.2 (workstation receipt) instead of the rows")
     ap.add_argument("--external", action="store_true",
                     help="real OS input on the Windows workstation instead of the window's dispatched events")
     a = ap.parse_args()
@@ -140,6 +142,8 @@ def main() -> int:
         args.append("--timing-check-external")
     if a.only:
         args += ["--timing-check-only", a.only]
+    if a.budgets:
+        args.append("--timing-check-budgets")
     started = time.monotonic()
     proc = subprocess.Popen(args, env=env)
     done: list = []
@@ -159,8 +163,11 @@ def main() -> int:
         frontend = (json.loads(report.read_text(encoding="utf-8")) or {}).get("frontend") or {}
     rows = frontend.get("rows") or []
     failed = [r.get("name") for r in rows if not r.get("ok")]
-    ok = bool(rows) and not failed and frontend.get("ok") is True and error is None
-    manifest = {"kind": "toontown.c51b.timing-three-way", "external": a.external, "exitCode": proc.returncode,
+    ok = (bool(rows) or a.budgets) and not failed and frontend.get("ok") is True and error is None
+    if a.budgets:
+        print(json.dumps(frontend.get("budgets"), indent=1))
+    manifest = {"kind": "toontown.c51b.timeline-budgets" if a.budgets else "toontown.c51b.timing-three-way",
+                "external": a.external, "exitCode": proc.returncode,
                 "seconds": round(time.monotonic() - started, 1), "rows": len(rows), "failed": failed,
                 "error": error or frontend.get("error"), "platform": frontend.get("platform"), "input": done, "ok": ok}
     (out / "manifest.json").write_text(json.dumps(manifest, indent=1), encoding="utf-8")

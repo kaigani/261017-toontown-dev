@@ -50,6 +50,10 @@ export interface TimingCheckPlan {
   external: boolean;
   /** Only the cases whose name contains this text (a probe's subset), or null. */
   only: string | null;
+  /** The window's budgets (plan §6.2) instead of the three-way rows. */
+  budgets: boolean;
+  /** The report's folder (the budgets save their scene there while building it), or null. */
+  workDir: string | null;
 }
 
 export interface SpikeApi {

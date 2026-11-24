@@ -46,6 +46,8 @@ pub struct TimingCheckSettings {
     pub external: bool,
     /// Only the cases whose name contains this text (`--timing-check-only <text>`; a probe's subset).
     pub only: Option<String>,
+    /// The window's budgets (plan §6.2) instead of the three-way rows (`--timing-check-budgets`).
+    pub budgets: bool,
 }
 
 /// Errors parsing the diagnostics arguments.
@@ -71,8 +73,8 @@ pub enum ArgsError {
     /// `--spike-renderer` without `--spike canvas`.
     #[error("--spike-renderer needs --spike canvas")]
     RendererWithoutCanvas,
-    /// `--timing-check-external` or `--timing-check-only` without `--timing-check`.
-    #[error("--timing-check-external and --timing-check-only need --timing-check <out.json>")]
+    /// `--timing-check-external`, `--timing-check-only` or `--timing-check-budgets` without `--timing-check`.
+    #[error("--timing-check-external, --timing-check-only and --timing-check-budgets need --timing-check <out.json>")]
     ExternalWithoutCheck,
     /// `--spike-log` without `--spike`.
     #[error("--spike-log needs --spike")]
@@ -97,6 +99,7 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     let mut timing_out = None;
     let mut timing_external = false;
     let mut timing_only = None;
+    let mut timing_budgets = false;
     let mut count = DEFAULT_COUNT;
     let mut spike = None;
     let mut spike_log = None;
@@ -116,6 +119,7 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
                 timing_out = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--timing-check"))?));
             }
             "--timing-check-external" => timing_external = true,
+            "--timing-check-budgets" => timing_budgets = true,
             "--timing-check-only" => {
                 timing_only = Some(it.next().ok_or(ArgsError::MissingValue("--timing-check-only"))?);
             }
@@ -167,7 +171,7 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
             other => return Err(ArgsError::Unknown(other.to_owned())),
         }
     }
-    if (timing_external || timing_only.is_some()) && timing_out.is_none() {
+    if (timing_external || timing_budgets || timing_only.is_some()) && timing_out.is_none() {
         return Err(ArgsError::ExternalWithoutCheck);
     }
     if spike_log.is_some() && spike.is_none() {
@@ -181,7 +185,12 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     }
     Ok(LaunchOptions {
         bench: out.map(|out| BenchSettings { out, count }),
-        timing_check: timing_out.map(|out| TimingCheckSettings { out, external: timing_external, only: timing_only }),
+        timing_check: timing_out.map(|out| TimingCheckSettings {
+            out,
+            external: timing_external,
+            only: timing_only,
+            budgets: timing_budgets,
+        }),
         spike: spike.map(|name| SpikeSettings {
             name,
             log_path: spike_log,
@@ -368,7 +377,10 @@ mod tests {
     #[test]
     fn timing_check_flags() {
         let s = parse_args(args(&["--timing-check", "t.json"])).unwrap();
-        assert_eq!(s.timing_check, Some(TimingCheckSettings { out: "t.json".into(), external: false, only: None }));
+        assert_eq!(
+            s.timing_check,
+            Some(TimingCheckSettings { out: "t.json".into(), external: false, only: None, budgets: false })
+        );
         assert_eq!(s.requested_diagnostic(), Some("--timing-check"));
         let s =
             parse_args(args(&["--timing-check", "t.json", "--timing-check-external", "--timing-check-only", "row"]))

@@ -33,13 +33,22 @@ pub struct TimingCheckPlan {
     pub external: bool,
     /// See [`TimingCheckSettings::only`].
     pub only: Option<String>,
+    /// See [`TimingCheckSettings::budgets`].
+    pub budgets: bool,
+    /// The report's folder: where the budgets save their scene while building it.
+    pub work_dir: Option<String>,
 }
 
 /// The plan when the app was started with `--timing-check`, otherwise `null`.
 #[tauri::command]
 #[must_use]
 pub fn timing_check_plan(diagnostics: State<'_, Diagnostics>) -> Option<TimingCheckPlan> {
-    diagnostics.timing_check.as_ref().map(|t| TimingCheckPlan { external: t.external, only: t.only.clone() })
+    diagnostics.timing_check.as_ref().map(|t| TimingCheckPlan {
+        external: t.external,
+        only: t.only.clone(),
+        budgets: t.budgets,
+        work_dir: t.out.parent().map(|p| p.to_string_lossy().into_owned()),
+    })
 }
 
 /// The kernel interpreter's plan for the window's layout and samples (`ExecutorHandle::timing_replay`, nothing

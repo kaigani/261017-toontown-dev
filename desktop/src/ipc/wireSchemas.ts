@@ -48,12 +48,22 @@ export const isMenuCommandEvent = guard<MenuCommandEvent>(menuCommandEventSchema
 export const isBenchPlanOrNull = guard<BenchPlan | null>({ anyOf: [benchPlanSchema, { type: 'null' }] });
 export const isNull = guard<null>({ type: 'null' });
 /** M0 diagnostics only (M5 C5.1b): the Timeline three-way check's plan (`toontown --timing-check`). */
-export const isTimingCheckPlanOrNull = guard<{ external: boolean; only: string | null } | null>({
+export const isTimingCheckPlanOrNull = guard<{
+  external: boolean;
+  only: string | null;
+  budgets: boolean;
+  workDir: string | null;
+} | null>({
   anyOf: [
     {
       type: 'object',
-      properties: { external: { type: 'boolean' }, only: { type: ['string', 'null'] } },
-      required: ['external', 'only'],
+      properties: {
+        external: { type: 'boolean' },
+        only: { type: ['string', 'null'] },
+        budgets: { type: 'boolean' },
+        workDir: { type: ['string', 'null'] },
+      },
+      required: ['external', 'only', 'budgets', 'workDir'],
       additionalProperties: false,
     },
     { type: 'null' },
