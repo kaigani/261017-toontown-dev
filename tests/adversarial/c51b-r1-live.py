@@ -216,7 +216,7 @@ async def body(t,step):
   async def names():
    es=(await c('element.list'))['elements'];return [await c('element.get',{'elementId':e['id']}) for e in es]
   async def rename(name,value,escape=False):
-   click('timeline.row.'+ids[name]+'.label');click('timeline.row.'+ids[name]+'.label')
+   await down(rowpoint(name));await up();await down(rowpoint(name));await up()
    await wait(lambda:dom('timeline.row.'+ids[name]+'.name'))
    key(0x41,0x11);guard();d.type_text(value);key(0x1b if escape else 0x0d)
    await wait(lambda:not dom('timeline.row.'+ids[name]+'.name'))
@@ -247,7 +247,7 @@ async def body(t,step):
   elif step==12:
    await rename('Alice','Alicia');await rename('Alice','Discard',True)
    assert (await c('element.get',{'elementId':ids['Alice']}))['name']=='Alicia'
-   click('timeline.row.'+ids['Alice']+'.label');click('timeline.row.'+ids['Alice']+'.label');await wait(lambda:dom('timeline.row.'+ids['Alice']+'.name'))
+   await down(rowpoint('Alice'));await up();await down(rowpoint('Alice'));await up();await wait(lambda:dom('timeline.row.'+ids['Alice']+'.name'))
    before=[await c('cell.selection.get'),await c('edit.selection.get',{'context':'timeline'}),await names(),await c('playback.state.get')]
    for k in (0xbf,0x25,0x27,0x26,0x28,0x2e,0x0d):key(k)
    after=[await c('cell.selection.get'),await c('edit.selection.get',{'context':'timeline'}),await names(),await c('playback.state.get')]
@@ -260,9 +260,9 @@ async def body(t,step):
    order=[r['elementId'] for r in (await rows())['rows']];idx=order.index(ids['Bob']);frame=3
    for k,di,df in [(0x27,0,1),(0x25,0,-1),(0x28,1,0),(0x26,-1,0)]:
     key(k);idx+=di;frame+=df
-    await until_cmd('app.state.get',{},lambda r:r['frame']==frame and r['currentElementId']==order[idx])
+    await until_cmd('app.state.get',{},lambda r:r['frame']==frame and r['element']['id']==order[idx])
    await c('xsheet.currentCell.set',{'elementId':order[-1],'frame':1});key(0x25);key(0x28)
-   state=await c('app.state.get');assert state['frame']==1 and state['currentElementId']==order[-1]
+   state=await c('app.state.get');assert state['frame']==1 and state['element']['id']==order[-1]
    await menu('Peg-A','timeline.row.changeStart');await wait(lambda:dom('timelineStart.value'));before=await c('cell.selection.get')
    for k in (0x25,0x27,0x26,0x28):key(k)
    assert await c('cell.selection.get')==before;key(0x1b)
