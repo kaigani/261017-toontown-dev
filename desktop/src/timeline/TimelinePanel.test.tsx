@@ -3,7 +3,7 @@
 // (`interface.elementColours.*`), each after a `prefs.changed` event alone (no click in the window). The fourth,
 // `timing.timeline.singleCellSelection`, is the kernel's to apply in the gesture (crates/executor/tests/
 // c51b_single_cell_follows.rs).
-import { cleanup, render, waitFor } from '@testing-library/react';
+import { act, cleanup, fireEvent, render, waitFor } from '@testing-library/react';
 import { afterEach, describe, expect, it } from 'vitest';
 
 import { App } from '../App';
@@ -184,5 +184,33 @@ describe('the Timeline follows an agent’s change of the effect-parameter setti
       expect(document.querySelector('[data-tt-id="timeline.row.el_mask"]')).toBeNull();
     });
     expect(document.querySelector('[data-tt-id="timeline.row.el_clip"]')).not.toBeNull();
+  });
+});
+
+// Plan §6.5: the arrow keys in the Timeline move the current cell, a frame left or right, a shown row up or down.
+describe('the arrow keys in the Timeline', () => {
+  it('move the current cell; a slider keeps its own arrows', async () => {
+    const second = { ...BOB, elementId: 'el_two', name: 'Two' };
+    const h = await timeline({}, () => [BOB, second]);
+    const sent = () => h.actions().filter((a) => a.command === 'xsheet.currentCell.set');
+    const tracks = el('timeline.tracks');
+    act(() => {
+      tracks.focus();
+      fireEvent.keyDown(tracks, { key: 'ArrowRight' });
+    });
+    await waitFor(() => {
+      expect(sent().at(-1)?.params).toEqual({ elementId: 'el_bob', frame: 2 });
+    });
+    act(() => {
+      fireEvent.keyDown(tracks, { key: 'ArrowDown' });
+    });
+    await waitFor(() => {
+      expect(sent().at(-1)?.params).toEqual({ elementId: 'el_two', frame: 1 });
+    });
+    const before = sent().length;
+    act(() => {
+      fireEvent.keyDown(el('timeline.zoom'), { key: 'ArrowRight' });
+    });
+    expect(sent().length).toBe(before);
   });
 });

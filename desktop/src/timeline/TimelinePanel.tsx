@@ -74,6 +74,14 @@ const REREAD = new Set([
   'app.state.changed',
 ]);
 
+/** The arrow keys' steps of the current cell (plan §6.5). */
+const ARROWS: Readonly<Record<string, { readonly rows: number; readonly frames: number }>> = {
+  ArrowLeft: { rows: 0, frames: -1 },
+  ArrowRight: { rows: 0, frames: 1 },
+  ArrowUp: { rows: -1, frames: 0 },
+  ArrowDown: { rows: 1, frames: 0 },
+};
+
 const PLATFORM = platformOf(typeof navigator === 'undefined' ? '' : navigator.userAgent);
 
 type Json = Record<string, unknown>;
@@ -484,6 +492,8 @@ export function TimelinePanel() {
       } catch {
         // A synthetic event has no capturable pointer.
       }
+      // The surface takes the keyboard focus: the arrow keys then move the current cell (plan §6.5).
+      el.focus({ preventScroll: true });
       gesture.press(layoutFor(surface), sampleOf(e, el));
     },
     onPointerMove: (e: React.PointerEvent<HTMLElement>) => {
@@ -496,6 +506,25 @@ export function TimelinePanel() {
       if (gesture.active) gesture.abort();
     },
   });
+
+  // ----- keys ---------------------------------------------------------------------------------------------------------
+
+  // The arrow keys in the Timeline move the current cell (plan §6.5): Left and Right a frame, Up and Down a shown row
+  // (`xsheet.currentCell.set`, the cell a click selects). A text field or a slider keeps its own arrows.
+  const onKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+    if (!open || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    const t = e.target;
+    if (t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement || t instanceof HTMLSelectElement)
+      return;
+    const step = ARROWS[e.key];
+    if (!step || shown.length === 0) return;
+    e.preventDefault();
+    const at = shown.findIndex((r) => r.elementId === selection?.currentElementId);
+    const row = shown[Math.max(0, Math.min(shown.length - 1, (at < 0 ? 0 : at) + step.rows))];
+    if (!row) return;
+    const frame = Math.max(1, (rows?.currentFrame ?? 1) + step.frames);
+    void actions.run('xsheet.currentCell.set', { elementId: row.elementId, frame });
+  };
 
   // ----- menus --------------------------------------------------------------------------------------------------------
 
@@ -591,6 +620,7 @@ export function TimelinePanel() {
       data-tt-role="panel"
       data-tt-id="timeline"
       data-tt-label="Timeline"
+      onKeyDown={onKeyDown}
       // A column that fills its dock area: the layout, not the canvases' pixel sizes, sizes every box.
       style={{ display: 'flex', flexDirection: 'column', height: '100%', minHeight: 0, overflow: 'hidden' }}
     >
@@ -708,6 +738,7 @@ export function TimelinePanel() {
             role="list"
             data-tt-role="list"
             data-tt-id="timeline.layers"
+            tabIndex={0}
             // Not selectable: a drag across the row names selected their text, and the next press on that text began the
             // browser's own drag (pointercancel), which dropped the row drag (found by the three-way rows' real input).
             style={{
@@ -793,6 +824,7 @@ export function TimelinePanel() {
               className="timeline-tracks"
               data-tt-role="canvas"
               data-tt-id="timeline.tracks"
+              tabIndex={0}
               data-tt-first-frame={position.firstFrame}
               data-tt-zoom={position.zoomLevel}
               data-tt-rows={shown.length}

@@ -21529,6 +21529,10 @@
       "file": "desktop/src/state/store.ts"
     },
     {
+      "command": "xsheet.currentCell.set",
+      "file": "desktop/src/timeline/TimelinePanel.tsx"
+    },
+    {
       "command": "xsheet.exposures.get",
       "file": "desktop/src/timeline/TimelinePanel.tsx"
     }
@@ -26384,6 +26388,12 @@
         "desktop/src-tauri/src/menu.rs",
         "desktop/src-tauri/src/menu_model.rs",
         "desktop/src/shell/Toolbars.tsx"
+      ]
+    },
+    {
+      "command": "xsheet.currentCell.set",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {
