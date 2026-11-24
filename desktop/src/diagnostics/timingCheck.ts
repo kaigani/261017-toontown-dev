@@ -316,7 +316,9 @@ const CASES: readonly Case[] = [
       ['timeline.transferOptions.set', { operation: 'dragDrop', options: { exposure: false } }],
       ['cell.select', { elementIds: [ids['Bob']], from: 2, to: 3 }],
     ],
-    teardown: () => [['timeline.transferOptions.set', { operation: 'dragDrop', options: { exposure: true } }]],
+    teardown: () => [
+      ['timeline.transferOptions.set', { operation: 'dragDrop', options: { exposure: true } }],
+    ],
     points: (g) => [
       { x: g.frame(2), y: g.y('Bob', 'lower') },
       { x: g.frame(6), y: g.y('Bob', 'lower') },
