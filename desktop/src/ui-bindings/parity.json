@@ -3784,7 +3784,7 @@
         "nodeIds": [
           "el_peg"
         ],
-        "frame": 3,
+        "frame": 1,
         "constant": true
       }
     },
@@ -3848,7 +3848,7 @@
         "nodeIds": [
           "el_peg"
         ],
-        "frame": 3,
+        "frame": 1,
         "constant": false
       }
     },
@@ -3905,7 +3905,7 @@
       ],
       "params": {
         "nodeId": "el_peg",
-        "frame": 3,
+        "frame": 1,
         "side": "right"
       }
     },
@@ -23711,6 +23711,12 @@
       "command": "cell.range.add",
       "files": [
         "desktop/src/timeline/menus.ts"
+      ]
+    },
+    {
+      "command": "cell.select",
+      "files": [
+        "desktop/src/timeline/TimelinePanel.tsx"
       ]
     },
     {

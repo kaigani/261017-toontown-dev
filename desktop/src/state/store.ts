@@ -45,10 +45,22 @@ export const AVAILABILITY_EVENTS: ReadonlySet<string> = new Set([
 ]);
 
 /** Which slices an engine event makes stale (01 §12.3 events). */
-export function slicesFor(event: string): SliceName[] {
+export function slicesFor(event: string, payload?: unknown): SliceName[] {
   switch (event) {
-    case 'app.state.changed':
+    case 'app.state.changed': {
+      // A change of the frame or the playback alone (each playback frame, M5 C5.1b round 1: plan §6.2's playback
+      // budget): the state comes with the notice and only the status bar shows it; the panels, the layout and the
+      // workspaces do not depend on it (re-reading them at 24 frames a second delayed the frames on a debug build).
+      const p = payload as { changed?: unknown; state?: unknown } | null | undefined;
+      const changed = Array.isArray(p?.changed) ? p.changed : [];
+      if (
+        p?.state !== undefined &&
+        changed.length > 0 &&
+        changed.every((c) => c === 'frame' || c === 'playback')
+      )
+        return ['statusBar'];
       return ['appState', 'statusBar', 'panels', 'layout', 'workspaces'];
+    }
     case 'workspace.changed':
       return ['layout', 'workspaces', 'panels', 'toolbars'];
     case 'prefs.changed':
@@ -237,7 +249,7 @@ export function createStore(engine: EngineApi): Store {
       if (gap) {
         await store.resync();
       } else {
-        const stale = slicesFor(event.name);
+        const stale = slicesFor(event.name, event.payload);
         if (event.name === 'app.state.changed') {
           const p = event.payload as { state?: unknown } | null;
           if (p?.state !== undefined) set({ ...state, slices: { ...state.slices, appState: p.state } });

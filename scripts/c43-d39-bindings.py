@@ -4125,8 +4125,17 @@ async def jobs_row(t: Table) -> None:
         rec["runningPerKernel"] = running[-5:]
         if jid:
             await e2e.call(t.s, "job_wait", {"jobId": jid, "timeoutMs": 120000})
-        # A wait for the state (D-45; it read once after a fixed second, and the MCP form's tree had not refreshed yet):
-        # the segment empties within the bound.
+        # Waits for states (D-45): the job has ended in the kernel (`job_wait` is bounded; a slow render outlives it),
+        # then the window's segment empties within the bound (it read once after a fixed second before).
+        still = None
+        for _ in range(600):
+            jobs = (await e2e.run_cmd(t.s, "job.list", {})).get("result")
+            listed = jobs if isinstance(jobs, list) else (jobs or {}).get("jobs") or []
+            still = sum(1 for j in listed if j.get("state") == "running")
+            if still == 0:
+                break
+            await asyncio.sleep(0.5)
+        rec["runningAfterWait"] = still
         end = await jobs_text()
         for _ in range(150):
             if end == "":

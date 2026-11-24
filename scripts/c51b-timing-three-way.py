@@ -141,10 +141,12 @@ def main() -> int:
     report.unlink(missing_ok=True)
     work = Path(tempfile.mkdtemp(prefix="tt-c51b-three-way-"))
     env = dict(os.environ)
+    # The webview's profile is the run's own (a fresh folder, as the user folder is): no run reads what an earlier run
+    # left in it.
+    env["WEBVIEW2_USER_DATA_FOLDER"] = str(work / "webview2")
     if a.external:
         d39 = _load("c43d39", "c43-d39-bindings.py")
         env["WEBVIEW2_ADDITIONAL_BROWSER_ARGUMENTS"] = f"--remote-debugging-port={d39.CDP_PORT}"
-        env["WEBVIEW2_USER_DATA_FOLDER"] = str(work / "webview2")
     args = [a.app, "--timing-check", str(report), "--user-dir", str(work / "user")]
     if a.external:
         args.append("--timing-check-external")

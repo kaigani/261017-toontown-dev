@@ -635,3 +635,36 @@ describe('a context menu while the engine is not responding', () => {
     });
   });
 });
+
+// Plan §6.2's playback budget (C5.1b round 1): an app-state change of the frame alone (each playback frame) re-reads the
+// status bar only; the panels, the layout and the workspaces do not depend on it. Any other field reads them again.
+describe('the store at a frame change', () => {
+  it('reads the status bar only', async () => {
+    const h = await timeline({});
+    await new Promise((r) => setTimeout(r, 300));
+    const count = (c: string) => h.sent.filter((x) => x.command === c).length;
+    const before = [
+      'window.panel.list',
+      'workspace.get',
+      'workspace.list',
+      'app.state.get',
+      'ui.statusBar.get',
+    ].map(count);
+    act(() => {
+      h.event('app.state.changed', { changed: ['frame'], state: { ...PROJECT, frame: 9 } });
+    });
+    await waitFor(() => {
+      expect(count('ui.statusBar.get')).toBeGreaterThan(before[4] ?? 0);
+    });
+    await new Promise((r) => setTimeout(r, 200));
+    expect(['window.panel.list', 'workspace.get', 'workspace.list', 'app.state.get'].map(count)).toEqual(
+      before.slice(0, 4),
+    );
+    act(() => {
+      h.event('app.state.changed', { changed: ['element'], state: { ...PROJECT, frame: 9 } });
+    });
+    await waitFor(() => {
+      expect(count('window.panel.list')).toBeGreaterThan(before[0] ?? 0);
+    });
+  });
+});

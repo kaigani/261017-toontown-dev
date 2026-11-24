@@ -178,4 +178,47 @@ describe('the Timeline gesture controller', () => {
     expect(p.refusals.map((e) => e.code)).toEqual(['project.none']);
     expect(h.requests.map((r) => r.phase)).toEqual(['press']);
   });
+
+  // Plan §6.2 (a click to the selection drawn): the release's plan and envelopes reach the panel, which draws the cell
+  // selection from them without a read of its own.
+  it('hands the committed plan and its envelopes to the panel', async () => {
+    const click: TimingGestureAnswer = {
+      ok: true,
+      value: {
+        plan: {
+          kind: 'commands',
+          commands: [
+            ['cell.select', { elementIds: ['e1'], from: 3, to: 3 }],
+            ['xsheet.currentCell.set', { elementId: 'e1', frame: 3 }],
+          ],
+        },
+        envelopes: [
+          { status: 'ok', result: { elementIds: ['e1'], from: 3, to: 3 } },
+          { status: 'ok', result: { elementId: 'e1', frame: 3 } },
+        ],
+      },
+    };
+    const h = host({ kind: 'cell', row: 0, element: 'e1', frame: 3, selected: false }, click);
+    const applied: unknown[] = [];
+    const p = panel();
+    const g = new TimelineGesture(h, {
+      ...p.events,
+      applied: (commands, envelopes) => applied.push({ commands, envelopes }),
+    });
+    g.press(tracks, at(40));
+    await settle();
+    await g.release(at(40));
+    expect(applied).toEqual([
+      {
+        commands: [
+          ['cell.select', { elementIds: ['e1'], from: 3, to: 3 }],
+          ['xsheet.currentCell.set', { elementId: 'e1', frame: 3 }],
+        ],
+        envelopes: [
+          { status: 'ok', result: { elementIds: ['e1'], from: 3, to: 3 } },
+          { status: 'ok', result: { elementId: 'e1', frame: 3 } },
+        ],
+      },
+    ]);
+  });
 });

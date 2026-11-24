@@ -44,6 +44,11 @@ export interface GestureEvents {
   refusal(error: CommandFailure): void;
   /** The release committed: the envelopes' document revision, for the preview-until-drawn rule (D-53). */
   committed(rev: number | null): void;
+  /** The release committed this plan (its commands and their envelopes, in order): what the panel can show at once. */
+  applied?(
+    commands: readonly (readonly [string, Record<string, unknown>])[],
+    envelopes: readonly Record<string, unknown>[],
+  ): void;
 }
 
 type Phase =
@@ -147,6 +152,14 @@ export class TimelineGesture {
       this.events.refusal(e ?? { code: 'internal', message: 'the gesture was refused' });
       return;
     }
+    const plan = a.value['plan'] as { commands?: unknown } | undefined;
+    const commands = Array.isArray(plan?.commands)
+      ? (plan.commands as unknown[]).filter(
+          (c): c is [string, Record<string, unknown>] =>
+            Array.isArray(c) && typeof c[0] === 'string' && typeof c[1] === 'object' && c[1] !== null,
+        )
+      : [];
+    this.events.applied?.(commands, envelopes);
     const last = envelopes[envelopes.length - 1];
     const rev = last && typeof last['documentRev'] === 'number' ? last['documentRev'] : null;
     // The preview holds until the panel has drawn a read at this revision (D-53): the panel clears it.

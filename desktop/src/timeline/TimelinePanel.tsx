@@ -568,9 +568,38 @@ export function TimelinePanel() {
             if (rev === null) setPreview(null);
             else setCommitted(rev);
           },
+          // A click's cell selection is drawn from the release's own answer (plan §6.2: a click to the selection drawn
+          // within two frames). Waiting for `cell.selection.get` put a third round trip, queued behind the other
+          // panels' reads of the same change, between the click and the draw (41-47 ms against 33 ms, release build).
+          // The read gate drops a selection read sent before; the reads the change's events make confirm it.
+          applied: (commands, envelopes) => {
+            const at = commands.findIndex(([name]) => name === 'cell.select');
+            const env = envelopes[at];
+            if (at < 0 || env?.['status'] !== 'ok') return;
+            const result = (env['result'] ?? {}) as Record<string, unknown>;
+            const params = commands[at]?.[1] ?? {};
+            const ids = Array.isArray(result['elementIds']) ? result['elementIds'] : params['elementIds'];
+            const from = typeof result['from'] === 'number' ? result['from'] : params['from'];
+            const to = typeof result['to'] === 'number' ? result['to'] : params['to'];
+            if (!Array.isArray(ids) || typeof from !== 'number' || typeof to !== 'number') return;
+            const cell = commands.find(([name]) => name === 'xsheet.currentCell.set')?.[1];
+            const next: SelectionAnswer = {
+              elementIds: ids.filter((x): x is string => typeof x === 'string'),
+              from,
+              to,
+              rowsSelected: 0,
+              currentElementId: typeof cell?.['elementId'] === 'string' ? cell['elementId'] : null,
+              currentFrame: typeof cell?.['frame'] === 'number' ? cell['frame'] : from,
+            };
+            selGate();
+            setSelection((prev) => ({
+              ...next,
+              currentElementId: next.currentElementId ?? prev?.currentElementId ?? null,
+            }));
+          },
         },
       ),
-    [engine, messages],
+    [engine, messages, selGate],
   );
   useEffect(
     () => () => {
