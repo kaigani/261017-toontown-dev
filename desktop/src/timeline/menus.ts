@@ -3,6 +3,11 @@
 // clicked row's and frame's parameters; its availability, check state and disabled reason come from the kernel (O-10),
 // so an item whose command belongs to a later checkpoint shows that owner. Items that collect a value open a dialog
 // (`dialog`), handled by the panel's dialog layer (section 7).
+//
+// Every command 04 lines 704-706 require is present (ruling E-47; `menus.test.ts` holds the three models against a table
+// transcribed from those lines): a command a later checkpoint owns is shown disabled with that owner (the deferred list,
+// or the kernel's "arrives with" for a command not implemented yet), and an item no command performs yet carries its
+// owner (`owner`). A toggle or a radio item shows its state (04 line 708): `check`, with the state the kernel completes.
 import type { MenuGroup } from '../shell/contextMenuModel';
 import { CELL_BASED, loopable, PARENTABLE, type TimelineRow } from './model';
 
@@ -70,8 +75,15 @@ export function rowMenu(
   row: TimelineRow,
   rows: readonly TimelineRow[],
   selected: readonly string[],
+  currentFrame = 1,
+  hasNote = false,
 ): TimelineMenu {
   const id = row.elementId;
+  // Toggle Constant Z acts on the segment at the current frame: the motion keyframe that starts it.
+  const segmentStart = [...row.keyframes]
+    .filter((k) => k.frame <= currentFrame && k.channels.includes('position'))
+    .map((k) => k.frame)
+    .at(-1);
   const targets = selected.includes(id) ? [...selected] : [id];
   const ids = { elementIds: targets };
   const index = rows.findIndex((r) => r.elementId === id);
@@ -91,6 +103,32 @@ export function rowMenu(
           label: 'Add Parent Peg',
           command: 'element.parentPeg.create',
           params: ids,
+        },
+      ],
+    },
+    {
+      // 04 line 704 with 09: the imports (each owned by a later checkpoint until its command is bound).
+      label: 'Import',
+      items: [
+        { id: 'timeline.row.importImage', label: 'Import Image…', command: 'import.file.run', params: {} },
+        {
+          id: 'timeline.row.importVectorize',
+          label: 'Import and Vectorize…',
+          command: 'draw.vectorize.run',
+          params: {},
+        },
+        {
+          id: 'timeline.row.importArtwork',
+          label: 'Import Artwork…',
+          command: 'import.file.run',
+          params: {},
+        },
+        { id: 'timeline.row.importSound', label: 'Import Sound…', command: 'sound.import', params: {} },
+        {
+          id: 'timeline.row.importMovie',
+          label: 'Import Movie as Image Sequence…',
+          command: 'import.movie.run',
+          params: {},
         },
       ],
     },
@@ -238,10 +276,12 @@ export function rowMenu(
         ...(EFFECT_TYPES.has(row.type)
           ? [
               {
+                // A toggle: the kernel completes `visible` to the next state and reports the current one.
                 id: 'timeline.row.effectParameters',
                 label: 'Show Effect Parameters',
                 command: 'timeline.effectParameterRows.set',
-                params: { visible: true, elementId: id },
+                params: { elementId: id },
+                check: true,
               },
             ]
           : []),
@@ -322,16 +362,36 @@ export function rowMenu(
           command: 'anim.key.remove',
           params: { nodeIds: targets, all: true },
         },
+        {
+          // A toggle (05 §4): the kernel completes `enabled` and reports the segment's state. Without a motion keyframe
+          // at or before the current frame there is no segment: the reference is complete and the kernel refuses it.
+          id: 'timeline.row.constantZ',
+          label: 'Toggle Constant Z',
+          command: 'anim.path.lockDepth.set',
+          params:
+            segmentStart === undefined
+              ? { nodeId: id, frame: currentFrame, enabled: true }
+              : { nodeId: id, frame: segmentStart },
+          check: true,
+        },
+        { id: 'timeline.row.addDefaultKey', label: 'Add Default Keyframe', command: '', owner: 'M6 C6.2' },
       ],
     },
     {
       label: 'Sound',
       items: [
         {
+          id: 'timeline.row.editSound',
+          label: 'Edit Sound',
+          command: 'sound.editor.open',
+          params: { elementId: id },
+        },
+        {
           id: 'timeline.row.waveforms',
           label: 'Sound Waveforms',
           command: 'timeline.soundWaveforms.set',
-          params: { enabled: true },
+          params: {},
+          check: true,
         },
       ],
     },
@@ -345,7 +405,13 @@ export function rowMenu(
       elementId: id,
     },
     { id: 'timeline.row.rename', label: 'Rename…', dialog: 'rename', elementId: id },
-    { id: 'timeline.row.note', label: 'Element Note…', dialog: 'note', elementId: id },
+    // 04 lines 405-408: presented as Update Element Note when the element has one.
+    {
+      id: 'timeline.row.note',
+      label: hasNote ? 'Update Element Note…' : 'Element Note…',
+      dialog: 'note',
+      elementId: id,
+    },
     ...(row.bar && !CELL_BASED.has(row.type)
       ? [
           {
@@ -379,8 +445,85 @@ export function rowMenu(
 /** The cell context (04 line 705): the clicked row and frame. */
 export function cellMenu(row: TimelineRow, frame: number): TimelineMenu {
   const id = row.elementId;
-  const bar = !CELL_BASED.has(row.type);
+  const cells = { elementIds: [id], from: frame, to: frame };
   const groups: MenuGroup[] = [
+    {
+      // Ruling E-2 (a): the cell commands, disabled with their owner M5 C5.2 until it binds them in both views.
+      label: 'Exposure',
+      items: [
+        {
+          id: 'timeline.cell.addExposure',
+          label: 'Add Exposure',
+          command: 'cell.exposure.add',
+          params: cells,
+        },
+        {
+          id: 'timeline.cell.removeExposure',
+          label: 'Remove Exposure',
+          command: 'cell.exposure.remove',
+          params: cells,
+        },
+        ...([1, 2, 3] as const).map((n) => ({
+          id: `timeline.cell.exposure${String(n)}`,
+          label: `Set Exposure to ${String(n)}`,
+          command: 'cell.exposure.set',
+          params: { ...cells, length: n },
+        })),
+        {
+          id: 'timeline.cell.exposureN',
+          label: 'Set Exposure to N…',
+          command: 'cell.exposure.set',
+          params: cells,
+        },
+        {
+          id: 'timeline.cell.fill',
+          label: 'Extend Exposure',
+          command: 'cell.fill.apply',
+          params: { elementIds: [id], frame },
+        },
+      ],
+    },
+    {
+      label: 'Cells',
+      items: [
+        {
+          id: 'timeline.cell.insertCells',
+          label: 'Insert Cells…',
+          command: 'cell.range.add',
+          params: { elementIds: [id], frame },
+        },
+        {
+          id: 'timeline.cell.insertBlank',
+          label: 'Insert Blank Cell',
+          command: 'cell.blank.add',
+          params: { elementIds: [id], frame },
+        },
+        {
+          id: 'timeline.cell.deleteBlank',
+          label: 'Delete Blank Cell',
+          command: 'cell.blank.remove',
+          params: { elementIds: [id], frame },
+        },
+        {
+          id: 'timeline.cell.cycle',
+          label: 'Create Cycle…',
+          command: 'cell.cycle.create',
+          params: { elementId: id, from: frame, to: frame },
+        },
+        {
+          id: 'timeline.cell.columnate',
+          label: 'Columnate…',
+          command: 'cell.columnate.apply',
+          params: { elementId: id, frame },
+        },
+        {
+          id: 'timeline.cell.duplicateDrawing',
+          label: 'Duplicate Drawing',
+          command: 'cell.drawing.duplicate',
+          params: { elementId: id, from: frame, to: frame },
+        },
+      ],
+    },
     {
       items: [
         { id: 'timeline.cell.cut', label: 'Cut', command: 'edit.cut', params: { context: 'timeline' } },
@@ -394,9 +537,9 @@ export function cellMenu(row: TimelineRow, frame: number): TimelineMenu {
         },
       ],
     },
-  ];
-  if (bar) {
-    groups.push({
+    {
+      // Ruling E-2 (b): bound in C5.1b on every row (a row that cannot be keyed is refused by the kernel, with its
+      // reason on the item).
       label: 'Keyframes',
       items: [
         {
@@ -435,9 +578,29 @@ export function cellMenu(row: TimelineRow, frame: number): TimelineMenu {
           command: 'anim.segment.uniform.apply',
           params: { nodeId: id, frame, side: 'right' },
         },
+        { id: 'timeline.cell.addDefaultKey', label: 'Add Default Keyframe', command: '', owner: 'M6 C6.2' },
       ],
-    });
-  }
+    },
+    {
+      // 07 §6: the sound items, owned by M8 (Fit Sound has no command yet).
+      label: 'Sound',
+      items: [
+        {
+          id: 'timeline.cell.editSound',
+          label: 'Edit Sound',
+          command: 'sound.editor.open',
+          params: { elementId: id },
+        },
+        {
+          id: 'timeline.cell.splitSound',
+          label: 'Split Sound',
+          command: 'sound.placement.split',
+          params: { frame },
+        },
+        { id: 'timeline.cell.fitSound', label: 'Fit Sound', command: '', owner: 'M8' },
+      ],
+    },
+  ];
   const dialogs: DialogItem[] =
     row.type === 'peg'
       ? [
@@ -460,17 +623,20 @@ export function rulerMenu(frame: number): TimelineMenu {
       {
         label: 'Playback range',
         items: [
+          // A radio pair: the kernel reports which mode is current (04 line 708).
           {
             id: 'timeline.ruler.rangeAuto',
             label: 'Automatic Fit',
             command: 'timeline.playbackRange.set',
             params: { mode: 'auto' },
+            check: true,
           },
           {
             id: 'timeline.ruler.rangeFree',
             label: 'Free',
             command: 'timeline.playbackRange.set',
             params: { mode: 'free' },
+            check: true,
           },
           {
             id: 'timeline.ruler.startHere',
@@ -493,7 +659,22 @@ export function rulerMenu(frame: number): TimelineMenu {
             id: 'timeline.ruler.waveforms',
             label: 'Sound Waveforms',
             command: 'timeline.soundWaveforms.set',
-            params: { enabled: true },
+            params: {},
+            check: true,
+          },
+          {
+            id: 'timeline.ruler.soundPlayback',
+            label: 'Sound Playback',
+            command: 'sound.playback.set',
+            params: {},
+            check: true,
+          },
+          {
+            id: 'timeline.ruler.soundScrubbing',
+            label: 'Sound Scrubbing',
+            command: 'sound.scrubbing.set',
+            params: {},
+            check: true,
           },
         ],
       },

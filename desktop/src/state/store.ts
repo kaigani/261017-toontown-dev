@@ -39,6 +39,9 @@ export const AVAILABILITY_EVENTS: ReadonlySet<string> = new Set([
   'draw.selection.changed',
   'edit.selection.changed',
   'shell.view',
+  // The system font list read or still being read (ruling E-43): a precheck that answered `fontsLoading` is asked again
+  // (C5.1b round 1 observation; a control disabled while the fonts loaded stayed disabled until another refresh).
+  'shell.fontsLoading',
 ]);
 
 /** Which slices an engine event makes stale (01 §12.3 events). */

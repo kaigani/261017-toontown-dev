@@ -83,7 +83,8 @@ export function ContextMenu({
   onClose: () => void;
 }) {
   const actions = useActions();
-  const refs = useMemo(() => groups.flatMap((g) => g.items.map(refOf)), [groups]);
+  // An owner-only item (no command yet) is never asked of the kernel.
+  const refs = useMemo(() => groups.flatMap((g) => g.items.filter((i) => !i.owner).map(refOf)), [groups]);
   const availability = useAvailability(refs);
   const root = useRef<HTMLDivElement | null>(null);
   const opener = useRef<Element | null>(null);
@@ -307,8 +308,8 @@ export function ContextMenu({
               </div>
             )}
             {g.items.map((item) => {
-              const facts = availability(refOf(item));
-              const owner = DEFERRED[item.command]?.owner;
+              const facts = item.owner ? undefined : availability(refOf(item));
+              const owner = item.owner ?? DEFERRED[item.command]?.owner;
               const enabled = !owner && enabledIn(facts);
               // The parameters as the kernel completes them now (a toggle's next state; O-10).
               const params =

@@ -125,6 +125,24 @@ export function isTextEntry(el: EventTarget | null): boolean {
   return el instanceof HTMLInputElement && TEXT_INPUTS.has((el.getAttribute('type') ?? '').toLowerCase());
 }
 
+/** An agent's Shift+F10 (11 §7.6: simulated input takes the real input's path; M5 ruling E-48): the platform's keyboard
+ *  `contextmenu` (no pointer position) to the control the notice names by its window id, or to the focused control, as
+ *  the window's own Shift+F10 sends it (D-66 item 3). The control opens its menu where the keyboard is: a Timeline
+ *  surface at the current row, cell or frame. */
+export function openContextMenuFor(payload: unknown): void {
+  const target =
+    typeof payload === 'object' && payload !== null ? (payload as { target?: unknown }).target : undefined;
+  const at =
+    typeof target === 'string'
+      ? document.querySelector(`[data-tt-id=${JSON.stringify(target)}]`)
+      : document.activeElement;
+  if (!(at instanceof HTMLElement)) return;
+  at.focus({ preventScroll: true });
+  at.dispatchEvent(
+    new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 0, clientY: 0 }),
+  );
+}
+
 /** Engine events applied in order; a resync at start and after a gap (IPC freshness). */
 export function useEngineMirror(services: ShellServices, reportScreens: boolean): void {
   useEffect(() => {
@@ -133,6 +151,7 @@ export function useEngineMirror(services: ShellServices, reportScreens: boolean)
     let chain: Promise<void> = Promise.resolve();
     void services.engine
       .onEvent((e) => {
+        if (e.name === 'shell.contextMenu') openContextMenuFor(e.payload);
         chain = chain.then(() => services.store.apply(e)).catch(() => undefined);
       })
       .then((u) => {

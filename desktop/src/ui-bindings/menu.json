@@ -1199,6 +1199,22 @@
           "check": "playbackForceRate"
         },
         {
+          "kind": "command",
+          "command": "sound.playback.set",
+          "label": "Sound Playback",
+          "params": {},
+          "enabledWithoutProject": false,
+          "check": "soundPlayback"
+        },
+        {
+          "kind": "command",
+          "command": "sound.scrubbing.set",
+          "label": "Sound Scrubbing",
+          "params": {},
+          "enabledWithoutProject": false,
+          "check": "soundScrubbing"
+        },
+        {
           "kind": "submenu",
           "id": "playbackRate",
           "label": "Playback Rate",

@@ -7,6 +7,10 @@ export interface MenuCommand {
   readonly command: string;
   readonly params?: Readonly<Record<string, unknown>>;
   readonly check?: boolean;
+  /** A later checkpoint that owns an item the spec requires but no command performs yet (04 §11.9 "add default
+   *  keyframe"): shown disabled, "arrives with <owner>", never performed or asked of the kernel (`command` is empty).
+   *  An item whose command exists takes its owner from the deferred list or the kernel instead. */
+  readonly owner?: string;
   /** An item that collects a value first (a dialog): chosen, it runs this instead of performing the reference, which
    *  stays its availability and its parity binding (the dialog completes it). */
   readonly onSelect?: () => void;

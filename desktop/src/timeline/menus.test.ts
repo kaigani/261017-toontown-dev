@@ -43,7 +43,13 @@ describe('the Timeline context menus', () => {
     for (const [name, menu] of everyMenu()) {
       for (const g of menu.groups) {
         for (const item of g.items) {
-          expect(paramProblems(item.command, item.params ?? {}), `${name}: ${item.id}`).toEqual([]);
+          // An owner-only item has no command yet (ruling E-47). A required member left out is completed by the kernel
+          // (a toggle's next state) or by a dialog (01 §0); every member given must be valid.
+          if (item.owner) continue;
+          const problems = paramProblems(item.command, item.params ?? {}).filter(
+            (p) => !/^\/[^/]+: required$/.test(p),
+          );
+          expect(problems, `${name}: ${item.id}`).toEqual([]);
         }
       }
     }
@@ -56,14 +62,15 @@ describe('the Timeline context menus', () => {
     }
   });
 
-  it('follow the row: keyframe items on bars, extend children on pegs, annotation on drawings, loops when loopable', () => {
+  it('follow the row: extend children on pegs, annotation on drawings, loops when loopable', () => {
     const ids = (m: TimelineMenu) => [
       ...m.groups.flatMap((g) => g.items.map((i) => i.id)),
       ...m.dialogs.map((d) => d.id),
     ];
     expect(ids(cellMenu(row('peg'), 3))).toContain('timeline.cell.addKey');
     expect(ids(cellMenu(row('peg'), 3))).toContain('timeline.cell.extendChildren');
-    expect(ids(cellMenu(row('drawing'), 3))).not.toContain('timeline.cell.addKey');
+    // Ruling E-2 (b): the keyframe items on every row (the kernel refuses a row that cannot be keyed).
+    expect(ids(cellMenu(row('drawing'), 3))).toContain('timeline.cell.addKey');
     expect(ids(rowMenu(row('drawing'), [], []))).toContain('timeline.row.annotation');
     expect(ids(rowMenu(row('peg'), [], []))).not.toContain('timeline.row.annotation');
     expect(ids(rowMenu(row('peg'), [], []))).toContain('timeline.row.changeLoops');

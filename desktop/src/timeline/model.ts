@@ -65,7 +65,10 @@ export interface Run {
 
 /** What `element.get` tells the panel about one visible row. */
 export interface RowDisplay {
+  /** The colour the marker shows (the element's own, else the type's default). */
   readonly markerColour: string;
+  /** The element's own marker colour, `null` while it shows the default (its dialog's starting value). */
+  readonly ownMarkerColour: string | null;
   readonly backgroundColour: string | null;
   readonly note: string;
 }
@@ -192,8 +195,10 @@ export function parseExposures(v: unknown): Map<string, Run[]> | null {
 export function parseDisplay(v: unknown): RowDisplay | null {
   if (!isObj(v) || !str(v['effectiveMarkerColour'])) return null;
   const bg = v['backgroundColour'];
+  const own = v['markerColour'];
   return {
     markerColour: v['effectiveMarkerColour'],
+    ownMarkerColour: str(own) && own !== '' ? own : null,
     backgroundColour: str(bg) ? bg : null,
     note: str(v['note']) ? v['note'] : '',
   };

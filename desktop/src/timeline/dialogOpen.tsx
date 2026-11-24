@@ -5,7 +5,7 @@ import type React from 'react';
 import type { DialogsApi } from '../shell/dialogsApi';
 import { NewElementsDialog, NumberDialog, TextDialog } from './dialogs';
 import type { DialogItem } from './menus';
-import type { RowsAnswer, TimelineRow } from './model';
+import type { RowDisplay, RowsAnswer, TimelineRow } from './model';
 
 /** A completed command reference: what the dialog's OK sends. */
 export interface CompletedRef {
@@ -13,21 +13,18 @@ export interface CompletedRef {
   readonly params: Record<string, unknown>;
 }
 
-/** What a dialog may read to prefill its field. */
+/** What a dialog may read to prefill its field: a dialog that edits an existing value opens with it (C51B-R1S-05). */
 export interface DialogContext {
   readonly rows: readonly TimelineRow[];
   readonly selected: readonly string[];
   readonly scene: RowsAnswer | null;
+  /** The rows' display fields as read (`element.get`): the note and the element's own colours. */
+  readonly display?: ReadonlyMap<string, RowDisplay>;
+  /** The current frame the Timeline shows. */
+  readonly currentFrame?: number;
 }
 
 const HEX = /^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
-
-/** A positive whole number in 1..max, or null. */
-export function wholeIn(text: string, min: number, max: number): number | null {
-  if (!/^\s*\d+\s*$/.test(text)) return null;
-  const n = Number(text);
-  return Number.isSafeInteger(n) && n >= min && n <= max ? n : null;
-}
 
 /** A whole-number dialog's render, completing `complete` with the number typed. */
 function numberDialog(
@@ -104,6 +101,7 @@ export function openTimelineDialog(
       : [item.elementId]
     : [...ctx.selected];
   const length = ctx.scene?.sceneLength ?? 1;
+  const shown = item.elementId ? ctx.display?.get(item.elementId) : undefined;
   const colour = (key: 'marker' | 'background') => (t: string) => ({
     command: 'element.colour.set',
     params: { elementIds: targets, [key]: t },
@@ -127,13 +125,31 @@ export function openTimelineDialog(
       return dialogs.open<CompletedRef>('Rename Element', render);
     }
     case 'note': {
+      // 04 lines 405-408: with a note, the action is Update Element Note and the editor opens with the note's text (OK
+      // without typing keeps it).
+      const note = shown?.note ?? '';
+      const complete = (t: string) => ({
+        command: 'element.note.set',
+        params: { elementId: item.elementId, text: t },
+      });
+      if (note !== '') {
+        const render = textDialog(
+          'timelineNote',
+          'Update Element Note',
+          'Note (empty removes it)',
+          'element.note.set',
+          { initial: note, multiline: true },
+          complete,
+        );
+        return dialogs.open<CompletedRef>('Update Element Note', render);
+      }
       const render = textDialog(
         'timelineNote',
         'Element Note',
         'Note (empty removes it)',
         'element.note.set',
         { multiline: true },
-        (t) => ({ command: 'element.note.set', params: { elementId: item.elementId, text: t } }),
+        complete,
       );
       return dialogs.open<CompletedRef>('Element Note', render);
     }
@@ -143,7 +159,8 @@ export function openTimelineDialog(
         'Marker Colour',
         'Colour (#RRGGBB; empty reverts to the default)',
         'element.colour.set',
-        { validate: hex },
+        // The element's own colour, or empty while it shows the default (OK without typing keeps either).
+        { initial: shown?.ownMarkerColour ?? '', validate: hex },
         colour('marker'),
       );
       return dialogs.open<CompletedRef>('Marker Colour', render);
@@ -154,7 +171,7 @@ export function openTimelineDialog(
         'Background Colour',
         'Colour (#RRGGBB; empty reverts to the default)',
         'element.colour.set',
-        { validate: hex },
+        { initial: shown?.backgroundColour ?? '', validate: hex },
         colour('background'),
       );
       return dialogs.open<CompletedRef>('Background Colour', render);
@@ -201,7 +218,8 @@ export function openTimelineDialog(
         'timelineCurrentFrame',
         'Set Current Frame',
         'Frame',
-        item.frame ?? 1,
+        // The value it edits: the current frame (the clicked frame when the Timeline has none to show).
+        ctx.currentFrame ?? item.frame ?? 1,
         (n) => ({ command: 'timeline.currentFrame.set', params: { frame: n } }),
       );
       return dialogs.open<CompletedRef>('Set Current Frame', render);

@@ -154,6 +154,9 @@ export function TimelinePanel() {
   const [frameNow, setFrameNow] = useState<number | null>(null);
   const [range, setRange] = useState<RowsAnswer['playbackRange'] | null>(null);
   const [scrollTop, setScrollTop] = useState(0);
+  // Show Timeline Selection's row (the notice's `revealElementId`, each reveal counted): scrolled into the visible window
+  // once the rows that hold it are read (C51B-R1S-01).
+  const [reveal, setReveal] = useState<{ readonly id: string; readonly count: number } | null>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [preview, setPreview] = useState<Preview | null>(null);
   const [menu, setMenu] = useState<OpenMenu | null>(null);
@@ -214,6 +217,10 @@ export function TimelinePanel() {
   // per step behind which every other read waited (5 s on the plan's §6.2 scene). A newer request makes the answer in
   // flight stale (the read gate) and is sent when that answer returns; only the newest waiting request is kept.
   const rowsFlight = useRef<{ busy: boolean; queued: (() => void) | null }>({ busy: false, queued: null });
+  // Frame notices and rows answers in one order (C51B-R1S-02): each frame notice is counted; a rows answer replaces the
+  // notice's frame only when no frame notice arrived after its read was sent (an older snapshot never replaces a newer
+  // frame, so the playhead cannot rest on an old frame after playback stops).
+  const frameSeq = useRef(0);
   const readRows = useCallback(() => {
     const flight = rowsFlight.current;
     const live = rowsGate();
@@ -221,12 +228,13 @@ export function TimelinePanel() {
     const to = Math.max(from, lastFrame);
     const send = () => {
       flight.busy = true;
+      const framesAtSend = frameSeq.current;
       void engine
         .run('timeline.rows.list', { from, to })
         .done.then((env) => {
           if (!live()) return;
           setRows(env.status === 'ok' ? parseRows(env.result) : null);
-          setFrameNow(null);
+          if (frameSeq.current === framesAtSend) setFrameNow(null);
           setRowsRev(Number(env.documentRev ?? 0));
         })
         .catch(() => undefined)
@@ -384,6 +392,11 @@ export function TimelinePanel() {
     // a change of them reads everything again (E-40). A change of the view alone sets it; the rows are read again when
     // the frames in view change (the effect on `readRows`).
     let notice: string | null = null;
+    let revealCount: number | null = null;
+    const frameNotice = (f: number) => {
+      frameSeq.current += 1;
+      setFrameNow(f);
+    };
     readAll();
     void engine
       .onEvent((e) => {
@@ -391,6 +404,15 @@ export function TimelinePanel() {
           const payload = obj(e.payload);
           const v = parseView(payload['view']);
           if (v) setView(v);
+          // Show Timeline Selection: each reveal counts, so a reveal of the same row again scrolls again (the first
+          // notice the panel sees only records the count).
+          const id = payload['revealElementId'];
+          const count = payload['revealCount'];
+          if (typeof count === 'number') {
+            if (revealCount !== null && count !== revealCount && typeof id === 'string')
+              setReveal({ id, count });
+            revealCount = count;
+          }
           const rest = JSON.stringify({ ...payload, view: null });
           if (rest !== notice) {
             notice = rest;
@@ -400,7 +422,7 @@ export function TimelinePanel() {
         if (e.name === 'prefs.changed') setPrefsRev((r) => r + 1);
         if (e.name === 'timeline.currentFrame.changed') {
           const f = obj(e.payload)['frame'];
-          if (typeof f === 'number') setFrameNow(f);
+          if (typeof f === 'number') frameNotice(f);
         }
         if (REREAD.has(e.name)) readAll();
         if (SELECTION.has(e.name)) readSelection();
@@ -411,7 +433,7 @@ export function TimelinePanel() {
           const changed = Array.isArray(p['changed']) ? (p['changed'] as unknown[]) : [];
           const f = obj(p['state'])['frame'];
           if (changed.length > 0 && changed.every((c) => typeof c === 'string' && ROWS_UNCHANGED.has(c))) {
-            if (changed.includes('frame') && typeof f === 'number') setFrameNow(f);
+            if (changed.includes('frame') && typeof f === 'number') frameNotice(f);
             if (changed.some((c) => c !== 'frame' && c !== 'playback')) readSelection();
           } else readAll();
         }
@@ -661,19 +683,25 @@ export function TimelinePanel() {
       at: menuAt(e),
       id: 'timeline.rowMenu',
       label: 'Timeline row',
-      menu: rowMenu(row, shown, selectedRows),
+      menu: rowMenu(row, shown, selectedRows, currentFrame, (display.get(row.elementId)?.note ?? '') !== ''),
     });
   };
+  // A menu the keyboard opened (the context-menu key or Shift+F10: no pointer position, D-66 item 3) acts on the current
+  // cell: the current element's row and the current frame (ruling E-48).
+  const byKeyboard = (e: React.MouseEvent) => e.clientX === 0 && e.clientY === 0;
   const openTracksMenu = (e: React.MouseEvent<HTMLCanvasElement>) => {
     e.preventDefault();
     const r = e.currentTarget.getBoundingClientRect();
-    const row = rowAtY(e.clientY - r.top);
+    const keyboard = byKeyboard(e);
+    const row = keyboard
+      ? (shown.find((x) => x.elementId === selection?.currentElementId) ?? shown[0])
+      : rowAtY(e.clientY - r.top);
     if (!row) return;
     setMenu({
       at: menuAt(e),
       id: 'timeline.cellMenu',
       label: 'Timeline cells',
-      menu: cellMenu(row, frameAtX(e.clientX - r.left)),
+      menu: cellMenu(row, keyboard ? currentFrame : frameAtX(e.clientX - r.left)),
     });
   };
   const openRulerMenu = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -683,15 +711,37 @@ export function TimelinePanel() {
       at: menuAt(e),
       id: 'timeline.rulerMenu',
       label: 'Timeline ruler',
-      menu: rulerMenu(frameAtX(e.clientX - r.left)),
+      menu: rulerMenu(byKeyboard(e) ? currentFrame : frameAtX(e.clientX - r.left)),
     });
   };
+
+  // Show Timeline Selection (C51B-R1S-01): the revealed row scrolled into the visible window, the least distance.
+  useEffect(() => {
+    if (!reveal) return;
+    const index = shown.findIndex((x) => x.elementId === reveal.id);
+    const list = listRef.current;
+    if (index < 0 || !list) return;
+    const top = index * LAYOUT.rowHeight;
+    let next = list.scrollTop;
+    if (top < next) next = top;
+    else if (top + LAYOUT.rowHeight > next + list.clientHeight)
+      next = top + LAYOUT.rowHeight - list.clientHeight;
+    if (next !== list.scrollTop) {
+      list.scrollTop = next;
+      setScrollTop(list.scrollTop);
+    }
+    setReveal(null);
+  }, [reveal, shown]);
   const runDialog = (item: DialogItem) => {
-    void openTimelineDialog(dialogs, item, { rows: shown, selected: selectedRows, scene: rows }).then(
-      (ref) => {
-        if (ref) void actions.perform(ref.command, ref.params);
-      },
-    );
+    void openTimelineDialog(dialogs, item, {
+      rows: shown,
+      selected: selectedRows,
+      scene: rows,
+      display,
+      currentFrame,
+    }).then((ref) => {
+      if (ref) void actions.perform(ref.command, ref.params);
+    });
   };
 
   // ----- view controls ------------------------------------------------------------------------------------------------
@@ -838,6 +888,13 @@ export function TimelinePanel() {
             data-tt-role="list"
             data-tt-id="timeline.layers"
             tabIndex={0}
+            // The keyboard on the list itself (the context-menu key, Shift+F10, an agent's `key`; ruling E-48): the row
+            // context of the current element's row. A row's own secondary click opens its menu in the row.
+            onContextMenu={(e) => {
+              if (e.target !== e.currentTarget || !byKeyboard(e)) return;
+              const row = shown.find((x) => x.elementId === selection?.currentElementId) ?? shown[0];
+              if (row) openRowMenu(e, row);
+            }}
             // Not selectable: a drag across the row names selected their text, and the next press on that text began the
             // browser's own drag (pointercancel), which dropped the row drag (found by the three-way rows' real input).
             style={{

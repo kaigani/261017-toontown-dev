@@ -349,3 +349,204 @@ describe('the Timeline reads only what a notice changes', () => {
     expect(count(h, 'timeline.rows.list')).toBe(before + 2);
   });
 });
+
+// C51B-R1S-02: frame notices and rows answers in one order. A rows answer whose read was sent before a frame notice
+// arrives late: it must not move the playhead back to its older frame.
+describe('a rows answer older than a frame notice', () => {
+  it('keeps the newer frame', async () => {
+    const h = await timeline({});
+    await waitFor(() => {
+      expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('1');
+    });
+    await new Promise((r) => setTimeout(r, 300));
+    const original = h.handlers['timeline.rows.list'];
+    if (!original) throw new Error('no rows handler');
+    const answers: (() => void)[] = [];
+    h.handlers['timeline.rows.list'] = (p, s) =>
+      new Promise((resolve) => {
+        answers.push(() => {
+          resolve(original(p, s));
+        });
+      });
+    const before = h.sent.filter((x) => x.command === 'timeline.rows.list').length;
+    act(() => {
+      h.event('doc.changed', {});
+    });
+    await waitFor(() => {
+      expect(h.sent.filter((x) => x.command === 'timeline.rows.list').length).toBe(before + 1);
+    });
+    // The frame moves while the read is out (its answer still says frame 1).
+    act(() => {
+      h.event('timeline.currentFrame.changed', { sceneId: 'sc_1', frame: 20, source: 'playback' });
+    });
+    await waitFor(() => {
+      expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('20');
+    });
+    h.handlers['timeline.rows.list'] = original;
+    act(() => {
+      answers.shift()?.();
+    });
+    await new Promise((r) => setTimeout(r, 300));
+    expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('20');
+  });
+});
+
+// C51B-R1S-01: Show Timeline Selection scrolls the revealed row into the visible window, also when it is repeated for
+// the same row.
+describe('Show Timeline Selection', () => {
+  it('scrolls the list to the revealed row, each time', async () => {
+    const many = Array.from({ length: 60 }, (_, i) => ({
+      ...BOB,
+      elementId: `el_r${String(i)}`,
+      name: `R${String(i)}`,
+    }));
+    const h = await timeline({}, () => many);
+    await waitFor(() => {
+      expect(document.querySelector('[data-tt-id="timeline.row.el_r0"]')).not.toBeNull();
+    });
+    const list = el('timeline.layers');
+    const notice = (count: number) => ({
+      sceneId: 'sc_1',
+      view: { zoomLevel: 6, firstFrame: 1, lastFrame: 40 },
+      revealElementId: count > 0 ? 'el_r50' : null,
+      revealCount: count,
+      soundWaveforms: true,
+      effectParameterRowsHidden: false,
+      effectParameterRows: {},
+    });
+    act(() => {
+      h.event('shell.timelineView', notice(0));
+    });
+    await new Promise((r) => setTimeout(r, 200));
+    expect(list.scrollTop).toBe(0);
+    act(() => {
+      h.event('shell.timelineView', notice(1));
+    });
+    await waitFor(() => {
+      expect(list.scrollTop).toBeGreaterThan(0);
+    });
+    // The person scrolls back up; the same row revealed again scrolls again.
+    act(() => {
+      list.scrollTop = 0;
+      fireEvent.scroll(list);
+    });
+    act(() => {
+      h.event('shell.timelineView', notice(2));
+    });
+    await waitFor(() => {
+      expect(list.scrollTop).toBeGreaterThan(0);
+    });
+  });
+});
+
+// C51B-R1S-05 (04 lines 405-408): a dialog that edits an existing value opens with it. With a note, the row context's
+// item and the dialog say Update Element Note, the editor shows the note, and OK without typing keeps it.
+describe('the dialogs that edit an existing value', () => {
+  it('prefill the element note and call it Update', async () => {
+    const h = await timeline({});
+    h.handlers['element.get'] = () =>
+      ok({
+        effectiveMarkerColour: '#FF8800FF',
+        markerColour: '#112233FF',
+        backgroundColour: null,
+        note: 'Keep this',
+      });
+    act(() => {
+      h.event('element.state.changed', {});
+    });
+    await waitFor(() => {
+      expect(h.sent.filter((x) => x.command === 'element.get').length).toBeGreaterThan(1);
+    });
+    await new Promise((r) => setTimeout(r, 200));
+    act(() => {
+      fireEvent.contextMenu(el('timeline.row.el_bob'), { clientX: 30, clientY: 30 });
+    });
+    const item = await waitFor(() => el('timeline.rowMenu.timeline.row.note'));
+    expect(item.textContent).toContain('Update Element Note');
+    act(() => {
+      item.click();
+    });
+    const field = await waitFor(() => el('timelineNote.value'));
+    expect((field as HTMLTextAreaElement).value).toBe('Keep this');
+    expect(document.body.textContent).toContain('Update Element Note');
+    act(() => {
+      el('timelineNote.submit').click();
+    });
+    await waitFor(() => {
+      expect(h.actions().find((a) => a.command === 'element.note.set')?.params).toEqual({
+        elementId: 'el_bob',
+        text: 'Keep this',
+      });
+    });
+  });
+
+  // C51B-R1S-06: the frame dialogs use the one numeric field: an entry that is not a number restores the value held.
+  it('Set Current Frame starts at the current frame and keeps its value on a bad entry', async () => {
+    const h = await timeline({});
+    await waitFor(() => {
+      expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('1');
+    });
+    act(() => {
+      h.event('timeline.currentFrame.changed', { sceneId: 'sc_1', frame: 5, source: 'user' });
+    });
+    await waitFor(() => {
+      expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('5');
+    });
+    act(() => {
+      fireEvent.contextMenu(el('timeline.ruler'), { clientX: 100, clientY: 5 });
+    });
+    const item = await waitFor(() => el('timeline.rulerMenu.timeline.ruler.currentFrame'));
+    act(() => {
+      item.click();
+    });
+    const field = (await waitFor(() => el('timelineCurrentFrame.value'))) as HTMLInputElement;
+    expect(field.value).toBe('5');
+    act(() => {
+      fireEvent.change(field, { target: { value: 'abc' } });
+      fireEvent.blur(field);
+    });
+    await waitFor(() => {
+      expect(field.value).toBe('5');
+    });
+    expect(field.dataset['ttProblem']).toBeTruthy();
+    act(() => {
+      fireEvent.change(field, { target: { value: '7' } });
+      fireEvent.blur(field);
+    });
+    act(() => {
+      el('timelineCurrentFrame.submit').click();
+    });
+    await waitFor(() => {
+      expect(h.actions().find((a) => a.command === 'timeline.currentFrame.set')?.params).toEqual({
+        frame: 7,
+      });
+    });
+  });
+});
+
+// C5.1b round 1 observation: the fonts-ready notice is an availability event. A control a `fontsLoading` precheck
+// disabled while the font list was read is asked again when the list is read.
+describe('the fonts-ready notice', () => {
+  it('reads the availability again', async () => {
+    const h = await timeline({});
+    let fontsRead = false;
+    const before = h.available;
+    h.available = (ref) =>
+      ref.commandId === 'element.solo.set' && !fontsRead
+        ? { enabled: false, reason: 'the system font list is still being read' }
+        : before(ref);
+    act(() => {
+      h.event('shell.fontsLoading', { waiting: true });
+    });
+    await waitFor(() => {
+      expect((el('timeline.solo') as HTMLButtonElement).disabled).toBe(true);
+    });
+    fontsRead = true;
+    act(() => {
+      h.event('shell.fontsLoading', { waiting: false });
+    });
+    await waitFor(() => {
+      expect((el('timeline.solo') as HTMLButtonElement).disabled).toBe(false);
+    });
+  });
+});

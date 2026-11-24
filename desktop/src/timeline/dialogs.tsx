@@ -4,11 +4,14 @@
 import { useEffect, useRef, useState } from 'react';
 
 import { Dialog } from '../shell/dialogs';
+import { NumericField } from '../shell/NumericField';
 import { ADD_TYPES } from './menus';
-import { wholeIn, type CompletedRef } from './dialogOpen';
+import type { CompletedRef } from './dialogOpen';
 import type { TransferOptions } from './model';
 
-/** One whole-number field (D-61): OK is disabled while the value is outside the range. */
+/** One whole-number field: the window's one numeric field (ruling D-61 item 3; C51B-R1S-06), with its commit rule. An
+ *  empty, non-numeric or out-of-range entry is never a value: the field returns to the value it holds and says why, and
+ *  OK sends the value held. Enter on an unchanged value is OK (01 §2). */
 export function NumberDialog(props: {
   id: string;
   title: string;
@@ -19,8 +22,12 @@ export function NumberDialog(props: {
   command: string;
   onDone: (n: number | null) => void;
 }) {
-  const [text, setText] = useState(String(props.initial));
-  const n = wholeIn(text, props.min, props.max);
+  const [value, setValue] = useState(props.initial);
+  const input = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    input.current?.focus();
+    input.current?.select();
+  }, []);
   return (
     <Dialog
       id={props.id}
@@ -29,30 +36,29 @@ export function NumberDialog(props: {
         props.onDone(null);
       }}
       onSubmit={() => {
-        props.onDone(n);
+        props.onDone(value);
       }}
       submitLabel="OK"
-      submitDisabled={n === null}
       command={props.command}
     >
       <label>
         {props.label}{' '}
-        <input
-          autoFocus
-          inputMode="numeric"
-          value={text}
-          data-tt-role="field"
-          data-tt-id={`${props.id}.value`}
-          onChange={(e) => {
-            setText(e.target.value);
+        <NumericField
+          id={`${props.id}.value`}
+          label={props.label}
+          role="field"
+          guiOnly="typing"
+          value={value}
+          range={{ min: props.min, max: props.max, integer: true }}
+          inputRef={input}
+          onSubmit={() => {
+            props.onDone(value);
+          }}
+          onCommit={(v) => {
+            setValue(v);
           }}
         />
       </label>
-      {n === null && (
-        <p className="field-problem" role="alert">
-          {`Type a whole number from ${props.min} to ${props.max}.`}
-        </p>
-      )}
     </Dialog>
   );
 }
@@ -128,8 +134,7 @@ export function NewElementsDialog(props: {
 }) {
   const [type, setType] = useState('drawing');
   const [name, setName] = useState('');
-  const [count, setCount] = useState('1');
-  const n = wholeIn(count, 1, 100);
+  const [count, setCount] = useState(1);
   return (
     <Dialog
       id="timelineNewElements"
@@ -138,14 +143,12 @@ export function NewElementsDialog(props: {
         props.onDone(null);
       }}
       onSubmit={() => {
-        if (n === null) return;
-        const params: Record<string, unknown> = { type, count: n };
+        const params: Record<string, unknown> = { type, count };
         if (name.trim() !== '') params['name'] = name.trim();
         if (props.above) params['above'] = props.above;
         props.onDone({ command: 'element.create', params });
       }}
       submitLabel="Create"
-      submitDisabled={n === null}
       command="element.create"
     >
       <label>
@@ -178,22 +181,19 @@ export function NewElementsDialog(props: {
         />
       </label>
       <label>
-        Number{' '}
-        <input
-          inputMode="numeric"
+        Number {/* The batch count: the one numeric field (C51B-R1S-06), 1 to 100. */}
+        <NumericField
+          id="timelineNewElements.count"
+          label="Number"
+          role="field"
+          guiOnly="typing"
           value={count}
-          data-tt-role="field"
-          data-tt-id="timelineNewElements.count"
-          onChange={(e) => {
-            setCount(e.target.value);
+          range={{ min: 1, max: 100, integer: true }}
+          onCommit={(v) => {
+            setCount(v);
           }}
         />
       </label>
-      {n === null && (
-        <p className="field-problem" role="alert">
-          Type a number of elements from 1 to 100.
-        </p>
-      )}
     </Dialog>
   );
 }

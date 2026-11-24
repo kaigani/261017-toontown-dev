@@ -46,25 +46,10 @@
       "section": "05 §19.3 (Command table)",
       "location": "Function editor: Reshape"
     },
-    "anim.key.add": {
-      "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Animation menu, Timeline: Add Keyframe"
-    },
-    "anim.key.remove": {
-      "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Animation menu, Timeline: Remove Keyframe, Remove All Keyframes"
-    },
     "anim.loop.set": {
       "owner": "M5 C5.2",
       "section": "04 §6.3 (Peg panel: loop mode; 05 §8.4)",
       "location": "Properties › Peg panel: loop mode (ruling E-3; the Timeline's loops send element.timing.set, 04 §17.1 item 4)"
-    },
-    "anim.path.lockDepth.set": {
-      "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Motion point properties, Animation menu: Toggle Constant Z"
     },
     "anim.path.point.add": {
       "owner": "M6 C6.2",
@@ -85,16 +70,6 @@
       "owner": "M6 C6.1",
       "section": "05 §19.3 (Command table)",
       "location": "Scene views: frame markers, ghosts and pivot paths"
-    },
-    "anim.segment.set": {
-      "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Animation menu, Timeline: Set Constant / Non-Constant Segment"
-    },
-    "anim.segment.uniform.apply": {
-      "owner": "M6 C6.2",
-      "section": "05 §19.3 (Command table)",
-      "location": "Animation menu: Uniform Left / Uniform Right"
     },
     "cell.blank.add": {
       "owner": "M5 C5.2",
