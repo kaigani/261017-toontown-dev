@@ -1,0 +1,20 @@
+{
+  "escapeUnchanged": true,
+  "escapeNoHistory": true,
+  "previewGone": true,
+  "inside": {
+    "start": 4,
+    "end": 51,
+    "loops": 1
+  },
+  "outside": {
+    "start": 4,
+    "end": 51,
+    "loops": 1
+  },
+  "outsidePoint": [
+    528,
+    0
+  ],
+  "outsideOutcome": "same as inside"
+}

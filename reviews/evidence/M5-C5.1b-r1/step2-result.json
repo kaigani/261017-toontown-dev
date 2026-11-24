@@ -1,0 +1,19 @@
+{
+  "before": {
+    "start": 1,
+    "end": 48,
+    "loops": 1
+  },
+  "after": {
+    "start": 4,
+    "end": 51,
+    "loops": 1
+  },
+  "history": [
+    [
+      "Change Timing",
+      "user"
+    ]
+  ],
+  "directEqual": true
+}

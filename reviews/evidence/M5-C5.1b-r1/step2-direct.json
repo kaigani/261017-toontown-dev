@@ -1,0 +1,9 @@
+{
+  "freshLaunch": true,
+  "bar": {
+    "start": 4,
+    "end": 51,
+    "loops": 1
+  },
+  "equal": true
+}

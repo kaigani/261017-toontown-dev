@@ -1,0 +1,85 @@
+{
+  "project": {
+    "id": "pr_01M868C9V1T1PNCQJZCXMJPK9J",
+    "name": "Timeline live review",
+    "path": null,
+    "dirty": true,
+    "globalLibraryDirty": false,
+    "readOnly": false
+  },
+  "scene": {
+    "id": "sc_01M868C9V1T1PNCQJZCXMJPKDP",
+    "name": "Scene-1",
+    "frameCount": 48
+  },
+  "frame": 1,
+  "element": {
+    "id": "el_01K7JJN800B3SGBQ3MPP84A36Q",
+    "name": "Bob",
+    "type": "drawing"
+  },
+  "drawing": {
+    "id": "dr_01K7JJN800M1EH4PHRQE1FJMAP",
+    "name": "1"
+  },
+  "mode": "staging",
+  "activeView": {
+    "viewId": "cameraView",
+    "panelId": "cameraView",
+    "type": "camera"
+  },
+  "focusedPanel": "timeline",
+  "activeTool": null,
+  "selection": {
+    "context": "timeline",
+    "ids": [
+      "el_01K7JJN800B3SGBQ3MPP84A36Q"
+    ],
+    "kinds": [
+      "element"
+    ]
+  },
+  "workspace": {
+    "name": "Default",
+    "modified": true
+  },
+  "playback": {
+    "playing": false
+  },
+  "startScreenVisible": false,
+  "modal": null,
+  "agentSessions": [
+    {
+      "sessionId": "s1-292ca1",
+      "name": "mcp",
+      "acting": false
+    }
+  ],
+  "fullScreen": false,
+  "agent": {
+    "sessionId": "s1-292ca1",
+    "client": "mcp",
+    "policy": "autonomous",
+    "scopes": [
+      "read",
+      "edit",
+      "ui",
+      "input",
+      "files.read",
+      "files.write",
+      "prefs",
+      "library.global"
+    ],
+    "paused": false,
+    "limits": {
+      "policy": "autonomous",
+      "maxJobs": 2,
+      "maxBatchSteps": 1000,
+      "maxInlineImagePx": 2048,
+      "maxInlineBytes": 52428800,
+      "askInApp": true,
+      "letAgentMoveView": true,
+      "highlightAgentChanges": true
+    }
+  }
+}

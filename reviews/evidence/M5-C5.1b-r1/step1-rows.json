@@ -1,0 +1,198 @@
+{
+  "head": "7db8567c80c67d5ad465425de53cde3841be3764",
+  "build": "default release",
+  "foreground": true,
+  "shown": [
+    {
+      "id": "timeline.row.el_01K7JJN8008RJC9FZMMB6BYKNQ",
+      "name": "Alice",
+      "cls": "timeline-row selected current",
+      "html": "<div role=\"listitem\" class=\"timeline-row selected current\" data-tt-role=\"listitem\" data-tt-id=\"timeline.row.el_01K7JJN8008RJC9FZMMB6BYKNQ\" data-tt-label=\"Alice\" style=\"position: absolute; top: 0px; left: 0px; right: 0px; height: 22px; padding-left: 4px; display: flex; align-items: center; gap: 4px; border-left: 4px solid rgb(143, 217, 143);\"><button type=\"button\" class=\"timeline-disclosure\" aria-expanded=\"true\" title=\"Collapse (element.collapsed.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN8008RJC9FZMMB6BYKNQ.collapsed\" data-tt-command=\"element.collapsed.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN8008RJC9FZMMB6BYKNQ&quot;],&quot;collapsed&quot;:true}\" style=\"visibility: hidden;\">-</button><button type=\"button\" class=\"timeline-visibility\" aria-pressed=\"true\" title=\"Show or hide in the scene (element.visibility.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN8008RJC9FZMMB6BYKNQ.visible\" data-tt-command=\"element.visibility.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN8008RJC9FZMMB6BYKNQ&quot;],&quot;scope&quot;:&quot;scene&quot;,&quot;visible&quot;:false}\">o</button><span class=\"timeline-name\" data-tt-role=\"text\" data-tt-id=\"timeline.row.el_01K7JJN8008RJC9FZMMB6BYKNQ.label\">Alice</span></div>"
+    },
+    {
+      "id": "timeline.row.el_01K7JJN800TMMQFRAWXNP9X99V",
+      "name": "Peg-B",
+      "cls": "timeline-row",
+      "html": "<div role=\"listitem\" class=\"timeline-row\" data-tt-role=\"listitem\" data-tt-id=\"timeline.row.el_01K7JJN800TMMQFRAWXNP9X99V\" data-tt-label=\"Peg-B\" style=\"position: absolute; top: 22px; left: 0px; right: 0px; height: 22px; padding-left: 4px; display: flex; align-items: center; gap: 4px; border-left: 4px solid rgb(128, 128, 255);\"><button type=\"button\" class=\"timeline-disclosure\" aria-expanded=\"true\" title=\"Collapse (element.collapsed.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN800TMMQFRAWXNP9X99V.collapsed\" data-tt-command=\"element.collapsed.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN800TMMQFRAWXNP9X99V&quot;],&quot;collapsed&quot;:true}\" style=\"visibility: hidden;\">-</button><button type=\"button\" class=\"timeline-visibility\" aria-pressed=\"true\" title=\"Show or hide in the scene (element.visibility.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN800TMMQFRAWXNP9X99V.visible\" data-tt-command=\"element.visibility.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN800TMMQFRAWXNP9X99V&quot;],&quot;scope&quot;:&quot;scene&quot;,&quot;visible&quot;:false}\">o</button><span class=\"timeline-name\" data-tt-role=\"text\" data-tt-id=\"timeline.row.el_01K7JJN800TMMQFRAWXNP9X99V.label\">Peg-B</span></div>"
+    },
+    {
+      "id": "timeline.row.el_01K7JJN800JGJ3HCQ82726MFM8",
+      "name": "Peg-A",
+      "cls": "timeline-row",
+      "html": "<div role=\"listitem\" class=\"timeline-row\" data-tt-role=\"listitem\" data-tt-id=\"timeline.row.el_01K7JJN800JGJ3HCQ82726MFM8\" data-tt-label=\"Peg-A\" style=\"position: absolute; top: 44px; left: 0px; right: 0px; height: 22px; padding-left: 4px; display: flex; align-items: center; gap: 4px; border-left: 4px solid rgb(128, 128, 255);\"><button type=\"button\" class=\"timeline-disclosure\" aria-expanded=\"true\" title=\"Collapse (element.collapsed.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN800JGJ3HCQ82726MFM8.collapsed\" data-tt-command=\"element.collapsed.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN800JGJ3HCQ82726MFM8&quot;],&quot;collapsed&quot;:true}\" style=\"visibility: visible;\">-</button><button type=\"button\" class=\"timeline-visibility\" aria-pressed=\"true\" title=\"Show or hide in the scene (element.visibility.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN800JGJ3HCQ82726MFM8.visible\" data-tt-command=\"element.visibility.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN800JGJ3HCQ82726MFM8&quot;],&quot;scope&quot;:&quot;scene&quot;,&quot;visible&quot;:false}\">o</button><span class=\"timeline-name\" data-tt-role=\"text\" data-tt-id=\"timeline.row.el_01K7JJN800JGJ3HCQ82726MFM8.label\">Peg-A</span></div>"
+    },
+    {
+      "id": "timeline.row.el_01K7JJN800WAB8QZHHRVFAHWK9",
+      "name": "Bob",
+      "cls": "timeline-row",
+      "html": "<div role=\"listitem\" class=\"timeline-row\" data-tt-role=\"listitem\" data-tt-id=\"timeline.row.el_01K7JJN800WAB8QZHHRVFAHWK9\" data-tt-label=\"Bob\" style=\"position: absolute; top: 66px; left: 0px; right: 0px; height: 22px; padding-left: 16px; display: flex; align-items: center; gap: 4px; border-left: 4px solid rgb(143, 217, 143);\"><button type=\"button\" class=\"timeline-disclosure\" aria-expanded=\"true\" title=\"Collapse (element.collapsed.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN800WAB8QZHHRVFAHWK9.collapsed\" data-tt-command=\"element.collapsed.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN800WAB8QZHHRVFAHWK9&quot;],&quot;collapsed&quot;:true}\" style=\"visibility: hidden;\">-</button><button type=\"button\" class=\"timeline-visibility\" aria-pressed=\"true\" title=\"Show or hide in the scene (element.visibility.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01K7JJN800WAB8QZHHRVFAHWK9.visible\" data-tt-command=\"element.visibility.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01K7JJN800WAB8QZHHRVFAHWK9&quot;],&quot;scope&quot;:&quot;scene&quot;,&quot;visible&quot;:false}\">o</button><span class=\"timeline-name\" data-tt-role=\"text\" data-tt-id=\"timeline.row.el_01K7JJN800WAB8QZHHRVFAHWK9.label\">Bob</span></div>"
+    },
+    {
+      "id": "timeline.row.el_01M86814V4YX07EM9PEBJ1SXR5",
+      "name": "Camera Peg",
+      "cls": "timeline-row",
+      "html": "<div role=\"listitem\" class=\"timeline-row\" data-tt-role=\"listitem\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR5\" data-tt-label=\"Camera Peg\" style=\"position: absolute; top: 88px; left: 0px; right: 0px; height: 22px; padding-left: 4px; display: flex; align-items: center; gap: 4px; border-left: 4px solid rgb(128, 128, 255);\"><button type=\"button\" class=\"timeline-disclosure\" aria-expanded=\"true\" title=\"Collapse (element.collapsed.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR5.collapsed\" data-tt-command=\"element.collapsed.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01M86814V4YX07EM9PEBJ1SXR5&quot;],&quot;collapsed&quot;:true}\" style=\"visibility: visible;\">-</button><button type=\"button\" class=\"timeline-visibility\" aria-pressed=\"true\" title=\"Show or hide in the scene (element.visibility.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR5.visible\" data-tt-command=\"element.visibility.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01M86814V4YX07EM9PEBJ1SXR5&quot;],&quot;scope&quot;:&quot;scene&quot;,&quot;visible&quot;:false}\">o</button><span class=\"timeline-name\" data-tt-role=\"text\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR5.label\">Camera Peg</span></div>"
+    },
+    {
+      "id": "timeline.row.el_01M86814V4YX07EM9PEBJ1SXR6",
+      "name": "Camera",
+      "cls": "timeline-row",
+      "html": "<div role=\"listitem\" class=\"timeline-row\" data-tt-role=\"listitem\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR6\" data-tt-label=\"Camera\" style=\"position: absolute; top: 110px; left: 0px; right: 0px; height: 22px; padding-left: 16px; display: flex; align-items: center; gap: 4px; border-left: 4px solid rgb(255, 128, 128);\"><button type=\"button\" class=\"timeline-disclosure\" aria-expanded=\"true\" title=\"Collapse (element.collapsed.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR6.collapsed\" data-tt-command=\"element.collapsed.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01M86814V4YX07EM9PEBJ1SXR6&quot;],&quot;collapsed&quot;:true}\" style=\"visibility: hidden;\">-</button><button type=\"button\" class=\"timeline-visibility\" aria-pressed=\"true\" title=\"Show or hide in the scene (element.visibility.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR6.visible\" data-tt-command=\"element.visibility.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01M86814V4YX07EM9PEBJ1SXR6&quot;],&quot;scope&quot;:&quot;scene&quot;,&quot;visible&quot;:false}\">o</button><span class=\"timeline-name\" data-tt-role=\"text\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR6.label\">Camera</span></div>"
+    },
+    {
+      "id": "timeline.row.el_01M86814V4YX07EM9PEBJ1SXR7",
+      "name": "Drawing",
+      "cls": "timeline-row",
+      "html": "<div role=\"listitem\" class=\"timeline-row\" data-tt-role=\"listitem\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR7\" data-tt-label=\"Drawing\" style=\"position: absolute; top: 132px; left: 0px; right: 0px; height: 22px; padding-left: 4px; display: flex; align-items: center; gap: 4px; border-left: 4px solid rgb(143, 217, 143);\"><button type=\"button\" class=\"timeline-disclosure\" aria-expanded=\"true\" title=\"Collapse (element.collapsed.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR7.collapsed\" data-tt-command=\"element.collapsed.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01M86814V4YX07EM9PEBJ1SXR7&quot;],&quot;collapsed&quot;:true}\" style=\"visibility: hidden;\">-</button><button type=\"button\" class=\"timeline-visibility\" aria-pressed=\"true\" title=\"Show or hide in the scene (element.visibility.set)\" data-tt-role=\"button\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR7.visible\" data-tt-command=\"element.visibility.set\" data-tt-params=\"{&quot;elementIds&quot;:[&quot;el_01M86814V4YX07EM9PEBJ1SXR7&quot;],&quot;scope&quot;:&quot;scene&quot;,&quot;visible&quot;:false}\">o</button><span class=\"timeline-name\" data-tt-role=\"text\" data-tt-id=\"timeline.row.el_01M86814V4YX07EM9PEBJ1SXR7.label\">Drawing</span></div>"
+    }
+  ],
+  "mcp": {
+    "sceneId": "sc_01M86814V4YX07EM9PEBJ1SXR4",
+    "sceneLength": 48,
+    "currentFrame": 1,
+    "playbackRange": {
+      "mode": "auto",
+      "start": 1,
+      "end": 48
+    },
+    "rows": [
+      {
+        "elementId": "el_01K7JJN8008RJC9FZMMB6BYKNQ",
+        "name": "Alice",
+        "type": "drawing",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 12,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN800TMMQFRAWXNP9X99V",
+        "name": "Peg-B",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 48,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN800JGJ3HCQ82726MFM8",
+        "name": "Peg-A",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 48,
+          "loops": 1
+        },
+        "keyframes": [
+          {
+            "frame": 1,
+            "channels": [
+              "position"
+            ],
+            "segmentAfter": "interpolated"
+          },
+          {
+            "frame": 8,
+            "channels": [
+              "position"
+            ],
+            "segmentAfter": "interpolated"
+          }
+        ],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN800WAB8QZHHRVFAHWK9",
+        "name": "Bob",
+        "type": "drawing",
+        "depth": 1,
+        "parentId": "el_01K7JJN800JGJ3HCQ82726MFM8",
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 12,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M86814V4YX07EM9PEBJ1SXR5",
+        "name": "Camera Peg",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 1,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M86814V4YX07EM9PEBJ1SXR6",
+        "name": "Camera",
+        "type": "camera",
+        "depth": 1,
+        "parentId": "el_01M86814V4YX07EM9PEBJ1SXR5",
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 1,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M86814V4YX07EM9PEBJ1SXR7",
+        "name": "Drawing",
+        "type": "drawing",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": null,
+        "keyframes": [],
+        "childKeyframeFrames": []
+      }
+    ]
+  }
+}

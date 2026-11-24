@@ -1,0 +1,48 @@
+{
+  "bar": {
+    "start": 1,
+    "end": 12,
+    "loops": 1
+  },
+  "calls": [
+    {
+      "phase": "press",
+      "layout": {
+        "surface": "tracks",
+        "zoomLevel": 6,
+        "firstFrame": 1,
+        "scrollTop": 0,
+        "platform": "windows"
+      },
+      "sample": {
+        "x": 55.921875,
+        "y": 72,
+        "modifiers": []
+      },
+      "generation": 0
+    },
+    {
+      "phase": "release",
+      "grabId": 1,
+      "samples": [
+        {
+          "x": 55.921875,
+          "y": 72,
+          "modifiers": []
+        },
+        {
+          "x": 103.921875,
+          "y": 72,
+          "modifiers": []
+        },
+        {
+          "x": 103.921875,
+          "y": 72,
+          "modifiers": []
+        }
+      ],
+      "generation": 0
+    }
+  ],
+  "target": "timeline.tracks"
+}

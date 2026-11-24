@@ -1,0 +1,91 @@
+[
+  {
+    "name": "1. an autosave of the modified project",
+    "ok": true,
+    "detail": {
+      "seconds": 60.65
+    }
+  },
+  {
+    "name": "2. the engine stops: internal, reason engineStopped, the hint names project.recovery.list",
+    "ok": true,
+    "detail": {
+      "died": {
+        "code": "internal",
+        "message": "the document thread has stopped",
+        "details": {
+          "reason": "engineStopped"
+        },
+        "hint": "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave."
+      },
+      "later": {
+        "code": "internal",
+        "message": "the document thread has stopped",
+        "details": {
+          "reason": "engineStopped"
+        },
+        "hint": "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave."
+      }
+    }
+  },
+  {
+    "name": "3. the window marks the engine not responding at once (within 7.0 s)",
+    "ok": true,
+    "detail": {
+      "secondsAfterTheStop": 3.83
+    }
+  },
+  {
+    "name": "3b. the banner's Restart the engine is in view and reachable by a click (nothing covers it)",
+    "ok": true,
+    "detail": {
+      "rect": {
+        "x": 912.21875,
+        "y": 87.5,
+        "dpr": 1,
+        "disabled": false,
+        "reachable": true
+      }
+    }
+  },
+  {
+    "name": "4a. the restart question, Cancel: the engine stays stopped and the banner stays",
+    "ok": true,
+    "detail": {
+      "asked": 0.0,
+      "banner": true,
+      "engine": {
+        "code": "internal",
+        "message": "the document thread has stopped",
+        "details": {
+          "reason": "engineStopped"
+        },
+        "hint": "The engine must be restarted: in the desktop application, Restart the engine; with the headless engine or an MCP client, restart the engine process. Then `project.recovery.list` offers the work of the last autosave."
+      }
+    }
+  },
+  {
+    "name": "4b. the restart question, Restart: the banner goes and the new engine answers",
+    "ok": true,
+    "detail": {
+      "asked": 0.0,
+      "bannerGoneAfter": 0.0,
+      "newEndpoint": true,
+      "engine": "ok",
+      "error": null
+    }
+  },
+  {
+    "name": "5. Recover: the start screen offers the autosave; it opens with the work before it, not the change the engine died on",
+    "ok": true,
+    "detail": {
+      "entry": "start.recover.rc_c332b0ba7cd231e7",
+      "elements": [
+        "Before",
+        "Camera",
+        "Camera Peg",
+        "Drawing"
+      ]
+    }
+  }
+]
