@@ -11,8 +11,9 @@ read through the webview's debugging port and driven with real OS input where a 
 dialog opened from the menu bar, the rename editor opened by a double click), as `c43-d39-bindings.py` does.
 
 Rows: the passing case (the cell context of the tracks), a control without a menu (the toolbar's Add), an unknown
-control, a stale row id (an element deleted), a non-string `view`, a dialog open (nothing focused or opened), the rename
-editor open (its text kept), and whose action an item is: the agent runs an opened item's reference (`run_command`,
+control, a stale row id (an element deleted), a non-string `view`, a dialog open (nothing focused or opened: New
+Elements from the menu bar, and the reviewer's case, Change Duration from the row context, aimed at the row's name), the
+rename editor open (its text kept), and whose action an item is: the agent runs an opened item's reference (`run_command`,
 the agent's origin and scopes: an agent step), a person's real click on an item of the same menu is a user step.
 
 Output: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c51b.context-menu-key`). Exit 0 when every row
@@ -195,6 +196,30 @@ async def check(app: str, run, out: Path, work: Path) -> list:
             d39.front()
             d39.key(0x1B)
             await until(lambda: not present("timelineNewElements"), 10.0)
+
+            # 6b. The reviewer's case (C51B-R2-02): Change Duration opened from the row context by real input, the key
+            # aimed at the row's name: ui.modalOpen, no menu, the dialog's field keeps the focus and its value.
+            r = t.rect(f"timeline.row.{a}.label")
+            h = d39.front()
+            origin = d39.wintypes.POINT(0, 0)
+            d39.u32.ClientToScreen(h, d39.ctypes.byref(origin))
+            d39.right_click_screen(origin.x + r["x"] * r["dpr"], origin.y + r["y"] * r["dpr"])
+            item = "timeline.rowMenu.timeline.row.changeDuration"
+            await until(lambda: js("document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')"
+                                   "?.getAttribute('aria-disabled') ?? null" % json.dumps(item)) == "false", 10.0)
+            t.click(item)
+            opened = await until(lambda: present("timelineDuration"), 10.0)
+            await asyncio.sleep(0.5)
+            focus_before = focused()
+            value_before = js("document.activeElement?.value ?? null")
+            env = await press(f"timeline.row.{a}.label")
+            row("6b. Change Duration open (the reviewer's case): ui.modalOpen, no menu, the field keeps focus and value",
+                opened is not None and (env.get("error") or {}).get("code") == "ui.modalOpen" and menu_open() is None
+                and focused() == focus_before and js("document.activeElement?.value ?? null") == value_before,
+                {"answer": env, "focusBefore": focus_before, "focusAfter": focused(), "value": value_before})
+            d39.front()
+            d39.key(0x1B)
+            await until(lambda: not present("timelineDuration"), 10.0)
 
             # 7. The rename editor open (a real double click on the row's name): ui.busy, the text kept, no menu.
             r = t.rect(f"timeline.row.{a}.label")

@@ -317,6 +317,8 @@ mod tests {
                 "canvas_load",
                 "gesture_commit",
                 "gesture_abort",
+                // M5 ruling E-52: the window's answer to an agent's Shift+F10 (what it did with the routed request).
+                "context_menu_answer",
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",
@@ -344,7 +346,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..23],
+            &names[..24],
             [
                 "ping",
                 "app_info",
@@ -360,6 +362,8 @@ mod tests {
                 "canvas_load",
                 "gesture_commit",
                 "gesture_abort",
+                // M5 ruling E-52: the window's answer to an agent's Shift+F10 (what it did with the routed request).
+                "context_menu_answer",
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",

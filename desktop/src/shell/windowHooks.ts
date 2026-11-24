@@ -142,9 +142,9 @@ export async function openContextMenuFor(
     return { outcome: 'notFound', menuId: null };
   }
   const before = document.activeElement;
-  let taken = false;
+  const seen = { taken: false };
   const probe = (e: Event) => {
-    taken = e.defaultPrevented;
+    seen.taken = e.defaultPrevented;
   };
   document.addEventListener('contextmenu', probe);
   at.focus({ preventScroll: true });
@@ -152,7 +152,7 @@ export async function openContextMenuFor(
     new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 0, clientY: 0 }),
   );
   document.removeEventListener('contextmenu', probe);
-  if (!taken) {
+  if (!seen.taken) {
     if (before instanceof HTMLElement && before !== at) before.focus({ preventScroll: true });
     return { outcome: 'noMenu', menuId: null };
   }
