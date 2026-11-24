@@ -99,8 +99,13 @@ TL_ROW_MENU = {**{f"add.{t}": f"Add {label}" for t, label in (
     "hideAnnotations": "Hide All Annotation Elements", "defaultColour": "Default Colour",
     "showAllParameters": "Show All Effect Parameters", "hideAllParameters": "Hide All Effect Parameters",
     "annotation": "Set as Annotation", "lock": "Lock", "lockOthers": "Lock All Others", "lockAll": "Lock All",
-    "unlockAll": "Unlock All", "clone": "Clone", "duplicate": "Duplicate"}
-TL_CELL_MENU = {"cut": "Cut", "copy": "Copy", "paste": "Paste", "delete": "Delete"}
+    "unlockAll": "Unlock All", "clone": "Clone", "duplicate": "Duplicate",
+    # Rulings E-2 (b), E-47.
+    "removeKeys": "Remove All Keyframes", "constantZ": "Toggle Constant Z"}
+TL_CELL_MENU = {"cut": "Cut", "copy": "Copy", "paste": "Paste", "delete": "Delete",
+                # Rulings E-2 (b), E-47.
+                "addKey": "Add Keyframe", "removeKey": "Remove Keyframe", "constant": "Set Constant Segment",
+                "nonConstant": "Set Non-Constant Segment", "uniformLeft": "Uniform Left", "uniformRight": "Uniform Right"}
 TL_RULER_MENU = {"rangeAuto": "Automatic Fit", "rangeFree": "Free", "startHere": "Set Playback Start Here",
                  "endHere": "Set Playback End Here"}
 
@@ -287,6 +292,20 @@ COVERAGE: dict[str, dict] = {
        for i, label in TL_RULER_MENU.items()},
     "timeline.rowMenu.timeline.row.pegReset": {"reason": "anim.reset.apply arrives with M6 C6.1 (registered, not "
                                                          "implemented): the item is disabled with that reason"},
+    # Ruling E-47: the items 04 lines 704-706 require whose command a later checkpoint implements (registered, not
+    # implemented): each is shown disabled with the kernel's "arrives with" reason. Items whose command is deferred, or
+    # that no command performs yet, render as placeholders and are not commanded controls.
+    **{f"timeline.rowMenu.timeline.row.{i}": {"reason": f"{c} arrives with a later checkpoint (registered, not "
+                                                         "implemented): the item is disabled with that reason"}
+       for i, c in (("importImage", "import.file.run"), ("importArtwork", "import.file.run"),
+                    ("importSound", "sound.import"), ("importMovie", "import.movie.run"),
+                    ("editSound", "sound.editor.open"))},
+    **{f"timeline.cellMenu.timeline.cell.{i}": {"reason": f"{c} arrives with M8 (registered, not implemented): the "
+                                                           "item is disabled with that reason"}
+       for i, c in (("editSound", "sound.editor.open"), ("splitSound", "sound.placement.split"))},
+    **{f"timeline.rulerMenu.timeline.ruler.{i}": {"reason": f"{c} arrives with M8 (registered, not implemented): "
+                                                             "the item is disabled with that reason"}
+       for i, c in (("soundPlayback", "sound.playback.set"), ("soundScrubbing", "sound.scrubbing.set"))},
     **{c: {"d44": names} for c, names in TL_DIALOG_ITEMS.items()},
     **{c: {"d44": names} for c, names in TL_SUBMITS.items()},
 }

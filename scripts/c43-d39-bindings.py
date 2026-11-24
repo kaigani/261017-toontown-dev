@@ -984,6 +984,45 @@ class McpTable(Table):
                 raise RuntimeError(f"option {action[2]!r} absent from the list's node: {action[1]}")
             ref = o.get("command") or {}
             self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
+        elif kind == "context" and action[2].startswith("timeline."):
+            # M5 ruling E-48: the Timeline's context menus through the keyboard path an agent has, the `key` tool's
+            # Shift+F10 on the surface (11 §7.6; D-66 item 3). A keyboard-opened menu acts on the current cell, so the
+            # current cell is set to the row and frame the OS form clicks, then put back once the menu's item has been
+            # read; the item's live reference (the clicked row's ids, the kernel's completed toggle state) is read from
+            # the window's tree and run, as the other MCP rows run what their control declares.
+            app = await e2e.run_cmd(self.s, "app.state.get", {})
+            was = (app.get("result") or {}) if isinstance(app, dict) else {}
+            where = action[3] if len(action) > 3 else None
+            if where:
+                view = (await e2e.run_cmd(self.s, "timeline.view.set", {})).get("result") or {}
+                z = TL_LAYOUT["zoomLevels"][min(int(view.get("zoomLevel", 6)), len(TL_LAYOUT["zoomLevels"]) - 1)]
+                frame = int(view.get("firstFrame", 1)) + int(where["x"] // max(1, z["cellWidth"])) * max(
+                    1, z.get("framesPerCell", 1))
+                row_of = where.get("y_of", "")
+                if row_of.startswith("timeline.row."):
+                    await e2e.run_cmd(self.s, "xsheet.currentCell.set",
+                                      {"elementId": row_of[len("timeline.row."):], "frame": frame})
+                else:
+                    await e2e.run_cmd(self.s, "timeline.currentFrame.set", {"frame": frame})
+            pressed = await e2e.call(self.s, "key", {"keys": "shift+F10", "view": action[1]})
+            n = self.node(await self.tree(), action[2])
+            start = time.monotonic()
+            while not (n and n.get("enabled") is True) and time.monotonic() - start < 20.0:
+                await asyncio.sleep(0.25)
+                n = self.node(await self.tree(), action[2])
+            if where:
+                element = (was.get("element") or {}).get("id") if isinstance(was.get("element"), dict) else None
+                if element and was.get("frame"):
+                    await e2e.run_cmd(self.s, "xsheet.currentCell.set", {"elementId": element, "frame": was["frame"]})
+                elif was.get("frame"):
+                    await e2e.run_cmd(self.s, "timeline.currentFrame.set", {"frame": was["frame"]})
+            if not n:
+                raise RuntimeError(f"menu item absent from the window's tree after Shift+F10 "
+                                   f"({pressed.get('status')}): {action[2]}")
+            if n.get("enabled") is False:
+                raise RuntimeError(f"menu item disabled in the window's tree: {action[2]}")
+            ref = n.get("command") or {}
+            self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
         elif kind == "context":
             # An agent has no secondary click: the item is exercised through the reference the rendered menu declares
             # for it (the parity manifest's DOM row, collected from the same menu; design note 1 §9, plan §4.10).
@@ -3345,9 +3384,8 @@ async def build_and_run(t: Table, only: set) -> None:
 
 # ----- M5 C5.1b: the Timeline panel (04 §9-§13, lines 600-710; reviews/M5-design-timeline-view.md) -----------------
 
-TL_CONTEXT_ONLY = ("the item's reference names the row and frame the person's secondary click chose: an agent has no "
-                   "secondary click, and the parity manifest's reference was collected on the collector's fixture (its "
-                   "element ids), so only the OS form exercises the item")
+# M5 ruling E-48: the context menus' items run in both forms; the MCP form opens each menu through the keyboard path
+# (the `key` tool's Shift+F10 on the surface, the current cell where the OS form clicks), see `McpTable.do`.
 TL_SLIDER = ("a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared "
              "reference is the current value)")
 TL_LAYOUT = json.loads((ROOT / "desktop/src/timeline/timeline-layout.json").read_text(encoding="utf-8"))
@@ -3490,10 +3528,17 @@ async def timeline_rows(t: Table, bob: str) -> list:
         if ctx.get("a"):
             got = (await run("xsheet.exposures.get", {"elementIds": [ctx["a"]], "from": 1, "to": 24})).get("result")
             cells = json.dumps(got, sort_keys=True)[:3000]
+        # E-2 (b): each row's keys (frame, segment after), and the peg's path (Constant Z per motion keyframe).
+        keys = {r["elementId"]: [(k.get("frame"), k.get("segmentAfter")) for k in r.get("keyframes") or []]
+                for r in listed.get("rows") or []}
+        path = ""
+        if ctx.get("p"):
+            path = json.dumps((await run("anim.path.get", {"nodeId": ctx["p"]})).get("result"), sort_keys=True)
         return {"els": els, "sel": sorted(i for i in sel.get("ids") or [] if str(i).startswith("el_")),
                 "clip": json.dumps(clip, sort_keys=True)[:3000], "range": await cmd("timeline.playbackRange.get", {}),
                 "rows": len(listed.get("rows") or []), "zoom": view.get("zoomLevel"), "first": view.get("firstFrame"),
-                "playing": play.get("playing"), "frame": play.get("frame"), "cells": cells}
+                "playing": play.get("playing"), "frame": play.get("frame"), "cells": cells, "keys": keys,
+                "path": path}
 
     def el(s, key):
         want = bob if key == "bob" else ctx.get(key)
@@ -3516,7 +3561,7 @@ async def timeline_rows(t: Table, bob: str) -> list:
                      "action": lambda: ("context", surface(), f"timeline.{menu}Menu.timeline.{menu}.{item}", where()),
                      "expect": lambda b: (command, params() if callable(params) else params),
                      **({"label": step} if step else {"undoOf": command}), "setup": setup(kind, target, *steps),
-                     "state": state, "effect": effect, "disabled": None, "osOnly": True, "mcpReason": TL_CONTEXT_ONLY,
+                     "state": state, "effect": effect, "disabled": None,
                      **({"match": point} if point else {})})
 
     ids = lambda key: (lambda: {"elementIds": [ctx[key]]})  # noqa: E731
@@ -3649,6 +3694,64 @@ async def timeline_rows(t: Table, bob: str) -> list:
     menu_row("cell", "paste", "Paste", "edit.paste", {"context": "timeline"}, "a", "a", cells_changed, cells_copied)
     menu_row("cell", "delete", "Delete", "edit.delete", {"context": "timeline"}, "a", "a", cells_changed,
              cells_selected)
+
+    # Rulings E-2 (b), E-47: the cell menu's keyframe items (05 §10) on TlA at the clicked frame (40 pixels in: the
+    # frame is the window's, so the parameters are a predicate), and the row menu's Remove All Keyframes and Toggle
+    # Constant Z on TlP.
+    def keyed(key, frames, constant=False):
+        async def go():
+            for f in frames:
+                await cmd("anim.key.add", {"nodeIds": [ctx[key]], "frame": f})
+            if constant:
+                for f in frames[:-1]:
+                    await cmd("anim.segment.set", {"nodeIds": [ctx[key]], "frame": f, "constant": True})
+        return go
+
+    def key_count(s, key):
+        return len(s["keys"].get(ctx[key]) or [])
+
+    def segments(s, key, kind):
+        return sum(1 for _, seg in s["keys"].get(ctx[key]) or [] if seg == kind)
+
+    def at_click(extra):
+        return lambda prm, b: (prm.get("nodeIds") == [ctx["a"]] and isinstance(prm.get("frame"), int)
+                               and 1 <= prm["frame"] <= 12 and all(prm.get(k) == v for k, v in extra.items()))
+
+    menu_row("cell", "addKey", "Add Keyframe", "anim.key.add", {"nodeIds": ["TlA"], "frame": "the clicked frame"},
+             "a", "a", lambda b, a, k: key_count(a, "a") == key_count(b, "a") + 1, point=at_click({}))
+    menu_row("cell", "removeKey", "Remove Keyframe", "anim.key.remove",
+             {"nodeIds": ["TlA"], "frame": "the clicked frame"}, "a", "a",
+             lambda b, a, k: key_count(a, "a") == key_count(b, "a") - 1, keyed("a", list(range(1, 13))),
+             point=at_click({}))
+    menu_row("cell", "constant", "Set Constant Segment", "anim.segment.set",
+             {"nodeIds": ["TlA"], "frame": "the clicked frame", "constant": True}, "a", "a",
+             lambda b, a, k: segments(a, "a", "constant") > segments(b, "a", "constant"),
+             keyed("a", [1, 12]), point=at_click({"constant": True}))
+    menu_row("cell", "nonConstant", "Set Non-Constant Segment", "anim.segment.set",
+             {"nodeIds": ["TlA"], "frame": "the clicked frame", "constant": False}, "a", "a",
+             lambda b, a, k: segments(a, "a", "constant") < segments(b, "a", "constant"),
+             keyed("a", [1, 12], constant=True), point=at_click({"constant": False}))
+    # Uniform Left / Right on TlP's cells: a path whose keys are unevenly spaced (frames 1, 6 and 12 at x 0, 1 and 10),
+    # so making the clicked segment's motion uniform changes the path.
+    async def uneven_path():
+        await cmd("anim.path.set", {"nodeId": ctx["p"], "points": [
+            {"kind": "key", "frame": 1, "x": 0, "y": 0, "z": 0}, {"kind": "key", "frame": 6, "x": 1, "y": 0, "z": 0},
+            {"kind": "key", "frame": 12, "x": 10, "y": 0, "z": 0}]})
+    for item, label, side in (("uniformLeft", "Uniform Left", "left"), ("uniformRight", "Uniform Right", "right")):
+        menu_row("cell", item, label, "anim.segment.uniform.apply",
+                 {"nodeId": "TlP", "frame": "the clicked frame", "side": side}, "next", "p",
+                 lambda b, a, k: a["path"] != b["path"], uneven_path,
+                 point=(lambda sd: lambda prm, b: (prm.get("nodeId") == ctx["p"] and prm.get("side") == sd
+                                                   and isinstance(prm.get("frame"), int)
+                                                   and 1 <= prm["frame"] <= 12))(side))
+
+    menu_row("row", "removeKeys", "Remove All Keyframes", "anim.key.remove",
+             lambda: {"nodeIds": [ctx["p"]], "all": True}, "next", "p",
+             lambda b, a, k: key_count(b, "p") == 2 and key_count(a, "p") == 0, keyed("p", [1, 5]))
+    menu_row("row", "constantZ", "Toggle Constant Z", "anim.path.lockDepth.set",
+             lambda: {"nodeId": ctx["p"], "frame": 1, "enabled": True}, "next", "p",
+             lambda b, a, k: '"lockDepth": true' in a["path"] and '"lockDepth": true' not in b["path"],
+             keyed("p", [1, 5]))
 
     # The ruler menu (04 line 706; 09 line 85): the playback range's mode and its ends at the clicked frame (60 pixels
     # in: the frame there is the window's, so the parameters are a predicate: one frame of the scene).
