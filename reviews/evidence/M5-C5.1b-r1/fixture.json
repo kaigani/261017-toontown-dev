@@ -37,7 +37,7 @@
   {
     "command": "element.drawing.create",
     "params": {
-      "elementId": "el_01K7JJN800T3AQX0CA9SRHVTPN",
+      "elementId": "el_01K7JJN800NJ14PHRHWCGPR3GF",
       "name": "1",
       "exposeFrom": 1,
       "exposeTo": 4
@@ -46,7 +46,7 @@
   {
     "command": "element.drawing.create",
     "params": {
-      "elementId": "el_01K7JJN800T3AQX0CA9SRHVTPN",
+      "elementId": "el_01K7JJN800NJ14PHRHWCGPR3GF",
       "name": "2",
       "exposeFrom": 5,
       "exposeTo": 8
@@ -55,7 +55,7 @@
   {
     "command": "element.drawing.create",
     "params": {
-      "elementId": "el_01K7JJN800T3AQX0CA9SRHVTPN",
+      "elementId": "el_01K7JJN800NJ14PHRHWCGPR3GF",
       "name": "3",
       "exposeFrom": 9,
       "exposeTo": 12
@@ -64,7 +64,7 @@
   {
     "command": "element.drawing.create",
     "params": {
-      "elementId": "el_01K7JJN8002M7ZAGJV389ZZH4T",
+      "elementId": "el_01K7JJN800AH98T16VDZYFS04Y",
       "name": "1",
       "exposeFrom": 1,
       "exposeTo": 4
@@ -73,7 +73,7 @@
   {
     "command": "element.drawing.create",
     "params": {
-      "elementId": "el_01K7JJN8002M7ZAGJV389ZZH4T",
+      "elementId": "el_01K7JJN800AH98T16VDZYFS04Y",
       "name": "2",
       "exposeFrom": 5,
       "exposeTo": 8
@@ -82,7 +82,7 @@
   {
     "command": "element.drawing.create",
     "params": {
-      "elementId": "el_01K7JJN8002M7ZAGJV389ZZH4T",
+      "elementId": "el_01K7JJN800AH98T16VDZYFS04Y",
       "name": "3",
       "exposeFrom": 9,
       "exposeTo": 12
@@ -92,16 +92,16 @@
     "command": "element.parent.set",
     "params": {
       "elementIds": [
-        "el_01K7JJN800T3AQX0CA9SRHVTPN"
+        "el_01K7JJN800NJ14PHRHWCGPR3GF"
       ],
-      "parentId": "el_01K7JJN800P489WEJAHTDWHMP9"
+      "parentId": "el_01K7JJN800MA6G8DGSEP9TTVTS"
     }
   },
   {
     "command": "element.timing.set",
     "params": {
       "elementIds": [
-        "el_01K7JJN800P489WEJAHTDWHMP9"
+        "el_01K7JJN800MA6G8DGSEP9TTVTS"
       ],
       "start": 1,
       "duration": 48
@@ -111,7 +111,7 @@
     "command": "element.timing.set",
     "params": {
       "elementIds": [
-        "el_01K7JJN800TRJ0GEN2DZB68YMS"
+        "el_01K7JJN800G0CDBFVZF11W5VVM"
       ],
       "start": 1,
       "duration": 48
@@ -121,7 +121,7 @@
     "command": "anim.key.add",
     "params": {
       "nodeIds": [
-        "el_01K7JJN800P489WEJAHTDWHMP9"
+        "el_01K7JJN800MA6G8DGSEP9TTVTS"
       ],
       "frame": 1,
       "channels": [
@@ -133,7 +133,7 @@
     "command": "anim.key.add",
     "params": {
       "nodeIds": [
-        "el_01K7JJN800P489WEJAHTDWHMP9"
+        "el_01K7JJN800MA6G8DGSEP9TTVTS"
       ],
       "frame": 8,
       "channels": [

@@ -79,6 +79,10 @@ async def body(t,step):
   tr=js("document.querySelector('[data-tt-id=\"timeline.tracks\"]').getBoundingClientRect().toJSON()")
   return point('timeline.tracks',(frame-.5)*16,rr['y']-tr['y']+16)
  async def move(pt):
+  import ctypes
+  from ctypes import wintypes
+  cur=wintypes.POINT();d.u32.GetCursorPos(ctypes.byref(cur))
+  if (cur.x,cur.y)==tuple(pt):return
   guard();d.u32.SetCursorPos(*pt)
   await wait(lambda:js('window.reviewPointer && window.reviewPointer.x===%d && window.reviewPointer.y===%d'%pt))
  async def down(pt):
@@ -195,10 +199,10 @@ async def body(t,step):
   async def wheels():
    xy=point('timeline.tracks',100,70)
    for i in range(40):
-    guard();d.wheel_screen(*xy,1)
+    await move(xy);guard();d._send_mouse(0x0800,-120)
     await wait(lambda:js('window.reviewWheels')>=i+1)
   await asyncio.gather(queries(),wheels())
-  v=await c('timeline.view.set');r=await c('timeline.rows.list',{'from':v['firstFrame'],'to':v['lastFrame']})
+  v=await c('timeline.view.set');r=await c('timeline.rows.list',{'from':int(v['firstFrame']),'to':int(v['lastFrame'])})
   def visible():return js("(()=>{const l=document.querySelector('[data-tt-id=\"timeline.layers\"]'),b=l.getBoundingClientRect();return {scroll:l.scrollTop,height:l.clientHeight,ids:[...l.querySelectorAll('.timeline-row')].filter(e=>{const r=e.getBoundingClientRect();return r.bottom>b.top&&r.top<b.bottom}).map(e=>e.dataset.ttId)}})()")
   ui=visible();expected=['timeline.row.'+x['elementId'] for x in r['rows']][int(ui['scroll']//22):__import__('math').ceil((ui['scroll']+ui['height'])/22)]
   await wait(lambda:visible()['ids']==expected)
