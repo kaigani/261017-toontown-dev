@@ -36,6 +36,16 @@ fn poster(cx: &Cx) -> Result<crate::Poster, CommandError> {
     cx.session().env.poster.clone().ok_or_else(|| CommandError::internal("the document thread cannot be reached"))
 }
 
+/// Waits, in an open's job, until the invocation that started the job has finished on the document thread (M5 ruling
+/// E-45): its `onUnsaved: "save"` written, the open project closed and its lock released. The thread serves one request
+/// at a time and the whole invocation, commit included, is one request, so a request posted from the job runs after it.
+/// Without this the job read the file while the save was still pending: reopening the open project's own path
+/// installed the copy read before the save (the window showed the old state, the disk held the new, and the next save
+/// wrote the old over the new), and the project's own lock, not yet released, opened it read-only.
+fn after_invocation(poster: &crate::Poster) -> Result<(), CommandError> {
+    poster.run(POST_TIMEOUT, |_| ())
+}
+
 fn exists_project(path: &Path) -> bool {
     path.is_file() || path.join(tt_persist::layout::PROJECT).is_file()
 }
@@ -523,6 +533,8 @@ pub(crate) fn project_open(cx: &mut Cx, p: OpenParams) -> Result<Job<OpenResult>
     let migrations = cx.session().env.migrations;
     let read_only = p.read_only;
     let job = cx.session().jobs.submit("project.open", &origin.session_key(), move |progress| {
+        // Save first, then read what was saved (E-45).
+        after_invocation(&poster)?;
         let (lock, read_only, lock_warnings, locked_by) = lock_for(&path, read_only, &|| progress.cancelled())?;
         let report = |f: f64, text: &str| {
             progress.report(f * 0.95, text);
@@ -1281,7 +1293,9 @@ pub(crate) fn project_recovery_open(cx: &mut Cx, p: RecoveryOpenParams) -> Resul
     let id = p.recovery_id;
     let release_root = root.clone();
     let job = cx.session().jobs.submit("project.recovery.open", &origin.session_key(), move |progress| {
-        let outcome = recover_claimed(&root, &id, &info, migrations, &poster, &origin, progress);
+        // The original path's lock, stamp and content are read after the open project's save and close (E-45).
+        let outcome = after_invocation(&poster)
+            .and_then(|()| recover_claimed(&root, &id, &info, migrations, &poster, &origin, progress));
         if outcome.is_err() {
             recovery::release(&release_root, &previous);
         }
