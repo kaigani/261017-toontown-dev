@@ -1015,9 +1015,12 @@ class McpTable(Table):
                     break
                 await asyncio.sleep(0.2)
             pressed = await e2e.call(self.s, "key", {"keys": "shift+F10", "view": action[1]})
+            # The item is shown enabled once its availability has answered. The window tree marks a disabled control
+            # `enabled: false` and leaves the field out for an enabled one: waiting for `enabled: true` waited the whole
+            # bound at every row (46 minutes of the Windows `desktop gui` job in run 45400525009, past its 65).
             n = self.node(await self.tree(), action[2])
             start = time.monotonic()
-            while not (n and n.get("enabled") is True) and time.monotonic() - start < 20.0:
+            while not (n and n.get("enabled") is not False) and time.monotonic() - start < 20.0:
                 await asyncio.sleep(0.25)
                 n = self.node(await self.tree(), action[2])
             if where:
