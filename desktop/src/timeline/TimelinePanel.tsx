@@ -708,7 +708,15 @@ export function TimelinePanel() {
             role="list"
             data-tt-role="list"
             data-tt-id="timeline.layers"
-            style={{ flex: 1, overflowY: 'auto', position: 'relative' }}
+            // Not selectable: a drag across the row names selected their text, and the next press on that text began the
+            // browser's own drag (pointercancel), which dropped the row drag (found by the three-way rows' real input).
+            style={{
+              flex: 1,
+              overflowY: 'auto',
+              position: 'relative',
+              userSelect: 'none',
+              WebkitUserSelect: 'none',
+            }}
             onScroll={(e) => {
               setScrollTop(e.currentTarget.scrollTop);
             }}
@@ -952,6 +960,7 @@ function LayerRow(props: {
         <input
           className="timeline-rename"
           autoFocus
+          style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
           value={props.renaming}
           aria-label="Element name"
           data-tt-role="textField"

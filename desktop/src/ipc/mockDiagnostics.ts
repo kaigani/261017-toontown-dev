@@ -6,6 +6,7 @@ type Outcome = { ok: true; value: unknown } | { ok: false; error: ErrorInfo };
 
 export const MOCK_DIAGNOSTIC_HANDLERS: Record<string, () => Outcome> = {
   bench_plan: () => ({ ok: true, value: null }),
+  timing_check_plan: () => ({ ok: true, value: null }),
   spike_mode: () => ({ ok: true, value: null }),
   bench_report: () => ({
     ok: false,

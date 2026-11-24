@@ -88,7 +88,8 @@ describe('M0 diagnostics gating (C0.4)', () => {
     ]);
     expect(DIAGNOSTIC).toContain('bench_plan');
     expect(DIAGNOSTIC).toContain('spike_canvas_scene');
-    expect(DIAGNOSTIC.length).toBe(12);
+    // 12 until M5 C5.1b, which added the Timeline three-way check's four (timing_check.rs).
+    expect(DIAGNOSTIC.length).toBe(16);
   });
 
   it(

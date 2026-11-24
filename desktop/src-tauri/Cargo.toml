@@ -21,7 +21,7 @@ path = "../../tests/adversarial/c03-r2-encoder.rs"
 [features]
 # M0 diagnostics (--ipc-bench, --spike tablet|canvas and their commands). Off in the default build; enabled by
 # tauri.diagnostics.conf.json for CI's measurement steps and the manual spike tests (C0.4).
-m0-diagnostics = []
+m0-diagnostics = ["dep:tt-model"]
 # Ruling D-50: dev-only delays of the gesture commit's and the scene's answers (src/delay_hooks.rs). Never in a product
 # build (scripts/check-release-features.py).
 # Ruling E-29 item 3 (M5 C5.1b): the watchdog's live check stops the engine on a trigger file (src/degrade_hook.rs).
@@ -37,6 +37,8 @@ tt-engine.workspace = true
 tt-executor.workspace = true
 # Only with `test-hooks` (the persistence boundary hook the degrade trigger uses); never in a product build.
 tt-persist = { workspace = true, optional = true }
+# Only with `m0-diagnostics`: the Timeline's three-way check opens the kernel's sample document (src/timing_check.rs).
+tt-model = { workspace = true, optional = true }
 tt-mcp.workspace = true
 # M4 C4.2b: attached screenshots are cropped and re-encoded with the renderer's PNG codec.
 tt-render.workspace = true

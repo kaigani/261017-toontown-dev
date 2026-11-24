@@ -4793,6 +4793,7 @@ dependencies = [
  "tt-engine",
  "tt-executor",
  "tt-mcp",
+ "tt-model",
  "tt-persist",
  "tt-render",
  "webview2-com",

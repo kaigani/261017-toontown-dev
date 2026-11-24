@@ -1176,6 +1176,41 @@ jobs:
           name: desktop-gui-${{ runner.os }}
           path: desktop-gui/
 
+  # M5 C5.1b (plan §9, ruling E-12): the Timeline's three-way rows in the running window, on the diagnostics build the
+  # bundle job made: each gesture of the plan's §6.3 made through the window's event path on the kernel's sample
+  # document; the window's commit, the interpreter's replay of the samples it sent and the plan's commands run directly
+  # compared exactly (scripts/c51b-timing-three-way.py; desktop/src/diagnostics/timingCheck.ts). A job of its own:
+  # `desktop gui` already takes most of its 60 minutes on Windows. Real OS input is the workstation receipt (--external).
+  timing-gui:
+    name: timing gui (${{ matrix.os }})
+    needs: bundle
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/download-artifact@v7
+        with:
+          name: desktop-${{ runner.os }}
+          path: desktop-artifact
+      - name: The Timeline's three-way rows through the window's event path (diagnostics build)
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/toontown.exe; PY=python
+          else
+            tar -xzf desktop-artifact/Toontown-macos-arm64.app.tar.gz -C desktop-artifact
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; PY=python3
+          fi
+          PYTHONIOENCODING=utf-8 $PY -I scripts/c51b-timing-three-way.py "$app" timing-gui/three-way
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: timing-gui-${{ runner.os }}
+          path: timing-gui/
+
   # M4 C4.2b part G (M3 merge note §8 item 2): the same saved fixture, revision and integer frames rendered through the
   # running application and headless; PNG bytes and metadata compared (volatile fields named); receipts retained.
   drawing-byte-gate:

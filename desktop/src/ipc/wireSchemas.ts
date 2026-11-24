@@ -47,3 +47,15 @@ export const isEngineInfo = guard<EngineInfo>(engineInfoSchema, WIRE);
 export const isMenuCommandEvent = guard<MenuCommandEvent>(menuCommandEventSchema, WIRE);
 export const isBenchPlanOrNull = guard<BenchPlan | null>({ anyOf: [benchPlanSchema, { type: 'null' }] });
 export const isNull = guard<null>({ type: 'null' });
+/** M0 diagnostics only (M5 C5.1b): the Timeline three-way check's plan (`toontown --timing-check`). */
+export const isTimingCheckPlanOrNull = guard<{ external: boolean; only: string | null } | null>({
+  anyOf: [
+    {
+      type: 'object',
+      properties: { external: { type: 'boolean' }, only: { type: ['string', 'null'] } },
+      required: ['external', 'only'],
+      additionalProperties: false,
+    },
+    { type: 'null' },
+  ],
+});

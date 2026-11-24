@@ -70,7 +70,14 @@ function notBuilt(): Promise<never> {
 }
 
 /** The benchmark API of a build without M0 diagnostics: never a benchmark launch. */
-const NO_BENCH: BenchApi = { benchPlan: () => Promise.resolve(null), benchReport: notBuilt };
+const NO_BENCH: BenchApi = {
+  benchPlan: () => Promise.resolve(null),
+  benchReport: notBuilt,
+  timingCheckPlan: () => Promise.resolve(null),
+  timingReplay: notBuilt,
+  timingCheckReset: notBuilt,
+  timingCheckReport: notBuilt,
+};
 
 /** The spike API of a build without M0 diagnostics: never a spike launch, every other call refused. */
 const NO_SPIKES: SpikeApi = {

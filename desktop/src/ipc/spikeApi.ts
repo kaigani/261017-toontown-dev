@@ -27,7 +27,7 @@ import type {
   SpikeMode,
   BenchPlan,
 } from './types';
-import { isBenchPlanOrNull, isNull } from './wireSchemas';
+import { isBenchPlanOrNull, isNull, isTimingCheckPlanOrNull } from './wireSchemas';
 
 /** M0 diagnostics: the IPC benchmark (`--ipc-bench`). Only the diagnostics build calls the host (C0.4). */
 export interface BenchApi {
@@ -35,6 +35,21 @@ export interface BenchApi {
   benchPlan(): Promise<BenchPlan | null>;
   /** Hands the measurements to the host, which writes them and exits. */
   benchReport(report: unknown): Promise<void>;
+  /** M5 C5.1b: the Timeline's three-way check requested on the command line (`--timing-check`), or null. */
+  timingCheckPlan(): Promise<TimingCheckPlan | null>;
+  /** The kernel interpreter's plan for a layout and samples, nothing committed (`timing_replay`). */
+  timingReplay(request: { layout: unknown; samples: unknown }): Promise<unknown>;
+  /** Opens the check's sample document again, its changes discarded. */
+  timingCheckReset(): Promise<void>;
+  /** Hands the check's report to the host, which writes it and exits. */
+  timingCheckReport(report: unknown): Promise<void>;
+}
+
+/** The three-way check's plan: the gestures are made by real input from outside (`external`), or by the window. */
+export interface TimingCheckPlan {
+  external: boolean;
+  /** Only the cases whose name contains this text (a probe's subset), or null. */
+  only: string | null;
 }
 
 export interface SpikeApi {
@@ -100,6 +115,20 @@ export function createBenchApi(transport: HostTransport): BenchApi {
     benchPlan: () => checked(transport.invoke('bench_plan'), 'bench_plan', isBenchPlanOrNull),
     benchReport: async (report) => {
       await checked(transport.invoke('bench_report', { report }), 'bench_report', isNull);
+    },
+    timingCheckPlan: () =>
+      checked(transport.invoke('timing_check_plan'), 'timing_check_plan', isTimingCheckPlanOrNull),
+    timingReplay: (request) =>
+      checked(
+        transport.invoke('timing_replay', { json: JSON.stringify(request) }),
+        'timing_replay',
+        (v: unknown): v is unknown => v !== undefined,
+      ),
+    timingCheckReset: async () => {
+      await checked(transport.invoke('timing_check_reset'), 'timing_check_reset', isNull);
+    },
+    timingCheckReport: async (report) => {
+      await checked(transport.invoke('timing_check_report', { report }), 'timing_check_report', isNull);
     },
   };
 }

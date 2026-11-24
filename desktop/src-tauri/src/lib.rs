@@ -30,6 +30,8 @@ pub mod watchdog;
 // Spike code is compiled into a build only with the feature; unit tests always compile it so its tests keep running.
 #[cfg(any(test, feature = "m0-diagnostics"))]
 pub mod spikes;
+#[cfg(feature = "m0-diagnostics")]
+pub mod timing_check;
 
 use std::sync::Arc;
 
@@ -102,6 +104,10 @@ command_registry![
     ipc::agent_acting,
     diagnostics::bench_plan,
     diagnostics::bench_report,
+    timing_check::timing_check_plan,
+    timing_check::timing_replay,
+    timing_check::timing_check_reset,
+    timing_check::timing_check_report,
     spikes::tablet::spike_mode,
     spikes::tablet::spike_tablet_native_start,
     spikes::tablet::spike_tablet_native_stop,
@@ -244,7 +250,7 @@ fn with_m0_diagnostics(
     launch: &diagnostics::LaunchOptions,
 ) -> tauri::Builder<tauri::Wry> {
     builder
-        .manage(diagnostics::Diagnostics { bench: launch.bench.clone() })
+        .manage(diagnostics::Diagnostics { bench: launch.bench.clone(), timing_check: launch.timing_check.clone() })
         .manage(spikes::tablet::TabletSpike::new(launch.spike.clone()))
         .manage(spikes::canvas::CanvasSpike::new(launch.spike.clone()))
 }
@@ -254,6 +260,9 @@ fn with_m0_diagnostics(
 fn m0_setup(app: &tauri::AppHandle, launch: &diagnostics::LaunchOptions) {
     if let Some(settings) = &launch.bench {
         diagnostics::arm_timeout(app, settings);
+    }
+    if let Some(settings) = &launch.timing_check {
+        timing_check::start(app, settings);
     }
     if let Some(settings) = &launch.spike {
         spikes::tablet::arm_auto_timeout(app, settings);

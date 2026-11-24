@@ -37,6 +37,17 @@ pub struct BenchSettings {
     pub count: u32,
 }
 
+/// The Timeline's three-way check (`--timing-check <out> [--timing-check-external]`; M5 C5.1b, `timing_check.rs`).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TimingCheckSettings {
+    /// Where the report is written.
+    pub out: PathBuf,
+    /// The gestures are made by real input from outside (the workstation script), not dispatched by the window.
+    pub external: bool,
+    /// Only the cases whose name contains this text (`--timing-check-only <text>`; a probe's subset).
+    pub only: Option<String>,
+}
+
 /// Errors parsing the diagnostics arguments.
 #[derive(Debug, thiserror::Error, PartialEq, Eq)]
 pub enum ArgsError {
@@ -48,7 +59,7 @@ pub enum ArgsError {
     BadCount(String),
     /// An argument this binary does not know.
     #[error(
-        "unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--spike tablet|canvas [--spike-log <file>] [--spike-auto] [--spike-renderer auto|webgpu|webgl2]])"
+        "unknown argument `{0}` (usage: toontown [--ipc-bench <out.json> [--ipc-bench-count <n>]] [--timing-check <out.json> [--timing-check-external]] [--spike tablet|canvas [--spike-log <file>] [--spike-auto] [--spike-renderer auto|webgpu|webgl2]])"
     )]
     Unknown(String),
     /// `--spike` names a spike that does not exist.
@@ -60,6 +71,9 @@ pub enum ArgsError {
     /// `--spike-renderer` without `--spike canvas`.
     #[error("--spike-renderer needs --spike canvas")]
     RendererWithoutCanvas,
+    /// `--timing-check-external` or `--timing-check-only` without `--timing-check`.
+    #[error("--timing-check-external and --timing-check-only need --timing-check <out.json>")]
+    ExternalWithoutCheck,
     /// `--spike-log` without `--spike`.
     #[error("--spike-log needs --spike")]
     LogWithoutSpike,
@@ -80,6 +94,9 @@ pub enum ArgsError {
 /// [`ArgsError`] for malformed or unknown arguments.
 pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptions, ArgsError> {
     let mut out = None;
+    let mut timing_out = None;
+    let mut timing_external = false;
+    let mut timing_only = None;
     let mut count = DEFAULT_COUNT;
     let mut spike = None;
     let mut spike_log = None;
@@ -95,6 +112,13 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     while let Some(arg) = it.next() {
         match arg.as_str() {
             "--ipc-bench" => out = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--ipc-bench"))?)),
+            "--timing-check" => {
+                timing_out = Some(PathBuf::from(it.next().ok_or(ArgsError::MissingValue("--timing-check"))?));
+            }
+            "--timing-check-external" => timing_external = true,
+            "--timing-check-only" => {
+                timing_only = Some(it.next().ok_or(ArgsError::MissingValue("--timing-check-only"))?);
+            }
             "--ipc-bench-count" => {
                 let v = it.next().ok_or(ArgsError::MissingValue("--ipc-bench-count"))?;
                 count = v.parse().ok().filter(|n| *n > 0).ok_or(ArgsError::BadCount(v))?;
@@ -143,6 +167,9 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
             other => return Err(ArgsError::Unknown(other.to_owned())),
         }
     }
+    if (timing_external || timing_only.is_some()) && timing_out.is_none() {
+        return Err(ArgsError::ExternalWithoutCheck);
+    }
     if spike_log.is_some() && spike.is_none() {
         return Err(ArgsError::LogWithoutSpike);
     }
@@ -154,6 +181,7 @@ pub fn parse_args<I: IntoIterator<Item = String>>(args: I) -> Result<LaunchOptio
     }
     Ok(LaunchOptions {
         bench: out.map(|out| BenchSettings { out, count }),
+        timing_check: timing_out.map(|out| TimingCheckSettings { out, external: timing_external, only: timing_only }),
         spike: spike.map(|name| SpikeSettings {
             name,
             log_path: spike_log,
@@ -187,6 +215,8 @@ pub struct SpikeSettings {
 pub struct LaunchOptions {
     /// `--ipc-bench`.
     pub bench: Option<BenchSettings>,
+    /// `--timing-check` (M5 C5.1b).
+    pub timing_check: Option<TimingCheckSettings>,
     /// `--spike tablet [--spike-log <file>]` (M0 spike, C0.2).
     pub spike: Option<SpikeSettings>,
     /// `--user-dir <dir>`: the per-user folder (settings, recovery, backups) instead of the platform's.
@@ -213,6 +243,8 @@ impl LaunchOptions {
     pub fn requested_diagnostic(&self) -> Option<&'static str> {
         if self.bench.is_some() {
             Some("--ipc-bench")
+        } else if self.timing_check.is_some() {
+            Some("--timing-check")
         } else if self.spike.is_some() {
             Some("--spike")
         } else {
@@ -227,6 +259,8 @@ impl LaunchOptions {
 pub struct Diagnostics {
     /// Settings of a requested benchmark run.
     pub bench: Option<BenchSettings>,
+    /// Settings of a requested Timeline three-way check (M5 C5.1b).
+    pub timing_check: Option<TimingCheckSettings>,
 }
 
 /// What the front end should measure.
@@ -329,6 +363,23 @@ mod tests {
         assert_eq!(s, BenchSettings { out: "o.json".into(), count: 50 });
         let s = parse_args(args(&["--ipc-bench", "o.json"])).unwrap().bench.unwrap();
         assert_eq!(s.count, DEFAULT_COUNT);
+    }
+
+    #[test]
+    fn timing_check_flags() {
+        let s = parse_args(args(&["--timing-check", "t.json"])).unwrap();
+        assert_eq!(s.timing_check, Some(TimingCheckSettings { out: "t.json".into(), external: false, only: None }));
+        assert_eq!(s.requested_diagnostic(), Some("--timing-check"));
+        let s =
+            parse_args(args(&["--timing-check", "t.json", "--timing-check-external", "--timing-check-only", "row"]))
+                .unwrap()
+                .timing_check
+                .unwrap();
+        assert!(s.external);
+        assert_eq!(s.only.as_deref(), Some("row"));
+        assert_eq!(parse_args(args(&["--timing-check"])), Err(ArgsError::MissingValue("--timing-check")));
+        assert_eq!(parse_args(args(&["--timing-check-external"])), Err(ArgsError::ExternalWithoutCheck));
+        assert_eq!(parse_args(args(&["--timing-check-only", "x"])), Err(ArgsError::ExternalWithoutCheck));
     }
 
     #[test]

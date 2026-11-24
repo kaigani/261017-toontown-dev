@@ -5,6 +5,7 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { maybeRunIpcBench } from './diagnostics/ipcBench';
+import { maybeRunTimingCheck } from './diagnostics/timingCheck';
 import { DockArea } from './dock/DockArea';
 import { useHost, type Envelope, type SpikeMode } from './ipc';
 import { isMac } from './keys/sequence';
@@ -66,6 +67,14 @@ export function App({ floatPanel }: { floatPanel?: string } = {}) {
   useEffect(() => {
     if (!__TT_M0_DIAGNOSTICS__) return;
     maybeRunIpcBench(host).then(
+      () => undefined,
+      () => undefined,
+    );
+  }, [host]);
+  // M5 C5.1b: `--timing-check` runs the Timeline's three-way check (diagnostics build only).
+  useEffect(() => {
+    if (!__TT_M0_DIAGNOSTICS__) return;
+    maybeRunTimingCheck(host).then(
       () => undefined,
       () => undefined,
     );
