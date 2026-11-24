@@ -21,7 +21,6 @@ use tt_model::document::Document;
 use tt_model::entities::element::ElementType;
 use tt_registry::{CommandError, codes, command};
 
-use super::anim_common::{ChannelEdit, data_in, frame_of};
 use super::common::NoParams;
 use super::timing::{Budget, as_u32, element, element_id, err, internal, scene_id};
 use crate::cx::Cx;
@@ -592,42 +591,45 @@ fn glyph_channel(name: &str) -> Option<&'static str> {
     }
 }
 
-/// The keyed scene frames of one element with their glyph channels and constant flags. `tree` and `scene_length` are its
-/// scene's, computed once by a caller that reads many rows (the scene length walks every element of the scene).
+/// The keyed scene frames of one element with their glyph channels and constant flags. `scene_length` is its scene's,
+/// computed once by a caller that reads many rows (the scene length walks every element of the scene).
+///
+/// Read from the element's typed channels (M5 C5.1b): the channels as JSON (`ChannelEdit::read`, which serialises the
+/// whole element and copies its channels twice) and the node's evaluation data (for its bar alone) cost about a second
+/// per `timeline.rows.list` on the plan's §6.2 scene (200 pegs with 100 keys each), against a 20 ms budget.
 fn keys_of(
     doc: &Document,
-    tree: &[tt_model::entities::scene::TreeNode],
     scene_length: u64,
     id: &Id,
     budget: &mut Budget,
 ) -> Result<BTreeMap<u32, (BTreeSet<&'static str>, bool)>, CommandError> {
-    let data = data_in(doc, tree, scene_length, id, budget)?;
-    let edit = ChannelEdit::read(doc, id)?;
+    let e = element(doc, id)?;
+    let bar = tt_anim::timing::Bar::of(e, scene_length);
     let mut map: BTreeMap<u32, (BTreeSet<&'static str>, bool)> = BTreeMap::new();
     let mut put = |local: u32, ch: &'static str, constant: bool| {
-        let scene = data.bar.scene(f64::from(local));
+        let scene = bar.scene(f64::from(local));
         if scene >= 1.0 && scene <= f64::from(u32::MAX) {
             let e = map.entry(scene as u32).or_insert((BTreeSet::new(), true));
             e.0.insert(ch);
             e.1 &= constant;
         }
     };
-    for q in edit.points() {
+    let Some(channels) = e.channels() else { return Ok(map) };
+    // The motion path's keyframes stand for `position` (its 1-D keys are not glyphs of their own).
+    for q in channels.get("position").and_then(|c| c.points().as_ref()).into_iter().flatten() {
         budget.spend(1)?;
-        if let Some(f) = frame_of(&q) {
-            put(f, "position", q["constantSegment"] == json!(true));
+        if let Some(f) = *q.frame() {
+            put(f, "position", *q.constant_segment());
         }
     }
-    for name in edit.channels.keys() {
+    for (name, channel) in channels {
         let Some(ch) = glyph_channel(name) else { continue };
         if ch == "position" {
             continue;
         }
-        for key in edit.keys(name) {
+        for key in channel.keys().iter().flatten() {
             budget.spend(1)?;
-            if let Some(f) = frame_of(&key) {
-                put(f, ch, key["constantSegment"] == json!(true));
-            }
+            put(*key.frame(), ch, *key.constant_segment());
         }
     }
     Ok(map)
@@ -636,7 +638,7 @@ fn keys_of(
 /// The keyed scene frames of an element (the Timeline's keyframe symbols; the timing-gesture interpreter's hit test).
 pub(crate) fn keyed_frames(doc: &Document, id: &Id, budget: &mut Budget) -> Result<Vec<u32>, CommandError> {
     let scene = super::timing::scene_of(doc, id)?;
-    Ok(keys_of(doc, scene.tree(), doc.scene_length(scene), id, budget)?.into_keys().collect())
+    Ok(keys_of(doc, doc.scene_length(scene), id, budget)?.into_keys().collect())
 }
 
 #[command(
@@ -702,7 +704,7 @@ pub(crate) fn timeline_rows_list(cx: &mut Cx, p: RowsListParams) -> Result<RowsR
                 loops: *e.loops(),
             }),
         };
-        let keys = keys_of(&doc, sc.tree(), scene_length, &q.id, &mut budget)?;
+        let keys = keys_of(&doc, scene_length, &q.id, &mut budget)?;
         keyed.insert(q.id.clone(), keys.keys().copied().collect());
         let keyframes = keys
             .range(from..=to)

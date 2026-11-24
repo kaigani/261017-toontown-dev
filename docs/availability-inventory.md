@@ -923,7 +923,6 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `timeline.effectParameterRows.set` | `arg.invalid` | parameter | an `elementId` that is not an effect element |  |
 | `timeline.effectParameterRows.set` | `element.notFound` | parameter | an `elementId` the caller names does not exist |  |
 | `timeline.rows.list` | `arg.invalid` | parameter | a window whose `to` is before its `from` (ruling E-26) |  |
-| `timeline.rows.list` | `anim.notFound` | unreachable | the rows are read from the scene's tree, whose every node is an element of the document |  |
 | `timeline.rows.list` | `element.notFound` | unreachable | the rows are read from the scene's tree, whose every node is an element of the document |  |
 | `timeline.transferOptions.set` | `arg.invalid` | parameter | an option value that is not a boolean, or `options` that is not an object |  |
 | `timeline.view.set` | `arg.invalid` | parameter | a zoom level outside the ladder, or a `revealElementId` outside the current scene |  |
