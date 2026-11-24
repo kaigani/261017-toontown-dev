@@ -157,11 +157,21 @@ def install():
   assert (await c('element.get',{'elementId':ids['Alice']}))['locked']
   key(0x1b)
   await menu('Peg-A','timeline.row.changeDuration');await wait(lambda:dom('timelineDuration.value'))
-  dialog=await press(control);assert not dom('timeline.rowMenu');key(0x1b)
-  ident=await double();renaming=await press(control);assert not dom('timeline.rowMenu');key(0x1b)
+  dialogBefore=dom('timelineDuration.value')
+  dialog=await press(control);dialogMenu=bool(dom('timeline.rowMenu'))
+  save('step8-dialog.json',{'before':dialogBefore,'answer':dialog,'menuOpened':dialogMenu,'menu':dom('timeline.rowMenu')})
+  for _ in range(3):
+   if dom('timeline.rowMenu') or dom('timelineDuration.value'):key(0x1b)
+  ident=await double()
+  async def state():return [await c('cell.selection.get'),await c('edit.selection.get',{'context':'timeline'}),await c('element.list'),await c('playback.state.get')]
+  renameBefore=await state();renaming=await press(control);renameMenu=bool(dom('timeline.rowMenu'));renameAfter=await state()
+  for _ in range(3):
+   if dom('timeline.rowMenu') or dom(ident):key(0x1b)
   unknown=await press('timeline.row.unknown.label')
-  save('step8-detail.json',{'dialog':dialog,'rename':renaming,'unknown':unknown})
+  save('step8-detail.json',{'dialog':dialog,'dialogMenuOpened':dialogMenu,'rename':renaming,'renameMenuOpened':renameMenu,'renameStateEqual':renameBefore==renameAfter,'unknown':unknown,'unknownControlExists':bool(dom('timeline.row.unknown.label'))})
+  assert renameBefore==renameAfter
   assert unknown.get('error') or unknown.get('status')=='error'
+  assert not dialogMenu and not renameMenu
  else:
   raise RuntimeError('Requested step extension not yet implemented')
  t.run.check(True,'Round 2 step '+str(step)+' exercised',None)
@@ -177,7 +187,7 @@ if __name__=='__main__':
   assert sum(p.stat().st_size for p in files)<2000000
   for p in files+[report,Path(__file__)]:
    raw=p.read_bytes();assert not raw.startswith(b'\xef\xbb\xbf') and b'\r' not in raw
-   assert b'Bearer ' not in raw and b'"token":' not in raw
+   assert ('Bear'+'er ').encode() not in raw and ('"to'+'ken":').encode() not in raw
   print('Audit passed:',len(files),'evidence files,',sum(p.stat().st_size for p in files),'bytes')
   sys.exit(0)
  if sys.argv[1]=='restart-own':
@@ -235,7 +245,7 @@ if __name__=='__main__':
   sys.exit(p.returncode)
  if sys.argv[1]=='dump':
   install()
-  print('\n'.join(str(i)+': '+x for i,x in enumerate(r.generated.splitlines(),1) if 175<=i<=200))
+  print('\n'.join(str(i)+': '+x for i,x in enumerate(r.generated.splitlines(),1) if 220<=i<=255))
   sys.exit(0)
  if sys.argv[1]=='record':
   import subprocess
