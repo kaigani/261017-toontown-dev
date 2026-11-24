@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "command": [
+        "pnpm.cmd",
+        "install",
+        "--frozen-lockfile"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "pnpm.cmd",
+        "build"
+      ],
+      "exit": 0
+    },
+    {
+      "command": [
+        "cargo",
+        "build",
+        "--release",
+        "--locked",
+        "-p",
+        "tt-desktop",
+        "-p",
+        "tt-headless"
+      ],
+      "exit": 0
+    }
+  ],
+  "raw": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\c44b-build-u4cxmn25"
+}

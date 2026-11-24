@@ -1,0 +1,13 @@
+{
+  "reason": "timeline.gesture: drawing `3` is locked",
+  "selection": {
+    "elementIds": [
+      "el_01K7JJN800HHNA80T0HBM3E963"
+    ],
+    "from": 2,
+    "to": 3,
+    "rowsSelected": 0,
+    "currentElementId": "el_01K7JJN8003C53ZVA3TRD552XT",
+    "currentFrame": 1
+  }
+}

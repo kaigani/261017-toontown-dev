@@ -1,0 +1,36 @@
+{
+  "dialog": {
+    "status": "ok",
+    "result": {
+      "handled": true,
+      "contextMenu": "timeline.row.el_01K7JJN800H49NT3MMFMJED7HD.label"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "dialogMenuOpened": true,
+  "rename": {
+    "status": "ok",
+    "result": {
+      "handled": true,
+      "contextMenu": "timeline.row.el_01K7JJN800H49NT3MMFMJED7HD.label"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "renameMenuOpened": false,
+  "renameStateEqual": true,
+  "unknown": {
+    "status": "ok",
+    "result": {
+      "handled": true,
+      "contextMenu": "timeline.row.unknown.label"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  "unknownControlExists": false
+}

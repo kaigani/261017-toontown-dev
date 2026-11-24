@@ -1,0 +1,141 @@
+{
+  "cellItems": [
+    {
+      "id": "timeline.cellMenu.timeline.cell.addExposure",
+      "text": "Add Exposurearrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.removeExposure",
+      "text": "Remove Exposurearrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.exposure1",
+      "text": "Set Exposure to 1arrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.exposure2",
+      "text": "Set Exposure to 2arrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.exposure3",
+      "text": "Set Exposure to 3arrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.exposureN",
+      "text": "Set Exposure to N\u2026arrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.fill",
+      "text": "Extend Exposurearrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.insertCells",
+      "text": "Insert Cells\u2026arrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.insertBlank",
+      "text": "Insert Blank Cellarrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.deleteBlank",
+      "text": "Delete Blank Cellarrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.cycle",
+      "text": "Create Cycle\u2026arrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.columnate",
+      "text": "Columnate\u2026arrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.duplicateDrawing",
+      "text": "Duplicate Drawingarrives with M5 C5.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.cut",
+      "text": "Cut",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.copy",
+      "text": "Copy",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.paste",
+      "text": "Pastethe clipboard is empty",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.delete",
+      "text": "Delete",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.addKey",
+      "text": "Add Keyframe",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.removeKey",
+      "text": "Remove Keyframe",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.constant",
+      "text": "Set Constant Segment",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.nonConstant",
+      "text": "Set Non-Constant Segment",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.uniformLeft",
+      "text": "Uniform Left",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.uniformRight",
+      "text": "Uniform Right",
+      "disabled": "false"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.addDefaultKey",
+      "text": "Add Default Keyframearrives with M6 C6.2",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.editSound",
+      "text": "Edit Soundarrives with M8 C8.1",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.splitSound",
+      "text": "Split Soundarrives with M8 C8.1",
+      "disabled": "true"
+    },
+    {
+      "id": "timeline.cellMenu.timeline.cell.fitSound",
+      "text": "Fit Soundarrives with M8",
+      "disabled": "true"
+    }
+  ],
+  "keysAddedRemovedAndUndone": true,
+  "rangeChangedAndMarked": true
+}
