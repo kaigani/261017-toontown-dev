@@ -1,0 +1,151 @@
+{
+ "kind": "toontown.c51b.timing-three-way",
+ "external": true,
+ "exitCode": 0,
+ "seconds": 130.9,
+ "rows": 20,
+ "failed": [],
+ "error": null,
+ "platform": "windows",
+ "input": [
+  {
+   "index": 0,
+   "name": "ruler: a click sets the current frame",
+   "input": "real OS drag",
+   "press": 425677.0955552,
+   "release": 425677.2065421
+  },
+  {
+   "index": 1,
+   "name": "ruler: a drag scrubs",
+   "input": "real OS drag",
+   "press": 425678.5188528,
+   "release": 425678.6901663
+  },
+  {
+   "index": 2,
+   "name": "ruler: a free range\u2019s start marker dragged",
+   "input": "real OS drag",
+   "press": 425680.0122683,
+   "release": 425680.1228944
+  },
+  {
+   "index": 3,
+   "name": "layer list: a click on a row name selects it",
+   "input": "real OS drag",
+   "press": 425681.4342131,
+   "release": 425681.546885
+  },
+  {
+   "index": 4,
+   "name": "layer list: extend + click",
+   "input": "real OS drag",
+   "press": 425682.858063,
+   "release": 425682.9686891
+  },
+  {
+   "index": 5,
+   "name": "layer list: toggle + click",
+   "input": "real OS drag",
+   "press": 425684.2833298,
+   "release": 425684.3941931
+  },
+  {
+   "index": 6,
+   "name": "tracks: a click on a cell selects it",
+   "input": "real OS drag",
+   "press": 425685.7025631,
+   "release": 425685.812901
+  },
+  {
+   "index": 7,
+   "name": "tracks: a drag across cells selects them",
+   "input": "real OS drag",
+   "press": 425687.1289188,
+   "release": 425687.2996735
+  },
+  {
+   "index": 8,
+   "name": "layer list: a row dropped between rows of its level reorders",
+   "input": "real OS drag",
+   "press": 425688.6116479,
+   "release": 425688.7827219
+  },
+  {
+   "index": 9,
+   "name": "layer list: a row dropped onto a peg row is attached",
+   "input": "real OS drag",
+   "press": 425690.0917643,
+   "release": 425690.2626993
+  },
+  {
+   "index": 10,
+   "name": "layer list: a row dropped between rows of another level",
+   "input": "real OS drag",
+   "press": 425691.5692038,
+   "release": 425691.7417577
+  },
+  {
+   "index": 11,
+   "name": "tracks: a bar body dragged",
+   "input": "real OS drag",
+   "press": 425693.0521649,
+   "release": 425693.2235682
+  },
+  {
+   "index": 12,
+   "name": "tracks: a bar\u2019s end dragged",
+   "input": "real OS drag",
+   "press": 425699.7756512,
+   "release": 425699.9477988
+  },
+  {
+   "index": 13,
+   "name": "tracks: a bar\u2019s start dragged",
+   "input": "real OS drag",
+   "press": 425706.5122637,
+   "release": 425706.6836493
+  },
+  {
+   "index": 14,
+   "name": "tracks: the loop handle dragged",
+   "input": "real OS drag",
+   "press": 425713.4454836,
+   "release": 425713.6185663
+  },
+  {
+   "index": 15,
+   "name": "tracks: a keyframe symbol dragged",
+   "input": "real OS drag",
+   "press": 425720.1800589,
+   "release": 425720.3515292
+  },
+  {
+   "index": 16,
+   "name": "tracks: selected cells dragged (move)",
+   "input": "real OS drag",
+   "press": 425721.6791394,
+   "release": 425721.8514012
+  },
+  {
+   "index": 17,
+   "name": "tracks: selected cells dragged (copy)",
+   "input": "real OS drag",
+   "press": 425723.1652482,
+   "release": 425723.338677
+  },
+  {
+   "index": 18,
+   "name": "tracks: selected cells dragged (link)",
+   "input": "real OS drag",
+   "press": 425724.6513021,
+   "release": 425724.8254485
+  },
+  {
+   "index": 19,
+   "name": "tracks: Escape during a drag sends and changes nothing",
+   "input": "real OS drag"
+  }
+ ],
+ "ok": true
+}

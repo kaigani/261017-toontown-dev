@@ -1,0 +1,145 @@
+{
+  "host": {
+    "name": "Toontown",
+    "version": "0.0.1",
+    "platform": "windows",
+    "arch": "x86_64",
+    "formatVersion": "1.0",
+    "registryVersion": "0.1.0",
+    "runMode": "attached"
+  },
+  "frontend": {
+    "ok": true,
+    "budgets": {
+      "ok": true,
+      "scene": {
+        "reused": true,
+        "drawings": 801,
+        "pegs": 201,
+        "keysPerPeg": 100,
+        "keyedFrames": "1-400 every 4",
+        "buildSeconds": 4.452300000011921
+      },
+      "control": {
+        "frames": 120,
+        "medianMs": 17.69999999999709
+      },
+      "rows": [
+        {
+          "name": "work per frame while scrolling",
+          "drawP95Ms": 0.10000002384185791,
+          "draws": 124,
+          "overTwiceControl": 0,
+          "ok": true
+        },
+        {
+          "name": "work per frame while zooming",
+          "drawP95Ms": 0.10000002384185791,
+          "draws": 63,
+          "overTwiceControl": 0,
+          "ok": true
+        },
+        {
+          "name": "work per frame while dragging",
+          "drawP95Ms": 0.10000002384185791,
+          "draws": 120,
+          "overTwiceControl": 0,
+          "ok": true
+        },
+        {
+          "name": "a click on a cell to the selection drawn",
+          "p95Ms": 27,
+          "samples": 30,
+          "boundMs": 35.39999999999418,
+          "ok": true
+        },
+        {
+          "name": "a wheel step to the scrolled repaint",
+          "p95Ms": 20.100000023841858,
+          "samples": 30,
+          "boundMs": 35.39999999999418,
+          "ok": true
+        },
+        {
+          "name": "playback at 24 fps: every frame presented, in order",
+          "presented": 48,
+          "missing": [],
+          "inOrder": true,
+          "intervalP95Ms": 48.30000001192093,
+          "boundMs": 62.5,
+          "ok": true
+        }
+      ],
+      "phases": [
+        {
+          "name": "scrolling",
+          "sent": {
+            "playback.state.get": 1,
+            "element.get": 1079
+          },
+          "backlogMsAfter": 3
+        },
+        {
+          "name": "zooming",
+          "sent": {
+            "playback.state.get": 1,
+            "timeline.frameLabel.get": 60,
+            "timeline.view.set": 60,
+            "timeline.rows.list": 11,
+            "element.get": 540
+          },
+          "backlogMsAfter": 93.40000003576279
+        },
+        {
+          "name": "dragging",
+          "sent": {
+            "playback.state.get": 1
+          },
+          "backlogMsAfter": 3.599999964237213
+        },
+        {
+          "name": "clicks",
+          "sent": {
+            "playback.state.get": 1,
+            "anim.camera.list": 60,
+            "anim.camera.current.get": 60,
+            "draw.viewMapping.get": 30,
+            "app.state.get": 60,
+            "cell.selection.get": 121,
+            "ui.statusBar.get": 60,
+            "window.panel.list": 60,
+            "workspace.get": 60,
+            "workspace.list": 60
+          },
+          "backlogMsAfter": 4.099999964237213
+        },
+        {
+          "name": "wheel steps",
+          "sent": {
+            "playback.state.get": 1,
+            "element.get": 270,
+            "xsheet.exposures.get": 30
+          },
+          "backlogMsAfter": 3.699999988079071
+        },
+        {
+          "name": "playback",
+          "sent": {
+            "playback.state.get": 68,
+            "anim.camera.list": 47,
+            "anim.camera.current.get": 47,
+            "draw.viewMapping.get": 47,
+            "app.state.get": 47,
+            "cell.selection.get": 47,
+            "ui.statusBar.get": 47,
+            "window.panel.list": 47,
+            "workspace.get": 47,
+            "workspace.list": 47,
+            "playback.start": 1
+          },
+          "backlogMsAfter": 3.800000011920929
+        }
+      ]
+    }
+  }
+}
