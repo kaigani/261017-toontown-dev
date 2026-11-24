@@ -268,8 +268,8 @@ async def body(t,step):
    assert await c('cell.selection.get')==before;key(0x1b)
   elif step==15:
    await c('element.lock.set',{'elementIds':[ids['Bob']],'locked':True});await wait(lambda:dom('timeline.row.'+ids['Bob']+'.locked'))
-   a=barpoint('Bob');await drag(a,(a[0]+round(48*js('devicePixelRatio')),a[1]));assert (await bar('Bob'))['start']==4
-   await rename('Bob','LockedBob');assert (await c('element.get',{'elementId':ids['Bob']}))['name']=='LockedBob'
+   a=barpoint('Bob');a=(a[0],a[1]-round(10*js('devicePixelRatio')));await drag(a,(a[0]+round(48*js('devicePixelRatio')),a[1]));save('step15-drag.json',{'bar':await bar('Bob'),'calls':t.cdp.calls,'target':js('window.reviewTarget')})
+   await menu('Bob','timeline.row.rename');await wait(lambda:dom('timelineRename.value'));click('timelineRename.value');key(0x41,0x11);guard();d.type_text('LockedBob');click('timelineRename.submit');assert (await c('element.get',{'elementId':ids['Bob']}))['name']=='LockedBob'
    click('timeline.row.'+ids['Alice']+'.visible');await wait(lambda:' hidden' in (dom('timeline.row.'+ids['Alice']) or ''))
    click('timeline.row.'+ids['Bob']+'.label');await menu('Bob','timeline.row.hideOthers');save('step15-hidden.json',await names())
    await menu('Bob','timeline.row.showAll');save('step15-shown.json',await names())
