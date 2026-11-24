@@ -174,46 +174,56 @@ fn d23_row_drops_reorder_attach_and_change_level() {
 
 /// D-45: the read model's cost at 1,000 elements against 10, in one process (a ratio), with a ceiling that only catches a
 /// gross regression; the budget itself (20 ms p95 for a 120-frame window, release) is a workstation receipt.
+///
+/// The three scenes (the fixture, about 500 rows, about 1,000 rows) are built first and measured in turns, ten rounds,
+/// the best of each: a burst of load on the runner (the other tests of this binary run beside it) then falls on every
+/// side of the ratio. Measured one after the other, the 1,000-row side of run 45400525009 (macOS) took 14.3 ms against
+/// 4.7 ms on the workstation while its 500-row side took 4.2 ms against 2.5: a doubling ratio of 3.41 for a read that is
+/// linear (1.75 to 1.89 on the workstation). Every sample is printed when an assertion fails.
 #[test]
 fn rows_list_stays_linear_at_one_thousand_elements() {
-    let h = fixture();
     let small = fixture();
-    let measure = |h: &ExecutorHandle| -> Duration {
-        let mut best = Duration::MAX;
-        for _ in 0..5 {
-            let t = Instant::now();
-            ok(h, "timeline.rows.list", json!({"from": 1, "to": 120}));
-            best = best.min(t.elapsed());
+    let half_h = fixture();
+    let h = fixture();
+    let fill = |h: &ExecutorHandle, rows: usize| {
+        let mut built = 0;
+        while built < rows {
+            let n = (rows - built).min(99);
+            ok(
+                h,
+                "element.create",
+                json!({"type": if built % 2 == 0 { "peg" } else { "drawing" }, "count": n, "name": format!("Row{built}")}),
+            );
+            built += n;
         }
-        best
     };
-    let mut built = 0;
-    let mut half = Duration::ZERO;
-    while built < 990 {
-        let n = (990 - built).min(99);
-        ok(
-            &h,
-            "element.create",
-            json!({"type": if built % 2 == 0 { "peg" } else { "drawing" }, "count": n, "name": format!("Row{built}")}),
-        );
-        built += n;
-        if built == 495 {
-            half = measure(&h);
+    fill(&half_h, 495);
+    fill(&h, 990);
+    let once = |h: &ExecutorHandle| -> Duration {
+        let t = Instant::now();
+        ok(h, "timeline.rows.list", json!({"from": 1, "to": 120}));
+        t.elapsed()
+    };
+    let mut samples: [Vec<Duration>; 3] = [Vec::new(), Vec::new(), Vec::new()];
+    for _ in 0..10 {
+        for (k, handle) in [&small, &half_h, &h].into_iter().enumerate() {
+            samples[k].push(once(handle));
         }
     }
-    let large = measure(&h);
-    let base = measure(&small).max(Duration::from_millis(1));
+    let best = |k: usize| samples[k].iter().copied().min().unwrap_or(Duration::MAX);
+    let (base, half, large) = (best(0).max(Duration::from_millis(1)), best(1), best(2));
     let rows_large = ok(&h, "timeline.rows.list", json!({}))["rows"].as_array().unwrap().len();
     assert!(rows_large >= 1000, "{rows_large} rows");
+    let shown = format!("samples (fixture, ~500 rows, ~1,000 rows): {samples:?}");
     let ratio = large.as_secs_f64() / base.as_secs_f64();
     eprintln!("timeline.rows.list: {rows_large} rows {large:?}, 20 rows {base:?}, ratio {ratio:.1}");
-    assert!(ratio <= 150.0, "rows.list grows faster than the rows: ratio {ratio:.1}");
+    assert!(ratio <= 150.0, "rows.list grows faster than the rows: ratio {ratio:.1}; {shown}");
     // Twice the rows, about twice the time (linear about 2, quadratic about 4): run 45139823182 found the read growing with
     // the square of the rows (the scene length computed per row).
     let doubling = large.as_secs_f64() / half.max(Duration::from_micros(100)).as_secs_f64();
     eprintln!("timeline.rows.list: about 500 rows {half:?}, 1000 rows {large:?}, doubling ratio {doubling:.2}");
-    assert!(doubling <= 3.0, "rows.list grows faster than the rows when they double: {doubling:.2}");
-    assert!(large < Duration::from_secs(2), "a gross regression: {large:?}");
+    assert!(doubling <= 3.0, "rows.list grows faster than the rows when they double: {doubling:.2}; {shown}");
+    assert!(large < Duration::from_secs(2), "a gross regression: {large:?}; {shown}");
 }
 
 /// E-1: the real clock plays the range and stops at its end; observed by the events it raises, waiting for states, never
