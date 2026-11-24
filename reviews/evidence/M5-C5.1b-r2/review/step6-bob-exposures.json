@@ -1,0 +1,78 @@
+{
+  "before": {
+    "sceneId": "sc_01M87A9BPGFD3JZ1PKF5EH4ZQ7",
+    "rev": 19,
+    "sceneLength": 51,
+    "from": 1,
+    "to": 24,
+    "columns": [
+      {
+        "elementId": "el_01K7JJN800HHNA80T0HBM3E963",
+        "name": "Bob",
+        "elementType": "drawing",
+        "visible": true,
+        "exposures": [
+          {
+            "drawing": "1",
+            "drawingId": "dr_01K7JJN8001E9E32E6GBC09SDB",
+            "from": 1,
+            "to": 4
+          },
+          {
+            "drawing": "2",
+            "drawingId": "dr_01K7JJN800ZYKTX7M1S75RN5Y8",
+            "from": 5,
+            "to": 8
+          },
+          {
+            "drawing": "3",
+            "drawingId": "dr_01K7JJN800EX1B5FT3AZHF4MZR",
+            "from": 9,
+            "to": 12
+          }
+        ]
+      }
+    ]
+  },
+  "after": {
+    "sceneId": "sc_01M87A9BPGFD3JZ1PKF5EH4ZQ7",
+    "rev": 20,
+    "sceneLength": 51,
+    "from": 1,
+    "to": 24,
+    "columns": [
+      {
+        "elementId": "el_01K7JJN800HHNA80T0HBM3E963",
+        "name": "Bob",
+        "elementType": "drawing",
+        "visible": true,
+        "exposures": [
+          {
+            "drawing": "1",
+            "drawingId": "dr_01K7JJN8001E9E32E6GBC09SDB",
+            "from": 1,
+            "to": 2
+          },
+          {
+            "drawing": "2",
+            "drawingId": "dr_01K7JJN800ZYKTX7M1S75RN5Y8",
+            "from": 3,
+            "to": 6
+          },
+          {
+            "drawing": "3",
+            "drawingId": "dr_01K7JJN800EX1B5FT3AZHF4MZR",
+            "from": 7,
+            "to": 10
+          },
+          {
+            "drawing": "1",
+            "drawingId": "dr_01K7JJN8001E9E32E6GBC09SDB",
+            "from": 12,
+            "to": 13
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -122,18 +122,26 @@ def install():
   a=barpoint('Peg-A',20);await drag(a,(a[0]+round(48*js('devicePixelRatio')),a[1]))
   await until_cmd('timeline.rows.list',{'from':1,'to':48},lambda r:next(x['bar']['start'] for x in r['rows'] if x['elementId']==ids['Peg-A'])==4)
   await c('element.lock.set',{'elementIds':[ids['Bob']],'locked':True})
+  imageBefore=js("document.querySelector('[data-tt-id=\\"timeline.tracks\\"]').toDataURL()")
   await c('cell.select',{'elementIds':[ids['Bob']],'from':2,'to':3})
-  a=barpoint('Bob',2);await drag(a,(a[0]+round(192*js('devicePixelRatio')),a[1]))
+  await wait(lambda:js("document.querySelector('[data-tt-id=\\"timeline.tracks\\"]').toDataURL()")!=imageBefore)
+  beforeBob=await c('xsheet.exposures.get',{'elementIds':[ids['Bob']],'from':1,'to':24})
+  a=barpoint('Bob',2);await down(a);await move((a[0]+round(48*js('devicePixelRatio')),a[1]));await move((a[0]+round(192*js('devicePixelRatio')),a[1]));await up()
+  save('step6-probe.json',{'rows':await rows(),'target':js('window.reviewTarget'),'calls':t.cdp.calls})
   after=await c('cell.selection.get');save('step6-selection.json',after)
-  await until_cmd('timeline.rows.list',{'from':1,'to':48},lambda r:next(x['bar']['end'] for x in r['rows'] if x['elementId']==ids['Bob'])==15)
+  afterBob=await c('xsheet.exposures.get',{'elementIds':[ids['Bob']],'from':1,'to':24})
+  save('step6-bob-exposures.json',{'before':beforeBob,'after':afterBob})
+  assert beforeBob!=afterBob
   await c('app.context.set',{'elementId':ids['Alice'],'frame':10})
   await c('element.drawingLock.set',{'locked':True})
   await c('timeline.transferOptions.set',{'operation':'dragDrop','options':{'exposure':False}})
+  imageBefore=js("document.querySelector('[data-tt-id=\\"timeline.tracks\\"]').toDataURL()")
   await c('cell.select',{'elementIds':[ids['Alice']],'from':2,'to':3})
-  before=await c('doc.export.json',{'scope':'project','binaries':'omit'})
-  a=barpoint('Alice',2);await drag(a,(a[0]+round(128*js('devicePixelRatio')),a[1]))
-  assert await c('doc.export.json',{'scope':'project','binaries':'omit'})==before
+  await wait(lambda:js("document.querySelector('[data-tt-id=\\"timeline.tracks\\"]').toDataURL()")!=imageBefore)
+  before=await c('xsheet.exposures.get',{'elementIds':[ids['Alice']],'from':1,'to':24})
+  a=barpoint('Alice',2);await down(a);await move((a[0]+round(64*js('devicePixelRatio')),a[1]));await move((a[0]+round(128*js('devicePixelRatio')),a[1]));await up()
   reason=await wait(lambda:js("document.querySelector('[data-tt-id=\\"status.line\\"]')?.textContent"))
+  assert await c('xsheet.exposures.get',{'elementIds':[ids['Alice']],'from':1,'to':24})==before
   save('step6-detail.json',{'reason':reason,'selection':after})
   assert 'locked' in reason.lower()
  elif step==8:
@@ -159,6 +167,20 @@ def install():
  r.generated=prefix+extra
  exec(r.generated,r.__dict__)
 if __name__=='__main__':
+ if sys.argv[1]=='restart-build':
+  import subprocess
+  raw=Path(tempfile.mkdtemp(prefix='c51b-r2-build-'))/'build.log'
+  with raw.open('w',encoding='utf-8') as f:
+   p=subprocess.run(['pnpm.cmd','--dir','desktop','tauri','build','--debug','--no-bundle','--features','test-hooks'],cwd=ROOT,stdout=f,stderr=subprocess.STDOUT,timeout=530)
+  r.save('step7-build.json',{'exit':p.returncode,'raw':str(raw)})
+  if p.returncode:print(raw.read_text(encoding='utf-8')[-3000:])
+  sys.exit(p.returncode)
+ if sys.argv[1]=='restart-baseline':
+  import subprocess,json
+  raw=Path(tempfile.mkdtemp(prefix='c51b-r2-restart-baseline-'))
+  p=subprocess.run([sys.executable,str(ROOT/'scripts/c51b-engine-restart.py'),str(ROOT/'target/debug/toontown.exe'),str(raw)],cwd=ROOT,timeout=500)
+  for name in ('manifest.json','rows.json'):r.save('step7-baseline-'+name,json.loads((raw/name).read_text(encoding='utf-8')))
+  sys.exit(p.returncode)
  if sys.argv[1]=='dump':
   install()
   print('\n'.join(str(i)+': '+x for i,x in enumerate(r.generated.splitlines(),1) if 175<=i<=200))

@@ -1,0 +1,235 @@
+{
+  "rows": {
+    "sceneId": "sc_01M87A9BPGFD3JZ1PKF5EH4ZQ7",
+    "sceneLength": 51,
+    "currentFrame": 1,
+    "playbackRange": {
+      "mode": "auto",
+      "start": 1,
+      "end": 51
+    },
+    "rows": [
+      {
+        "elementId": "el_01K7JJN8003C53ZVA3TRD552XT",
+        "name": "Alice",
+        "type": "drawing",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 12,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN800C3RCPWS4MX91TSA7",
+        "name": "Peg-B",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 48,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN8002CQ9J9JX5NV4XNWD",
+        "name": "Peg-A",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": true,
+        "bar": {
+          "start": 4,
+          "end": 51,
+          "loops": 1
+        },
+        "keyframes": [
+          {
+            "frame": 4,
+            "channels": [
+              "position"
+            ],
+            "segmentAfter": "interpolated"
+          },
+          {
+            "frame": 11,
+            "channels": [
+              "position"
+            ],
+            "segmentAfter": "interpolated"
+          }
+        ],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN800HHNA80T0HBM3E963",
+        "name": "Bob",
+        "type": "drawing",
+        "depth": 1,
+        "parentId": "el_01K7JJN8002CQ9J9JX5NV4XNWD",
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": true,
+        "bar": {
+          "start": 1,
+          "end": 13,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M87A9BPGFD3JZ1PKF5EH4ZQ8",
+        "name": "Camera Peg",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 1,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M87A9BPGFD3JZ1PKF5EH4ZQ9",
+        "name": "Camera",
+        "type": "camera",
+        "depth": 1,
+        "parentId": "el_01M87A9BPGFD3JZ1PKF5EH4ZQ8",
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 1,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M87A9BPGFD3JZ1PKF5EH4ZQA",
+        "name": "Drawing",
+        "type": "drawing",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": null,
+        "keyframes": [],
+        "childKeyframeFrames": []
+      }
+    ]
+  },
+  "target": "timeline.tracks",
+  "calls": [
+    {
+      "phase": "press",
+      "layout": {
+        "surface": "tracks",
+        "zoomLevel": 6,
+        "firstFrame": 1,
+        "scrollTop": 0,
+        "platform": "windows"
+      },
+      "sample": {
+        "x": 311.921875,
+        "y": 60,
+        "modifiers": []
+      },
+      "generation": 0
+    },
+    {
+      "phase": "release",
+      "grabId": 1,
+      "samples": [
+        {
+          "x": 311.921875,
+          "y": 60,
+          "modifiers": []
+        },
+        {
+          "x": 359.921875,
+          "y": 60,
+          "modifiers": []
+        },
+        {
+          "x": 359.921875,
+          "y": 60,
+          "modifiers": []
+        }
+      ],
+      "generation": 0
+    },
+    {
+      "phase": "press",
+      "layout": {
+        "surface": "tracks",
+        "zoomLevel": 6,
+        "firstFrame": 1,
+        "scrollTop": 0,
+        "platform": "windows"
+      },
+      "sample": {
+        "x": 23.921875,
+        "y": 82,
+        "modifiers": []
+      },
+      "generation": 0
+    },
+    {
+      "phase": "release",
+      "grabId": 2,
+      "samples": [
+        {
+          "x": 23.921875,
+          "y": 82,
+          "modifiers": []
+        },
+        {
+          "x": 71.921875,
+          "y": 82,
+          "modifiers": []
+        },
+        {
+          "x": 215.921875,
+          "y": 82,
+          "modifiers": []
+        },
+        {
+          "x": 215.921875,
+          "y": 82,
+          "modifiers": []
+        }
+      ],
+      "generation": 0
+    }
+  ]
+}
