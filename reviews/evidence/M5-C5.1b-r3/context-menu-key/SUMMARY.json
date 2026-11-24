@@ -1,9 +1,10 @@
 {
  "receipt": "reviews/evidence/M5-C5.1b-r3/context-menu-key",
  "verdict": "pass",
- "regenerate": "python scripts/c51b-context-menu-key.py <release build> <out>",
+ "regenerate": "python scripts/c51b-context-menu-key.py <release build> <out> --mode os",
  "manifest": {
   "kind": "toontown.c51b.context-menu-key",
+  "mode": "os",
   "seconds": 10.1,
   "rows": 9,
   "failed": [],
@@ -74,7 +75,7 @@
      "commandId": "anim.key.add",
      "params": {
       "nodeIds": [
-       "el_01K7JJN80083CYSSBCDM1EEMYK"
+       "el_01K7JJN8008XECJGF3BY2X8SEF"
       ],
       "frame": 3
      }
@@ -159,18 +160,18 @@
  "raw": [
   {
    "file": "manifest.json",
-   "bytes": 118,
-   "sha256": "0010202d29de94c9d7a47fc4fcbf61a299d4798b27fa05108fa11619cd3a4e0a"
+   "bytes": 135,
+   "sha256": "126d987b8fbf630d6b5dd71f47cdd6f4c825e3280b9415d075611cc28ca6334b"
   },
   {
    "file": "rows.json",
    "bytes": 5577,
-   "sha256": "ae792e3658029e59bb829cc0fe8ec3f8b6dce2eb427c0015bdb825981ecf7fff"
+   "sha256": "8bf2050e09ef8f9911a4ab80d7c3937ed04dd2ca2672930dc13741d5d5ae38cc"
   },
   {
    "file": "transcript.json",
    "bytes": 5631,
-   "sha256": "feb2843b4fb8a8ee8f9828ebac3c408eadef18b699cbee786c011ffa56f10c4c"
+   "sha256": "09fa29f7377466b4cd7a8d6d61d751c55beaaaedaa08f0a7f9cc6ddded600e81"
   }
  ]
 }

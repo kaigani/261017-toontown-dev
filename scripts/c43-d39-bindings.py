@@ -1030,8 +1030,11 @@ class McpTable(Table):
                 elif was.get("frame"):
                     await e2e.run_cmd(self.s, "timeline.currentFrame.set", {"frame": was["frame"]})
             if not n:
+                # The key's answer in full (its code and details: run 45471231219 named only the status).
+                err = pressed.get("error") or {}
                 raise RuntimeError(f"menu item absent from the window's tree after Shift+F10 "
-                                   f"({pressed.get('status')}): {action[2]}")
+                                   f"({pressed.get('status')} {err.get('code')}: {err.get('message')} "
+                                   f"{json.dumps(err.get('details'))[:300]}): {action[2]}")
             if n.get("enabled") is False:
                 raise RuntimeError(f"menu item disabled in the window's tree: {action[2]}")
             ref = n.get("command") or {}

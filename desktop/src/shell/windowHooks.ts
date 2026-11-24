@@ -383,24 +383,40 @@ export function usePageReady(services: ShellServices): void {
   }, [services]);
 }
 
-/** Text focus is a sensor fact (the kernel's key dispatch and the `key` tool respect it). */
+/** Text focus is a sensor fact (the kernel's key dispatch and the `key` tool respect it). It is reported when the focus
+ *  moves, and also when the focused field leaves the page: WebKit (macOS) fires no `focusout` for a focused element that
+ *  is removed (the start screen's field when a project opens, an editor that closes), so the kernel kept `textFocus:
+ *  true` and refused an agent's plain keys and Shift+F10 with `ui.busy` (run 45471231219, macOS: every D-39 context
+ *  row). A change of the page re-reads the fact; only a changed fact is sent. */
 export function useTextFocusReport(services: ShellServices): void {
   useEffect(() => {
-    const report = () => {
+    let last: string | null = null;
+    const report = (always: boolean) => {
       const el = document.activeElement;
       // The field's kind goes with the fact, so the kernel's key resolution applies the same rule (SI-193).
-      void services.engine
-        .report({ textFocus: isTextField(el), textFieldKind: fieldKindOf(el) })
-        .catch(() => undefined);
+      const fact = { textFocus: isTextField(el), textFieldKind: fieldKindOf(el) };
+      const key = JSON.stringify(fact);
+      if (!always && key === last) return;
+      last = key;
+      void services.engine.report(fact).catch(() => undefined);
     };
-    window.addEventListener('focusin', report);
-    window.addEventListener('focusout', report);
+    const moved = () => {
+      report(false);
+    };
     // A new engine generation starts without this window's facts (ruling O-9, O-14).
-    window.addEventListener(GENERATION_EVENT, report);
+    const restarted = () => {
+      report(true);
+    };
+    window.addEventListener('focusin', moved);
+    window.addEventListener('focusout', moved);
+    window.addEventListener(GENERATION_EVENT, restarted);
+    const removed = new MutationObserver(moved);
+    removed.observe(document.body, { childList: true, subtree: true });
     return () => {
-      window.removeEventListener('focusin', report);
-      window.removeEventListener('focusout', report);
-      window.removeEventListener(GENERATION_EVENT, report);
+      window.removeEventListener('focusin', moved);
+      window.removeEventListener('focusout', moved);
+      window.removeEventListener(GENERATION_EVENT, restarted);
+      removed.disconnect();
     };
   }, [services]);
 }

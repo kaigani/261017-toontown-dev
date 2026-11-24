@@ -1,6 +1,6 @@
 """M5 C5.1b round 2, ruling E-52: an agent's Shift+F10 obeys the rules of every other key, on a real MCP stream.
 
-Usage: python scripts/c51b-context-menu-key.py <toontown binary> <out dir>
+Usage: python scripts/c51b-context-menu-key.py <toontown binary> <out dir> [--mode os|mcp]
 
 The `key` tool's `shift+F10` (11 §7.6; E-48) opens a window control's context menu. It takes the path of every key: the
 `input` scope, the text session, the coexistence checks (11 lines 237-241: a dialog the person opened answers
@@ -16,8 +16,16 @@ Elements from the menu bar, and the reviewer's case, Change Duration from the ro
 rename editor open (its text kept), and whose action an item is: the agent runs an opened item's reference (`run_command`,
 the agent's origin and scopes: an agent step), a person's real click on an item of the same menu is a user step.
 
-Output: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c51b.context-menu-key`). Exit 0 when every row
-holds. Windows workstation (real input).
+Two forms, as D-39's. `--mode os` (the default; Windows workstation): every row, the window read through the webview's
+debugging port and the person's part driven with real OS input; its receipt is committed. `--mode mcp` (CI, both
+systems): the rows that need no person, the window read through the attached MCP interface alone (`inspect_ui`): rows
+1 to 5 judged on the answer and on the menu the window shows (the tree does not report the DOM focus), and row 8's
+agent half. The person's rows (a dialog the person opened, the rename editor a real double click opened, a person's
+click) are named with that reason; their kernel half runs in CI in `crates/mcp/tests/c51b_r2_context_key.rs`. A CI
+runner gives neither real OS input nor the debugging port (run 45471231219: no page on the port after 300 s).
+
+Output: `rows.json`, `transcript.json`, `manifest.json` (kind `toontown.c51b.context-menu-key`, with `mode`). Exit 0 when
+every row holds.
 """
 
 from __future__ import annotations
@@ -251,14 +259,142 @@ async def check(app: str, run, out: Path, work: Path) -> list:
     return rows
 
 
+async def check_mcp(app: str, run, out: Path, work: Path) -> list:
+    """The CI form: no debugging port, no OS input; the window read through `inspect_ui`."""
+    rows: list = []
+
+    def row(name: str, ok: bool, detail) -> None:
+        rows.append({"name": name, "ok": bool(ok), "detail": detail})
+        run.check(bool(ok), f"E-52 {name}", detail)
+        run.save("rows.json", rows)
+
+    user = work / "user"
+    (user / "Settings").mkdir(parents=True)
+    seed = {"agent.policy.defaults": {"policy": "autonomous", "maxJobs": 2, "maxBatchSteps": 1000,
+                                      "maxInlineImagePx": 2048, "maxInlineBytes": 52428800, "askInApp": True,
+                                      "letAgentMoveView": True, "highlightAgentChanges": True}}
+    (user / "Settings" / "preferences.json").write_text(json.dumps(
+        {"format": "toontown-settings", "kind": "preferences", "formatVersion": "1.0", "data": seed}), encoding="utf-8")
+    os.environ["WEBVIEW2_USER_DATA_FOLDER"] = str(work / "webview2")
+    discovery = work / "discovery.json"
+    proc = e2e.launch(app, user, discovery)
+    try:
+        d = e2e.wait_discovery(discovery, proc)
+        async with contextlib.AsyncExitStack() as stack:
+            client = await stack.enter_async_context(
+                e2e.httpx2.AsyncClient(headers={"Authorization": f"Bearer {d['token']}"},
+                                       timeout=e2e.httpx2.Timeout(60.0, read=300.0)))
+            streams = await stack.enter_async_context(e2e.streamable_http_client(d["endpoint"], http_client=client))
+            from mcp import types
+
+            async def roots(_ctx):
+                return types.ListRootsResult(roots=[types.Root(uri=work.resolve().as_uri(), name="work")])
+            s = await stack.enter_async_context(e2e.ClientSession(streams[0], streams[1], list_roots_callback=roots))
+            await s.initialize()
+            await e2e.gui_tree(s, run, lambda r: e2e.by_id(r, "startScreen") is not None, "the GUI is up")
+            t = d39.McpTable(s, run, out, work)
+
+            async def tree() -> dict:
+                return await t.tree()
+
+            def menu_of(root: dict):
+                """The open context menu's id, or None (the menu bar's menus and submenus, `menu.*` and `menu:*`, are
+                menus of the tree too)."""
+                stack = [root]
+                while stack:
+                    n = stack.pop()
+                    if n.get("role") == "menu" and not (n.get("id") or "").startswith("menu"):
+                        return n.get("id")
+                    stack.extend(n.get("children") or [])
+                return None
+
+            async def wait_tree(pred, bound: float):
+                """The window's tree once `pred(root)` holds (the window reports it asynchronously), bounded."""
+                start = time.monotonic()
+                root: dict = {}
+                while time.monotonic() - start < bound:
+                    root = await tree()
+                    if pred(root):
+                        return root, round(time.monotonic() - start, 2)
+                    await asyncio.sleep(0.2)
+                return root, None
+
+            async def press(view=None):
+                args = {"keys": "shift+F10"}
+                if view is not None:
+                    args["view"] = view
+                return await e2e.call(s, "key", args)
+
+            await t.cmd("project.create", {"name": "Context menu key", "onUnsaved": "fail"})
+            a = (await t.cmd("element.create", {"type": "drawing", "name": "TlA"}))["elementIds"][0]
+            await t.cmd("element.drawing.create", {"elementId": a, "name": "1", "exposeFrom": 1, "exposeTo": 12})
+            await t.cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
+            await t.cmd("xsheet.currentCell.set", {"elementId": a, "frame": 3})
+            await wait_tree(lambda r: t.node(r, f"timeline.row.{a}") is not None, 15.0)
+
+            # 1. The passing case.
+            env = await press("timeline.tracks")
+            res = env.get("result") or {}
+            root, took = await wait_tree(lambda r: menu_of(r) == "timeline.cellMenu", 10.0)
+            row("1. the passing case: the cell context opens and the answer names it",
+                env.get("status") == "ok" and res.get("handled") is True and res.get("menuId") == "timeline.cellMenu"
+                and took is not None, {"answer": env, "menu": menu_of(root)})
+
+            # 8 (the agent's half). The agent runs an opened item's reference itself: its own invocation, an agent step.
+            node = t.node(root, "timeline.cellMenu.timeline.cell.addKey") or {}
+            ref = node.get("command") or {}
+            before = await t.position()
+            ran = await e2e.run_cmd(s, ref.get("commandId") or "", ref.get("params") or {})
+            agent_steps = await t.steps_since(before)
+            row("8. the agent's run of an opened item's reference is the agent's own step (the person's click: the OS form)",
+                ran.get("status") == "ok" and [src for _, src in agent_steps] == ["agent"],
+                {"reference": ref, "agentSteps": agent_steps})
+
+            # Rows 2 to 5: nothing new opens. The menu row 1 opened stays as it was (no OS input closes it here).
+            shown = menu_of(await tree())
+
+            env = await press("timeline.add")
+            res = env.get("result") or {}
+            row("2. a control without a context menu: handled false, nothing opened",
+                env.get("status") == "ok" and res.get("handled") is False and res.get("reason") == "noContextMenu"
+                and menu_of(await tree()) == shown, {"answer": env})
+
+            env = await press("timeline.noSuchControl")
+            row("3. an unknown control: view.notFound, nothing opened",
+                (env.get("error") or {}).get("code") == "view.notFound" and menu_of(await tree()) == shown,
+                {"answer": env})
+
+            gone = (await t.cmd("element.create", {"type": "drawing", "name": "Gone"}))["elementIds"][0]
+            await t.cmd("element.delete", {"elementIds": [gone]})
+            await wait_tree(lambda r: t.node(r, f"timeline.row.{gone}") is None, 10.0)
+            env = await press(f"timeline.row.{gone}")
+            row("4. a stale row id: view.notFound, nothing opened",
+                (env.get("error") or {}).get("code") == "view.notFound" and menu_of(await tree()) == shown,
+                {"answer": env})
+
+            env = await press(42)
+            row("5. a non-string view: arg.invalid, nothing opened",
+                (env.get("error") or {}).get("code") == "arg.invalid" and menu_of(await tree()) == shown,
+                {"answer": env})
+
+            for name in ("6. a dialog open", "6b. Change Duration open (the reviewer's case)", "7. the rename editor open"):
+                run.check(True, f"E-52 {name}: the OS form (a person's dialog or editor opened by real input; the "
+                                "kernel half in c51b_r2_context_key.rs)")
+    finally:
+        e2e.stop(proc)
+    return rows
+
+
 def main() -> int:
     d39.e6.dpi_aware()
     ap = argparse.ArgumentParser()
     ap.add_argument("app")
     ap.add_argument("out")
+    ap.add_argument("--mode", choices=["os", "mcp"], default="os",
+                    help="os: every row, real input and the debugging port (Windows workstation); mcp: CI's form")
     a = ap.parse_args()
-    if sys.platform != "win32":
-        print("The context-menu key check drives the real window through Windows input; run it on Windows.")
+    if a.mode == "os" and sys.platform != "win32":
+        print("The OS form drives the real window through Windows input; run it on Windows, or use --mode mcp.")
         return 0
     out = Path(a.out)
     out.mkdir(parents=True, exist_ok=True)
@@ -267,14 +403,14 @@ def main() -> int:
     started = time.monotonic()
     rows: list = []
     try:
-        rows = asyncio.run(check(a.app, run, out, work))
+        rows = asyncio.run(check(a.app, run, out, work) if a.mode == "os" else check_mcp(a.app, run, out, work))
     except Exception as ex:  # noqa: BLE001 - reported as a failure with its text
         import traceback
         traceback.print_exception(ex)
         run.check(False, "the check ran", repr(ex))
     finally:
         shutil.rmtree(work, ignore_errors=True)
-    manifest = {"kind": "toontown.c51b.context-menu-key", "seconds": round(time.monotonic() - started, 1),
+    manifest = {"kind": "toontown.c51b.context-menu-key", "mode": a.mode, "seconds": round(time.monotonic() - started, 1),
                 "rows": len(rows), "failed": [r.get("name") for r in rows if not r.get("ok")], "failures": run.failures}
     run.save("transcript.json", run.transcript)
     run.save("manifest.json", manifest)

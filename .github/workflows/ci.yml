@@ -1121,9 +1121,19 @@ jobs:
           PYTHONIOENCODING=utf-8 $VPY -I tests/adversarial/c41-r1-http-lifecycle.py "$app" "desktop-gui/c41-r1-http-lifecycle.json"
       # The reviewer's round-2 desktop probes use the Win32 window APIs (ctypes) and run on Windows only; on macOS the
       # builder e2e above carries the float-window checks (open, move, resize, hide, global visibility, restore).
-      - name: The agent's context-menu key (M5 ruling E-52; Windows only, real input) against the running application
-        if: always() && runner.os == 'Windows'
-        run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I scripts/c51b-context-menu-key.py desktop-artifact/default-build/toontown.exe desktop-gui/c51b-context-menu-key
+      # M5 ruling E-52: the agent's Shift+F10 on a real MCP stream against the running application, in the script's MCP
+      # form (the window read through inspect_ui: a runner gives neither the webview's debugging port nor real OS input,
+      # run 45471231219). The OS form, with the person's rows, is the workstation receipt
+      # (reviews/evidence/M5-C5.1b-r3/context-menu-key).
+      - name: The agent's context-menu key (M5 ruling E-52; MCP form) against the running application
+        if: always()
+        run: |
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            app=desktop-artifact/default-build/toontown.exe; VPY=.venv-gui/Scripts/python
+          else
+            app=desktop-artifact/Toontown.app/Contents/MacOS/toontown; VPY=.venv-gui/bin/python
+          fi
+          PYTHONIOENCODING=utf-8 $VPY -I scripts/c51b-context-menu-key.py "$app" desktop-gui/c51b-context-menu-key --mode mcp
       - name: Reviewer float-window probe (C4.1 round 2; Windows only) against the running application
         if: always() && runner.os == 'Windows'
         run: PYTHONIOENCODING=utf-8 .venv-gui/Scripts/python -I tests/adversarial/c41-r2-desktop-floats.py desktop-artifact/default-build/toontown.exe desktop-gui/c41-r2-desktop-floats.json
