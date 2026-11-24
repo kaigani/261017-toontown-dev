@@ -166,7 +166,43 @@ async def body(t,step):
   order=[r['elementId'] for r in (await rows())['rows']];lo,hi=sorted([order.index(ids['Bob']),order.index(ids['Alice'])]);assert set(sel['ids'])==set(order[lo:hi+1])
   await c('element.select',{'elementIds':[ids['Peg-B']]})
   await wait(lambda:' selected' in (dom('timeline.row.'+ids['Peg-B']) or ''))
- else:raise RuntimeError('Remaining gesture sentences not yet implemented')
+ elif step==8:
+  await c('playback.loop.set',{'enabled':False});await c('timeline.currentFrame.set',{'frame':1})
+  click('mainToolbar.playStop')
+  started=await until_cmd('playback.state.get',{},lambda r:r['playing'])
+  await wait(lambda:'playback.stop' in (dom('mainToolbar.playStop') or ''))
+  stopped=await until_cmd('playback.state.get',{},lambda r:not r['playing'])
+  assert stopped['frame']==stopped['range']['end']
+  await wait(lambda:'playback.start' in (dom('mainToolbar.playStop') or ''))
+  await c('timeline.currentFrame.set',{'frame':1});click('mainToolbar.playStop')
+  await until_cmd('playback.state.get',{},lambda r:r['playing'])
+  await wait(lambda:'playback.stop' in (dom('mainToolbar.playStop') or ''))
+  xy=point('timeline.ruler',(12-.5)*16,12);guard();d.click_screen(*xy)
+  clicked=await until_cmd('playback.state.get',{},lambda r:not r['playing'])
+  assert clicked['frame']==12
+  await wait(lambda:'playback.start' in (dom('mainToolbar.playStop') or ''))
+  save('step8-result.json',{'started':started,'end':stopped,'rulerClick':clicked,'toolbarAgreed':True})
+ elif step==9:
+  import time
+  result=await asyncio.wait_for(d.e2e.call(t.s,'batch',{'label':'Large scene','steps':[{'id':'element.create','params':{'type':'drawing','name':'Large-%03d'%i}} for i in range(300)]}),30)
+  assert result.get('status')=='ok',str(result)[:200]
+  await wait(lambda:js("Number(document.querySelector('[data-tt-id=\"timeline.tracks\"]').dataset.ttRows)>=300"))
+  js("window.reviewWheels=0;document.querySelector('[data-tt-id=\"timeline.tracks\"]').addEventListener('wheel',()=>window.reviewWheels++)")
+  durations=[]
+  async def queries():
+   for _ in range(20):
+    start=time.monotonic();await c('doc.state.get');durations.append(time.monotonic()-start)
+  async def wheels():
+   xy=point('timeline.tracks',100,70)
+   for i in range(40):
+    guard();d.wheel_screen(*xy,1)
+    await wait(lambda:js('window.reviewWheels')>=i+1)
+  await asyncio.gather(queries(),wheels())
+  v=await c('timeline.view.set');r=await c('timeline.rows.list',{'from':v['firstFrame'],'to':v['lastFrame']})
+  def visible():return js("(()=>{const l=document.querySelector('[data-tt-id=\"timeline.layers\"]'),b=l.getBoundingClientRect();return {scroll:l.scrollTop,height:l.clientHeight,ids:[...l.querySelectorAll('.timeline-row')].filter(e=>{const r=e.getBoundingClientRect();return r.bottom>b.top&&r.top<b.bottom}).map(e=>e.dataset.ttId)}})()")
+  ui=visible();expected=['timeline.row.'+x['elementId'] for x in r['rows']][int(ui['scroll']//22):__import__('math').ceil((ui['scroll']+ui['height'])/22)]
+  await wait(lambda:visible()['ids']==expected)
+  save('step9-result.json',{'created':300,'batchCount':1,'wheels':js('window.reviewWheels'),'callSeconds':durations,'view':v,'visible':visible(),'expected':expected})
  t.run.check(True,'Step '+str(step)+' exercised',None)
 def live(step):
  global P
