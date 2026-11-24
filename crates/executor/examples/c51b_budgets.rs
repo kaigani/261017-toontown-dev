@@ -184,10 +184,13 @@ fn main() {
             );
             eprintln!("plan {surface}: {}", out["plan"]);
         });
-        // A document change is undone (a UI change has nothing to undo).
-        if ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap_or(0) > 0 {
-            ok(&h, "edit.undo", json!({}));
-        }
+        // Every sample is a commit (ruling E-44: a sample that changed nothing measured nothing); it is undone before
+        // the next.
+        assert!(
+            ok(&h, "edit.history.get", json!({}))["position"].as_u64().unwrap_or(0) > 0,
+            "the {surface} sample committed nothing"
+        );
+        ok(&h, "edit.undo", json!({}));
         ms
     };
     let s = |x: f64, y: f64| json!({"x": x, "y": y, "modifiers": []});
@@ -210,12 +213,21 @@ fn main() {
             )
         })
         .collect();
-    // Two selected cells of a drawing moved 10 frames.
+    // The last two exposed cells of a drawing moved 10 frames later, into empty cells (ruling E-44: cells moved onto the
+    // same drawing's occupied cells, as the first receipt did, change nothing and commit nothing).
     let cell_row = index_of(&drawings[5]);
+    let end = shown[cell_row as usize]["bar"]["end"].as_i64().unwrap();
+    let first = end - 60;
+    let at = |frame: i64| ((frame - first) as f64 + 0.5) * cw;
     let cells: Vec<f64> = (0..SAMPLES)
         .map(|_| {
-            ok(&h, "cell.select", json!({"elementIds": [drawings[5]], "from": 2, "to": 3}));
-            release("tracks", 1, cell_row * rh, json!([s(1.5 * cw, 16.0), s(5.5 * cw, 16.0), s(11.5 * cw, 16.0)]))
+            ok(&h, "cell.select", json!({"elementIds": [drawings[5]], "from": end - 1, "to": end}));
+            release(
+                "tracks",
+                first,
+                cell_row * rh,
+                json!([s(at(end - 1), 16.0), s(at(end + 3), 16.0), s(at(end + 9), 16.0)]),
+            )
         })
         .collect();
 

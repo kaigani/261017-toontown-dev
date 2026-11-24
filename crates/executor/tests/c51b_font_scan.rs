@@ -252,8 +252,18 @@ fn every_path_into_the_font_list_waits_at_most_the_bound_or_not_at_all() {
         assert!(t0.elapsed() < BOUND, "the window's {view} state read waited {:?}", t0.elapsed());
         report.push(format!("{:<48} {:>6} ms answered", format!("state read: {view}"), t0.elapsed().as_millis()));
     }
-    // The window is told while a call waits, and when the list is read.
-    let seen: Vec<Value> = notices.try_iter().filter(|e| e.name == "shell.fontsLoading").map(|e| e.payload).collect();
+    // The window is told while a call waits, and when the list is read (waits for the states, D-45; R1S-07).
+    let mut seen: Vec<Value> = Vec::new();
+    let deadline = Instant::now() + Duration::from_secs(30);
+    while !(seen.contains(&json!({"waiting": true})) && seen.contains(&json!({"waiting": false})))
+        && Instant::now() < deadline
+    {
+        if let Ok(e) = notices.recv_timeout(Duration::from_millis(200))
+            && e.name == "shell.fontsLoading"
+        {
+            seen.push(e.payload);
+        }
+    }
     assert!(seen.contains(&json!({"waiting": true})) && seen.contains(&json!({"waiting": false})), "{seen:?}");
     // Released: the list is read and every refused call succeeds on retry.
     let after = h.subscribe();
@@ -267,7 +277,14 @@ fn every_path_into_the_font_list_waits_at_most_the_bound_or_not_at_all() {
     }
     let env = h.pointer(Origin::User, click);
     assert!(reason(&env).as_deref() != Some("fontsLoading"), "the Text tool's click on retry: {env:?}");
-    std::thread::sleep(Duration::from_millis(100));
-    assert!(after.try_iter().any(|e| e.name == "shell.fontsLoading" && e.payload == json!({"waiting": false})));
+    // The notice that the list is read: waited for on the receiver, not after a fixed sleep (D-45; R1S-07).
+    let deadline = Instant::now() + Duration::from_secs(30);
+    let mut ready = false;
+    while !ready && Instant::now() < deadline {
+        ready = after
+            .recv_timeout(Duration::from_millis(200))
+            .is_ok_and(|e| e.name == "shell.fontsLoading" && e.payload == json!({"waiting": false}));
+    }
+    assert!(ready, "no shell.fontsLoading {{waiting: false}} within 30 s of the release");
     println!("{}", report.join("\n"));
 }
