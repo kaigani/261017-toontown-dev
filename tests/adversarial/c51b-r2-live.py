@@ -125,6 +125,7 @@ def install():
   await c('cell.select',{'elementIds':[ids['Bob']],'from':2,'to':3})
   a=barpoint('Bob',2);await drag(a,(a[0]+round(192*js('devicePixelRatio')),a[1]))
   after=await c('cell.selection.get');save('step6-selection.json',after)
+  await until_cmd('timeline.rows.list',{'from':1,'to':48},lambda r:next(x['bar']['end'] for x in r['rows'] if x['elementId']==ids['Bob'])==15)
   await c('app.context.set',{'elementId':ids['Alice'],'frame':10})
   await c('element.drawingLock.set',{'locked':True})
   await c('timeline.transferOptions.set',{'operation':'dragDrop','options':{'exposure':False}})
