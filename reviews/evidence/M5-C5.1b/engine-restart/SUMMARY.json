@@ -1,0 +1,121 @@
+{
+ "receipt": "reviews/evidence/M5-C5.1b/engine-restart",
+ "verdict": "pass",
+ "regenerate": "python scripts/c51b-engine-restart.py <test-hooks build> <out>",
+ "manifest": {
+  "kind": "toontown.c51b.engine-restart",
+  "seconds": 74.7,
+  "rows": 7,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "E-29 item 3 1. an autosave of the modified project"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 2. the engine stops: internal, reason engineStopped, the hint names project.recovery.list"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 3. the window marks the engine not responding at once (within 7.0 s)"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 3b. the banner's Restart the engine is in view and reachable by a click (nothing covers it)"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 4a. the restart question, Cancel: the engine stays stopped and the banner stays"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 4b. the restart question, Restart: the banner goes and the new engine answers"
+  },
+  {
+   "ok": true,
+   "check": "E-29 item 3 5. Recover: the start screen offers the autosave; it opens with the work before it, not the change the engine died on"
+  }
+ ],
+ "rows": [
+  {
+   "name": "1. an autosave of the modified project",
+   "ok": true,
+   "detail": {
+    "seconds": 60.62
+   }
+  },
+  {
+   "name": "2. the engine stops: internal, reason engineStopped, the hint names project.recovery.list",
+   "ok": true
+  },
+  {
+   "name": "3. the window marks the engine not responding at once (within 7.0 s)",
+   "ok": true,
+   "detail": {
+    "secondsAfterTheStop": 2.63
+   }
+  },
+  {
+   "name": "3b. the banner's Restart the engine is in view and reachable by a click (nothing covers it)",
+   "ok": true,
+   "detail": {
+    "rect": {
+     "x": 912.1953125,
+     "y": 87.5,
+     "dpr": 1,
+     "disabled": false,
+     "reachable": true
+    }
+   }
+  },
+  {
+   "name": "4a. the restart question, Cancel: the engine stays stopped and the banner stays",
+   "ok": true
+  },
+  {
+   "name": "4b. the restart question, Restart: the banner goes and the new engine answers",
+   "ok": true,
+   "detail": {
+    "asked": 0.0,
+    "bannerGoneAfter": 0.0,
+    "newEndpoint": true,
+    "engine": "ok",
+    "error": null
+   }
+  },
+  {
+   "name": "5. Recover: the start screen offers the autosave; it opens with the work before it, not the change the engine died on",
+   "ok": true,
+   "detail": {
+    "entry": "start.recover.rc_1144207144ec005e",
+    "elements": [
+     "Before",
+     "Camera",
+     "Camera Peg",
+     "Drawing"
+    ]
+   }
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 116,
+   "sha256": "e5162176b1dc6072737555d8efc4bf4287aa54bd893c3167a53291844285dbe1"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 2834,
+   "sha256": "10fb5313ad87627b66a9282c6f3de73a7e3c356c3c772dc5ab09517f5134f73f"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 2925,
+   "sha256": "000b24868b3749608f0e22d49154141a73240d36aa50f44752993a6218fcfa48"
+  }
+ ]
+}

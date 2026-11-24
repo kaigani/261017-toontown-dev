@@ -1,0 +1,2299 @@
+{
+ "receipt": "reviews/evidence/M5-C5.1b/d44-timeline",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-d44-flows.py <build> <out> --only \"Element,Change,Paste Special,Cut Special,Drag and Drop,Extend Children,Marker Colour,Background Colour,Set Current Frame,Set Playback\"",
+ "manifest": {
+  "kind": "toontown.c43b.d44-flows",
+  "seconds": 418.7,
+  "rows": 42,
+  "named": [],
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "D-44 New Elements › OK: the choice sends exactly its commands and has its effect (04 §3.2; spec/04_timeline_xsheet.md:1381)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 New Elements › Cancel: the choice sends exactly its commands and has its effect (04 §3.2; spec/04_timeline_xsheet.md:1381)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Rename Element › OK: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1385)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Rename Element › Cancel: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1385)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Rename Element (Timeline row) › OK: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1385)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Rename Element (Timeline row) › Cancel: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1385)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Element Note › OK: the choice sends exactly its commands and has its effect (04 §9.7; spec/04_timeline_xsheet.md:1406)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Element Note › Cancel: the choice sends exactly its commands and has its effect (04 §9.7; spec/04_timeline_xsheet.md:1406)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Element Note (Timeline row) › OK: the choice sends exactly its commands and has its effect (04 §9.7; spec/04_timeline_xsheet.md:1406)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Element Note (Timeline row) › Cancel: the choice sends exactly its commands and has its effect (04 §9.7; spec/04_timeline_xsheet.md:1406)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Element Colours › OK: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1403)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Element Colours › Cancel: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1403)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Marker Colour (Timeline row) › OK: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1403)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Marker Colour (Timeline row) › Cancel: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1403)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Background Colour (Timeline row) › OK: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1403)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Background Colour (Timeline row) › Cancel: the choice sends exactly its commands and has its effect (04 §9.6; spec/04_timeline_xsheet.md:1403)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Start Frame › OK: the choice sends exactly its commands and has its effect (04 §10.2; spec/04_timeline_xsheet.md:1408)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Start Frame › Cancel: the choice sends exactly its commands and has its effect (04 §10.2; spec/04_timeline_xsheet.md:1408)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Duration › OK: the choice sends exactly its commands and has its effect (04 §10.2; spec/04_timeline_xsheet.md:1408)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Duration › Cancel: the choice sends exactly its commands and has its effect (04 §10.2; spec/04_timeline_xsheet.md:1408)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Loops › OK: the choice sends exactly its commands and has its effect (04 §10.2; spec/04_timeline_xsheet.md:1408)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Loops › Cancel: the choice sends exactly its commands and has its effect (04 §10.2; spec/04_timeline_xsheet.md:1408)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Extend Children Exposure › OK: the choice sends exactly its commands and has its effect (04 §13.8; spec/04_timeline_xsheet.md:1409)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Extend Children Exposure › Cancel: the choice sends exactly its commands and has its effect (04 §13.8; spec/04_timeline_xsheet.md:1409)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Current Frame › OK: the choice sends exactly its commands and has its effect (09 §2.2; spec/01_application_shell.md:1063)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Current Frame › Cancel: the choice sends exactly its commands and has its effect (09 §2.2; spec/01_application_shell.md:1063)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Set Current Frame (Timeline ruler) › OK: the choice sends exactly its commands and has its effect (04 §11.9; spec/04_timeline_xsheet.md:1438)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Set Current Frame (Timeline ruler) › Cancel: the choice sends exactly its commands and has its effect (04 §11.9; spec/04_timeline_xsheet.md:1438)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Playback Start Frame › OK: the choice sends exactly its commands and has its effect (09 §2.6; spec/09_playback_export.md:1003)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Playback Start Frame › Cancel: the choice sends exactly its commands and has its effect (09 §2.6; spec/09_playback_export.md:1003)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Playback End Frame › OK: the choice sends exactly its commands and has its effect (09 §2.6; spec/09_playback_export.md:1003)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Change Playback End Frame › Cancel: the choice sends exactly its commands and has its effect (09 §2.6; spec/09_playback_export.md:1003)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Set Playback Start Frame (Timeline ruler) › OK: the choice sends exactly its commands and has its effect (09 §2.6; spec/04_timeline_xsheet.md:1440)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Set Playback Start Frame (Timeline ruler) › Cancel: the choice sends exactly its commands and has its effect (09 §2.6; spec/04_timeline_xsheet.md:1440)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Set Playback End Frame (Timeline ruler) › OK: the choice sends exactly its commands and has its effect (09 §2.6; spec/04_timeline_xsheet.md:1440)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Set Playback End Frame (Timeline ruler) › Cancel: the choice sends exactly its commands and has its effect (09 §2.6; spec/04_timeline_xsheet.md:1440)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Paste Special › OK: the choice sends exactly its commands and has its effect (04 §11.14; spec/01_application_shell.md:1100)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Paste Special › Cancel: the choice sends exactly its commands and has its effect (04 §11.14; spec/01_application_shell.md:1100)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Cut Special › OK: the choice sends exactly its commands and has its effect (04 §11.14; spec/01_application_shell.md:1099)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Cut Special › Cancel: the choice sends exactly its commands and has its effect (04 §11.14; spec/01_application_shell.md:1099)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Drag and Drop Options › OK: the choice sends exactly its commands and has its effect (04 §11.14; spec/04_timeline_xsheet.md:1448)"
+  },
+  {
+   "ok": true,
+   "check": "D-44 Drag and Drop Options › Cancel: the choice sends exactly its commands and has its effect (04 §11.14; spec/04_timeline_xsheet.md:1448)"
+  }
+ ],
+ "rows": [
+  {
+   "name": "New Elements › OK",
+   "spec": "04 §3.2; spec/04_timeline_xsheet.md:1381",
+   "path": [
+    "Element",
+    "New Elements"
+   ],
+   "choice": "OK",
+   "input": "real native menu Element › New Elements, a real click on OK",
+   "expected": [
+    {
+     "command": "element.create",
+     "must": {
+      "type": "drawing",
+      "count": 1,
+      "name": "FlowEl"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.create",
+     "params": {
+      "type": "drawing",
+      "count": 1,
+      "name": "FlowEl"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Bob",
+    "Camera",
+    "Camera Peg",
+    "Drawing",
+    "FlowPeg"
+   ],
+   "after": [
+    "Bob",
+    "Camera",
+    "Camera Peg",
+    "Drawing",
+    "FlowEl",
+    "FlowPeg"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "New Elements › Cancel",
+   "spec": "04 §3.2; spec/04_timeline_xsheet.md:1381",
+   "path": [
+    "Element",
+    "New Elements"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Element › New Elements, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": [
+    "Bob",
+    "Camera",
+    "Camera Peg",
+    "Drawing",
+    "FlowPeg"
+   ],
+   "after": [
+    "Bob",
+    "Camera",
+    "Camera Peg",
+    "Drawing",
+    "FlowPeg"
+   ],
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Rename Element › OK",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1385",
+   "path": [
+    "Element",
+    "Rename"
+   ],
+   "choice": "OK",
+   "input": "real native menu Element › Rename, a real click on OK",
+   "expected": [
+    {
+     "command": "element.rename",
+     "must": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "name": "FlowBob"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.rename",
+     "params": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "name": "FlowBob"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "Bob",
+   "after": "FlowBob",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Rename Element › Cancel",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1385",
+   "path": [
+    "Element",
+    "Rename"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Element › Rename, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "Bob",
+   "after": "Bob",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Rename Element (Timeline row) › OK",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1385",
+   "path": [
+    "Timeline",
+    "row",
+    "Rename"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.rename, a real click on OK",
+   "expected": [
+    {
+     "command": "element.rename",
+     "must": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "name": "FlowBob"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.rename",
+     "params": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "name": "FlowBob"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "Bob",
+   "after": "FlowBob",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Rename Element (Timeline row) › Cancel",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1385",
+   "path": [
+    "Timeline",
+    "row",
+    "Rename"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.rename, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "Bob",
+   "after": "Bob",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Element Note › OK",
+   "spec": "04 §9.7; spec/04_timeline_xsheet.md:1406",
+   "path": [
+    "Element",
+    "Element Note"
+   ],
+   "choice": "OK",
+   "input": "real native menu Element › Element Note, a real click on OK",
+   "expected": [
+    {
+     "command": "element.note.set",
+     "must": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "text": "flow note"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.note.set",
+     "params": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "text": "flow note"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "",
+   "after": "flow note",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Element Note › Cancel",
+   "spec": "04 §9.7; spec/04_timeline_xsheet.md:1406",
+   "path": [
+    "Element",
+    "Element Note"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Element › Element Note, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "",
+   "after": "",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Element Note (Timeline row) › OK",
+   "spec": "04 §9.7; spec/04_timeline_xsheet.md:1406",
+   "path": [
+    "Timeline",
+    "row",
+    "Element Note"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.note, a real click on OK",
+   "expected": [
+    {
+     "command": "element.note.set",
+     "must": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "text": "flow note"
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.note.set",
+     "params": {
+      "elementId": "el_01K7JJN800KKD9TNDP6H7D7WRH",
+      "text": "flow note"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "",
+   "after": "flow note",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Element Note (Timeline row) › Cancel",
+   "spec": "04 §9.7; spec/04_timeline_xsheet.md:1406",
+   "path": [
+    "Timeline",
+    "row",
+    "Element Note"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.note, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": "",
+   "after": "",
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Element Colours › OK",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1403",
+   "path": [
+    "Element",
+    "Element Colours"
+   ],
+   "choice": "OK",
+   "input": "real native menu Element › Element Colours, a real click on OK",
+   "expected": [
+    {
+     "command": "element.colour.set",
+     "must": {
+      "marker": "#FF0000"
+     },
+     "absent": [
+      "background"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.colour.set",
+     "params": {
+      "marker": "#FF0000"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "marker": null,
+    "background": null
+   },
+   "after": {
+    "marker": "#FF0000FF",
+    "background": null
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Element Colours › Cancel",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1403",
+   "path": [
+    "Element",
+    "Element Colours"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Element › Element Colours, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "marker": null,
+    "background": null
+   },
+   "after": {
+    "marker": null,
+    "background": null
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Marker Colour (Timeline row) › OK",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1403",
+   "path": [
+    "Timeline",
+    "row",
+    "Marker Colour"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.markerColour, a real click on OK",
+   "expected": [
+    {
+     "command": "element.colour.set",
+     "must": {
+      "elementIds": [
+       "el_01K7JJN800KKD9TNDP6H7D7WRH"
+      ],
+      "marker": "#00FF00"
+     },
+     "absent": [
+      "background"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.colour.set",
+     "params": {
+      "elementIds": [
+       "el_01K7JJN800KKD9TNDP6H7D7WRH"
+      ],
+      "marker": "#00FF00"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "marker": null,
+    "background": null
+   },
+   "after": {
+    "marker": "#00FF00FF",
+    "background": null
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Marker Colour (Timeline row) › Cancel",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1403",
+   "path": [
+    "Timeline",
+    "row",
+    "Marker Colour"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.markerColour, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "marker": null,
+    "background": null
+   },
+   "after": {
+    "marker": null,
+    "background": null
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Background Colour (Timeline row) › OK",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1403",
+   "path": [
+    "Timeline",
+    "row",
+    "Background Colour"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.backgroundColour, a real click on OK",
+   "expected": [
+    {
+     "command": "element.colour.set",
+     "must": {
+      "elementIds": [
+       "el_01K7JJN800KKD9TNDP6H7D7WRH"
+      ],
+      "background": "#0000FF"
+     },
+     "absent": [
+      "marker"
+     ]
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.colour.set",
+     "params": {
+      "elementIds": [
+       "el_01K7JJN800KKD9TNDP6H7D7WRH"
+      ],
+      "background": "#0000FF"
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "marker": null,
+    "background": null
+   },
+   "after": {
+    "marker": null,
+    "background": "#0000FFFF"
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Background Colour (Timeline row) › Cancel",
+   "spec": "04 §9.6; spec/04_timeline_xsheet.md:1403",
+   "path": [
+    "Timeline",
+    "row",
+    "Background Colour"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.backgroundColour, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "marker": null,
+    "background": null
+   },
+   "after": {
+    "marker": null,
+    "background": null
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Start Frame › OK",
+   "spec": "04 §10.2; spec/04_timeline_xsheet.md:1408",
+   "path": [
+    "Timeline",
+    "row",
+    "Change Start Frame"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.changeStart, a real click on OK",
+   "expected": [
+    {
+     "command": "element.timing.set",
+     "must": {
+      "elementIds": [
+       "el_01K7JJN8003KRTAYF6VTS6BZ1D"
+      ],
+      "start": 5
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.timing.set",
+     "params": {
+      "elementIds": [
+       "el_01K7JJN8003KRTAYF6VTS6BZ1D"
+      ],
+      "start": 5
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "after": {
+    "start": 5,
+    "duration": 24,
+    "loops": 1
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Start Frame › Cancel",
+   "spec": "04 §10.2; spec/04_timeline_xsheet.md:1408",
+   "path": [
+    "Timeline",
+    "row",
+    "Change Start Frame"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.changeStart, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "after": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Duration › OK",
+   "spec": "04 §10.2; spec/04_timeline_xsheet.md:1408",
+   "path": [
+    "Timeline",
+    "row",
+    "Change Duration"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.changeDuration, a real click on OK",
+   "expected": [
+    {
+     "command": "element.timing.set",
+     "must": {
+      "elementIds": [
+       "el_01K7JJN8003KRTAYF6VTS6BZ1D"
+      ],
+      "duration": 30
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.timing.set",
+     "params": {
+      "elementIds": [
+       "el_01K7JJN8003KRTAYF6VTS6BZ1D"
+      ],
+      "duration": 30
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "after": {
+    "start": 1,
+    "duration": 30,
+    "loops": 1
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Duration › Cancel",
+   "spec": "04 §10.2; spec/04_timeline_xsheet.md:1408",
+   "path": [
+    "Timeline",
+    "row",
+    "Change Duration"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.changeDuration, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "after": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Loops › OK",
+   "spec": "04 §10.2; spec/04_timeline_xsheet.md:1408",
+   "path": [
+    "Timeline",
+    "row",
+    "Change Loops"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.changeLoops, a real click on OK",
+   "expected": [
+    {
+     "command": "element.timing.set",
+     "must": {
+      "elementIds": [
+       "el_01K7JJN8003KRTAYF6VTS6BZ1D"
+      ],
+      "loops": 2
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.timing.set",
+     "params": {
+      "elementIds": [
+       "el_01K7JJN8003KRTAYF6VTS6BZ1D"
+      ],
+      "loops": 2
+     }
+    }
+   ],
+   "dryRuns": [],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "after": {
+    "start": 1,
+    "duration": 48,
+    "loops": 2
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Loops › Cancel",
+   "spec": "04 §10.2; spec/04_timeline_xsheet.md:1408",
+   "path": [
+    "Timeline",
+    "row",
+    "Change Loops"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.row.changeLoops, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "after": {
+    "start": 1,
+    "duration": 24,
+    "loops": 1
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Extend Children Exposure › OK",
+   "spec": "04 §13.8; spec/04_timeline_xsheet.md:1409",
+   "path": [
+    "Timeline",
+    "cells",
+    "Extend Children Exposure"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.cell.extendChildren, a real click on OK",
+   "expected": [
+    {
+     "command": "element.childExposure.apply",
+     "must": {
+      "pegId": "el_01K7JJN8003KRTAYF6VTS6BZ1D",
+      "toFrame": 30
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "element.childExposure.apply",
+     "params": {
+      "pegId": "el_01K7JJN8003KRTAYF6VTS6BZ1D",
+      "toFrame": 30
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": 24,
+   "after": 30,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Extend Children Exposure › Cancel",
+   "spec": "04 §13.8; spec/04_timeline_xsheet.md:1409",
+   "path": [
+    "Timeline",
+    "cells",
+    "Extend Children Exposure"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.cell.extendChildren, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": 24,
+   "after": 24,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Current Frame › OK",
+   "spec": "09 §2.2; spec/01_application_shell.md:1063",
+   "path": [
+    "Play",
+    "Change Current Frame"
+   ],
+   "choice": "OK",
+   "input": "real native menu Play › Change Current Frame, a real click on OK",
+   "expected": [
+    {
+     "command": "app.frame.set",
+     "must": {
+      "frame": 6
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "app.frame.set",
+     "params": {
+      "frame": 6
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": 1,
+   "after": 6,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Current Frame › Cancel",
+   "spec": "09 §2.2; spec/01_application_shell.md:1063",
+   "path": [
+    "Play",
+    "Change Current Frame"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Play › Change Current Frame, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": 1,
+   "after": 1,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Set Current Frame (Timeline ruler) › OK",
+   "spec": "04 §11.9; spec/04_timeline_xsheet.md:1438",
+   "path": [
+    "Timeline",
+    "ruler",
+    "Set Current Frame"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.ruler.currentFrame, a real click on OK",
+   "expected": [
+    {
+     "command": "timeline.currentFrame.set",
+     "must": {
+      "frame": 7
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "timeline.currentFrame.set",
+     "params": {
+      "frame": 7
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": 1,
+   "after": 7,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Set Current Frame (Timeline ruler) › Cancel",
+   "spec": "04 §11.9; spec/04_timeline_xsheet.md:1438",
+   "path": [
+    "Timeline",
+    "ruler",
+    "Set Current Frame"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.ruler.currentFrame, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": 1,
+   "after": 1,
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Playback Start Frame › OK",
+   "spec": "09 §2.6; spec/09_playback_export.md:1003",
+   "path": [
+    "Play",
+    "Playback Range",
+    "Change Playback Start Frame"
+   ],
+   "choice": "OK",
+   "input": "real native menu Play › Playback Range › Change Playback Start Frame, a real click on OK",
+   "expected": [
+    {
+     "command": "playback.range.set",
+     "must": {
+      "start": 3
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "playback.range.set",
+     "params": {
+      "start": 3
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 3,
+    "end": 24
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Playback Start Frame › Cancel",
+   "spec": "09 §2.6; spec/09_playback_export.md:1003",
+   "path": [
+    "Play",
+    "Playback Range",
+    "Change Playback Start Frame"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Play › Playback Range › Change Playback Start Frame, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 1,
+    "end": 24
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Playback End Frame › OK",
+   "spec": "09 §2.6; spec/09_playback_export.md:1003",
+   "path": [
+    "Play",
+    "Playback Range",
+    "Change Playback End Frame"
+   ],
+   "choice": "OK",
+   "input": "real native menu Play › Playback Range › Change Playback End Frame, a real click on OK",
+   "expected": [
+    {
+     "command": "playback.range.set",
+     "must": {
+      "end": 10
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "playback.range.set",
+     "params": {
+      "end": 10
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 3,
+    "end": 10
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Change Playback End Frame › Cancel",
+   "spec": "09 §2.6; spec/09_playback_export.md:1003",
+   "path": [
+    "Play",
+    "Playback Range",
+    "Change Playback End Frame"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Play › Playback Range › Change Playback End Frame, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 1,
+    "end": 24
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Set Playback Start Frame (Timeline ruler) › OK",
+   "spec": "09 §2.6; spec/04_timeline_xsheet.md:1440",
+   "path": [
+    "Timeline",
+    "ruler",
+    "Set Playback Start Frame"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.ruler.rangeStart, a real click on OK",
+   "expected": [
+    {
+     "command": "timeline.playbackRange.set",
+     "must": {
+      "start": 4
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "timeline.playbackRange.set",
+     "params": {
+      "start": 4
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 4,
+    "end": 10
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Set Playback Start Frame (Timeline ruler) › Cancel",
+   "spec": "09 §2.6; spec/04_timeline_xsheet.md:1440",
+   "path": [
+    "Timeline",
+    "ruler",
+    "Set Playback Start Frame"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.ruler.rangeStart, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 1,
+    "end": 24
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Set Playback End Frame (Timeline ruler) › OK",
+   "spec": "09 §2.6; spec/04_timeline_xsheet.md:1440",
+   "path": [
+    "Timeline",
+    "ruler",
+    "Set Playback End Frame"
+   ],
+   "choice": "OK",
+   "input": "a real secondary click in the Timeline, a real click on timeline.ruler.rangeEnd, a real click on OK",
+   "expected": [
+    {
+     "command": "timeline.playbackRange.set",
+     "must": {
+      "end": 12
+     },
+     "absent": []
+    }
+   ],
+   "sent": [
+    {
+     "command": "timeline.playbackRange.set",
+     "params": {
+      "end": 12
+     }
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 4,
+    "end": 12
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Set Playback End Frame (Timeline ruler) › Cancel",
+   "spec": "09 §2.6; spec/04_timeline_xsheet.md:1440",
+   "path": [
+    "Timeline",
+    "ruler",
+    "Set Playback End Frame"
+   ],
+   "choice": "Cancel",
+   "input": "a real secondary click in the Timeline, a real click on timeline.ruler.rangeEnd, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "start": 1,
+    "end": 24
+   },
+   "after": {
+    "start": 1,
+    "end": 24
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Paste Special › OK",
+   "spec": "04 §11.14; spec/01_application_shell.md:1100",
+   "path": [
+    "Edit",
+    "Paste Special"
+   ],
+   "choice": "OK",
+   "input": "real native menu Edit › Paste Special, a real click on OK",
+   "expected": [
+    {
+     "command": "timeline.transferOptions.set",
+     "must": {
+      "operation": "paste"
+     },
+     "absent": []
+    },
+    {
+     "command": "edit.pasteSpecial",
+     "must": {},
+     "absent": [
+      "options"
+     ]
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "after": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": true,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Paste Special › Cancel",
+   "spec": "04 §11.14; spec/01_application_shell.md:1100",
+   "path": [
+    "Edit",
+    "Paste Special"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Edit › Paste Special, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "after": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Cut Special › OK",
+   "spec": "04 §11.14; spec/01_application_shell.md:1099",
+   "path": [
+    "Edit",
+    "Cut Special"
+   ],
+   "choice": "OK",
+   "input": "real native menu Edit › Cut Special, a real click on OK",
+   "expected": [
+    {
+     "command": "timeline.transferOptions.set",
+     "must": {
+      "operation": "cut"
+     },
+     "absent": []
+    },
+    {
+     "command": "edit.cutSpecial",
+     "must": {},
+     "absent": [
+      "options"
+     ]
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "after": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": true,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Cut Special › Cancel",
+   "spec": "04 §11.14; spec/01_application_shell.md:1099",
+   "path": [
+    "Edit",
+    "Cut Special"
+   ],
+   "choice": "Cancel",
+   "input": "real native menu Edit › Cut Special, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "after": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Drag and Drop Options › OK",
+   "spec": "04 §11.14; spec/04_timeline_xsheet.md:1448",
+   "path": [
+    "Timeline",
+    "toolbar",
+    "Drag Options"
+   ],
+   "choice": "OK",
+   "input": "a real click on the Timeline toolbar's Drag Options, a real click on OK",
+   "expected": [
+    {
+     "command": "timeline.transferOptions.set",
+     "must": {
+      "operation": "dragDrop"
+     },
+     "absent": []
+    }
+   ],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "after": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": true,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "ok": true,
+   "observed": {}
+  },
+  {
+   "name": "Drag and Drop Options › Cancel",
+   "spec": "04 §11.14; spec/04_timeline_xsheet.md:1448",
+   "path": [
+    "Timeline",
+    "toolbar",
+    "Drag Options"
+   ],
+   "choice": "Cancel",
+   "input": "a real click on the Timeline toolbar's Drag Options, a real click on Cancel",
+   "expected": [],
+   "sent": [],
+   "dryRuns": [],
+   "otherSent": [
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    },
+    {
+     "command": "timeline.view.set",
+     "params": {}
+    }
+   ],
+   "exact": true,
+   "effect": true,
+   "before": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "after": {
+    "overwriteDrawings": false,
+    "exposure": true,
+    "autoExtend": false,
+    "updateColours": false,
+    "keyframeSubstitution": false,
+    "boundaryKeys": false,
+    "pegKeys": {
+     "motion": true,
+     "rotation": true,
+     "scale": true,
+     "pivot": true,
+     "velocity": true,
+     "skew": true
+    }
+   },
+   "ok": true,
+   "observed": {}
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 129,
+   "sha256": "c29e115d6489097d8c0e98f534d081472e42c87c80494cb9673e9b0858bfcd31"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 49405,
+   "sha256": "c3d702dcc049369f5c2752aebbef5aa460306ba0b6432086842aab23505c14c1"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 22848,
+   "sha256": "3705b95daac0ecffea8eb867ffc0876e8be9abcda1364dfa99bf347c6df65709"
+  }
+ ]
+}
