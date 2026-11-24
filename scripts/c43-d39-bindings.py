@@ -3371,9 +3371,15 @@ async def timeline_rows(t: Table, bob: str) -> list:
     async def elements():
         return (await cmd("element.list", {})).get("elements") or []
 
-    async def shown(ident, timeout=10.0):
+    async def shown(ident, timeout=20.0):
+        # A wait for a state (D-45); 20 s as the table's other tree waits (a CI runner once needed more than 10 s for
+        # the row to reach the window's tree, run 45285128916). The panel is asked for again halfway.
         start = time.monotonic()
+        asked_again = False
         while time.monotonic() - start < timeout:
+            if not asked_again and time.monotonic() - start > timeout / 2:
+                asked_again = True
+                await run("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
             if mcp:
                 if McpTable.node(await t.tree(), ident) is not None:
                     return True

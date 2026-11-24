@@ -80157,7 +80157,7 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
         minimum: -9223372036854775808n,
       },
       revealElementId: {
-        description: "Scroll so this element's row is shown (Show Timeline Selection).",
+        description: "Scroll so this element's row is shown (Show Timeline Selection); `null`: the current element's row (the menu\nitem's and the key's reference, so the window and an agent's key reveal the same row).",
         type: [
           "string",
           "null",
@@ -105501,7 +105501,7 @@ export interface timeline_view_set_params {
   zoomLevel?: number | bigint | null;
   /** First frame shown: any integer, clamped to 1..(scene length + the empty margin). */
   firstFrame?: number | bigint | null;
-  /** Scroll so this element's row is shown (Show Timeline Selection). */
+  /** Scroll so this element's row is shown (Show Timeline Selection); `null`: the current element's row (the menu item's and the key's reference, so the window and an agent's key reveal the same row). */
   revealElementId?: string | null;
 }
 
