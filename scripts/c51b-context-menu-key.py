@@ -120,6 +120,7 @@ async def check(app: str, run, out: Path, work: Path) -> list:
 
             # A project with a drawing exposed on 1-12 and a peg, in a shown Timeline.
             await t.cmd("project.create", {"name": "Context menu key", "onUnsaved": "fail"})
+            peg = (await t.cmd("element.create", {"type": "peg", "name": "PegA"}))["elementIds"][0]
             a = (await t.cmd("element.create", {"type": "drawing", "name": "TlA"}))["elementIds"][0]
             await t.cmd("element.drawing.create", {"elementId": a, "name": "1", "exposeFrom": 1, "exposeTo": 12})
             await t.cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
@@ -136,7 +137,9 @@ async def check(app: str, run, out: Path, work: Path) -> list:
 
             # 8. Whose action an item is: the agent runs an opened item's reference itself (its own origin and scopes),
             # and a person's real click on an item is the person's.
-            node = e2e.by_id(await e2e.tree(s), "timeline.cellMenu.timeline.cell.addKey") or {}
+            shown = await e2e.call(s, "inspect_ui", {"target": "window", "depth": 32})
+            root = (shown.get("result") or shown).get("root") or {}
+            node = e2e.by_id(root, "timeline.cellMenu.timeline.cell.addKey") or {}
             ref = node.get("command") or {}
             before = await t.position()
             ran = await e2e.run_cmd(s, ref.get("commandId") or "", ref.get("params") or {})
@@ -197,9 +200,10 @@ async def check(app: str, run, out: Path, work: Path) -> list:
             d39.key(0x1B)
             await until(lambda: not present("timelineNewElements"), 10.0)
 
-            # 6b. The reviewer's case (C51B-R2-02): Change Duration opened from the row context by real input, the key
-            # aimed at the row's name: ui.modalOpen, no menu, the dialog's field keeps the focus and its value.
-            r = t.rect(f"timeline.row.{a}.label")
+            # 6b. The reviewer's case (C51B-R2-02): Change Duration opened from a peg row's context by real input (the
+            # item of elements that are not cell-based), the key aimed at a row's name: ui.modalOpen, no menu, the
+            # dialog's field keeps the focus and its value.
+            r = t.rect(f"timeline.row.{peg}.label")
             h = d39.front()
             origin = d39.wintypes.POINT(0, 0)
             d39.u32.ClientToScreen(h, d39.ctypes.byref(origin))

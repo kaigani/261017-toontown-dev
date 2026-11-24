@@ -93,6 +93,22 @@ async function timeline(
   return h;
 }
 
+/** Waits until the window has stopped sending commands: no new command for three polls in a row (a wait for a state,
+ *  D-45; C51B-R2S-03), bounded. What a test judges after it is what the window did with everything before. */
+async function quiet(h: ScriptedHost): Promise<void> {
+  let last = -1;
+  let still = 0;
+  await waitFor(
+    () => {
+      const n = h.sent.length;
+      still = n === last ? still + 1 : 0;
+      last = n;
+      expect(still).toBeGreaterThanOrEqual(3);
+    },
+    { interval: 50, timeout: 5000 },
+  );
+}
+
 const el = (id: string) => {
   const e = document.querySelector(`[data-tt-id="${id}"]`);
   if (!(e instanceof HTMLElement)) throw new Error(`no ${id}`);
@@ -242,7 +258,7 @@ describe('a current-frame change', () => {
     await waitFor(() => {
       expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('12');
     });
-    await new Promise((r) => setTimeout(r, 300));
+    await quiet(h);
     expect(reads()).toBe(before);
   });
 });
@@ -251,11 +267,15 @@ describe('a current-frame change', () => {
 // draw does not need delays the one it does. A click's app-state notice (the current element, the selection) reads the
 // selection alone; a view notice that moves the view alone sets it; one rows read is in flight at a time.
 describe('the Timeline reads only what a notice changes', () => {
-  const settle = () => new Promise((r) => setTimeout(r, 300));
+  let host: ScriptedHost | null = null;
+  const settle = async () => {
+    if (host) await quiet(host);
+  };
   const count = (h: ScriptedHost, command: string) => h.sent.filter((x) => x.command === command).length;
 
   it('a click’s app-state notice reads the selection, not the rows', async () => {
     const h = await timeline({});
+    host = h;
     await settle();
     const rows = count(h, 'timeline.rows.list');
     const selection = count(h, 'cell.selection.get');
@@ -281,6 +301,7 @@ describe('the Timeline reads only what a notice changes', () => {
 
   it('a view notice that moves the view alone reads the rows for the new frames only', async () => {
     const h = await timeline({});
+    host = h;
     const notice = (firstFrame: number, effectParameterRowsHidden = false) => ({
       sceneId: 'sc_1',
       view: { zoomLevel: 6, firstFrame, lastFrame: firstFrame + 39 },
@@ -317,6 +338,7 @@ describe('the Timeline reads only what a notice changes', () => {
 
   it('keeps one rows read in flight and sends the newest waiting request when it returns', async () => {
     const h = await timeline({});
+    host = h;
     await settle();
     const original = h.handlers['timeline.rows.list'];
     if (!original) throw new Error('no rows handler');
@@ -358,7 +380,7 @@ describe('a rows answer older than a frame notice', () => {
     await waitFor(() => {
       expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('1');
     });
-    await new Promise((r) => setTimeout(r, 300));
+    await quiet(h);
     const original = h.handlers['timeline.rows.list'];
     if (!original) throw new Error('no rows handler');
     const answers: (() => void)[] = [];
@@ -386,7 +408,7 @@ describe('a rows answer older than a frame notice', () => {
     act(() => {
       answers.shift()?.();
     });
-    await new Promise((r) => setTimeout(r, 300));
+    await quiet(h);
     expect(el('timeline.tracks').dataset['ttCurrentFrame']).toBe('20');
   });
 });
@@ -418,7 +440,7 @@ describe('Show Timeline Selection', () => {
     act(() => {
       h.event('shell.timelineView', notice(0));
     });
-    await new Promise((r) => setTimeout(r, 200));
+    await quiet(h);
     expect(list.scrollTop).toBe(0);
     act(() => {
       h.event('shell.timelineView', notice(1));
@@ -458,7 +480,7 @@ describe('the dialogs that edit an existing value', () => {
     await waitFor(() => {
       expect(h.sent.filter((x) => x.command === 'element.get').length).toBeGreaterThan(1);
     });
-    await new Promise((r) => setTimeout(r, 200));
+    await quiet(h);
     act(() => {
       fireEvent.contextMenu(el('timeline.row.el_bob'), { clientX: 30, clientY: 30 });
     });
@@ -732,8 +754,7 @@ describe('a context menu while the engine is not responding', () => {
     act(() => {
       h.emit('engine-status', { notResponding: true, generation: 0 });
     });
-    // A floating Timeline has no banner of its own; its menus follow the watchdog all the same.
-    await new Promise((r) => setTimeout(r, 100));
+    // A floating Timeline has no banner of its own; its menus follow the watchdog all the same (the wait below).
     act(() => {
       fireEvent.contextMenu(el('timeline.row.el_bob'), { clientX: 30, clientY: 30 });
     });

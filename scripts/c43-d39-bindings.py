@@ -3972,7 +3972,9 @@ async def timeline_rows(t: Table, bob: str) -> list:
         def effect(b, a, k):
             c = rename_case.get(case) or {}
             after = c.get("after") or {}
-            return (a == b and after.get("focused") is True and after.get("value") == typed
+            # Nothing renamed (the double click may move the current cell, which is the click's, not the rename's).
+            names = [(e["id"], e["name"]) for e in a["els"]] == [(e["id"], e["name"]) for e in b["els"]]
+            return (names and after.get("focused") is True and after.get("value") == typed
                     and words in (c.get("status") or "") and words in (c.get("problem") or "")
                     and c.get("messageBox") is False and c.get("afterEscape") is None)
         return effect
@@ -3985,7 +3987,9 @@ async def timeline_rows(t: Table, bob: str) -> list:
         rows.append({"name": f"Timeline › row rename refused ({code}): the status line says why, the editor stays open",
                      "spec": f"{spec_line('element.rename')}; 04 §3.2 ({code}), §4.1; D-87; ruling E-53",
                      "action": ("none",), "custom": refused_rename(case, typed),
-                     "expect": None, "label": None, "setup": setup(kind, "a"), "state": state,
+                     # The name typed is sent (the kernel decides) and refused: no undo step, nothing changed.
+                     "expect": (lambda typed_: lambda b: ("element.rename", {"elementId": ctx["a"], "name": typed_}))(typed),
+                     "label": None, "setup": setup(kind, "a"), "state": state,
                      "effect": refused_told(case, typed, words), "disabled": None, "osOnly": True,
                      "mcpReason": "the name is typed by the person into the editor a real double click opens; an agent's "
                                   "element.rename answers the refusal to the agent"})
