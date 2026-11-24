@@ -47,7 +47,10 @@ pub fn timing_check_plan(diagnostics: State<'_, Diagnostics>) -> Option<TimingCh
         external: t.external,
         only: t.only.clone(),
         budgets: t.budgets,
-        work_dir: t.out.parent().map(|p| p.to_string_lossy().into_owned()),
+        // The out path as given may be relative; the work folder holds a project, whose path must be absolute.
+        work_dir: std::path::absolute(&t.out)
+            .ok()
+            .and_then(|out| out.parent().map(|p| p.to_string_lossy().into_owned())),
     })
 }
 

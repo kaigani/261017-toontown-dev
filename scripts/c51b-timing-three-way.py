@@ -62,7 +62,15 @@ def real_gestures(proc: subprocess.Popen, report: Path) -> list:
         try:
             return conn["cdp"].js(expr)
         except Exception:  # noqa: BLE001 - reconnect once, then let the error through
-            conn["cdp"] = d39.Cdp(d39.CDP_PORT)
+            # The app writes its report and exits after the last case: a page gone then is the end, not an error.
+            if proc.poll() is not None or report.exists():
+                return None
+            try:
+                conn["cdp"] = d39.Cdp(d39.CDP_PORT)
+            except RuntimeError:
+                if proc.poll() is not None or report.exists():
+                    return None
+                raise
             return conn["cdp"].js(expr)
     done_cases: list = []
     handled = -1
@@ -127,7 +135,7 @@ def main() -> int:
     if a.external and sys.platform != "win32":
         print("--external drives the real window through Windows input; on this platform run without it.")
         return 0
-    out = Path(a.out)
+    out = Path(a.out).resolve()
     out.mkdir(parents=True, exist_ok=True)
     report = out / "report.json"
     report.unlink(missing_ok=True)
