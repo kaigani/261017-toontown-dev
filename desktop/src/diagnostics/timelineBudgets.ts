@@ -67,52 +67,106 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
   };
   const draws: Draw[] = [];
   (window as unknown as { __ttTimelineDraws?: Draw[] }).__ttTimelineDraws = draws;
+  // Every command the window sends, counted by name: what each measured phase asked of the engine.
+  const sent = new Map<string, number>();
+  const originalRun = engine.run.bind(engine);
+  (engine as { run: typeof engine.run }).run = (command, params, options) => {
+    sent.set(command, (sent.get(command) ?? 0) + 1);
+    return originalRun(command, params, options);
+  };
+  const snapshot = () => new Map(sent);
+  const sentSince = (before: ReadonlyMap<string, number>): Json => {
+    const out: Json = {};
+    for (const [k, v] of sent) if (v - (before.get(k) ?? 0) > 0) out[k] = v - (before.get(k) ?? 0);
+    return out;
+  };
+  // How long a read waits behind the commands already queued (the engine runs one command at a time).
+  const answerMs = async () => {
+    const t0 = performance.now();
+    await run('playback.state.get', {});
+    return performance.now() - t0;
+  };
+  // Each phase starts with the engine quiet: a read answers within 30 ms (bounded at 120 s).
+  const quiet = async () => {
+    const t0 = performance.now();
+    while ((await answerMs()) > 30 && performance.now() - t0 < 120_000) await sleep(50);
+    await sleep(200);
+  };
+  const phases: Json[] = [];
+  const phaseEnd = async (name: string, before: ReadonlyMap<string, number>) => {
+    const backlogMs = await answerMs();
+    phases.push({ name, sent: sentSince(before), backlogMsAfter: backlogMs });
+  };
   const built = performance.now();
 
-  // The scene: 800 drawings (the first anchors 9,999 frames), 200 pegs keyed every 4 frames.
-  await run('project.create', { name: 'Budgets', onUnsaved: 'discard' });
-  // Hidden while the scene is built: a shown Timeline reads its rows again after each of the 2,500 key additions.
-  await run('window.panel.set', { panelId: 'timeline', visible: false });
-  // Saved and opened again now and then while it is built: each step is an undo step holding the curves as they were,
-  // so 2,500 key additions in one history grow with their square. Opening the saved project starts a new history.
   if (workDir === null) throw new Error('no folder to save the scene in');
   const path = `${workDir}/tt-timeline-budgets.animpkg`;
-  // Saved, the save's job waited for, then opened (an open that saves first reads the file before its own save).
-  const waited = async (command: string, params: Json) => {
-    const out = await run(command, params);
-    if (typeof out['jobId'] === 'string') await run('job.wait', { jobId: out['jobId'], timeoutMs: 600_000 });
-  };
-  const reopen = async () => {
-    await waited('project.save', {});
-    // Closed first: an open of the project's own path finds its lock held and opens it read-only.
-    await run('project.close', { onUnsaved: 'fail' });
-    await waited('project.open', { path, onUnsaved: 'fail' });
-  };
-  await waited('project.saveAs', { path, onExists: 'overwrite' });
-  const ids = (r: Json) => (Array.isArray(r['elementIds']) ? (r['elementIds'] as string[]) : []);
+  // A scene a previous run left in the work folder is opened (a rerun skips the build; the scene is the same).
+  const reopened = await engine.run('project.open', { path, onUnsaved: 'discard' }).done;
+  const reusedJob = reopened.status === 'ok' ? (reopened.result as Json | undefined)?.['jobId'] : undefined;
+  const reused =
+    typeof reusedJob === 'string' &&
+    (await engine.run('job.wait', { jobId: reusedJob, timeoutMs: 600_000 }).done).status === 'ok' &&
+    (await engine.run('project.info.get', {}).done).status === 'ok';
+  if (!reused) await buildScene();
   const drawings: string[] = [];
-  for (let b = 0; b < 9; b++)
-    drawings.push(...ids(await run('element.create', { type: 'drawing', count: b === 8 ? 8 : 99 })));
-  for (const [i, id] of drawings.entries())
-    await run('element.drawing.create', {
-      elementId: id,
-      name: '1',
-      exposeFrom: 1,
-      exposeTo: i === 0 ? 9999 : 200 + (i % 40) * 5,
-    });
-  await reopen();
-  // 200 pegs keyed every 4 frames where the measured views can show keys: frames 1-400 (the zoom levels stepped show
-  // about 110 frames at most). Keys beyond them change no draw: building them through the command path costs an undo
-  // step per frame that holds every curve (quadratic in the keys).
   const pegs: string[] = [];
-  for (let b = 0; b < 3; b++)
-    pegs.push(...ids(await run('element.create', { type: 'peg', count: b === 2 ? 2 : 99 })));
-  for (let f = 1, k = 0; f <= 400; f += 4, k++) {
-    await run('anim.key.add', { nodeIds: pegs, frame: f });
-    if (k % 25 === 24) await reopen();
+  for (const r of ((await run('timeline.rows.list', { from: 1, to: 1 }))['rows'] as Json[] | undefined) ??
+    []) {
+    const id = r['elementId'];
+    if (typeof id !== 'string') continue;
+    if (r['type'] === 'peg') pegs.push(id);
+    if (r['type'] === 'drawing') drawings.push(id);
   }
-  await reopen();
+  // The drawing anchoring 9,999 frames was created first (new elements go to the top: it is the last drawing row).
+  drawings.reverse();
+  pegs.reverse();
   const buildSeconds = (performance.now() - built) / 1000;
+
+  async function buildScene() {
+    // The scene: 800 drawings (the first anchors 9,999 frames), 200 pegs keyed every 4 frames.
+    await run('project.create', { name: 'Budgets', onUnsaved: 'discard' });
+    // Hidden while the scene is built: a shown Timeline reads its rows again after each of the 2,500 key additions.
+    await run('window.panel.set', { panelId: 'timeline', visible: false });
+    // Saved and opened again now and then while it is built: each step is an undo step holding the curves as they were,
+    // so 2,500 key additions in one history grow with their square. Opening the saved project starts a new history.
+    // Saved, the save's job waited for, then opened (an open that saves first reads the file before its own save).
+    const waited = async (command: string, params: Json) => {
+      const out = await run(command, params);
+      if (typeof out['jobId'] === 'string')
+        await run('job.wait', { jobId: out['jobId'], timeoutMs: 600_000 });
+    };
+    const reopen = async () => {
+      await waited('project.save', {});
+      // Closed first: an open of the project's own path finds its lock held and opens it read-only.
+      await run('project.close', { onUnsaved: 'fail' });
+      await waited('project.open', { path, onUnsaved: 'fail' });
+    };
+    await waited('project.saveAs', { path, onExists: 'overwrite' });
+    const ids = (r: Json) => (Array.isArray(r['elementIds']) ? (r['elementIds'] as string[]) : []);
+    const made: string[] = [];
+    for (let b = 0; b < 9; b++)
+      made.push(...ids(await run('element.create', { type: 'drawing', count: b === 8 ? 8 : 99 })));
+    for (const [i, id] of made.entries())
+      await run('element.drawing.create', {
+        elementId: id,
+        name: '1',
+        exposeFrom: 1,
+        exposeTo: i === 0 ? 9999 : 200 + (i % 40) * 5,
+      });
+    await reopen();
+    // 200 pegs keyed every 4 frames where the measured views can show keys: frames 1-400 (the zoom levels stepped show
+    // about 110 frames at most). Keys beyond them change no draw: building them through the command path costs an undo
+    // step per frame that holds every curve (quadratic in the keys).
+    const madePegs: string[] = [];
+    for (let b = 0; b < 3; b++)
+      madePegs.push(...ids(await run('element.create', { type: 'peg', count: b === 2 ? 2 : 99 })));
+    for (let f = 1, k = 0; f <= 400; f += 4, k++) {
+      await run('anim.key.add', { nodeIds: madePegs, frame: f });
+      if (k % 25 === 24) await reopen();
+    }
+    await reopen();
+  }
 
   await run('window.panel.set', { panelId: 'timeline', visible: true, focus: true });
   await run('timeline.view.set', { zoomLevel: 6, firstFrame: 1 });
@@ -136,19 +190,25 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
     xs.filter((x) => x > 2 * controlMedian).length / Math.max(1, xs.length);
 
   // Scrolling: one row a frame.
+  await quiet();
+  let mark = snapshot();
   let since = performance.now();
   const scrollIntervals = await intervals(120, (i) => {
     list.scrollTop = (i + 1) * LAYOUT.rowHeight;
     list.dispatchEvent(new Event('scroll'));
   });
   const scrollWork = work(since);
+  await phaseEnd('scrolling', mark);
   // Zooming: the view's zoom stepped each frame (the kernel answers; the panel draws the new ladder step).
+  await quiet();
+  mark = snapshot();
   since = performance.now();
   const zoomIntervals = await intervals(60, (i) => {
     void run('timeline.view.set', { zoomLevel: 4 + (i % 5) });
   });
   await sleep(300);
   const zoomWork = work(since);
+  await phaseEnd('zooming', mark);
   await run('timeline.view.set', { zoomLevel: 6, firstFrame: 1 });
   list.scrollTop = 0;
   list.dispatchEvent(new Event('scroll'));
@@ -158,7 +218,8 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
   const box = tracks.getBoundingClientRect();
   list.scrollTop = pegRow * LAYOUT.rowHeight;
   list.dispatchEvent(new Event('scroll'));
-  await sleep(300);
+  await quiet();
+  mark = snapshot();
   const fire = (type: string, x: number, buttons: number) => {
     tracks.dispatchEvent(
       new PointerEvent(type, {
@@ -182,12 +243,13 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
   const dragWork = work(since);
   window.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
   fire('pointerup', 20.5 * z.cellWidth, 0);
-  await sleep(300);
+  await phaseEnd('dragging', mark);
 
   // A click on a cell to the selection drawn (30 samples, alternating frames on the first drawing's row).
   list.scrollTop = drawingRow * LAYOUT.rowHeight;
   list.dispatchEvent(new Event('scroll'));
-  await sleep(300);
+  await quiet();
+  mark = snapshot();
   const clicks: number[] = [];
   for (let i = 0; i < 30; i++) {
     const f = 3 + (i % 2) * 4;
@@ -206,7 +268,13 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
     }
     await sleep(100);
   }
-  // A wheel step to the scrolled repaint (30 samples).
+  await phaseEnd('clicks', mark);
+  // A wheel step to the scrolled repaint (30 samples), from the middle of the list (the clicks left it at the end,
+  // where a step down scrolls nothing).
+  list.scrollTop = Math.floor(list.scrollHeight / 2);
+  list.dispatchEvent(new Event('scroll'));
+  await quiet();
+  mark = snapshot();
   const wheels: number[] = [];
   const boxEl = tracks.parentElement?.parentElement ?? tracks;
   for (let i = 0; i < 30; i++) {
@@ -224,13 +292,15 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
     await sleep(100);
   }
 
+  await phaseEnd('wheel steps', mark);
   // Playback at 24 fps over a 48-frame range, Loop off: every frame presented, in order.
   await run('playback.rate.set', { fps: 24 });
   await run('playback.forceRate.set', { enabled: false });
   await run('playback.loop.set', { enabled: false });
   await run('timeline.playbackRange.set', { mode: 'free', start: 1, end: 48 });
   await run('timeline.currentFrame.set', { frame: 1 });
-  await sleep(300);
+  await quiet();
+  mark = snapshot();
   since = performance.now();
   await run('playback.start', {});
   for (let k = 0; k < 400; k++) {
@@ -239,7 +309,11 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
     await sleep(25);
   }
   await sleep(200);
+  await phaseEnd('playback', mark);
+  // Frame 1 is on screen when playback starts (the last draw before it shows the current frame, 1).
   const presented: { frame: number; at: number }[] = [];
+  const shownAtStart = draws.filter((x) => x.at < since).at(-1);
+  if (shownAtStart?.currentFrame === 1) presented.push({ frame: 1, at: since });
   for (const d of draws.filter((x) => x.at >= since)) {
     if (presented.at(-1)?.frame !== d.currentFrame) presented.push({ frame: d.currentFrame, at: d.at });
   }
@@ -300,6 +374,7 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
   return {
     ok: rows.every((r) => r['ok'] === true),
     scene: {
+      reused,
       drawings: drawings.length,
       pegs: pegs.length,
       keysPerPeg: 100,
@@ -308,5 +383,6 @@ export async function runTimelineBudgets(host: HostApi, workDir: string | null):
     },
     control: { frames: control.length, medianMs: controlMedian },
     rows,
+    phases,
   };
 }

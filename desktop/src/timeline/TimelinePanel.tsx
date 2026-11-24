@@ -65,13 +65,30 @@ const REREAD = new Set([
   'doc.redone',
   'timeline.playbackRange.changed',
   'prefs.changed',
-  'shell.timelineView',
   'project.opened',
   'project.closed',
 ]);
 
 /** Events that change only the selection (the rows do not depend on it). */
 const SELECTION = new Set(['cell.selection.changed', 'edit.selection.changed']);
+
+/**
+ * App-state fields the rows do not depend on (`timeline.rows.list` answers the scene's rows; the current frame is
+ * followed from the event, the current element and the selection by `cell.selection.get`). A change of any other field
+ * reads everything again. On the plan's §6.2 scene a click on a cell re-read all 1,003 rows ahead of the selection
+ * the click's draw waits for.
+ */
+const ROWS_UNCHANGED = new Set([
+  'frame',
+  'element',
+  'drawing',
+  'selection',
+  'mode',
+  'activeView',
+  'focusedPanel',
+  'activeTool',
+  'playback',
+]);
 
 /** The arrow keys' steps of the current cell (plan §6.5). */
 const ARROWS: Readonly<Record<string, { readonly rows: number; readonly frames: number }>> = {
@@ -193,19 +210,35 @@ export function TimelinePanel() {
       .catch(() => undefined);
   }, [engine, viewGate]);
 
+  // One rows read in flight: the engine runs one command at a time, and a zoom stepped each frame queued a full read
+  // per step behind which every other read waited (5 s on the plan's §6.2 scene). A newer request makes the answer in
+  // flight stale (the read gate) and is sent when that answer returns; only the newest waiting request is kept.
+  const rowsFlight = useRef<{ busy: boolean; queued: (() => void) | null }>({ busy: false, queued: null });
   const readRows = useCallback(() => {
+    const flight = rowsFlight.current;
     const live = rowsGate();
     const from = Math.max(1, position.firstFrame);
     const to = Math.max(from, lastFrame);
-    void engine
-      .run('timeline.rows.list', { from, to })
-      .done.then((env) => {
-        if (!live()) return;
-        setRows(env.status === 'ok' ? parseRows(env.result) : null);
-        setFrameNow(null);
-        setRowsRev(Number(env.documentRev ?? 0));
-      })
-      .catch(() => undefined);
+    const send = () => {
+      flight.busy = true;
+      void engine
+        .run('timeline.rows.list', { from, to })
+        .done.then((env) => {
+          if (!live()) return;
+          setRows(env.status === 'ok' ? parseRows(env.result) : null);
+          setFrameNow(null);
+          setRowsRev(Number(env.documentRev ?? 0));
+        })
+        .catch(() => undefined)
+        .finally(() => {
+          flight.busy = false;
+          const next = flight.queued;
+          flight.queued = null;
+          next?.();
+        });
+    };
+    if (flight.busy) flight.queued = send;
+    else send();
   }, [engine, rowsGate, position.firstFrame, lastFrame]);
 
   const readSelection = useCallback(() => {
@@ -324,16 +357,45 @@ export function TimelinePanel() {
     prefsRev,
   ]);
 
+  // The newest readers, for the subscription: it subscribes once per engine. Depending on the readers subscribed again
+  // and read everything twice at each change of the frames in view (each step of a zoom; plan §6.2's budgets).
+  const readAllRef = useRef(readAll);
+  const readSelectionRef = useRef(readSelection);
+  useEffect(() => {
+    readAllRef.current = readAll;
+    readSelectionRef.current = readSelection;
+  });
+  // A project opened (or the panel's first project): everything is read for it.
+  useEffect(() => {
+    if (open) readAllRef.current();
+  }, [open]);
+
   // Subscribe, then read (D-85, D-86): nothing between the first read and the subscription is lost.
   useEffect(() => {
     let off: (() => void) | null = null;
     let stopped = false;
+    const readAll = () => {
+      readAllRef.current();
+    };
+    const readSelection = () => {
+      readSelectionRef.current();
+    };
+    // The view notice's fields other than the view (the display toggles, Show Timeline Selection's reveal, the scene):
+    // a change of them reads everything again (E-40). A change of the view alone sets it; the rows are read again when
+    // the frames in view change (the effect on `readRows`).
+    let notice: string | null = null;
     readAll();
     void engine
       .onEvent((e) => {
         if (e.name === 'shell.timelineView') {
-          const v = parseView(obj(e.payload)['view']);
+          const payload = obj(e.payload);
+          const v = parseView(payload['view']);
           if (v) setView(v);
+          const rest = JSON.stringify({ ...payload, view: null });
+          if (rest !== notice) {
+            notice = rest;
+            readAll();
+          }
         }
         if (e.name === 'prefs.changed') setPrefsRev((r) => r + 1);
         if (e.name === 'timeline.currentFrame.changed') {
@@ -342,14 +404,16 @@ export function TimelinePanel() {
         }
         if (REREAD.has(e.name)) readAll();
         if (SELECTION.has(e.name)) readSelection();
-        // An app-state change of the frame alone (each playback frame) moves the playhead; any other field reads again.
+        // An app-state change of fields the rows do not depend on moves the playhead (each playback frame) and reads
+        // the selection again; any other field reads everything again.
         if (e.name === 'app.state.changed') {
           const p = obj(e.payload);
           const changed = Array.isArray(p['changed']) ? (p['changed'] as unknown[]) : [];
           const f = obj(p['state'])['frame'];
-          if (changed.length > 0 && changed.every((c) => c === 'frame') && typeof f === 'number')
-            setFrameNow(f);
-          else readAll();
+          if (changed.length > 0 && changed.every((c) => typeof c === 'string' && ROWS_UNCHANGED.has(c))) {
+            if (changed.includes('frame') && typeof f === 'number') setFrameNow(f);
+            if (changed.some((c) => c !== 'frame' && c !== 'playback')) readSelection();
+          } else readAll();
         }
       })
       .then((u) => {
@@ -363,7 +427,7 @@ export function TimelinePanel() {
       stopped = true;
       off?.();
     };
-  }, [engine, readAll, readSelection]);
+  }, [engine]);
 
   // The rows are read again when the window in view changes (a scroll that leaves the read window, a zoom).
   useEffect(() => {

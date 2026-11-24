@@ -246,3 +246,106 @@ describe('a current-frame change', () => {
     expect(reads()).toBe(before);
   });
 });
+
+// Plan §6.2's window budgets on the plan's scene (1,003 rows): the engine runs one command at a time, so a read the
+// draw does not need delays the one it does. A click's app-state notice (the current element, the selection) reads the
+// selection alone; a view notice that moves the view alone sets it; one rows read is in flight at a time.
+describe('the Timeline reads only what a notice changes', () => {
+  const settle = () => new Promise((r) => setTimeout(r, 300));
+  const count = (h: ScriptedHost, command: string) => h.sent.filter((x) => x.command === command).length;
+
+  it('a click’s app-state notice reads the selection, not the rows', async () => {
+    const h = await timeline({});
+    await settle();
+    const rows = count(h, 'timeline.rows.list');
+    const selection = count(h, 'cell.selection.get');
+    act(() => {
+      h.event('app.state.changed', {
+        changed: ['element', 'selection', 'focusedPanel'],
+        state: { ...PROJECT },
+      });
+    });
+    await waitFor(() => {
+      expect(count(h, 'cell.selection.get')).toBeGreaterThan(selection);
+    });
+    await settle();
+    expect(count(h, 'timeline.rows.list')).toBe(rows);
+    // A field the rows depend on (the scene) reads everything again.
+    act(() => {
+      h.event('app.state.changed', { changed: ['scene'], state: { ...PROJECT } });
+    });
+    await waitFor(() => {
+      expect(count(h, 'timeline.rows.list')).toBeGreaterThan(rows);
+    });
+  });
+
+  it('a view notice that moves the view alone reads the rows for the new frames only', async () => {
+    const h = await timeline({});
+    const notice = (firstFrame: number, effectParameterRowsHidden = false) => ({
+      sceneId: 'sc_1',
+      view: { zoomLevel: 6, firstFrame, lastFrame: firstFrame + 39 },
+      revealElementId: null,
+      revealCount: 0,
+      soundWaveforms: true,
+      effectParameterRowsHidden,
+      effectParameterRows: {},
+    });
+    act(() => {
+      h.event('shell.timelineView', notice(1));
+    });
+    await settle();
+    const selection = count(h, 'cell.selection.get');
+    const prefs = count(h, 'prefs.get');
+    act(() => {
+      h.event('shell.timelineView', notice(10));
+    });
+    await waitFor(() => {
+      const last = h.sent.filter((x) => x.command === 'timeline.rows.list').at(-1);
+      expect(last?.params['from']).toBe(10);
+    });
+    await settle();
+    expect(count(h, 'cell.selection.get')).toBe(selection);
+    expect(count(h, 'prefs.get')).toBe(prefs);
+    // A change of a display toggle in the notice reads everything again (E-40).
+    act(() => {
+      h.event('shell.timelineView', notice(10, true));
+    });
+    await waitFor(() => {
+      expect(count(h, 'prefs.get')).toBeGreaterThan(prefs);
+    });
+  });
+
+  it('keeps one rows read in flight and sends the newest waiting request when it returns', async () => {
+    const h = await timeline({});
+    await settle();
+    const original = h.handlers['timeline.rows.list'];
+    if (!original) throw new Error('no rows handler');
+    const answers: (() => void)[] = [];
+    h.handlers['timeline.rows.list'] = (p, s) =>
+      new Promise((resolve) => {
+        answers.push(() => {
+          resolve(original(p, s));
+        });
+      });
+    const before = count(h, 'timeline.rows.list');
+    act(() => {
+      h.event('doc.changed', {});
+      h.event('doc.changed', {});
+      h.event('doc.changed', {});
+    });
+    await waitFor(() => {
+      expect(count(h, 'timeline.rows.list')).toBe(before + 1);
+    });
+    await settle();
+    expect(count(h, 'timeline.rows.list')).toBe(before + 1);
+    h.handlers['timeline.rows.list'] = original;
+    act(() => {
+      answers.shift()?.();
+    });
+    await waitFor(() => {
+      expect(count(h, 'timeline.rows.list')).toBe(before + 2);
+    });
+    await settle();
+    expect(count(h, 'timeline.rows.list')).toBe(before + 2);
+  });
+});
