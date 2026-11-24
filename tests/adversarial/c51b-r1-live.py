@@ -139,7 +139,7 @@ async def body(t,step):
   save('step4-result.json',{'cancelReason':reason,'unrelatedRenameDragStart':4})
  elif step==5:
   before=await rows();pos=await t.position()
-  await drag(rowpoint('Peg-B'),rowpoint('Peg-A',frac=.05))
+  await drag(rowpoint('Alice'),rowpoint('Peg-A',frac=.05))
   after=await rows();assert [r['elementId'] for r in after['rows']]!=[r['elementId'] for r in before['rows']]
   assert len(await t.steps_since(pos))==1
   await c('edit.undo');assert (await rows())['rows']==before['rows']
