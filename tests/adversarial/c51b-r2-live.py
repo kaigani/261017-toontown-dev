@@ -19,10 +19,19 @@ def install():
   ident='timeline.row.'+ids['Alice']+'.name'
   await wait(lambda:dom(ident));return ident
  async def double():
-  click('timeline.row.'+ids['Alice']+'.label');click('timeline.row.'+ids['Alice']+'.label')
+  import ctypes
+  from ctypes import wintypes
+  rr=t.rect('timeline.row.'+ids['Alice']+'.label');o=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(o))
+  guard();d.u32.SetCursorPos(round(o.x+rr['x']*rr['dpr']),round(o.y+rr['y']*rr['dpr']))
+  save('step2-pointer.json',js("(()=>{const e=document.elementFromPoint(%s,%s);return {id:e?.dataset.ttId,html:e?.outerHTML}})()"%(rr['x'],rr['y'])))
+  for pressed in (True,False,True,False):
+   guard();d.e6._send_button(pressed)
   return await editor()
  async def typed(ident,text):
-  click(ident);key(0x41,0x11);guard();d.type_text(text)
+  click(ident);key(0x41,0x11)
+  if text:guard();d.type_text(text)
+  else:key(0x08)
+  await wait(lambda:value(ident)==text)
  if step==2:
   ident=await double();assert value(ident)=='Alice'
   pos=await t.position();await typed(ident,'Alicia');key(0x0d)
@@ -36,13 +45,14 @@ def install():
   before=await state()
   for k in (0xbf,0x25,0x26,0x27,0x28,0x2e):key(k)
   # Enter is the Play binding and commits the field's name only.
-  key(0x0d)
   assert await state()==before;key(0x1b)
   refusals=[]
   for name in ('','Bob'):
    ident=await double();await typed(ident,name);key(0x0d)
    assert (await c('element.get',{'elementId':ids['Alice']}))['name']=='Alice'
-   refusals.append(await wait(lambda:js("document.querySelector('[data-tt-id=\\"status.line\\"]')?.textContent")))
+   save('step2-refusal-'+('empty' if not name else 'duplicate')+'.json',{'editor':dom(ident),'status':dom('status.line'),'name':(await c('element.get',{'elementId':ids['Alice']}))['name']})
+   try:refusals.append(await wait(lambda:js("document.querySelector('[data-tt-id=\\"status.line\\"]')?.textContent")))
+   except RuntimeError:refusals.append('NO STATUS REFUSAL WITHIN CALL BOUND')
    key(0x1b)
   save('step2-detail.json',{'refusals':refusals,'isolated':True,'undoSteps':1})
  elif step==3:
@@ -98,6 +108,23 @@ def install():
    else:await c('timeline.view.set',{'revealElementId':None})
    await wait(visible)
   save('step4-detail.json',{'revealedThreeTimes':True})
+ elif step==6:
+  await c('element.lock.set',{'elementIds':[ids['Peg-A']],'locked':True})
+  a=barpoint('Peg-A',20);await drag(a,(a[0]+round(48*js('devicePixelRatio')),a[1]))
+  await until_cmd('timeline.rows.list',{'from':1,'to':48},lambda r:next(x['bar']['start'] for x in r['rows'] if x['elementId']==ids['Peg-A'])==4)
+  await c('element.lock.set',{'elementIds':[ids['Bob']],'locked':True})
+  await c('cell.select',{'elementIds':[ids['Bob']],'from':2,'to':3})
+  a=barpoint('Bob',2);await drag(a,(a[0]+round(192*js('devicePixelRatio')),a[1]))
+  after=await c('cell.selection.get');save('step6-selection.json',after)
+  await c('element.drawingLock.set',{'elementIds':[ids['Alice']],'drawingNames':['3'],'locked':True})
+  await c('timeline.transferOptions.set',{'operation':'dragDrop','options':{'exposure':False}})
+  await c('cell.select',{'elementIds':[ids['Alice']],'from':2,'to':3})
+  before=await c('doc.export.json',{'scope':'project','binaries':'omit'})
+  a=barpoint('Alice',2);await drag(a,(a[0]+round(128*js('devicePixelRatio')),a[1]))
+  assert await c('doc.export.json',{'scope':'project','binaries':'omit'})==before
+  reason=await wait(lambda:js("document.querySelector('[data-tt-id=\\"status.line\\"]')?.textContent"))
+  save('step6-detail.json',{'reason':reason,'selection':after})
+  assert 'locked' in reason.lower()
  elif step==8:
   async def press(view):return await __import__('asyncio').wait_for(d.e2e.call(t.s,'key',{'keys':'shift+F10','view':view}),30)
   control='timeline.row.'+ids['Alice']+'.label'
@@ -120,6 +147,16 @@ def install():
 '''
  exec(prefix+extra,r.__dict__)
 if __name__=='__main__':
+ if sys.argv[1]=='record':
+  import subprocess
+  step=int(sys.argv[2]);line=sys.argv[3]
+  report=ROOT/'reviews/M5-C5.1b-r2.md';text=report.read_text(encoding='ascii')
+  text=text.replace('\n## Findings',f'\n{step}. {line}\n\n## Findings')
+  report.write_text(text,encoding='ascii',newline='\n')
+  subprocess.run(['git','add',str(report),'tests/adversarial/c51b-r2-live.py','reviews/evidence/M5-C5.1b-r2/review'],check=True)
+  subprocess.run(['git','commit','-m',f'Review C51b round 2 step {step}'],check=True)
+  subprocess.run(['git','push','origin','HEAD:review/m5-c51b-r2'],check=True)
+  sys.exit(0)
  step=int(sys.argv[1])
  if step==1:
   rc=r.build()
