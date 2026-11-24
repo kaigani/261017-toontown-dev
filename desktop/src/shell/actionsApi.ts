@@ -26,6 +26,11 @@ export interface ActionsApi {
   /** Reports a refused person's action that did not go through `run` (a key's refusal by the key dispatch, a
    *  gesture's): the status line (ruling D-87; `refusals.ts`); answers whether the error was a refusal. */
   refused(error: Refusal | undefined, commandId: string): boolean;
+  /** Sends a value the person typed in an editor or a dialog field (an element name, a note, a colour) to the kernel,
+   *  which decides (ruling E-53): null when it was taken; else the refusal's line, which the status line shows too
+   *  (D-87), so the editor can stay open with the text for the person to correct. Any other failure is surfaced as
+   *  `run` surfaces it, and answered as its message. */
+  submitTyped(command: string, params: Record<string, unknown>): Promise<string | null>;
 }
 
 /** A running action that offers Cancel. */

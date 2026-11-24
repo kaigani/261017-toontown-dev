@@ -150,6 +150,22 @@ opener as it closes, which blurred an editor focused earlier and committed it at
 round 1 live review); D-39 rows "Timeline › row rename (double click, Enter)", "(Escape)", "(keys stay in the editor)"
 and "Timeline row menu › Rename (in place)".
 
+**A refused name (ruling E-53, round 2).** Every name submitted (Enter, or focus loss) goes to `element.rename`; the
+kernel decides with 04 §3.2's rules. Taken, the editor closes. Refused (`element.nameEmpty`, `element.nameInvalid`,
+`element.nameDuplicate`, `element.nameTooLong`), nothing changes, the status line gives the command's label and the
+kernel's reason (D-87: the four codes are refusals of a person's input, `refusals.ts`), and the editor stays open with
+the text, the focus and the reason (`data-tt-problem`, the tooltip; a Timeline in a float has no status bar), until the
+person corrects it or presses Escape. Escape and Enter on the unchanged name close it with nothing sent (§4.1: a silent
+no-op). One submission at a time: a blur while one is out sends nothing more. The same rule holds for every Timeline
+dialog with a typed field (Rename Element and the notes in the main menu, New Elements' name, Marker and Background
+Colour, Element Colours): OK sends the value through `actions.submitTyped`, a refusal keeps the dialog open with the
+text and shows the reason under the fields and on the status line; no client rule decides first (the required-name and
+hex-colour checks are gone). A value the command's schema refuses (a colour that is not `#RRGGBB[AA]`, a note over 10 000
+characters) is refused by the engine client with the kernel's own schema, as `arg.invalid` at its pointer, and shown the
+same way. The number dialogs keep the one numeric field's rule (D-61). Tests: `typedRefusals.test.tsx`, "rename in place"
+in `TimelinePanel.test.tsx` (each of the four codes, the unchanged name, the colour dialog end to end); D-39 rows
+"Timeline › row rename refused (element.name…)" with real input, one per code.
+
 ## 6b. An agent and the context menus (rulings E-48, E-52, C5.1b rounds 1 and 2)
 
 - **Opening.** An agent opens a context menu with the `key` tool's `shift+F10` (11 §7.6), `view` naming the control by

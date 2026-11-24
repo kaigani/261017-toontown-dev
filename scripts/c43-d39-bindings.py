@@ -3931,6 +3931,65 @@ async def timeline_rows(t: Table, bob: str) -> list:
                  "mcpReason": "real keys typed into the open editor: an agent's `key` tool is refused while a text field has "
                               "the focus"})
 
+    # ----- Ruling E-53 (C51B-R2-01; 04 §4.1 with §3.2's codes): every name typed into the editor goes to element.rename
+    # and the kernel decides. A refused name (empty, a forbidden character, a duplicate, too long) changes nothing, the
+    # status line says why (D-87), and the editor stays open with the text and the focus; Escape then closes it. -----
+    def refused_rename(case, typed):
+        async def flow():
+            ident, got = await double_click_name("a")
+            t.cdp.js("window.dispatchEvent(new CustomEvent('tt-status-line', { detail: null }))")
+            rename_case[case] = {"opened": got}
+            t.clear()
+            key(0x41, 0x11)  # Ctrl+A: the editor's text, replaced by what is typed (Backspace for the empty name)
+            await asyncio.sleep(0.1)
+            if typed:
+                type_text(typed)
+            else:
+                key(0x08)
+            await asyncio.sleep(0.2)
+            rename_case[case]["typed"] = name_field(ident)
+            key(0x0D)
+            end = time.monotonic() + 5.0
+            status = ""
+            while time.monotonic() < end and not status:
+                status = t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent ?? ''") or ""
+                await asyncio.sleep(0.1)
+            await asyncio.sleep(0.3)
+            rename_case[case]["status"] = status
+            rename_case[case]["after"] = name_field(ident)
+            rename_case[case]["problem"] = t.cdp.js(
+                "document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')?.dataset.ttProblem ?? null"
+                % json.dumps(ident))
+            rename_case[case]["messageBox"] = bool(t.cdp.js("!!document.querySelector('[role=\"alertdialog\"]')"))
+            key(0x1B)
+            await asyncio.sleep(0.6)
+            rename_case[case]["afterEscape"] = name_field(ident)
+            t.run.save(f"timeline-rename-{case}.json", rename_case[case])
+            return "a real double click on the row's name, the name typed, Enter (refused), then Escape"
+        return flow
+
+    def refused_told(case, typed, words):
+        def effect(b, a, k):
+            c = rename_case.get(case) or {}
+            after = c.get("after") or {}
+            return (a == b and after.get("focused") is True and after.get("value") == typed
+                    and words in (c.get("status") or "") and words in (c.get("problem") or "")
+                    and c.get("messageBox") is False and c.get("afterEscape") is None)
+        return effect
+
+    for case, kind, typed, words, code in (
+            ("empty", "a", "", "name must not be empty", "element.nameEmpty"),
+            ("invalid", "a", "Tl/A", "name must not contain `/`", "element.nameInvalid"),
+            ("duplicate", "three", "TlB", "already named `TlB`", "element.nameDuplicate"),
+            ("tooLong", "a", "T" * 65, "name is longer than 64 characters", "element.nameTooLong")):
+        rows.append({"name": f"Timeline › row rename refused ({code}): the status line says why, the editor stays open",
+                     "spec": f"{spec_line('element.rename')}; 04 §3.2 ({code}), §4.1; D-87; ruling E-53",
+                     "action": ("none",), "custom": refused_rename(case, typed),
+                     "expect": None, "label": None, "setup": setup(kind, "a"), "state": state,
+                     "effect": refused_told(case, typed, words), "disabled": None, "osOnly": True,
+                     "mcpReason": "the name is typed by the person into the editor a real double click opens; an agent's "
+                                  "element.rename answers the refusal to the agent"})
+
     dom_row("toolbar Add", "timeline.add", "element.create", {"type": "drawing"}, "a", "a",
             lambda b, a, k: len(new_of(b, a, "drawing")) == 1)
     dom_row("toolbar Parent Peg", "timeline.addParentPeg", "element.parentPeg.create",

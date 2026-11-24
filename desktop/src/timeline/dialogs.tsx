@@ -9,6 +9,43 @@ import { ADD_TYPES } from './menus';
 import type { CompletedRef } from './dialogOpen';
 import type { TransferOptions } from './model';
 
+/** What a dialog that sends a typed value does at OK (ruling E-53): the kernel decides. `send` answers null when the
+ *  value was taken (the dialog closes) or the refusal, which the dialog shows under its fields while it stays open with
+ *  what was typed, the focus back in `focus`; a second OK while one is out is ignored. Typing clears the refusal. */
+function useTypedSubmit(focus: { current: HTMLElement | null }) {
+  const [refusal, setRefusal] = useState<string | null>(null);
+  const sending = useRef(false);
+  const submit = (send: () => Promise<string | null>, done: () => void) => {
+    if (sending.current) return;
+    sending.current = true;
+    void send().then((refused) => {
+      sending.current = false;
+      if (refused === null) {
+        done();
+        return;
+      }
+      setRefusal(refused);
+      focus.current?.focus();
+    });
+  };
+  return {
+    refusal,
+    submit,
+    clear: () => {
+      setRefusal(null);
+    },
+  };
+}
+
+/** The refusal of a typed value, under the dialog's fields (ruling E-53; the status line shows it too). */
+function Refusal(props: { id: string; text: string | null }) {
+  return props.text === null ? null : (
+    <p className="field-problem" role="alert" data-tt-role="text" data-tt-id={`${props.id}.refusal`}>
+      {props.text}
+    </p>
+  );
+}
+
 /** One whole-number field: the window's one numeric field (ruling D-61 item 3; C51B-R1S-06), with its commit rule. An
  *  empty, non-numeric or out-of-range entry is never a value: the field returns to the value it holds and says why, and
  *  OK sends the value held. Enter on an unchanged value is OK (01 §2). */
@@ -63,7 +100,8 @@ export function NumberDialog(props: {
   );
 }
 
-/** One text field (multi-line for a note). */
+/** One text field (multi-line for a note). OK sends the text as typed through `submit` (ruling E-53: the kernel decides,
+ *  an empty name included): taken, the dialog closes with it; refused, it stays open with the text and says why. */
 export function TextDialog(props: {
   id: string;
   title: string;
@@ -71,19 +109,20 @@ export function TextDialog(props: {
   initial: string;
   command: string;
   multiline?: boolean;
-  required?: boolean;
-  validate?: (t: string) => string | null;
+  submit: (t: string) => Promise<string | null>;
   onDone: (t: string | null) => void;
 }) {
   const [text, setText] = useState(props.initial);
-  const value = props.multiline ? text : text.trim();
-  const problem =
-    props.required && value === '' ? 'This cannot be empty.' : (props.validate?.(value) ?? null);
+  const focus = useRef<HTMLElement | null>(null);
+  const typed = useTypedSubmit(focus);
   const field = {
     autoFocus: true,
     value: text,
     'data-tt-role': 'field',
     'data-tt-id': `${props.id}.value`,
+    ref: (el: HTMLElement | null) => {
+      focus.current = el;
+    },
   };
   return (
     <Dialog
@@ -93,10 +132,14 @@ export function TextDialog(props: {
         props.onDone(null);
       }}
       onSubmit={() => {
-        props.onDone(value);
+        typed.submit(
+          () => props.submit(text),
+          () => {
+            props.onDone(text);
+          },
+        );
       }}
       submitLabel="OK"
-      submitDisabled={problem !== null}
       command={props.command}
     >
       <label>
@@ -107,6 +150,7 @@ export function TextDialog(props: {
             rows={4}
             onChange={(e) => {
               setText(e.target.value);
+              typed.clear();
             }}
           />
         ) : (
@@ -114,27 +158,29 @@ export function TextDialog(props: {
             {...field}
             onChange={(e) => {
               setText(e.target.value);
+              typed.clear();
             }}
           />
         )}
       </label>
-      {problem && (
-        <p className="field-problem" role="alert">
-          {problem}
-        </p>
-      )}
+      <Refusal id={props.id} text={typed.refusal} />
     </Dialog>
   );
 }
 
-/** Batch creation (04 §3.2): type, name and count. */
+/** Batch creation (04 §3.2): type, name and count. An empty name field is the type's default name; any name typed is
+ *  sent as typed (ruling E-53: the kernel refuses an empty, invalid, duplicate or too long one, and the dialog stays open
+ *  with it). */
 export function NewElementsDialog(props: {
   above?: string | undefined;
+  submit: (ref: CompletedRef) => Promise<string | null>;
   onDone: (ref: CompletedRef | null) => void;
 }) {
   const [type, setType] = useState('drawing');
   const [name, setName] = useState('');
   const [count, setCount] = useState(1);
+  const focus = useRef<HTMLElement | null>(null);
+  const typed = useTypedSubmit(focus);
   return (
     <Dialog
       id="timelineNewElements"
@@ -144,9 +190,15 @@ export function NewElementsDialog(props: {
       }}
       onSubmit={() => {
         const params: Record<string, unknown> = { type, count };
-        if (name.trim() !== '') params['name'] = name.trim();
+        if (name !== '') params['name'] = name;
         if (props.above) params['above'] = props.above;
-        props.onDone({ command: 'element.create', params });
+        const ref = { command: 'element.create', params };
+        typed.submit(
+          () => props.submit(ref),
+          () => {
+            props.onDone(ref);
+          },
+        );
       }}
       submitLabel="Create"
       command="element.create"
@@ -171,12 +223,16 @@ export function NewElementsDialog(props: {
       <label>
         Name{' '}
         <input
+          ref={(el) => {
+            focus.current = el;
+          }}
           value={name}
           placeholder="(the type's name)"
           data-tt-role="field"
           data-tt-id="timelineNewElements.name"
           onChange={(e) => {
             setName(e.target.value);
+            typed.clear();
           }}
         />
       </label>
@@ -194,24 +250,24 @@ export function NewElementsDialog(props: {
           }}
         />
       </label>
+      <Refusal id="timelineNewElements" text={typed.refusal} />
     </Dialog>
   );
 }
 
-const HEX_COLOUR = /^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
-
-/** Element Colours (04 §9.6): the marker and the background colour; an empty field leaves that colour as it is. */
+/** Element Colours (04 §9.6): the marker and the background colour; an empty field leaves that colour as it is. A
+ *  colour typed is sent as typed (ruling E-53: the kernel refuses one it cannot read, and the dialog stays open). */
 export function ColoursDialog(props: {
   /** The element's own colours (empty: the default), the values the dialog starts from (C51B-R1S-05). */
   marker?: string;
   background?: string;
+  submit: (params: Record<string, unknown>) => Promise<string | null>;
   onDone: (params: Record<string, unknown> | null) => void;
 }) {
   const [marker, setMarker] = useState(props.marker ?? '');
   const [background, setBackground] = useState(props.background ?? '');
-  const bad = (t: string) => t.trim() !== '' && !HEX_COLOUR.test(t.trim());
-  const problem =
-    bad(marker) || bad(background) ? 'Type a colour as #RRGGBB or #RRGGBBAA, or leave it empty.' : null;
+  const focus = useRef<HTMLElement | null>(null);
+  const typed = useTypedSubmit(focus);
   return (
     <Dialog
       id="timelineColours"
@@ -221,24 +277,33 @@ export function ColoursDialog(props: {
       }}
       onSubmit={() => {
         const params: Record<string, unknown> = {};
-        if (marker.trim() !== '') params['marker'] = marker.trim();
-        if (background.trim() !== '') params['background'] = background.trim();
-        props.onDone(params);
+        if (marker.trim() !== '') params['marker'] = marker;
+        if (background.trim() !== '') params['background'] = background;
+        typed.submit(
+          () => props.submit(params),
+          () => {
+            props.onDone(params);
+          },
+        );
       }}
       submitLabel="OK"
-      submitDisabled={problem !== null || (marker.trim() === '' && background.trim() === '')}
+      submitDisabled={marker.trim() === '' && background.trim() === ''}
       command="element.colour.set"
     >
       <label>
         Marker colour{' '}
         <input
           autoFocus
+          ref={(el) => {
+            focus.current = el;
+          }}
           value={marker}
           placeholder="#RRGGBB"
           data-tt-role="field"
           data-tt-id="timelineColours.marker"
           onChange={(e) => {
             setMarker(e.target.value);
+            typed.clear();
           }}
         />
       </label>
@@ -251,14 +316,11 @@ export function ColoursDialog(props: {
           data-tt-id="timelineColours.background"
           onChange={(e) => {
             setBackground(e.target.value);
+            typed.clear();
           }}
         />
       </label>
-      {problem && (
-        <p className="field-problem" role="alert">
-          {problem}
-        </p>
-      )}
+      <Refusal id="timelineColours" text={typed.refusal} />
     </Dialog>
   );
 }

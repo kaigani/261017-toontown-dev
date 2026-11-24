@@ -16,12 +16,17 @@ export function fontsNoticeLine(payload: unknown): string | null {
   return waiting === true ? FONTS_READING_LINE : null;
 }
 
-/** The refusals the status line reports. */
+/** The refusals the status line reports. A typed element name the kernel refuses is one (04 §3.2, §4.1; ruling E-53):
+ *  the person reads why on the status line while the editor stays open with the text. */
 export const REFUSALS: ReadonlySet<string> = new Set([
   'drawing.locked',
   'element.locked',
   'element.hidden',
   'command.disabled',
+  'element.nameEmpty',
+  'element.nameInvalid',
+  'element.nameDuplicate',
+  'element.nameTooLong',
 ]);
 
 /** A refusal as the window receives it: an envelope's `error`, or a host error of the key dispatch. */
@@ -33,8 +38,9 @@ export interface Refusal {
 
 /** The status line's text for a refusal of `commandId` ("Delete Points: the element is locked: ..."), or null when the
  *  error is not one the status line reports. The command named in the refusal's details wins over `commandId` (a
- *  gesture names the command it would have sent, a key the command it is bound to). */
-export function refusalLine(error: Refusal | undefined, commandId: string): string | null {
+ *  gesture names the command it would have sent, a key the command it is bound to). With `typed`, the error answers a
+ *  value the person typed (a colour, a note: ruling E-53), so the kernel's `arg.invalid` for it is a refusal too. */
+export function refusalLine(error: Refusal | undefined, commandId: string, typed = false): string | null {
   const d = (typeof error?.details === 'object' && error.details !== null ? error.details : {}) as Record<
     string,
     unknown
@@ -55,6 +61,9 @@ export function refusalLine(error: Refusal | undefined, commandId: string): stri
   if (error?.code === 'command.timeout' && d['reason'] === 'fontsLoading') {
     const named = typeof d['commandId'] === 'string' ? d['commandId'] : commandId;
     return `${commandLabel(named)}: the system fonts are still being read; nothing was changed, try again in a moment`;
+  }
+  if (typed && error?.code === 'arg.invalid') {
+    return `${commandLabel(commandId)}: ${error.message ?? 'the value is not valid'}`;
   }
   if (!error?.code || !REFUSALS.has(error.code)) return null;
   const named = [d['refusedCommandId'], d['commandId']].find((v): v is string => typeof v === 'string');

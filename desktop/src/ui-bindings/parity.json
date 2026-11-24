@@ -23596,7 +23596,9 @@
         "desktop/src/ipc/engine.ts",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/TextPanel.tsx",
-        "desktop/src/panels/ToolOptionsPage.tsx"
+        "desktop/src/panels/ToolOptionsPage.tsx",
+        "desktop/src/shell/makeActions.tsx",
+        "desktop/src/shell/refusals.ts"
       ]
     },
     {
@@ -24431,6 +24433,30 @@
     },
     {
       "command": "element.locked",
+      "files": [
+        "desktop/src/shell/refusals.ts"
+      ]
+    },
+    {
+      "command": "element.nameDuplicate",
+      "files": [
+        "desktop/src/shell/refusals.ts"
+      ]
+    },
+    {
+      "command": "element.nameEmpty",
+      "files": [
+        "desktop/src/shell/refusals.ts"
+      ]
+    },
+    {
+      "command": "element.nameInvalid",
+      "files": [
+        "desktop/src/shell/refusals.ts"
+      ]
+    },
+    {
+      "command": "element.nameTooLong",
       "files": [
         "desktop/src/shell/refusals.ts"
       ]
@@ -25423,12 +25449,6 @@
       "files": [
         "desktop/src-tauri/src/shell.rs",
         "desktop/src/prefs/AgentAccessPage.tsx"
-      ]
-    },
-    {
-      "command": "shell.contextMenu",
-      "files": [
-        "desktop/src/shell/windowHooks.ts"
       ]
     },
     {

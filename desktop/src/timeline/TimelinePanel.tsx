@@ -160,7 +160,12 @@ export function TimelinePanel() {
   const [size, setSize] = useState({ width: 0, height: 0 });
   const [preview, setPreview] = useState<Preview | null>(null);
   const [menu, setMenu] = useState<OpenMenu | null>(null);
-  const [renaming, setRenaming] = useState<{ elementId: string; name: string } | null>(null);
+  /** The row being renamed in place: the text typed, and the kernel's refusal of the last submission (ruling E-53). */
+  const [renaming, setRenaming] = useState<{ elementId: string; name: string; refusal?: string } | null>(
+    null,
+  );
+  /** A rename out to the kernel (ruling E-53): a second submission waits for its answer. */
+  const renameSending = useRef(false);
 
   const listRef = useRef<HTMLDivElement | null>(null);
   const tracksRef = useRef<HTMLCanvasElement | null>(null);
@@ -769,13 +774,18 @@ export function TimelinePanel() {
       if (row) setRenaming({ elementId: row.elementId, name: row.name });
       return;
     }
-    void openTimelineDialog(dialogs, item, {
-      rows: shown,
-      selected: selectedRows,
-      scene: rows,
-      display,
-      currentFrame,
-    }).then((ref) => {
+    void openTimelineDialog(
+      dialogs,
+      item,
+      {
+        rows: shown,
+        selected: selectedRows,
+        scene: rows,
+        display,
+        currentFrame,
+      },
+      (ref) => actions.submitTyped(ref.command, ref.params),
+    ).then((ref) => {
       if (ref) void actions.perform(ref.command, ref.params);
     });
   };
@@ -967,14 +977,34 @@ export function TimelinePanel() {
                   current={selection?.currentElementId === r.elementId}
                   parent={parents.has(r.elementId)}
                   renaming={renaming?.elementId === r.elementId ? renaming.name : null}
+                  renameRefusal={renaming?.elementId === r.elementId ? (renaming.refusal ?? null) : null}
                   onRenameChange={(name) => {
                     setRenaming({ elementId: r.elementId, name });
                   }}
                   onRenameEnd={(commit) => {
+                    // Ruling E-53 (04 §4.1 with §3.2's rules): Escape, and the unchanged name (a silent no-op), close
+                    // the editor; every other name goes to the kernel, which decides. Taken, the editor closes; refused
+                    // (empty, a forbidden character, a duplicate, too long), it stays open with the text and the status
+                    // line says why. One submission at a time (Enter, then the blur of a refusal, send once).
                     const name = renaming?.name ?? r.name;
-                    setRenaming(null);
-                    if (commit && name.trim() !== '' && name !== r.name)
-                      void actions.run('element.rename', { elementId: r.elementId, name });
+                    if (!commit || name === r.name) {
+                      setRenaming(null);
+                      return;
+                    }
+                    if (renameSending.current) return;
+                    renameSending.current = true;
+                    void actions
+                      .submitTyped('element.rename', { elementId: r.elementId, name })
+                      .then((refused) => {
+                        renameSending.current = false;
+                        setRenaming((now) =>
+                          now?.elementId !== r.elementId
+                            ? now
+                            : refused === null
+                              ? null
+                              : { ...now, refusal: refused },
+                        );
+                      });
                   }}
                   onContextMenu={(e) => {
                     openRowMenu(e, r);
@@ -1125,6 +1155,8 @@ function LayerRow(props: {
   /** The row has children: it shows the disclosure (04 line 605, "elements with children"). */
   parent: boolean;
   renaming: string | null;
+  /** The kernel's refusal of the name last submitted, shown on the editor (ruling E-53; the status line says it too). */
+  renameRefusal: string | null;
   onRenameChange: (name: string) => void;
   onRenameEnd: (commit: boolean) => void;
   onContextMenu: (e: React.MouseEvent<HTMLElement>) => void;
@@ -1207,6 +1239,9 @@ function LayerRow(props: {
           style={{ userSelect: 'text', WebkitUserSelect: 'text' }}
           value={props.renaming}
           aria-label="Element name"
+          {...(props.renameRefusal !== null
+            ? { 'aria-invalid': true, title: props.renameRefusal, 'data-tt-problem': props.renameRefusal }
+            : {})}
           data-tt-role="textField"
           data-tt-id={`timeline.row.${r.elementId}.name`}
           data-tt-command="element.rename"

@@ -8,7 +8,7 @@ import { afterEach, describe, expect, it } from 'vitest';
 
 import { App } from '../App';
 import { createHostApi, HostProvider } from '../ipc';
-import { createScriptedHost, ok, type ScriptedHost } from '../test-support/scriptedHost';
+import { createScriptedHost, fail, ok, type ScriptedHost } from '../test-support/scriptedHost';
 import { cssColour } from './model';
 
 afterEach(cleanup);
@@ -596,6 +596,126 @@ describe('rename in place', () => {
     expect(document.querySelector('[data-tt-id="timelineRename"]')).toBeNull();
     act(() => {
       fireEvent.keyDown(field, { key: 'Escape' });
+    });
+    await waitFor(() => {
+      expect(document.querySelector('[data-tt-id="timeline.row.el_bob.name"]')).toBeNull();
+    });
+    expect(h.actions().some((a) => a.command === 'element.rename')).toBe(false);
+  });
+
+  // Ruling E-53 (C51B-R2-01; 04 §4.1 with §3.2's codes): every submitted name goes to element.rename and the kernel
+  // decides. A refused name keeps the editor open with the text and says why, on the status line (D-87) and on the
+  // editor; Escape then closes it with nothing more sent.
+  it.each([
+    ['element.nameEmpty', '', 'names must not be empty'],
+    ['element.nameInvalid', 'Bo/b', 'names must not contain any of \\ / : * ? < > " | .'],
+    ['element.nameDuplicate', 'Alice', 'an element of this scene is already named `Alice`'],
+    ['element.nameTooLong', 'x'.repeat(65), 'names must not exceed 64 characters'],
+  ])('a refused name (%s) keeps the editor open with the text and says why', async (code, typed, message) => {
+    const h = await timeline({});
+    h.handlers['element.rename'] = () => fail(code, message, { pointer: '/name' });
+    const lines: string[] = [];
+    const listen = (e: Event) => {
+      const line = (e as CustomEvent<{ text?: string } | null>).detail;
+      if (line?.text) lines.push(line.text);
+    };
+    window.addEventListener('tt-status-line', listen);
+    try {
+      act(() => {
+        fireEvent.doubleClick(el('timeline.layers'), { clientX: 60, clientY: 5 });
+      });
+      const field = (await waitFor(() => el('timeline.row.el_bob.name'))) as HTMLInputElement;
+      act(() => {
+        fireEvent.change(field, { target: { value: typed } });
+        fireEvent.keyDown(field, { key: 'Enter' });
+      });
+      await waitFor(() => {
+        expect(lines).toContain(`Rename element: ${message}`);
+      });
+      expect(
+        h
+          .actions()
+          .filter((a) => a.command === 'element.rename')
+          .map((a) => a.params),
+      ).toEqual([{ elementId: 'el_bob', name: typed }]);
+      const open = el('timeline.row.el_bob.name') as HTMLInputElement;
+      expect(open.value).toBe(typed);
+      expect(open.dataset['ttProblem']).toBe(`Rename element: ${message}`);
+      expect(document.activeElement).toBe(open);
+      act(() => {
+        fireEvent.keyDown(open, { key: 'Escape' });
+      });
+      await waitFor(() => {
+        expect(document.querySelector('[data-tt-id="timeline.row.el_bob.name"]')).toBeNull();
+      });
+      expect(h.actions().filter((a) => a.command === 'element.rename').length).toBe(1);
+      // No message box: the refusal is the status line's.
+      expect(document.querySelector('[role="alertdialog"]')).toBeNull();
+    } finally {
+      window.removeEventListener('tt-status-line', listen);
+    }
+  });
+
+  it('a colour the kernel refuses keeps the Marker Colour dialog open, on the status line and in the dialog', async () => {
+    const h = await timeline({});
+    // The kernel's refusal of the value: its schema's `arg.invalid` at `/marker`, which the engine client applies before
+    // sending (the command's own schema, the kernel's contract), so the host is not reached.
+    const lines: string[] = [];
+    const listen = (e: Event) => {
+      const line = (e as CustomEvent<{ text?: string } | null>).detail;
+      if (line?.text) lines.push(line.text);
+    };
+    window.addEventListener('tt-status-line', listen);
+    try {
+      act(() => {
+        fireEvent.contextMenu(el('timeline.row.el_bob'), { clientX: 30, clientY: 30 });
+      });
+      const item = await waitFor(() => el('timeline.rowMenu.timeline.row.markerColour'));
+      act(() => {
+        item.click();
+      });
+      const field = (await waitFor(() => el('timelineMarkerColour.value'))) as HTMLInputElement;
+      act(() => {
+        fireEvent.change(field, { target: { value: 'green-ish' } });
+      });
+      act(() => {
+        el('timelineMarkerColour.submit').click();
+      });
+      const refusal = await waitFor(() => el('timelineMarkerColour.refusal').textContent);
+      expect(refusal).toMatch(/^Set element colour: .*\/marker/);
+      expect(lines).toContain(refusal);
+      expect(field.value).toBe('green-ish');
+      expect(document.querySelector('[role="alertdialog"]')).toBeNull();
+      expect(h.actions().filter((x) => x.command === 'element.colour.set')).toEqual([]);
+      // A colour the kernel takes closes the dialog; it is sent once.
+      act(() => {
+        fireEvent.change(field, { target: { value: '#00FF00' } });
+      });
+      act(() => {
+        el('timelineMarkerColour.submit').click();
+      });
+      await waitFor(() => {
+        expect(document.querySelector('[data-tt-id="timelineMarkerColour"]')).toBeNull();
+      });
+      expect(
+        h
+          .actions()
+          .filter((x) => x.command === 'element.colour.set')
+          .map((x) => x.params),
+      ).toEqual([{ elementIds: ['el_bob'], marker: '#00FF00' }]);
+    } finally {
+      window.removeEventListener('tt-status-line', listen);
+    }
+  });
+
+  it('Enter on the unchanged name closes the editor with nothing sent (04 §4.1: a silent no-op)', async () => {
+    const h = await timeline({});
+    act(() => {
+      fireEvent.doubleClick(el('timeline.layers'), { clientX: 60, clientY: 5 });
+    });
+    const field = (await waitFor(() => el('timeline.row.el_bob.name'))) as HTMLInputElement;
+    act(() => {
+      fireEvent.keyDown(field, { key: 'Enter' });
     });
     await waitFor(() => {
       expect(document.querySelector('[data-tt-id="timeline.row.el_bob.name"]')).toBeNull();

@@ -1,5 +1,6 @@
 // Opening the Timeline's dialogs (reviews/M5-design-timeline-view.md section 7): each menu item's dialog, the value it
-// collects and the command reference its OK completes; Cancel answers nothing and nothing is sent.
+// collects and the command reference its OK completes; Cancel answers nothing and nothing is sent. A dialog whose field
+// is typed text (a name, a note, a colour) sends it itself and stays open on a refusal (ruling E-53).
 import type React from 'react';
 
 import type { DialogsApi } from '../shell/dialogsApi';
@@ -23,8 +24,6 @@ export interface DialogContext {
   /** The current frame the Timeline shows. */
   readonly currentFrame?: number;
 }
-
-const HEX = /^#[0-9a-fA-F]{6}([0-9a-fA-F]{2})?$/;
 
 /** A whole-number dialog's render, completing `complete` with the number typed. */
 function numberDialog(
@@ -53,7 +52,11 @@ function numberDialog(
   return Rendered;
 }
 
-/** A text dialog's render. */
+/** What a dialog with a typed field sends at OK (ruling E-53): null when the kernel took it, else the refusal. */
+export type SubmitTyped = (ref: CompletedRef) => Promise<string | null>;
+
+/** A text dialog's render: OK sends the completed reference through `submit` (the dialog then answers null: the
+ *  reference was sent); a refusal keeps it open. */
 function textDialog(
   id: string,
   title: string,
@@ -62,10 +65,9 @@ function textDialog(
   options: {
     initial?: string;
     multiline?: boolean;
-    required?: boolean;
-    validate?: (t: string) => string | null;
   },
   complete: (t: string) => CompletedRef,
+  submit: SubmitTyped,
 ): (close: (v: CompletedRef | null) => void) => React.ReactNode {
   function Rendered(close: (v: CompletedRef | null) => void) {
     return (
@@ -76,10 +78,9 @@ function textDialog(
         initial={options.initial ?? ''}
         command={command}
         {...(options.multiline ? { multiline: true } : {})}
-        {...(options.required ? { required: true } : {})}
-        {...(options.validate ? { validate: options.validate } : {})}
-        onDone={(t) => {
-          close(t === null ? null : complete(t));
+        submit={(t) => submit(complete(t))}
+        onDone={() => {
+          close(null);
         }}
       />
     );
@@ -87,12 +88,14 @@ function textDialog(
   return Rendered;
 }
 
-/** Opens the dialog of a menu item; resolves with the reference to send, or null when cancelled. Each title is written
- *  where the dialog opens, so the D-44 inventory (`scripts/c43_d44_coverage.py`) finds every dialog. */
+/** Opens the dialog of a menu item; resolves with the reference to send, or null when cancelled or when the dialog sent
+ *  its typed value itself through `submit` (ruling E-53). Each title is written where the dialog opens, so the D-44
+ *  inventory (`scripts/c43_d44_coverage.py`) finds every dialog. */
 export function openTimelineDialog(
   dialogs: DialogsApi,
   item: DialogItem,
   ctx: DialogContext,
+  submit: SubmitTyped,
 ): Promise<CompletedRef | null> {
   const row = ctx.rows.find((r) => r.elementId === item.elementId);
   const targets = item.elementId
@@ -106,12 +109,16 @@ export function openTimelineDialog(
     command: 'element.colour.set',
     params: { elementIds: targets, [key]: t },
   });
-  const hex = (t: string) =>
-    t === '' || HEX.test(t) ? null : 'Type a colour as #RRGGBB or #RRGGBBAA, or leave it empty.';
   switch (item.dialog) {
     case 'newElements':
       return dialogs.open<CompletedRef>('New Elements', (close) => (
-        <NewElementsDialog above={item.elementId} onDone={close} />
+        <NewElementsDialog
+          above={item.elementId}
+          submit={submit}
+          onDone={() => {
+            close(null);
+          }}
+        />
       ));
     case 'rename': {
       const render = textDialog(
@@ -119,8 +126,9 @@ export function openTimelineDialog(
         'Rename Element',
         'Name',
         'element.rename',
-        { initial: row?.name ?? '', required: true },
+        { initial: row?.name ?? '' },
         (t) => ({ command: 'element.rename', params: { elementId: item.elementId, name: t } }),
+        submit,
       );
       return dialogs.open<CompletedRef>('Rename Element', render);
     }
@@ -140,6 +148,7 @@ export function openTimelineDialog(
           'element.note.set',
           { initial: note, multiline: true },
           complete,
+          submit,
         );
         return dialogs.open<CompletedRef>('Update Element Note', render);
       }
@@ -150,6 +159,7 @@ export function openTimelineDialog(
         'element.note.set',
         { multiline: true },
         complete,
+        submit,
       );
       return dialogs.open<CompletedRef>('Element Note', render);
     }
@@ -160,8 +170,9 @@ export function openTimelineDialog(
         'Colour (#RRGGBB; empty reverts to the default)',
         'element.colour.set',
         // The element's own colour, or empty while it shows the default (OK without typing keeps either).
-        { initial: shown?.ownMarkerColour ?? '', validate: hex },
+        { initial: shown?.ownMarkerColour ?? '' },
         colour('marker'),
+        submit,
       );
       return dialogs.open<CompletedRef>('Marker Colour', render);
     }
@@ -171,8 +182,9 @@ export function openTimelineDialog(
         'Background Colour',
         'Colour (#RRGGBB; empty reverts to the default)',
         'element.colour.set',
-        { initial: shown?.backgroundColour ?? '', validate: hex },
+        { initial: shown?.backgroundColour ?? '' },
         colour('background'),
+        submit,
       );
       return dialogs.open<CompletedRef>('Background Colour', render);
     }

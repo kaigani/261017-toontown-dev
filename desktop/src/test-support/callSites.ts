@@ -3,7 +3,8 @@
 // test helper is not a call site.
 //
 // - TypeScript and TSX: the TypeScript compiler's syntax tree. A call site is a call expression `run('id', ...)`,
-//   `x.run('id', ...)`, `perform('id', ...)`, `x.perform('id', ...)` or `useQuery(services, 'id', ...)` whose id
+//   `x.run('id', ...)`, `perform('id', ...)`, `x.perform('id', ...)`, `x.submitTyped('id', ...)` (a typed value, ruling
+//   E-53) or `useQuery(services, 'id', ...)` whose id
 //   argument is a string literal, and each entry `name: ['id', params]` of the store's `SLICES` table (the queries the
 //   store runs on every refresh).
 // - Rust (the host): a lexer that skips comments, keeps string literals whole and stops at `#[cfg(test)]`. A call site is
@@ -62,7 +63,7 @@ export function tsCallSites(text: string, fileName: string): string[] {
           ? callee.text
           : null;
       const id =
-        name === 'run' || name === 'perform'
+        name === 'run' || name === 'perform' || name === 'submitTyped'
           ? literalId(node.arguments[0])
           : name === 'useQuery'
             ? literalId(node.arguments[1])

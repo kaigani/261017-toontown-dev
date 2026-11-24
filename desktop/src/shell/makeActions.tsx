@@ -11,6 +11,7 @@ import { BUSY_AFTER_MS, DISCARDING, isQuery, type ActionsApi, type Busy } from '
 import { NamePrompt } from './dialogs';
 import type { DialogsApi } from './dialogsApi';
 import type { MessagesApi } from './messagesApi';
+import { refusalLine } from './refusals';
 import { AboutDialog, BackupsDialog, CheckProjectDialog, ProjectInfoDialog } from './infoDialogs';
 import { JobProgress, NewProjectDialog, ProjectPropertiesDialog } from './projectForms';
 import { ToolbarSheet } from './toolbarSheet';
@@ -80,6 +81,22 @@ export function makeActions(
     if (env.status !== 'ok' && env.status !== 'needs_confirmation' && !answered)
       await messages.failure(env, command);
     return env;
+  };
+
+  /** Sends a value the person typed (ruling E-53): the envelope, and the refusal's line when the kernel refused it (the
+   *  status line shows it: `run` puts a listed refusal there, and the kernel's `arg.invalid` for the value is put there
+   *  here), else null. */
+  const sendTyped = async (
+    command: string,
+    params: Record<string, unknown>,
+  ): Promise<{ env: Envelope; refusal: string | null }> => {
+    const env = await run(command, params, ['arg.invalid']);
+    if (env.status !== 'error') return { env, refusal: null };
+    if (env.error?.code === 'arg.invalid') messages.refused(env.error, command, true);
+    return {
+      env,
+      refusal: refusalLine(env.error, command, true) ?? env.error?.message ?? 'The value was not accepted.',
+    };
   };
 
   const waitJob = async (env: Envelope, title: string, cancellable: boolean): Promise<Envelope> => {
@@ -279,11 +296,19 @@ export function makeActions(
       // dialogs, for the current element where the item names none.
       case 'element.create': {
         if (p['type'] === undefined) {
+          // The dialog sends its own reference (ruling E-53: a refused name keeps it open with the text).
+          let sent: Envelope | null = null;
           const ref = await dialogs.open<CompletedRef>('New Elements', (close) => (
-            <NewElementsDialog onDone={close} />
+            <NewElementsDialog
+              submit={async (r) => {
+                const answer = await sendTyped(r.command, { ...p, ...r.params });
+                sent = answer.env;
+                return answer.refusal;
+              }}
+              onDone={close}
+            />
           ));
-          if (!ref) return null;
-          Object.assign(p, ref.params);
+          return ref ? sent : null;
         }
         return run(command, p);
       }
@@ -300,6 +325,8 @@ export function makeActions(
           const note = typeof current['note'] === 'string' ? current['note'] : '';
           const name = typeof current['name'] === 'string' ? current['name'] : el?.id === id ? el.name : '';
           const update = !rename && note !== '';
+          // The dialog sends the text itself (ruling E-53: the kernel decides; a refusal keeps it open).
+          let sent: Envelope | null = null;
           const render = (close: (t: string | null) => void) => (
             <TextDialog
               id={rename ? 'timelineRename' : 'timelineNote'}
@@ -308,7 +335,11 @@ export function makeActions(
               initial={rename ? name : note}
               command={command}
               multiline={!rename}
-              required={rename}
+              submit={async (t) => {
+                const answer = await sendTyped(command, { ...p, elementId: id, [key]: t });
+                sent = answer.env;
+                return answer.refusal;
+              }}
               onDone={close}
             />
           );
@@ -318,9 +349,7 @@ export function makeActions(
             : update
               ? await dialogs.open<string>('Update Element Note', render)
               : await dialogs.open<string>('Element Note', render);
-          if (text === null) return null;
-          p['elementId'] = id;
-          p[key] = text;
+          return text === null ? null : sent;
         }
         return run(command, p);
       }
@@ -340,11 +369,20 @@ export function makeActions(
             const v = current[k];
             return typeof v === 'string' ? v : '';
           };
+          let sent: Envelope | null = null;
           const chosen = await dialogs.open<Record<string, unknown>>('Element Colours', (close) => (
-            <ColoursDialog marker={own('markerColour')} background={own('backgroundColour')} onDone={close} />
+            <ColoursDialog
+              marker={own('markerColour')}
+              background={own('backgroundColour')}
+              submit={async (colours) => {
+                const answer = await sendTyped(command, { ...p, ...colours });
+                sent = answer.env;
+                return answer.refusal;
+              }}
+              onDone={close}
+            />
           ));
-          if (!chosen) return null;
-          Object.assign(p, chosen);
+          return chosen ? sent : null;
         }
         return run(command, p);
       }
@@ -531,5 +569,10 @@ export function makeActions(
     }
   };
 
-  return { perform, run, refused: (error, commandId) => messages.refused(error, commandId) };
+  return {
+    perform,
+    run,
+    refused: (error, commandId) => messages.refused(error, commandId),
+    submitTyped: async (command, params) => (await sendTyped(command, params)).refusal,
+  };
 }

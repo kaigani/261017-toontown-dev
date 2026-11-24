@@ -117,8 +117,8 @@ export function MessageHost({
       status(text, kind = 'info') {
         setLine({ text, kind });
       },
-      refused(error, commandId) {
-        const text = refusalLine(error, commandId);
+      refused(error, commandId, typed = false) {
+        const text = refusalLine(error, commandId, typed);
         if (text === null) return false;
         setLine({ text, kind: 'warning' });
         return true;

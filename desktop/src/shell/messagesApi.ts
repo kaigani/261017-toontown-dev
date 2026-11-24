@@ -48,8 +48,9 @@ export interface MessagesApi {
    *  a message box. */
   failure(env: Envelope, what: string): Promise<void>;
   /** Reports a refused person's action of `commandId` on the status line when the error is a refusal (ruling D-87;
-   *  `refusals.ts` decides); answers whether it was one. Every input's refusal goes through here. */
-  refused(error: Refusal | undefined, commandId: string): boolean;
+   *  `refusals.ts` decides); answers whether it was one. Every input's refusal goes through here. `typed`: the error
+   *  answers a value the person typed (ruling E-53). */
+  refused(error: Refusal | undefined, commandId: string, typed?: boolean): boolean;
   /** Opens a modal state the executor must know about (dialogs, progress); returns the function that closes it. */
   enterModal(kind: 'dialog' | 'progress' | 'gesture', title: string): () => void;
 }
