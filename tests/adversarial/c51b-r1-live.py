@@ -113,10 +113,18 @@ async def body(t,step):
   assert await bar('Peg-A')==after
   save('step2-result.json',{'before':before,'after':after,'history':hist,'directEqual':True})
  elif step==3:
+  canvas=lambda:js("document.querySelector('[data-tt-id=\"timeline.tracks\"]').toDataURL()")
   before=await bar('Peg-A');pos=await t.position();a=barpoint('Peg-A');b=(a[0]+round(48*js('devicePixelRatio')),a[1])
-  await down(a);await move(b);guard();d.key(0x1b);await up()
+  original=canvas();await down(a);await move(b);await wait(lambda:canvas()!=original)
+  guard();d.key(0x1b);await up();await wait(lambda:canvas()==original)
   assert await bar('Peg-A')==before;assert not await t.steps_since(pos)
-  raise RuntimeError('Escape state/history exercised; preview disappearance and outside-window release not exercised')
+  await drag(a,b)
+  await until_cmd('timeline.rows.list',{'from':1,'to':60},lambda r:next(x['bar']['start'] for x in r['rows'] if x['elementId']==ids['Peg-A'])==4)
+  inside=await bar('Peg-A');await c('edit.undo')
+  await wait(lambda:canvas()==original)
+  await down(a);await move(b);await move((b[0],0));await up()
+  outside=await bar('Peg-A');assert outside in (before,inside)
+  save('step3-result.json',{'escapeUnchanged':True,'escapeNoHistory':True,'previewGone':True,'inside':inside,'outside':outside,'outsidePoint':[b[0],0],'outsideOutcome':'cancelled' if outside==before else 'same as inside'})
  elif step==4:
   a=barpoint('Peg-A');b=(a[0]+round(48*js('devicePixelRatio')),a[1]);await down(a);await move(b)
   await c('element.timing.set',{'elementIds':[ids['Peg-A']],'start':6});pos=await t.position();await up()
