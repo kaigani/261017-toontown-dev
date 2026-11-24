@@ -97,17 +97,26 @@ def install():
   await wait(lambda:value('timelineDuration.value')=='48');key(0x1b)
   save('step5-detail.json',{'notePreservedAndReplaced':True,'invalidDurationRestored':True})
  elif step==4:
-  for i in range(56):last=(await c('element.create',{'type':'drawing','name':'Reveal-%02d'%i}))['elementIds'][0]
+  for i in range(60-len((await rows())['rows'])):await c('element.create',{'type':'drawing','name':'Reveal-%02d'%i})
+  last=(await rows())['rows'][-1]['elementId']
   await c('xsheet.currentCell.set',{'elementId':last,'frame':1})
   def visible():return js("(()=>{const l=document.querySelector('[data-tt-id=\\"timeline.layers\\"]'),r=document.querySelector('[data-tt-id='+JSON.stringify(%s)+']');if(!r)return false;const a=l.getBoundingClientRect(),b=r.getBoundingClientRect();return b.top>=a.top&&b.bottom<=a.bottom})()"%json.dumps('timeline.row.'+last))
+  outcomes=[]
+  js("window.reviewKeys=[];window.addEventListener('keydown',e=>window.reviewKeys.push({key:e.key,code:e.code,target:e.target.dataset.ttId}))")
   for mode in ('key','key','mcp'):
    js("document.querySelector('[data-tt-id=\\"timeline.layers\\"]').scrollTop=0")
    await wait(lambda:not visible())
    if mode=='key':
-    click('timeline.row.'+ids['Peg-A']+'.label');await c('xsheet.currentCell.set',{'elementId':last,'frame':1});key(0xbf)
+    click('timeline.row.'+(await rows())['rows'][0]['elementId']+'.label');await c('element.select',{'elementIds':[last]});await c('xsheet.currentCell.set',{'elementId':last,'frame':1})
+    guard();d.u32.keybd_event(0xbf,0x35,0,0)
+    guard();d.u32.keybd_event(0xbf,0x35,2,0)
    else:await c('timeline.view.set',{'revealElementId':None})
-   await wait(visible)
-  save('step4-detail.json',{'revealedThreeTimes':True})
+   try:await wait(visible);outcomes.append(True)
+   except RuntimeError:
+    outcomes.append(False)
+    save('step4-probe.json',{'mode':mode,'last':last,'keys':js('window.reviewKeys'),'focus':js('document.activeElement?.dataset.ttId'),'layers':js("(()=>{const e=document.querySelector('[data-tt-id=\\"timeline.layers\\"]');return {scroll:e.scrollTop,height:e.clientHeight}})()")})
+  save('step4-detail.json',{'outcomes':outcomes})
+  assert all(outcomes)
  elif step==6:
   await c('element.lock.set',{'elementIds':[ids['Peg-A']],'locked':True})
   a=barpoint('Peg-A',20);await drag(a,(a[0]+round(48*js('devicePixelRatio')),a[1]))
@@ -116,7 +125,8 @@ def install():
   await c('cell.select',{'elementIds':[ids['Bob']],'from':2,'to':3})
   a=barpoint('Bob',2);await drag(a,(a[0]+round(192*js('devicePixelRatio')),a[1]))
   after=await c('cell.selection.get');save('step6-selection.json',after)
-  await c('element.drawingLock.set',{'elementIds':[ids['Alice']],'drawingNames':['3'],'locked':True})
+  await c('app.context.set',{'elementId':ids['Alice'],'frame':10})
+  await c('element.drawingLock.set',{'locked':True})
   await c('timeline.transferOptions.set',{'operation':'dragDrop','options':{'exposure':False}})
   await c('cell.select',{'elementIds':[ids['Alice']],'from':2,'to':3})
   before=await c('doc.export.json',{'scope':'project','binaries':'omit'})
@@ -145,8 +155,13 @@ def install():
   raise RuntimeError('Requested step extension not yet implemented')
  t.run.check(True,'Round 2 step '+str(step)+' exercised',None)
 '''
- exec(prefix+extra,r.__dict__)
+ r.generated=prefix+extra
+ exec(r.generated,r.__dict__)
 if __name__=='__main__':
+ if sys.argv[1]=='dump':
+  install()
+  print('\n'.join(str(i)+': '+x for i,x in enumerate(r.generated.splitlines(),1) if 175<=i<=200))
+  sys.exit(0)
  if sys.argv[1]=='record':
   import subprocess
   step=int(sys.argv[2]);line=sys.argv[3]

@@ -1,0 +1,21 @@
+{
+  "mode": "key",
+  "last": "el_01M87A1NF7AT17BZQ1RX4ZGA53",
+  "keys": [
+    {
+      "key": "/",
+      "code": "",
+      "target": "timeline.layers"
+    },
+    {
+      "key": "/",
+      "code": "",
+      "target": "timeline.layers"
+    }
+  ],
+  "focus": "timeline.layers",
+  "layers": {
+    "scroll": 0,
+    "height": 261
+  }
+}
