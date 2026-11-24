@@ -1,0 +1,69 @@
+{
+  "started": {
+    "playing": true,
+    "mode": "scene",
+    "sceneId": "sc_01M868EJKXQFAVP2TH05X8NFSJ",
+    "frame": 7,
+    "range": {
+      "mode": "auto",
+      "start": 1,
+      "end": 48,
+      "sceneLength": 48
+    },
+    "rate": {
+      "setting": "project",
+      "fps": 24.0
+    },
+    "loop": false,
+    "forceRate": false,
+    "sound": false,
+    "scrubbing": false,
+    "measuredFps": 23.2,
+    "droppedFrames": 0
+  },
+  "end": {
+    "playing": false,
+    "mode": "scene",
+    "sceneId": "sc_01M868EJKXQFAVP2TH05X8NFSJ",
+    "frame": 48,
+    "range": {
+      "mode": "auto",
+      "start": 1,
+      "end": 48,
+      "sceneLength": 48
+    },
+    "rate": {
+      "setting": "project",
+      "fps": 24.0
+    },
+    "loop": false,
+    "forceRate": false,
+    "sound": false,
+    "scrubbing": false,
+    "measuredFps": 0.0,
+    "droppedFrames": 0
+  },
+  "rulerClick": {
+    "playing": false,
+    "mode": "scene",
+    "sceneId": "sc_01M868EJKXQFAVP2TH05X8NFSJ",
+    "frame": 12,
+    "range": {
+      "mode": "auto",
+      "start": 1,
+      "end": 48,
+      "sceneLength": 48
+    },
+    "rate": {
+      "setting": "project",
+      "fps": 24.0
+    },
+    "loop": false,
+    "forceRate": false,
+    "sound": false,
+    "scrubbing": false,
+    "measuredFps": 0.0,
+    "droppedFrames": 0
+  },
+  "toolbarAgreed": true
+}
