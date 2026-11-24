@@ -24,6 +24,8 @@ export const NOT_PRODUCT_DIRS: readonly string[] = [
   'test-support',
   '__probes__',
   'testdata',
+  // The M0 diagnostics (`--ipc-bench`, `--timing-check`): absent from the default build (gating.build.test.ts).
+  'diagnostics',
 ];
 
 /** Whether a repository path (with `/`) is product code: a `.ts`, `.tsx` or `.rs` file outside tests and test helpers. */

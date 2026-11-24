@@ -23278,6 +23278,7 @@
         "desktop/src-tauri/src/spikes/canvas/mod.rs",
         "desktop/src-tauri/src/spikes/tablet/mod.rs",
         "desktop/src-tauri/src/spikes/tablet/simulate_windows.rs",
+        "desktop/src-tauri/src/timing_check.rs",
         "desktop/src/ipc/engine.ts",
         "desktop/src/panels/PenPanel.tsx",
         "desktop/src/panels/TextPanel.tsx",
@@ -23490,6 +23491,7 @@
       "command": "diagnostics.notRequested",
       "files": [
         "desktop/src-tauri/src/diagnostics.rs",
+        "desktop/src-tauri/src/timing_check.rs",
         "desktop/src/ipc/mockDiagnostics.ts"
       ]
     },
@@ -24169,7 +24171,8 @@
       "command": "fs.unwritable",
       "files": [
         "desktop/src-tauri/src/diagnostics.rs",
-        "desktop/src-tauri/src/spikes/tablet/mod.rs"
+        "desktop/src-tauri/src/spikes/tablet/mod.rs",
+        "desktop/src-tauri/src/timing_check.rs"
       ]
     },
     {
