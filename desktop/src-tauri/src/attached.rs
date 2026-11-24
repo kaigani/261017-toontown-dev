@@ -28,6 +28,13 @@ use tt_executor::{AttachedIo, CapturedPng, CommandError, Envelope, Origin};
 /// The host event carrying an agent's gesture to a window.
 pub const AGENT_INPUT_EVENT: &str = "agent-input";
 
+/// The host event carrying an agent's Shift+F10 to the main window (M5 rulings E-48, E-52): the window opens the named
+/// control's context menu, or its focused control's, and answers what it did through `context_menu_answer`.
+pub const AGENT_CONTEXT_MENU_EVENT: &str = "agent-context-menu";
+
+/// The view name a routed Shift+F10 waits under in [`Routed`] (it acts on the window, not on a view's canvas).
+const CONTEXT_MENU: &str = "contextMenu";
+
 /// Where a window's canvas for a view is, in the window's view pixels, and its device pixel ratio.
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Presence {
@@ -237,6 +244,28 @@ impl WindowIo {
         env
     }
 
+    /// The window's answer to a routed Shift+F10 (M5 ruling E-52): `opened` (a menu opened: `menuId`), `noMenu` (the
+    /// control exists and offers none: `handled: false`), `notFound` (no control has that id: `view.notFound`).
+    pub fn context_menu_answer(&self, id: u64, outcome: &str, target: Option<String>, menu_id: Option<String>) {
+        let Some(p) = self.host().routed().take(id) else { return };
+        let env = match outcome {
+            "opened" => Envelope::ok(json!({ "handled": true, "contextMenu": target, "menuId": menu_id }), None),
+            "noMenu" => Envelope::ok(json!({ "handled": false, "reason": "noContextMenu", "control": target }), None),
+            _ => Envelope::error(
+                refusal(
+                    "view.notFound",
+                    match &target {
+                        Some(t) => format!("the window has no control `{t}`"),
+                        None => "the window has no focused control".to_owned(),
+                    },
+                    json!({ "view": target, "reason": "noControl", "pointer": "/view" }),
+                ),
+                None,
+            ),
+        };
+        p.answer(env);
+    }
+
     /// A user press during an agent gesture (P2): the agent's gesture is discarded and its call answers `ui.busy`
     /// with `reason: "userInput"` (SI-135); nothing is committed.
     pub fn abort(&self, id: u64) {
@@ -281,6 +310,39 @@ impl AttachedIo for WindowIo {
                         "command.timeout",
                         format!("the window showing {view} did not play the gesture within {} ms", budget.as_millis()),
                         json!({ "commandId": "pointer", "viewId": view }),
+                    ),
+                    None,
+                ))
+            }
+        }
+    }
+
+    fn route_context_menu(&self, target: Option<&str>, origin: &Origin, budget: Duration) -> Option<Envelope> {
+        let window = "main";
+        self.app.get_webview_window(window)?;
+        let host = self.host();
+        let generation = host.generation();
+        let (id, rx) = host.routed().register(origin, CONTEXT_MENU, window, generation);
+        let payload = json!({ "requestId": id, "target": target, "generation": generation });
+        let sent = tt_engine::wire::to_wire_json(&payload)
+            .map_err(|e| e.message)
+            .and_then(|text| self.app.emit_to(window, AGENT_CONTEXT_MENU_EVENT, text).map_err(|e| e.to_string()));
+        if let Err(e) = sent {
+            host.routed().take(id);
+            return Some(Envelope::error(
+                refusal("internal", format!("cannot reach the main window: {e}"), json!({ "view": target })),
+                None,
+            ));
+        }
+        match rx.recv_timeout(budget) {
+            Ok(env) => Some(env),
+            Err(_) => {
+                host.routed().take(id);
+                Some(Envelope::error(
+                    refusal(
+                        "command.timeout",
+                        format!("the window did not answer the context-menu key within {} ms", budget.as_millis()),
+                        json!({ "commandId": "key", "view": target }),
                     ),
                     None,
                 ))

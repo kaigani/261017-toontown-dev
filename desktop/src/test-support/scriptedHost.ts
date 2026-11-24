@@ -85,6 +85,8 @@ export interface ScriptedHost extends HostTransport {
   generation: number;
   /** How many restarts were asked. */
   restarts: number;
+  /** The window's answers to routed Shift+F10 requests (`context_menu_answer`; M5 ruling E-52). */
+  contextMenuAnswers: Record<string, unknown>[];
   /** Answers to `dispatch_key` (`{error}`: the host's refusal). */
   keys: Record<string, unknown>;
   /** Answers to `availability` (ruling O-10): the kernel's facts for one reference. */
@@ -315,6 +317,9 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
         case 'token_rect':
           host.tokenRectAnswers.push({ request: Number(json['request']), rect: json['rect'] ?? null });
           return Promise.resolve({});
+        case 'context_menu_answer':
+          host.contextMenuAnswers.push(json);
+          return Promise.resolve({});
         case 'restart_engine':
           host.restarts += 1;
           host.generation += 1;
@@ -354,6 +359,7 @@ export function createScriptedHost(overrides: Record<string, Handler> = {}): Scr
     },
     generation: 0,
     restarts: 0,
+    contextMenuAnswers: [],
     skip() {
       seq += 1;
     },

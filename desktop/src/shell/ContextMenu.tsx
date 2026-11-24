@@ -316,6 +316,8 @@ export function ContextMenu({
               const reason = engineDown ? ENGINE_DOWN_REASON : facts?.reason;
               const owner = item.owner ?? DEFERRED[item.command]?.owner;
               const enabled = !owner && !engineDown && enabledIn(facts);
+              // While the engine is not responding every item gives that reason, a later owner's too (E-52).
+              const ownerShown = engineDown ? undefined : owner;
               // The parameters as the kernel completes them now (a toggle's next state; O-10).
               const params =
                 facts && facts.params !== null && typeof facts.params === 'object'
@@ -331,8 +333,8 @@ export function ContextMenu({
                   {...(checked !== undefined ? { 'aria-checked': checked } : {})}
                   aria-disabled={!enabled}
                   title={
-                    owner
-                      ? `${text} — arrives with ${owner}`
+                    ownerShown
+                      ? `${text} — arrives with ${ownerShown}`
                       : !enabled && reason
                         ? `${text} — ${reason}`
                         : undefined
@@ -361,8 +363,8 @@ export function ContextMenu({
                     {checked ? '✓' : ''}
                   </span>
                   {text}
-                  {owner ? (
-                    <span className="context-menu-reason">{`arrives with ${owner}`}</span>
+                  {ownerShown ? (
+                    <span className="context-menu-reason">{`arrives with ${ownerShown}`}</span>
                   ) : (
                     !enabled && reason && <span className="context-menu-reason">{reason}</span>
                   )}

@@ -125,22 +125,71 @@ export function isTextEntry(el: EventTarget | null): boolean {
   return el instanceof HTMLInputElement && TEXT_INPUTS.has((el.getAttribute('type') ?? '').toLowerCase());
 }
 
-/** An agent's Shift+F10 (11 §7.6: simulated input takes the real input's path; M5 ruling E-48): the platform's keyboard
- *  `contextmenu` (no pointer position) to the control the notice names by its window id, or to the focused control, as
- *  the window's own Shift+F10 sends it (D-66 item 3). The control opens its menu where the keyboard is: a Timeline
- *  surface at the current row, cell or frame. */
-export function openContextMenuFor(payload: unknown): void {
-  const target =
-    typeof payload === 'object' && payload !== null ? (payload as { target?: unknown }).target : undefined;
+/** An agent's Shift+F10, once the kernel's key checks have passed (11 §6.4, §7.6; M5 rulings E-48, E-52): the
+ *  platform's keyboard `contextmenu` (no pointer position) to the control `target` names by its window id, or to the
+ *  focused control, as the window's own Shift+F10 sends it (D-66 item 3). The answer is what happened: `notFound` (no
+ *  such control), `noMenu` (the control did not take the event: the focus goes back where it was), `opened`. A control
+ *  that opens a menu takes the event (`preventDefault` in its handler); the window's own guard against the browser's
+ *  menu also prevents it, but later, at the window: the probe on the document reads the event before that guard. */
+export async function openContextMenuFor(
+  target: string | null,
+): Promise<{ outcome: 'opened' | 'noMenu' | 'notFound'; menuId: string | null }> {
   const at =
-    typeof target === 'string'
+    target !== null
       ? document.querySelector(`[data-tt-id=${JSON.stringify(target)}]`)
       : document.activeElement;
-  if (!(at instanceof HTMLElement)) return;
+  if (!(at instanceof HTMLElement) || (target === null && at === document.body)) {
+    return { outcome: 'notFound', menuId: null };
+  }
+  const before = document.activeElement;
+  let taken = false;
+  const probe = (e: Event) => {
+    taken = e.defaultPrevented;
+  };
+  document.addEventListener('contextmenu', probe);
   at.focus({ preventScroll: true });
   at.dispatchEvent(
     new MouseEvent('contextmenu', { bubbles: true, cancelable: true, clientX: 0, clientY: 0 }),
   );
+  document.removeEventListener('contextmenu', probe);
+  if (!taken) {
+    if (before instanceof HTMLElement && before !== at) before.focus({ preventScroll: true });
+    return { outcome: 'noMenu', menuId: null };
+  }
+  // The menu the control opened, once rendered (the next frame at most).
+  await new Promise<void>((r) => {
+    requestAnimationFrame(() => {
+      r();
+    });
+  });
+  const menu = document.querySelector('[data-tt-role="menu"]');
+  return { outcome: 'opened', menuId: menu instanceof HTMLElement ? (menu.dataset['ttId'] ?? null) : null };
+}
+
+/** The main window's side of an agent's Shift+F10 (M5 rulings E-48, E-52): each routed request is played here and
+ *  answered with what happened. */
+export function useAgentContextMenu(services: ShellServices): void {
+  useEffect(() => {
+    let disposed = false;
+    let unlisten: (() => void) | null = null;
+    void services.engine
+      .onAgentContextMenu((request) => {
+        void openContextMenuFor(request.target).then(({ outcome, menuId }) =>
+          services.engine
+            .contextMenuAnswer({ agentRequest: request.requestId, outcome, target: request.target, menuId })
+            .catch(() => undefined),
+        );
+      })
+      .then((u) => {
+        if (disposed) u();
+        else unlisten = u;
+      })
+      .catch(() => undefined);
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, [services]);
 }
 
 /** Engine events applied in order; a resync at start and after a gap (IPC freshness). */
@@ -151,7 +200,6 @@ export function useEngineMirror(services: ShellServices, reportScreens: boolean)
     let chain: Promise<void> = Promise.resolve();
     void services.engine
       .onEvent((e) => {
-        if (e.name === 'shell.contextMenu') openContextMenuFor(e.payload);
         chain = chain.then(() => services.store.apply(e)).catch(() => undefined);
       })
       .then((u) => {

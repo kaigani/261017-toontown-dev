@@ -622,6 +622,10 @@ describe('a context menu while the engine is not responding', () => {
       expect(item.getAttribute('aria-disabled')).toBe('true');
     });
     expect(item.textContent).toContain('the engine is not responding');
+    // A later owner's item gives the engine's reason too while the engine is stopped (E-52's observation).
+    const owned = el('timeline.rowMenu.timeline.row.addDefaultKey');
+    expect(owned.textContent).toContain('the engine is not responding');
+    expect(owned.textContent).not.toContain('arrives with');
     const sent = h.actions().length;
     act(() => {
       item.click();
@@ -641,8 +645,28 @@ describe('a context menu while the engine is not responding', () => {
 describe('the store at a frame change', () => {
   it('reads the status bar only', async () => {
     const h = await timeline({});
-    await new Promise((r) => setTimeout(r, 300));
     const count = (c: string) => h.sent.filter((x) => x.command === c).length;
+    // The start-up reads have completed: every slice read has been sent and no read has been sent for three polls in
+    // a row (a wait for a state, D-45; C51B-R2S-03: a fixed 300 ms took the baseline before them on a slow runner).
+    let last = -1;
+    let quiet = 0;
+    await waitFor(
+      () => {
+        for (const c of [
+          'window.panel.list',
+          'workspace.get',
+          'workspace.list',
+          'app.state.get',
+          'ui.statusBar.get',
+        ])
+          expect(count(c)).toBeGreaterThan(0);
+        const n = h.sent.length;
+        quiet = n === last ? quiet + 1 : 0;
+        last = n;
+        expect(quiet).toBeGreaterThanOrEqual(3);
+      },
+      { interval: 50, timeout: 5000 },
+    );
     const before = [
       'window.panel.list',
       'workspace.get',
@@ -653,10 +677,11 @@ describe('the store at a frame change', () => {
     act(() => {
       h.event('app.state.changed', { changed: ['frame'], state: { ...PROJECT, frame: 9 } });
     });
+    // The notice's refresh has run: the store sends a refresh's reads together, so once the status bar's read has gone
+    // out, any other slice of the same refresh has too (no fixed wait before judging).
     await waitFor(() => {
       expect(count('ui.statusBar.get')).toBeGreaterThan(before[4] ?? 0);
     });
-    await new Promise((r) => setTimeout(r, 200));
     expect(['window.panel.list', 'workspace.get', 'workspace.list', 'app.state.get'].map(count)).toEqual(
       before.slice(0, 4),
     );

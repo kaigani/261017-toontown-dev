@@ -58,6 +58,15 @@ pub trait AttachedIo: Send + Sync + std::fmt::Debug {
     /// headless path runs), else the envelope of the window's commit, or its refusal (a user press: `ui.busy` with
     /// `reason: "userInput"`, SI-135), within `budget`.
     fn route_pointer(&self, view: &str, origin: &Origin, request: &Value, budget: Duration) -> Option<Envelope>;
+    /// Opens the context menu of a window control for an agent's Shift+F10 (11 §7.6: simulated input takes the real
+    /// input's path; M5 rulings E-48, E-52): `target` names the control by its window id (`None`: the focused control).
+    /// `None` when no window is attached (the headless path); else what the window did, within `budget`: `{handled:
+    /// true, contextMenu, menuId}` when a menu opened, `{handled: false, reason: "noContextMenu"}` when the control
+    /// offers none, `view.notFound` (`reason: "noControl"`) when no control has that id.
+    fn route_context_menu(&self, target: Option<&str>, origin: &Origin, budget: Duration) -> Option<Envelope> {
+        let _ = (target, origin, budget);
+        None
+    }
     /// Captures what the user sees for `target` (`window`, a view id or a float's panel id), cropped to `region` (`x, y,
     /// w, h` in the target's view pixels), refused before capturing when the result's long side would exceed
     /// `max_side` (`render.inlineTooLarge`), within `budget`.
@@ -824,6 +833,30 @@ impl ExecutorHandle {
             }
             crate::run::Core::settle(s, &before);
         })));
+    }
+
+    /// An agent's Shift+F10 through the `key` tool, once the key's coexistence checks have passed (11 §6.4, §7.6; M5
+    /// rulings E-48, E-52): the window opens the context menu of the control `target` names, or of its focused control,
+    /// and the answer is what it did ([`AttachedIo::route_context_menu`]). Without a window nothing has a context menu:
+    /// a named control is `view.notFound`, the focused one `{handled: false}`.
+    #[must_use]
+    pub fn context_menu(&self, origin: &crate::types::Origin, target: Option<String>) -> crate::types::Envelope {
+        if let Some(io) = self.shell.attached_io()
+            && let Some(env) = io.route_context_menu(target.as_deref(), origin, self.config.budget)
+        {
+            return env;
+        }
+        match target {
+            Some(t) => crate::types::Envelope::error(
+                CommandError::with_details(
+                    "view.notFound",
+                    format!("no window shows a control `{t}`"),
+                    json!({ "view": t, "reason": "noControl", "pointer": "/view" }),
+                ),
+                None,
+            ),
+            None => crate::types::Envelope::ok(json!({ "handled": false, "reason": "noWindow" }), None),
+        }
     }
 
     /// The `pointer` tool (11 §7.6; M4 C4.2, design note 4): the events are grouped into gestures, each gesture's

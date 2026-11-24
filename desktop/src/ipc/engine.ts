@@ -143,6 +143,16 @@ export interface EngineApi {
   }): Promise<Envelope>;
   /** `gesture_abort` (P2; SI-135): a user press interrupted the agent gesture `agentRequest` the window was playing. */
   gestureAbort(agentRequest: number): Promise<void>;
+  /** An agent's Shift+F10 the host routes to this window (`agent-context-menu`; M5 rulings E-48, E-52). */
+  onAgentContextMenu(handler: (request: AgentContextMenu) => void): Promise<Unlisten>;
+  /** `context_menu_answer` (M5 ruling E-52): what the window did with a routed Shift+F10, which answers the agent's
+   *  `key` call: `opened` (a menu opened), `noMenu` (the control offers none), `notFound` (no such control). */
+  contextMenuAnswer(answer: {
+    agentRequest: number;
+    outcome: 'opened' | 'noMenu' | 'notFound';
+    target: string | null;
+    menuId: string | null;
+  }): Promise<void>;
   /** `text_input` (M4 C4.4b, design note 5 §4): one input of the Text tool's editor into the kernel's input path (typed
    *  text, an editing key, a paste or a cut), on the generation the window follows (D-7b). */
   textInput(input: {
@@ -221,6 +231,14 @@ export interface TokenRect {
 }
 
 /** An agent's `pointer` request routed to this window (attached mode). */
+/** An agent's Shift+F10 routed to this window: the control its `view` named (by window id), or `null` for the focused
+ *  one. */
+export interface AgentContextMenu {
+  requestId: number;
+  target: string | null;
+  generation: number;
+}
+
 export interface AgentInput {
   requestId: number;
   viewId: string;
@@ -444,6 +462,24 @@ export function createEngineApi(transport: HostTransport): EngineApi {
     },
     async gestureAbort(agentRequest) {
       await invoke('gesture_abort', { agentRequest });
+    },
+    onAgentContextMenu(handler) {
+      return transport.listen('agent-context-menu', (payload) => {
+        try {
+          const v = decode(payload);
+          if (typeof v !== 'object' || v === null) return;
+          const o = v as Record<string, unknown>;
+          const target = o['target'];
+          if (typeof o['requestId'] !== 'number' || typeof o['generation'] !== 'number') return;
+          if (target !== null && typeof target !== 'string') return;
+          handler({ requestId: o['requestId'], target, generation: o['generation'] });
+        } catch {
+          // A malformed message can only come from a version mismatch; it is dropped (the agent's call times out).
+        }
+      });
+    },
+    async contextMenuAnswer(answer) {
+      await invoke('context_menu_answer', answer);
     },
     async textInput(input) {
       try {

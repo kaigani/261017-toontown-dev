@@ -524,6 +524,32 @@ pub fn gesture_abort(host: State<'_, Host>, json: String) -> Result<Response, St
     respond(&json!({}))
 }
 
+/// `context_menu_answer` request.
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct ContextMenuAnswerRequest {
+    agent_request: u64,
+    outcome: String,
+    #[serde(default)]
+    target: Option<String>,
+    #[serde(default)]
+    menu_id: Option<String>,
+}
+
+/// The window's answer to an agent's Shift+F10 the host routed to it (M5 ruling E-52): what it did, which answers the
+/// waiting `key` call.
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed request.
+#[tauri::command]
+pub fn context_menu_answer(host: State<'_, Host>, json: String) -> Result<Response, String> {
+    let req: ContextMenuAnswerRequest = parse(&json)?;
+    if let Some(io) = host.attached() {
+        io.context_menu_answer(req.agent_request, &req.outcome, req.target, req.menu_id);
+    }
+    respond(&json!({}))
+}
+
 /// `canvas_presence` request.
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]

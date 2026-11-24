@@ -1388,21 +1388,35 @@ fn key_tool(
         shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
         return ("key".to_owned(), env);
     }
-    // Shift+F10 opens the context menu of the window's control, as the real key does (D-66 item 3; 11 §7.6; M5 ruling
-    // E-48): `view` may name the control by its window id (a Timeline surface: `timeline.tracks`, `timeline.layers`,
-    // `timeline.ruler`), else the focused control. The menu is the window's: `inspect_ui` lists its items.
-    if tt_executor::ExecutorHandle::canonical_keys(keys).is_ok_and(|k| k == "Shift+F10") {
-        let target = args.get("view").and_then(Value::as_str).map(str::to_owned);
-        let env = match shared.handle.open_context_menu(target.clone()) {
-            Ok(()) => Envelope::ok(json!({ "handled": true, "contextMenu": target }), None),
-            Err(e) => Envelope::error(e, None),
-        };
-        shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
-        return ("key".to_owned(), env);
-    }
+    // Shift+F10 opens the context menu of a window control, as the real key does (D-66 item 3; 11 §7.6; M5 rulings E-48,
+    // E-52). It takes the path of every key: the scope above, the text session and the coexistence checks below (a
+    // modal: `ui.modalOpen`; a text field being edited keeps its Shift+F10: `ui.busy`); then, where another key would
+    // run its binding, the window opens the menu and answers what it did. Its `view` names the control by its window id
+    // (a Timeline surface: `timeline.tracks`, `timeline.layers`, `timeline.ruler`, a row), not a view: a string or
+    // absent (the focused control).
+    let context_menu = tt_executor::ExecutorHandle::canonical_keys(keys).is_ok_and(|k| k == "Shift+F10");
+    let menu_target = if context_menu {
+        match args.get("view") {
+            None => None,
+            Some(Value::String(t)) => Some(t.clone()),
+            Some(_) => {
+                let env = envelope_error(
+                    "arg.invalid",
+                    "`view` names a window control by its id: a string".into(),
+                    json!({ "tool": "key", "pointer": "/view" }),
+                    None,
+                );
+                shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+                return ("key".to_owned(), env);
+            }
+        }
+    } else {
+        None
+    };
     // `view` (M4 C4.2): the view the key is aimed at. It must exist; a bound `view.*` command without its own `viewId`
     // acts on that view instead of the active one. The user's active view is not changed.
     let view = match args.get("view") {
+        _ if context_menu => None,
         None => None,
         Some(v) => {
             let name = v.as_str().unwrap_or_default().to_owned();
@@ -1478,6 +1492,12 @@ fn key_tool(
                     None,
                 )
             };
+            shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+            ("key".to_owned(), env)
+        }
+        // Past the coexistence checks: the window's own key, before any binding (as its keydown handler does).
+        _ if context_menu => {
+            let env = shared.handle.context_menu(origin, menu_target);
             shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
             ("key".to_owned(), env)
         }

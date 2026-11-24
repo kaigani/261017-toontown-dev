@@ -25,6 +25,7 @@ import { StatusBar } from './shell/StatusBar';
 import { fontsNoticeLine } from './shell/refusals';
 import { MainToolbar, ToolPaletteRail } from './shell/Toolbars';
 import {
+  useAgentContextMenu,
   useEngineMirror,
   useNoBrowserMenus,
   usePageReady,
@@ -212,6 +213,7 @@ function Window() {
 
   useEngineMirror(services, true);
   useEngineStatusMirror(host);
+  useAgentContextMenu(services);
 
   // Start-up (01 §1.1 rules 7-8): documents requested before the window existed take precedence over the start-up
   // behaviour preference. Runs once per application (React may mount twice in development).

@@ -150,6 +150,26 @@ opener as it closes, which blurred an editor focused earlier and committed it at
 round 1 live review); D-39 rows "Timeline › row rename (double click, Enter)", "(Escape)", "(keys stay in the editor)"
 and "Timeline row menu › Rename (in place)".
 
+## 6b. An agent and the context menus (rulings E-48, E-52, C5.1b rounds 1 and 2)
+
+- **Opening.** An agent opens a context menu with the `key` tool's `shift+F10` (11 §7.6), `view` naming the control by
+  its window id (`timeline.tracks`, `timeline.layers`, `timeline.ruler`, `timeline.row.<id>`) or omitted for the
+  focused control. The key takes every key's path: the `input` scope, the coexistence checks (a dialog the person
+  opened: `ui.modalOpen`; a text field being edited keeps its Shift+F10 under the shared text-field rule: `ui.busy`),
+  and then the host routes it to the main window, which sends the keyboard `contextmenu` to the control (a Timeline
+  surface opens its menu at the current row, cell or frame) and answers what it did: `{handled: true, contextMenu,
+  menuId}`, `{handled: false, reason: "noContextMenu"}` for a control without a menu (the focus goes back), `view.notFound`
+  for no such control, `arg.invalid` for a `view` that is not a string.
+- **What the agent can do with it.** Read it: the open menu and its items are in the window's tree (`inspect_ui`), each
+  item with the reference it would send as the kernel completes it now (a toggle's next state) and whether it is
+  enabled. No tool clicks a window item. To act, the agent runs the item's reference itself with `run_command`: its
+  own invocation, with the agent's origin and the session's scopes and policy (an agent step in the history and the
+  activity log). The menu stays open until the person dismisses it or another opens.
+- **Whose action an item is.** Whoever activates it. A person's click or Enter on an item goes through the window's
+  action router (`actions.perform`), the person's action (origin user), whether the menu was opened by the person or by
+  an agent. Test: `scripts/c51b-context-menu-key.py` row 8 (the agent's run of an opened item's reference is an agent
+  step; a person's real click on an item of the menu the agent opened is a user step).
+
 ## 7. Dialogs (shared modal manager; D-44, D-49)
 
 Batch creation (type, name, count; 04 §3.2), Change Start Frame / Duration / Loops (one numeric field each, D-61),
