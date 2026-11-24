@@ -384,6 +384,20 @@ fn toggle_fill(
         "playback.forceRate.set" => ("enabled", !s.timeline.playback.force_rate),
         // The Timeline toolbar's solo mode, a toggle (04 line 604; M5 C5.1b): on when off, off when on.
         "element.solo.set" => ("enabled", s.timeline.solo.is_none()),
+        // The Timeline contexts' toggles (04 line 708; M5 ruling E-49): one effect's parameter rows, the sound
+        // waveforms, and Constant Z of the segment a motion keyframe starts.
+        "timeline.effectParameterRows.set" if params.contains_key("elementId") => {
+            let id = params.get("elementId").and_then(Value::as_str)?;
+            let t = &s.timeline;
+            ("visible", !t.parameter_rows.get(id).copied().unwrap_or(!t.parameter_rows_hidden))
+        }
+        "timeline.soundWaveforms.set" => ("enabled", s.timeline.waveforms_off),
+        "anim.path.lockDepth.set" => {
+            let doc = &s.project.as_ref()?.doc;
+            let id = tt_model::Id::parse(params.get("nodeId").and_then(Value::as_str)?).ok()?;
+            let frame = params.get("frame").and_then(Value::as_i64)?;
+            ("enabled", !crate::commands::anim_path::lock_depth_at(doc, &id, frame)?)
+        }
         "window.toolbar.set" => {
             let id = params.get("toolbarId").and_then(Value::as_str)?;
             let l = ui.layout();
@@ -560,6 +574,14 @@ fn checked_of(s: &crate::session::Session, command_id: &str, params: &Map<String
             (_, Some(f), crate::commands::playback::Rate::Fps(r)) => (f - r).abs() < 1e-9,
             _ => false,
         });
+    }
+    // The Timeline ruler's Automatic Fit and Free (04 line 706; M5 ruling E-49): checked when it names the current mode.
+    if command_id == "timeline.playbackRange.set" && params.len() == 1 {
+        let want = params.get("mode").and_then(Value::as_str)?;
+        let scene = s.app.scene.as_ref()?;
+        let mode = crate::commands::timeline::range_mode(&s.timeline.ranges, scene);
+        let name = serde_json::to_value(mode).ok()?;
+        return Some(name.as_str() == Some(want));
     }
     if command_id == "playback.range.mode.set" {
         let want = params.get("mode").and_then(Value::as_str)?;

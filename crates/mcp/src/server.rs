@@ -1388,6 +1388,18 @@ fn key_tool(
         shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
         return ("key".to_owned(), env);
     }
+    // Shift+F10 opens the context menu of the window's control, as the real key does (D-66 item 3; 11 §7.6; M5 ruling
+    // E-48): `view` may name the control by its window id (a Timeline surface: `timeline.tracks`, `timeline.layers`,
+    // `timeline.ruler`), else the focused control. The menu is the window's: `inspect_ui` lists its items.
+    if tt_executor::ExecutorHandle::canonical_keys(keys).is_ok_and(|k| k == "Shift+F10") {
+        let target = args.get("view").and_then(Value::as_str).map(str::to_owned);
+        let env = match shared.handle.open_context_menu(target.clone()) {
+            Ok(()) => Envelope::ok(json!({ "handled": true, "contextMenu": target }), None),
+            Err(e) => Envelope::error(e, None),
+        };
+        shared.handle.audit_call(origin, "key", "key", &params, &env, started.elapsed());
+        return ("key".to_owned(), env);
+    }
     // `view` (M4 C4.2): the view the key is aimed at. It must exist; a bound `view.*` command without its own `viewId`
     // acts on that view instead of the active one. The user's active view is not changed.
     let view = match args.get("view") {

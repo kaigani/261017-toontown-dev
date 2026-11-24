@@ -1134,3 +1134,13 @@ pub(crate) fn anim_path_lock_depth_set(cx: &mut Cx, p: LockDepthParams) -> Resul
     emit_changed(cx, &data, &edit);
     Ok(LockDepthResult { node_id: id.as_str().to_owned(), frame: p.frame })
 }
+
+/// Whether the motion keyframe at scene `frame` keeps Z constant in its segment: the state Toggle Constant Z shows and
+/// completes (04 line 708; M5 ruling E-49). `None` when the node has no motion keyframe there.
+pub(crate) fn lock_depth_at(doc: &Document, id: &Id, frame: i64) -> Option<bool> {
+    let mut budget = Budget::new("reading constant Z");
+    let data = data_of(doc, id, &mut budget).ok()?;
+    let local = key_frame(&data, frame as f64).ok()?;
+    let edit = ChannelEdit::read(doc, id).ok()?;
+    edit.points().iter().find(|q| frame_of(q) == Some(local)).map(|q| q["lockDepth"].as_bool().unwrap_or(false))
+}

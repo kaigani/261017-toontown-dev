@@ -758,6 +758,24 @@ impl ExecutorHandle {
         })
     }
 
+    /// Opens the context menu of a window control, as Shift+F10 does there (D-66 item 3; 11 §7.6: simulated input takes
+    /// the real input's path; M5 ruling E-48): the host-only notice `shell.contextMenu {target}`, on which the window
+    /// sends the platform's keyboard `contextmenu` to the control `target` names (its window id), or to the focused
+    /// control. The menu is the window's: its items are read from the window's tree and chosen as any control is.
+    ///
+    /// # Errors
+    /// `command.timeout`, `internal` (executor stopped).
+    pub fn open_context_menu(&self, target: Option<String>) -> Result<(), CommandError> {
+        self.call("shell.contextMenu", |r| {
+            Request::Run(Box::new(move |core| {
+                if let Some(s) = core.session_mut() {
+                    s.emit("shell.contextMenu", serde_json::json!({ "target": target }));
+                }
+                let _ = r.send(());
+            }))
+        })
+    }
+
     /// Asks the person in the app for a pending confirmation (ruling D-58, R-a: attached, a window present and the
     /// session's `askInApp` on): the request is marked in-app, so its token is refused until the person accepts, and
     /// the windows re-read the pending requests (`shell.agentConfirmation`). `false` when no such request is pending.
