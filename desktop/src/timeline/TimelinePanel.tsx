@@ -1030,6 +1030,9 @@ export function TimelinePanel() {
               data-tt-rows={shown.length}
               data-tt-background={background}
               data-tt-current-frame={currentFrame}
+              // The document revision of the rows drawn (the window tree's value): a client waits for the rows of its
+              // change before it opens a menu built from them (D-45).
+              data-tt-value={String(rowsRev)}
               style={{
                 position: 'absolute',
                 inset: 0,

@@ -1004,6 +1004,16 @@ class McpTable(Table):
                                       {"elementId": row_of[len("timeline.row."):], "frame": frame})
                 else:
                     await e2e.run_cmd(self.s, "timeline.currentFrame.set", {"frame": frame})
+            # The menu is built from the rows the window has read: wait until it has read them at the document's present
+            # revision (the setup's changes; a wait for a state, D-45: the menu opened at once once named a key the
+            # window had not read yet).
+            rev = (await e2e.run_cmd(self.s, "doc.state.get", {})).get("documentRev") or 0
+            start = time.monotonic()
+            while time.monotonic() - start < 20.0:
+                shown_rev = (self.node(await self.tree(), "timeline.tracks") or {}).get("value")
+                if str(shown_rev).isdigit() and int(shown_rev) >= int(rev):
+                    break
+                await asyncio.sleep(0.2)
             pressed = await e2e.call(self.s, "key", {"keys": "shift+F10", "view": action[1]})
             n = self.node(await self.tree(), action[2])
             start = time.monotonic()
