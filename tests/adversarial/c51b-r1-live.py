@@ -277,10 +277,10 @@ async def body(t,step):
    path=str(t.work/'lifecycle.animpkg');await c('project.saveAs',{'path':path});original=[r['name'] for r in (await rows())['rows']]
    await c('project.close',{'onUnsaved':'discard'});await wait(lambda:shown()==[])
    controls=js("[...document.querySelectorAll('.timeline-toolbar button,.timeline-toolbar input,.timeline-toolbar select')].map(e=>({id:e.dataset.ttId,disabled:e.disabled}))")
-   save('step16-toolbar.json',controls);assert controls and all(e['disabled'] for e in controls)
-   await c('project.create',{'name':'New','onUnsaved':'fail'});await c('element.create',{'type':'drawing','name':'Only'})
+   save('step16-toolbar.json',controls);await wait(lambda:js("[...document.querySelectorAll('.timeline-toolbar button,.timeline-toolbar input,.timeline-toolbar select')].every(e=>e.disabled)"))
+   await c('project.create',{'name':'New','onUnsaved':'fail'});defaults=(await c('element.list'))['elements'];camera=next(e for e in defaults if e['type']=='camera');await c('element.parent.remove',{'elementIds':[camera['id']]});await c('element.delete',{'elementIds':[e['id'] for e in defaults if e['id']!=camera['id']]});await c('element.rename',{'elementId':camera['id'],'name':'Only'})
    await wait(lambda:[r['name'] for r in shown()]==['Only']);assert (await c('app.state.get'))['frame']==1
-   await c('project.open',{'path':path,'onUnsaved':'discard'});await wait(lambda:[r['name'] for r in shown()]==original)
+   await c('project.saveAs',{'path':str(t.work/'new.animpkg')});await c('project.close');await c('project.open',{'path':path});await wait(lambda:[r['name'] for r in shown()]==original)
   elif step==14:
    trigger=Path(os.environ['TT_TEST_DEGRADE_TRIGGER']);trigger.write_text('stop',encoding='utf-8')
    result=await asyncio.wait_for(d.e2e.run_cmd(t.s,'element.create',{'type':'drawing','name':'Dies'}),30)

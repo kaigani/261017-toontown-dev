@@ -1,0 +1,26 @@
+[
+  {
+    "id": "timeline.add",
+    "disabled": true
+  },
+  {
+    "id": "timeline.addParentPeg",
+    "disabled": true
+  },
+  {
+    "id": "timeline.solo",
+    "disabled": true
+  },
+  {
+    "id": "timeline.showAll",
+    "disabled": true
+  },
+  {
+    "id": "timeline.dragOptions",
+    "disabled": true
+  },
+  {
+    "id": "timeline.zoom",
+    "disabled": true
+  }
+]
