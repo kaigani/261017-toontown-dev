@@ -15,7 +15,13 @@ def build():
 async def body(t,step):
  import asyncio, shutil
  d=P.d
- t.cdp=d.Cdp(d.CDP_PORT)
+ src=(ROOT/'scripts/c43-d39-bindings.py').read_text(encoding='utf-8')
+ src=src[src.index('class Cdp:'):src.index('# ----- OS input')].replace('class Cdp:','class TimingCdp:').replace('/run_command','/timing_gesture')
+ exec(src,d.__dict__)
+ def capture(self,body):
+  outer=json.loads(body);self.calls.append(json.loads(outer['json']) if isinstance(outer.get('json'),str) else outer)
+ d.TimingCdp._ipc=capture
+ t.cdp=d.TimingCdp(d.CDP_PORT);t.cdp.record()
  c=lambda n,p={}: asyncio.wait_for(t.cmd(n,p),30)
  commands=[]
  async def setup(n,p):
@@ -31,6 +37,8 @@ async def body(t,step):
  for frame in (1,8):await setup('anim.key.add',{'nodeIds':[ids['Peg-A']],'frame':frame,'channels':['position']})
  await setup('workspace.select',{'name':'Default'})
  await setup('window.panel.set',{'panelId':'timeline','visible':True,'focus':True})
+ layout=await c('workspace.get',{'name':'Default'});layout=layout.get('layout',layout);layout['docks']['bottom'][0]['size']=350
+ await setup('workspace.layout.set',{'layout':layout})
  await setup('timeline.view.set',{'zoomLevel':6,'firstFrame':1})
  save('fixture.json',commands)
  def js(x):return t.cdp.js(x)
@@ -56,10 +64,80 @@ async def body(t,step):
    if pred(v):return v
    if asyncio.get_running_loop().time()>deadline:raise RuntimeError('MCP state wait exceeded 30 seconds')
    await asyncio.sleep(.025)
+ def point(surface,x,y):
+  import ctypes
+  from ctypes import wintypes
+  rr=js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']').getBoundingClientRect().toJSON()"%json.dumps(surface))
+  o=wintypes.POINT();d.u32.ClientToScreen(d.window_handle(),ctypes.byref(o));scale=js('devicePixelRatio')
+  return round(o.x+(rr['x']+x)*scale),round(o.y+(rr['y']+y)*scale)
+ def rowpoint(name,x=120,frac=.5):
+  rr=js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']').getBoundingClientRect().toJSON()"%json.dumps('timeline.row.'+ids[name]))
+  ll=js("document.querySelector('[data-tt-id=\"timeline.layers\"]').getBoundingClientRect().toJSON()")
+  return point('timeline.layers',x,rr['y']-ll['y']+22*frac)
+ def barpoint(name,frame=4):
+  rr=js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']').getBoundingClientRect().toJSON()"%json.dumps('timeline.row.'+ids[name]))
+  tr=js("document.querySelector('[data-tt-id=\"timeline.tracks\"]').getBoundingClientRect().toJSON()")
+  return point('timeline.tracks',(frame-.5)*16,rr['y']-tr['y']+16)
+ async def move(pt):
+  guard();d.u32.SetCursorPos(*pt)
+  await wait(lambda:js('window.reviewPointer && window.reviewPointer.x===%d && window.reviewPointer.y===%d'%pt))
+ async def down(pt):
+  await move(pt);guard();d.e6._send_button(True)
+  await wait(lambda:js('window.reviewDown===true'))
+ async def up():
+  guard();d.e6._send_button(False)
+  await wait(lambda:js('window.reviewDown===false'))
+ async def drag(a,b):
+  await down(a);await move(b);await up()
+ js("window.reviewDown=false;window.addEventListener('pointermove',e=>window.reviewPointer={x:e.screenX,y:e.screenY});window.addEventListener('pointerdown',e=>{window.reviewDown=true;window.reviewTarget=e.target.dataset.ttId});window.addEventListener('pointerup',()=>window.reviewDown=false)")
+ async def bar(name):return next(r['bar'] for r in (await rows())['rows'] if r['elementId']==ids[name])
  d.front();guard()
  if step==1:
   r=await rows();ui=shown();save('step1-rows.json',{'head':subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),'build':'default release','foreground':True,'shown':ui,'mcp':r})
   assert [x['name'] for x in ui]==[x['name'] for x in r['rows']]
+ elif step==2 and os.environ.get('C51B_DIRECT'):
+  await c('element.timing.set',{'elementIds':[ids['Peg-A']],'startDelta':3})
+  expected=json.loads((EVID/'step2-result.json').read_text())['after']
+  assert await bar('Peg-A')==expected
+  save('step2-direct.json',{'freshLaunch':True,'bar':await bar('Peg-A'),'equal':True})
+ elif step==2:
+  before=await bar('Peg-A');pos=await t.position();a=barpoint('Peg-A');b=(a[0]+round(48*js('devicePixelRatio')),a[1])
+  await drag(a,b)
+  save('step2-probe.json',{'target':js('window.reviewTarget'),'point':[a,b],'calls':t.cdp.calls,'rows':await rows(),'status':js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent")})
+  await until_cmd('timeline.rows.list',{'from':1,'to':60},lambda r:next(x['bar']['start'] for x in r['rows'] if x['elementId']==ids['Peg-A'])==4)
+  after=await bar('Peg-A');hist=await t.steps_since(pos);assert len(hist)==1
+  assert after['end']-after['start']==before['end']-before['start']
+  await c('edit.undo');assert await bar('Peg-A')==before
+  # The undo restores the fresh fixture's content before the direct command.
+  await c('element.timing.set',{'elementIds':[ids['Peg-A']],'startDelta':3})
+  assert await bar('Peg-A')==after
+  save('step2-result.json',{'before':before,'after':after,'history':hist,'directEqual':True})
+ elif step==3:
+  before=await bar('Peg-A');pos=await t.position();a=barpoint('Peg-A');b=(a[0]+round(48*js('devicePixelRatio')),a[1])
+  await down(a);await move(b);guard();d.key(0x1b);await up()
+  assert await bar('Peg-A')==before;assert not await t.steps_since(pos)
+  raise RuntimeError('Escape state/history exercised; preview disappearance and outside-window release not exercised')
+ elif step==4:
+  a=barpoint('Peg-A');b=(a[0]+round(48*js('devicePixelRatio')),a[1]);await down(a);await move(b)
+  await c('element.timing.set',{'elementIds':[ids['Peg-A']],'start':6});pos=await t.position();await up()
+  assert (await bar('Peg-A'))['start']==6;assert not await t.steps_since(pos)
+  reason=await wait(lambda:js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent"))
+  await c('edit.undo');await wait(lambda:True)
+  # Wait for the restored bar's row read before pressing again.
+  await c('timeline.view.set',{'zoomLevel':6,'firstFrame':1})
+  a=barpoint('Peg-A');b=(a[0]+round(48*js('devicePixelRatio')),a[1]);await down(a);await move(b)
+  await c('element.rename',{'elementId':ids['Alice'],'name':'Alice-renamed'});await up()
+  await until_cmd('timeline.rows.list',{'from':1,'to':60},lambda r:next(x['bar']['start'] for x in r['rows'] if x['elementId']==ids['Peg-A'])==4)
+  save('step4-result.json',{'cancelReason':reason,'unrelatedRenameDragStart':4})
+ elif step==5:
+  before=await rows();pos=await t.position()
+  await drag(rowpoint('Peg-B'),rowpoint('Peg-A',frac=.05))
+  after=await rows();assert [r['elementId'] for r in after['rows']]!=[r['elementId'] for r in before['rows']]
+  assert len(await t.steps_since(pos))==1
+  await c('edit.undo');assert (await rows())['rows']==before['rows']
+  await drag(rowpoint('Alice'),rowpoint('Peg-A'))
+  assert next(r for r in (await rows())['rows'] if r['elementId']==ids['Alice'])['parentId']==ids['Peg-A']
+  await c('edit.undo');assert (await rows())['rows']==before['rows']
  elif step==6:
   eid=(await c('element.create',{'type':'drawing','name':'Agent-created'}))['elementIds'][0];row='timeline.row.'+eid
   await wait(lambda:dom(row))

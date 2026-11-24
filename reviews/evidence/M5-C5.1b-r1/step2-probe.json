@@ -1,0 +1,203 @@
+{
+  "target": "timeline.tracks",
+  "point": [
+    [
+      480,
+      681
+    ],
+    [
+      528,
+      681
+    ]
+  ],
+  "calls": [
+    {
+      "phase": "press",
+      "layout": {
+        "surface": "tracks",
+        "zoomLevel": 6,
+        "firstFrame": 1,
+        "scrollTop": 0,
+        "platform": "windows"
+      },
+      "sample": {
+        "x": 55.921875,
+        "y": 60,
+        "modifiers": []
+      },
+      "generation": 0
+    },
+    {
+      "phase": "release",
+      "grabId": 1,
+      "samples": [
+        {
+          "x": 55.921875,
+          "y": 60,
+          "modifiers": []
+        },
+        {
+          "x": 103.921875,
+          "y": 60,
+          "modifiers": []
+        },
+        {
+          "x": 103.921875,
+          "y": 60,
+          "modifiers": []
+        }
+      ],
+      "generation": 0
+    }
+  ],
+  "rows": {
+    "sceneId": "sc_01M8687YXRGVYX8WPFRVZG2HSX",
+    "sceneLength": 51,
+    "currentFrame": 1,
+    "playbackRange": {
+      "mode": "auto",
+      "start": 1,
+      "end": 51
+    },
+    "rows": [
+      {
+        "elementId": "el_01K7JJN800H138K53CTZNF687D",
+        "name": "Alice",
+        "type": "drawing",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 12,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN800BYVZPN659NRWFXPB",
+        "name": "Peg-B",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 48,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN8008YNAGZ0CPHB9DW6R",
+        "name": "Peg-A",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 4,
+          "end": 51,
+          "loops": 1
+        },
+        "keyframes": [
+          {
+            "frame": 4,
+            "channels": [
+              "position"
+            ],
+            "segmentAfter": "interpolated"
+          },
+          {
+            "frame": 11,
+            "channels": [
+              "position"
+            ],
+            "segmentAfter": "interpolated"
+          }
+        ],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01K7JJN800E5M3RW9NJVENM97S",
+        "name": "Bob",
+        "type": "drawing",
+        "depth": 1,
+        "parentId": "el_01K7JJN8008YNAGZ0CPHB9DW6R",
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 12,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M8687YXRGVYX8WPFRVZG2HSY",
+        "name": "Camera Peg",
+        "type": "peg",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 1,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M8687YXRGVYX8WPFRVZG2HSZ",
+        "name": "Camera",
+        "type": "camera",
+        "depth": 1,
+        "parentId": "el_01M8687YXRGVYX8WPFRVZG2HSY",
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": {
+          "start": 1,
+          "end": 1,
+          "loops": 1
+        },
+        "keyframes": [],
+        "childKeyframeFrames": []
+      },
+      {
+        "elementId": "el_01M8687YXRGVYX8WPFRVZG2HT0",
+        "name": "Drawing",
+        "type": "drawing",
+        "depth": 0,
+        "parentId": null,
+        "collapsed": false,
+        "visibleInScene": true,
+        "hiddenByParent": false,
+        "locked": false,
+        "bar": null,
+        "keyframes": [],
+        "childKeyframeFrames": []
+      }
+    ]
+  },
+  "status": ""
+}
