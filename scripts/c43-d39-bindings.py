@@ -1023,6 +1023,9 @@ class McpTable(Table):
                 raise RuntimeError(f"menu item disabled in the window's tree: {action[2]}")
             ref = n.get("command") or {}
             self.declared = {"command": ref.get("commandId"), "params": ref.get("params") or {}}
+            # The harness's own calls (the current cell set and put back, the key) are not the row's: the record of
+            # what the row sends starts after them.
+            await self.mark()
         elif kind == "context":
             # An agent has no secondary click: the item is exercised through the reference the rendered menu declares
             # for it (the parity manifest's DOM row, collected from the same menu; design note 1 §9, plan §4.10).
@@ -3532,13 +3535,16 @@ async def timeline_rows(t: Table, bob: str) -> list:
         keys = {r["elementId"]: [(k.get("frame"), k.get("segmentAfter")) for k in r.get("keyframes") or []]
                 for r in listed.get("rows") or []}
         path = ""
+        velocity = ""
         if ctx.get("p"):
             path = json.dumps((await run("anim.path.get", {"nodeId": ctx["p"]})).get("result"), sort_keys=True)
+            velocity = json.dumps((await run("anim.function.get", {"nodeId": ctx["p"], "channel": "velocity"})).get(
+                "result"), sort_keys=True)
         return {"els": els, "sel": sorted(i for i in sel.get("ids") or [] if str(i).startswith("el_")),
                 "clip": json.dumps(clip, sort_keys=True)[:3000], "range": await cmd("timeline.playbackRange.get", {}),
                 "rows": len(listed.get("rows") or []), "zoom": view.get("zoomLevel"), "first": view.get("firstFrame"),
                 "playing": play.get("playing"), "frame": play.get("frame"), "cells": cells, "keys": keys,
-                "path": path}
+                "path": path, "velocity": velocity}
 
     def el(s, key):
         want = bob if key == "bob" else ctx.get(key)
@@ -3731,16 +3737,19 @@ async def timeline_rows(t: Table, bob: str) -> list:
              {"nodeIds": ["TlA"], "frame": "the clicked frame", "constant": False}, "a", "a",
              lambda b, a, k: segments(a, "a", "constant") < segments(b, "a", "constant"),
              keyed("a", [1, 12], constant=True), point=at_click({"constant": False}))
-    # Uniform Left / Right on TlP's cells: a path whose keys are unevenly spaced (frames 1, 6 and 12 at x 0, 1 and 10),
-    # so making the clicked segment's motion uniform changes the path.
+    # Uniform Left / Right on TlP's cells (the clicked frame, 3, lies in the segment from key 1 to key 6): a path with an
+    # uneven speed in that segment, so making it uniform changes the node's timing.
     async def uneven_path():
         await cmd("anim.path.set", {"nodeId": ctx["p"], "points": [
             {"kind": "key", "frame": 1, "x": 0, "y": 0, "z": 0}, {"kind": "key", "frame": 6, "x": 1, "y": 0, "z": 0},
             {"kind": "key", "frame": 12, "x": 10, "y": 0, "z": 0}]})
+        # A velocity key inside the first segment (the speed uneven there): Uniform removes it (05 §10.6). A fresh path's
+        # speed is already uniform, and Uniform then changes nothing (the first run of these rows).
+        await cmd("anim.function.key.add", {"nodeId": ctx["p"], "channel": "velocity", "frame": 3, "value": 0.9})
     for item, label, side in (("uniformLeft", "Uniform Left", "left"), ("uniformRight", "Uniform Right", "right")):
         menu_row("cell", item, label, "anim.segment.uniform.apply",
                  {"nodeId": "TlP", "frame": "the clicked frame", "side": side}, "next", "p",
-                 lambda b, a, k: a["path"] != b["path"], uneven_path,
+                 lambda b, a, k: a["velocity"] != b["velocity"], uneven_path,
                  point=(lambda sd: lambda prm, b: (prm.get("nodeId") == ctx["p"] and prm.get("side") == sd
                                                    and isinstance(prm.get("frame"), int)
                                                    and 1 <= prm["frame"] <= 12))(side))
@@ -4116,8 +4125,14 @@ async def jobs_row(t: Table) -> None:
         rec["runningPerKernel"] = running[-5:]
         if jid:
             await e2e.call(t.s, "job_wait", {"jobId": jid, "timeoutMs": 120000})
-        await asyncio.sleep(1.0)
+        # A wait for the state (D-45; it read once after a fixed second, and the MCP form's tree had not refreshed yet):
+        # the segment empties within the bound.
         end = await jobs_text()
+        for _ in range(150):
+            if end == "":
+                break
+            await asyncio.sleep(0.1)
+            end = await jobs_text()
         ok = any(x and "1 job running" in x for x in shown) and end == ""
         rec.update({"jobId": jid, "shownWhileRunning": [x for x in shown if x][-1:] or shown[-1:], "afterEnd": end, "ok": ok})
         t.run.check(ok, "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)", rec)

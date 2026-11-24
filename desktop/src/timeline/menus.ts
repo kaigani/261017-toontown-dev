@@ -446,6 +446,12 @@ export function rowMenu(
 export function cellMenu(row: TimelineRow, frame: number): TimelineMenu {
   const id = row.elementId;
   const cells = { elementIds: [id], from: frame, to: frame };
+  // The segment the clicked cell lies in (05 §10): `anim.segment.set` and `anim.segment.uniform.apply` name a key, so
+  // the items name the key that starts the segment (at or before the frame) and, for Uniform Left, the key that ends it
+  // (at or after the frame). Without such a key the clicked frame is sent and the kernel changes nothing or refuses.
+  const keys = row.keyframes.map((k) => k.frame).sort((x, y) => x - y);
+  const startKey = keys.filter((k) => k <= frame).at(-1) ?? frame;
+  const endKey = keys.find((k) => k >= frame) ?? frame;
   const groups: MenuGroup[] = [
     {
       // Ruling E-2 (a): the cell commands, disabled with their owner M5 C5.2 until it binds them in both views.
@@ -558,25 +564,25 @@ export function cellMenu(row: TimelineRow, frame: number): TimelineMenu {
           id: 'timeline.cell.constant',
           label: 'Set Constant Segment',
           command: 'anim.segment.set',
-          params: { nodeIds: [id], frame, constant: true },
+          params: { nodeIds: [id], frame: startKey, constant: true },
         },
         {
           id: 'timeline.cell.nonConstant',
           label: 'Set Non-Constant Segment',
           command: 'anim.segment.set',
-          params: { nodeIds: [id], frame, constant: false },
+          params: { nodeIds: [id], frame: startKey, constant: false },
         },
         {
           id: 'timeline.cell.uniformLeft',
           label: 'Uniform Left',
           command: 'anim.segment.uniform.apply',
-          params: { nodeId: id, frame, side: 'left' },
+          params: { nodeId: id, frame: endKey, side: 'left' },
         },
         {
           id: 'timeline.cell.uniformRight',
           label: 'Uniform Right',
           command: 'anim.segment.uniform.apply',
-          params: { nodeId: id, frame, side: 'right' },
+          params: { nodeId: id, frame: startKey, side: 'right' },
         },
         { id: 'timeline.cell.addDefaultKey', label: 'Add Default Keyframe', command: '', owner: 'M6 C6.2' },
       ],

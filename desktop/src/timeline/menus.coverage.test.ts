@@ -286,4 +286,29 @@ describe('the Timeline contexts hold 04 §11.9 (ruling E-47)', () => {
     expect(z(25)).toEqual({ nodeId: 'el_peg', frame: 9 });
     expect(z(3)).toEqual({ nodeId: 'el_peg', frame: 1 });
   });
+
+  it('the segment items name the keys around the clicked frame (05 §10)', () => {
+    const keyed = row('peg', {
+      keyframes: [
+        { frame: 1, channels: ['position'], segmentAfter: 'interpolated' },
+        { frame: 6, channels: ['position'], segmentAfter: 'interpolated' },
+        { frame: 12, channels: ['position'], segmentAfter: 'interpolated' },
+      ],
+    });
+    const params = (frame: number, item: string) =>
+      cellMenu(keyed, frame)
+        .groups.flatMap((g) => g.items)
+        .find((i) => i.id === item)?.params;
+    expect(params(3, 'timeline.cell.constant')).toEqual({ nodeIds: ['el_peg'], frame: 1, constant: true });
+    expect(params(8, 'timeline.cell.nonConstant')).toEqual({
+      nodeIds: ['el_peg'],
+      frame: 6,
+      constant: false,
+    });
+    expect(params(3, 'timeline.cell.uniformRight')).toEqual({ nodeId: 'el_peg', frame: 1, side: 'right' });
+    expect(params(3, 'timeline.cell.uniformLeft')).toEqual({ nodeId: 'el_peg', frame: 6, side: 'left' });
+    expect(params(6, 'timeline.cell.uniformLeft')).toEqual({ nodeId: 'el_peg', frame: 6, side: 'left' });
+    // Add and Remove Keyframe act at the clicked frame itself.
+    expect(params(3, 'timeline.cell.addKey')).toEqual({ nodeIds: ['el_peg'], frame: 3 });
+  });
 });
