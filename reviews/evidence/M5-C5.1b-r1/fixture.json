@@ -1,0 +1,165 @@
+[
+  {
+    "command": "project.create",
+    "params": {
+      "name": "Timeline live review",
+      "onUnsaved": "fail"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "peg",
+      "name": "Peg-A"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "peg",
+      "name": "Peg-B"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "drawing",
+      "name": "Bob"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "drawing",
+      "name": "Alice"
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN800WAB8QZHHRVFAHWK9",
+      "name": "1",
+      "exposeFrom": 1,
+      "exposeTo": 4
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN800WAB8QZHHRVFAHWK9",
+      "name": "2",
+      "exposeFrom": 5,
+      "exposeTo": 8
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN800WAB8QZHHRVFAHWK9",
+      "name": "3",
+      "exposeFrom": 9,
+      "exposeTo": 12
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN8008RJC9FZMMB6BYKNQ",
+      "name": "1",
+      "exposeFrom": 1,
+      "exposeTo": 4
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN8008RJC9FZMMB6BYKNQ",
+      "name": "2",
+      "exposeFrom": 5,
+      "exposeTo": 8
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN8008RJC9FZMMB6BYKNQ",
+      "name": "3",
+      "exposeFrom": 9,
+      "exposeTo": 12
+    }
+  },
+  {
+    "command": "element.parent.set",
+    "params": {
+      "elementIds": [
+        "el_01K7JJN800WAB8QZHHRVFAHWK9"
+      ],
+      "parentId": "el_01K7JJN800JGJ3HCQ82726MFM8"
+    }
+  },
+  {
+    "command": "element.timing.set",
+    "params": {
+      "elementIds": [
+        "el_01K7JJN800JGJ3HCQ82726MFM8"
+      ],
+      "start": 1,
+      "duration": 48
+    }
+  },
+  {
+    "command": "element.timing.set",
+    "params": {
+      "elementIds": [
+        "el_01K7JJN800TMMQFRAWXNP9X99V"
+      ],
+      "start": 1,
+      "duration": 48
+    }
+  },
+  {
+    "command": "anim.key.add",
+    "params": {
+      "nodeIds": [
+        "el_01K7JJN800JGJ3HCQ82726MFM8"
+      ],
+      "frame": 1,
+      "channels": [
+        "position"
+      ]
+    }
+  },
+  {
+    "command": "anim.key.add",
+    "params": {
+      "nodeIds": [
+        "el_01K7JJN800JGJ3HCQ82726MFM8"
+      ],
+      "frame": 8,
+      "channels": [
+        "position"
+      ]
+    }
+  },
+  {
+    "command": "workspace.select",
+    "params": {
+      "name": "Default"
+    }
+  },
+  {
+    "command": "window.panel.set",
+    "params": {
+      "panelId": "timeline",
+      "visible": true,
+      "focus": true
+    }
+  },
+  {
+    "command": "timeline.view.set",
+    "params": {
+      "zoomLevel": 6,
+      "firstFrame": 1
+    }
+  }
+]
