@@ -238,7 +238,7 @@ async def body(t,step):
      else:click(dialog+'.'+ending)
      await wait(lambda:not dom(dialog+'.value'))
      if ending=='submit':
-      assert (await bar('Peg-A'))[field]==int(value);await c('edit.undo');assert (await rows())['rows']==before['rows']
+      b=await bar('Peg-A');assert (b['end']-b['start']+1 if field=='duration' else b[field])==int(value);await c('edit.undo');assert (await rows())['rows']==before['rows']
      else:assert (await rows())['rows']==before['rows'] and not await t.steps_since(pos)
    guard();d.choose_menu(['Element','New Elements']);await wait(lambda:dom('timelineNewElements.name'))
    for field,value in [('name','Leaf'),('count','3')]:
