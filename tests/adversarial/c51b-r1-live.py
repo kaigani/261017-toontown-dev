@@ -261,8 +261,8 @@ async def body(t,step):
    for k,di,df in [(0x27,0,1),(0x25,0,-1),(0x28,1,0),(0x26,-1,0)]:
     key(k);idx+=di;frame+=df
     await until_cmd('app.state.get',{},lambda r:r['frame']==frame and r['element']['id']==order[idx])
-   await c('xsheet.currentCell.set',{'elementId':order[-1],'frame':1});key(0x25);key(0x28)
-   state=await c('app.state.get');assert state['frame']==1 and state['element']['id']==order[-1]
+   await c('xsheet.currentCell.set',{'elementId':order[-1],'frame':1});await wait(lambda:' current' in (dom('timeline.row.'+order[-1]) or ''));key(0x25);key(0x28)
+   state=await c('app.state.get');save('step13-boundary.json',{'state':state,'expectedElement':order[-1]});assert state['frame']==1 and state['element']['id']==order[-1]
    await menu('Peg-A','timeline.row.changeStart');await wait(lambda:dom('timelineStart.value'));before=await c('cell.selection.get')
    for k in (0x25,0x27,0x26,0x28):key(k)
    assert await c('cell.selection.get')==before;key(0x1b)
