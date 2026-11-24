@@ -158,10 +158,12 @@ async def body(t,step):
   click('timeline.row.'+ids['Bob']+'.label')
   await until_cmd('edit.selection.get',{'context':'timeline'},lambda r:ids['Bob'] in r.get('ids',[]))
   state=await c('app.state.get');save('step7-current.json',state)
+  assert (await c('cell.selection.get'))['currentElementId']==ids['Bob']
   guard();d.u32.keybd_event(0x10,0,0,0)
   try:click('timeline.row.'+ids['Alice']+'.label')
   finally:guard();d.u32.keybd_event(0x10,0,2,0)
-  sel=await c('edit.selection.get',{'context':'timeline'});assert len(sel['ids'])>=2
+  sel=await c('edit.selection.get',{'context':'timeline'})
+  order=[r['elementId'] for r in (await rows())['rows']];lo,hi=sorted([order.index(ids['Bob']),order.index(ids['Alice'])]);assert set(sel['ids'])==set(order[lo:hi+1])
   await c('element.select',{'elementIds':[ids['Peg-B']]})
   await wait(lambda:' selected' in (dom('timeline.row.'+ids['Peg-B']) or ''))
  else:raise RuntimeError('Remaining gesture sentences not yet implemented')
