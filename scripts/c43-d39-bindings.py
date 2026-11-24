@@ -796,8 +796,26 @@ class Table:
         """After the project is closed (`project.none` refuses every control of the table): each is disabled or gone,
         a real click on it sends nothing and changes nothing; each native menu item is disabled in the menu and in the
         window tree (D-38)."""
-        answer = await e2e.call(self.s, "inspect_ui", {"target": "window", "depth": 32})
-        tree = (answer.get("result") or answer).get("root") or {}
+        # A wait for the state (D-45), bounded, as the MCP form's: every target gone or disabled in the window's tree
+        # (the window re-reads the availability after the close), then each is judged.
+        async def read_tree() -> dict:
+            answer = await e2e.call(self.s, "inspect_ui", {"target": "window", "depth": 32})
+            return (answer.get("result") or answer).get("root") or {}
+
+        targets = [r.get("disabledTarget") for r in self.rows if r.get("disabledTarget")]
+
+        def settled(t: dict) -> bool:
+            for target in targets:
+                n = McpTable.menu_node(t, target[1]) if target[0] == "menu" else McpTable.node(t, target[1])
+                if n is not None and n.get("enabled") is not False:
+                    return False
+            return True
+
+        tree = await read_tree()
+        start = time.monotonic()
+        while not settled(tree) and time.monotonic() - start < 20.0:
+            await asyncio.sleep(0.25)
+            tree = await read_tree()
         bar = next((c for c in tree.get("children") or [] if c.get("id") == "menuBar"), {})
 
         def menu_node(path):
@@ -1075,7 +1093,23 @@ class McpTable(Table):
         return f"an agent's pointer gesture played by the window ({env.get('status')})"
 
     async def disabled_checks(self) -> None:
+        # A wait for the state (D-45), bounded: the window re-reads the availability after the close and reports its
+        # tree a frame or two later. Run 45490862349 (Windows) judged one tree read 1.5 s after the close, before the
+        # Timeline toolbar's Add and Show All had been asked again.
+        targets = [r.get("disabledTarget") for r in self.rows if r.get("disabledTarget")]
+
+        def settled(t: dict) -> bool:
+            for target in targets:
+                n = self.menu_node(t, target[1]) if target[0] == "menu" else self.node(t, target[1])
+                if n is not None and n.get("enabled") is not False:
+                    return False
+            return True
+
         tree = await self.tree()
+        start = time.monotonic()
+        while not settled(tree) and time.monotonic() - start < 20.0:
+            await asyncio.sleep(0.25)
+            tree = await self.tree()
         seen = set()
         for rec in self.rows:
             target = rec.get("disabledTarget")
@@ -3381,7 +3415,6 @@ async def build_and_run(t: Table, only: set) -> None:
     if not only or any("load report" in o for o in only):
         await load_report_row(t, t.work / "D39-final.animpkg")
     await cmd("project.close", {"onUnsaved": "fail"})
-    await asyncio.sleep(1.5)
     await t.disabled_checks()
     # D-59 item 2: every row the control coverage names ran, or was named with its reason in the MCP form (a commanded
     # control cannot be listed and not exercised).
