@@ -1,0 +1,133 @@
+{
+  "before": [
+    {
+      "id": "el_01K7JJN8006EXANCQE1X73DRCD",
+      "name": "Alice",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 0
+    },
+    {
+      "id": "el_01K7JJN800MQBCRC2JRQ57Y98W",
+      "name": "Peg-B",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 1
+    },
+    {
+      "id": "el_01K7JJN800EXYGA4802FCN8BGC",
+      "name": "Peg-A",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 2
+    },
+    {
+      "id": "el_01K7JJN800W330GJJH0TD4Q4Q0",
+      "name": "Bob",
+      "type": "drawing",
+      "parentId": "el_01K7JJN800EXYGA4802FCN8BGC",
+      "depth": 1,
+      "index": 0
+    },
+    {
+      "id": "el_01M868X4Q2VWJDPKA1F7JRC8XV",
+      "name": "Camera Peg",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 3
+    },
+    {
+      "id": "el_01M868X4Q2VWJDPKA1F7JRC8XW",
+      "name": "Camera",
+      "type": "camera",
+      "parentId": "el_01M868X4Q2VWJDPKA1F7JRC8XV",
+      "depth": 1,
+      "index": 0
+    },
+    {
+      "id": "el_01M868X4Q2VWJDPKA1F7JRC8XX",
+      "name": "Drawing",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 4
+    }
+  ],
+  "after": [
+    {
+      "id": "el_01K7JJN8006EXANCQE1X73DRCD",
+      "name": "Alice",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 0
+    },
+    {
+      "id": "el_01K7JJN800MQBCRC2JRQ57Y98W",
+      "name": "Peg-B",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 1
+    },
+    {
+      "id": "el_01K7JJN800EXYGA4802FCN8BGC",
+      "name": "Peg-A",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 2
+    },
+    {
+      "id": "el_01K7JJN8001D3TJTJR17X2R693",
+      "name": "Bob_1",
+      "type": "drawing",
+      "parentId": "el_01K7JJN800EXYGA4802FCN8BGC",
+      "depth": 1,
+      "index": 0
+    },
+    {
+      "id": "el_01K7JJN800W330GJJH0TD4Q4Q0",
+      "name": "Bob",
+      "type": "drawing",
+      "parentId": "el_01K7JJN800EXYGA4802FCN8BGC",
+      "depth": 1,
+      "index": 1
+    },
+    {
+      "id": "el_01M868X4Q2VWJDPKA1F7JRC8XV",
+      "name": "Camera Peg",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 3
+    },
+    {
+      "id": "el_01M868X4Q2VWJDPKA1F7JRC8XW",
+      "name": "Camera",
+      "type": "camera",
+      "parentId": "el_01M868X4Q2VWJDPKA1F7JRC8XV",
+      "depth": 1,
+      "index": 0
+    },
+    {
+      "id": "el_01M868X4Q2VWJDPKA1F7JRC8XX",
+      "name": "Drawing",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 4
+    }
+  ],
+  "history": [
+    [
+      "Duplicate Element",
+      "user"
+    ]
+  ],
+  "dialogs": []
+}

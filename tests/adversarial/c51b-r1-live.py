@@ -207,6 +207,81 @@ async def body(t,step):
   ui=visible();expected=['timeline.row.'+x['elementId'] for x in r['rows']][int(ui['scroll']//22):__import__('math').ceil((ui['scroll']+ui['height'])/22)]
   await wait(lambda:visible()['ids']==expected)
   save('step9-result.json',{'created':300,'batchCount':1,'wheels':js('window.reviewWheels'),'callSeconds':durations,'view':v,'visible':visible(),'expected':expected})
+ elif step>=10:
+  def key(k,mod=None):
+   guard();d.key(k,mod) if mod else d.key(k)
+  async def menu(name,item):
+   guard();d.right_click_screen(*rowpoint(name))
+   await wait(lambda:dom('timeline.rowMenu'));click('timeline.rowMenu.'+item)
+  async def names():
+   es=(await c('element.list'))['elements'];return [await c('element.get',{'elementId':e['id']}) for e in es]
+  async def rename(name,value,escape=False):
+   click('timeline.row.'+ids[name]+'.label');click('timeline.row.'+ids[name]+'.label')
+   await wait(lambda:dom('timeline.row.'+ids[name]+'.name'))
+   key(0x41,0x11);guard();d.type_text(value);key(0x1b if escape else 0x0d)
+   await wait(lambda:not dom('timeline.row.'+ids[name]+'.name'))
+  if step==10:
+   action=os.environ.get('C51B_ACTION','rename');before=await names();pos=await t.position()
+   await menu('Bob','timeline.row.'+action)
+   if action=='rename':
+    await wait(lambda:dom('timeline.row.'+ids['Bob']+'.name'));key(0x41,0x11);guard();d.type_text('Robert');key(0x0d)
+   await wait(lambda:not dom('timeline.rowMenu'))
+   after=await names();save('step10-'+action+'.json',{'before':before,'after':after,'history':await t.steps_since(pos),'dialogs':js("[...document.querySelectorAll('[role=dialog]')].map(e=>e.textContent)")})
+   assert before!=after
+   await c('edit.undo');assert await names()==before
+  elif step==11:
+   for item,dialog,value,field in [('changeStart','timelineStart','5','start'),('changeDuration','timelineDuration','30','duration'),('changeLoops','timelineLoops','2','loops')]:
+    for ending in ('submit','escape','cancel'):
+     before=await rows();pos=await t.position();await menu('Peg-A','timeline.row.'+item);await wait(lambda:dom(dialog+'.value'))
+     click(dialog+'.value');key(0x41,0x11);guard();d.type_text(value)
+     if ending=='escape':key(0x1b)
+     else:click(dialog+'.'+ending)
+     await wait(lambda:not dom(dialog+'.value'))
+     if ending=='submit':
+      assert (await bar('Peg-A'))[field]==int(value);await c('edit.undo');assert (await rows())['rows']==before['rows']
+     else:assert (await rows())['rows']==before['rows'] and not await t.steps_since(pos)
+   guard();d.choose_menu(['Element','New Elements']);await wait(lambda:dom('timelineNewElements.name'))
+   for field,value in [('name','Leaf'),('count','3')]:
+    click('timelineNewElements.'+field);key(0x41,0x11);guard();d.type_text(value)
+   click('timelineNewElements.submit');es=await names();assert sorted(e['name'] for e in es if e['name'].startswith('Leaf'))==['Leaf','Leaf_1','Leaf_2']
+  elif step==12:
+   await rename('Alice','Alicia');await rename('Alice','Discard',True)
+   assert (await c('element.get',{'elementId':ids['Alice']}))['name']=='Alicia'
+   click('timeline.row.'+ids['Alice']+'.label');click('timeline.row.'+ids['Alice']+'.label');await wait(lambda:dom('timeline.row.'+ids['Alice']+'.name'))
+   before=[await c('cell.selection.get'),await c('edit.selection.get',{'context':'timeline'}),await names(),await c('playback.state.get')]
+   for k in (0xbf,0x25,0x27,0x26,0x28,0x2e,0x0d):key(k)
+   after=[await c('cell.selection.get'),await c('edit.selection.get',{'context':'timeline'}),await names(),await c('playback.state.get')]
+   save('step12-keys.json',{'before':before,'after':after});assert before==after
+   for value in ('','Bob'):
+    await rename('Alice',value);assert (await c('element.get',{'elementId':ids['Alice']}))['name']=='Alicia'
+    await wait(lambda:js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent"))
+  elif step==13:
+   click('timeline.row.'+ids['Bob']+'.label');await c('xsheet.currentCell.set',{'elementId':ids['Bob'],'frame':3})
+   order=[r['elementId'] for r in (await rows())['rows']];idx=order.index(ids['Bob']);frame=3
+   for k,di,df in [(0x27,0,1),(0x25,0,-1),(0x28,1,0),(0x26,-1,0)]:
+    key(k);idx+=di;frame+=df
+    await until_cmd('app.state.get',{},lambda r:r['frame']==frame and r['currentElementId']==order[idx])
+   await c('xsheet.currentCell.set',{'elementId':order[-1],'frame':1});key(0x25);key(0x28)
+   state=await c('app.state.get');assert state['frame']==1 and state['currentElementId']==order[-1]
+   await menu('Peg-A','timeline.row.changeStart');await wait(lambda:dom('timelineStart.value'));before=await c('cell.selection.get')
+   for k in (0x25,0x27,0x26,0x28):key(k)
+   assert await c('cell.selection.get')==before;key(0x1b)
+  elif step==15:
+   await c('element.lock.set',{'elementIds':[ids['Bob']],'locked':True});await wait(lambda:dom('timeline.row.'+ids['Bob']+'.locked'))
+   a=barpoint('Bob');await drag(a,(a[0]+round(48*js('devicePixelRatio')),a[1]));assert (await bar('Bob'))['start']==4
+   await rename('Bob','LockedBob');assert (await c('element.get',{'elementId':ids['Bob']}))['name']=='LockedBob'
+   click('timeline.row.'+ids['Alice']+'.visible');await wait(lambda:' hidden' in (dom('timeline.row.'+ids['Alice']) or ''))
+   click('timeline.row.'+ids['Bob']+'.label');await menu('Bob','timeline.row.hideOthers');save('step15-hidden.json',await names())
+   await menu('Bob','timeline.row.showAll');save('step15-shown.json',await names())
+  elif step==16:
+   path=str(t.work/'lifecycle.animpkg');await c('project.saveAs',{'path':path});original=[r['name'] for r in (await rows())['rows']]
+   await c('project.close',{'onUnsaved':'discard'});await wait(lambda:shown()==[])
+   controls=js("[...document.querySelectorAll('.timeline-toolbar button,.timeline-toolbar input,.timeline-toolbar select')].map(e=>({id:e.dataset.ttId,disabled:e.disabled}))")
+   save('step16-toolbar.json',controls);assert controls and all(e['disabled'] for e in controls)
+   await c('project.create',{'name':'New','onUnsaved':'fail'});await c('element.create',{'type':'drawing','name':'Only'})
+   await wait(lambda:[r['name'] for r in shown()]==['Only']);assert (await c('app.state.get'))['frame']==1
+   await c('project.open',{'path':path,'onUnsaved':'discard'});await wait(lambda:[r['name'] for r in shown()]==original)
+  else:raise RuntimeError('Step 14 requires the test-hooks build and separate restart session')
  t.run.check(True,'Step '+str(step)+' exercised',None)
 def live(step):
  global P
@@ -215,7 +290,7 @@ def live(step):
  return P.live(step)
 if __name__=='__main__':
  case,step=sys.argv[1],int(sys.argv[2])
- assert (case=='l1' and 1<=step<=5) or (case=='l2' and 6<=step<=9)
+ assert (case=='l1' and 1<=step<=5) or (case=='l2' and 6<=step<=9) or (case=='l3' and 10<=step<=13) or (case=='l4' and 14<=step<=16)
  if step==1 and not os.environ.get('C51B_SKIP_BUILD'):
   rc=build()
   if rc:sys.exit(rc)

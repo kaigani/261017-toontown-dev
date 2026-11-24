@@ -1,0 +1,117 @@
+{
+  "before": [
+    {
+      "id": "el_01K7JJN800S2BT7HXVA1Q4CQYY",
+      "name": "Alice",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 0
+    },
+    {
+      "id": "el_01K7JJN800MS17WVMCFQQP9WPR",
+      "name": "Peg-B",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 1
+    },
+    {
+      "id": "el_01K7JJN800JS62R1SG5J1RAE4M",
+      "name": "Peg-A",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 2
+    },
+    {
+      "id": "el_01K7JJN800NZ7939YMQB9YSKZT",
+      "name": "Bob",
+      "type": "drawing",
+      "parentId": "el_01K7JJN800JS62R1SG5J1RAE4M",
+      "depth": 1,
+      "index": 0
+    },
+    {
+      "id": "el_01M868XA2PY0Z48MF7GFJARR24",
+      "name": "Camera Peg",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 3
+    },
+    {
+      "id": "el_01M868XA2PY0Z48MF7GFJARR25",
+      "name": "Camera",
+      "type": "camera",
+      "parentId": "el_01M868XA2PY0Z48MF7GFJARR24",
+      "depth": 1,
+      "index": 0
+    },
+    {
+      "id": "el_01M868XA2PY0Z48MF7GFJARR26",
+      "name": "Drawing",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 4
+    }
+  ],
+  "after": [
+    {
+      "id": "el_01K7JJN800S2BT7HXVA1Q4CQYY",
+      "name": "Alice",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 0
+    },
+    {
+      "id": "el_01K7JJN800MS17WVMCFQQP9WPR",
+      "name": "Peg-B",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 1
+    },
+    {
+      "id": "el_01K7JJN800JS62R1SG5J1RAE4M",
+      "name": "Peg-A",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 2
+    },
+    {
+      "id": "el_01M868XA2PY0Z48MF7GFJARR24",
+      "name": "Camera Peg",
+      "type": "peg",
+      "parentId": null,
+      "depth": 0,
+      "index": 3
+    },
+    {
+      "id": "el_01M868XA2PY0Z48MF7GFJARR25",
+      "name": "Camera",
+      "type": "camera",
+      "parentId": "el_01M868XA2PY0Z48MF7GFJARR24",
+      "depth": 1,
+      "index": 0
+    },
+    {
+      "id": "el_01M868XA2PY0Z48MF7GFJARR26",
+      "name": "Drawing",
+      "type": "drawing",
+      "parentId": null,
+      "depth": 0,
+      "index": 4
+    }
+  ],
+  "history": [
+    [
+      "Delete Elements",
+      "user"
+    ]
+  ],
+  "dialogs": []
+}
