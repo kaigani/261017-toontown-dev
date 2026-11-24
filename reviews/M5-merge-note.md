@@ -47,7 +47,8 @@ passes).
 - **On a large animated scene every change takes about half a second to commit.** On the plan's §6.2 scene (1,003
   rows; 200 pegs with 100 keys each) any document change, a Timeline bar move or row reorder, a rename, a lock, an
   undo, takes 450 to 520 ms (release, p95: bar move 483 ms, row reorder 519 ms, against the Timeline's 50 ms budget;
-  receipt `reviews/evidence/M5-C5.1b/budgets-kernel.json`). The same rows without keys commit in 6 ms. The Timeline's
+  receipt `reviews/evidence/M5-C5.1b/budgets-kernel.json`; in round 1 a cell move that changes cells, 510 ms,
+  `reviews/evidence/M5-C5.1b-r2/budgets-kernel.json`). The same rows without keys commit in 6 ms. The Timeline's
   own part is under a millisecond (press 0.8 ms, the interpreter's replay 0.9 ms). Diagnosis: the model's staged commit
   (`Document::with_patched_entries`, M1 C1.2) rebuilds the derived data and runs the whole document's integrity check
   (`Document::issues`, which walks every element's keys: 266 ms alone); the executor adds about 200 ms. The fix checks

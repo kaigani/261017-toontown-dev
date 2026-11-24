@@ -1,0 +1,52 @@
+{
+  "kind": "toontown.c51b.kernel-budgets",
+  "profile": "release",
+  "scene": {
+    "rows": 1003,
+    "sceneLength": 9999,
+    "pegs": 200,
+    "keysPerPeg": 100,
+    "keyedFrames": "1-400 every 4",
+    "buildSeconds": 3.970186
+  },
+  "timeline.rows.list (120 frames)": {
+    "samples": 30,
+    "p50Ms": 14.373199999999999,
+    "p95Ms": 18.991500000000002,
+    "maxMs": 21.463099999999997,
+    "boundP95Ms": 20.0,
+    "withinBound": true
+  },
+  "xsheet.exposures.get (60 rows x 200 frames)": {
+    "samples": 30,
+    "p50Ms": 1.874,
+    "p95Ms": 2.2731000000000003,
+    "maxMs": 2.367,
+    "boundP95Ms": 5.0,
+    "withinBound": true
+  },
+  "release to commit: bar move": {
+    "samples": 30,
+    "p50Ms": 488.53020000000004,
+    "p95Ms": 505.5229,
+    "maxMs": 506.9133,
+    "boundP95Ms": 50.0,
+    "withinBound": false
+  },
+  "release to commit: row reorder": {
+    "samples": 30,
+    "p50Ms": 511.5718,
+    "p95Ms": 517.6807,
+    "maxMs": 533.5339,
+    "boundP95Ms": 50.0,
+    "withinBound": false
+  },
+  "release to commit: cell move": {
+    "samples": 30,
+    "p50Ms": 489.6525,
+    "p95Ms": 509.6463,
+    "maxMs": 510.6039,
+    "boundP95Ms": 50.0,
+    "withinBound": false
+  }
+}

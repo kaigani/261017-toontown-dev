@@ -740,6 +740,10 @@
     "job.wait": {
       "files": ["desktop/src/shell/projectForms.tsx"],
       "reason": "the New Project form waits for its own creation job; the progress it shows is job.list's"
+    },
+    "element.get": {
+      "files": ["desktop/src/shell/makeActions.tsx"],
+      "reason": "the main menu's Element Note, Rename and Element Colours read the element when an action opens them, to prefill the dialog (C51B-R1S-05); the dialogs are not collected surfaces"
     }
   }
 }

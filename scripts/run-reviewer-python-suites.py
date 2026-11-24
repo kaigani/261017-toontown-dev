@@ -105,6 +105,9 @@ NOT_SUITES = {
     "c34-r2-inventory.py": "round-2 receipt pinned to 1cbd190..967229a that writes reviews/evidence/M3-C3.4-r2/"
     "inventory.json and asserts the register ends at SI-110 (SI-111 is ruled in round 2); its live counterpart is "
     "scripts/check-merge-note-inventory.py",
+    # M5 C5.1b round 1 (declared in reviews/M5-C5.1b-r1-response.md): the live reviewer's runner.
+    "c51b-r1-live.py": "Windows live runner of the running application (round 1 of C5.1b): needs a case and a step "
+    "number; receipts retained under reviews/evidence/M5-C5.1b-r1/",
 }
 # Single tests of a suite that are fixed-commit receipts of a finding rather than live checks: the suite runs every other
 # test (by name). Each entry names its live counterpart.
