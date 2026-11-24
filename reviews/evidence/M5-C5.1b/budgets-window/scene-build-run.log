@@ -1,0 +1,74 @@
+toontown: system fonts read in 6 ms (169 faces)
+{
+ "ok": false,
+ "scene": {
+  "drawings": 800,
+  "pegs": 200,
+  "keysPerPeg": 100,
+  "keyedFrames": "1-400 every 4",
+  "buildSeconds": 792.4911999999881
+ },
+ "control": {
+  "frames": 120,
+  "medianMs": 17.699999999953434
+ },
+ "rows": [
+  {
+   "name": "work per frame while scrolling",
+   "drawP95Ms": 0.10000002384185791,
+   "draws": 120,
+   "overTwiceControl": 0,
+   "ok": true
+  },
+  {
+   "name": "work per frame while zooming",
+   "drawP95Ms": null,
+   "draws": 0,
+   "overTwiceControl": 0,
+   "ok": false
+  },
+  {
+   "name": "work per frame while dragging",
+   "drawP95Ms": null,
+   "draws": 0,
+   "overTwiceControl": 0,
+   "ok": false
+  },
+  {
+   "name": "a click on a cell to the selection drawn",
+   "p95Ms": 117.5,
+   "samples": 12,
+   "boundMs": 35.39999999990687,
+   "ok": false
+  },
+  {
+   "name": "a wheel step to the scrolled repaint",
+   "p95Ms": 20.600000023841858,
+   "samples": 30,
+   "boundMs": 35.39999999990687,
+   "ok": true
+  },
+  {
+   "name": "playback at 24 fps: every frame presented, in order",
+   "presented": 47,
+   "missing": [
+    1
+   ],
+   "inOrder": true,
+   "intervalP95Ms": 69.60000002384186,
+   "boundMs": 62.5,
+   "ok": false
+  }
+ ]
+}
+{
+ "kind": "toontown.c51b.timeline-budgets",
+ "external": false,
+ "exitCode": 0,
+ "seconds": 864.4,
+ "rows": 0,
+ "failed": [],
+ "error": null,
+ "platform": null,
+ "ok": false
+}
