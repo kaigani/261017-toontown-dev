@@ -8,8 +8,8 @@ M5; until then only the table of §4 is kept current.
 | Checkpoint | Scope | Closure |
 |---|---|---|
 | C5.1a | Timeline kernel: `timeline.*`, interactive playback, the timing-gesture interpreter, the `xsheet` composition | handed off on `ba8e1946` (run 45100267389, 36 of 36); round 2 on `908088c3` (run 45124085313, 36 of 36), `reviews/M5-C5.1a-handoff-r2.md`; round 3 on `658cc6ed` (run 45163891820, 36 of 36), `reviews/M5-C5.1a-handoff-r3.md`; closure check clean (`291bb3bd`); rulings E-36 to E-39 on `08f66f1c` (run 45206466211 attempt 2, 36 of 36), the handoff's §8; **passed (ruling E-42)** |
-| C5.1b | the Timeline view | round 3 handoff on `578bdd51` (run 45504027720); closure addendum (E-62, E-63) on product head `376583ed` (run 45531678228, 38 of 38); the orchestrator's reading pending |
-| C5.2 | the Exposure Sheet, cell commands, the Properties and Cells panels | plan approved (`reviews/M5-C5.2-plan.md`, rulings E-54 to E-60); starts after C5.1b closes |
+| C5.1b | the Timeline view | **passed (E-65)**: head `376583ed`, run 45531678228 (38 of 38), addendum `1f183ecd`; two full rounds, a closure check in two parts and a second reading, all findings closed; reviewer file edited under ruling: `c31_r1_selection_budget.rs` (E-46) |
+| C5.2 | the Exposure Sheet, cell commands, the Properties and Cells panels | plan approved (`reviews/M5-C5.2-plan.md`, rulings E-54 to E-60); C5.2a (kernel) in progress |
 
 ## 4. Tests that failed on a commit later green on rerun (the M11 list)
 

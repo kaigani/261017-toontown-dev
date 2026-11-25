@@ -186,6 +186,19 @@ pub fn agent_placeholders(h: &ExecutorHandle, dir: &std::path::Path, params: &mu
 
 /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
 pub fn clipboard_for(h: &ExecutorHandle, id: &str) {
+    // M5 C5.2a: the static light table's examples name items `lt1` and `lt2` (two drawings of Bob sent first), and
+    // the bare `xsheet.lightTable.add` sends the drawings of the selected cells.
+    if id == "xsheet.lightTable.add" {
+        ok(h, "cell.select", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 2 }));
+    }
+    if matches!(id, "xsheet.lightTable.move" | "xsheet.lightTable.remove" | "xsheet.lightTable.set") {
+        let bob = "scene:\"Intro\"/element:\"Bob\"";
+        ok(
+            h,
+            "xsheet.lightTable.add",
+            json!({ "items": [{ "elementId": bob, "frame": 1 }, { "elementId": bob, "frame": 5 }] }),
+        );
+    }
     if id == "anim.camera.delete" {
         // A scene keeps at least one camera (05 §12.1): the example deletes a second one.
         ok(h, "anim.camera.create", json!({ "name": "Wide" }));

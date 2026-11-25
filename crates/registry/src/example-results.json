@@ -14378,12 +14378,52 @@
       "varies": []
     }
   ],
+  "xsheet.columnWidth.set": [
+    {
+      "title": "Bob's column 120 pixels wide",
+      "result": {
+        "widths": {
+          "el_01K742SG11W3SGB8Q1H50W74VB": 120
+        }
+      },
+      "varies": []
+    },
+    {
+      "title": "Reset every column width",
+      "result": {
+        "widths": {}
+      },
+      "varies": []
+    }
+  ],
   "xsheet.currentCell.set": [
     {
       "title": "Bob at frame 3",
       "result": {
         "elementId": "el_01K742SG11W3SGB8Q1H50W74VB",
         "frame": 3
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.display.set": [
+    {
+      "title": "Thumbnails on",
+      "result": {
+        "thumbnails": true,
+        "exposureText": false,
+        "elementNames": false,
+        "notes": true
+      },
+      "varies": []
+    },
+    {
+      "title": "Repeat the drawing name in held cells, without the element name",
+      "result": {
+        "thumbnails": false,
+        "exposureText": true,
+        "elementNames": false,
+        "notes": true
       },
       "varies": []
     }
@@ -14563,11 +14603,105 @@
       "varies": []
     }
   ],
+  "xsheet.lightTable.add": [
+    {
+      "title": "The drawings of the selected cells",
+      "result": {
+        "itemIds": [
+          "lt1"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Bob's drawing at frame 3",
+      "result": {
+        "itemIds": [
+          "lt1"
+        ]
+      },
+      "varies": []
+    }
+  ],
   "xsheet.lightTable.list": [
     {
       "title": "The current scene's static light table",
       "result": {
         "items": []
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.lightTable.move": [
+    {
+      "title": "Move item lt2 to the top",
+      "result": {
+        "order": [
+          "lt2",
+          "lt1"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.lightTable.remove": [
+    {
+      "title": "Delete all",
+      "result": {
+        "removedIds": [
+          "lt1",
+          "lt2"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Delete item lt1",
+      "result": {
+        "removedIds": [
+          "lt1"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.lightTable.set": [
+    {
+      "title": "Hide all others than lt1",
+      "result": {
+        "changedIds": [
+          "lt2"
+        ]
+      },
+      "varies": []
+    },
+    {
+      "title": "Overlay all",
+      "result": {
+        "changedIds": [
+          "lt1",
+          "lt2"
+        ]
+      },
+      "varies": []
+    }
+  ],
+  "xsheet.panel.set": [
+    {
+      "title": "Show the static light table panel",
+      "result": {
+        "elementList": false,
+        "lightTable": true,
+        "toolbar": true
+      },
+      "varies": []
+    },
+    {
+      "title": "Hide the toolbar, show the element list",
+      "result": {
+        "elementList": true,
+        "lightTable": false,
+        "toolbar": false
       },
       "varies": []
     }
