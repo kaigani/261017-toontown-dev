@@ -43,7 +43,7 @@ All on the sample document (scene `Intro`, drawing element `Bob`) unless named o
 `locked-drawing` (`drawing`, its drawing locked); `drawing-selected` (`drawing`, one of its objects selected);
 `peg-current` (a peg made current); `element` (Bob current); `no-element` (a new project: no element);
 `blank-cell` (Bob current at a frame past its exposure, after a blank insertion there); `element-selected` (Bob
-selected in the Timeline); `peg-selected` (a peg selected in the Timeline); `locked-element-selected` (Bob locked and
+selected in the Timeline); `cell-selected` (Bob's cell at frame 1 selected); `peg-selected` (a peg selected in the Timeline); `locked-element-selected` (Bob locked and
 selected); `camera-selected` (the scene's only camera selected); `sound-current` (a sound element current, which has no
 transformation); `no-camera` (a new project with a drawing element and no camera); `clipboard-empty` (nothing
 copied); `clipboard-cells` (Bob's frame-1 cell copied, Bob current); `clipboard-cells-no-element` (cells copied, then
@@ -983,3 +983,18 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `xsheet.exposures.set` | `xsheet.runInvalid` | parameter | a run the caller gives is invalid |  |
 | `xsheet.exposures.set` | `xsheet.runOutOfRange` | parameter | a run the caller gives is out of range |  |
 | `xsheet.exposures.set` | `xsheet.runOverlap` | parameter | runs the caller gives overlap |  |
+| `xsheet.columnWidth.set` | `arg.invalid` | parameter | neither `width` nor `reset`, both, a width out of 20-1000, or an element that is not an Exposure Sheet column |  |
+| `xsheet.columnWidth.set` | `element.noCurrent` | precheck | no `elementId` and no current element | untestable: a project always has a current element: a new project makes its first element current, another becomes current when it goes, and a scene's last camera cannot be deleted |
+| `xsheet.columnWidth.set` | `element.notFound` | parameter | the element the caller names does not exist |  |
+| `xsheet.lightTable.add` | `arg.invalid` | parameter | an item gives both `frame` and `drawingId`, or names an element of another scene |  |
+| `xsheet.lightTable.add` | `cell.typeMismatch` | parameter | an item names an element that is not a drawing, image or annotation element |  |
+| `xsheet.lightTable.add` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
+| `xsheet.lightTable.add` | `drawing.noTarget` | precheck | no items and the selected cells expose no drawing (with items: the caller's cell is empty, a parameter) | refuse: drawing · pass: drawing+cell-selected |
+| `xsheet.lightTable.add` | `drawing.notFound` | parameter | an item's `drawingId` is not in the element's bank |  |
+| `xsheet.lightTable.add` | `element.notFound` | parameter | an item's element does not exist |  |
+| `xsheet.lightTable.move` | `arg.invalid` | parameter | `index` past the last position |  |
+| `xsheet.lightTable.move` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
+| `xsheet.lightTable.remove` | `arg.invalid` | parameter | neither `itemIds` nor `all` is given |  |
+| `xsheet.lightTable.remove` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
+| `xsheet.lightTable.set` | `arg.invalid` | parameter | no `itemIds` with `apply` given or others |  |
+| `xsheet.lightTable.set` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |

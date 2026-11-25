@@ -399,6 +399,19 @@ fn agent_placeholders(h: &ExecutorHandle, dir: &std::path::Path, params: &mut Va
 
 /// The clipboard a paste example expects (paste examples paste cells of `Bob`).
 fn clipboard_for(h: &ExecutorHandle, id: &str) {
+    // M5 C5.2a: the static light table's examples name items `lt1` and `lt2` (two drawings of Bob sent first), and
+    // the bare `xsheet.lightTable.add` sends the drawings of the selected cells.
+    if id == "xsheet.lightTable.add" {
+        ok(h, "cell.select", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 2 }));
+    }
+    if matches!(id, "xsheet.lightTable.move" | "xsheet.lightTable.remove" | "xsheet.lightTable.set") {
+        let bob = "scene:\"Intro\"/element:\"Bob\"";
+        ok(
+            h,
+            "xsheet.lightTable.add",
+            json!({ "items": [{ "elementId": bob, "frame": 1 }, { "elementId": bob, "frame": 5 }] }),
+        );
+    }
     if id == "cell.clipboard.apply" {
         ok(h, "cell.clipboard.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 8 }));
     }

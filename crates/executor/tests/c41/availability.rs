@@ -606,6 +606,8 @@ fn apply_state(h: &ExecutorHandle, part: &str, vars: &mut BTreeMap<&'static str,
             ok(h, "app.context.set", json!({ "elementId": BOB, "frame": 1 }));
         }
         "element-selected" => select_rows(h, &[BOB]),
+        // M5 C5.2a: Bob's cell at frame 1 selected (the drawings the bare `xsheet.lightTable.add` sends).
+        "cell-selected" => ok(h, "cell.select", json!({ "elementIds": [BOB], "from": 1, "to": 1 })),
         // M4 C4.2: the Drawing view window active (the `activeView` composition renders it, SI-107).
         "drawing-view" => ok(h, "view.active.set", json!({ "viewId": "drawingView" })),
         // C42A-R1-08: the Drawing view window switched to the Camera view type.

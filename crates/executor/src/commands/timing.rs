@@ -663,8 +663,11 @@ pub(crate) struct LightItem {
 pub(crate) struct TimelineState {
     /// Solo mode: the soloed elements while on (04 §10.3).
     pub solo: Option<Vec<Id>>,
-    /// Static light tables by scene ID, in stacking order (04 §15; stored per scene with the session state, SI-085).
+    /// Static light tables by scene ID, in stacking order (04 §15; saved with the scene in `session.json`, 04 §15.3,
+    /// M5 C5.2a; never document content, never undoable; SI-085).
     pub light_tables: BTreeMap<String, Vec<LightItem>>,
+    /// The Exposure Sheet's column widths by element ID (`xsheet.columnWidth.set`; saved in `session.json`).
+    pub column_widths: BTreeMap<String, u32>,
     /// Playback ranges by scene ID (09 §2.8; saved in `session.json`, SI-204).
     pub ranges: BTreeMap<String, super::timeline::PlaybackRange>,
     /// Timeline views by scene ID (04 §11.5; `timeline.view.set`).

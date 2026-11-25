@@ -270,6 +270,40 @@ pub struct Aids {
     pub background: Background,
 }
 
+/// The Exposure Sheet's panels and display options (04 §12.2: the panels' shown state is remembered across sessions;
+/// §12.4: the display options are persisted; M5 C5.2a), kept with the user's view settings in this file. The
+/// light-table panel's shown state is the aids' ([`Aids::static_light_table_panel`]): one state with
+/// `drawAid.staticLightTablePanel.set` (ruling E-57).
+#[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
+#[serde(rename_all = "camelCase", default)]
+pub struct XsheetView {
+    /// The element list panel shown (04 §12.2, optional: hidden by default).
+    pub element_list: bool,
+    /// The toolbar shown (04 §12.1).
+    pub toolbar: bool,
+    /// Thumbnails in cells (04 §12.4).
+    pub thumbnails: bool,
+    /// The drawing name repeated in every held cell (otherwise a hold line, 04 §12.3).
+    pub exposure_text: bool,
+    /// The element-name prefix in cell labels (`<element>-<drawing>`, 04 §12.3).
+    pub element_names: bool,
+    /// Element and cell note indicators.
+    pub notes: bool,
+}
+
+impl Default for XsheetView {
+    fn default() -> Self {
+        Self {
+            element_list: false,
+            toolbar: true,
+            thumbnails: false,
+            exposure_text: false,
+            element_names: false,
+            notes: true,
+        }
+    }
+}
+
 /// Everything in this module.
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize, JsonSchema)]
 #[serde(rename_all = "camelCase", default)]
@@ -292,6 +326,8 @@ pub struct DrawingSettings {
     pub tablet: TabletSetting,
     /// Drawing aids.
     pub aids: Aids,
+    /// The Exposure Sheet's panels and display options (M5 C5.2a).
+    pub xsheet: XsheetView,
 }
 
 impl Default for DrawingSettings {
@@ -306,6 +342,7 @@ impl Default for DrawingSettings {
             symmetry: SymmetrySetting::default(),
             tablet: TabletSetting::default(),
             aids: Aids::default(),
+            xsheet: XsheetView::default(),
         }
     }
 }

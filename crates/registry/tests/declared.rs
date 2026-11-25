@@ -80,8 +80,9 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
     assert!(get("export.publish.run").scopes.contains(&Scope::Network));
     assert!(get("print.run").scopes.contains(&Scope::Print));
     assert!(DECLARED.iter().all(|c| c.decl.id != "prefs.set"), "implemented in M4 C4.1");
-    // `timeline.rows.list` was the sample until M5 C5.1a implemented it.
-    assert!(get("xsheet.display.set").needs_project);
+    // `timeline.rows.list` was the sample until M5 C5.1a implemented it, `xsheet.display.set` until M5 C5.2a.
+    assert!(get("anim.flip.apply").needs_project);
+    assert!(DECLARED.iter().all(|c| c.decl.id != "xsheet.display.set"), "implemented in M5 C5.2a");
     assert!(DECLARED.iter().all(|c| c.decl.id != "timeline.rows.list"), "implemented in M5 C5.1a");
     assert_eq!(owner_of("import.movie.run"), "M8 C8.3");
     assert_eq!(owner_of("anim.key.add"), "M3 C3.2");
@@ -90,21 +91,23 @@ fn declarations_carry_owner_scopes_project_rule_undo_and_gui() {
 #[test]
 fn parameter_constraints_come_from_the_spec() {
     let at = |id: &str| declared_schema(DECLARED.iter().position(|c| c.decl.id == id).unwrap(), false);
-    // `cell.select` was the example until M3 C3.1 implemented it, `timeline.currentFrame.move` until M5 C5.1a.
-    let p = at("xsheet.lightTable.set");
-    assert_eq!(p["properties"]["apply"]["enum"], json!(["given", "all", "others"]));
-    assert_eq!(p["properties"]["apply"]["default"], "given");
-    assert_eq!(p["properties"]["placement"]["type"], "string");
-    let e = validate_params("xsheet.lightTable.set", &p, &json!({ "apply": "x" })).unwrap_err();
+    // `cell.select` was the example until M3 C3.1 implemented it, `timeline.currentFrame.move` until M5 C5.1a,
+    // `xsheet.lightTable.set` until M5 C5.2a.
+    let p = at("anim.flip.apply");
+    assert_eq!(p["properties"]["target"]["enum"], json!(["static", "key"]));
+    assert_eq!(p["properties"]["target"]["default"], "static");
+    assert_eq!(p["properties"]["axis"]["type"], "string");
+    let e = validate_params("anim.flip.apply", &p, &json!({ "target": "x" })).unwrap_err();
     assert_eq!(e.code, "arg.invalid");
     let p = at("lipsync.settings.set");
     assert_eq!(p["properties"]["minHoldFrames"]["minimum"], 0);
     assert_eq!(p["properties"]["minHoldFrames"]["maximum"], 6);
     assert!(validate_params("lipsync.settings.set", &p, &json!({ "minHoldFrames": 7 })).is_err());
-    let p = at("xsheet.columnWidth.set");
+    // `xsheet.columnWidth.set` was the range example until M5 C5.2a implemented it.
+    let p = at("draw.feather.apply");
     assert_eq!(
-        (p["properties"]["width"]["minimum"].clone(), p["properties"]["width"]["maximum"].clone()),
-        (json!(20), json!(1000))
+        (p["properties"]["stepWidth"]["minimum"].clone(), p["properties"]["stepWidth"]["maximum"].clone()),
+        (json!(5), json!(100))
     );
     let p = at("anim.bone.rest.set");
     assert_eq!(p["properties"]["length"]["minimum"], 0.01);

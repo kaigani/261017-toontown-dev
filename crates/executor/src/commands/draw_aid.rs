@@ -25,7 +25,7 @@ fn aid_json(a: &Aids, aid: &str) -> Value {
 }
 
 /// Applies `f` to the aids and announces `drawAid.changed` for `aid` when it changed something.
-fn change(cx: &mut Cx, aid: &str, f: impl FnOnce(&mut Aids)) -> Value {
+pub(crate) fn change(cx: &mut Cx, aid: &str, f: impl FnOnce(&mut Aids)) -> Value {
     let before = cx.ui().drawing().aids.clone();
     f(&mut cx.ui_mut().drawing_mut().aids);
     let after = cx.ui().drawing().aids.clone();
@@ -577,7 +577,7 @@ pub(crate) struct Entry {
 }
 
 /// A scene's entries whose sources still exist (02 §10.4: a deleted source removes its entry).
-fn entries(cx: &Cx, scene: &Id) -> Vec<Entry> {
+pub(crate) fn entries(cx: &Cx, scene: &Id) -> Vec<Entry> {
     let Ok(doc) = cx.document() else { return Vec::new() };
     cx.session()
         .timeline
@@ -605,7 +605,7 @@ fn entries(cx: &Cx, scene: &Id) -> Vec<Entry> {
 
 /// Drops entries whose sources are gone, then announces the scene's light table when it differs from `before` (an
 /// event only for an effective change, the C4.1 change-event rule).
-fn announce(cx: &mut Cx, scene: &Id, before: &[Entry]) -> Vec<Entry> {
+pub(crate) fn announce(cx: &mut Cx, scene: &Id, before: &[Entry]) -> Vec<Entry> {
     let live = entries(cx, scene);
     if let Some(items) = cx.session_mut().timeline.light_tables.get_mut(scene.as_str()) {
         items.retain(|it| live.iter().any(|e| e.entry_id == it.item_id));
@@ -651,6 +651,19 @@ fn yes() -> bool {
 pub(crate) struct EntryIdResult {
     /// The new entry.
     entry_id: String,
+}
+
+/// The entry's id (the Exposure Sheet calls it the item's id: one state, ruling E-57).
+impl Entry {
+    pub(crate) fn id(&self) -> &str {
+        &self.entry_id
+    }
+}
+
+/// The next free entry id of a scene's table (`lt<n>`).
+pub(crate) fn next_entry_id(table: &[LightItem]) -> String {
+    let n = table.iter().filter_map(|it| it.item_id.strip_prefix("lt")?.parse::<u64>().ok()).max().unwrap_or(0) + 1;
+    format!("lt{n}")
 }
 
 /// The upper bound on entries per scene (SI-131).
@@ -741,8 +754,7 @@ pub(crate) fn draw_aid_static_light_table_add(cx: &mut Cx, p: AddParams) -> Resu
             json!({ "limit": "staticLightTableEntries", "max": MAX_ENTRIES }),
         ));
     }
-    let n = table.iter().filter_map(|it| it.item_id.strip_prefix("lt")?.parse::<u64>().ok()).max().unwrap_or(0) + 1;
-    let entry_id = format!("lt{n}");
+    let entry_id = next_entry_id(table);
     table.push(LightItem {
         item_id: entry_id.clone(),
         element_id: element.as_str().to_owned(),

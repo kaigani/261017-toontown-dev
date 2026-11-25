@@ -85,8 +85,33 @@ pub(crate) fn session_json(
             (scene.clone(), json!({ "mode": if r.free { "free" } else { "auto" }, "start": r.start, "end": r.end, "lastFree": last }))
         })
         .collect();
+    // The static light tables of this document's scenes, items whose drawing and element still exist (04 §15.3: saved
+    // with the scene; M5 C5.2a), and the Exposure Sheet's column widths of its elements.
+    let scene_ok = |s: &str| tt_model::Id::parse(s).is_ok_and(|s| doc.scene(&s).is_some());
+    let item_ok = |it: &crate::commands::timing::LightItem| {
+        tt_model::Id::parse(&it.drawing_id).is_ok_and(|d| doc.drawing(&d).is_some())
+            && tt_model::Id::parse(&it.element_id).is_ok_and(|e| doc.element(&e).is_some())
+    };
+    let light_tables: serde_json::Map<String, Value> = timeline
+        .light_tables
+        .iter()
+        .filter(|(scene, _)| scene_ok(scene))
+        .map(|(scene, items)| {
+            let kept: Vec<&crate::commands::timing::LightItem> = items.iter().filter(|it| item_ok(it)).collect();
+            (scene.clone(), json!(kept))
+        })
+        .filter(|(_, items)| items.as_array().is_some_and(|a| !a.is_empty()))
+        .collect();
+    let widths: serde_json::Map<String, Value> = timeline
+        .column_widths
+        .iter()
+        .filter(|(e, _)| tt_model::Id::parse(e).is_ok_and(|e| doc.element(&e).is_some()))
+        .map(|(e, w)| (e.clone(), json!(w)))
+        .collect();
     json!({
         "playbackRanges": ranges,
+        "lightTables": light_tables,
+        "xsheetColumnWidths": widths,
         "format": "toontown-session",
         "currentSceneId": app.scene.as_ref().map(|s| s.as_str()),
         "frame": app.frame,
@@ -120,6 +145,42 @@ pub(crate) fn restore_session(
                     scene.clone(),
                     crate::commands::timeline::PlaybackRange { free, start, end: end.max(start), last_free: pair },
                 );
+            }
+        }
+    }
+    // The static light tables (04 §15.3) and the column widths, for what the document still has (items whose source
+    // is gone are dropped, as a list read drops them).
+    timeline.light_tables.clear();
+    if let Some(m) = v.get("lightTables").and_then(Value::as_object) {
+        for (scene, items) in m {
+            if !tt_model::Id::parse(scene).is_ok_and(|s| doc.scene(&s).is_some()) {
+                continue;
+            }
+            let kept: Vec<crate::commands::timing::LightItem> = items
+                .as_array()
+                .into_iter()
+                .flatten()
+                .filter_map(|it| serde_json::from_value::<crate::commands::timing::LightItem>(it.clone()).ok())
+                .filter(|it| {
+                    tt_model::Id::parse(&it.drawing_id).is_ok_and(|d| doc.drawing(&d).is_some())
+                        && tt_model::Id::parse(&it.element_id).is_ok_and(|e| doc.element(&e).is_some())
+                        && (it.placement == "over" || it.placement == "under")
+                })
+                .take(crate::commands::draw_aid::MAX_ENTRIES)
+                .collect();
+            if !kept.is_empty() {
+                timeline.light_tables.insert(scene.clone(), kept);
+            }
+        }
+    }
+    timeline.column_widths.clear();
+    if let Some(m) = v.get("xsheetColumnWidths").and_then(Value::as_object) {
+        for (e, w) in m {
+            let width = w.as_u64().and_then(|w| u32::try_from(w).ok()).filter(|w| (20..=1000).contains(w));
+            if let Some(width) = width
+                && tt_model::Id::parse(e).is_ok_and(|e| doc.element(&e).is_some())
+            {
+                timeline.column_widths.insert(e.clone(), width);
             }
         }
     }

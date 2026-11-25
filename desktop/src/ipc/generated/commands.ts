@@ -10961,14 +10961,19 @@ export const COMMAND_INDEX = {
   },
   "xsheet.columnWidth.set": {
     kind: "ui",
-    label: "Set one column's width, or reset all widths",
+    label: "Set column width",
     summary: "Set one column's width, or reset all widths",
     params: "xsheet.columnWidth.set.params",
     result: "xsheet.columnWidth.set.result",
     examples: [
-      {},
+      {
+        elementId: "scene:\"Intro\"/element:\"Bob\"",
+        width: 120,
+      },
+      {
+        reset: true,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "xsheet.currentCell.set": {
     kind: "ui",
@@ -10985,14 +10990,19 @@ export const COMMAND_INDEX = {
   },
   "xsheet.display.set": {
     kind: "ui",
-    label: "Thumbnails, exposure text in held cells, element-name prefix, notes",
+    label: "Exposure Sheet display options",
     summary: "Thumbnails, exposure text in held cells, element-name prefix, notes",
     params: "xsheet.display.set.params",
     result: "xsheet.display.set.result",
     examples: [
-      {},
+      {
+        thumbnails: true,
+      },
+      {
+        exposureText: true,
+        elementNames: false,
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "xsheet.exposures.get": {
     kind: "query",
@@ -11072,14 +11082,21 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.add": {
     kind: "ui",
-    label: "Send drawings to the static light table",
+    label: "Send to static light table",
     summary: "Send drawings to the static light table (omit items = selection)",
     params: "xsheet.lightTable.add.params",
     result: "xsheet.lightTable.add.result",
     examples: [
       {},
+      {
+        items: [
+          {
+            elementId: "scene:\"Intro\"/element:\"Bob\"",
+            frame: 3,
+          },
+        ],
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "xsheet.lightTable.changed": {
     kind: "event",
@@ -11104,50 +11121,69 @@ export const COMMAND_INDEX = {
   },
   "xsheet.lightTable.move": {
     kind: "ui",
-    label: "Reorder a light-table item",
+    label: "Reorder light-table item",
     summary: "Reorder a light-table item",
     params: "xsheet.lightTable.move.params",
     result: "xsheet.lightTable.move.result",
     examples: [
       {
-        itemId: "scene:#1",
-        index: 1,
+        itemId: "lt2",
+        index: 0,
       },
     ],
-    milestone: "M5 C5.2",
   },
   "xsheet.lightTable.remove": {
     kind: "ui",
-    label: "Remove light-table items, or all",
+    label: "Remove light-table items",
     summary: "Remove light-table items, or all",
     params: "xsheet.lightTable.remove.params",
     result: "xsheet.lightTable.remove.result",
     examples: [
-      {},
+      {
+        all: true,
+      },
+      {
+        itemIds: [
+          "lt1",
+        ],
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "xsheet.lightTable.set": {
     kind: "ui",
-    label: "Show/hide and over/under for given items, all, or all others",
+    label: "Change light-table items",
     summary: "Show/hide and over/under for given items, all, or all others",
     params: "xsheet.lightTable.set.params",
     result: "xsheet.lightTable.set.result",
     examples: [
-      {},
+      {
+        itemIds: [
+          "lt1",
+        ],
+        apply: "others",
+        visible: false,
+      },
+      {
+        apply: "all",
+        placement: "over",
+      },
     ],
-    milestone: "M5 C5.2",
   },
   "xsheet.panel.set": {
     kind: "ui",
-    label: "Show/hide the element list panel, static light table panel and toolbar",
+    label: "Exposure Sheet panels",
     summary: "Show/hide the element list panel, static light table panel and toolbar",
     params: "xsheet.panel.set.params",
     result: "xsheet.panel.set.result",
     examples: [
-      {},
+      {
+        lightTable: true,
+      },
+      {
+        toolbar: false,
+        elementList: true,
+      },
     ],
-    milestone: "M5 C5.2",
   },
 };
 
@@ -85888,50 +85924,54 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "xsheet.columnWidth.set.params": {
-    title: "xsheet.columnWidth.set parameters",
+    title: "ColumnWidthParams",
+    description: "`xsheet.columnWidth.set` parameters.",
     type: "object",
     properties: {
       elementId: {
-        type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
+        description: "The column's element (default: the current element).",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
       width: {
-        type: "integer",
+        description: "The width in pixels.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
         minimum: 20,
         maximum: 1000,
       },
       reset: {
+        description: "Return every column to the default width (04 §12.4 \"Reset column width\").",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementId?: id; width?: int (20–1000); reset: bool = false`",
   },
   "xsheet.columnWidth.set.result": {
-    title: "xsheet.columnWidth.set result",
+    title: "ColumnWidthResult",
+    description: "`{widths}`.",
     type: "object",
     properties: {
       widths: {
+        description: "The columns with a width of their own, by element ID (the others have the default width).",
         type: "object",
-        description: "(elementId → int)",
         additionalProperties: {
           type: "integer",
-        },
-        properties: {},
-        propertyNames: {
-          minLength: 1,
-          maxLength: 4096,
+          maximum: 2147483647,
+          minimum: 0,
         },
       },
     },
     required: [
       "widths",
     ],
-    "x-spec": "`{widths: object}`",
-    additionalProperties: false,
   },
   "xsheet.currentCell.set.params": {
     title: "CurrentCellParams",
@@ -85975,27 +86015,48 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "xsheet.display.set.params": {
-    title: "xsheet.display.set parameters",
+    title: "DisplayParams",
+    description: "`xsheet.display.set` parameters.",
     type: "object",
     properties: {
       thumbnails: {
-        type: "boolean",
+        description: "Thumbnails in cells.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       exposureText: {
-        type: "boolean",
+        description: "The drawing name in every held cell.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       elementNames: {
-        type: "boolean",
+        description: "The element-name prefix in cell labels.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       notes: {
-        type: "boolean",
+        description: "Note indicators.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`thumbnails?: bool; exposureText?: bool; elementNames?: bool; notes?: bool`",
   },
   "xsheet.display.set.result": {
-    title: "xsheet.display.set result",
+    title: "DisplayResult",
+    description: "`{thumbnails, exposureText, elementNames, notes}`.",
     type: "object",
     properties: {
       thumbnails: {
@@ -86017,8 +86078,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "elementNames",
       "notes",
     ],
-    "x-spec": "`{thumbnails, exposureText, elementNames, notes}`",
-    additionalProperties: false,
   },
   "xsheet.exposures.get.Include": {
     description: "Optional parts of the sheet.",
@@ -86562,46 +86621,74 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "createdDrawings",
     ],
   },
-  "xsheet.lightTable.add.params": {
-    title: "xsheet.lightTable.add parameters",
+  "xsheet.lightTable.add.LightAddItem": {
+    description: "One drawing to send (SI-043, the shape 04 §13.18 and §15.1 give: a drawing of an element, chosen by its cell or\ndirectly): `elementId` with `frame` (the drawing exposed there), or `drawingId` (a drawing of that element's bank),\nor neither (the element's drawing at the current frame, as from a column header).",
     type: "object",
     properties: {
-      items: {
-        type: "array",
-        items: {
-          type: "object",
-          properties: {},
-          additionalProperties: false,
-          "x-placeholder": true,
-          description: "shape not defined by the owning section (spec issue); only {} is accepted until it is",
-          "x-specIssue": "SI-043",
-        },
-        maxItems: 100000,
+      elementId: {
+        description: "The element.",
+        type: "string",
+      },
+      frame: {
+        description: "The frame of its cell.",
+        type: [
+          "integer",
+          "null",
+        ],
+        default: null,
+        minimum: 1,
+        maximum: 100000,
+      },
+      drawingId: {
+        description: "A drawing of the element's bank.",
+        type: [
+          "string",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`items?: [object]`",
+    required: [
+      "elementId",
+    ],
+  },
+  "xsheet.lightTable.add.params": {
+    title: "LightAddParams",
+    description: "`xsheet.lightTable.add` parameters.",
+    type: "object",
+    properties: {
+      items: {
+        description: "The drawings to send (omitted: the drawings of the selected cells).",
+        type: [
+          "array",
+          "null",
+        ],
+        items: {
+          $ref: "#/$defs/xsheet.lightTable.add.LightAddItem",
+        },
+        minItems: 1,
+        maxItems: 256,
+      },
+    },
+    additionalProperties: false,
   },
   "xsheet.lightTable.add.result": {
-    title: "xsheet.lightTable.add result",
+    title: "LightAddResult",
+    description: "`{itemIds}`.",
     type: "object",
     properties: {
       itemIds: {
+        description: "The new items, in the order sent.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "itemIds",
     ],
-    "x-spec": "`{itemIds[]}`",
-    additionalProperties: false,
   },
   "xsheet.lightTable.changed.params": {
     title: "NoParams",
@@ -86688,168 +86775,216 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
     ],
   },
   "xsheet.lightTable.move.params": {
-    title: "xsheet.lightTable.move parameters",
+    title: "LightMoveParams",
+    description: "`xsheet.lightTable.move` parameters.",
     type: "object",
     properties: {
       itemId: {
+        description: "The item.",
         type: "string",
-        minLength: 1,
-        maxLength: 4096,
-        description: "object ID or path reference (10 §3)",
       },
       index: {
+        description: "Its new position in the stacking order (0: the first).",
         type: "integer",
+        maximum: 2147483647,
         minimum: 0,
       },
     },
+    additionalProperties: false,
     required: [
       "itemId",
       "index",
     ],
-    additionalProperties: false,
-    "x-spec": "`itemId: id; index: int (≥0)`",
   },
   "xsheet.lightTable.move.result": {
-    title: "xsheet.lightTable.move result",
+    title: "LightMoveResult",
+    description: "`{order}`.",
     type: "object",
     properties: {
       order: {
+        description: "The items in stacking order.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "order",
     ],
-    "x-spec": "`{order: [id]}`",
-    additionalProperties: false,
   },
   "xsheet.lightTable.remove.params": {
-    title: "xsheet.lightTable.remove parameters",
+    title: "LightRemoveParams",
+    description: "`xsheet.lightTable.remove` parameters.",
     type: "object",
     properties: {
       itemIds: {
-        type: "array",
+        description: "The items to remove.",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        maxItems: 256,
+        default: null,
       },
       all: {
+        description: "Remove every item.",
         type: "boolean",
         default: false,
       },
     },
     additionalProperties: false,
-    "x-spec": "`itemIds?: [id]; all: bool = false`",
   },
   "xsheet.lightTable.remove.result": {
-    title: "xsheet.lightTable.remove result",
+    title: "LightRemoveResult",
+    description: "`{removedIds}`.",
     type: "object",
     properties: {
       removedIds: {
+        description: "The items removed (their drawings untouched, 04 §15.3).",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "removedIds",
     ],
-    "x-spec": "`{removedIds[]}`",
-    additionalProperties: false,
+  },
+  "xsheet.lightTable.set.Apply": {
+    description: "Which items `xsheet.lightTable.set` changes.",
+    oneOf: [
+      {
+        description: "The items given.",
+        type: "string",
+        const: "given",
+      },
+      {
+        description: "Every item.",
+        type: "string",
+        const: "all",
+      },
+      {
+        description: "Every item but the ones given (Hide All Others, 04 §15.4).",
+        type: "string",
+        const: "others",
+      },
+    ],
+  },
+  "xsheet.lightTable.set.Placement": {
+    description: "Over or under the Drawing View's drawings.",
+    oneOf: [
+      {
+        description: "Over.",
+        type: "string",
+        const: "over",
+      },
+      {
+        description: "Under.",
+        type: "string",
+        const: "under",
+      },
+    ],
   },
   "xsheet.lightTable.set.params": {
-    title: "xsheet.lightTable.set parameters",
+    title: "LightSetParams",
+    description: "`xsheet.lightTable.set` parameters.",
     type: "object",
     properties: {
       itemIds: {
-        type: "array",
+        description: "The items (with `apply: given` or `others`).",
+        type: [
+          "array",
+          "null",
+        ],
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
+        maxItems: 256,
+        default: null,
       },
       apply: {
-        type: "string",
-        enum: [
-          "given",
-          "all",
-          "others",
-        ],
-        default: "given",
+        description: "Which items change.",
+        $ref: "#/$defs/xsheet.lightTable.set.Apply",
       },
       visible: {
-        type: "boolean",
+        description: "Show or hide them.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       placement: {
-        type: "string",
-        enum: [
-          "over",
-          "under",
+        description: "Over or under the Drawing View's drawings.",
+        anyOf: [
+          {
+            $ref: "#/$defs/xsheet.lightTable.set.Placement",
+          },
+          {
+            type: "null",
+          },
         ],
       },
     },
     additionalProperties: false,
-    "x-spec": "`itemIds?: [id]; apply: enum \"given\"|\"all\"|\"others\" = \"given\"; visible?: bool; placement?: enum \"over\"|\"under\"`",
   },
   "xsheet.lightTable.set.result": {
-    title: "xsheet.lightTable.set result",
+    title: "LightSetResult",
+    description: "`{changedIds}`.",
     type: "object",
     properties: {
       changedIds: {
+        description: "The items whose state changed.",
         type: "array",
         items: {
           type: "string",
-          minLength: 1,
-          maxLength: 4096,
-          description: "object ID or path reference (10 §3)",
         },
-        maxItems: 100000,
       },
     },
     required: [
       "changedIds",
     ],
-    "x-spec": "`{changedIds[]}`",
-    additionalProperties: false,
   },
   "xsheet.panel.set.params": {
-    title: "xsheet.panel.set parameters",
+    title: "PanelParams",
+    description: "`xsheet.panel.set` parameters.",
     type: "object",
     properties: {
       elementList: {
-        type: "boolean",
+        description: "The element list panel.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       lightTable: {
-        type: "boolean",
+        description: "The static light table panel (one state with `drawAid.staticLightTablePanel.set`, ruling E-57).",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
       toolbar: {
-        type: "boolean",
+        description: "The toolbar.",
+        type: [
+          "boolean",
+          "null",
+        ],
+        default: null,
       },
     },
     additionalProperties: false,
-    "x-spec": "`elementList?: bool; lightTable?: bool; toolbar?: bool`",
   },
   "xsheet.panel.set.result": {
-    title: "xsheet.panel.set result",
+    title: "PanelResult",
+    description: "`{elementList, lightTable, toolbar}`.",
     type: "object",
     properties: {
       elementList: {
@@ -86867,8 +87002,6 @@ export const COMMAND_DEFS: Readonly<Record<string, Schema>> = {
       "lightTable",
       "toolbar",
     ],
-    "x-spec": "`{elementList, lightTable, toolbar}`",
-    additionalProperties: false,
   },
 };
 
@@ -107385,16 +107518,20 @@ export interface workspace_select_result {
   name: string;
 }
 
+/** `xsheet.columnWidth.set` parameters. */
 export interface xsheet_columnWidth_set_params {
-  /** object ID or path reference (10 §3) */
-  elementId?: string;
-  width?: number;
+  /** The column's element (default: the current element). */
+  elementId?: string | null;
+  /** The width in pixels. */
+  width?: number | null;
+  /** Return every column to the default width (04 §12.4 "Reset column width"). */
   reset?: boolean;
 }
 
+/** `{widths}`. */
 export interface xsheet_columnWidth_set_result {
-  /** (elementId → int) */
-  widths: Record<string, number | bigint>;
+  /** The columns with a width of their own, by element ID (the others have the default width). */
+  widths: Record<string, number>;
 }
 
 /** `xsheet.currentCell.set` parameters. */
@@ -107411,13 +107548,19 @@ export interface xsheet_currentCell_set_result {
   frame: number;
 }
 
+/** `xsheet.display.set` parameters. */
 export interface xsheet_display_set_params {
-  thumbnails?: boolean;
-  exposureText?: boolean;
-  elementNames?: boolean;
-  notes?: boolean;
+  /** Thumbnails in cells. */
+  thumbnails?: boolean | null;
+  /** The drawing name in every held cell. */
+  exposureText?: boolean | null;
+  /** The element-name prefix in cell labels. */
+  elementNames?: boolean | null;
+  /** Note indicators. */
+  notes?: boolean | null;
 }
 
+/** `{thumbnails, exposureText, elementNames, notes}`. */
 export interface xsheet_display_set_result {
   thumbnails: boolean;
   exposureText: boolean;
@@ -107596,11 +107739,25 @@ export interface xsheet_exposures_set_result {
   createdDrawings: xsheet_exposures_set_Created[];
 }
 
-export interface xsheet_lightTable_add_params {
-  items?: (Record<string, unknown>)[];
+/** One drawing to send (SI-043, the shape 04 §13.18 and §15.1 give: a drawing of an element, chosen by its cell or directly): `elementId` with `frame` (the drawing exposed there), or `drawingId` (a drawing of that element's bank), or neither (the element's drawing at the current frame, as from a column header). */
+export interface xsheet_lightTable_add_LightAddItem {
+  /** The element. */
+  elementId: string;
+  /** The frame of its cell. */
+  frame?: number | null;
+  /** A drawing of the element's bank. */
+  drawingId?: string | null;
 }
 
+/** `xsheet.lightTable.add` parameters. */
+export interface xsheet_lightTable_add_params {
+  /** The drawings to send (omitted: the drawings of the selected cells). */
+  items?: xsheet_lightTable_add_LightAddItem[] | null;
+}
+
+/** `{itemIds}`. */
 export interface xsheet_lightTable_add_result {
+  /** The new items, in the order sent. */
   itemIds: string[];
 }
 
@@ -107638,42 +107795,69 @@ export interface xsheet_lightTable_list_result {
   items: xsheet_lightTable_list_LightItemOut[];
 }
 
+/** `xsheet.lightTable.move` parameters. */
 export interface xsheet_lightTable_move_params {
-  /** object ID or path reference (10 §3) */
+  /** The item. */
   itemId: string;
-  index: number | bigint;
+  /** Its new position in the stacking order (0: the first). */
+  index: number;
 }
 
+/** `{order}`. */
 export interface xsheet_lightTable_move_result {
+  /** The items in stacking order. */
   order: string[];
 }
 
+/** `xsheet.lightTable.remove` parameters. */
 export interface xsheet_lightTable_remove_params {
-  itemIds?: string[];
+  /** The items to remove. */
+  itemIds?: string[] | null;
+  /** Remove every item. */
   all?: boolean;
 }
 
+/** `{removedIds}`. */
 export interface xsheet_lightTable_remove_result {
+  /** The items removed (their drawings untouched, 04 §15.3). */
   removedIds: string[];
 }
 
+/** Which items `xsheet.lightTable.set` changes. */
+export type xsheet_lightTable_set_Apply = 'given' | 'all' | 'others';
+
+/** Over or under the Drawing View's drawings. */
+export type xsheet_lightTable_set_Placement = 'over' | 'under';
+
+/** `xsheet.lightTable.set` parameters. */
 export interface xsheet_lightTable_set_params {
-  itemIds?: string[];
-  apply?: 'given' | 'all' | 'others';
-  visible?: boolean;
-  placement?: 'over' | 'under';
+  /** The items (with `apply: given` or `others`). */
+  itemIds?: string[] | null;
+  /** Which items change. */
+  apply?: xsheet_lightTable_set_Apply;
+  /** Show or hide them. */
+  visible?: boolean | null;
+  /** Over or under the Drawing View's drawings. */
+  placement?: xsheet_lightTable_set_Placement | null;
 }
 
+/** `{changedIds}`. */
 export interface xsheet_lightTable_set_result {
+  /** The items whose state changed. */
   changedIds: string[];
 }
 
+/** `xsheet.panel.set` parameters. */
 export interface xsheet_panel_set_params {
-  elementList?: boolean;
-  lightTable?: boolean;
-  toolbar?: boolean;
+  /** The element list panel. */
+  elementList?: boolean | null;
+  /** The static light table panel (one state with `drawAid.staticLightTablePanel.set`, ruling E-57). */
+  lightTable?: boolean | null;
+  /** The toolbar. */
+  toolbar?: boolean | null;
 }
 
+/** `{elementList, lightTable, toolbar}`. */
 export interface xsheet_panel_set_result {
   elementList: boolean;
   lightTable: boolean;

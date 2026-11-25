@@ -271,10 +271,45 @@
       "section": "04 §11.11 (Sound rows)",
       "location": "Timeline row and ruler context: Sound Waveforms (ruling E-9: shown with its owner until sound rows exist)"
     },
+    "xsheet.columnWidth.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §12.2 (Column headers), §12.4 (Reset column width)",
+      "location": "Exposure Sheet: drag a column header's border; grid context Reset Column Width"
+    },
+    "xsheet.display.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §12.4 (Display options)",
+      "location": "Exposure Sheet: toolbar thumbnails toggle; grid context display options"
+    },
     "xsheet.exposures.set": {
       "owner": "M5 C5.2",
       "section": "04 §17.4 (Command table)",
       "location": "Exposure Sheet: type labels into cells (M5 C5.2); agents write whole windows atomically"
+    },
+    "xsheet.lightTable.add": {
+      "owner": "M5 C5.2",
+      "section": "04 §13.18, §15.2",
+      "location": "Exposure Sheet and Timeline: cell and column-header contexts, Send to Static Light Table; cells dragged onto the panel"
+    },
+    "xsheet.lightTable.move": {
+      "owner": "M5 C5.2",
+      "section": "04 §15.3",
+      "location": "Exposure Sheet static light table panel: drag an item"
+    },
+    "xsheet.lightTable.remove": {
+      "owner": "M5 C5.2",
+      "section": "04 §15.4",
+      "location": "Exposure Sheet static light table panel: Delete, Delete All"
+    },
+    "xsheet.lightTable.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §15.3, §15.4",
+      "location": "Exposure Sheet static light table panel: visibility and over/under controls; item and panel contexts"
+    },
+    "xsheet.panel.set": {
+      "owner": "M5 C5.2",
+      "section": "04 §12.2 (Components)",
+      "location": "Exposure Sheet toolbar: element list and static light table panel toggles"
     }
   }
 }

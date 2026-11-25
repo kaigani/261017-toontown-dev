@@ -365,13 +365,9 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 - **Resolved:** no placeholder remains in `view.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
-## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; decided)
+## SI-043 — `xsheet.*`: shapes the owning section leaves undefined (found in C1.2 r2; resolved)
 
-- **Section:** 04 and spec A (`xsheet.*` command rows).
-- **Positions** (in `crates/registry/src/declared.json`, `placeholders`):
-  - `xsheet.lightTable.add` `/params/items/*`: an object whose fields are not listed
-- **Decision taken (ADR-0013 §1, C12-R2-02):** each position is a strict placeholder: an object accepts only `{}`, a member accepts only a scalar (never an object or a list), so nothing undefined is accepted silently. The implementing checkpoint replaces it with the shape the section gives.
-- **Question:** define these shapes in the owning section (field names and types).
+- **Resolved:** no placeholder remains in `xsheet.*`. Its positions are typed from the owning section or the sibling commands (C1.2 r3, C12-R3-01), or by the hand-written declarations of the checkpoint that implemented the commands (for example `ui.*` in M4 C4.1).
 
 <!-- end of generated placeholder issues -->
 
