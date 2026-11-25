@@ -1,11 +1,3 @@
-   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m5-c52a-r2\crates\executor)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.56s
-     Running tests\c52a_r2_fixes.rs (target\debug\deps\c52a_r2_fixes-7215eddf32efc024.exe)
-
-running 2 tests
-toontown: system fonts read in 6 ms (169 faces)
 test q5::huge_layouts_refuse ... ok
 test q5::an_edge_drag_whose_exposure_changed_is_cancelled ... ok
-
 test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.07s
-

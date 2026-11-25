@@ -1,13 +1,5 @@
-   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m5-c52a-r2\crates\executor)
-    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.45s
-     Running tests\c52a_r1_lighttable.rs (target\debug\deps\c52a_r1_lighttable-ba109df5ce2f466a.exe)
-
-running 4 tests
-toontown: system fonts read in 6 ms (169 faces)
 test a3_limits_and_notices ... ok
 test p3_add_types_empty_frame_and_no_selection ... ok
 test p2_scenes_save_and_exact_cleanup ... ok
 test a2_seeded_two_family_trace ... ok
-
 test result: ok. 4 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.60s
-
