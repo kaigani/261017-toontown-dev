@@ -1,0 +1,11 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m5-c52a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 45.42s
+     Running tests\c52a_r2_fixes.rs (target\debug\deps\c52a_r2_fixes-7215eddf32efc024.exe)
+
+running 2 tests
+toontown: system fonts read in 6 ms (169 faces)
+test a_render_in_flight_across_a_replacement_is_dropped ... ok
+test q4_saved_forks_same_id_revision_different_image ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.90s
+
