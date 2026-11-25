@@ -63,6 +63,8 @@ passes).
   (`Document::with_patched_entries`, M1 C1.2) rebuilds the derived data and runs the whole document's integrity check
   (`Document::issues`, which walks every element's keys: 266 ms alone); the executor adds about 200 ms. The fix checks
   the entries a commit touched and the rules that cross entries, not the whole document.
+- **On a very large drawing, memory grows by about 10 MB for each edit until 256 edits are held** (since ruling E-73,
+  until about 256 MB are held: the oldest copies are then let go). In detail:
 - **Each recent revision keeps its own copy of the document's index.** Every commit rebuilds the document's derived data,
   its object index included (`Document::rebuild_derived`, M1 C1.2), and the revision log keeps the `before` document of
   each of the last 256 revisions while their changed objects fit its budget (`SNAPSHOT_WINDOW`, `SNAPSHOT_OBJECT_BUDGET`,
@@ -70,9 +72,13 @@ passes).
   drawing, 300 note changes hold about 3.1 GB (about 10 MB per change; measured locally with
   `crates/executor/tests/c52a_history_size.rs` at 20,000 strokes, which runs with 1,000 in CI; found while measuring the
   history for ruling E-70). The same rebuild is the commit cost above; the fix shares the index of
-  the entries a commit did not touch. Outside the undo history's bound, which counts its steps only (measured with it:
-  a patch step holds about 4.7 times the size the bound counts, and a snapshot step holds the entries it shared with the
-  live document once later edits replace them there: 24 MB counted as 6 KB in that test).
+  the entries a commit did not touch: M11 C11.1's ticket, with E-44's commit cost above (ruling E-73 item 2), and a snapshot
+  step of the undo history holds the entries it shared with the live document once later edits replace them there (24 MB
+  in that test). **Bounded meanwhile (E-73 items 1 and 3):** the undo history counts the memory its steps hold (within
+  1.5 times of the allocator's measure for small, medium and large values), and the revision log keeps its earlier
+  documents within 256 MiB by the same estimate (each weighed by the entries it replaced and its own index), the oldest
+  let go first; a revision whose document was let go still diffs exactly from its back-patches, only slower, and the
+  records themselves are kept as 10 AG-09 asks (to the last save and the last 10,000 transactions).
 - **Keying many nodes slows down as keys accumulate.** `anim.key.add` on 200 pegs at one frame takes about 1.2 s with
   no keys yet and about 10.8 s with 75 to 100 keys on each peg (release). Each addition costs in proportion to the keys
   already on the curves it touches (the commit above, plus the undo record below).

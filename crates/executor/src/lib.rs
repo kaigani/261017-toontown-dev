@@ -1346,6 +1346,32 @@ pub mod hooks {
         })?
     }
 
+    static SNAPSHOT_BUDGET: AtomicU64 = AtomicU64::new(0);
+
+    /// The revision log's snapshot budget in bytes from now on (0: the product's 256 MiB; ruling E-73's test with a
+    /// small budget).
+    pub fn set_snapshot_budget(bytes: u64) {
+        SNAPSHOT_BUDGET.store(bytes, Ordering::Release);
+    }
+
+    pub(crate) fn snapshot_budget() -> Option<usize> {
+        let b = SNAPSHOT_BUDGET.load(Ordering::Acquire);
+        (b > 0).then(|| usize::try_from(b).unwrap_or(usize::MAX))
+    }
+
+    /// The open project's revision log: `(records, kept snapshots, the memory they hold alone by the estimate)`.
+    ///
+    /// # Errors
+    /// `project.none`, `command.timeout`.
+    pub fn log_counted(h: &crate::ExecutorHandle) -> Result<(usize, usize, usize), crate::CommandError> {
+        crate::Poster(h.tx.clone()).run(h.config.budget, |core| {
+            let s = core.session().ok_or_else(crate::cx::no_project)?;
+            let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
+            let (kept, bytes) = crate::session::kept_snapshots(&p.log);
+            Ok::<_, crate::CommandError>((p.log.len(), kept, bytes))
+        })?
+    }
+
     pub(crate) fn thumbnail_delay() {
         let ms = THUMBNAIL_DELAY_MS.load(Ordering::Acquire);
         if ms > 0 {

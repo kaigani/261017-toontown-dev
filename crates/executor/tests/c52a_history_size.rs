@@ -28,6 +28,9 @@ use tt_executor::{ExecutorConfig, ExecutorHandle};
 #[global_allocator]
 static GLOBAL: &StatsAlloc<System> = &INSTRUMENTED_SYSTEM;
 
+/// The allocator's counters and the hooks are process-wide: one test at a time.
+static SERIAL: std::sync::Mutex<()> = std::sync::Mutex::new(());
+
 const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
 
 /// The crowded drawing's strokes: 1,000 in CI (the response quotes a local run with 20,000, which holds about 3 GB).
@@ -126,6 +129,7 @@ fn opened() -> ExecutorHandle {
 
 #[test]
 fn the_counted_size_against_the_memory_held() {
+    let _serial = SERIAL.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
     // Ruling E-73: the count is within 1.5 times of what the allocator measures, for small, medium and large values.
     let h = opened();
     let element = ok(&h, "element.create", json!({ "type": "drawing", "name": "Noted" }))["elementIds"][0]
@@ -169,3 +173,51 @@ fn the_counted_size_against_the_memory_held() {
     );
     assert!(with != 0 && without != 0);
 }
+
+/// Ruling E-73 item 3: the revision log weighs each kept snapshot by the memory it holds alone (the entries the change
+/// replaced and its own rebuilt index), within a budget, the oldest dropped first. On a 2,000-stroke drawing a small
+/// change keeps a snapshot of about a megabyte: the estimate is within 1.5 times of what the allocator measures; with a
+/// small budget the kept snapshots stay within it, and a revision whose snapshot was dropped still diffs (from its
+/// back-patches: only slower).
+#[test]
+fn the_revision_log_weighs_its_snapshots_by_memory_and_keeps_them_within_the_budget() {
+    let _serial = SERIAL.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    let h = crowded(STROKES2);
+    let bob = "scene:\"Intro\"/element:\"Bob\"";
+    ok(&h, "element.note.set", json!({ "elementId": bob, "text": "warm" }));
+    let (_, kept0, bytes0) = tt_executor::hooks::log_counted(&h).unwrap();
+    let (_, hist0) = tt_executor::hooks::history_counted(&h).unwrap();
+    let r = Region::new(GLOBAL);
+    for i in 0..40 {
+        ok(&h, "element.note.set", json!({ "elementId": bob, "text": format!("n{i}") }));
+    }
+    let held = net(&r);
+    let (_, kept1, bytes1) = tt_executor::hooks::log_counted(&h).unwrap();
+    let (_, hist1) = tt_executor::hooks::history_counted(&h).unwrap();
+    assert_eq!(kept1 - kept0, 40, "every snapshot fits the product's budget here");
+    let estimate = (bytes1 - bytes0) + (hist1 - hist0);
+    let ratio = held as f64 / estimate as f64;
+    println!(
+        "revision log: 40 changes on {STROKES2} strokes hold {held} B; the estimate {estimate} B ({} B per snapshot); \
+         {ratio:.2} x",
+        (bytes1 - bytes0) / 40
+    );
+    assert!((1.0 / 1.5..=1.5).contains(&ratio), "the snapshots hold {ratio:.2} times their estimate");
+    let rev_early = ok(&h, "doc.state.get", json!({}))["documentRev"].as_u64().unwrap() - 30;
+    // A small budget: the oldest snapshots go first; the kept ones stay within it.
+    let per = (bytes1 - bytes0) / 40;
+    tt_executor::hooks::set_snapshot_budget((8 * per) as u64);
+    for i in 0..20 {
+        ok(&h, "element.note.set", json!({ "elementId": bob, "text": format!("m{i}") }));
+    }
+    let (records, kept, bytes) = tt_executor::hooks::log_counted(&h).unwrap();
+    tt_executor::hooks::set_snapshot_budget(0);
+    assert!(kept <= 8 && bytes <= 8 * per + per / 2, "{kept} snapshots, {bytes} B against {}", 8 * per);
+    assert!(records > 60, "the records are kept (10 AG-09): {records}");
+    // A revision whose snapshot was dropped diffs from its back-patches.
+    let diff = ok(&h, "doc.diff", json!({ "sinceRev": rev_early, "detail": "summary" }));
+    assert!(diff["changes"].as_array().is_some_and(|c| !c.is_empty()), "{diff}");
+}
+
+/// The crowded drawing's strokes for the revision log's test.
+const STROKES2: usize = 2_000;

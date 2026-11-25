@@ -47,7 +47,7 @@ pub(crate) struct RevRecord {
     /// The revisions the objects the transaction stamped had at `rev - 1` (back-patches restore content, these
     /// restore the revisions; C12-R1-08).
     pub earlier_revs: Vec<(String, u64)>,
-    /// Objects held only by `before` (the entries the transaction replaced): what keeping the snapshot costs.
+    /// The memory `before` holds alone, in bytes ([`snapshot_weight`]): what keeping the snapshot costs.
     pub weight: usize,
 }
 
@@ -55,29 +55,45 @@ pub(crate) struct RevRecord {
 pub const REV_LOG_LEN: usize = 10_000;
 /// Records that keep their previous snapshot for fast diffs.
 pub const SNAPSHOT_WINDOW: usize = 256;
-/// The most objects the kept snapshots may hold beyond the current document (M2 C2.1 obligations 4 and 11): a commit
-/// replaces whole entries, so each snapshot of a 100 000-stroke drawing holds a full copy of it; older records fall
-/// back to their back-patches (`doc.diff` stays exact, only slower). The newest snapshot is always kept.
-pub const SNAPSHOT_OBJECT_BUDGET: usize = 400_000;
+/// The most memory the kept snapshots may hold alone, in bytes (M5 ruling E-73 item 3, by the estimate of
+/// [`snapshot_weight`]): each commit rebuilds the document's derived data, its object index included, so every kept
+/// `before` holds its own index besides the entries the transaction replaced (on a 20,000-stroke drawing about 10 MB per
+/// revision: the merge note's known limits, M11 C11.1). The oldest snapshots are dropped first and fall back to their
+/// back-patches: `doc.diff` stays exact, only slower; no revision becomes unavailable (the records themselves are kept
+/// as 10 AG-09 asks). The newest snapshot is always kept.
+pub const SNAPSHOT_MEMORY_BUDGET: usize = 256 << 20;
 
-/// The objects of the entries `before` holds that `after` does not share (copy-on-write): nodes and strokes count
-/// one each for drawings, every other entry one.
-pub(crate) fn snapshot_weight(before: &Document, after: &Document) -> usize {
-    fn count(nodes: &[tt_model::entities::drawing::DrawingNode]) -> usize {
-        nodes
-            .iter()
-            .map(|n| 1 + n.strokes().as_ref().map_or(0, Vec::len) + n.children().as_ref().map_or(0, |c| count(c)))
-            .sum()
+/// The snapshot budget in force: [`SNAPSHOT_MEMORY_BUDGET`], or the dev-only hook's (`test-hooks`).
+fn snapshot_budget() -> usize {
+    #[cfg(feature = "test-hooks")]
+    if let Some(b) = crate::hooks::snapshot_budget() {
+        return b;
     }
-    before
+    SNAPSHOT_MEMORY_BUDGET
+}
+
+/// The kept snapshots of a log: how many, and the memory they hold alone by [`snapshot_weight`].
+#[cfg(feature = "test-hooks")]
+pub(crate) fn kept_snapshots(log: &VecDeque<RevRecord>) -> (usize, usize) {
+    log.iter().filter(|r| r.before.is_some()).fold((0, 0), |(n, b), r| (n + 1, b + r.weight))
+}
+
+/// The memory one indexed object costs in a document's derived data (the index's map entry with its location, the
+/// copies of its key, the local-ID map), estimated from the measurement of `crates/executor/tests/c52a_history_size.rs`
+/// (about 500 bytes per object on a crowded drawing).
+pub const INDEX_BYTES_PER_OBJECT: usize = 512;
+
+/// What keeping `before` costs beside `after`, in bytes: the entries `before` holds that `after` does not share
+/// (copy-on-write; [`crate::heap::entry`]), and its own derived data, rebuilt by every commit and so never shared
+/// ([`INDEX_BYTES_PER_OBJECT`] per indexed object).
+pub(crate) fn snapshot_weight(before: &Document, after: &Document) -> usize {
+    let replaced: usize = before
         .entry_keys()
         .iter()
         .filter(|k| !before.same_entry(after, k))
-        .map(|k| match k {
-            tt_model::document::EntryKey::Drawing(id) => before.drawing(id).map_or(1, |d| 1 + count(d.nodes())),
-            _ => 1,
-        })
-        .sum()
+        .map(|k| crate::heap::entry(before, k))
+        .sum();
+    std::mem::size_of::<Document>() + replaced + before.object_count() * INDEX_BYTES_PER_OBJECT
 }
 
 /// The open project.
@@ -154,7 +170,7 @@ impl OpenProject {
             if r.before.is_none() {
                 continue;
             }
-            if kept > 0 && held.saturating_add(r.weight) > SNAPSHOT_OBJECT_BUDGET {
+            if kept > 0 && held.saturating_add(r.weight) > snapshot_budget() {
                 r.before = None;
                 continue;
             }
