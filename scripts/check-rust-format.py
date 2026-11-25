@@ -13,6 +13,10 @@ import sys
 REVIEWER_FILES = {
     'crates/executor/tests/c51a_r1_part2.rs': 'M5 C5.1a round 1 (dynamic, part 2)',
     'crates/mcp/tests/c51a_r1_notices.rs': 'M5 C5.1a round 1 (dynamic, part 2)',
+    'crates/executor/tests/c52a_r1_gestures.rs': 'M5 C5.2a round 1 (dynamic)',
+    'crates/executor/tests/c52a_r1_history.rs': 'M5 C5.2a round 1 (dynamic)',
+    'crates/executor/tests/c52a_r1_lighttable.rs': 'M5 C5.2a round 1 (dynamic)',
+    'crates/executor/tests/c52a_r1_thumbnails.rs': 'M5 C5.2a round 1 (dynamic)',
 }
 
 
