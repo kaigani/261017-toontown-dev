@@ -61,3 +61,33 @@ fn a3_limits_and_notices(){
  ok(&h,"doc.state.get",json!({}));
  }
 }
+mod c13_support;
+#[test]
+fn p2_scenes_save_and_exact_cleanup(){
+ let dir=c13_support::tmp();let h=c13_support::spawn(&dir.join("user"));
+ assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(),None,false).is_ok());
+ let path=dir.join("Scenes.animpkg");
+ c13_support::job_ok(&h,"project.saveAs",json!({"path":path.to_string_lossy()}));
+ let a=first(&h,"scene");
+ let e=ok(&h,"element.create",json!({"type":"drawing","name":"A"}))["elementIds"][0].clone();
+ let mut ds=Vec::new();for i in 0..3 {ds.push(ok(&h,"element.drawing.create",json!({"elementId":e,"name":format!("D{i}")}))["drawingId"].clone());}
+ for d in &ds {ok(&h,"xsheet.lightTable.add",json!({"items":[{"elementId":e,"drawingId":d}]}));}
+ let ids=lists(&h);ok(&h,"xsheet.lightTable.move",json!({"itemId":ids[2]["itemId"],"index":0}));
+ ok(&h,"xsheet.lightTable.set",json!({"itemIds":[ids[1]["itemId"]],"visible":false,"placement":"over"}));
+ let before_a=lists(&h);
+ let b=get(&h,"scene:\"Scene-2\"")["id"].clone();
+ ok(&h,"app.context.set",json!({"sceneId":b}));
+ assert!(lists(&h).is_empty());
+ let f=ok(&h,"element.create",json!({"type":"drawing","name":"B"}))["elementIds"][0].clone();
+ let d=ok(&h,"element.drawing.create",json!({"elementId":f,"name":"B1"}))["drawingId"].clone();
+ ok(&h,"xsheet.lightTable.add",json!({"items":[{"elementId":f,"drawingId":d}]}));let before_b=lists(&h);
+ c13_support::job_ok(&h,"project.save",json!({}));ok(&h,"project.close",json!({}));
+ c13_support::job_ok(&h,"project.open",json!({"path":path.to_string_lossy()}));
+ ok(&h,"app.context.set",json!({"sceneId":b}));assert_eq!(lists(&h),before_b);
+ ok(&h,"app.context.set",json!({"sceneId":a}));assert_eq!(lists(&h),before_a);
+ ok(&h,"element.drawing.delete",json!({"drawingIds":[ds[1]],"ifInUse":"clearCells"}));
+ assert_eq!(lists(&h),before_a.iter().filter(|x|x["drawingId"]!=ds[1]).cloned().collect::<Vec<_>>());
+ ok(&h,"element.delete",json!({"elementIds":[e]}));assert!(lists(&h).is_empty());
+ assert_eq!(err(&h,"storyline.scene.delete",json!({"sceneId":a})).code,"command.notImplemented");
+ ok(&h,"app.context.set",json!({"sceneId":b}));assert_eq!(lists(&h),before_b);
+}
