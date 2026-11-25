@@ -63,6 +63,15 @@ passes).
   (`Document::with_patched_entries`, M1 C1.2) rebuilds the derived data and runs the whole document's integrity check
   (`Document::issues`, which walks every element's keys: 266 ms alone); the executor adds about 200 ms. The fix checks
   the entries a commit touched and the rules that cross entries, not the whole document.
+- **Each recent revision keeps its own copy of the document's index.** Every commit rebuilds the document's derived data,
+  its object index included (`Document::rebuild_derived`, M1 C1.2), and the revision log keeps the `before` document of
+  each of the last 256 revisions while their changed objects fit its budget (`SNAPSHOT_WINDOW`, `SNAPSHOT_OBJECT_BUDGET`,
+  which weighs the objects a change touched, not the index each snapshot holds). On the sample with a 20,000-stroke
+  drawing, 300 note changes hold about 3.1 GB (about 10 MB per change; `crates/executor/tests/c52a_history_size.rs`, found
+  while measuring the history for ruling E-70). The same rebuild is the commit cost above; the fix shares the index of
+  the entries a commit did not touch. Outside the undo history's bound, which counts its steps only (measured with it:
+  a patch step holds about 4.7 times the size the bound counts, and a snapshot step holds the entries it shared with the
+  live document once later edits replace them there: 24 MB counted as 6 KB in that test).
 - **Keying many nodes slows down as keys accumulate.** `anim.key.add` on 200 pegs at one frame takes about 1.2 s with
   no keys yet and about 10.8 s with 75 to 100 keys on each peg (release). Each addition costs in proportion to the keys
   already on the curves it touches (the commit above, plus the undo record below).

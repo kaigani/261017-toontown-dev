@@ -768,6 +768,9 @@ fn commit(
                 events.push(("anim.changed", a));
             }
         }
+        // The memory bound once every transaction of the call is in: an undo or redo measured its replayed steps again
+        // (ruling E-70); the replays carry step indices fixed before the call, so none is discarded under them.
+        p.history.apply_bound();
     }
     for (name, e) in events {
         s.emit(name, e);

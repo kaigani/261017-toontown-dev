@@ -1316,6 +1316,19 @@ pub mod hooks {
         (b > 0).then(|| usize::try_from(b).unwrap_or(usize::MAX))
     }
 
+    /// The open project's undo history as its memory bound counts it: `(steps, bytes)` (ruling E-70's measurement of
+    /// the counted size against the memory really held).
+    ///
+    /// # Errors
+    /// `project.none`, `command.timeout`.
+    pub fn history_counted(h: &crate::ExecutorHandle) -> Result<(usize, usize), crate::CommandError> {
+        crate::Poster(h.tx.clone()).run(h.config.budget, |core| {
+            let s = core.session().ok_or_else(crate::cx::no_project)?;
+            let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
+            Ok::<_, crate::CommandError>((p.history.len(), p.history.bytes()))
+        })?
+    }
+
     static THUMBNAIL_PANIC: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
 
     /// The window's render of this drawing's thumbnail panics from now on (`None`: none; ruling E-70's test of the

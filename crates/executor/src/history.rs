@@ -232,8 +232,14 @@ impl History {
         self.bound.unwrap_or(MEMORY_BOUND)
     }
 
-    /// The total size of the kept steps in bytes.
-    #[cfg(test)]
+    /// Applies the memory bound now: after a call's replays are in (a replayed step is measured again; ruling E-70).
+    /// Not inside [`Self::replace_edit`]: a call's replays carry step indices fixed before the call.
+    pub fn apply_bound(&mut self) {
+        self.keep_bound();
+    }
+
+    /// The total size of the kept steps in bytes (as the bound counts it).
+    #[cfg(any(test, feature = "test-hooks"))]
     pub fn bytes(&self) -> usize {
         self.bytes
     }
@@ -446,6 +452,27 @@ mod tests {
         assert_eq!(h.steps()[0].id, "u-150", "the oldest are discarded first");
         assert_eq!(h.position(), 250);
         assert_eq!(h.clean_position(), None, "the clean position was discarded with its step");
+    }
+
+    /// Ruling E-70: a replayed step measured again (the redo its undo returned can be larger) is held to the bound once
+    /// the call's replays are in, the oldest steps going first.
+    #[test]
+    fn a_replayed_step_measured_again_is_held_to_the_bound() {
+        let size = edit_size(&step(0, 1_000).edit);
+        let bound = 250 * size + size / 2;
+        let mut h = History::clean().with_bound(bound);
+        for i in 0..250 {
+            h.push(step(i, 1_000));
+        }
+        assert_eq!((h.len(), h.bytes()), (250, 250 * size));
+        // The top step replayed with a patch ten times larger: measured again, over the bound until it applies.
+        h.replace_edit(249, step(249, 10_000).edit);
+        assert!(h.bytes() > bound);
+        assert_eq!(h.len(), 250, "nothing is discarded under the call's replays");
+        h.apply_bound();
+        assert!(h.bytes() <= bound, "{} > {bound}", h.bytes());
+        assert_eq!(h.steps()[0].id, "u-9", "the oldest go first");
+        assert_eq!(h.steps().last().map(|s| s.id.as_str()), Some("u-249"));
     }
 
     #[test]
