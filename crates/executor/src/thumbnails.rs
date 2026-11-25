@@ -12,6 +12,11 @@
 //! (with how many are still out, the window's progress line). A read replaces the queue: work for drawings the window no
 //! longer shows (a scroll) is dropped. A drawing edited while its thumbnail renders has a new revision: the image of the
 //! old one is never answered for it (the revision is part of the key and of the answer).
+//!
+//! The agents' derived `thumbnail` of a drawing (`doc.object.get {include: ["derived"]}`, 10 line 493: a blob) shares
+//! the cache: it is rendered on the document thread when the cache does not hold it (synchronous, 04 §17.1 item 9), and
+//! names the package's derived-cache entry [`entry_name`] (10 line 743, `cache/...`), which `doc.blob.get {entry}`
+//! answers while the drawing is at that revision.
 
 use std::collections::{BTreeMap, VecDeque};
 use std::sync::{Arc, Condvar, Mutex, PoisonError};
@@ -29,6 +34,29 @@ pub const CACHE_BOUND: usize = 64 << 20;
 pub const MIN_SIDE: u32 = 16;
 /// The largest thumbnail side.
 pub const MAX_SIDE: u32 = 512;
+
+/// The side of a drawing's derived `thumbnail` (the size `xsheet.exposures.get {include: ["thumbnails"]}` renders).
+pub const DERIVED_SIDE: u32 = 64;
+
+/// The folder of the derived thumbnails' entries (10 line 743: optional derived caches go under `cache/`).
+const ENTRY_PREFIX: &str = "cache/thumbnails/";
+
+/// The derived-cache entry that names a thumbnail: `cache/thumbnails/<drawing id>-<revision>-<side>.png`.
+#[must_use]
+pub fn entry_name(key: &ThumbnailKey) -> String {
+    format!("{ENTRY_PREFIX}{}-{}-{}.png", key.drawing_id, key.rev, key.size)
+}
+
+/// The key an entry name of [`entry_name`]'s form names; `None` for any other entry.
+#[must_use]
+pub fn parse_entry(entry: &str) -> Option<ThumbnailKey> {
+    let rest = entry.strip_prefix(ENTRY_PREFIX)?.strip_suffix(".png")?;
+    let mut parts = rest.rsplitn(3, '-');
+    let size = parts.next()?.parse::<u32>().ok()?;
+    let rev = parts.next()?.parse::<u64>().ok()?;
+    let drawing_id = parts.next()?.to_owned();
+    (!drawing_id.is_empty() && (MIN_SIDE..=MAX_SIDE).contains(&size)).then_some(ThumbnailKey { drawing_id, rev, size })
+}
 
 /// One thumbnail the window asks for.
 #[derive(Debug, Clone, Deserialize)]
@@ -201,7 +229,9 @@ impl Service {
                     st.uses += 1;
                     let uses = st.uses;
                     st.bytes += png.len();
-                    st.cache.insert(job.key.clone(), (Arc::new(png), uses));
+                    if let Some((old, _)) = st.cache.insert(job.key.clone(), (Arc::new(png), uses)) {
+                        st.bytes = st.bytes.saturating_sub(old.len());
+                    }
                     self.evict(&mut st);
                 }
                 st.queue.len()
@@ -230,6 +260,29 @@ impl Service {
                 st.bytes = st.bytes.saturating_sub(png.len());
             }
         }
+    }
+
+    /// The thumbnail the cache holds for a key, marked as used.
+    pub(crate) fn cached(&self, key: &ThumbnailKey) -> Option<Arc<Vec<u8>>> {
+        let mut st = self.lock();
+        st.uses += 1;
+        let uses = st.uses;
+        st.cache.get_mut(key).map(|(png, used)| {
+            *used = uses;
+            Arc::clone(png)
+        })
+    }
+
+    /// Keeps a thumbnail rendered elsewhere (the agents' synchronous path) in the cache, within its bound.
+    pub(crate) fn keep(&self, key: ThumbnailKey, png: Arc<Vec<u8>>) {
+        let mut st = self.lock();
+        st.uses += 1;
+        let uses = st.uses;
+        st.bytes += png.len();
+        if let Some((old, _)) = st.cache.insert(key, (png, uses)) {
+            st.bytes = st.bytes.saturating_sub(old.len());
+        }
+        self.evict(&mut st);
     }
 
     /// The cache's size in bytes and its number of thumbnails.

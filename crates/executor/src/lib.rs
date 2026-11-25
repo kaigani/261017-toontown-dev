@@ -391,6 +391,8 @@ impl ExecutorHandle {
             session.ui.shell_mut().window = clamped;
         }
         maintenance::start(&mut session);
+        let thumbs = thumbnails::Service::new(Arc::clone(&subscribers), thumbnails::CACHE_BOUND);
+        session.thumbs = Some(Arc::clone(&thumbs));
         let subs = subscribers.clone();
         let budget = config.budget;
         let cancel = Arc::new(tt_vector::work::CancelState::default());
@@ -431,7 +433,6 @@ impl ExecutorHandle {
             })
             .map_err(|e| CommandError::internal(format!("cannot start the playback clock: {e}")))?;
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
-        let thumbs = thumbnails::Service::new(Arc::clone(&subscribers), thumbnails::CACHE_BOUND);
         Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, thumbs, _guard: guard })
     }
 

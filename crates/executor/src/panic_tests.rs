@@ -164,6 +164,9 @@ fn every_session_field_is_classified_against_the_rollback() {
         env: _,
         // Derived caches keyed by content and revision: a stale entry cannot be read for other content.
         planar: _,
+        // The thumbnails' cache, keyed by drawing, revision and size: a failed call's thumbnail is of a revision that
+        // never committed, so no committed revision reads it.
+        thumbs: _,
         selection_checked: _,
     } = Session::default();
 }

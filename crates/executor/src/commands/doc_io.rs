@@ -275,6 +275,9 @@ pub(crate) fn doc_blob_get(cx: &mut Cx, p: BlobParams) -> Result<BlobResult, Com
             if !tt_persist::zip::safe_name(e) {
                 return Err(invalid("/entry", "not a package entry name"));
             }
+            if let Some(key) = crate::thumbnails::parse_entry(e) {
+                return thumbnail_entry(cx, e, &key, p.max_bytes);
+            }
             (Source::Entry(e.clone()), media_type(e).to_owned())
         }
         _ => return Err(invalid("/ref", "give either `ref` or `entry`")),
@@ -286,6 +289,37 @@ pub(crate) fn doc_blob_get(cx: &mut Cx, p: BlobParams) -> Result<BlobResult, Com
         sha256: fsx::sha256(&bytes),
         base64: b64::encode(&bytes),
     })
+}
+
+/// A derived thumbnail's entry (`cache/thumbnails/<drawing>-<revision>-<side>.png`, the blob a drawing's derived
+/// `thumbnail` names): the drawing's thumbnail while it is at that revision; once it has changed (or is gone) the entry
+/// is missing, as a derived cache's entry may be (MED-06: read the drawing's thumbnail again).
+fn thumbnail_entry(
+    cx: &Cx,
+    entry: &str,
+    key: &crate::thumbnails::ThumbnailKey,
+    max: u64,
+) -> Result<BlobResult, CommandError> {
+    let drawing = tt_model::Id::parse(&key.drawing_id).ok().and_then(|id| cx.project().ok()?.doc.drawing(&id));
+    let Some(d) = drawing.filter(|d| *d.rev() == key.rev) else {
+        return Err(CommandError::with_details(
+            tt_persist::codes::MEDIA_MISSING,
+            format!("entry `{entry}` is missing: the drawing is not at revision {}", key.rev),
+            json!({ "entry": entry }),
+        )
+        .hint("read the drawing's thumbnail again (doc.object.get with include derived)"));
+    };
+    let (_, png) = super::derived::drawing_thumbnail(cx, d, key.size)?;
+    let size = png.len() as u64;
+    if size > max {
+        return Err(CommandError::with_details(
+            "doc.blobTooLarge",
+            format!("the payload has {size} bytes, more than maxBytes {max}"),
+            json!({ "size": size, "maxBytes": max }),
+        )
+        .hint("raise maxBytes"));
+    }
+    Ok(BlobResult { media_type: "image/png".to_owned(), size, sha256: fsx::sha256(&png), base64: b64::encode(&png) })
 }
 
 // ----- assets ------------------------------------------------------------------------------------------------------

@@ -4,11 +4,14 @@
 //! Properties whose inputs belong to later milestones are not invented: they are left out and named, with their
 //! owner, in a `doc.derivedUnavailable` warning (ADR-0013 §9).
 
+use std::sync::Arc;
+
 use serde_json::{Map, Value, json};
 use tt_model::document::Document;
-use tt_model::entities::drawing::DrawingNode;
+use tt_model::entities::drawing::{Drawing, DrawingNode};
 use tt_model::entities::scene::TreeNode;
 use tt_model::{Id, ObjectType};
+use tt_registry::CommandError;
 
 /// Derived properties not computed yet, with their owners.
 pub(crate) fn unavailable(ty: ObjectType) -> &'static [(&'static str, &'static str)] {
@@ -20,7 +23,6 @@ pub(crate) fn unavailable(ty: ObjectType) -> &'static [(&'static str, &'static s
         ],
         ObjectType::Scene => &[("paddedLength", "M9 (storyline timing)")],
         ObjectType::Element => &[("effectiveMarkerColour", "M4 C4.1 (preferences)")],
-        ObjectType::Drawing => &[("thumbnail", "M5 C5.2 (Exposure Sheet thumbnails)")],
         ObjectType::Asset => &[("info", "M8"), ("refs", "M1 C1.3"), ("status", "M1 C1.3")],
         ObjectType::SoundPlacement => &[("naturalEndFrame", "M8")],
         ObjectType::MediaSequence => &[("sourceLength", "M10"), ("missing", "M10")],
@@ -198,4 +200,61 @@ pub(crate) fn add(
         _ => {}
     }
     unavailable(ty).to_vec()
+}
+
+/// Why a drawing's derived `thumbnail` is left out of an answer (named in `doc.derivedUnavailable`).
+pub(crate) const THUMBNAIL_UNCOMMITTED: &str = "the drawing has changes this call has not committed";
+
+/// A drawing's derived `thumbnail` (10 line 493: a blob, `xsheet.exposures.get`'s 64 pixels): the blob naming the
+/// derived-cache entry of the drawing at its revision ([`crate::thumbnails::entry_name`]), rendered on the document
+/// thread when the thumbnails' cache does not hold it (synchronous, 04 §17.1 item 9) and kept there. Only a committed
+/// drawing has one: revisions are stamped at commit (REV-01), so a drawing this call changed still carries the
+/// revision of other content; it answers `Ok(None)` and the caller names it.
+///
+/// # Errors
+/// The render's errors (`render.failed`, `limit.exceeded`).
+pub(crate) fn thumbnail(cx: &crate::cx::Cx, doc: &Document, id: &Id) -> Result<Option<Value>, CommandError> {
+    let Some(d) = doc.drawing(id) else { return Ok(None) };
+    let committed = cx.project().ok().and_then(|p| p.doc.drawing(id));
+    if !committed.is_some_and(|c| std::ptr::eq(c, d)) {
+        return Ok(None);
+    }
+    let (key, png) = drawing_thumbnail(cx, d, crate::thumbnails::DERIVED_SIDE)?;
+    Ok(Some(json!({
+        "entry": crate::thumbnails::entry_name(&key),
+        "mediaType": "image/png",
+        "size": png.len(),
+        "sha256": tt_persist::fsx::sha256(&png),
+    })))
+}
+
+/// The thumbnail of a committed drawing at its revision, `side` pixels square, from the thumbnails' cache or rendered
+/// now and kept there.
+///
+/// # Errors
+/// The render's errors.
+pub(crate) fn drawing_thumbnail(
+    cx: &crate::cx::Cx,
+    d: &Drawing,
+    side: u32,
+) -> Result<(crate::thumbnails::ThumbnailKey, Arc<Vec<u8>>), CommandError> {
+    let key = crate::thumbnails::ThumbnailKey {
+        drawing_id: d.id().as_str().to_owned(),
+        rev: *d.rev(),
+        size: side.clamp(crate::thumbnails::MIN_SIDE, crate::thumbnails::MAX_SIDE),
+    };
+    let thumbs = cx.session().thumbs.clone();
+    if let Some(png) = thumbs.as_ref().and_then(|t| t.cached(&key)) {
+        return Ok((key, png));
+    }
+    let project = cx.project()?;
+    let cache = cx.planar_cache();
+    let never = || false;
+    let src =
+        super::draw_render::Sources { cache: &cache, blobs: Some(&project.store.blobs), selection: None, stop: &never };
+    let png = Arc::new(super::draw_render::thumbnail_png(&src, &project.doc, d, key.size)?);
+    if let Some(t) = thumbs {
+        t.keep(key.clone(), Arc::clone(&png));
+    }
+    Ok((key, png))
 }

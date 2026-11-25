@@ -195,6 +195,24 @@ pub(crate) fn doc_object_get(cx: &mut Cx, p: GetParams) -> Result<GetResult, Com
             for (name, owner) in derived::add(&doc, *ty, key, &mut m, &cx.planar_cache()) {
                 missing.insert(format!("{}.{name} ({owner})", ty.as_str()));
             }
+            let wanted = p.fields.as_ref().is_none_or(|f| f.iter().any(|x| x == "thumbnail"));
+            if *ty == ObjectType::Drawing
+                && wanted
+                && let Ok(id) = Id::parse(key)
+            {
+                match derived::thumbnail(cx, &doc, &id) {
+                    Ok(Some(blob)) => {
+                        m.insert("thumbnail".into(), blob);
+                    }
+                    Ok(None) => {
+                        missing.insert(format!("drawing.thumbnail ({})", derived::THUMBNAIL_UNCOMMITTED));
+                    }
+                    // A drawing the renderer refuses (its time limit) leaves the read whole: the reason is named.
+                    Err(e) => {
+                        missing.insert(format!("drawing.thumbnail (not rendered: {})", e.code));
+                    }
+                }
+            }
         }
         if let Some(fields) = &p.fields {
             m.retain(|k, _| k == "id" || k == "colourId" || k == "type" || fields.iter().any(|f| f == k));
