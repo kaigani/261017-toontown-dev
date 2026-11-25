@@ -1,0 +1,22 @@
+diff --git a/crates/executor/tests/c52a_r2_cells.rs b/crates/executor/tests/c52a_r2_cells.rs
+index 612df411..04b58290 100644
+--- a/crates/executor/tests/c52a_r2_cells.rs
++++ b/crates/executor/tests/c52a_r2_cells.rs
+@@ -10,7 +10,7 @@
+ //! placements at or after the insertion later, delete blank moves the following ones earlier (a lip-sync track's
+ //! `producedFor.stopFrame` with them); an insertion strictly inside a placement would split the sound, which needs 07's
+ //! placement timing: refused with owner M8 C8.1 (SI-219), and not offered.
+-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
++#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::print_stdout, missing_docs, non_snake_case, reason = "test")]
+ 
+ mod c13_support;
+ mod common;
+diff --git a/crates/executor/tests/c52a_r2_fixes.rs b/crates/executor/tests/c52a_r2_fixes.rs
+index b59f9e66..acd002e6 100644
+--- a/crates/executor/tests/c52a_r2_fixes.rs
++++ b/crates/executor/tests/c52a_r2_fixes.rs
+@@ -1,3 +1,4 @@
++//! M5 C5.2a round 2 (dynamic): the fixes of round 1 (test-hooks).
+ #![cfg(feature = "test-hooks")]
+ #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, dead_code, reason = "test")]
+ mod c13_support;

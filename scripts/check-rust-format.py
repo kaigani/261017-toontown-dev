@@ -17,6 +17,8 @@ REVIEWER_FILES = {
     'crates/executor/tests/c52a_r1_history.rs': 'M5 C5.2a round 1 (dynamic)',
     'crates/executor/tests/c52a_r1_lighttable.rs': 'M5 C5.2a round 1 (dynamic)',
     'crates/executor/tests/c52a_r1_thumbnails.rs': 'M5 C5.2a round 1 (dynamic)',
+    'crates/executor/tests/c52a_r2_cells.rs': 'M5 C5.2a round 2 (dynamic)',
+    'crates/executor/tests/c52a_r2_fixes.rs': 'M5 C5.2a round 2 (dynamic)',
 }
 
 

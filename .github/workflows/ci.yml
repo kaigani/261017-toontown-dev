@@ -349,7 +349,7 @@ jobs:
       # small bound (the unit tests of the bound run in `check`); ruling E-56: the window's thumbnails off the document
       # thread, with the hooks that delay the renderer and bound the cache.
       - name: The undo history's memory bound and the thumbnails (test-hooks, debug)
-        run: cargo test --locked -p tt-executor --features test-hooks --test c52a_history_bound --test c52a_thumbnails --test c52a_history_size --test c52a_r1_thumbnails --test c52a_r1_history
+        run: cargo test --locked -p tt-executor --features test-hooks --test c52a_history_bound --test c52a_thumbnails --test c52a_history_size --test c52a_r1_thumbnails --test c52a_r1_history --test c52a_r2_fixes
 
       - uses: actions/upload-artifact@v7
         if: always()
