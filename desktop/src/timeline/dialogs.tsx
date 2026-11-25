@@ -256,7 +256,8 @@ export function NewElementsDialog(props: {
 }
 
 /** Element Colours (04 §9.6): the marker and the background colour; an empty field leaves that colour as it is. A
- *  colour typed is sent as typed (ruling E-53: the kernel refuses one it cannot read, and the dialog stays open). */
+ *  colour typed is sent as typed, spaces included (rulings E-53, E-62: the kernel refuses one it cannot read, and the
+ *  dialog stays open). */
 export function ColoursDialog(props: {
   /** The element's own colours (empty: the default), the values the dialog starts from (C51B-R1S-05). */
   marker?: string;
@@ -277,8 +278,10 @@ export function ColoursDialog(props: {
       }}
       onSubmit={() => {
         const params: Record<string, unknown> = {};
-        if (marker.trim() !== '') params['marker'] = marker;
-        if (background.trim() !== '') params['background'] = background;
+        // Only a truly empty field leaves that colour as it is; anything typed, spaces included, goes to the kernel
+        // (rulings E-53, E-62: C51B-R3S-03).
+        if (marker !== '') params['marker'] = marker;
+        if (background !== '') params['background'] = background;
         typed.submit(
           () => props.submit(params),
           () => {
@@ -287,7 +290,7 @@ export function ColoursDialog(props: {
         );
       }}
       submitLabel="OK"
-      submitDisabled={marker.trim() === '' && background.trim() === ''}
+      submitDisabled={marker === '' && background === ''}
       command="element.colour.set"
     >
       <label>

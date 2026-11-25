@@ -270,6 +270,12 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
                 host.window_destroyed(window.label());
             }
         }
+        // The active window's text focus is the kernel's (M5 ruling E-62).
+        WindowEvent::Focused(true) => {
+            if let Some(host) = window.app_handle().try_state::<Host>() {
+                host.window_focused(window.label());
+            }
+        }
         WindowEvent::Moved(_) | WindowEvent::Resized(_) => {
             if APPLYING.load(Ordering::Acquire) {
                 return;

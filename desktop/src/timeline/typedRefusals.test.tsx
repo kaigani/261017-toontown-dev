@@ -170,6 +170,34 @@ describe('a dialog with a typed field stays open on a refusal (E-53)', () => {
     expect((el('timelineColours.marker') as HTMLInputElement).value).toBe('green-ish');
   });
 
+  // Ruling E-62 (C51B-R3S-03): only a truly empty field leaves its colour as it is; spaces are typed and are sent.
+  it('Element Colours: a field of spaces is sent with the other, and its refusal keeps the dialog open', async () => {
+    const submit = vi.fn(() => Promise.resolve('Set element colour: not a colour'));
+    const onDone = vi.fn();
+    show(<ColoursDialog submit={submit} onDone={onDone} />);
+    act(() => {
+      fireEvent.change(el('timelineColours.marker'), { target: { value: '   ' } });
+      fireEvent.change(el('timelineColours.background'), { target: { value: '#112233' } });
+    });
+    act(() => {
+      el('timelineColours.submit').click();
+    });
+    await waitFor(() => {
+      expect(el('timelineColours.refusal').textContent).toBe('Set element colour: not a colour');
+    });
+    expect(submit).toHaveBeenCalledWith({ marker: '   ', background: '#112233' });
+    expect(onDone).not.toHaveBeenCalled();
+  });
+
+  it('Element Colours: spaces alone in both fields can be sent (only two empty fields disable OK)', () => {
+    show(<ColoursDialog submit={vi.fn(() => Promise.resolve(null))} onDone={vi.fn()} />);
+    expect((el('timelineColours.submit') as HTMLButtonElement).disabled).toBe(true);
+    act(() => {
+      fireEvent.change(el('timelineColours.marker'), { target: { value: ' ' } });
+    });
+    expect((el('timelineColours.submit') as HTMLButtonElement).disabled).toBe(false);
+  });
+
   it('a second OK while one submission is out sends nothing more', async () => {
     let answer: (v: string | null) => void = () => undefined;
     const submit = vi.fn(

@@ -3885,7 +3885,10 @@ async def timeline_rows(t: Table, bob: str) -> list:
                     await asyncio.sleep(0.1)
                 rename_case[case]["afterKeys"] = name_field(ident)
             key(finish)
-            await asyncio.sleep(0.6)
+            # Until the editor has closed (Enter commits, Escape restores; a wait for the state, D-45), bounded.
+            end = time.monotonic() + 5.0
+            while time.monotonic() < end and name_field(ident) is not None:
+                await asyncio.sleep(0.1)
             rename_case[case]["after"] = name_field(ident)
             t.run.save(f"timeline-rename-{case}.json", rename_case[case])
             return f"a real double click on the row's name, the name typed, {'Enter' if finish == 0x0D else 'Escape'}"
@@ -3924,7 +3927,9 @@ async def timeline_rows(t: Table, bob: str) -> list:
         key(0x41, 0x11)
         type_text("TlContext")
         key(0x0D)
-        await asyncio.sleep(0.6)
+        end = time.monotonic() + 5.0
+        while time.monotonic() < end and name_field(ident) is not None:
+            await asyncio.sleep(0.1)
         rename_case["context"]["after"] = name_field(ident)
         t.run.save("timeline-rename-context.json", rename_case["context"])
         return "a real secondary click on the row, a real click on Rename, the name typed, Enter"
@@ -3990,15 +3995,23 @@ async def timeline_rows(t: Table, bob: str) -> list:
             while time.monotonic() < end and not status:
                 status = t.cdp.js("document.querySelector('[data-tt-id=\"status.line\"]')?.textContent ?? ''") or ""
                 await asyncio.sleep(0.1)
-            await asyncio.sleep(0.3)
+            # The editor shows the reason once the refusal has come back (a wait for the state, D-45), bounded.
+            problem = None
+            end = time.monotonic() + 5.0
+            while time.monotonic() < end and not problem:
+                problem = t.cdp.js(
+                    "document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')?.dataset.ttProblem ?? null"
+                    % json.dumps(ident))
+                await asyncio.sleep(0.1)
             rename_case[case]["status"] = status
             rename_case[case]["after"] = name_field(ident)
-            rename_case[case]["problem"] = t.cdp.js(
-                "document.querySelector('[data-tt-id=' + JSON.stringify(%s) + ']')?.dataset.ttProblem ?? null"
-                % json.dumps(ident))
+            rename_case[case]["problem"] = problem
             rename_case[case]["messageBox"] = bool(t.cdp.js("!!document.querySelector('[role=\"alertdialog\"]')"))
             key(0x1B)
-            await asyncio.sleep(0.6)
+            # Until the editor has left the page (a wait for the state, D-45), bounded.
+            end = time.monotonic() + 5.0
+            while time.monotonic() < end and name_field(ident) is not None:
+                await asyncio.sleep(0.1)
             rename_case[case]["afterEscape"] = name_field(ident)
             t.run.save(f"timeline-rename-{case}.json", rename_case[case])
             return "a real double click on the row's name, the name typed, Enter (refused), then Escape"

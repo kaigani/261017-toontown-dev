@@ -1,0 +1,56 @@
+--- a/crates/executor/tests/c23_r4_closure.rs
++++ b/crates/executor/tests/c23_r4_closure.rs
+@@ -60,6 +60,28 @@
+     panic!("the worker did not answer");
+ }
+ 
++/// Shows the drawing inspector's preview (`drawing.inspectorPreview`) through an executor with an ordinary budget on the
++/// test's user folder; the 200 ms executor started after it reads the preference (ruling E-61, D-71 item 3, D-45: the
++/// setup call's atomic preferences write passed the 200 ms budget on a CI runner, run 45447170146).
++fn preview_shown() {
++    let setup = ExecutorHandle::spawn_with_options(tt_executor::ExecutorOptions {
++        config: ExecutorConfig { budget: Duration::from_secs(30) },
++        persist: tt_executor::PersistOptions {
++            user_dirs: Some(tt_executor::UserDirs::under(&user_dir())),
++            ..Default::default()
++        },
++    })
++    .unwrap();
++    ok(&setup, "draw.inspectorPreview.set", json!({"visible":true}));
++}
++
++/// The 200 ms executor shows the preview as the setup left it: the batch's `visible: false` step is a change to roll
++/// back, not a call that changes nothing.
++fn assert_preview_shown(h: &ExecutorHandle) {
++    let got = ok(h, "prefs.get", json!({"keys":["drawing.inspectorPreview"]}));
++    assert_eq!(got["values"]["drawing.inspectorPreview"], true, "{got}");
++}
++
+ fn prepare(h: &ExecutorHandle) {
+     ok(h, "draw.selection.set", json!({ "drawingId": D, "ids": ["st_round3_7", "st_round3_8"] }));
+     ok(h, "draw.pointSelection.set", json!({ "drawingId": D, "points": [{ "strokeId": "st_round3_7", "anchor": 1 }] }));
+@@ -70,10 +92,11 @@
+ #[test]
+ fn cancelled_session_document_and_prefs_batch_exports_nothing() {
+     let _guard = SERIAL.lock().unwrap();
++    preview_shown();
+     let h = crowded(3000, Duration::from_millis(200));
++    assert_preview_shown(&h);
+     prepare(&h);
+     let drawing = get(&h, D);
+-    ok(&h, "draw.inspectorPreview.set", json!({"visible":true}));
+     let pref_path = user_dir().join("Settings/preferences.json");
+     let prefs = std::fs::read(&pref_path).unwrap();
+     let a = h
+@@ -135,9 +158,10 @@
+ #[test]
+ fn queued_point_and_prefs_calls_timeout_without_late_changes() {
+     let _guard = SERIAL.lock().unwrap();
++    preview_shown();
+     let h = crowded(3000, Duration::from_millis(200));
++    assert_preview_shown(&h);
+     prepare(&h);
+-    ok(&h, "draw.inspectorPreview.set", json!({"visible":true}));
+     let before = session(&h);
+     let path = user_dir().join("Settings/preferences.json");
+     let prefs = std::fs::read(&path).unwrap();

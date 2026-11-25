@@ -79,11 +79,13 @@ struct WindowFacts {
     tree: Option<(Value, Option<u64>)>,
 }
 
-/// The windows' facts and which window reported text focus last.
+/// The windows' facts and which window has the operating system's focus.
 #[derive(Debug, Default)]
 struct Windows {
     facts: std::collections::BTreeMap<String, WindowFacts>,
     order: u64,
+    /// The window the operating system last gave the focus to ([`Host::window_focused`]); `None` before any focus
+    /// event, when the main window's fact counts. A window's report never changes it (M5 ruling E-62, C51B-R3S-02).
     focused: Option<String>,
     /// The float windows the host opened and has not seen destroyed (the main window is always expected): with every
     /// window that reported anything, the freshness quorum (C41-R2-06).
@@ -101,7 +103,9 @@ impl Windows {
         let modal =
             self.facts.values().filter_map(|f| f.modal.as_ref()).max_by_key(|(o, _)| *o).map(|(_, v)| v.clone());
         m.insert("modal".into(), modal.unwrap_or(Value::Null));
-        let focus = self.focused.as_ref().and_then(|l| self.facts.get(l)).is_some_and(|f| f.text_focus);
+        // The active window's own fact (ruling E-62): a report from a window that is not active never overrides it.
+        let active = self.focused.as_deref().unwrap_or("main");
+        let focus = self.facts.get(active).is_some_and(|f| f.text_focus);
         m.insert("textFocus".into(), Value::Bool(focus));
         let trees: Vec<(&String, &(Value, Option<u64>))> =
             self.facts.iter().filter_map(|(l, f)| f.tree.as_ref().map(|t| (l, t))).collect();
@@ -378,9 +382,9 @@ impl Host {
                 if let Some(t) = tree {
                     f.tree = Some((t, seq.and_then(|s| s.as_u64())));
                 }
-                if focus.is_some() {
-                    w.focused = Some(window.to_owned());
-                }
+                // A window reports its own fact; which window is active is the operating system's (M5 ruling E-62,
+                // C51B-R3S-02: a page change in the main window while the person typed in a float made the main window
+                // the active one, and its `false` replaced the float's `true`).
                 m.extend(w.combined());
             }
         }
@@ -391,6 +395,22 @@ impl Host {
         })?;
         self.exec().report_shell(report);
         Ok(json!({}))
+    }
+
+    /// The operating system gave the focus to the window `label` (its `Focused(true)` event; M5 ruling E-62): it becomes
+    /// the active window, and the executor gets that window's current text-focus fact (with the other combined facts).
+    pub fn window_focused(&self, label: &str) {
+        let combined = {
+            let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
+            if w.focused.as_deref() == Some(label) {
+                return;
+            }
+            w.focused = Some(label.to_owned());
+            w.combined()
+        };
+        let report: tt_executor::host::ShellReport =
+            serde_json::from_value(Value::Object(combined)).unwrap_or_default();
+        self.exec().report_shell(report);
     }
 
     /// The documents still to open at start (empty after the first call).

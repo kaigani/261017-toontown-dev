@@ -142,6 +142,11 @@ export async function openContextMenuFor(
     return { outcome: 'notFound', menuId: null };
   }
   const before = document.activeElement;
+  // The menus open before the event (a person's, or one an earlier request opened): the answer names the menu this
+  // event opened, not one of these (C51B-R3S-01).
+  const menus = () =>
+    [...document.querySelectorAll('[data-tt-role="menu"]')].filter((m): m is HTMLElement => m instanceof HTMLElement);
+  const open = new Map(menus().map((m) => [m, m.dataset['ttId']]));
   const seen = { taken: false };
   const probe = (e: Event) => {
     seen.taken = e.defaultPrevented;
@@ -162,23 +167,29 @@ export async function openContextMenuFor(
       r();
     });
   });
-  const menu = document.querySelector('[data-tt-role="menu"]');
-  return { outcome: 'opened', menuId: menu instanceof HTMLElement ? (menu.dataset['ttId'] ?? null) : null };
+  const menu = menus().find((m) => !open.has(m) || open.get(m) !== m.dataset['ttId']) ?? menus()[0];
+  return { outcome: 'opened', menuId: menu?.dataset['ttId'] ?? null };
 }
 
-/** The main window's side of an agent's Shift+F10 (M5 rulings E-48, E-52): each routed request is played here and
- *  answered with what happened. */
+/** The main window's side of an agent's Shift+F10 (M5 rulings E-48, E-52, E-62): each routed request is played here and
+ *  answered with what happened. One request is served at a time, in arrival order: a request waits until the one before
+ *  it has opened its menu and answered, so the menu each answer names is the one that request opened (C51B-R3S-01: two
+ *  requests in one frame both read the second's menu). A request sent on an earlier engine generation opens nothing
+ *  (D-7b: the restart drained its caller; the answer is not awaited). */
 export function useAgentContextMenu(services: ShellServices): void {
   useEffect(() => {
     let disposed = false;
     let unlisten: (() => void) | null = null;
+    let turn: Promise<void> = Promise.resolve();
     void services.engine
       .onAgentContextMenu((request) => {
-        void openContextMenuFor(request.target).then(({ outcome, menuId }) =>
-          services.engine
+        turn = turn.then(async () => {
+          if (disposed || request.generation !== services.engine.generation()) return;
+          const { outcome, menuId } = await openContextMenuFor(request.target);
+          await services.engine
             .contextMenuAnswer({ agentRequest: request.requestId, outcome, target: request.target, menuId })
-            .catch(() => undefined),
-        );
+            .catch(() => undefined);
+        });
       })
       .then((u) => {
         if (disposed) u();

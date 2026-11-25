@@ -66,6 +66,21 @@ async def until(pred, bound: float, step: float = 0.1):
     return None
 
 
+async def _moved(t, before: int) -> bool:
+    """The history has a step after `before` (a person's click recorded)."""
+    return await t.position() > before
+
+
+async def until_async(pred, bound: float, step: float = 0.1):
+    """`until` for a state read through a call (D-45); the bound only guards a hang. Returns the seconds, or None."""
+    start = time.monotonic()
+    while time.monotonic() - start < bound:
+        if await pred():
+            return round(time.monotonic() - start, 2)
+        await asyncio.sleep(step)
+    return None
+
+
 async def check(app: str, run, out: Path, work: Path) -> list:
     rows: list = []
 
@@ -121,10 +136,17 @@ async def check(app: str, run, out: Path, work: Path) -> list:
                     args["view"] = view
                 return await e2e.call(s, "key", args)
 
-            def close_menu():
+            async def close_menu():
+                """Escape on an open menu, then waits until it is gone (D-45)."""
                 if menu_open():
                     d39.front()
                     d39.key(0x1B)
+                await until(lambda: menu_open() is None, 5.0)
+
+            async def kernel_modal() -> bool:
+                """The kernel holds the person's dialog open (the state the key's check reads; the window reports it
+                after it renders the dialog)."""
+                return ((await t.cmd("app.state.get")).get("modal") or {}).get("kind") == "dialog"
 
             # A project with a drawing exposed on 1-12 and a peg, in a shown Timeline.
             await t.cmd("project.create", {"name": "Context menu key", "onUnsaved": "fail"})
@@ -134,7 +156,6 @@ async def check(app: str, run, out: Path, work: Path) -> list:
             await t.cmd("window.panel.set", {"panelId": "timeline", "visible": True, "focus": True})
             await t.cmd("xsheet.currentCell.set", {"elementId": a, "frame": 3})
             await until(lambda: present(f"timeline.row.{a}"), 15.0)
-            await asyncio.sleep(0.5)
 
             # 1. The passing case: the tracks' cell context at the current cell.
             env = await press("timeline.tracks")
@@ -152,23 +173,22 @@ async def check(app: str, run, out: Path, work: Path) -> list:
             before = await t.position()
             ran = await e2e.run_cmd(s, ref.get("commandId") or "", ref.get("params") or {})
             agent_steps = await t.steps_since(before)
-            close_menu()
-            await asyncio.sleep(0.3)
+            await close_menu()
             env = await press("timeline.tracks")
             await until(lambda: present("timeline.cellMenu.timeline.cell.removeKey"), 5.0)
             before = await t.position()
             how = t.click("timeline.cellMenu.timeline.cell.removeKey")
-            await asyncio.sleep(1.0)
+            # The person's step once it is in the history (a wait for the state, D-45).
+            await until_async(lambda: _moved(t, before), 10.0)
             person_steps = await t.steps_since(before)
             row("8. an item is the action of whoever activates it: the agent's run of its reference is an agent step, "
                 "a person's click a user step",
                 ran.get("status") == "ok" and [src for _, src in agent_steps] == ["agent"]
                 and [src for _, src in person_steps] == ["user"],
                 {"reference": ref, "agentSteps": agent_steps, "personClick": how, "personSteps": person_steps})
-            close_menu()
+            await close_menu()
 
             # 2. A control without a context menu: the toolbar's Add.
-            await asyncio.sleep(0.3)
             focus_before = focused()
             env = await press("timeline.add")
             res = env.get("result") or {}
@@ -183,12 +203,16 @@ async def check(app: str, run, out: Path, work: Path) -> list:
                 (env.get("error") or {}).get("code") == "view.notFound" and menu_open() is None, {"answer": env})
 
             # 4. A stale row id: an element deleted.
+            # The row is shown first, then gone (C51B-R3S observation: the row must have existed).
             gone = (await t.cmd("element.create", {"type": "drawing", "name": "Gone"}))["elementIds"][0]
+            shown_first = await until(lambda: present(f"timeline.row.{gone}"), 10.0)
             await t.cmd("element.delete", {"elementIds": [gone]})
-            await until(lambda: not present(f"timeline.row.{gone}"), 10.0)
+            gone_after = await until(lambda: not present(f"timeline.row.{gone}"), 10.0)
             env = await press(f"timeline.row.{gone}")
-            row("4. a stale row id: view.notFound, nothing opened",
-                (env.get("error") or {}).get("code") == "view.notFound" and menu_open() is None, {"answer": env})
+            row("4. a stale row id (the row shown, then deleted): view.notFound, nothing opened",
+                shown_first is not None and gone_after is not None
+                and (env.get("error") or {}).get("code") == "view.notFound" and menu_open() is None,
+                {"answer": env, "shownAfter": shown_first, "goneAfter": gone_after})
 
             # 5. A view that is not a string.
             env = await press(42)
@@ -198,11 +222,11 @@ async def check(app: str, run, out: Path, work: Path) -> list:
             # 6. A dialog the person opened (Element › New Elements, real input): ui.modalOpen, no focus moved.
             d39.choose_menu(["Element", "New Elements"])
             opened = await until(lambda: present("timelineNewElements"), 10.0)
-            await asyncio.sleep(0.5)
+            modal = await until_async(kernel_modal, 10.0)
             focus_before = focused()
             env = await press("timeline.tracks")
             row("6. a dialog open: ui.modalOpen, no menu, the focus unmoved",
-                opened is not None and (env.get("error") or {}).get("code") == "ui.modalOpen" and menu_open() is None
+                opened is not None and modal is not None and (env.get("error") or {}).get("code") == "ui.modalOpen" and menu_open() is None
                 and focused() == focus_before, {"answer": env, "focusBefore": focus_before, "focusAfter": focused()})
             d39.front()
             d39.key(0x1B)
@@ -221,13 +245,14 @@ async def check(app: str, run, out: Path, work: Path) -> list:
                                    "?.getAttribute('aria-disabled') ?? null" % json.dumps(item)) == "false", 10.0)
             t.click(item)
             opened = await until(lambda: present("timelineDuration"), 10.0)
-            await asyncio.sleep(0.5)
+            modal = await until_async(kernel_modal, 10.0)
             focus_before = focused()
             value_before = js("document.activeElement?.value ?? null")
             env = await press(f"timeline.row.{a}.label")
             row("6b. Change Duration open (the reviewer's case): ui.modalOpen, no menu, the field keeps focus and value",
-                opened is not None and (env.get("error") or {}).get("code") == "ui.modalOpen" and menu_open() is None
-                and focused() == focus_before and js("document.activeElement?.value ?? null") == value_before,
+                opened is not None and modal is not None and (env.get("error") or {}).get("code") == "ui.modalOpen"
+                and menu_open() is None and focused() == focus_before
+                and js("document.activeElement?.value ?? null") == value_before,
                 {"answer": env, "focusBefore": focus_before, "focusAfter": focused(), "value": value_before})
             d39.front()
             d39.key(0x1B)
@@ -364,13 +389,16 @@ async def check_mcp(app: str, run, out: Path, work: Path) -> list:
                 (env.get("error") or {}).get("code") == "view.notFound" and menu_of(await tree()) == shown,
                 {"answer": env})
 
+            # The row is shown first, then gone (C51B-R3S observation: the row must have existed).
             gone = (await t.cmd("element.create", {"type": "drawing", "name": "Gone"}))["elementIds"][0]
+            _, shown_first = await wait_tree(lambda r: t.node(r, f"timeline.row.{gone}") is not None, 10.0)
             await t.cmd("element.delete", {"elementIds": [gone]})
-            await wait_tree(lambda r: t.node(r, f"timeline.row.{gone}") is None, 10.0)
+            _, gone_after = await wait_tree(lambda r: t.node(r, f"timeline.row.{gone}") is None, 10.0)
             env = await press(f"timeline.row.{gone}")
-            row("4. a stale row id: view.notFound, nothing opened",
-                (env.get("error") or {}).get("code") == "view.notFound" and menu_of(await tree()) == shown,
-                {"answer": env})
+            row("4. a stale row id (the row shown, then deleted): view.notFound, nothing opened",
+                shown_first is not None and gone_after is not None
+                and (env.get("error") or {}).get("code") == "view.notFound" and menu_of(await tree()) == shown,
+                {"answer": env, "shownAfter": shown_first, "goneAfter": gone_after})
 
             env = await press(42)
             row("5. a non-string view: arg.invalid, nothing opened",

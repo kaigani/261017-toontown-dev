@@ -437,6 +437,10 @@ pub fn on_window_event(window: &tauri::Window, event: &WindowEvent) {
             }
         }
         WindowEvent::Focused(true) => {
+            // The active window's text focus is the kernel's (M5 ruling E-62), whatever the panel focus does next.
+            if let Some(host) = app.try_state::<Host>() {
+                host.window_focused(&l);
+            }
             if guard().settling(&l, Instant::now()) {
                 return;
             }
