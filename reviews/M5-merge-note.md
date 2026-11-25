@@ -77,8 +77,11 @@ passes).
   in that test). **Bounded meanwhile (E-73 items 1 and 3):** the undo history counts the memory its steps hold (within
   1.5 times of the allocator's measure for small, medium and large values), and the revision log keeps its earlier
   documents within 256 MiB by the same estimate (each weighed by the entries it replaced and its own index), the oldest
-  let go first; a revision whose document was let go still diffs exactly from its back-patches, only slower, and the
-  records themselves are kept as 10 AG-09 asks (to the last save and the last 10,000 transactions).
+  let go first; a revision whose document was let go still diffs exactly from its back-patches, only slower. Since E-77
+  the records' other holdings count too (back patches, a snapshot in `back`), and past the bound the oldest records go
+  whole, never the newest: a diff from an older base answers `doc.diffUnavailable`, which in a session of large
+  whole-document records (checkpoint restores on a big drawing) can come before 10 AG-09's last save or 10,000
+  transactions (SI-222, the user's).
 - **Keying many nodes slows down as keys accumulate.** `anim.key.add` on 200 pegs at one frame takes about 1.2 s with
   no keys yet and about 10.8 s with 75 to 100 keys on each peg (release). Each addition costs in proportion to the keys
   already on the curves it touches (the commit above, plus the undo record below).
