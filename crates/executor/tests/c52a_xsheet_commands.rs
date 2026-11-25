@@ -176,7 +176,7 @@ fn sending_the_selected_cells_and_the_refusals() {
         drawings.iter().map(|d| json!(d)).collect::<Vec<_>>()
     );
     let e = err(&h, "xsheet.lightTable.add", json!({ "items": [{ "elementId": peg }] }));
-    assert_eq!((e.code.as_str(), e.details["pointer"].as_str()), ("cell.typeMismatch", Some("/items/0/elementId")));
+    assert_eq!((e.code.as_str(), e.details["pointer"].as_str()), ("cell.notApplicable", Some("/items/0/elementId")));
     let e = err(&h, "xsheet.lightTable.add", json!({ "items": [{ "elementId": bob, "frame": 9 }] }));
     assert_eq!(e.code, "drawing.noTarget");
     let e = err(

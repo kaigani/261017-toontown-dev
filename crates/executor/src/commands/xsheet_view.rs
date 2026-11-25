@@ -344,7 +344,23 @@ pub(crate) struct LightAddResult {
 /// `xsheet.lightTable.add` without items: the cell selection must expose a drawing.
 pub(crate) fn precheck_light_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     super::timing::scene_id(cx, None)?;
-    if v.get("items").is_some() {
+    if let Some(items) = v.get("items").and_then(Value::as_array) {
+        // An item's element of a type the light table does not take is refused here as the handler refuses it (04
+        // §13.20; prechecks = handlers).
+        let doc = cx.document()?;
+        for (i, it) in items.iter().enumerate() {
+            let Some(r) = it.get("elementId").and_then(Value::as_str) else { continue };
+            let Ok(id) = element_id(cx, r, &format!("/items/{i}/elementId")) else { continue };
+            if doc.element(&id).is_some_and(|e| {
+                !matches!(e.element_type(), ElementType::Drawing | ElementType::Image | ElementType::Annotation)
+            }) {
+                return Err(err(
+                    "cell.notApplicable",
+                    "only drawings, images and annotations can go to the static light table (04 §13.20, §15.1)",
+                    json!({ "pointer": format!("/items/{i}/elementId") }),
+                ));
+            }
+        }
         return Ok(());
     }
     if selected_drawings(cx)?.is_empty() {
@@ -383,9 +399,10 @@ fn light_source(cx: &Cx, it: &LightAddItem, i: usize) -> Result<(Id, Id), Comman
         err("element.notFound", "no such element", json!({ "pointer": format!("/items/{i}/elementId") }))
     })?;
     if !matches!(e.element_type(), ElementType::Drawing | ElementType::Image | ElementType::Annotation) {
+        // 04 §13.20: a command invoked on an element type it is not available for reports `cell.notApplicable`.
         return Err(err(
-            "cell.typeMismatch",
-            "only drawings and images can go to the static light table (04 §15.1)",
+            "cell.notApplicable",
+            "only drawings, images and annotations can go to the static light table (04 §13.20, §15.1)",
             json!({ "pointer": format!("/items/{i}/elementId") }),
         ));
     }

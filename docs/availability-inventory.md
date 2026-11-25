@@ -987,7 +987,7 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `xsheet.columnWidth.set` | `element.noCurrent` | precheck | no `elementId` and no current element | untestable: a project always has a current element: a new project makes its first element current, another becomes current when it goes, and a scene's last camera cannot be deleted |
 | `xsheet.columnWidth.set` | `element.notFound` | parameter | the element the caller names does not exist |  |
 | `xsheet.lightTable.add` | `arg.invalid` | parameter | an item gives both `frame` and `drawingId`, or names an element of another scene |  |
-| `xsheet.lightTable.add` | `cell.typeMismatch` | parameter | an item names an element that is not a drawing, image or annotation element |  |
+| `xsheet.lightTable.add` | `cell.notApplicable` | parameter | an item names an element that is not a drawing, image or annotation element (04 §13.20) |  |
 | `xsheet.lightTable.add` | `command.disabled` | precheck | no current scene | untestable: a project always has a current scene: it is created with one, and no implemented command deletes a scene or clears the current one |
 | `xsheet.lightTable.add` | `drawing.noTarget` | precheck | no items and the selected cells expose no drawing (with items: the caller's cell is empty, a parameter) | refuse: drawing · pass: drawing+cell-selected |
 | `xsheet.lightTable.add` | `drawing.notFound` | parameter | an item's `drawingId` is not in the element's bank |  |
