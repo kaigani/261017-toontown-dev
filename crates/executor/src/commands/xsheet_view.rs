@@ -8,6 +8,7 @@ use schemars::JsonSchema;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 use tt_model::Id;
+use tt_model::document::Document;
 use tt_model::entities::element::ElementType;
 use tt_registry::{CommandError, codes, command};
 
@@ -373,22 +374,38 @@ pub(crate) fn precheck_light_add(cx: &Cx, v: &Value) -> Result<(), CommandError>
     Ok(())
 }
 
+/// The most items one `xsheet.lightTable.add` takes (its schema's bound).
+pub(crate) const LIGHT_ADD_MAX: usize = 256;
+
 /// The distinct (element, drawing) pairs the cell selection exposes, in column then frame order.
 fn selected_drawings(cx: &Cx) -> Result<Vec<(Id, Id)>, CommandError> {
     let doc = cx.document()?;
     let Some((elements, from, to)) = super::timing::selected_cells(cx) else { return Ok(Vec::new()) };
+    let (from, to) = (u32::try_from(from).unwrap_or(u32::MAX), u32::try_from(to).unwrap_or(u32::MAX));
+    Ok(light_table_drawings(doc, &elements, from, to))
+}
+
+/// The distinct (element, drawing) pairs cells expose that the static light table takes (the drawing, image and
+/// annotation columns, 04 §13.20, §15.1), in column then frame order: what the command without items sends for the
+/// selection and what cells dragged onto the panel send (the timing-gesture interpreter).
+pub(crate) fn light_table_drawings(doc: &Document, elements: &[Id], from: u32, to: u32) -> Vec<(Id, Id)> {
     let mut out: Vec<(Id, Id)> = Vec::new();
     for e in elements {
-        for f in from..=to {
-            let frame = u32::try_from(f).unwrap_or(u32::MAX);
-            if let Some(d) = AppContext::exposed_drawing(doc, &e, frame)
-                && !out.iter().any(|(oe, od)| *oe == e && *od == d)
+        let takes = doc.element(e).is_some_and(|el| {
+            matches!(el.element_type(), ElementType::Drawing | ElementType::Image | ElementType::Annotation)
+        });
+        if !takes {
+            continue;
+        }
+        for frame in from..=to {
+            if let Some(d) = AppContext::exposed_drawing(doc, e, frame)
+                && !out.iter().any(|(oe, od)| oe == e && *od == d)
             {
                 out.push((e.clone(), d));
             }
         }
     }
-    Ok(out)
+    out
 }
 
 /// Resolves one item to its element and drawing.

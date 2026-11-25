@@ -9,6 +9,7 @@
 //! | Click a cell | `cell.select` of the cell, `xsheet.currentCell.set` (extend: the rectangle from the current cell) |
 //! | Drag from a cell outside the selection | `cell.select` of the rectangle (frames × columns), `xsheet.currentCell.set` |
 //! | Drag the selected cells | `cell.range.move` (move, copy or link by the modifiers; another column: `targetElementId`) |
+//! | Drag the selected cells onto the light-table panel | `xsheet.lightTable.add {items}`: the drawings they expose |
 //! | Drag an exposure's bottom edge | `cell.exposure.add` / `cell.exposure.remove` of the frames dragged (following cells shift) |
 //! | Click a column header | `element.select`, `element.current.set` (extend and toggle as the Timeline's rows) |
 //! | Drag a column header | `element.order.set {order: "xsheet"}` |
@@ -199,6 +200,21 @@ pub(crate) fn plan(
                     ),
                 ],
             }
+        }
+        Target::SheetCell { selected: true, .. } if g.light_table.is_some_and(|r| r.contains(last.x, last.y)) => {
+            // 04 §15.2: cells dragged onto the panel send their drawings (the distinct drawings of the drawing, image
+            // and annotation columns, in column then frame order: the rule of the command without items).
+            let Some((els, from, to)) = &state.cells else { return Plan::Nothing };
+            let pairs = crate::commands::xsheet_view::light_table_drawings(doc, els, *from, *to);
+            if pairs.is_empty() {
+                return Plan::Nothing;
+            }
+            let items: Vec<serde_json::Value> = pairs
+                .iter()
+                .take(crate::commands::xsheet_view::LIGHT_ADD_MAX)
+                .map(|(e, d)| json!({ "elementId": e.as_str(), "drawingId": d.as_str() }))
+                .collect();
+            one("xsheet.lightTable.add", json!({ "items": items }))
         }
         Target::SheetCell { column, frame, selected: true, .. } => {
             let Some((els, from, to)) = &state.cells else { return Plan::Nothing };

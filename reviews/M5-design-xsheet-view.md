@@ -64,7 +64,7 @@ offsets) sent with the press as the Timeline's layout is.
 | Drag the bottom edge of an exposure | `xsheet.grid` | `cell.exposure.add` / `cell.exposure.remove {frames}` (following cells shift) |
 | Drag a column header | `xsheet.headers` | `element.order.set {order: "xsheet"}` |
 | Drag a header border | `xsheet.headers` | `xsheet.columnWidth.set` (window-only drag, one command at release) |
-| Drag cells onto the light-table panel | `xsheet.grid` → `xsheet.lightTable` | `xsheet.lightTable.add {items}` |
+| Drag the selected cells onto the light-table panel | `xsheet.grid` (the panel's rectangle in the layout, `lightTable`) | `xsheet.lightTable.add {items}`: the distinct drawings of the drawing, image and annotation columns, the rule of the command without items |
 | Library item, external files onto the grid | — | refused with their owners (M9 08, M10 09) until then |
 
 Each row is a D-23 row and a three-way row (window, interpreter replay, direct commands; event path in CI, real input

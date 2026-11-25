@@ -59,8 +59,34 @@ pub struct GestureLayout {
     /// The sheet's horizontal scroll in pixels (its columns; the Timeline scrolls by `first_frame`).
     #[serde(default)]
     pub scroll_left: f64,
+    /// The sheet's static light-table panel, where it is shown (04 §15.2: cells dragged onto it are sent to it), in
+    /// the surface's own pixels as the samples are (not scrolled with the grid).
+    #[serde(default)]
+    pub light_table: Option<DropRect>,
     /// `windows`, `macos` or `linux` (the modifier roles, SI-211).
     pub platform: String,
+}
+
+/// A drop target's rectangle in a surface's pixels.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize)]
+#[serde(deny_unknown_fields)]
+pub struct DropRect {
+    /// Left edge.
+    pub x: f64,
+    /// Top edge.
+    pub y: f64,
+    /// Width.
+    pub width: f64,
+    /// Height.
+    pub height: f64,
+}
+
+impl DropRect {
+    /// Whether a point is inside.
+    #[must_use]
+    pub fn contains(&self, x: f64, y: f64) -> bool {
+        x >= self.x && x < self.x + self.width && y >= self.y && y < self.y + self.height
+    }
 }
 
 /// One pointer sample in the surface's own pixels (tracks and layers: y from the top of the first row; ruler: y within
@@ -1160,6 +1186,7 @@ mod tests {
             first_frame: u32::try_from(first).unwrap_or(1),
             scroll_top: 0.0,
             scroll_left: 0.0,
+            light_table: None,
             platform: "windows".to_owned(),
         }
     }

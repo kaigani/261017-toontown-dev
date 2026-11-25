@@ -63,6 +63,7 @@ fn state(h: &ExecutorHandle) -> Value {
     json!({
         "sheet": ok(h, "xsheet.exposures.get", json!({})),
         "selection": ok(h, "cell.selection.get", json!({})),
+        "lightTable": ok(h, "xsheet.lightTable.list", json!({})),
         "app": ok(h, "app.state.get", json!({})),
         "rev": rev(h),
     })
@@ -70,14 +71,18 @@ fn state(h: &ExecutorHandle) -> Value {
 
 /// The plan equals the expectation; the window's press and release commit it; the direct commands give the same state.
 fn three_way(setup: &dyn Fn(&ExecutorHandle), surface: &str, samples: Value, expected: Value) {
+    three_way_in(setup, layout(surface), samples, expected);
+}
+
+/// [`three_way`] with a given layout.
+fn three_way_in(setup: &dyn Fn(&ExecutorHandle), layout: Value, samples: Value, expected: Value) {
     let (hw, hd) = (fixture(), fixture());
     setup(&hw);
     setup(&hd);
-    let plan = hw.timing_replay(Origin::User, layout(surface), samples.clone(), false).unwrap()["plan"].clone();
+    let plan = hw.timing_replay(Origin::User, layout.clone(), samples.clone(), false).unwrap()["plan"].clone();
     assert_eq!(plan, expected, "the interpreter's plan");
-    let press = hw
-        .timing_gesture(Origin::User, json!({"phase": "press", "layout": layout(surface), "sample": samples[0]}))
-        .unwrap();
+    let press =
+        hw.timing_gesture(Origin::User, json!({"phase": "press", "layout": layout, "sample": samples[0]})).unwrap();
     let out = hw
         .timing_gesture(Origin::User, json!({"phase": "release", "grabId": press["grabId"], "samples": samples}))
         .unwrap();
@@ -159,6 +164,57 @@ fn dragging_the_selected_cells_moves_them_down() {
                                  "mode": "copy", "options": options}],
         ]}),
     );
+}
+
+#[test]
+fn dragging_the_selected_cells_onto_the_light_table_panel_sends_their_drawings() {
+    let h = fixture();
+    let sheet = ok(&h, "xsheet.exposures.get", json!({}));
+    let shown: Vec<Value> =
+        sheet["columns"].as_array().unwrap().iter().filter(|c| c["visible"] == true).cloned().collect();
+    let ids: Vec<String> = shown.iter().map(|c| c["elementId"].as_str().unwrap().to_owned()).collect();
+    assert!(shown.iter().any(|c| c["elementType"] == "media"), "the selection holds a column the table does not take");
+    // Expected from the spec (04 §15.1, §13.20): the distinct drawings of the drawing, image and annotation columns in
+    // frames 1 to 4, in column then frame order.
+    let mut items: Vec<Value> = Vec::new();
+    for c in &shown {
+        if !["drawing", "image", "annotation"].contains(&c["elementType"].as_str().unwrap()) {
+            continue;
+        }
+        let mut runs: Vec<&Value> = c["exposures"].as_array().into_iter().flatten().collect();
+        runs.sort_by_key(|r| r["from"].as_u64());
+        for r in runs.iter().filter(|r| r["from"].as_u64().unwrap() <= 4) {
+            let item = json!({"elementId": c["elementId"], "drawingId": r["drawingId"]});
+            if !items.contains(&item) {
+                items.push(item);
+            }
+        }
+    }
+    assert!(!items.is_empty());
+    let ids2 = ids.clone();
+    let select = move |h: &ExecutorHandle| {
+        ok(h, "cell.select", json!({"elementIds": ids2, "from": 1, "to": 4}));
+    };
+    let mut with_panel = layout("xsheetGrid");
+    with_panel["lightTable"] = json!({"x": 0.0, "y": 600.0, "width": 400.0, "height": 200.0});
+    let (x, y0) = cell(0, 2);
+    three_way_in(
+        &select,
+        with_panel.clone(),
+        json!([s(x, y0), s(x + 30.0, 700.0)]),
+        json!({"kind": "commands", "commands": [["xsheet.lightTable.add", {"items": items}]]}),
+    );
+    // The same drawings as the command without items sends for the selection (one rule).
+    let (hd, hs) = (fixture(), fixture());
+    select(&hd);
+    select(&hs);
+    ok(&hd, "xsheet.lightTable.add", json!({"items": items}));
+    ok(&hs, "xsheet.lightTable.add", json!({}));
+    assert_eq!(ok(&hd, "xsheet.lightTable.list", json!({})), ok(&hs, "xsheet.lightTable.list", json!({})));
+    // Released outside the panel, the same drag moves the cells as before.
+    select(&h);
+    let plan = h.timing_replay(Origin::User, with_panel, json!([s(x, y0), s(x, y0 + 2.0 * ROW)]), false).unwrap();
+    assert_eq!(plan["plan"]["commands"][0][0], "cell.range.move", "{plan}");
 }
 
 #[test]
