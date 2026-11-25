@@ -91,3 +91,29 @@ fn p2_scenes_save_and_exact_cleanup(){
  assert_eq!(err(&h,"storyline.scene.delete",json!({"sceneId":a})).code,"command.notImplemented");
  ok(&h,"app.context.set",json!({"sceneId":b}));assert_eq!(lists(&h),before_b);
 }
+#[test]
+fn p3_add_types_empty_frame_and_no_selection(){
+ let h=fixture();
+ let all=ok(&h,"doc.object.find",json!({"type":"element","limit":1000}))["items"].as_array().unwrap().clone();
+ for item in all {
+ let id=item["id"].clone();let obj=get(&h,id.as_str().unwrap());
+ if !obj["path"].as_str().unwrap().starts_with("scene:\"Intro\""){continue;}
+ let ty=obj["elementType"].as_str().unwrap();
+ let before=lists(&h);
+ if ["drawing","image","annotation"].contains(&ty) {
+ let mut d=ok(&h,"element.drawing.list",json!({"elementId":id}))["drawings"][0]["id"].clone();
+ if d.is_null(){d=ok(&h,"element.drawing.create",json!({"elementId":id,"name":"Matrix"}))["drawingId"].clone();}
+ ok(&h,"xsheet.lightTable.add",json!({"items":[{"elementId":id,"drawingId":d}]}));
+ assert_eq!(lists(&h).len(),before.len()+1);
+ }else{
+ assert_eq!(err(&h,"xsheet.lightTable.add",json!({"items":[{"elementId":id,"frame":1}]})).code,"cell.notApplicable","{ty}");
+ assert_eq!(lists(&h),before);
+ }
+ }
+ let before=lists(&h);
+ assert_eq!(err(&h,"xsheet.lightTable.add",json!({"items":[{"elementId":BOB,"frame":999}]})).code,"drawing.noTarget");
+ assert_eq!(lists(&h),before);
+ ok(&h,"edit.deselectAll",json!({}));
+ assert_eq!(err(&h,"xsheet.lightTable.add",json!({})).code,"drawing.noTarget");
+ assert_eq!(lists(&h),before);
+}
