@@ -37,3 +37,27 @@ fn a2_seeded_two_family_trace(){
  lists(&h);assert_eq!(rev(&h),r);assert_eq!(ok(&h,"edit.history.get",json!({"limit":1000})),hist);
  }
 }
+#[test]
+fn a3_limits_and_notices(){
+ let h=fixture();
+ for w in [19,20,1000,1001] {
+ let r=run(&h,"xsheet.columnWidth.set",json!({"elementId":BOB,"width":w}));
+ if w==19 || w==1001 {assert_eq!(r.error.unwrap().code,"arg.invalid");}else{assert!(r.is_ok());}
+ ok(&h,"doc.state.get",json!({}));
+ }
+ assert_eq!(ok(&h,"xsheet.columnWidth.set",json!({"reset":true}))["widths"],json!({}));
+ let id=ok(&h,"xsheet.lightTable.add",json!({"items":[{"elementId":BOB,"frame":1}]}))["itemIds"][0].clone();
+ for (item,index,code) in [(id,1000,"arg.invalid"),(json!("lt999999"),0,"ref.notFound")] {
+ assert_eq!(err(&h,"xsheet.lightTable.move",json!({"itemId":item,"index":index})).code,code);
+ ok(&h,"doc.state.get",json!({}));
+ }
+ for (cmd,key) in [("xsheet.display.set","thumbnails"),("xsheet.panel.set","elementList")] {
+ let initial=ok(&h,cmd,json!({}))[key].as_bool().unwrap();
+ let rx=h.subscribe();
+ ok(&h,cmd,json!({key:!initial}));
+ assert_eq!(rx.try_iter().filter(|e|e.name=="shell.xsheetView").count(),1);
+ ok(&h,cmd,json!({key:!initial}));
+ assert_eq!(rx.try_iter().filter(|e|e.name=="shell.xsheetView").count(),0);
+ ok(&h,"doc.state.get",json!({}));
+ }
+}
