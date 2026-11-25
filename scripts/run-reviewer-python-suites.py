@@ -111,6 +111,9 @@ NOT_SUITES = {
     # M5 C5.1b round 2 (declared in reviews/M5-C5.1b-handoff-r3.md): the live reviewer's runner, as round 1's.
     "c51b-r2-live.py": "Windows live runner of the running application (round 2 of C5.1b, importing round 1's): needs "
     "a step number; receipts retained under reviews/evidence/M5-C5.1b-r2/review/",
+    # M5 C5.1b closure (declared in the round 3 handoff's addendum): the live closure runner, as rounds 1 and 2's.
+    "c51b-r3-live.py": "Windows live runner of the running application (the C5.1b closure, importing rounds 1 and 2): "
+    "needs a step number and 120 GB free; receipts retained under reviews/evidence/M5-C5.1b-r3/review/",
 }
 # Single tests of a suite that are fixed-commit receipts of a finding rather than live checks: the suite runs every other
 # test (by name). Each entry names its live counterpart.

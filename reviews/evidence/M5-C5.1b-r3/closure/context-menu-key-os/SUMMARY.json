@@ -1,0 +1,177 @@
+{
+ "receipt": "reviews/evidence/M5-C5.1b-r3/closure/context-menu-key-os",
+ "verdict": "pass",
+ "regenerate": "python scripts/c51b-context-menu-key.py <release build> <out> --mode os",
+ "manifest": {
+  "kind": "toontown.c51b.context-menu-key",
+  "mode": "os",
+  "seconds": 7.6,
+  "rows": 9,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "E-52 1. the passing case: the cell context opens and the answer names it"
+  },
+  {
+   "ok": true,
+   "check": "E-52 8. an item is the action of whoever activates it: the agent's run of its reference is an agent step, a person's click a user step"
+  },
+  {
+   "ok": true,
+   "check": "E-52 2. a control without a context menu: handled false, nothing opened, the focus back"
+  },
+  {
+   "ok": true,
+   "check": "E-52 3. an unknown control: view.notFound, nothing opened"
+  },
+  {
+   "ok": true,
+   "check": "E-52 4. a stale row id (the row shown, then deleted): view.notFound, nothing opened"
+  },
+  {
+   "ok": true,
+   "check": "E-52 5. a non-string view: arg.invalid, nothing opened"
+  },
+  {
+   "ok": true,
+   "check": "E-52 6. a dialog open: ui.modalOpen, no menu, the focus unmoved"
+  },
+  {
+   "ok": true,
+   "check": "E-52 6b. Change Duration open (the reviewer's case): ui.modalOpen, no menu, the field keeps focus and value"
+  },
+  {
+   "ok": true,
+   "check": "E-52 7. the rename editor open: ui.busy (the field keeps its Shift+F10), its text kept, no menu"
+  }
+ ],
+ "rows": [
+  {
+   "name": "1. the passing case: the cell context opens and the answer names it",
+   "ok": true,
+   "detail": {
+    "answer": {
+     "status": "ok",
+     "result": {
+      "handled": true,
+      "contextMenu": "timeline.tracks",
+      "menuId": "timeline.cellMenu"
+     },
+     "changes": [],
+     "warnings": [],
+     "documentRev": null
+    },
+    "menu": "timeline.cellMenu"
+   }
+  },
+  {
+   "name": "8. an item is the action of whoever activates it: the agent's run of its reference is an agent step, a person's click a user step",
+   "ok": true,
+   "detail": {
+    "reference": {
+     "commandId": "anim.key.add",
+     "params": {
+      "nodeIds": [
+       "el_01K7JJN800VQRVSSZHC0BE6XBC"
+      ],
+      "frame": 3
+     }
+    },
+    "agentSteps": [
+     [
+      "Add Keyframe",
+      "agent"
+     ]
+    ],
+    "personClick": "real OS click",
+    "personSteps": [
+     [
+      "Remove Keyframe",
+      "user"
+     ]
+    ]
+   }
+  },
+  {
+   "name": "2. a control without a context menu: handled false, nothing opened, the focus back",
+   "ok": true,
+   "detail": {
+    "answer": {
+     "status": "ok",
+     "result": {
+      "handled": false,
+      "reason": "noContextMenu",
+      "control": "timeline.add"
+     },
+     "changes": [],
+     "warnings": [],
+     "documentRev": null
+    },
+    "focusBefore": "timeline.tracks",
+    "focusAfter": "timeline.tracks"
+   }
+  },
+  {
+   "name": "3. an unknown control: view.notFound, nothing opened",
+   "ok": true,
+   "detail": {
+    "answer": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "view.notFound",
+      "message": "the window has no control `timeline.noSuchControl`",
+      "details": {
+       "view": "timeline.noSuchControl",
+       "reason": "noControl",
+       "pointer": "/view"
+      }
+     }
+    }
+   }
+  },
+  {
+   "name": "4. a stale row id (the row shown, then deleted): view.notFound, nothing opened",
+   "ok": true
+  },
+  {
+   "name": "5. a non-string view: arg.invalid, nothing opened",
+   "ok": true
+  },
+  {
+   "name": "6. a dialog open: ui.modalOpen, no menu, the focus unmoved",
+   "ok": true
+  },
+  {
+   "name": "6b. Change Duration open (the reviewer's case): ui.modalOpen, no menu, the field keeps focus and value",
+   "ok": true
+  },
+  {
+   "name": "7. the rename editor open: ui.busy (the field keeps its Shift+F10), its text kept, no menu",
+   "ok": true
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 134,
+   "sha256": "0ae6e1ed4a37e43c8a46949c8873d426d00b7345a560a1c74125cb1271aac82a"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 5660,
+   "sha256": "741332af3684f68d4201bb90a9302a8f7fd96edc0b8efc91f0f50c6b6d2bb566"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 5714,
+   "sha256": "e39a1562ef78701c4dd2447adbf13dbee4c02572cd4c7e293b71bb24d00505d1"
+  }
+ ]
+}

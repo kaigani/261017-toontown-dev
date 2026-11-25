@@ -145,7 +145,9 @@ export async function openContextMenuFor(
   // The menus open before the event (a person's, or one an earlier request opened): the answer names the menu this
   // event opened, not one of these (C51B-R3S-01).
   const menus = () =>
-    [...document.querySelectorAll('[data-tt-role="menu"]')].filter((m): m is HTMLElement => m instanceof HTMLElement);
+    [...document.querySelectorAll('[data-tt-role="menu"]')].filter(
+      (m): m is HTMLElement => m instanceof HTMLElement,
+    );
   const open = new Map(menus().map((m) => [m, m.dataset['ttId']]));
   const seen = { taken: false };
   const probe = (e: Event) => {

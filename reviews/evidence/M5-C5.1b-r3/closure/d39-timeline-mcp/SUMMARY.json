@@ -1,0 +1,4364 @@
+{
+ "receipt": "reviews/evidence/M5-C5.1b-r3/closure/d39-timeline-mcp",
+ "verdict": "pass",
+ "regenerate": "python scripts/c43-d39-bindings.py <release build> <out> --mode mcp --only \"Timeline,main toolbar › playStop,main toolbar › lastFrame\"",
+ "manifest": {
+  "kind": "toontown.c43b.d39-bindings",
+  "mode": "mcp",
+  "seconds": 261.3,
+  "rows": 87,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Drawing: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Annotation: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Image: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Sound: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Media: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Peg: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Camera: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Skeleton: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Colour Transform: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Clipping: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Drop Shadow: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Blur: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Shake: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Particle Nature: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Particle Impact: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Add Parent Peg: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1382; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Cut: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1094; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Copy: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1095; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Paste: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1096; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Delete: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1388; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Bring to Front: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Bring Forward: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Send Backward: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Send to Back: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Collapse: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1398; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Select Parent: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Select Children: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Select Child: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Select Previous Sibling: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Select Next Sibling: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Select Skeleton Root: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Attach to Next Object: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1391; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Detach from Parent: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1392; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Hide: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Show All: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Hide All Others: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Show All Others: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Hide All: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Show All Annotation Elements: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Hide All Annotation Elements: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Default Colour: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1403; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Show All Effect Parameters: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1446; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Hide All Effect Parameters: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1446; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Set as Annotation: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1402; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Lock: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Lock All Others: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Lock All: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Unlock All: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Clone: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1386; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Duplicate: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1387; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Cut: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1094; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Copy: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1095; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Paste: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1096; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Delete: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/01_application_shell.md:1098; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Add Keyframe: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1257; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Remove Keyframe: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1258; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Set Constant Segment: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1261; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Set Non-Constant Segment: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1261; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Uniform Left: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1262; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline cell menu › Uniform Right: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1262; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Remove All Keyframes: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1258; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Toggle Constant Z: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/05_scene_planning.md:1256; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline ruler menu › Automatic Fit: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline ruler menu › Free: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline ruler menu › Set Playback Start Here: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline ruler menu › Set Playback End Here: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline row menu › Rename (in place): runs in the OS form only (the name is typed by the person into the editor the item opens)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row rename (double click, Enter): runs in the OS form only (the editor opens on a real double click on the row's name; the typed name is the person's)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row rename (Escape): runs in the OS form only (the editor opens on a real double click on the row's name; Escape is the person's)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row rename (keys stay in the editor): runs in the OS form only (real keys typed into the open editor: an agent's `key` tool is refused while a text field has the focus)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row rename refused (element.nameEmpty): the status line says why, the editor stays open: runs in the OS form only (the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row rename refused (element.nameInvalid): the status line says why, the editor stays open: runs in the OS form only (the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row rename refused (element.nameDuplicate): the status line says why, the editor stays open: runs in the OS form only (the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row rename refused (element.nameTooLong): the status line says why, the editor stays open: runs in the OS form only (the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Add: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1381; 04 lines 604-605)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Parent Peg: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1382; 04 lines 604-605)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Solo: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1400; 04 lines 604-605)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Show All: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 604-605)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row disclosure: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1398; 04 lines 604-605)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › row visibility: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1399; 04 lines 604-605)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Zoom: runs in the OS form only (a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared reference is the current value))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › scroll bar: runs in the OS form only (a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared reference is the current value))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 main toolbar › playStop: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/09_playback_export.md:995; spec/09_playback_export.md:996; 09 §2.2)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 main toolbar › lastFrame: the window declares exactly the command, which changes the state and makes the spec's undo steps (spec/04_timeline_xsheet.md:1439; 09 §2.2)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › the layout settles: runs in the OS form only (the canvas's size is the window's layout, read through the webview's debugging port in the OS form)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 status bar › jobs: a running job shows and goes when it ends (01 §9.1)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 File › Open Recent › an entry's full path: the window tree's Open Recent entry names its full path (01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\"))"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Add: disabled in the window's tree while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Parent Peg: disabled in the window's tree while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Solo: disabled in the window's tree while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 Timeline › toolbar Show All: disabled in the window's tree while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 main toolbar › playStop: disabled in the window's tree while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  },
+  {
+   "ok": true,
+   "check": "D-39 main toolbar › lastFrame: disabled in the window's tree while the precheck refuses (no project, 01 §1.3 lines 71-75)"
+  }
+ ],
+ "rows": [
+  {
+   "name": "Timeline row menu › Add Drawing",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8009J3E70AQ7Z9387X0",
+    "timeline.rowMenu.timeline.row.add.drawing",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "drawing",
+       "above": "el_01K7JJN8009J3E70AQ7Z9387X0"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "drawing",
+       "above": "el_01K7JJN8009J3E70AQ7Z9387X0"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "drawing",
+        "above": "el_01K7JJN8009J3E70AQ7Z9387X0"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Annotation",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800HR95XKE1AW1TYZ7T",
+    "timeline.rowMenu.timeline.row.add.annotation",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "annotation",
+       "above": "el_01K7JJN800HR95XKE1AW1TYZ7T"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "annotation",
+       "above": "el_01K7JJN800HR95XKE1AW1TYZ7T"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "annotation",
+        "above": "el_01K7JJN800HR95XKE1AW1TYZ7T"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Image",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800JC46XC3EVKA3TCTR",
+    "timeline.rowMenu.timeline.row.add.image",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "image",
+       "above": "el_01K7JJN800JC46XC3EVKA3TCTR"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "image",
+       "above": "el_01K7JJN800JC46XC3EVKA3TCTR"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "image",
+        "above": "el_01K7JJN800JC46XC3EVKA3TCTR"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Sound",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800XXR1BE28C785Y7NC",
+    "timeline.rowMenu.timeline.row.add.sound",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "sound",
+       "above": "el_01K7JJN800XXR1BE28C785Y7NC"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "sound",
+       "above": "el_01K7JJN800XXR1BE28C785Y7NC"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "sound",
+        "above": "el_01K7JJN800XXR1BE28C785Y7NC"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Media",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800C44BVH9FFCMYP0JJ",
+    "timeline.rowMenu.timeline.row.add.media",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "media",
+       "above": "el_01K7JJN800C44BVH9FFCMYP0JJ"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "media",
+       "above": "el_01K7JJN800C44BVH9FFCMYP0JJ"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "media",
+        "above": "el_01K7JJN800C44BVH9FFCMYP0JJ"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Peg",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800X46M0QK2M4RWM9MG",
+    "timeline.rowMenu.timeline.row.add.peg",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "peg",
+       "above": "el_01K7JJN800X46M0QK2M4RWM9MG"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "peg",
+       "above": "el_01K7JJN800X46M0QK2M4RWM9MG"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "peg",
+        "above": "el_01K7JJN800X46M0QK2M4RWM9MG"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Camera",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800JJ3SCJRDMBSHFXM0",
+    "timeline.rowMenu.timeline.row.add.camera",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "camera",
+       "above": "el_01K7JJN800JJ3SCJRDMBSHFXM0"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "camera",
+       "above": "el_01K7JJN800JJ3SCJRDMBSHFXM0"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "camera",
+        "above": "el_01K7JJN800JJ3SCJRDMBSHFXM0"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Skeleton",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8001Z36C6X62K8GNTB3",
+    "timeline.rowMenu.timeline.row.add.skeleton",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "skeleton",
+       "above": "el_01K7JJN8001Z36C6X62K8GNTB3"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "skeleton",
+       "above": "el_01K7JJN8001Z36C6X62K8GNTB3"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "skeleton",
+        "above": "el_01K7JJN8001Z36C6X62K8GNTB3"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Colour Transform",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8009QB3N4CX8EK4JC06",
+    "timeline.rowMenu.timeline.row.add.colourTransform",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "colourTransform",
+       "above": "el_01K7JJN8009QB3N4CX8EK4JC06"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "colourTransform",
+       "above": "el_01K7JJN8009QB3N4CX8EK4JC06"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "colourTransform",
+        "above": "el_01K7JJN8009QB3N4CX8EK4JC06"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Clipping",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800W5FDAXQC5JPRX40N",
+    "timeline.rowMenu.timeline.row.add.clipping",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "clipping",
+       "above": "el_01K7JJN800W5FDAXQC5JPRX40N"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "clipping",
+       "above": "el_01K7JJN800W5FDAXQC5JPRX40N"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "clipping",
+        "above": "el_01K7JJN800W5FDAXQC5JPRX40N"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Drop Shadow",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800NB2P2VVR1A2MR8WC",
+    "timeline.rowMenu.timeline.row.add.dropShadow",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "dropShadow",
+       "above": "el_01K7JJN800NB2P2VVR1A2MR8WC"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "dropShadow",
+       "above": "el_01K7JJN800NB2P2VVR1A2MR8WC"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "dropShadow",
+        "above": "el_01K7JJN800NB2P2VVR1A2MR8WC"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Blur",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN80091NVBQHVQJTRWD4Z",
+    "timeline.rowMenu.timeline.row.add.blur",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "blur",
+       "above": "el_01K7JJN80091NVBQHVQJTRWD4Z"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "blur",
+       "above": "el_01K7JJN80091NVBQHVQJTRWD4Z"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "blur",
+        "above": "el_01K7JJN80091NVBQHVQJTRWD4Z"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Shake",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800TFH6XSZPDNG6R8YF",
+    "timeline.rowMenu.timeline.row.add.shake",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "shake",
+       "above": "el_01K7JJN800TFH6XSZPDNG6R8YF"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "shake",
+       "above": "el_01K7JJN800TFH6XSZPDNG6R8YF"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "shake",
+        "above": "el_01K7JJN800TFH6XSZPDNG6R8YF"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Particle Nature",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800RPCDQJCT5XMVTEGW",
+    "timeline.rowMenu.timeline.row.add.particleNature",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "particleNature",
+       "above": "el_01K7JJN800RPCDQJCT5XMVTEGW"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "particleNature",
+       "above": "el_01K7JJN800RPCDQJCT5XMVTEGW"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "particleNature",
+        "above": "el_01K7JJN800RPCDQJCT5XMVTEGW"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Particle Impact",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8002PXZ6SYG4KKKC3GZ",
+    "timeline.rowMenu.timeline.row.add.particleImpact",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "particleImpact",
+       "above": "el_01K7JJN8002PXZ6SYG4KKKC3GZ"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "particleImpact",
+       "above": "el_01K7JJN8002PXZ6SYG4KKKC3GZ"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "particleImpact",
+        "above": "el_01K7JJN8002PXZ6SYG4KKKC3GZ"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Add Parent Peg",
+   "spec": "spec/04_timeline_xsheet.md:1382; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800TNKEAYFTJQX8P9BF",
+    "timeline.rowMenu.timeline.row.addParentPeg",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.parentPeg.create",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800TNKEAYFTJQX8P9BF"
+       ]
+      }
+     },
+     "declared": {
+      "command": "element.parentPeg.create",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800TNKEAYFTJQX8P9BF"
+       ]
+      }
+     },
+     "sent": [
+      {
+       "command": "element.parentPeg.create",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800TNKEAYFTJQX8P9BF"
+        ]
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Add Parent Peg",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Cut",
+   "spec": "spec/01_application_shell.md:1094; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800BJM4C8A2S3QJT3MC",
+    "timeline.rowMenu.timeline.row.cut",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "edit.cut",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "declared": {
+      "command": "edit.cut",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "edit.cut",
+       "params": {
+        "context": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Cut",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Copy",
+   "spec": "spec/01_application_shell.md:1095; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800SBKQ3XFG99395V87",
+    "timeline.rowMenu.timeline.row.copy",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "edit.copy",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "declared": {
+      "command": "edit.copy",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "edit.copy",
+       "params": {
+        "context": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Paste",
+   "spec": "spec/01_application_shell.md:1096; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN80072THRF00NB7K3W1T",
+    "timeline.rowMenu.timeline.row.paste",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "edit.paste",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "declared": {
+      "command": "edit.paste",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "edit.paste",
+       "params": {
+        "context": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Paste",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Delete",
+   "spec": "spec/04_timeline_xsheet.md:1388; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800D28A48PDN5QDB4R2",
+    "timeline.rowMenu.timeline.row.delete",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.delete",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800D28A48PDN5QDB4R2"
+       ]
+      }
+     },
+     "declared": {
+      "command": "element.delete",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800D28A48PDN5QDB4R2"
+       ]
+      }
+     },
+     "sent": [
+      {
+       "command": "element.delete",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800D28A48PDN5QDB4R2"
+        ]
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Delete Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Bring to Front",
+   "spec": "spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800V15QC2ANGZS0ZRN1",
+    "timeline.rowMenu.timeline.row.arrange.front",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800V15QC2ANGZS0ZRN1"
+       ],
+       "to": "front",
+       "order": "timeline"
+      }
+     },
+     "declared": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800V15QC2ANGZS0ZRN1"
+       ],
+       "to": "front",
+       "order": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.order.move",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800V15QC2ANGZS0ZRN1"
+        ],
+        "to": "front",
+        "order": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Arrange",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Bring Forward",
+   "spec": "spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8009KEV5EKK5ZFWYEXE",
+    "timeline.rowMenu.timeline.row.arrange.forward",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN8009KEV5EKK5ZFWYEXE"
+       ],
+       "to": "forward",
+       "order": "timeline"
+      }
+     },
+     "declared": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN8009KEV5EKK5ZFWYEXE"
+       ],
+       "to": "forward",
+       "order": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.order.move",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN8009KEV5EKK5ZFWYEXE"
+        ],
+        "to": "forward",
+        "order": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Arrange",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Send Backward",
+   "spec": "spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800415CJFRP2XHB7P82",
+    "timeline.rowMenu.timeline.row.arrange.backward",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800415CJFRP2XHB7P82"
+       ],
+       "to": "backward",
+       "order": "timeline"
+      }
+     },
+     "declared": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800415CJFRP2XHB7P82"
+       ],
+       "to": "backward",
+       "order": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.order.move",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800415CJFRP2XHB7P82"
+        ],
+        "to": "backward",
+        "order": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Arrange",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Send to Back",
+   "spec": "spec/04_timeline_xsheet.md:1389; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800G3PPZANAQ7JG0VM4",
+    "timeline.rowMenu.timeline.row.arrange.back",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800G3PPZANAQ7JG0VM4"
+       ],
+       "to": "back",
+       "order": "timeline"
+      }
+     },
+     "declared": {
+      "command": "element.order.move",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800G3PPZANAQ7JG0VM4"
+       ],
+       "to": "back",
+       "order": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.order.move",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800G3PPZANAQ7JG0VM4"
+        ],
+        "to": "back",
+        "order": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Arrange",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Collapse",
+   "spec": "spec/04_timeline_xsheet.md:1398; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800ZTFCY3QGCTKNCGVN",
+    "timeline.rowMenu.timeline.row.collapse",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.collapsed.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800ZTFCY3QGCTKNCGVN"
+       ],
+       "collapsed": true
+      }
+     },
+     "declared": {
+      "command": "element.collapsed.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800ZTFCY3QGCTKNCGVN"
+       ],
+       "collapsed": true
+      }
+     },
+     "sent": [
+      {
+       "command": "element.collapsed.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800ZTFCY3QGCTKNCGVN"
+        ],
+        "collapsed": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Select Parent",
+   "spec": "spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800XFE3JBR6MV3JAJ2V",
+    "timeline.rowMenu.timeline.row.select.parent",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "parent",
+       "elementId": "el_01K7JJN800XFE3JBR6MV3JAJ2V"
+      }
+     },
+     "declared": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "parent",
+       "elementId": "el_01K7JJN800XFE3JBR6MV3JAJ2V"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.hierarchy.select",
+       "params": {
+        "relation": "parent",
+        "elementId": "el_01K7JJN800XFE3JBR6MV3JAJ2V"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Select Children",
+   "spec": "spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8006W0SBVT3QA8E2VHX",
+    "timeline.rowMenu.timeline.row.select.children",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "children",
+       "elementId": "el_01K7JJN8006W0SBVT3QA8E2VHX"
+      }
+     },
+     "declared": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "children",
+       "elementId": "el_01K7JJN8006W0SBVT3QA8E2VHX"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.hierarchy.select",
+       "params": {
+        "relation": "children",
+        "elementId": "el_01K7JJN8006W0SBVT3QA8E2VHX"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Select Child",
+   "spec": "spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800P7X02BMYRD7MNBEM",
+    "timeline.rowMenu.timeline.row.select.firstChild",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "firstChild",
+       "elementId": "el_01K7JJN800P7X02BMYRD7MNBEM"
+      }
+     },
+     "declared": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "firstChild",
+       "elementId": "el_01K7JJN800P7X02BMYRD7MNBEM"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.hierarchy.select",
+       "params": {
+        "relation": "firstChild",
+        "elementId": "el_01K7JJN800P7X02BMYRD7MNBEM"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Select Previous Sibling",
+   "spec": "spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800219XXMEC2GG3Y6JZ",
+    "timeline.rowMenu.timeline.row.select.previousSibling",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "previousSibling",
+       "elementId": "el_01K7JJN800219XXMEC2GG3Y6JZ"
+      }
+     },
+     "declared": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "previousSibling",
+       "elementId": "el_01K7JJN800219XXMEC2GG3Y6JZ"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.hierarchy.select",
+       "params": {
+        "relation": "previousSibling",
+        "elementId": "el_01K7JJN800219XXMEC2GG3Y6JZ"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Select Next Sibling",
+   "spec": "spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800Y8XGVVCGKGRP8E32",
+    "timeline.rowMenu.timeline.row.select.nextSibling",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "nextSibling",
+       "elementId": "el_01K7JJN800Y8XGVVCGKGRP8E32"
+      }
+     },
+     "declared": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "nextSibling",
+       "elementId": "el_01K7JJN800Y8XGVVCGKGRP8E32"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.hierarchy.select",
+       "params": {
+        "relation": "nextSibling",
+        "elementId": "el_01K7JJN800Y8XGVVCGKGRP8E32"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Select Skeleton Root",
+   "spec": "spec/04_timeline_xsheet.md:1395; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800WAZAQ2EPTKG8P2PE",
+    "timeline.rowMenu.timeline.row.select.skeletonRoot",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "skeletonRoot",
+       "elementId": "el_01K7JJN800WAZAQ2EPTKG8P2PE"
+      }
+     },
+     "declared": {
+      "command": "element.hierarchy.select",
+      "params": {
+       "relation": "skeletonRoot",
+       "elementId": "el_01K7JJN800WAZAQ2EPTKG8P2PE"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.hierarchy.select",
+       "params": {
+        "relation": "skeletonRoot",
+        "elementId": "el_01K7JJN800WAZAQ2EPTKG8P2PE"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Attach to Next Object",
+   "spec": "spec/04_timeline_xsheet.md:1391; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800Q03BD4PXQGH0SPQD",
+    "timeline.rowMenu.timeline.row.attachNext",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.parent.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800Q03BD4PXQGH0SPQD"
+       ],
+       "parentId": "el_01K7JJN8001XAT2GM5W5W8C0J4"
+      }
+     },
+     "declared": {
+      "command": "element.parent.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800Q03BD4PXQGH0SPQD"
+       ],
+       "parentId": "el_01K7JJN8001XAT2GM5W5W8C0J4"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.parent.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800Q03BD4PXQGH0SPQD"
+        ],
+        "parentId": "el_01K7JJN8001XAT2GM5W5W8C0J4"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Attach",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Detach from Parent",
+   "spec": "spec/04_timeline_xsheet.md:1392; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8003WNP9CA9FJVH5TEW",
+    "timeline.rowMenu.timeline.row.detach",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.parent.remove",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN8003WNP9CA9FJVH5TEW"
+       ]
+      }
+     },
+     "declared": {
+      "command": "element.parent.remove",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN8003WNP9CA9FJVH5TEW"
+       ]
+      }
+     },
+     "sent": [
+      {
+       "command": "element.parent.remove",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN8003WNP9CA9FJVH5TEW"
+        ]
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Detach",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Hide",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800DPDBFXP9FKGVARM1",
+    "timeline.rowMenu.timeline.row.showHide",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800DPDBFXP9FKGVARM1"
+       ],
+       "scope": "scene",
+       "visible": false
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800DPDBFXP9FKGVARM1"
+       ],
+       "scope": "scene",
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800DPDBFXP9FKGVARM1"
+        ],
+        "scope": "scene",
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Show All",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800NT7TJ9DDK004JSKR",
+    "timeline.rowMenu.timeline.row.showAll",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": true,
+       "apply": "all"
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": true,
+       "apply": "all"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Hide All Others",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800TRHECCB3BHYXGBDP",
+    "timeline.rowMenu.timeline.row.hideOthers",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800TRHECCB3BHYXGBDP"
+       ],
+       "scope": "scene",
+       "visible": false,
+       "apply": "others"
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800TRHECCB3BHYXGBDP"
+       ],
+       "scope": "scene",
+       "visible": false,
+       "apply": "others"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800TRHECCB3BHYXGBDP"
+        ],
+        "scope": "scene",
+        "visible": false,
+        "apply": "others"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Show All Others",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN80013BMK78PRD2GHG6S",
+    "timeline.rowMenu.timeline.row.showOthers",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN80013BMK78PRD2GHG6S"
+       ],
+       "scope": "scene",
+       "visible": true,
+       "apply": "others"
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN80013BMK78PRD2GHG6S"
+       ],
+       "scope": "scene",
+       "visible": true,
+       "apply": "others"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN80013BMK78PRD2GHG6S"
+        ],
+        "scope": "scene",
+        "visible": true,
+        "apply": "others"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Hide All",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800H83849E1QMB7RKW2",
+    "timeline.rowMenu.timeline.row.hideAll",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": false,
+       "apply": "all"
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": false,
+       "apply": "all"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "scope": "scene",
+        "visible": false,
+        "apply": "all"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Show All Annotation Elements",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800E2EE9BJF5ZRJ28ZK",
+    "timeline.rowMenu.timeline.row.showAnnotations",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": true,
+       "apply": "all",
+       "types": [
+        "annotation"
+       ]
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": true,
+       "apply": "all",
+       "types": [
+        "annotation"
+       ]
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all",
+        "types": [
+         "annotation"
+        ]
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Hide All Annotation Elements",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800554SVJYEJWCM2HT8",
+    "timeline.rowMenu.timeline.row.hideAnnotations",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": false,
+       "apply": "all",
+       "types": [
+        "annotation"
+       ]
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": false,
+       "apply": "all",
+       "types": [
+        "annotation"
+       ]
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "scope": "scene",
+        "visible": false,
+        "apply": "all",
+        "types": [
+         "annotation"
+        ]
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Default Colour",
+   "spec": "spec/04_timeline_xsheet.md:1403; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8001KTQ983S6FG491PH",
+    "timeline.rowMenu.timeline.row.defaultColour",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.colour.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN8001KTQ983S6FG491PH"
+       ],
+       "marker": "",
+       "background": ""
+      }
+     },
+     "declared": {
+      "command": "element.colour.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN8001KTQ983S6FG491PH"
+       ],
+       "marker": "",
+       "background": ""
+      }
+     },
+     "sent": [
+      {
+       "command": "element.colour.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN8001KTQ983S6FG491PH"
+        ],
+        "marker": "",
+        "background": ""
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Set Element Colour",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Show All Effect Parameters",
+   "spec": "spec/04_timeline_xsheet.md:1446; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN8003P9D9XY1WS00F845",
+    "timeline.rowMenu.timeline.row.showAllParameters",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "timeline.effectParameterRows.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "declared": {
+      "command": "timeline.effectParameterRows.set",
+      "params": {
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "timeline.effectParameterRows.set",
+       "params": {
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Hide All Effect Parameters",
+   "spec": "spec/04_timeline_xsheet.md:1446; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800T0GS5YP7D730MMQ6",
+    "timeline.rowMenu.timeline.row.hideAllParameters",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "timeline.effectParameterRows.set",
+      "params": {
+       "visible": false
+      }
+     },
+     "declared": {
+      "command": "timeline.effectParameterRows.set",
+      "params": {
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "timeline.effectParameterRows.set",
+       "params": {
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Set as Annotation",
+   "spec": "spec/04_timeline_xsheet.md:1402; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800N8V36SVEDD4EQNPS",
+    "timeline.rowMenu.timeline.row.annotation",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.annotation.set",
+      "params": {
+       "elementId": "el_01K7JJN800N8V36SVEDD4EQNPS",
+       "annotation": true
+      }
+     },
+     "declared": {
+      "command": "element.annotation.set",
+      "params": {
+       "elementId": "el_01K7JJN800N8V36SVEDD4EQNPS",
+       "annotation": true
+      }
+     },
+     "sent": [
+      {
+       "command": "element.annotation.set",
+       "params": {
+        "elementId": "el_01K7JJN800N8V36SVEDD4EQNPS",
+        "annotation": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Set as Annotation Element",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Lock",
+   "spec": "spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800YTXKWB50M4SYFHSQ",
+    "timeline.rowMenu.timeline.row.lock",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.lock.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800YTXKWB50M4SYFHSQ"
+       ],
+       "locked": true
+      }
+     },
+     "declared": {
+      "command": "element.lock.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800YTXKWB50M4SYFHSQ"
+       ],
+       "locked": true
+      }
+     },
+     "sent": [
+      {
+       "command": "element.lock.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800YTXKWB50M4SYFHSQ"
+        ],
+        "locked": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Lock Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Lock All Others",
+   "spec": "spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800NQ4ZM037NJK6GQ4S",
+    "timeline.rowMenu.timeline.row.lockOthers",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.lock.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800NQ4ZM037NJK6GQ4S"
+       ],
+       "locked": true,
+       "apply": "others"
+      }
+     },
+     "declared": {
+      "command": "element.lock.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800NQ4ZM037NJK6GQ4S"
+       ],
+       "locked": true,
+       "apply": "others"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.lock.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800NQ4ZM037NJK6GQ4S"
+        ],
+        "locked": true,
+        "apply": "others"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Lock Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Lock All",
+   "spec": "spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN80076EJKAS3YZB41MWY",
+    "timeline.rowMenu.timeline.row.lockAll",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.lock.set",
+      "params": {
+       "locked": true,
+       "apply": "all"
+      }
+     },
+     "declared": {
+      "command": "element.lock.set",
+      "params": {
+       "locked": true,
+       "apply": "all"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.lock.set",
+       "params": {
+        "locked": true,
+        "apply": "all"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Lock Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Unlock All",
+   "spec": "spec/04_timeline_xsheet.md:1401; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800H7V9W1QTQ2GM3PAM",
+    "timeline.rowMenu.timeline.row.unlockAll",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.lock.set",
+      "params": {
+       "locked": false,
+       "apply": "all"
+      }
+     },
+     "declared": {
+      "command": "element.lock.set",
+      "params": {
+       "locked": false,
+       "apply": "all"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.lock.set",
+       "params": {
+        "locked": false,
+        "apply": "all"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Unlock Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Clone",
+   "spec": "spec/04_timeline_xsheet.md:1386; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800HAP49AN8SF0C2473",
+    "timeline.rowMenu.timeline.row.clone",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.clone",
+      "params": {
+       "elementId": "el_01K7JJN800HAP49AN8SF0C2473"
+      }
+     },
+     "declared": {
+      "command": "element.clone",
+      "params": {
+       "elementId": "el_01K7JJN800HAP49AN8SF0C2473"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.clone",
+       "params": {
+        "elementId": "el_01K7JJN800HAP49AN8SF0C2473"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Clone Element",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Duplicate",
+   "spec": "spec/04_timeline_xsheet.md:1387; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800M164XN8BP9181QBR",
+    "timeline.rowMenu.timeline.row.duplicate",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.duplicate",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800M164XN8BP9181QBR"
+       ]
+      }
+     },
+     "declared": {
+      "command": "element.duplicate",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800M164XN8BP9181QBR"
+       ]
+      }
+     },
+     "sent": [
+      {
+       "command": "element.duplicate",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800M164XN8BP9181QBR"
+        ]
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Duplicate Element",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Cut",
+   "spec": "spec/01_application_shell.md:1094; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.cut",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800KV721FB5RSFGMW3H"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "edit.cut",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "declared": {
+      "command": "edit.cut",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "edit.cut",
+       "params": {
+        "context": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Cut",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Copy",
+   "spec": "spec/01_application_shell.md:1095; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.copy",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800TAM9XCFWPV13PA11"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "edit.copy",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "declared": {
+      "command": "edit.copy",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "edit.copy",
+       "params": {
+        "context": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Paste",
+   "spec": "spec/01_application_shell.md:1096; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.paste",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800TWDJJ00Z6F53SETM"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "edit.paste",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "declared": {
+      "command": "edit.paste",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "edit.paste",
+       "params": {
+        "context": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Paste",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Delete",
+   "spec": "spec/01_application_shell.md:1098; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.delete",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800F0YR43G69QAK1GCN"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "edit.delete",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "declared": {
+      "command": "edit.delete",
+      "params": {
+       "context": "timeline"
+      }
+     },
+     "sent": [
+      {
+       "command": "edit.delete",
+       "params": {
+        "context": "timeline"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Delete",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Add Keyframe",
+   "spec": "spec/05_scene_planning.md:1257; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.addKey",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800K2JC0P2RYHF1ZAAS"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.key.add",
+      "params": {
+       "nodeIds": [
+        "TlA"
+       ],
+       "frame": "the clicked frame"
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.key.add",
+       "params": {
+        "nodeIds": [
+         "el_01K7JJN800K2JC0P2RYHF1ZAAS"
+        ],
+        "frame": 3
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Add Keyframe",
+       "agent"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Remove Keyframe",
+   "spec": "spec/05_scene_planning.md:1258; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.removeKey",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800NZFSPRAMFT5ZEAT2"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.key.remove",
+      "params": {
+       "nodeIds": [
+        "TlA"
+       ],
+       "frame": "the clicked frame"
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.key.remove",
+       "params": {
+        "nodeIds": [
+         "el_01K7JJN800NZFSPRAMFT5ZEAT2"
+        ],
+        "frame": 3
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Remove Keyframe",
+       "agent"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Set Constant Segment",
+   "spec": "spec/05_scene_planning.md:1261; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.constant",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800S6GA1CJYW2PTJBG7"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.segment.set",
+      "params": {
+       "nodeIds": [
+        "TlA"
+       ],
+       "frame": "the clicked frame",
+       "constant": true
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.segment.set",
+       "params": {
+        "nodeIds": [
+         "el_01K7JJN800S6GA1CJYW2PTJBG7"
+        ],
+        "frame": 1,
+        "constant": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Change Segment",
+       "agent"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Set Non-Constant Segment",
+   "spec": "spec/05_scene_planning.md:1261; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.nonConstant",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800YSB89BETYYFCWKGJ"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.segment.set",
+      "params": {
+       "nodeIds": [
+        "TlA"
+       ],
+       "frame": "the clicked frame",
+       "constant": false
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.segment.set",
+       "params": {
+        "nodeIds": [
+         "el_01K7JJN800YSB89BETYYFCWKGJ"
+        ],
+        "frame": 1,
+        "constant": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Change Segment",
+       "agent"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Uniform Left",
+   "spec": "spec/05_scene_planning.md:1262; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.uniformLeft",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800YBC6KRCE1Q5VVV31"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.segment.uniform.apply",
+      "params": {
+       "nodeId": "TlP",
+       "frame": "the clicked frame",
+       "side": "left"
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.segment.uniform.apply",
+       "params": {
+        "nodeId": "el_01K7JJN800YBC6KRCE1Q5VVV31",
+        "frame": 6,
+        "side": "left"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Uniform Segment",
+       "agent"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline cell menu › Uniform Right",
+   "spec": "spec/05_scene_planning.md:1262; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.tracks",
+    "timeline.cellMenu.timeline.cell.uniformRight",
+    {
+     "x_of": "timeline.tracks",
+     "x": 40,
+     "y_of": "timeline.row.el_01K7JJN800J4NEKV03GF69517C"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.segment.uniform.apply",
+      "params": {
+       "nodeId": "TlP",
+       "frame": "the clicked frame",
+       "side": "right"
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.segment.uniform.apply",
+       "params": {
+        "nodeId": "el_01K7JJN800J4NEKV03GF69517C",
+        "frame": 1,
+        "side": "right"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Uniform Segment",
+       "agent"
+      ]
+     ],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Remove All Keyframes",
+   "spec": "spec/05_scene_planning.md:1258; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800Y0KGKQSZWQ0ACVQV",
+    "timeline.rowMenu.timeline.row.removeKeys",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.key.remove",
+      "params": {
+       "nodeIds": [
+        "el_01K7JJN800Y0KGKQSZWQ0ACVQV"
+       ],
+       "all": true
+      }
+     },
+     "declared": {
+      "command": "anim.key.remove",
+      "params": {
+       "nodeIds": [
+        "el_01K7JJN800Y0KGKQSZWQ0ACVQV"
+       ],
+       "all": true
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.key.remove",
+       "params": {
+        "nodeIds": [
+         "el_01K7JJN800Y0KGKQSZWQ0ACVQV"
+        ],
+        "all": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Remove Keyframe",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Toggle Constant Z",
+   "spec": "spec/05_scene_planning.md:1256; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.row.el_01K7JJN800RN33MVC1GMH16B40",
+    "timeline.rowMenu.timeline.row.constantZ",
+    null
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "anim.path.lockDepth.set",
+      "params": {
+       "nodeId": "el_01K7JJN800RN33MVC1GMH16B40",
+       "frame": 1,
+       "enabled": true
+      }
+     },
+     "declared": {
+      "command": "anim.path.lockDepth.set",
+      "params": {
+       "nodeId": "el_01K7JJN800RN33MVC1GMH16B40",
+       "frame": 1,
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "anim.path.lockDepth.set",
+       "params": {
+        "nodeId": "el_01K7JJN800RN33MVC1GMH16B40",
+        "frame": 1,
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Toggle Constant Z",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline ruler menu › Automatic Fit",
+   "spec": "spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.ruler",
+    "timeline.rulerMenu.timeline.ruler.rangeAuto",
+    {
+     "x_of": "timeline.ruler",
+     "x": 60,
+     "y_of": "timeline.ruler"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "timeline.playbackRange.set",
+      "params": {
+       "mode": "auto"
+      }
+     },
+     "declared": {
+      "command": "timeline.playbackRange.set",
+      "params": {
+       "mode": "auto"
+      }
+     },
+     "sent": [
+      {
+       "command": "timeline.playbackRange.set",
+       "params": {
+        "mode": "auto"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline ruler menu › Free",
+   "spec": "spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.ruler",
+    "timeline.rulerMenu.timeline.ruler.rangeFree",
+    {
+     "x_of": "timeline.ruler",
+     "x": 60,
+     "y_of": "timeline.ruler"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "timeline.playbackRange.set",
+      "params": {
+       "mode": "free"
+      }
+     },
+     "declared": {
+      "command": "timeline.playbackRange.set",
+      "params": {
+       "mode": "free"
+      }
+     },
+     "sent": [
+      {
+       "command": "timeline.playbackRange.set",
+       "params": {
+        "mode": "free"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline ruler menu › Set Playback Start Here",
+   "spec": "spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.ruler",
+    "timeline.rulerMenu.timeline.ruler.startHere",
+    {
+     "x_of": "timeline.ruler",
+     "x": 60,
+     "y_of": "timeline.ruler"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "timeline.playbackRange.set",
+      "params": {
+       "start": "the clicked frame"
+      }
+     },
+     "sent": [
+      {
+       "command": "timeline.playbackRange.set",
+       "params": {
+        "start": 4
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline ruler menu › Set Playback End Here",
+   "spec": "spec/04_timeline_xsheet.md:1440; 04 lines 704-706; 09 line 85",
+   "action": [
+    "context",
+    "timeline.ruler",
+    "timeline.rulerMenu.timeline.ruler.endHere",
+    {
+     "x_of": "timeline.ruler",
+     "x": 60,
+     "y_of": "timeline.ruler"
+    }
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "timeline.playbackRange.set",
+      "params": {
+       "end": "the clicked frame"
+      }
+     },
+     "sent": [
+      {
+       "command": "timeline.playbackRange.set",
+       "params": {
+        "end": 4
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline row menu › Rename (in place)",
+   "spec": "spec/04_timeline_xsheet.md:1385; 04 §4.1",
+   "ok": true,
+   "notRun": "the name is typed by the person into the editor the item opens"
+  },
+  {
+   "name": "Timeline › row rename (double click, Enter)",
+   "spec": "spec/04_timeline_xsheet.md:1385; 04 §4.1",
+   "ok": true,
+   "notRun": "the editor opens on a real double click on the row's name; the typed name is the person's"
+  },
+  {
+   "name": "Timeline › row rename (Escape)",
+   "spec": "04 §4.1",
+   "ok": true,
+   "notRun": "the editor opens on a real double click on the row's name; Escape is the person's"
+  },
+  {
+   "name": "Timeline › row rename (keys stay in the editor)",
+   "spec": "04 §4.1; 01 §8.4; D-66 item 2",
+   "ok": true,
+   "notRun": "real keys typed into the open editor: an agent's `key` tool is refused while a text field has the focus"
+  },
+  {
+   "name": "Timeline › row rename refused (element.nameEmpty): the status line says why, the editor stays open",
+   "spec": "spec/04_timeline_xsheet.md:1385; 04 §3.2 (element.nameEmpty), §4.1; D-87; ruling E-53",
+   "ok": true,
+   "notRun": "the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent"
+  },
+  {
+   "name": "Timeline › row rename refused (element.nameInvalid): the status line says why, the editor stays open",
+   "spec": "spec/04_timeline_xsheet.md:1385; 04 §3.2 (element.nameInvalid), §4.1; D-87; ruling E-53",
+   "ok": true,
+   "notRun": "the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent"
+  },
+  {
+   "name": "Timeline › row rename refused (element.nameDuplicate): the status line says why, the editor stays open",
+   "spec": "spec/04_timeline_xsheet.md:1385; 04 §3.2 (element.nameDuplicate), §4.1; D-87; ruling E-53",
+   "ok": true,
+   "notRun": "the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent"
+  },
+  {
+   "name": "Timeline › row rename refused (element.nameTooLong): the status line says why, the editor stays open",
+   "spec": "spec/04_timeline_xsheet.md:1385; 04 §3.2 (element.nameTooLong), §4.1; D-87; ruling E-53",
+   "ok": true,
+   "notRun": "the name is typed by the person into the editor a real double click opens; an agent's element.rename answers the refusal to the agent"
+  },
+  {
+   "name": "Timeline › toolbar Add",
+   "spec": "spec/04_timeline_xsheet.md:1381; 04 lines 604-605",
+   "action": [
+    "dom",
+    "timeline.add"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.create",
+      "params": {
+       "type": "drawing"
+      }
+     },
+     "declared": {
+      "command": "element.create",
+      "params": {
+       "type": "drawing"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.create",
+       "params": {
+        "type": "drawing"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "New Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "timeline.add"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "timeline.add"
+    ],
+    "ok": true,
+    "enabled": false
+   }
+  },
+  {
+   "name": "Timeline › toolbar Parent Peg",
+   "spec": "spec/04_timeline_xsheet.md:1382; 04 lines 604-605",
+   "action": [
+    "dom",
+    "timeline.addParentPeg"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.parentPeg.create",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800VNPBXTX191N1F36D"
+       ]
+      }
+     },
+     "declared": {
+      "command": "element.parentPeg.create",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800VNPBXTX191N1F36D"
+       ]
+      }
+     },
+     "sent": [
+      {
+       "command": "element.parentPeg.create",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800VNPBXTX191N1F36D"
+        ]
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Add Parent Peg",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "timeline.addParentPeg"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "timeline.addParentPeg"
+    ],
+    "ok": true,
+    "enabled": false
+   }
+  },
+  {
+   "name": "Timeline › toolbar Solo",
+   "spec": "spec/04_timeline_xsheet.md:1400; 04 lines 604-605",
+   "action": [
+    "dom",
+    "timeline.solo"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.solo.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800N0JT3WYF4R0QYTER"
+       ],
+       "enabled": true
+      }
+     },
+     "declared": {
+      "command": "element.solo.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800N0JT3WYF4R0QYTER"
+       ],
+       "enabled": true
+      }
+     },
+     "sent": [
+      {
+       "command": "element.solo.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800N0JT3WYF4R0QYTER"
+        ],
+        "enabled": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    },
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.solo.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800N0JT3WYF4R0QYTER"
+       ],
+       "enabled": false
+      }
+     },
+     "declared": {
+      "command": "element.solo.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800N0JT3WYF4R0QYTER"
+       ],
+       "enabled": false
+      }
+     },
+     "sent": [
+      {
+       "command": "element.solo.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800N0JT3WYF4R0QYTER"
+        ],
+        "enabled": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "timeline.solo"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "timeline.solo"
+    ],
+    "ok": true,
+    "enabled": false
+   }
+  },
+  {
+   "name": "Timeline › toolbar Show All",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 604-605",
+   "action": [
+    "dom",
+    "timeline.showAll"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": true,
+       "apply": "all"
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "scope": "scene",
+       "visible": true,
+       "apply": "all"
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "scope": "scene",
+        "visible": true,
+        "apply": "all"
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "timeline.showAll"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "timeline.showAll"
+    ],
+    "ok": true,
+    "enabled": false
+   }
+  },
+  {
+   "name": "Timeline › row disclosure",
+   "spec": "spec/04_timeline_xsheet.md:1398; 04 lines 604-605",
+   "action": [
+    "dom",
+    "timeline.row.el_01K7JJN800XRB7DM2XZPCTHYRN.collapsed"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.collapsed.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800XRB7DM2XZPCTHYRN"
+       ],
+       "collapsed": true
+      }
+     },
+     "declared": {
+      "command": "element.collapsed.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800XRB7DM2XZPCTHYRN"
+       ],
+       "collapsed": true
+      }
+     },
+     "sent": [
+      {
+       "command": "element.collapsed.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800XRB7DM2XZPCTHYRN"
+        ],
+        "collapsed": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    },
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.collapsed.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800XRB7DM2XZPCTHYRN"
+       ],
+       "collapsed": false
+      }
+     },
+     "declared": {
+      "command": "element.collapsed.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800XRB7DM2XZPCTHYRN"
+       ],
+       "collapsed": false
+      }
+     },
+     "sent": [
+      {
+       "command": "element.collapsed.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800XRB7DM2XZPCTHYRN"
+        ],
+        "collapsed": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline › row visibility",
+   "spec": "spec/04_timeline_xsheet.md:1399; 04 lines 604-605",
+   "action": [
+    "dom",
+    "timeline.row.el_01K7JJN800T21FE0MXF1E2EXHM.visible"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800T21FE0MXF1E2EXHM"
+       ],
+       "scope": "scene",
+       "visible": false
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800T21FE0MXF1E2EXHM"
+       ],
+       "scope": "scene",
+       "visible": false
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800T21FE0MXF1E2EXHM"
+        ],
+        "scope": "scene",
+        "visible": false
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    },
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800T21FE0MXF1E2EXHM"
+       ],
+       "scope": "scene",
+       "visible": true
+      }
+     },
+     "declared": {
+      "command": "element.visibility.set",
+      "params": {
+       "elementIds": [
+        "el_01K7JJN800T21FE0MXF1E2EXHM"
+       ],
+       "scope": "scene",
+       "visible": true
+      }
+     },
+     "sent": [
+      {
+       "command": "element.visibility.set",
+       "params": {
+        "elementIds": [
+         "el_01K7JJN800T21FE0MXF1E2EXHM"
+        ],
+        "scope": "scene",
+        "visible": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [
+      [
+       "Show/Hide Elements",
+       "agent"
+      ]
+     ],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": null
+  },
+  {
+   "name": "Timeline › toolbar Zoom",
+   "spec": "spec/04_timeline_xsheet.md:1444; 04 lines 600-610",
+   "ok": true,
+   "notRun": "a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared reference is the current value)"
+  },
+  {
+   "name": "Timeline › scroll bar",
+   "spec": "spec/04_timeline_xsheet.md:1444; 04 lines 600-610",
+   "ok": true,
+   "notRun": "a slider's value is chosen by the person's drag or key; the MCP form has no input to move it (its declared reference is the current value)"
+  },
+  {
+   "name": "main toolbar › playStop",
+   "spec": "spec/09_playback_export.md:995; spec/09_playback_export.md:996; 09 §2.2",
+   "action": [
+    "dom",
+    "mainToolbar.playStop"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "playback.start",
+      "params": {}
+     },
+     "declared": {
+      "command": "playback.start",
+      "params": {}
+     },
+     "sent": [
+      {
+       "command": "playback.start",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    },
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "playback.stop",
+      "params": {}
+     },
+     "declared": {
+      "command": "playback.stop",
+      "params": {}
+     },
+     "sent": [
+      {
+       "command": "playback.stop",
+       "params": {}
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "mainToolbar.playStop"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "mainToolbar.playStop"
+    ],
+    "ok": true,
+    "enabled": false
+   }
+  },
+  {
+   "name": "main toolbar › lastFrame",
+   "spec": "spec/04_timeline_xsheet.md:1439; 09 §2.2",
+   "action": [
+    "dom",
+    "mainToolbar.lastFrame"
+   ],
+   "clicks": [
+    {
+     "input": "the declared reference through run_command (ok)",
+     "expected": {
+      "command": "timeline.currentFrame.move",
+      "params": {
+       "direction": "last",
+       "withinRange": true
+      }
+     },
+     "declared": {
+      "command": "timeline.currentFrame.move",
+      "params": {
+       "direction": "last",
+       "withinRange": true
+      }
+     },
+     "sent": [
+      {
+       "command": "timeline.currentFrame.move",
+       "params": {
+        "direction": "last",
+        "withinRange": true
+       }
+      }
+     ],
+     "effect": true,
+     "steps": [],
+     "shown": null,
+     "ok": true
+    }
+   ],
+   "ok": true,
+   "disabledTarget": [
+    "dom",
+    "mainToolbar.lastFrame"
+   ],
+   "disabled": {
+    "target": [
+     "dom",
+     "mainToolbar.lastFrame"
+    ],
+    "ok": true,
+    "enabled": false
+   }
+  },
+  {
+   "name": "Timeline › the layout settles",
+   "spec": "04 lines 600-610; M5 C5.1b",
+   "ok": true,
+   "notRun": "the canvas's size is the window's layout, read through the webview's debugging port in the OS form"
+  },
+  {
+   "name": "status bar › jobs",
+   "spec": "spec/11_agent_interface_mcp.md:636; 01 §9.1 (status bar: running jobs)",
+   "runningPerKernel": [
+    1
+   ],
+   "runningAfterWait": 0,
+   "jobId": "job-2",
+   "shownWhileRunning": [
+    "1 job running"
+   ],
+   "afterEnd": "",
+   "ok": true
+  },
+  {
+   "name": "File › Open Recent › an entry's full path",
+   "spec": "01 §3.3 line 190 (\"the full path is shown in the status bar or tooltip\")",
+   "form": "mcp",
+   "expected": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-6_r_xbdb\\D39-recent.animpkg",
+   "node": {
+    "id": "dyn:recent:0",
+    "label": "D39",
+    "hint": "C:\\Users\\kaiga\\AppData\\Local\\Temp\\tt-d39-6_r_xbdb\\D39-recent.animpkg"
+   },
+   "ok": true
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 134,
+   "sha256": "bd56d85339cde1475488467ae4c43ea3b87f3818f90bd46ac69f052939853657"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 545768,
+   "sha256": "349687d7733ef52f5800774ad090e2ad67d5bc9ba2a19f1fe6b3b3541327c2b8"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 78739,
+   "sha256": "34ae97249add095c102b6b91209e3a09c5922a486c1a2b803bade563cdf7be2b"
+  }
+ ]
+}

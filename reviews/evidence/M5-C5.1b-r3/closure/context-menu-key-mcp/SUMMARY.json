@@ -1,0 +1,156 @@
+{
+ "receipt": "reviews/evidence/M5-C5.1b-r3/closure/context-menu-key-mcp",
+ "verdict": "pass",
+ "regenerate": "python scripts/c51b-context-menu-key.py <release build> <out> --mode mcp",
+ "manifest": {
+  "kind": "toontown.c51b.context-menu-key",
+  "mode": "mcp",
+  "seconds": 1.6,
+  "rows": 6,
+  "failed": [],
+  "failures": []
+ },
+ "checks": [
+  {
+   "ok": true,
+   "check": "E-52 1. the passing case: the cell context opens and the answer names it"
+  },
+  {
+   "ok": true,
+   "check": "E-52 8. the agent's run of an opened item's reference is the agent's own step (the person's click: the OS form)"
+  },
+  {
+   "ok": true,
+   "check": "E-52 2. a control without a context menu: handled false, nothing opened"
+  },
+  {
+   "ok": true,
+   "check": "E-52 3. an unknown control: view.notFound, nothing opened"
+  },
+  {
+   "ok": true,
+   "check": "E-52 4. a stale row id (the row shown, then deleted): view.notFound, nothing opened"
+  },
+  {
+   "ok": true,
+   "check": "E-52 5. a non-string view: arg.invalid, nothing opened"
+  },
+  {
+   "ok": true,
+   "check": "E-52 6. a dialog open: the OS form (a person's dialog or editor opened by real input; the kernel half in c51b_r2_context_key.rs)"
+  },
+  {
+   "ok": true,
+   "check": "E-52 6b. Change Duration open (the reviewer's case): the OS form (a person's dialog or editor opened by real input; the kernel half in c51b_r2_context_key.rs)"
+  },
+  {
+   "ok": true,
+   "check": "E-52 7. the rename editor open: the OS form (a person's dialog or editor opened by real input; the kernel half in c51b_r2_context_key.rs)"
+  }
+ ],
+ "rows": [
+  {
+   "name": "1. the passing case: the cell context opens and the answer names it",
+   "ok": true,
+   "detail": {
+    "answer": {
+     "status": "ok",
+     "result": {
+      "handled": true,
+      "contextMenu": "timeline.tracks",
+      "menuId": "timeline.cellMenu"
+     },
+     "changes": [],
+     "warnings": [],
+     "documentRev": null
+    },
+    "menu": "timeline.cellMenu"
+   }
+  },
+  {
+   "name": "8. the agent's run of an opened item's reference is the agent's own step (the person's click: the OS form)",
+   "ok": true,
+   "detail": {
+    "reference": {
+     "commandId": "anim.key.add",
+     "params": {
+      "nodeIds": [
+       "el_01K7JJN800KA0N4H0H58V2X43K"
+      ],
+      "frame": 3
+     }
+    },
+    "agentSteps": [
+     [
+      "Add Keyframe",
+      "agent"
+     ]
+    ]
+   }
+  },
+  {
+   "name": "2. a control without a context menu: handled false, nothing opened",
+   "ok": true,
+   "detail": {
+    "answer": {
+     "status": "ok",
+     "result": {
+      "handled": false,
+      "reason": "noContextMenu",
+      "control": "timeline.add"
+     },
+     "changes": [],
+     "warnings": [],
+     "documentRev": null
+    }
+   }
+  },
+  {
+   "name": "3. an unknown control: view.notFound, nothing opened",
+   "ok": true,
+   "detail": {
+    "answer": {
+     "status": "error",
+     "changes": [],
+     "warnings": [],
+     "documentRev": null,
+     "error": {
+      "code": "view.notFound",
+      "message": "the window has no control `timeline.noSuchControl`",
+      "details": {
+       "view": "timeline.noSuchControl",
+       "reason": "noControl",
+       "pointer": "/view"
+      }
+     }
+    }
+   }
+  },
+  {
+   "name": "4. a stale row id (the row shown, then deleted): view.notFound, nothing opened",
+   "ok": true
+  },
+  {
+   "name": "5. a non-string view: arg.invalid, nothing opened",
+   "ok": true
+  }
+ ],
+ "kept": [],
+ "raw": [
+  {
+   "file": "manifest.json",
+   "bytes": 135,
+   "sha256": "0992cb0c71d49a3226aa95f61c686180b87795e30dcfc7294a01f13cf421a87f"
+  },
+  {
+   "file": "rows.json",
+   "bytes": 3441,
+   "sha256": "570934e6874e6843ffe2f34f99e261da4bacc813ebc7cb7723f2ec94cebe0fb7"
+  },
+  {
+   "file": "transcript.json",
+   "bytes": 4098,
+   "sha256": "de1a09836cef336ff5dd1eb90002c776bcf87873b37c4e33968cd8adaef6656a"
+  }
+ ]
+}
