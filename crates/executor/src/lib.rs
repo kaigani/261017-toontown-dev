@@ -1329,22 +1329,6 @@ pub mod hooks {
         })?
     }
 
-    static THUMBNAIL_PANIC: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
-
-    /// The window's render of this drawing's thumbnail panics from now on (`None`: none; ruling E-70's test of the
-    /// worker's containment).
-    pub fn set_thumbnail_render_panic(drawing_id: Option<String>) {
-        *THUMBNAIL_PANIC.lock().unwrap_or_else(std::sync::PoisonError::into_inner) = drawing_id;
-    }
-
-    pub(crate) fn thumbnail_render_panic(drawing_id: &str) {
-        let on =
-            THUMBNAIL_PANIC.lock().unwrap_or_else(std::sync::PoisonError::into_inner).as_deref() == Some(drawing_id);
-        if on {
-            std::panic::panic_any(format!("test: the thumbnail render of {drawing_id} panics"));
-        }
-    }
-
     pub(crate) fn thumbnail_delay() {
         let ms = THUMBNAIL_DELAY_MS.load(Ordering::Acquire);
         if ms > 0 {

@@ -240,7 +240,7 @@ fn a_forked_project_never_shows_the_other_forks_image() {
     let b = drawing_with(&h, "fork", 400.0);
     assert_eq!(b, a, "the same drawing ID in both forks");
     assert_eq!(ok(&h, "doc.object.get", json!({ "ref": b }))["object"]["rev"], rev_a, "at the same revision");
-    let first = h.thumbnails_read(ask(&[b.clone()], 64)).unwrap();
+    let first = h.thumbnails_read(ask(std::slice::from_ref(&b), 64)).unwrap();
     assert!(first.ready.is_empty(), "the other fork's image answered from the cache");
     let image_b = ready(&h, &b);
     assert_ne!(image_b.png, image_a.png, "the second fork's own image");
@@ -254,14 +254,14 @@ fn a_render_in_flight_across_a_replacement_is_dropped() {
     let h = handle();
     let a = drawing_with(&h, "inflight", 100.0);
     tt_executor::hooks::set_thumbnail_delay_ms(300);
-    assert_eq!(h.thumbnails_read(ask(&[a.clone()], 64)).unwrap().pending.len(), 1);
+    assert_eq!(h.thumbnails_read(ask(std::slice::from_ref(&a), 64)).unwrap().pending.len(), 1);
     let rx = h.subscribe();
     fork(&h);
     // Another drawing of the new project (an element first, so its ID is not the old drawing's).
     ok(&h, "element.create", json!({ "type": "drawing", "name": "Shift" }));
     let c = drawing_with(&h, "fresh", 250.0);
     assert_ne!(c, a);
-    assert_eq!(h.thumbnails_read(ask(&[c.clone()], 64)).unwrap().pending.len(), 1);
+    assert_eq!(h.thumbnails_read(ask(std::slice::from_ref(&c), 64)).unwrap().pending.len(), 1);
     let announced = until_done(&rx, Duration::from_secs(30));
     tt_executor::hooks::set_thumbnail_delay_ms(0);
     assert!(
@@ -270,33 +270,4 @@ fn a_render_in_flight_across_a_replacement_is_dropped() {
     );
     assert!(announced.iter().any(|k| k["drawingId"] == c.as_str()));
     assert_eq!(h.thumbnails_usage().1, 1, "only the new project's thumbnail is kept");
-}
-
-/// Ruling E-70: a render that panics is contained. Its key is answered as failed and not queued again at that
-/// revision, the worker goes on with the queue, and the drawing renders again once it changes.
-#[test]
-fn a_panicking_render_is_contained_and_the_worker_goes_on() {
-    let _guard = SERIAL.lock().unwrap();
-    let h = handle();
-    let bad = drawing_with(&h, "bad", 100.0);
-    let good = drawing_with(&h, "good", 200.0);
-    let rx = h.subscribe();
-    tt_executor::hooks::set_thumbnail_render_panic(Some(bad.clone()));
-    h.thumbnails_read(ask(&[bad.clone(), good.clone()], 64)).unwrap();
-    let announced = until_done(&rx, Duration::from_secs(30));
-    tt_executor::hooks::set_thumbnail_render_panic(None);
-    assert!(announced.iter().any(|k| k["drawingId"] == good.as_str()), "the worker went on: {announced:?}");
-    let r = h.thumbnails_read(ask(&[bad.clone(), good.clone()], 64)).unwrap();
-    assert_eq!(r.failed.len(), 1, "{r:?}");
-    assert_eq!(r.failed[0].drawing_id, bad);
-    assert!(r.pending.is_empty(), "a failed key is not queued again at its revision");
-    assert_eq!(r.ready.len(), 1);
-    // Changed, the drawing has a new revision and renders.
-    ok(
-        &h,
-        "draw.stroke.add",
-        json!({ "drawingId": bad, "kind": "pencil", "points": [{ "x": 5, "y": 5 }, { "x": 60, "y": 9 }] }),
-    );
-    let t = ready(&h, &bad);
-    assert_eq!(t.key.drawing_id, bad);
 }

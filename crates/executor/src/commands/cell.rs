@@ -393,12 +393,10 @@ fn is_sound(doc: &Document, e: &Id) -> bool {
 /// strictly inside a placement would split the sound, which needs 07's placement timing (in and out points in seconds,
 /// loops, the mouth track): refused with owner M8 C8.1 (SI-219). The patch and the changed window; the precheck and the
 /// handler both use it (prechecks = handlers).
-pub(crate) fn sound_shift(
-    doc: &Document,
-    e: &Id,
-    edit: SoundEdit,
-    command: &str,
-) -> Result<(Vec<PatchOp>, Option<(usize, usize)>), CommandError> {
+/// A sound column's patch and the frame window it changes (`None`: nothing moves).
+pub(crate) type SoundPatch = (Vec<PatchOp>, Option<(usize, usize)>);
+
+pub(crate) fn sound_shift(doc: &Document, e: &Id, edit: SoundEdit, command: &str) -> Result<SoundPatch, CommandError> {
     let j = doc.entry_raw_json(&EntryKey::Element(e.clone())).map_err(super::timing::internal)?;
     let items = j.get("placements").and_then(Value::as_array).cloned().unwrap_or_default();
     let frame_of = |it: &Value, k: &str| it.get(k).and_then(Value::as_u64).and_then(|v| usize::try_from(v).ok());
@@ -2419,7 +2417,10 @@ pub(crate) fn precheck_fill(cx: &Cx, v: &Value) -> Result<(), CommandError> {
         let mut budget = Budget::new("checking the cells to extend");
         for e in &t.elements {
             let col = Column::read(doc, e, &mut budget)?;
-            if to >= 1 && matches!(x::fill(&col.frames, t.from, to), Err(FillError::Blank)) {
+            // Only a target frame the handler accepts (it refuses any other with `cell.frameOutOfRange` first): the
+            // parameters here are not yet bounded, and the fill builds the column up to the target.
+            let in_range = (1..=x::MAX_COMMAND_FRAMES as usize).contains(&to);
+            if in_range && matches!(x::fill(&col.frames, t.from, to), Err(FillError::Blank)) {
                 return Err(err(
                     "cell.notApplicable",
                     format!("the cell at frame {} of element `{e}` is blank: there is no drawing to extend", t.from),

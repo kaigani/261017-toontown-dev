@@ -355,8 +355,8 @@ impl Service {
 
 /// Renders one queued thumbnail from its snapshot; `None` when the drawing cannot be rendered (it is not answered).
 fn render(job: &Job) -> Option<Vec<u8>> {
-    #[cfg(feature = "test-hooks")]
-    crate::hooks::thumbnail_render_panic(&job.key.drawing_id);
+    #[cfg(test)]
+    tests::render_panic(&job.key.drawing_id);
     let id = Id::parse(&job.key.drawing_id).ok()?;
     let d = job.snapshot.doc.drawing(&id)?;
     let never = || false;
@@ -367,4 +367,64 @@ fn render(job: &Job) -> Option<Vec<u8>> {
         stop: &never,
     };
     crate::commands::draw_render::thumbnail_png(&src, &job.snapshot.doc, d, job.key.size).ok()
+}
+
+#[cfg(test)]
+mod tests {
+    use std::sync::{Arc, Mutex, PoisonError};
+    use std::time::{Duration, Instant};
+
+    use super::{Service, Snapshot, ThumbnailRequest};
+
+    static PANIC_ON: Mutex<Option<String>> = Mutex::new(None);
+
+    /// The dev-only panicking render (ruling E-70's test of the worker's containment).
+    pub(super) fn render_panic(drawing_id: &str) {
+        let on = PANIC_ON.lock().unwrap_or_else(PoisonError::into_inner).as_deref() == Some(drawing_id);
+        if on {
+            std::panic::panic_any(format!("test: the thumbnail render of {drawing_id} panics"));
+        }
+    }
+
+    /// Ruling E-70: a render that panics is contained. Its key is answered as failed and not queued again at that
+    /// revision, the worker goes on with the queue, and the service keeps answering.
+    #[test]
+    fn a_panicking_render_is_contained_and_the_worker_goes_on() {
+        let doc = tt_model::fixture::sample_document(1).unwrap();
+        let ids: Vec<String> = doc.drawings().map(|d| d.id().as_str().to_owned()).take(2).collect();
+        assert_eq!(ids.len(), 2);
+        let (bad, good) = (ids[0].clone(), ids[1].clone());
+        let service = Service::new(Arc::new(crate::host::Bus::default()), super::CACHE_BOUND);
+        let snapshot =
+            Snapshot { doc: Arc::new(doc), planar: crate::planar::SharedCache::default(), blobs: None, generation: 1 };
+        let ask = || [&bad, &good].map(|d| ThumbnailRequest { drawing_id: d.clone(), size: 32 }).to_vec();
+        *PANIC_ON.lock().unwrap_or_else(PoisonError::into_inner) = Some(bad.clone());
+        assert_eq!(service.read(&ask(), &snapshot).pending.len(), 2);
+        let start = Instant::now();
+        let r = loop {
+            let r = service.read(&ask(), &snapshot);
+            if r.pending.is_empty() {
+                break r;
+            }
+            assert!(start.elapsed() < Duration::from_secs(30), "the worker stopped: {r:?}");
+            std::thread::sleep(Duration::from_millis(10));
+        };
+        *PANIC_ON.lock().unwrap_or_else(PoisonError::into_inner) = None;
+        assert_eq!(r.failed.len(), 1, "{r:?}");
+        assert_eq!(r.failed[0].drawing_id, bad);
+        assert_eq!(r.ready.len(), 1, "the worker went on: {r:?}");
+        assert_eq!(r.ready[0].key.drawing_id, good);
+        // A new generation (another project) forgets the failure: the drawing renders again.
+        let next = Snapshot { generation: 2, ..snapshot };
+        service.read(&ask(), &next);
+        let start = Instant::now();
+        loop {
+            let r = service.read(&ask(), &next);
+            if r.ready.len() == 2 {
+                break;
+            }
+            assert!(start.elapsed() < Duration::from_secs(30), "no worker for the new generation: {r:?}");
+            std::thread::sleep(Duration::from_millis(10));
+        }
+    }
 }

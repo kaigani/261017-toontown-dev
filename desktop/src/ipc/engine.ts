@@ -524,6 +524,7 @@ export function createEngineApi(transport: HostTransport): EngineApi {
         ready: list<ThumbnailKey & { png: string }>(o['ready']),
         pending: list<ThumbnailKey>(o['pending']),
         missing: list<string>(o['missing']),
+        failed: list<ThumbnailKey>(o['failed']),
       };
     },
     async contextMenuAnswer(answer) {
