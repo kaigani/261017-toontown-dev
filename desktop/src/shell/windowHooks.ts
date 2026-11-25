@@ -9,6 +9,7 @@ import TEXT_FIELD_KEYS from '../keys/text-field-keys.json';
 import type { ShellServices } from '../state/context';
 import type { Binding } from '../state/types';
 import type { ActionsApi } from './actionsApi';
+import { lastOpening, retireOpeningsAfter } from './contextMenuModel';
 import { anyModalOpen } from './modalFocus';
 import { collectUiTree, type UiNode } from './uiTree';
 
@@ -134,7 +135,7 @@ export function isTextEntry(el: EventTarget | null): boolean {
 export async function openContextMenuFor(
   target: string | null,
   frameBoundMs: number = FRAME_BOUND_MS,
-): Promise<{ outcome: 'opened' | 'noMenu' | 'notFound'; menuId: string | null }> {
+): Promise<{ outcome: 'opened' | 'noMenu' | 'notFound' | 'notRendered'; menuId: string | null }> {
   const at =
     target !== null
       ? document.querySelector(`[data-tt-id=${JSON.stringify(target)}]`)
@@ -143,13 +144,9 @@ export async function openContextMenuFor(
     return { outcome: 'notFound', menuId: null };
   }
   const before = document.activeElement;
-  // The menus open before the event (a person's, or one an earlier request opened): the answer names the menu this
-  // event opened, not one of these (C51B-R3S-01).
-  const menus = () =>
-    [...document.querySelectorAll('[data-tt-role="menu"]')].filter(
-      (m): m is HTMLElement => m instanceof HTMLElement,
-    );
-  const open = new Map(menus().map((m) => [m, m.dataset['ttId']]));
+  // The openings before the event (a person's menu, or one an earlier request opened): the answer names the menu this
+  // event opened, by its opening number, not one of those (C51B-R3S-01; E-66).
+  const mark = lastOpening();
   const seen = { taken: false };
   const probe = (e: Event) => {
     seen.taken = e.defaultPrevented;
@@ -173,8 +170,14 @@ export async function openContextMenuFor(
       r();
     });
   });
-  const menu = menus().find((m) => !open.has(m) || open.get(m) !== m.dataset['ttId']) ?? menus()[0];
-  return { outcome: 'opened', menuId: menu?.dataset['ttId'] ?? null };
+  const menu = [...document.querySelectorAll('[data-tt-role="menu"]')].find(
+    (m): m is HTMLElement => m instanceof HTMLElement && Number(m.dataset['ttOpening'] ?? '0') > mark,
+  );
+  if (menu) return { outcome: 'opened', menuId: menu.dataset['ttId'] ?? null };
+  // Nothing rendered within the bound (a minimised window draws nothing, E-66): the answer says so, and the menu the
+  // event asked for is retired, so it never appears later for a caller told it did not open.
+  retireOpeningsAfter(mark);
+  return { outcome: 'notRendered', menuId: null };
 }
 
 /** How long a context-menu turn waits for the frame that renders its menu before it reads what is there (E-63). */

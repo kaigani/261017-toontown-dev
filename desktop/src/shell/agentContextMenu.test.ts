@@ -7,6 +7,8 @@ import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { AgentContextMenu, EngineApi } from '../ipc';
 import type { ShellServices } from '../state/context';
+import { ContextMenu } from './ContextMenu';
+import { isRetired, menuAt, type MenuAt } from './contextMenuModel';
 import { openContextMenuFor, useAgentContextMenu } from './windowHooks';
 
 const guard = (e: MouseEvent) => {
@@ -29,6 +31,10 @@ function control(id: string, opensMenu: boolean): HTMLElement {
       const menu = document.createElement('div');
       menu.dataset['ttRole'] = 'menu';
       menu.dataset['ttId'] = `${id}.menu`;
+      // As every owner does: the opening's number (menuAt), shown by the menu (E-66).
+      menu.dataset['ttOpening'] = String(
+        menuAt({ clientX: e.clientX, clientY: e.clientY, currentTarget: el }).opening,
+      );
       document.body.appendChild(menu);
     });
   document.body.appendChild(el);
@@ -68,6 +74,9 @@ function replacing(id: string): HTMLElement {
     const menu = document.createElement('div');
     menu.dataset['ttRole'] = 'menu';
     menu.dataset['ttId'] = `${id}.menu`;
+    menu.dataset['ttOpening'] = String(
+      menuAt({ clientX: e.clientX, clientY: e.clientY, currentTarget: el }).opening,
+    );
     document.body.appendChild(menu);
   });
   document.body.appendChild(el);
@@ -206,5 +215,36 @@ describe("the window's agent context-menu turns are bounded", () => {
     await waitFor(() => {
       expect(answers.map((a) => a.agentRequest)).toEqual([2]);
     });
+  });
+});
+
+// Ruling E-66: when the window draws nothing within the bound (a minimised window), the answer says no menu opened, and
+// the menu the event asked for never appears later.
+describe('a menu the window did not draw within the bound', () => {
+  it('answers notRendered, and the late menu closes as it mounts', async () => {
+    window.addEventListener('contextmenu', guard);
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+    // A control that asks for its menu (menuAt) and would draw it later, after the bound.
+    let asked: MenuAt | null = null;
+    const el = document.createElement('button');
+    el.dataset['ttId'] = 'late.control';
+    el.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      asked = menuAt({ clientX: e.clientX, clientY: e.clientY, currentTarget: el });
+    });
+    document.body.appendChild(el);
+    expect(await openContextMenuFor('late.control', 20)).toEqual({ outcome: 'notRendered', menuId: null });
+    expect(asked).not.toBeNull();
+    const late = asked as unknown as MenuAt;
+    expect(isRetired(late)).toBe(true);
+    // The owner now draws the menu it asked for: it closes at once and draws nothing.
+    const onClose = vi.fn();
+    render(createElement(ContextMenu, { id: 'late.menu', label: 'Late', at: late, groups: [], onClose }));
+    await waitFor(() => {
+      expect(onClose).toHaveBeenCalled();
+    });
+    expect(document.querySelector('[data-tt-id="late.menu"]')).toBeNull();
+    // A later opening is not retired.
+    expect(isRetired({ x: 0, y: 0, opening: late.opening === undefined ? 0 : late.opening + 1 })).toBe(false);
   });
 });

@@ -149,7 +149,7 @@ export interface EngineApi {
    *  `key` call: `opened` (a menu opened), `noMenu` (the control offers none), `notFound` (no such control). */
   contextMenuAnswer(answer: {
     agentRequest: number;
-    outcome: 'opened' | 'noMenu' | 'notFound';
+    outcome: 'opened' | 'noMenu' | 'notFound' | 'notRendered';
     target: string | null;
     menuId: string | null;
   }): Promise<void>;

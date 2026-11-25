@@ -25,13 +25,38 @@ export interface MenuGroup {
 export interface MenuAt {
   readonly x: number;
   readonly y: number;
+  /** This opening's number (M5 ruling E-66): the menu shows it, so an agent's request can name the menu it opened, and
+   *  a retired opening never renders. */
+  readonly opening?: number;
 }
 
-/** Where a `contextmenu` event opens a menu: the pointer, or the target's corner when the keyboard opened it. */
+/** The openings counted so far, and the retired ones (E-66). */
+let openings = 0;
+const retired = new Set<number>();
+
+/** The number of the last opening (an agent's request marks it before its event). */
+export function lastOpening(): number {
+  return openings;
+}
+
+/** Retires every opening after `mark` (E-66): an agent's request whose menu did not render within its bound answered
+ *  that the menu did not open; that menu never appears later. */
+export function retireOpeningsAfter(mark: number): void {
+  for (let n = mark + 1; n <= openings; n++) retired.add(n);
+}
+
+/** Whether a menu's opening was retired. */
+export function isRetired(at: MenuAt): boolean {
+  return at.opening !== undefined && retired.has(at.opening);
+}
+
+/** Where a `contextmenu` event opens a menu: the pointer, or the target's corner when the keyboard opened it. Each call
+ *  is a new opening. */
 export function menuAt(e: { clientX: number; clientY: number; currentTarget: Element }): MenuAt {
-  if (e.clientX !== 0 || e.clientY !== 0) return { x: e.clientX, y: e.clientY };
+  openings += 1;
+  if (e.clientX !== 0 || e.clientY !== 0) return { x: e.clientX, y: e.clientY, opening: openings };
   const r = e.currentTarget.getBoundingClientRect();
-  return { x: r.left + 8, y: r.top + 8 };
+  return { x: r.left + 8, y: r.top + 8, opening: openings };
 }
 
 /** The menu's natural size and the window's client area, in CSS pixels. */

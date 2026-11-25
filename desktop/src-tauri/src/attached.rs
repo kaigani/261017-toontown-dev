@@ -251,6 +251,11 @@ impl WindowIo {
         let env = match outcome {
             "opened" => Envelope::ok(json!({ "handled": true, "contextMenu": target, "menuId": menu_id }), None),
             "noMenu" => Envelope::ok(json!({ "handled": false, "reason": "noContextMenu", "control": target }), None),
+            // The window drew nothing within the bound (a minimised window): no menu opened, and the window retired the
+            // one the event asked for, so it does not appear later (M5 ruling E-66).
+            "notRendered" => {
+                Envelope::ok(json!({ "handled": false, "reason": "notRendering", "control": target }), None)
+            }
             _ => Envelope::error(
                 refusal(
                     "view.notFound",

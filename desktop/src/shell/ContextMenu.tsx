@@ -30,6 +30,7 @@ import { createPortal } from 'react-dom';
 import { useActions } from './actionsApi';
 import type { CommandRef } from './availability';
 import {
+  isRetired,
   MENU_MARGIN,
   placeMenu,
   type MenuAt,
@@ -70,7 +71,26 @@ function reveal(list: HTMLElement, item: HTMLElement): void {
   else if (r.bottom > l.bottom) list.scrollTop += Math.min(r.bottom - l.bottom, r.top - l.top);
 }
 
-export function ContextMenu({
+/** A context menu. An opening an agent's request retired (it answered that no menu opened, the window drawing nothing
+ *  within its bound: M5 ruling E-66) closes as it mounts and draws nothing. */
+export function ContextMenu(props: {
+  id: string;
+  label: string;
+  at: MenuAt;
+  groups: readonly MenuGroup[];
+  onClose: () => void;
+}) {
+  return isRetired(props.at) ? <RetiredMenu onClose={props.onClose} /> : <OpenMenu {...props} />;
+}
+
+function RetiredMenu({ onClose }: { onClose: () => void }) {
+  useEffect(() => {
+    onClose();
+  }, [onClose]);
+  return null;
+}
+
+function OpenMenu({
   id,
   label,
   at,
@@ -282,6 +302,7 @@ export function ContextMenu({
       }
       data-tt-role="menu"
       data-tt-id={id}
+      {...(at.opening !== undefined ? { 'data-tt-opening': at.opening } : {})}
       onKeyDown={onKeyDown}
       onContextMenu={(e) => {
         e.preventDefault();
