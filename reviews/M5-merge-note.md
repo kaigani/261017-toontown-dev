@@ -11,6 +11,12 @@ M5; until then only the table of §4 is kept current.
 | C5.1b | the Timeline view | **passed (E-65)**: head `376583ed`, run 45531678228 (38 of 38), addendum `1f183ecd`; two full rounds, a closure check in two parts and a second reading, all findings closed; reviewer file edited under ruling: `c31_r1_selection_budget.rs` (E-46) |
 | C5.2 | the Exposure Sheet, cell commands, the Properties and Cells panels | plan approved (`reviews/M5-C5.2-plan.md`, rulings E-54 to E-60); C5.2a (kernel) handed off (`reviews/M5-C5.2a-handoff.md`; gaps A to F of 04 §13.20 reported) |
 
+## 2. Deferred to later milestones (owners)
+
+| What | Owner | Why |
+|---|---|---|
+| The project's derived `thumbnail` (10 line 348; line 742: the package's representative frame, regenerated on save; 08 §6.2), named in `doc.derivedUnavailable` | M9 C9.2 (the scene manager and storyline) | Not an Exposure Sheet thumbnail: the milestone that saves the package's representative frame and shows it (ruling E-68). The drawings' derived `thumbnail` is done in C5.2a |
+
 ## 4. Tests that failed on a commit later green on rerun (the M11 list)
 
 Every test that fails on a commit whose product is unchanged, its cause and what was done (no rerun in the hope it

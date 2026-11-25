@@ -19,7 +19,10 @@ pub(crate) fn unavailable(ty: ObjectType) -> &'static [(&'static str, &'static s
         ObjectType::Project => &[
             ("sceneStartFrames", "M9 (storyline timing)"),
             ("globalLength", "M9 (storyline timing)"),
-            ("thumbnail", "M5 C5.2 (Exposure Sheet thumbnails)"),
+            (
+                "thumbnail",
+                "M9 C9.2 (the package's representative frame, saved with the project and shown by the scene manager; M5 ruling E-68)",
+            ),
         ],
         ObjectType::Scene => &[("paddedLength", "M9 (storyline timing)")],
         ObjectType::Element => &[("effectiveMarkerColour", "M4 C4.1 (preferences)")],
