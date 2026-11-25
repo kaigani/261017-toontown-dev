@@ -229,3 +229,49 @@ fn the_light_table_and_column_widths_are_saved_with_the_scene_and_are_no_documen
     let saved = std::fs::read_to_string(target.join("session.json")).unwrap_or_default();
     assert!(!saved.contains(&gone), "the deleted drawing's item is not saved");
 }
+
+/// 11 §6.4 (line 241), ruling D-12: none of the seven changes focus, so an agent's call runs while the person has a
+/// dialog open (only focus-changing `ui` commands answer `ui.modalOpen`), and waits while the person is mid-gesture,
+/// then answers `ui.busy` with nothing changed.
+#[test]
+fn an_agents_call_runs_under_the_persons_dialog_and_waits_out_a_gesture() {
+    use tt_executor::host::ShellReport;
+    use tt_executor::{Invocation, InvokeOptions, Status};
+    use tt_registry::Scope;
+    let modal = |kind: &str| -> ShellReport {
+        serde_json::from_str(&format!(r#"{{"modal":{{"kind":"{kind}","title":"Preferences"}}}}"#)).unwrap()
+    };
+    let inv = |command: &str, params: Value| Invocation {
+        command: command.into(),
+        params,
+        options: InvokeOptions::default(),
+        origin: agent(&[Scope::Read, Scope::Edit, Scope::Ui]),
+    };
+    let bob = "scene:\"Intro\"/element:\"Bob\"";
+    let calls = [
+        ("xsheet.display.set", json!({ "thumbnails": true })),
+        ("xsheet.panel.set", json!({ "elementList": true })),
+        ("xsheet.columnWidth.set", json!({ "elementId": bob, "width": 120 })),
+        (
+            "xsheet.lightTable.add",
+            json!({ "items": [{ "elementId": bob, "frame": 1 }, { "elementId": bob, "frame": 1 }] }),
+        ),
+        ("xsheet.lightTable.move", json!({ "itemId": "lt2", "index": 0 })),
+        ("xsheet.lightTable.set", json!({ "apply": "all", "placement": "over" })),
+        ("xsheet.lightTable.remove", json!({ "all": true })),
+    ];
+    let h = fixture();
+    h.set_wait_for_user(std::time::Duration::ZERO);
+    for (command, params) in &calls {
+        h.report_shell(modal("dialog"));
+        let env = h.invoke(inv(command, params.clone()));
+        assert_eq!(env.status, Status::Ok, "{command} under a dialog: {:?}", env.error);
+        h.report_shell(modal("gesture"));
+        let before = (ok(&h, "xsheet.lightTable.list", json!({})), ok(&h, "xsheet.exposures.get", json!({})));
+        let env = h.invoke(inv(command, params.clone()));
+        assert_eq!(env.error.map(|e| e.code), Some("ui.busy".to_owned()), "{command} under a gesture");
+        let after = (ok(&h, "xsheet.lightTable.list", json!({})), ok(&h, "xsheet.exposures.get", json!({})));
+        assert_eq!(before, after, "{command}: nothing changed under the gesture");
+        h.report_shell(serde_json::from_str(r#"{"modal":null}"#).unwrap());
+    }
+}
