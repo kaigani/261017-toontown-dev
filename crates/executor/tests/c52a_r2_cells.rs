@@ -1,12 +1,12 @@
-//! M5 C5.2a, ruling E-67: the cell commands 04 Ã‚Â§13.20 gives media and sound columns.
+//! M5 C5.2a, ruling E-67: the cell commands 04 Ãƒâ€šÃ‚Â§13.20 gives media and sound columns.
 //!
-//! **Media (A).** A media column's cells derive from its sequences (10 Ã‚Â§4.15: each frame of a sequence shows the next
+//! **Media (A).** A media column's cells derive from its sequences (10 Ãƒâ€šÃ‚Â§4.15: each frame of a sequence shows the next
 //! frame of its linked source). The exposure commands work on those cells as on an image column's, a source frame
 //! standing for a drawing, and the result is written back as sequences, one per run of consecutive source frames. The
 //! expected cells are written from the spec as the source frame each frame shows; the sample's `Reference` shows its
 //! source's frames 1 to 24 at frames 1 to 24.
 //!
-//! **Sound (B).** A sound column's cells are its placements (10 Ã‚Â§4.14). Insert cells and insert blank move the
+//! **Sound (B).** A sound column's cells are its placements (10 Ãƒâ€šÃ‚Â§4.14). Insert cells and insert blank move the
 //! placements at or after the insertion later, delete blank moves the following ones earlier (a lip-sync track's
 //! `producedFor.stopFrame` with them); an insertion strictly inside a placement would split the sound, which needs 07's
 //! placement timing: refused with owner M8 C8.1 (SI-219), and not offered.
@@ -102,7 +102,7 @@ fn the_exposure_commands_work_on_a_media_columns_cells() {
     );
     // Remove exposure on frames 1-2 (each one frame long): their cells go, the rest moves up.
     assert_eq!(media_after("cell.exposure.remove", json!({ "elementIds": [MEDIA], "from": 1, "to": 2 })), src(3..=24));
-    // Extend the cell of frame 1 to frame 3: it overwrites frames 2 and 3 (04 Ã‚Â§13.21).
+    // Extend the cell of frame 1 to frame 3: it overwrites frames 2 and 3 (04 Ãƒâ€šÃ‚Â§13.21).
     assert_eq!(
         media_after("cell.fill.apply", json!({ "elementIds": [MEDIA], "frame": 1, "toFrame": 3 })),
         cat(&[vec![Some(1), Some(1), Some(1)], src(4..=24)])
@@ -188,4 +188,1354 @@ fn an_insertion_inside_a_sound_is_refused_with_its_owner_and_not_offered() {
         assert!(!a.enabled, "{command}: offered though refused");
     }
     assert_eq!(placement(&h), (1, 8, 8));
+}
+
+#[test]
+fn q3_drawing_fill_frame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 48, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_frame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 100000, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_frame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1000000000, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_frame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 9223372036854775807, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_frame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 18446744073709551615, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_toFrame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "toFrame": 48}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_toFrame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "toFrame": 100000}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_toFrame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "toFrame": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_toFrame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "toFrame": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_fill_toFrame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "toFrame": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_frame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 48, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_frame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 100000, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_frame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1000000000, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_frame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 9223372036854775807, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_frame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 18446744073709551615, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_count_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "count": 48}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_count_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "count": 100000}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_count_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "count": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_count_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "count": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_range_count_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "frame": 1, "count": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_from_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 48, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_from_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 100000, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_from_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1000000000, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_from_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 9223372036854775807, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_from_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 18446744073709551615, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_to_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 48, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_to_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 100000, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_to_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 1000000000, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_to_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 9223372036854775807, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_to_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 18446744073709551615, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_length_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 2, "length": 48}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_length_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 2, "length": 100000}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_length_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 2, "length": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_length_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 2, "length": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_exposure_length_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Bob\""], "from": 1, "to": 2, "length": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_from_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 48, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_from_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 100000, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_from_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1000000000, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_from_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 9223372036854775807, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_from_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 18446744073709551615, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_to_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 48, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_to_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 100000, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_to_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 1000000000, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_to_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 9223372036854775807, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_to_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 18446744073709551615, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_cycles_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 2, "cycles": 48}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_cycles_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 2, "cycles": 100000}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_cycles_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 2, "cycles": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_cycles_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 2, "cycles": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_cycle_cycles_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "from": 1, "to": 2, "cycles": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_frame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 48, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_frame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 100000, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_frame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1000000000, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_frame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 9223372036854775807, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_frame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 18446744073709551615, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeEach_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 48, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeEach_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 100000, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeEach_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1000000000, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeEach_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 9223372036854775807, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeEach_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 18446744073709551615, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeLast_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 48}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeLast_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 100000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeLast_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeLast_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_exposeLast_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_loops_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 48}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_loops_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 100000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_loops_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_loops_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_loops_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_totalFrames_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 48}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_totalFrames_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 100000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_totalFrames_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_totalFrames_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_drawing_columnate_totalFrames_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Bob\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_frame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 48, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_frame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 100000, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_frame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1000000000, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_frame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 9223372036854775807, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_frame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 18446744073709551615, "toFrame": 3}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_toFrame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "toFrame": 48}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_toFrame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "toFrame": 100000}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_toFrame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "toFrame": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_toFrame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "toFrame": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_fill_toFrame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "toFrame": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.fill.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_frame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 48, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_frame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 100000, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_frame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1000000000, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_frame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 9223372036854775807, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_frame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 18446744073709551615, "count": 1}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_count_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "count": 48}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_count_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "count": 100000}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_count_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "count": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_count_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "count": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_range_count_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "frame": 1, "count": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.range.add",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_from_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 48, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_from_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 100000, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_from_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1000000000, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_from_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 9223372036854775807, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_from_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 18446744073709551615, "to": 2, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_to_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 48, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_to_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 100000, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_to_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 1000000000, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_to_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 9223372036854775807, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_to_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 18446744073709551615, "length": 2}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_length_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 2, "length": 48}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_length_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 2, "length": 100000}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_length_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 2, "length": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_length_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 2, "length": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_exposure_length_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementIds": ["scene:\"Intro\"/element:\"Reference\""], "from": 1, "to": 2, "length": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.exposure.set",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_from_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 48, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_from_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 100000, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_from_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1000000000, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_from_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 9223372036854775807, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_from_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 18446744073709551615, "to": 2, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_to_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 48, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_to_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 100000, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_to_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 1000000000, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_to_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 9223372036854775807, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_to_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 18446744073709551615, "cycles": 2}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_cycles_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 2, "cycles": 48}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_cycles_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 2, "cycles": 100000}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_cycles_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 2, "cycles": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_cycles_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 2, "cycles": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_cycle_cycles_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "from": 1, "to": 2, "cycles": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.cycle.create",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_frame_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 48, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_frame_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 100000, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_frame_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1000000000, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_frame_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 9223372036854775807, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_frame_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 18446744073709551615, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeEach_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 48, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeEach_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 100000, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeEach_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1000000000, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeEach_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 9223372036854775807, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeEach_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 18446744073709551615, "loopMode": "continuous", "loops": 1}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeLast_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 48}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeLast_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 100000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeLast_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeLast_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_exposeLast_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "exposeLast": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_loops_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 48}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_loops_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 100000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_loops_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_loops_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_loops_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_totalFrames_48() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 48}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_totalFrames_100000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 100000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_totalFrames_1000000000() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 1000000000}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_totalFrames_9223372036854775807() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 9223372036854775807}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
+}
+
+#[test]
+fn q3_media_columnate_totalFrames_18446744073709551615() {
+ let h=fixture();
+ let p: Value=serde_json::from_str(r##"{"elementId": "scene:\"Intro\"/element:\"Reference\"", "frame": 1, "firstDrawing": "1", "lastDrawing": "1", "exposeEach": 1, "loopMode": "continuous", "loops": 1, "totalFrames": 18446744073709551615}"##).unwrap();
+ let e=run(&h,"cell.columnate.apply",p);
+ assert!(e.result.is_some() || e.error.is_some(), "{e:?}");
+ ok(&h,"doc.state.get",json!({}));
 }
