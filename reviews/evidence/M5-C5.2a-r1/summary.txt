@@ -1,0 +1,9 @@
+Headless dynamic review, product b6589228, base 71b949f1.
+A1: cargo test -p tt-executor --locked --features test-hooks --test c52a_r1_history -- --nocapture: 1 passed.
+A2: cargo test -p tt-executor --locked --test c52a_r1_lighttable -- --nocapture: 1 passed.
+A3: same lighttable command: 2 passed.
+B1: cargo test -p tt-executor --locked --features test-hooks --test c52a_r1_thumbnails -- --nocapture: 7 passed.
+B2: cargo test -p tt-executor --locked --test c52a_r1_gestures -- --nocapture: 8 passed.
+B3: same gestures command: 9 passed.
+All cargo calls sequential, wrapped in timeout 530. Existing target retained.
+No wall-clock assertions introduced. No product or existing test files edited.
