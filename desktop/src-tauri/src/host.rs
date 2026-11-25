@@ -75,8 +75,29 @@ struct WindowFacts {
     modal: Option<(u64, Value)>,
     /// A text field of it has focus.
     text_focus: bool,
+    /// The kind of that field (`ordinary`, `canvasText`): the window's own, taken with its boolean from the active
+    /// window (M5 ruling E-63, the C51B-R4S-02 observation).
+    text_field_kind: Option<Value>,
     /// Its rendered UI tree and the engine event number it vouches for.
     tree: Option<(Value, Option<u64>)>,
+    /// The order of the newest report applied for each member (`modal`, `focus`, `tree`): the page's id and its
+    /// report number (`reportOrder`). A report older than one already applied for a member leaves that member as it is
+    /// (E-63: a window's reports may arrive out of order). A new page (a reload) starts its own numbering.
+    order: std::collections::BTreeMap<&'static str, (String, u64)>,
+}
+
+impl WindowFacts {
+    /// Whether a report numbered `at` may replace member `what` (and records it when it may).
+    fn newer(&mut self, what: &'static str, at: Option<&(String, u64)>) -> bool {
+        let Some((page, n)) = at else { return true };
+        match self.order.get(what) {
+            Some((p, m)) if p == page && *m >= *n => false,
+            _ => {
+                self.order.insert(what, (page.clone(), *n));
+                true
+            }
+        }
+    }
 }
 
 /// The windows' facts and which window has the operating system's focus.
@@ -103,10 +124,14 @@ impl Windows {
         let modal =
             self.facts.values().filter_map(|f| f.modal.as_ref()).max_by_key(|(o, _)| *o).map(|(_, v)| v.clone());
         m.insert("modal".into(), modal.unwrap_or(Value::Null));
-        // The active window's own fact (ruling E-62): a report from a window that is not active never overrides it.
+        // The active window's own fact (ruling E-62), with its field kind (E-63): a report from a window that is not
+        // active never overrides either.
         let active = self.focused.as_deref().unwrap_or("main");
-        let focus = self.facts.get(active).is_some_and(|f| f.text_focus);
-        m.insert("textFocus".into(), Value::Bool(focus));
+        let facts = self.facts.get(active);
+        m.insert("textFocus".into(), Value::Bool(facts.is_some_and(|f| f.text_focus)));
+        if let Some(kind) = facts.and_then(|f| f.text_field_kind.clone()) {
+            m.insert("textFieldKind".into(), kind);
+        }
         let trees: Vec<(&String, &(Value, Option<u64>))> =
             self.facts.iter().filter_map(|(l, f)| f.tree.as_ref().map(|t| (l, t))).collect();
         if !trees.is_empty() {
@@ -282,7 +307,11 @@ impl Host {
         {
             let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
             let expected = std::mem::take(&mut w.expected);
-            *w = Windows { expected, ..Windows::default() };
+            // Which window has the operating system's focus is the host's fact, not the engine's: it outlives the
+            // restart (M5 ruling E-63, C51B-R4S-02: with a float active, the main window's fact counted until the next
+            // focus change).
+            let focused = w.focused.take();
+            *w = Windows { expected, focused, ..Windows::default() };
         }
         let generation = self.generation.fetch_add(1, Ordering::AcqRel) + 1;
         // Agent gestures routed on the replaced engine are never committed to this one (D-7b): answered at once.
@@ -366,20 +395,38 @@ impl Host {
             return Ok(json!({ "ignored": "staleGeneration", "generation": self.generation() }));
         }
         if let Some(m) = value.as_object_mut() {
-            let (modal, focus, tree, seq) =
-                (m.remove("modal"), m.remove("textFocus"), m.remove("uiTree"), m.remove("renderedSeq"));
-            if modal.is_some() || focus.is_some() || tree.is_some() {
+            let (modal, focus, kind, tree, seq) = (
+                m.remove("modal"),
+                m.remove("textFocus"),
+                m.remove("textFieldKind"),
+                m.remove("uiTree"),
+                m.remove("renderedSeq"),
+            );
+            // The report's place in its window's order (E-63): `{page, seq}`, absent from callers that do not number.
+            let at = m
+                .remove("reportOrder")
+                .and_then(|o| Some((o.get("page")?.as_str()?.to_owned(), o.get("seq")?.as_u64()?)));
+            if modal.is_some() || focus.is_some() || kind.is_some() || tree.is_some() {
                 let mut w = self.windows.lock().unwrap_or_else(PoisonError::into_inner);
                 w.order += 1;
                 let order = w.order;
                 let f = w.facts.entry(window.to_owned()).or_default();
-                if let Some(v) = modal {
+                if let Some(v) = modal
+                    && f.newer("modal", at.as_ref())
+                {
                     f.modal = if v.is_null() { None } else { Some((order, v)) };
                 }
-                if let Some(v) = &focus {
-                    f.text_focus = v.as_bool().unwrap_or(false);
+                if (focus.is_some() || kind.is_some()) && f.newer("focus", at.as_ref()) {
+                    if let Some(v) = &focus {
+                        f.text_focus = v.as_bool().unwrap_or(false);
+                    }
+                    if let Some(k) = kind {
+                        f.text_field_kind = Some(k);
+                    }
                 }
-                if let Some(t) = tree {
+                if let Some(t) = tree
+                    && f.newer("tree", at.as_ref())
+                {
                     f.tree = Some((t, seq.and_then(|s| s.as_u64())));
                 }
                 // A window reports its own fact; which window is active is the operating system's (M5 ruling E-62,

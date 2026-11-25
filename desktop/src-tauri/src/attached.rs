@@ -323,7 +323,9 @@ impl AttachedIo for WindowIo {
         let host = self.host();
         let generation = host.generation();
         let (id, rx) = host.routed().register(origin, CONTEXT_MENU, window, generation);
-        let payload = json!({ "requestId": id, "target": target, "generation": generation });
+        // The budget goes with the request: the window retires a turn whose caller has timed out (M5 ruling E-63).
+        let budget_ms = u64::try_from(budget.as_millis()).unwrap_or(u64::MAX);
+        let payload = json!({ "requestId": id, "target": target, "generation": generation, "budgetMs": budget_ms });
         let sent = tt_engine::wire::to_wire_json(&payload)
             .map_err(|e| e.message)
             .and_then(|text| self.app.emit_to(window, AGENT_CONTEXT_MENU_EVENT, text).map_err(|e| e.to_string()));

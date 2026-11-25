@@ -201,14 +201,21 @@ describe('typed errors and cancellation (M3 merge note §8 item 1)', () => {
     await vi.waitFor(() => {
       expect(
         host.rawReports.some(
-          (r) => r.startsWith('{"modal":{"kind":"dialog","title":') && r.endsWith(',"generation":0}'),
+          // The report's place in the page's order follows the generation (M5 ruling E-63).
+          (r) =>
+            r.startsWith('{"modal":{"kind":"dialog","title":') &&
+            r.includes(',"generation":0,"reportOrder":{'),
         ),
       ).toBe(true);
     });
     const before = host.rawReports.length;
     fireEvent.click(within(box).getByRole('button', { name: 'OK' }));
     await vi.waitFor(() => {
-      expect(host.rawReports.slice(before)).toContain('{"modal":null,"generation":0}');
+      expect(
+        host.rawReports
+          .slice(before)
+          .some((r) => r.startsWith('{"modal":null,"generation":0,"reportOrder":{')),
+      ).toBe(true);
     });
   });
 
@@ -350,7 +357,11 @@ describe('preferences (01 §7.1)', () => {
       expect(screen.queryByRole('dialog', { name: 'Preferences' })).toBeNull();
     });
     await vi.waitFor(() => {
-      expect(host.rawReports.slice(before)).toContain('{"modal":null,"generation":0}');
+      expect(
+        host.rawReports
+          .slice(before)
+          .some((r) => r.startsWith('{"modal":null,"generation":0,"reportOrder":{')),
+      ).toBe(true);
     });
     expect(host.actions().some((a) => a.command === 'prefs.set')).toBe(false);
   });

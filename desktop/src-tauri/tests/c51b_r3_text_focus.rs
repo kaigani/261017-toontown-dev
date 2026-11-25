@@ -78,3 +78,52 @@ fn the_active_window_changing_brings_its_current_fact() -> Result<(), Box<dyn Er
     let _ = std::fs::remove_dir_all(dir);
     Ok(())
 }
+
+/// Ruling E-63 (C51B-R4S-02): which window has the operating system's focus is the host's fact; an engine restart keeps
+/// it. The windows report their facts again on the new generation (as they do on its notice), and the float's counts.
+#[test]
+fn an_engine_restart_keeps_the_active_float() -> Result<(), Box<dyn Error>> {
+    let (h, dir) = host()?;
+    h.window_focused("float-timeline");
+    h.report_from("main", json!({ "generation": 0, "textFocus": false }))?;
+    h.report_from("float-timeline", json!({ "generation": 0, "textFocus": true }))?;
+    assert!(editing(&h));
+    let (generation, restarted) = h.restart()?;
+    assert!(restarted);
+    h.report_from("main", json!({ "generation": generation, "textFocus": false }))?;
+    h.report_from("float-timeline", json!({ "generation": generation, "textFocus": true }))?;
+    assert!(editing(&h), "the float is still active after the restart: its field keeps the key");
+    drop(h);
+    let _ = std::fs::remove_dir_all(dir);
+    Ok(())
+}
+
+/// E-63, the reviewer's two points beside it: the field kind comes from the same window as the boolean, and an older
+/// report of a window never replaces a newer one.
+#[test]
+fn the_field_kind_is_the_active_windows_and_older_reports_lose() -> Result<(), Box<dyn Error>> {
+    let (h, dir) = host()?;
+    h.window_focused("float-timeline");
+    // The float's field is the canvas's text editor: its undo chord is the document's, not the field's (SI-193).
+    h.report_from("float-timeline", json!({ "generation": 0, "textFocus": true, "textFieldKind": "canvasText" }))?;
+    let undo_is_the_fields = |h: &Host| matches!(h.exec().resolve_key("Primary+Z"), Ok(KeyResolution::Suspended { ref reason, .. }) if reason == "textField");
+    assert!(editing(&h) && !undo_is_the_fields(&h));
+    // The inactive main window's ordinary field kind does not replace the active float's.
+    h.report_from("main", json!({ "generation": 0, "textFocus": false, "textFieldKind": "ordinary" }))?;
+    assert!(editing(&h) && !undo_is_the_fields(&h), "the field kind came from the inactive window");
+
+    // Out of order: the float's report 3 (no field) arrives, then its older report 2 (a field): the newer stays.
+    let order = |n: u64| json!({ "page": "p1", "seq": n });
+    h.report_from("float-timeline", json!({ "generation": 0, "textFocus": false, "reportOrder": order(3) }))?;
+    h.report_from("float-timeline", json!({ "generation": 0, "textFocus": true, "reportOrder": order(2) }))?;
+    assert!(!editing(&h), "an older report replaced a newer one");
+    // A reloaded page numbers from 1 again: its reports apply.
+    h.report_from(
+        "float-timeline",
+        json!({ "generation": 0, "textFocus": true, "reportOrder": { "page": "p2", "seq": 1 } }),
+    )?;
+    assert!(editing(&h));
+    drop(h);
+    let _ = std::fs::remove_dir_all(dir);
+    Ok(())
+}

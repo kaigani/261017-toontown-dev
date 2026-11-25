@@ -237,6 +237,8 @@ export interface AgentContextMenu {
   requestId: number;
   target: string | null;
   generation: number;
+  /** The caller's budget at the host, in milliseconds (M5 ruling E-63): past it the caller has its timeout. */
+  budgetMs: number | null;
 }
 
 export interface AgentInput {
@@ -344,6 +346,10 @@ export function gestureJson(request: Record<string, unknown>): string {
   return plain(request, 1) ? JSON.stringify(request) : stringifyWireJson(request);
 }
 
+/** This page's id for the order of its sensor reports (E-63), and their count. */
+const REPORT_PAGE = `${String(Date.now())}-${Math.random().toString(36).slice(2)}`;
+let reportSeq = 0;
+
 export function createEngineApi(transport: HostTransport): EngineApi {
   const invoke = async (command: string, args: unknown): Promise<unknown> =>
     transport.invoke(command, { json: stringifyWireJson(args) });
@@ -389,7 +395,14 @@ export function createEngineApi(transport: HostTransport): EngineApi {
       return v as KeyOutcome;
     },
     async report(report) {
-      await invoke('report_shell', { ...report, generation });
+      // Numbered in this page's order (M5 ruling E-63): the host keeps the newest of a window's facts even when its
+      // reports arrive out of order; a reload is a new page with its own numbering.
+      reportSeq += 1;
+      await invoke('report_shell', {
+        ...report,
+        generation,
+        reportOrder: { page: REPORT_PAGE, seq: reportSeq },
+      });
     },
     async availability(refs) {
       const v = decode(await invoke('availability', { refs }));
@@ -472,7 +485,13 @@ export function createEngineApi(transport: HostTransport): EngineApi {
           const target = o['target'];
           if (typeof o['requestId'] !== 'number' || typeof o['generation'] !== 'number') return;
           if (target !== null && typeof target !== 'string') return;
-          handler({ requestId: o['requestId'], target, generation: o['generation'] });
+          const budget = o['budgetMs'];
+          handler({
+            requestId: o['requestId'],
+            target,
+            generation: o['generation'],
+            budgetMs: typeof budget === 'number' ? budget : null,
+          });
         } catch {
           // A malformed message can only come from a version mismatch; it is dropped (the agent's call times out).
         }

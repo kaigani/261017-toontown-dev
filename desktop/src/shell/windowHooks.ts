@@ -133,6 +133,7 @@ export function isTextEntry(el: EventTarget | null): boolean {
  *  menu also prevents it, but later, at the window: the probe on the document reads the event before that guard. */
 export async function openContextMenuFor(
   target: string | null,
+  frameBoundMs: number = FRAME_BOUND_MS,
 ): Promise<{ outcome: 'opened' | 'noMenu' | 'notFound'; menuId: string | null }> {
   const at =
     target !== null
@@ -163,9 +164,12 @@ export async function openContextMenuFor(
     if (before instanceof HTMLElement && before !== at) before.focus({ preventScroll: true });
     return { outcome: 'noMenu', menuId: null };
   }
-  // The menu the control opened, once rendered (the next frame at most).
+  // The menu the control opened, once rendered: the next frame, or the timer when no frame comes (a minimised window
+  // runs none; M5 ruling E-63, C51B-R4S-01).
   await new Promise<void>((r) => {
+    const timer = setTimeout(r, Math.max(0, frameBoundMs));
     requestAnimationFrame(() => {
+      clearTimeout(timer);
       r();
     });
   });
@@ -173,10 +177,21 @@ export async function openContextMenuFor(
   return { outcome: 'opened', menuId: menu?.dataset['ttId'] ?? null };
 }
 
-/** The main window's side of an agent's Shift+F10 (M5 rulings E-48, E-52, E-62): each routed request is played here and
- *  answered with what happened. One request is served at a time, in arrival order: a request waits until the one before
- *  it has opened its menu and answered, so the menu each answer names is the one that request opened (C51B-R3S-01: two
- *  requests in one frame both read the second's menu). A request sent on an earlier engine generation opens nothing
+/** How long a context-menu turn waits for the frame that renders its menu before it reads what is there (E-63). */
+export const FRAME_BOUND_MS = 250;
+
+/** The share of a request's budget kept for the answer's way back: a turn that starts later than its budget less this
+ *  margin is retired, its caller having timed out at the host or about to (E-63). */
+const ANSWER_MARGIN_MS = 100;
+
+/** The main window's side of an agent's Shift+F10 (M5 rulings E-48, E-52, E-62, E-63): each routed request is played here
+ *  and answered with what happened. One request is served at a time, in arrival order: a request waits until the one
+ *  before it has opened its menu and answered, so the menu each answer names is the one that request opened
+ *  (C51B-R3S-01: two requests in one frame both read the second's menu). Each turn carries its request's deadline (the
+ *  host's budget from the moment it arrived): a turn whose deadline has passed when it comes is retired without opening
+ *  anything, its caller gone (C51B-R4S-01: a minimised window ran no frame, its turn held the queue, and the expired
+ *  requests opened stale menus when it was restored); the frame a turn waits for is bounded by a timer and by the
+ *  deadline; a failure inside a turn releases the queue. A request sent on an earlier engine generation opens nothing
  *  (D-7b: the restart drained its caller; the answer is not awaited). */
 export function useAgentContextMenu(services: ShellServices): void {
   useEffect(() => {
@@ -185,13 +200,22 @@ export function useAgentContextMenu(services: ShellServices): void {
     let turn: Promise<void> = Promise.resolve();
     void services.engine
       .onAgentContextMenu((request) => {
-        turn = turn.then(async () => {
-          if (disposed || request.generation !== services.engine.generation()) return;
-          const { outcome, menuId } = await openContextMenuFor(request.target);
-          await services.engine
-            .contextMenuAnswer({ agentRequest: request.requestId, outcome, target: request.target, menuId })
-            .catch(() => undefined);
-        });
+        const deadline =
+          performance.now() + (request.budgetMs ?? Number.POSITIVE_INFINITY) - ANSWER_MARGIN_MS;
+        turn = turn
+          .then(async () => {
+            if (disposed || request.generation !== services.engine.generation()) return;
+            const left = deadline - performance.now();
+            if (left <= 0) return;
+            const { outcome, menuId } = await openContextMenuFor(
+              request.target,
+              Math.min(FRAME_BOUND_MS, left),
+            );
+            await services.engine
+              .contextMenuAnswer({ agentRequest: request.requestId, outcome, target: request.target, menuId })
+              .catch(() => undefined);
+          })
+          .catch(() => undefined);
       })
       .then((u) => {
         if (disposed) u();

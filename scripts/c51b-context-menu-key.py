@@ -137,11 +137,13 @@ async def check(app: str, run, out: Path, work: Path) -> list:
                 return await e2e.call(s, "key", args)
 
             async def close_menu():
-                """Escape on an open menu, then waits until it is gone (D-45)."""
+                """Escape on an open menu, then waits until it is gone (D-45); a menu that stays open fails the check
+                (E-63: the wait's result is not discarded)."""
                 if menu_open():
                     d39.front()
                     d39.key(0x1B)
-                await until(lambda: menu_open() is None, 5.0)
+                if await until(lambda: menu_open() is None, 5.0) is None:
+                    raise RuntimeError(f"the context menu did not close after Escape: {menu_open()}")
 
             async def kernel_modal() -> bool:
                 """The kernel holds the person's dialog open (the state the key's check reads; the window reports it

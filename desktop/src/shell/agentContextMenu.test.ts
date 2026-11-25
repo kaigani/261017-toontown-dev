@@ -3,7 +3,7 @@
 // every contextmenu later, at the window, so the answer reads the event at the document, before that guard.
 import { cleanup, render, waitFor } from '@testing-library/react';
 import { createElement } from 'react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import type { AgentContextMenu, EngineApi } from '../ipc';
 import type { ShellServices } from '../state/context';
@@ -14,6 +14,7 @@ const guard = (e: MouseEvent) => {
 };
 
 afterEach(() => {
+  vi.restoreAllMocks();
   cleanup();
   window.removeEventListener('contextmenu', guard);
   document.body.innerHTML = '';
@@ -74,11 +75,11 @@ function replacing(id: string): HTMLElement {
 }
 
 /** The window's hook with a host that delivers requests and records the answers. */
-function served(generation: number) {
+function served(generation: number | (() => number)) {
   const answers: { agentRequest: number; menuId: string | null; outcome: string }[] = [];
   const deliver: { to: ((r: AgentContextMenu) => void) | null } = { to: null };
   const engine = {
-    generation: () => generation,
+    generation: typeof generation === 'number' ? () => generation : generation,
     onAgentContextMenu: (handler: (r: AgentContextMenu) => void) => {
       deliver.to = handler;
       return Promise.resolve(() => undefined);
@@ -107,8 +108,8 @@ describe("the window's agent context-menu requests", () => {
     await waitFor(() => {
       expect(deliver.to).not.toBeNull();
     });
-    deliver.to?.({ requestId: 1, target: 'timeline.tracks', generation: 3 });
-    deliver.to?.({ requestId: 2, target: 'timeline.ruler', generation: 3 });
+    deliver.to?.({ requestId: 1, target: 'timeline.tracks', generation: 3, budgetMs: 30_000 });
+    deliver.to?.({ requestId: 2, target: 'timeline.ruler', generation: 3, budgetMs: 30_000 });
     await waitFor(() => {
       expect(answers).toHaveLength(2);
     });
@@ -125,11 +126,85 @@ describe("the window's agent context-menu requests", () => {
     await waitFor(() => {
       expect(deliver.to).not.toBeNull();
     });
-    deliver.to?.({ requestId: 1, target: 'timeline.tracks', generation: 3 });
-    deliver.to?.({ requestId: 2, target: 'timeline.tracks', generation: 4 });
+    deliver.to?.({ requestId: 1, target: 'timeline.tracks', generation: 3, budgetMs: 30_000 });
+    deliver.to?.({ requestId: 2, target: 'timeline.tracks', generation: 4, budgetMs: 30_000 });
     await waitFor(() => {
       expect(answers).toHaveLength(1);
     });
     expect(answers[0]?.agentRequest).toBe(2);
+  });
+});
+
+// Ruling E-63 (C51B-R4S-01): a turn never holds the queue. A minimised window runs no animation frame: a timer bounds
+// the wait for it; a turn whose request's deadline has passed is retired without opening anything; a failure releases
+// the queue.
+describe("the window's agent context-menu turns are bounded", () => {
+  it('a turn whose frame never comes is answered, and the next request is served', async () => {
+    window.addEventListener('contextmenu', guard);
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation(() => 0);
+    replacing('timeline.tracks');
+    replacing('timeline.ruler');
+    const { answers, deliver } = served(3);
+    await waitFor(() => {
+      expect(deliver.to).not.toBeNull();
+    });
+    deliver.to?.({ requestId: 1, target: 'timeline.tracks', generation: 3, budgetMs: 30_000 });
+    deliver.to?.({ requestId: 2, target: 'timeline.ruler', generation: 3, budgetMs: 30_000 });
+    await waitFor(() => {
+      expect(answers.map((a) => [a.agentRequest, a.menuId])).toEqual([
+        [1, 'timeline.tracks.menu'],
+        [2, 'timeline.ruler.menu'],
+      ]);
+    });
+  });
+
+  it('a request whose deadline passed while it waited opens no menu, even after a late frame', async () => {
+    window.addEventListener('contextmenu', guard);
+    const frames: FrameRequestCallback[] = [];
+    vi.spyOn(window, 'requestAnimationFrame').mockImplementation((f) => {
+      frames.push(f);
+      return frames.length;
+    });
+    replacing('timeline.tracks');
+    const ruler = replacing('timeline.ruler');
+    let rulerEvents = 0;
+    ruler.addEventListener('contextmenu', () => {
+      rulerEvents += 1;
+    });
+    const { answers, deliver } = served(3);
+    await waitFor(() => {
+      expect(deliver.to).not.toBeNull();
+    });
+    // The first turn waits its frame bound (no frame comes); the second's budget runs out meanwhile.
+    deliver.to?.({ requestId: 1, target: 'timeline.tracks', generation: 3, budgetMs: 30_000 });
+    deliver.to?.({ requestId: 2, target: 'timeline.ruler', generation: 3, budgetMs: 150 });
+    await waitFor(() => {
+      expect(answers.map((a) => a.agentRequest)).toEqual([1]);
+    });
+    // The late frames arrive (the window restored): the expired request still opens nothing and answers nothing.
+    for (const f of frames.splice(0)) f(performance.now());
+    await new Promise((r) => setTimeout(r, 0));
+    expect(rulerEvents).toBe(0);
+    expect(document.querySelector('[data-tt-id="timeline.ruler.menu"]')).toBeNull();
+    expect(answers.map((a) => a.agentRequest)).toEqual([1]);
+  });
+
+  it('a failure inside a turn releases the queue', async () => {
+    window.addEventListener('contextmenu', guard);
+    replacing('timeline.tracks');
+    let calls = 0;
+    const { answers, deliver } = served(() => {
+      calls += 1;
+      if (calls === 1) throw new Error('the first turn fails');
+      return 3;
+    });
+    await waitFor(() => {
+      expect(deliver.to).not.toBeNull();
+    });
+    deliver.to?.({ requestId: 1, target: 'timeline.tracks', generation: 3, budgetMs: 30_000 });
+    deliver.to?.({ requestId: 2, target: 'timeline.tracks', generation: 3, budgetMs: 30_000 });
+    await waitFor(() => {
+      expect(answers.map((a) => a.agentRequest)).toEqual([2]);
+    });
   });
 });
