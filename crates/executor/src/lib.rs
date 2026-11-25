@@ -70,6 +70,7 @@ mod timing_gesture;
 pub use timing_gesture::COORDINATE_BOUND as TIMING_COORDINATE_BOUND;
 mod types;
 mod ui;
+pub mod xsheet_gesture;
 
 use std::sync::mpsc::{self, Receiver, RecvTimeoutError, Sender};
 use std::sync::{Arc, Mutex, OnceLock, PoisonError};

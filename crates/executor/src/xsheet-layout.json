@@ -1,0 +1,8 @@
+{
+  "$comment": "The Exposure Sheet's geometry (M5 C5.2a; reviews/M5-design-xsheet-view.md section 3). One source: the kernel's timing-gesture interpreter (crates/executor/src/xsheet_gesture.rs) and the window (C5.2b, a byte copy kept equal by a test). Lengths in CSS pixels. Frames run down, columns across (04 section 12.1). The grid: frame f's row spans y in [(f - 1) * rowHeight, f * rowHeight) from the top of frame 1, scrolled by scrollTop; rowHeightThumbnails with the thumbnails option on (04 section 12.3: rows become taller). A column's width is its own (xsheet.columnWidth.set) or columnWidth; the columns are the scene's cell-based elements in Exposure Sheet order shown in the sheet, from x = 0, scrolled by scrollLeft. A press within exposureEdge of the bottom edge of an exposure's last cell grabs that edge (lengthen or shorten, 04 section 12.9); otherwise the cell. In the headers a press is the column under x; a drop is before the column whose centre is right of x, else after the last.",
+  "version": 1,
+  "rowHeight": 20,
+  "rowHeightThumbnails": 52,
+  "columnWidth": 80,
+  "exposureEdge": 4
+}

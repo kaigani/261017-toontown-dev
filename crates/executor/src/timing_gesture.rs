@@ -27,7 +27,7 @@ use tt_registry::CommandError;
 use crate::commands::timeline::{RangeMode, effective_range, length_of};
 use crate::timeline_layout::{Layout, layout};
 
-/// The Timeline surface a gesture is made on.
+/// The surface a gesture is made on: the Timeline's, or the Exposure Sheet's (M5 C5.2a, [`crate::xsheet_gesture`]).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub enum Surface {
@@ -37,6 +37,10 @@ pub enum Surface {
     Tracks,
     /// The frame ruler.
     Ruler,
+    /// The Exposure Sheet's grid of cells (frames down, columns across).
+    XsheetGrid,
+    /// The Exposure Sheet's column headers.
+    XsheetHeaders,
 }
 
 /// A gesture's layout, captured at the press (design note §5.1).
@@ -49,9 +53,12 @@ pub struct GestureLayout {
     pub zoom_level: u32,
     /// The first frame shown.
     pub first_frame: u32,
-    /// The rows' vertical scroll in pixels.
+    /// The rows' vertical scroll in pixels (the sheet: the frames').
     #[serde(default)]
     pub scroll_top: f64,
+    /// The sheet's horizontal scroll in pixels (its columns; the Timeline scrolls by `first_frame`).
+    #[serde(default)]
+    pub scroll_left: f64,
     /// `windows`, `macos` or `linux` (the modifier roles, SI-211).
     pub platform: String,
 }
@@ -93,6 +100,10 @@ pub struct State {
     /// The drag-and-drop option set in effect (04's names): a cell drag carries the set resolved at its press, inline
     /// in its `cell.range.move` (ruling E-32).
     pub drag_options: serde_json::Map<String, Value>,
+    /// The Exposure Sheet's column widths by element (M5 C5.2a: its geometry).
+    pub column_widths: BTreeMap<String, u32>,
+    /// The Exposure Sheet shows thumbnails (taller rows, 04 §12.3).
+    pub thumbnails: bool,
 }
 
 impl State {
@@ -134,6 +145,8 @@ impl State {
                 s,
                 crate::commands::transfer_options::Operation::DragDrop,
             ),
+            column_widths: s.timeline.column_widths.clone(),
+            thumbnails: s.ui.drawing().xsheet.thumbnails,
         }
     }
 }
@@ -210,6 +223,24 @@ pub enum Target {
         element: String,
         frame: u32,
         selected: bool,
+    },
+    /// An Exposure Sheet cell (M5 C5.2a).
+    SheetCell {
+        column: usize,
+        element: String,
+        frame: u32,
+        selected: bool,
+    },
+    /// The bottom edge of an exposure's last cell in the sheet (lengthen or shorten, 04 §12.9).
+    ExposureEdge {
+        column: usize,
+        element: String,
+        frame: u32,
+    },
+    /// An Exposure Sheet column header.
+    Header {
+        column: usize,
+        element: String,
     },
 }
 
@@ -400,6 +431,8 @@ pub fn classify(doc: &Document, state: &State, g: &GestureLayout, s: &Sample) ->
     let z = l.zoom(g.zoom_level);
     let cw = f64::from(z.cell_width);
     match g.surface {
+        Surface::XsheetGrid => crate::xsheet_gesture::classify(doc, state, g, s, false),
+        Surface::XsheetHeaders => crate::xsheet_gesture::classify(doc, state, g, s, true),
         Surface::Ruler => {
             if state.range_free {
                 let half = f64::from(l.range_marker_half_width);
@@ -467,6 +500,9 @@ pub fn plan(doc: &Document, state: &State, g: &GestureLayout, samples: &[Sample]
     let dragged = travel(samples) >= f64::from(l.drag_threshold);
     let len = length_of(doc, scene);
     let target = classify(doc, state, g, first);
+    if matches!(g.surface, Surface::XsheetGrid | Surface::XsheetHeaders) {
+        return crate::xsheet_gesture::plan(doc, state, g, samples, target, dragged, &mods);
+    }
     let rows = visible_rows(doc, scene, state);
     let delta = i64::from(frame_at(l, g, last.x)) - i64::from(frame_at(l, g, first.x));
     match target {
@@ -580,6 +616,8 @@ pub fn plan(doc: &Document, state: &State, g: &GestureLayout, samples: &[Sample]
             }
             one("cell.range.move", params)
         }
+        // The sheet's targets are planned above (they never come from a Timeline surface).
+        Target::SheetCell { .. } | Target::ExposureEdge { .. } | Target::Header { .. } => Plan::Nothing,
         Target::Cell { row, frame, selected: false, .. } => {
             let r1 = row_at(l, g, last.y, rows.len()).unwrap_or(row);
             let (a, b) = (row.min(r1), row.max(r1));
@@ -1121,6 +1159,7 @@ mod tests {
             zoom_level: u32::try_from(zoom).unwrap_or(0),
             first_frame: u32::try_from(first).unwrap_or(1),
             scroll_top: 0.0,
+            scroll_left: 0.0,
             platform: "windows".to_owned(),
         }
     }
