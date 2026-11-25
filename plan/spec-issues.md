@@ -2798,6 +2798,23 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   focus runs; mid-gesture, every agent command that writes state waits then answers `ui.busy`.
 - **Question:** whether "agent mutations" in line 237 includes `ui`-kind commands that change no focus.
 
+## SI-222 — The revision log's retention against its memory (M5 C5.2a; interim decided by ruling E-77)
+
+- **Sections:** 10 AG-09 (line 1117: `doc.diff` from any base back to the last save and at least the last 10 000
+  transactions; older bases fail with `doc.diffUnavailable`), D11 (line 1252), line 1060 (`doc.diffUnavailable` with
+  `details.oldestRev`).
+- **Problem:** every commit rebuilds the document's derived data (M11 C11.1's ticket, E-44), so a record that keeps a
+  whole earlier document (a checkpoint restore, its undo and redo: the document in `back`) holds megabytes on a large
+  drawing; 10,000 such records would hold tens of gigabytes.
+- **Interim decision (rulings E-73 item 3, E-77):** the log is bounded by memory (256 MiB of what its records hold alone,
+  by the estimate of `crates/executor/src/heap.rs`): kept `before` documents are released first (only speed is lost),
+  then the oldest records whole, never the newest. A base older than the oldest kept record answers
+  `doc.diffUnavailable` with `oldestRev`, the spec's error for an older base; in a session of large whole-document
+  records that can come before the last save or the last 10 000 transactions. Ordinary changes (patches) are small: the
+  bound is reached by them only after far more than 10 000 transactions.
+- **Question:** whether the retention of 10 AG-09 yields to a memory bound for records that keep whole documents, or the
+  records keep a lighter form (until M11 shares the derived data, the cost cannot otherwise be lower).
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row

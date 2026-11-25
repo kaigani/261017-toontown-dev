@@ -47,8 +47,37 @@ pub(crate) struct RevRecord {
     /// The revisions the objects the transaction stamped had at `rev - 1` (back-patches restore content, these
     /// restore the revisions; C12-R1-08).
     pub earlier_revs: Vec<(String, u64)>,
-    /// The memory `before` holds alone, in bytes ([`snapshot_weight`]): what keeping the snapshot costs.
+    /// The memory the earlier document holds alone, in bytes ([`snapshot_weight`]): what keeping `before`, or a
+    /// snapshot in `back` (the same document: checkpoint restores and their undo and redo), costs.
     pub weight: usize,
+    /// The memory the record's other owned values hold: the back patches' values and `earlier_revs` (E-77).
+    pub extra: usize,
+}
+
+impl RevRecord {
+    /// Whether the record holds its earlier document (in `before` or as a snapshot in `back`; one document either way).
+    fn holds_document(&self) -> bool {
+        self.before.is_some() || matches!(self.back, Back::Snapshot(_))
+    }
+
+    /// Everything the record holds alone (M5 ruling E-77).
+    fn held(&self) -> usize {
+        std::mem::size_of::<RevRecord>() + self.extra + if self.holds_document() { self.weight } else { 0 }
+    }
+}
+
+/// The memory a record's back patches and earlier revisions hold (E-77; [`crate::heap`]).
+fn record_extra(back: &Back, earlier_revs: &[(String, u64)], revs_capacity: usize) -> usize {
+    let patches = match back {
+        Back::Patches(list) => {
+            list.capacity() * std::mem::size_of::<(EntryKey, Vec<PatchOp>)>()
+                + list.iter().map(|(_, ops)| crate::heap::ops(ops, ops.capacity())).sum::<usize>()
+        }
+        Back::Snapshot(_) => 0,
+    };
+    patches
+        + revs_capacity * std::mem::size_of::<(String, u64)>()
+        + earlier_revs.iter().map(|(k, _)| k.capacity()).sum::<usize>()
 }
 
 /// Transactions kept for `doc.diff` (10 AG-09 / D11: at least the last 10 000, and back to the last save).
@@ -72,10 +101,11 @@ fn snapshot_budget() -> usize {
     SNAPSHOT_MEMORY_BUDGET
 }
 
-/// The kept snapshots of a log: how many, and the memory they hold alone by [`snapshot_weight`].
+/// The kept earlier documents of a log (in `before` or as a snapshot in `back`): how many, and everything the log's
+/// records hold alone by the estimate (E-77).
 #[cfg(feature = "test-hooks")]
 pub(crate) fn kept_snapshots(log: &VecDeque<RevRecord>) -> (usize, usize) {
-    log.iter().filter(|r| r.before.is_some()).fold((0, 0), |(n, b), r| (n + 1, b + r.weight))
+    (log.iter().filter(|r| r.holds_document()).count(), log.iter().map(RevRecord::held).sum())
 }
 
 /// The memory one indexed object costs in a document's derived data (the index's map entry with its location, the
@@ -157,25 +187,46 @@ impl OpenProject {
         earlier_revs: Vec<(String, u64)>,
     ) {
         let weight = snapshot_weight(&before, after);
-        self.log.push_back(RevRecord { rev, back, before: Some(before), earlier_revs, weight });
+        let extra = record_extra(&back, &earlier_revs, earlier_revs.capacity());
+        self.log.push_back(RevRecord { rev, back, before: Some(before), earlier_revs, weight, extra });
         if self.log.len() > SNAPSHOT_WINDOW
             && let Some(old) = self.log.get_mut(self.log.len() - SNAPSHOT_WINDOW - 1)
         {
             old.before = None;
         }
-        // Bounded snapshot memory: newest first, keep snapshots while their objects fit the budget.
-        let mut held = 0usize;
-        let mut kept = 0usize;
+        // Bounded memory (E-73 item 3, E-77). What can only go with its record counts first: every record's owned values
+        // and a snapshot in `back` (its earlier document). The kept `before` documents beside back patches then fit in
+        // what remains, newest first (releasing one costs only speed: `doc.diff` rebuilds that revision from the
+        // patches). The newest record is always kept whole.
+        let budget = snapshot_budget();
+        let mut total: usize = self
+            .log
+            .iter()
+            .map(|r| {
+                std::mem::size_of::<RevRecord>()
+                    + r.extra
+                    + if matches!(r.back, Back::Snapshot(_)) { r.weight } else { 0 }
+            })
+            .sum();
+        let mut first = true;
         for r in self.log.iter_mut().rev() {
-            if r.before.is_none() {
-                continue;
+            if r.before.is_some() && !matches!(r.back, Back::Snapshot(_)) {
+                if !first && total.saturating_add(r.weight) > budget {
+                    r.before = None;
+                } else {
+                    total = total.saturating_add(r.weight);
+                }
             }
-            if kept > 0 && held.saturating_add(r.weight) > snapshot_budget() {
-                r.before = None;
-                continue;
+            first = false;
+        }
+        // Still over: the oldest records go whole, their snapshots in `back` included, never the newest. A `doc.diff`
+        // from a base older than the oldest kept record then answers `doc.diffUnavailable` with `oldestRev` (10 line 1060,
+        // AG-09 line 1117), as for any base outside the kept records.
+        while total > budget && self.log.len() > 1 {
+            match self.log.pop_front() {
+                Some(r) => total = total.saturating_sub(r.held()),
+                None => break,
             }
-            held = held.saturating_add(r.weight);
-            kept += 1;
         }
         while self.log.len() > REV_LOG_LEN
             && self.log.front().is_some_and(|r| self.saved_rev.is_none_or(|saved| r.rev.saturating_sub(1) < saved))

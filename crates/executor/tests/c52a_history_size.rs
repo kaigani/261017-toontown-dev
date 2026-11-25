@@ -221,3 +221,52 @@ fn the_revision_log_weighs_its_snapshots_by_memory_and_keeps_them_within_the_bud
 
 /// The crowded drawing's strokes for the revision log's test.
 const STROKES2: usize = 2_000;
+
+/// Ruling E-77 (C52A-R3S-01): the reviewer's sequence. Two checkpoints of a crowded drawing, differing in a note,
+/// restored in turn 300 times: every restore's record keeps the earlier document in `back`. The log weighs it and, past
+/// the budget, releases the oldest records whole (the newest always kept whole). After the sequence, with the undo
+/// history taken out (its snapshot steps hold the same documents: M11 C11.1's ticket, E-73 item 2), what the process
+/// still holds of the sequence stays within the budget, the log's own count within it, and a diff from a released base
+/// answers `doc.diffUnavailable` with the oldest kept revision.
+#[test]
+fn restores_in_turn_stay_within_the_logs_budget_and_a_released_base_is_unavailable() {
+    let _serial = SERIAL.lock().unwrap_or_else(std::sync::PoisonError::into_inner);
+    let h = crowded(STROKES2);
+    let bob = "scene:\"Intro\"/element:\"Bob\"";
+    let base = ok(&h, "doc.state.get", json!({}))["documentRev"].as_u64().unwrap();
+    ok(&h, "checkpoint.create", json!({ "name": "one" }));
+    ok(&h, "element.note.set", json!({ "elementId": bob, "text": "two" }));
+    ok(&h, "checkpoint.create", json!({ "name": "two" }));
+    // The memory one earlier document holds, from the log's own estimate.
+    let (_, kept_a, bytes_a) = tt_executor::hooks::log_counted(&h).unwrap();
+    ok(&h, "checkpoint.restore", json!({ "name": "one" }));
+    let (_, kept_b, bytes_b) = tt_executor::hooks::log_counted(&h).unwrap();
+    assert!(kept_b >= kept_a);
+    let per = bytes_b.saturating_sub(bytes_a).max(1);
+    let budget = 12 * per;
+    tt_executor::hooks::set_snapshot_budget(budget as u64);
+    let r = Region::new(GLOBAL);
+    for i in 0..300 {
+        let name = if i % 2 == 0 { "two" } else { "one" };
+        ok(&h, "checkpoint.restore", json!({ "name": name }));
+    }
+    let (records, kept, bytes) = tt_executor::hooks::log_counted(&h).unwrap();
+    // The undo history's snapshot steps hold the same documents (M11's ticket): taken out, so what remains is the log's.
+    drop(tt_executor::hooks::history_take(&h).unwrap());
+    let held = net(&r);
+    tt_executor::hooks::set_snapshot_budget(0);
+    println!(
+        "restores in turn: {records} records kept, {kept} with their document, counted {bytes} B against {budget} B \
+         ({per} B per document); the process holds {held} B more after the 300 restores"
+    );
+    assert!(bytes <= budget + per, "the log counts {bytes} B against {budget} B");
+    assert!(records < 300, "the oldest records were released: {records}");
+    assert!(held <= (budget + 2 * per) as i64, "the process holds {held} B, over the budget {budget} B");
+    // A base released with its record: unavailable, with the oldest kept revision.
+    let e = err(&h, "doc.diff", json!({ "sinceRev": base, "detail": "summary" }));
+    assert_eq!(e.code, "doc.diffUnavailable", "{e:?}");
+    assert!(e.details["oldestRev"].as_u64().is_some_and(|o| o > base), "{e:?}");
+    // The newest record is kept whole: a diff from the revision before the last restore answers.
+    let now = ok(&h, "doc.state.get", json!({}))["documentRev"].as_u64().unwrap();
+    assert!(ok(&h, "doc.diff", json!({ "sinceRev": now - 1, "detail": "summary" }))["changes"].is_array());
+}
