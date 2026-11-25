@@ -165,3 +165,51 @@ fn b1_two_hundred_pending_fifty_commands_answer(){
  for _ in 0..50 {ok(&h,"doc.state.get",json!({}));}
  tt_executor::hooks::set_thumbnail_delay_ms(0);
 }
+#[cfg(feature="test-hooks")]
+#[test]
+fn p4_edit_during_render_answers_new_pixels(){
+ let h=fixture();let d=drawing(&h,"Race");let rx=h.subscribe();
+ tt_executor::hooks::set_thumbnail_delay_ms(300);
+ let ask=||vec![ThumbnailRequest{drawing_id:d.clone(),size:64}];
+ let old=h.thumbnails_read(ask()).unwrap().pending[0].rev;
+ stroke(&h,&d,-500.0);
+ let deadline=std::time::Instant::now()+std::time::Duration::from_secs(60);
+ let ready=loop {
+ let r=h.thumbnails_read(ask()).unwrap();
+ assert!(r.ready.iter().all(|t|t.key.rev>old));
+ if !r.ready.is_empty(){break r.ready[0].clone();}
+ assert!(std::time::Instant::now()<deadline,"thumbnail never ready");
+ let _=rx.recv_timeout(std::time::Duration::from_millis(100));
+ };
+ tt_executor::hooks::set_thumbnail_delay_ms(0);
+ let expected=derived(&h,&d);
+ assert_eq!(ready.key.rev,expected["rev"].as_u64().unwrap());
+ assert_eq!(json!(ready.png),ok(&h,"doc.blob.get",json!({"entry":expected["thumbnail"]["entry"]}))["base64"]);
+}
+#[cfg(feature="test-hooks")]
+#[test]
+fn p4_unrelated_project_drops_old_notices_and_images(){
+ let h=fixture();let d=drawing(&h,"Departing");let rx=h.subscribe();
+ tt_executor::hooks::set_thumbnail_delay_ms(300);
+ assert_eq!(h.thumbnails_read(vec![ThumbnailRequest{drawing_id:d.clone(),size:64}]).unwrap().pending.len(),1);
+ ok(&h,"project.close",json!({"onUnsaved":"discard"}));
+ ok(&h,"project.create",json!({"name":"Unrelated"}));
+ let e=ok(&h,"element.create",json!({"type":"drawing","name":"Fresh"}))["elementIds"][0].clone();
+ let fresh=ok(&h,"element.drawing.create",json!({"elementId":e,"name":"Fresh"}))["drawingId"].as_str().unwrap().to_owned();
+ assert_ne!(fresh,d);
+ let _=rx.try_iter().collect::<Vec<_>>();
+ h.thumbnails_read(vec![ThumbnailRequest{drawing_id:fresh.clone(),size:64}]).unwrap();
+ let deadline=std::time::Instant::now()+std::time::Duration::from_secs(60);
+ let mut stale=Vec::new();
+ loop {
+ if let Ok(event)=rx.recv_timeout(std::time::Duration::from_millis(100)) {
+ if event.name=="shell.thumbnailsReady" {if event.payload.to_string().contains(&d){stale.push(event.payload);}}
+ }
+ let r=h.thumbnails_read(vec![ThumbnailRequest{drawing_id:fresh.clone(),size:64}]).unwrap();
+ if !r.ready.is_empty(){assert!(r.ready.iter().all(|t|t.key.drawing_id==fresh));break;}
+ assert!(std::time::Instant::now()<deadline);
+ }
+ tt_executor::hooks::set_thumbnail_delay_ms(0);
+ assert!(h.thumbnails_read(vec![ThumbnailRequest{drawing_id:d.clone(),size:64}]).unwrap().ready.is_empty());
+ assert!(stale.is_empty(),"old-project notices after switch: {stale:?}");
+}
