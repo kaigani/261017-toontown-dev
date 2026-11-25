@@ -887,10 +887,49 @@ fn bounded(v: f64, pointer: &str) -> Result<(), CommandError> {
     ))
 }
 
+/// Every numeric member of a layout, for every surface, bounded before any arithmetic (ruling E-31; E-70 C52A-R1S-04):
+/// the scroll offsets and the light-table panel's rectangle within [`COORDINATE_BOUND`] (its size not negative), the
+/// zoom level within the ladder, the first frame within the scene limit.
+pub(crate) fn check_layout(g: &GestureLayout) -> Result<(), CommandError> {
+    bounded(g.scroll_top, "/layout/scrollTop")?;
+    bounded(g.scroll_left, "/layout/scrollLeft")?;
+    if let Some(r) = &g.light_table {
+        bounded(r.x, "/layout/lightTable/x")?;
+        bounded(r.y, "/layout/lightTable/y")?;
+        for (v, at) in [(r.width, "/layout/lightTable/width"), (r.height, "/layout/lightTable/height")] {
+            bounded(v, at)?;
+            if v < 0.0 {
+                return Err(CommandError::with_details(
+                    tt_registry::codes::ARG_INVALID,
+                    "a rectangle's size must not be negative",
+                    json!({ "pointer": at, "allowed": { "minimum": 0, "maximum": COORDINATE_BOUND } }),
+                ));
+            }
+        }
+    }
+    let max_zoom = crate::timeline_layout::layout().max_zoom();
+    if g.zoom_level > max_zoom {
+        return Err(CommandError::with_details(
+            tt_registry::codes::ARG_INVALID,
+            format!("the zoom level must be 0 to {max_zoom}"),
+            json!({ "pointer": "/layout/zoomLevel", "allowed": { "minimum": 0, "maximum": max_zoom } }),
+        ));
+    }
+    let max_frame = u32::try_from(tt_anim::exposure::MAX_FRAMES).unwrap_or(u32::MAX);
+    if !(1..=max_frame).contains(&g.first_frame) {
+        return Err(CommandError::with_details(
+            tt_registry::codes::ARG_INVALID,
+            format!("the first frame must be 1 to {max_frame}"),
+            json!({ "pointer": "/layout/firstFrame", "allowed": { "minimum": 1, "maximum": max_frame } }),
+        ));
+    }
+    Ok(())
+}
+
 /// Refuses a layout or a sample with a coordinate beyond [`COORDINATE_BOUND`] (the window's entry and `timing_replay`).
 pub(crate) fn check_input(layout: Option<&GestureLayout>, samples: &[Sample], at: &str) -> Result<(), CommandError> {
     if let Some(g) = layout {
-        bounded(g.scroll_top, "/layout/scrollTop")?;
+        check_layout(g)?;
     }
     for (i, s) in samples.iter().enumerate() {
         bounded(s.x, &format!("{at}/{i}/x"))?;

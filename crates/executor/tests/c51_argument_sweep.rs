@@ -21,9 +21,18 @@ use tt_executor::{ExecutorHandle, Status};
 const BOB: &str = "scene:\"Intro\"/element:\"Bob\"";
 const MISSING_ELEMENT: &str = "scene:#99/element:#99";
 
-/// The commands of M5 by checkpoint: every `timeline.*` and `playback.*` command (C5.1) and `xsheet.currentCell.set`.
-/// C5.1b and C5.2 add theirs here.
-const COMMANDS: &[&str] = &["xsheet.currentCell.set"];
+/// The commands of M5 by checkpoint: every `timeline.*` and `playback.*` command (C5.1), `xsheet.currentCell.set`, and
+/// the seven `xsheet.*` commands of C5.2a (ruling E-70, C52A-R1S-05). C5.2b adds theirs here.
+const COMMANDS: &[&str] = &[
+    "xsheet.currentCell.set",
+    "xsheet.display.set",
+    "xsheet.panel.set",
+    "xsheet.columnWidth.set",
+    "xsheet.lightTable.add",
+    "xsheet.lightTable.move",
+    "xsheet.lightTable.remove",
+    "xsheet.lightTable.set",
+];
 const PREFIXES: &[&str] = &["timeline.", "playback."];
 
 fn commands() -> Vec<&'static str> {
@@ -38,7 +47,10 @@ fn commands() -> Vec<&'static str> {
         })
         .collect();
     ids.sort_unstable();
-    assert!(ids.len() >= 29, "the 28 commands of C5.1 and xsheet.currentCell.set: {ids:?}");
+    assert!(ids.len() >= 36, "the 28 commands of C5.1, xsheet.currentCell.set and the seven of C5.2a: {ids:?}");
+    for id in COMMANDS {
+        assert!(ids.contains(id), "{id} is selected");
+    }
     ids
 }
 
@@ -570,7 +582,7 @@ fn the_gesture_entry_refuses_huge_coordinates_and_stays_alive() {
     let huge = [1e300, -1e300, f64::MAX, f64::MIN, 9_007_199_254_740_991.0, -9_007_199_254_740_991.0, bound + 1.0];
     let layout = |surface: &str, zoom: u32, scroll: f64| json!({"surface": surface, "zoomLevel": zoom, "firstFrame": 1, "scrollTop": scroll, "platform": "windows"});
     let mut refused = 0;
-    for surface in ["ruler", "tracks", "layers"] {
+    for surface in ["ruler", "tracks", "layers", "xsheetGrid", "xsheetHeaders"] {
         for zoom in [0, 9] {
             for v in huge {
                 for sample in [json!({"x": v, "y": 12}), json!({"x": 12, "y": v})] {
@@ -624,5 +636,66 @@ fn the_gesture_entry_refuses_huge_coordinates_and_stays_alive() {
         }
     }
     println!("{refused} huge coordinates refused");
+    assert_eq!(h.caught_panics().unwrap(), 0);
+}
+
+/// Rulings E-31 and E-70 (C52A-R1S-04): every numeric member of the layout, for every surface, is bounded at the entry
+/// before any arithmetic: the scroll offsets and the light-table rectangle beyond the coordinate bound (or a negative
+/// size), a zoom level past the ladder and a first frame outside 1-100000 are `arg.invalid` at their pointer, at the
+/// press and in the replay; at the bound they are answered; the engine answers after every call.
+#[test]
+fn the_gesture_entry_bounds_every_numeric_member_of_the_layout() {
+    let h = fixture();
+    let bound = tt_executor::TIMING_COORDINATE_BOUND;
+    let base = |surface: &str| {
+        json!({"surface": surface, "zoomLevel": 0, "firstFrame": 1, "scrollTop": 0, "scrollLeft": 0,
+               "lightTable": {"x": 0, "y": 600, "width": 300, "height": 200}, "platform": "windows"})
+    };
+    let mut cases: Vec<(&str, Value)> = Vec::new();
+    for v in [1e300, -1e300, f64::MAX, bound + 1.0, -(bound + 1.0)] {
+        for member in
+            ["/scrollTop", "/scrollLeft", "/lightTable/x", "/lightTable/y", "/lightTable/width", "/lightTable/height"]
+        {
+            cases.push((member, json!(v)));
+        }
+    }
+    cases.push(("/lightTable/width", json!(-1.0)));
+    cases.push(("/lightTable/height", json!(-0.5)));
+    cases.push(("/zoomLevel", json!(10_000)));
+    cases.push(("/firstFrame", json!(0)));
+    cases.push(("/firstFrame", json!(100_001)));
+    let mut refused = 0;
+    for surface in ["ruler", "tracks", "layers", "xsheetGrid", "xsheetHeaders"] {
+        for (member, v) in &cases {
+            let mut layout = base(surface);
+            *layout.pointer_mut(member).unwrap() = v.clone();
+            let e = h.timing_replay(tt_executor::Origin::User, layout.clone(), json!([{"x": 5, "y": 5}]), false);
+            let e = e.expect_err("refused");
+            assert_eq!(
+                (e.code.as_str(), e.details["pointer"].as_str()),
+                ("arg.invalid", Some(format!("/layout{member}").as_str())),
+                "{surface} {member} {v}: {e:?}"
+            );
+            let press = h.timing_gesture(
+                tt_executor::Origin::User,
+                json!({"phase": "press", "layout": layout, "sample": {"x": 5, "y": 5}}),
+            );
+            assert_eq!(press.expect_err("refused").code, "arg.invalid", "{surface} {member} {v}");
+            refused += 2;
+            assert!(run(&h, "timeline.rows.list", json!({})).is_ok(), "alive after {surface} {member} {v}");
+        }
+        // At the bound every member is answered.
+        for member in
+            ["/scrollTop", "/scrollLeft", "/lightTable/x", "/lightTable/y", "/lightTable/width", "/lightTable/height"]
+        {
+            let mut layout = base(surface);
+            *layout.pointer_mut(member).unwrap() = json!(bound);
+            assert!(
+                h.timing_replay(tt_executor::Origin::User, layout, json!([{"x": 5, "y": 5}]), false).is_ok(),
+                "{surface} {member} at the bound"
+            );
+        }
+    }
+    println!("{refused} out-of-bound layout members refused");
     assert_eq!(h.caught_panics().unwrap(), 0);
 }
