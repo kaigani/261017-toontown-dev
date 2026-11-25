@@ -458,11 +458,9 @@ fn light_source(cx: &Cx, it: &LightAddItem, i: usize) -> Result<(Id, Id), Comman
 
 /// Announces both families' events for a change of the scene's light table: `xsheet.lightTable.changed` with the
 /// items it changed, and the Drawing view's `drawAid.changed` (one state, E-57).
-fn announce_light(cx: &mut Cx, scene: &Id, before: &[super::draw_aid::Entry], changed: Vec<String>) {
+/// Both families' events for an effective change ([`super::draw_aid::announce`], E-70).
+fn announce_light(cx: &mut Cx, scene: &Id, before: &[super::draw_aid::Entry]) {
     super::draw_aid::announce(cx, scene, before);
-    if !changed.is_empty() {
-        cx.emit("xsheet.lightTable.changed", json!({ "itemIds": changed }));
-    }
 }
 
 #[command(
@@ -513,7 +511,7 @@ pub(crate) fn xsheet_light_table_add(cx: &mut Cx, p: LightAddParams) -> Result<L
         });
         ids.push(id);
     }
-    announce_light(cx, &scene, &before, ids.clone());
+    announce_light(cx, &scene, &before);
     Ok(LightAddResult { item_ids: ids })
 }
 
@@ -604,7 +602,7 @@ pub(crate) fn xsheet_light_table_move(cx: &mut Cx, p: LightMoveParams) -> Result
             changed.push(p.item_id.clone());
         }
     }
-    announce_light(cx, &scene, &before, changed);
+    announce_light(cx, &scene, &before);
     Ok(LightMoveResult { order: live_ids(cx, &scene) })
 }
 
@@ -666,7 +664,7 @@ pub(crate) fn xsheet_light_table_remove(cx: &mut Cx, p: LightRemoveParams) -> Re
     if let Some(items) = cx.session_mut().timeline.light_tables.get_mut(scene.as_str()) {
         items.retain(|it| !ids.contains(&it.item_id));
     }
-    announce_light(cx, &scene, &before, ids.clone());
+    announce_light(cx, &scene, &before);
     Ok(LightRemoveResult { removed_ids: ids })
 }
 
@@ -766,6 +764,6 @@ pub(crate) fn xsheet_light_table_set(cx: &mut Cx, p: LightSetParams) -> Result<L
             }
         }
     }
-    announce_light(cx, &scene, &before, changed.clone());
+    announce_light(cx, &scene, &before);
     Ok(LightSetResult { changed_ids: changed })
 }

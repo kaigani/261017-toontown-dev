@@ -275,3 +275,55 @@ fn an_agents_call_runs_under_the_persons_dialog_and_waits_out_a_gesture() {
         h.report_shell(serde_json::from_str(r#"{"modal":null}"#).unwrap());
     }
 }
+
+/// Ruling E-70 (C52A-R1S-01; spec A line 504): one state, one set of events. Every effective change through either
+/// light-table family raises both `drawAid.changed` and `xsheet.lightTable.changed`, the latter with the items changed.
+#[test]
+fn every_light_table_change_raises_both_families_events() {
+    let h = fixture();
+    let bob = "scene:\"Intro\"/element:\"Bob\"";
+    let run_and_events = |command: &str, params: Value| -> (Value, Vec<tt_executor::Event>) {
+        let rx = h.subscribe();
+        let r = ok(&h, command, params);
+        (r, rx.try_iter().collect())
+    };
+    let check = |label: &str, events: &[tt_executor::Event], ids: &[String]| {
+        assert!(events.iter().any(|e| e.name == "drawAid.changed"), "{label}: no drawAid.changed");
+        let sheet = events.iter().find(|e| e.name == "xsheet.lightTable.changed");
+        let listed: Vec<String> =
+            sheet.unwrap_or_else(|| panic!("{label}: no xsheet.lightTable.changed")).payload["itemIds"]
+                .as_array()
+                .unwrap()
+                .iter()
+                .map(|v| v.as_str().unwrap().to_owned())
+                .collect();
+        for id in ids {
+            assert!(listed.contains(id), "{label}: {id} not in {listed:?}");
+        }
+    };
+    let ids = |v: &Value, key: &str| -> Vec<String> {
+        v[key].as_array().unwrap().iter().map(|x| x.as_str().unwrap().to_owned()).collect()
+    };
+    // The drawing-aid family.
+    let (r, ev) = run_and_events("drawAid.staticLightTable.add", json!({ "elementId": bob, "frame": 1 }));
+    let a = r["entryId"].as_str().unwrap().to_owned();
+    check("drawAid add", &ev, std::slice::from_ref(&a));
+    let (_, ev) = run_and_events("drawAid.staticLightTable.set", json!({ "entryIds": [a], "visible": false }));
+    check("drawAid set", &ev, std::slice::from_ref(&a));
+    // The sheet's family.
+    let (r, ev) = run_and_events("xsheet.lightTable.add", json!({ "items": [{ "elementId": bob, "frame": 3 }] }));
+    let added = ids(&r, "itemIds");
+    check("xsheet add", &ev, &added);
+    let (_, ev) = run_and_events("xsheet.lightTable.move", json!({ "itemId": added[0], "index": 0 }));
+    check("xsheet move", &ev, &added);
+    let (_, ev) =
+        run_and_events("xsheet.lightTable.set", json!({ "itemIds": [a], "apply": "given", "placement": "over" }));
+    check("xsheet set", &ev, std::slice::from_ref(&a));
+    let (_, ev) = run_and_events("xsheet.lightTable.remove", json!({ "itemIds": [added[0]] }));
+    check("xsheet remove", &ev, &added);
+    let (_, ev) = run_and_events("drawAid.staticLightTable.remove", json!({ "entryIds": [a] }));
+    check("drawAid remove", &ev, std::slice::from_ref(&a));
+    // No effective change, no event of either family.
+    let (_, ev) = run_and_events("xsheet.lightTable.remove", json!({ "all": true }));
+    assert!(!ev.iter().any(|e| e.name == "drawAid.changed" || e.name == "xsheet.lightTable.changed"), "{ev:?}");
+}

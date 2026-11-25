@@ -612,6 +612,21 @@ pub(crate) fn announce(cx: &mut Cx, scene: &Id, before: &[Entry]) -> Vec<Entry> 
     }
     if live != before {
         cx.emit("drawAid.changed", json!({ "aid": "staticLightTable", "state": live }));
+        // One state, one set of events (M5 ruling E-70, C52A-R1S-01; spec A line 504): whichever family changed the
+        // table, the sheet's event names the items added, removed, changed in state or moved in the stacking order.
+        let mut ids: Vec<String> = Vec::new();
+        for (i, e) in live.iter().enumerate() {
+            let was = before.iter().position(|b| b.entry_id == e.entry_id);
+            if was != Some(i) || was.and_then(|w| before.get(w)) != Some(e) {
+                ids.push(e.entry_id.clone());
+            }
+        }
+        ids.extend(
+            before.iter().filter(|b| !live.iter().any(|e| e.entry_id == b.entry_id)).map(|b| b.entry_id.clone()),
+        );
+        if !ids.is_empty() {
+            cx.emit("xsheet.lightTable.changed", json!({ "itemIds": ids }));
+        }
     }
     live
 }
