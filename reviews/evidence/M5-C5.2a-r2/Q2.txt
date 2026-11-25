@@ -1,0 +1,3 @@
+test an_insertion_inside_a_sound_is_refused_with_its_owner_and_not_offered ... ok
+test insert_blank_insert_cells_and_delete_blank_move_a_sound_columns_placements ... ok
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.06s

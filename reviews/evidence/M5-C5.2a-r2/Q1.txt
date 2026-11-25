@@ -1,0 +1,7 @@
+test q1_reset_natural_length ... FAILED
+test the_exposure_commands_work_on_a_media_columns_cells ... ok
+test result: FAILED. 1 passed; 1 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.72s
+error: test failed, to rerun pass `-p tt-executor --test c52a_r2_cells`
+Reset failure: element.mediaLength.set without length returns command.disabled.
+Details: reason=sourceLengthUnknown, owner=M8 C8.3, specIssue=SI-088.
+The separate exposure edit/readback/persistence/undo oracle passes.
