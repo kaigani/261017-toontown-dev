@@ -1,3 +1,4 @@
+//! M5 C5.2a round 2 (dynamic): the fixes of round 1 (test-hooks).
 #![cfg(feature = "test-hooks")]
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, dead_code, reason = "test")]
 mod c13_support;

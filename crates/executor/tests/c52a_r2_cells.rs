@@ -10,7 +10,7 @@
 //! placements at or after the insertion later, delete blank moves the following ones earlier (a lip-sync track's
 //! `producedFor.stopFrame` with them); an insertion strictly inside a placement would split the sound, which needs 07's
 //! placement timing: refused with owner M8 C8.1 (SI-219), and not offered.
-#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, missing_docs, reason = "test")]
+#![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::print_stdout, missing_docs, non_snake_case, reason = "test")]
 
 mod c13_support;
 mod common;
