@@ -366,3 +366,28 @@ fn b3_changed_content_rename_deletion_and_huge_coordinates(){
  assert_eq!(h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("xsheetGrid"),"sample":s(1e300,5.0)})).unwrap_err().code,"arg.invalid");
  ok(&h,"doc.state.get",json!({}));
 }
+#[test]
+fn p5_hidden_column_click_and_reorder(){
+ let h=fixture();let cols=columns(&h);let hidden=cols[1].0.clone();
+ ok(&h,"element.visibility.set",json!({"elementIds":[hidden],"scope":"xsheet","visible":false}));
+ let out=h.timing_replay(Origin::User,layout("xsheetGrid"),json!([s(120.0,10.0),s(120.0,10.0)]),true).unwrap();
+ assert_eq!(out["plan"]["commands"][1][1]["elementId"],cols[2].0);
+ let before=ok(&h,"xsheet.exposures.get",json!({}))["columns"].as_array().unwrap().iter().map(|x|x["elementId"].clone()).collect::<Vec<_>>();
+ let at=before.iter().position(|x|*x==hidden).unwrap();
+ h.timing_replay(Origin::User,layout("xsheetHeaders"),json!([s(40.0,10.0),s(152.0,10.0)]),true).unwrap();
+ let after=ok(&h,"xsheet.exposures.get",json!({}))["columns"].as_array().unwrap().iter().map(|x|x["elementId"].clone()).collect::<Vec<_>>();
+ assert_eq!(after[at],hidden,"hidden column keeps its slot");
+ assert_ne!(after,before,"drag actually reorders");
+}
+#[test]
+fn p5_shortening_clamps_and_shifts_following_cells(){
+ let h=fixture();let id=columns(&h)[0].0.clone();
+ ok(&h,"cell.exposure.set",json!({"elementIds":[id],"from":1,"to":1,"length":3}));
+ let before=columns(&h)[0].1.clone();let (d,from,to)=before[0].clone();assert_eq!(to-from+1,3);
+ let edge=to as f64*ROW-1.0;
+ let out=h.timing_replay(Origin::User,layout("xsheetGrid"),json!([s(40.0,edge),s(40.0,edge-5.0*ROW)]),true).unwrap();
+ for e in out["envelopes"].as_array().unwrap(){assert_eq!(e["status"],"ok");}
+ let after=columns(&h)[0].1.clone();assert_eq!(after[0],(d,from,from));
+ assert!(before.len()>1);
+ assert_eq!(after[1..],before[1..].iter().map(|(d,f,t)|(d.clone(),f-2,t-2)).collect::<Vec<_>>());
+}
