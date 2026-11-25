@@ -333,3 +333,36 @@ fn b2_first_and_last_pixels_with_both_scroll_axes(){
  }
  }
 }
+#[test]
+fn b3_changed_content_rename_deletion_and_huge_coordinates(){
+ let mut baseline=Value::Null;
+ for variant in ["baseline","rename","content","deleted"] {
+ let h=fixture();let cols=columns(&h);let id=cols[0].0.clone();
+ let (_,from,to)=cols[0].1[0].clone();
+ ok(&h,"cell.select",json!({"elementIds":[id],"from":from,"to":to}));
+ let (x,y)=cell(0,from);let samples=json!([s(x,y),s(x,y+ROW*2.0)]);
+ let press=h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("xsheetGrid"),"sample":samples[0]})).unwrap();
+ match variant {
+ "rename"=>{ok(&h,"element.rename",json!({"elementId":"scene:\"Intro\"/element:\"Camera\"","name":"Unrelated"}));},
+ "content"=>{ok(&h,"cell.note.set",json!({"elementId":id,"frame":from,"text":"changed under press"}));},
+ "deleted"=>{ok(&h,"element.delete",json!({"elementIds":[id]}));},
+ _=>{}
+ }
+ let before=state(&h);
+ let out=h.timing_gesture(Origin::User,json!({"phase":"release","grabId":press["grabId"],"samples":samples})).unwrap();
+ if variant=="content" || variant=="deleted" {
+ assert_eq!(out["cancelled"],true,"{variant}: {out}");
+ assert_eq!(out["error"]["code"],"timeline.targetChanged");
+ assert_eq!(state(&h),before);
+ }else{
+ for e in out["envelopes"].as_array().unwrap(){assert_eq!(e["status"],"ok");}
+ let result=json!({"plan":out["plan"],"cells":ok(&h,"xsheet.exposures.get",json!({"elementIds":[id]})),"selection":ok(&h,"cell.selection.get",json!({}))});
+ if variant=="baseline" {baseline=result;}else{assert_eq!(result,baseline);}
+ }
+ }
+ let h=fixture();
+ assert_eq!(h.timing_replay(Origin::User,layout("xsheetGrid"),json!([s(1e300,5.0),s(1e300,5.0)]),false).unwrap_err().code,"arg.invalid");
+ ok(&h,"doc.state.get",json!({}));
+ assert_eq!(h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("xsheetGrid"),"sample":s(1e300,5.0)})).unwrap_err().code,"arg.invalid");
+ ok(&h,"doc.state.get",json!({}));
+}
