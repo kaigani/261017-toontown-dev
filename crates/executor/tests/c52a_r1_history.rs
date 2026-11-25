@@ -89,3 +89,43 @@ fn history_commands_never_reach_a_discarded_step() {
     tt_executor::hooks::set_history_bound(0);
 }
 
+// E-51: compare every stored entry, excluding revision/modified bookkeeping only.
+fn content(h: &tt_executor::ExecutorHandle) -> Vec<serde_json::Value> {
+ fn strip(v: &mut serde_json::Value) {
+  match v {
+   serde_json::Value::Object(m) => { for k in ["rev", "modifiedAt"] {m.remove(k);} for x in m.values_mut(){strip(x);} },
+   serde_json::Value::Array(a) => for x in a {strip(x);}, _=>{}
+  }
+ }
+ let d=h.snapshot().unwrap().unwrap();
+ d.entry_keys().iter().map(|k|{let mut v=d.entry_raw_json(k).unwrap();strip(&mut v);v}).collect()
+}
+#[test]
+fn p1_mixed_history_whole_document_and_negative_floor(){
+ tt_executor::hooks::set_history_bound(1);
+ let h=fixture();
+ let bob=get(&h,"scene:\"Intro\"/element:\"Bob\"")["id"].as_str().unwrap().to_owned();
+ let peg=ok(&h,"element.create",json!({"type":"peg","name":"MixedPeg"}))["elementIds"][0].as_str().unwrap().to_owned();
+ let mut states=vec![content(&h)];
+ for i in 0..400 {
+ match i%4 {
+ 0=>{ok(&h,"element.rename",json!({"elementId":bob,"name":format!("Mixed{i}")}));},
+ 1=>{ok(&h,"element.note.set",json!({"elementId":bob,"text":note(i)}));},
+ 2=>{ok(&h,"cell.exposure.add",json!({"elementIds":[bob],"from":1,"to":1,"frames":1}));},
+ _=>{ok(&h,"element.timing.set",json!({"elementIds":[peg],"start":i+1}));}
+ }
+ states.push(content(&h));
+ }
+ let total=ok(&h,"edit.history.get",json!({"limit":1000}))["total"].as_u64().unwrap() as usize;
+ assert!((200..400).contains(&total));
+ ok(&h,"edit.undo",json!({"steps":1000}));
+ assert_eq!(content(&h),states[400-total]);
+ for p in [-1,-201] {
+ let e=run(&h,"edit.history.move",json!({"position":p}));
+ assert!(e.error.is_some() || e.result.unwrap()["position"]==0);
+ assert_eq!(content(&h),states[400-total]);
+ }
+ ok(&h,"edit.redo",json!({"steps":1000}));
+ assert_eq!(content(&h),states[400]);
+ tt_executor::hooks::set_history_bound(0);
+}
