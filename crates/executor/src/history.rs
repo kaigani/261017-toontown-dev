@@ -183,7 +183,9 @@ impl History {
         }
         if self.bytes > bound && !self.over_bound_said {
             self.over_bound_said = true;
-            eprintln!(
+            use std::io::Write as _;
+            let _ = writeln!(
+                std::io::stderr(),
                 "toontown: the undo history holds {} MB in its last {} steps, over its {} MB bound; they are kept \
                  (01 §6.1: at least {MIN_STEPS} steps)",
                 self.bytes >> 20,
@@ -426,7 +428,7 @@ mod tests {
         let small = edit_size(&step(1, 10).edit);
         let large = edit_size(&step(2, 10_000).edit);
         // Four values of n characters each, with their quotes, the pointers and the key.
-        assert!(large >= 40_000 && large < 40_000 + 200, "{large}");
+        assert!((40_000..40_200).contains(&large), "{large}");
         assert!(large - small >= 4 * (10_000 - 10), "{small} {large}");
     }
 
