@@ -23,8 +23,22 @@ fn cancelled_calls_are_silent_and_following_calls_are_answered() {
                 json!({"name":"run_command","arguments":{"id":"render.frame.run","params":{"frame":1,"width":8192,"height":8192,"output":"file","path":dir.join("large.png")}}})
             }
         };
+        let command = match kind {
+            "waited" => "render.range.run",
+            "batch" => "batch",
+            _ => "render.frame.run",
+        };
+        // Ruling E-61 (D-45): the cancellation is sent once the call is known to be dispatched, when the executor
+        // announces it serving the agent's request (`shell.agentActing`, host only). A fixed 30 ms let the cancellation
+        // overtake the dispatch on a loaded runner (run 45490862349): nothing ran, so nothing was recorded.
+        let rx = h.subscribe();
         let id = c.send("tools/call", args);
-        std::thread::sleep(Duration::from_millis(30));
+        let started = std::time::Instant::now();
+        while !rx.recv_timeout(Duration::from_millis(100)).is_ok_and(|e| {
+            e.name == "shell.agentActing" && e.payload["acting"] == true && e.payload["commandId"] == command
+        }) {
+            assert!(started.elapsed() < Duration::from_secs(60), "the {kind} call was never dispatched");
+        }
         c.notify("notifications/cancelled", json!({"requestId":id}));
         assert!(c.wait(id, Duration::from_millis(1500)).is_none(), "cancelled {kind} answered");
         assert_eq!(c.run("doc.state.get", json!({}))["status"], "ok");
@@ -34,11 +48,6 @@ fn cancelled_calls_are_silent_and_following_calls_are_answered() {
             h.jobs().wait(j["jobId"].as_str().unwrap(), Duration::from_secs(60)).unwrap();
         }
         let audit = c.run("agent.activity.list", json!({"limit":100}));
-        let command = match kind {
-            "waited" => "render.range.run",
-            "batch" => "batch",
-            _ => "render.frame.run",
-        };
         let entries: Vec<_> =
             audit["result"].as_array().unwrap().iter().filter(|a| a["commandId"] == command).collect();
         assert_eq!(entries.len(), 1, "{audit}");
