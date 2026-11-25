@@ -480,6 +480,33 @@ pub async fn timing_gesture(app: AppHandle, json: String) -> Result<Response, St
     }
 }
 
+/// `thumbnails_read` request.
+#[derive(Debug, Deserialize)]
+#[serde(rename_all = "camelCase", deny_unknown_fields)]
+struct ThumbnailsReadRequest {
+    items: Vec<tt_executor::thumbnails::ThumbnailRequest>,
+}
+
+/// The window's thumbnails (04 §12.3; M5 ruling E-56): a host read, not a command. The answer is what the cache holds
+/// for the drawings' current revisions, the rest queued off the document thread and announced by the host-only notice
+/// `shell.thumbnailsReady` (`ExecutorHandle::thumbnails_read`). Each read replaces the queue: the window asks for what it
+/// shows.
+///
+/// # Errors
+/// The JSON text of `arg.invalid` for a malformed request, of `command.disabled` with no project, or of
+/// `command.timeout`.
+#[tauri::command]
+pub async fn thumbnails_read(app: AppHandle, json: String) -> Result<Response, String> {
+    let req: ThumbnailsReadRequest = parse(&json)?;
+    let answer = tauri::async_runtime::spawn_blocking(move || app.state::<Host>().exec().thumbnails_read(req.items))
+        .await
+        .map_err(|e| internal(e.to_string()))?;
+    match answer {
+        Ok(v) => respond(&v),
+        Err(e) => Err(error_json(&tt_engine::ErrorInfo { code: e.code, message: e.message, details: *e.details })),
+    }
+}
+
 /// The window keeps a record of a gesture of more than this many events by count, its commands by id (SI-141 item 9);
 /// the canvas's `RECORD_EVENTS`.
 const RECORD_EVENTS: usize = 4096;

@@ -67,6 +67,7 @@ command_registry![
     ipc::gesture_commit,
     ipc::gesture_abort,
     ipc::context_menu_answer,
+    ipc::thumbnails_read,
     ipc::canvas_presence,
     ipc::agent_token,
     ipc::token_hidden,
@@ -95,6 +96,7 @@ command_registry![
     ipc::gesture_commit,
     ipc::gesture_abort,
     ipc::context_menu_answer,
+    ipc::thumbnails_read,
     ipc::canvas_presence,
     ipc::agent_token,
     ipc::token_hidden,
@@ -319,6 +321,8 @@ mod tests {
                 "gesture_abort",
                 // M5 ruling E-52: the window's answer to an agent's Shift+F10 (what it did with the routed request).
                 "context_menu_answer",
+                // M5 ruling E-56: the window's thumbnails, read off the document thread.
+                "thumbnails_read",
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",
@@ -346,7 +350,7 @@ mod tests {
     fn diagnostics_build_registers_the_m0_commands() {
         let names = names();
         assert_eq!(
-            &names[..24],
+            &names[..25],
             [
                 "ping",
                 "app_info",
@@ -364,6 +368,8 @@ mod tests {
                 "gesture_abort",
                 // M5 ruling E-52: the window's answer to an agent's Shift+F10 (what it did with the routed request).
                 "context_menu_answer",
+                // M5 ruling E-56: the window's thumbnails, read off the document thread.
+                "thumbnails_read",
                 "canvas_presence",
                 // D-62 item 2: Preferences › Agent access shows the agent token (never a registry command).
                 "agent_token",

@@ -60,6 +60,7 @@ mod session;
 pub mod shell;
 mod store;
 pub mod text_edit;
+pub mod thumbnails;
 
 mod themes;
 mod time;
@@ -270,6 +271,8 @@ pub struct ExecutorHandle {
     cancel: Arc<tt_vector::work::CancelState>,
     /// This engine's recovery ownership token and its fence (C41-R1-15), reachable without the document thread.
     recovery: Arc<host::RecoveryFence>,
+    /// The window's thumbnails, off the document thread (M5 ruling E-56).
+    thumbs: Arc<thumbnails::Service>,
     _guard: Arc<ShutdownGuard>,
 }
 
@@ -427,7 +430,8 @@ impl ExecutorHandle {
             })
             .map_err(|e| CommandError::internal(format!("cannot start the playback clock: {e}")))?;
         let guard = Arc::new(ShutdownGuard(tx.clone(), Mutex::new(Some(done_rx))));
-        Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, _guard: guard })
+        let thumbs = thumbnails::Service::new(Arc::clone(&subscribers), thumbnails::CACHE_BOUND);
+        Ok(Self { tx, registry, jobs, subscribers, shell, config, cancel, recovery, thumbs, _guard: guard })
     }
 
     /// Handler panics contained so far (ruling E-29; reported on stderr and by the host-only `shell.handlerPanicked`
@@ -1200,6 +1204,11 @@ fn document_thread(
     drop(core);
 }
 
+/// Delivers one event from outside the document thread (the thumbnails' worker, M5 ruling E-56).
+pub(crate) fn broadcast_one(bus: &host::Bus, event: Event) {
+    broadcast(bus, &[event]);
+}
+
 /// Delivers events to every live subscriber (dropping closed ones).
 fn broadcast(bus: &host::Bus, events: &[Event]) {
     if events.is_empty() {
@@ -1279,6 +1288,33 @@ pub mod hooks {
     /// bound run with steps of a known size against a small bound.
     pub fn set_history_bound(bytes: u64) {
         HISTORY_BOUND.store(bytes, Ordering::Release);
+    }
+
+    static THUMBNAIL_DELAY_MS: AtomicU64 = AtomicU64::new(0);
+
+    /// A delay before each of the window's thumbnails renders, from now on (0: none; M5 ruling E-56's test: thumbnails
+    /// pending while ordinary commands answer at their normal speed).
+    pub fn set_thumbnail_delay_ms(ms: u64) {
+        THUMBNAIL_DELAY_MS.store(ms, Ordering::Release);
+    }
+
+    static THUMBNAIL_BOUND: AtomicU64 = AtomicU64::new(0);
+
+    /// The thumbnail cache's bound in bytes from now on (0: the product's; E-56's test of the bound).
+    pub fn set_thumbnail_cache_bound(bytes: u64) {
+        THUMBNAIL_BOUND.store(bytes, Ordering::Release);
+    }
+
+    pub(crate) fn thumbnail_cache_bound() -> Option<usize> {
+        let b = THUMBNAIL_BOUND.load(Ordering::Acquire);
+        (b > 0).then(|| usize::try_from(b).unwrap_or(usize::MAX))
+    }
+
+    pub(crate) fn thumbnail_delay() {
+        let ms = THUMBNAIL_DELAY_MS.load(Ordering::Acquire);
+        if ms > 0 {
+            std::thread::sleep(std::time::Duration::from_millis(ms));
+        }
     }
 
     pub(crate) fn history_bound() -> Option<usize> {

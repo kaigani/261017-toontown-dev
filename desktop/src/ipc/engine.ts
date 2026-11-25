@@ -147,6 +147,9 @@ export interface EngineApi {
   onAgentContextMenu(handler: (request: AgentContextMenu) => void): Promise<Unlisten>;
   /** `context_menu_answer` (M5 ruling E-52): what the window did with a routed Shift+F10, which answers the agent's
    *  `key` call: `opened` (a menu opened), `noMenu` (the control offers none), `notFound` (no such control). */
+  /** `thumbnails_read` (M5 ruling E-56): the drawings' thumbnails the cache holds now, the rest queued off the document
+   *  thread and announced by `shell.thumbnailsReady`; each read replaces the queue (ask for what is shown). */
+  thumbnailsRead(items: readonly { drawingId: string; size: number }[]): Promise<ThumbnailRead>;
   contextMenuAnswer(answer: {
     agentRequest: number;
     outcome: 'opened' | 'noMenu' | 'notFound' | 'notRendered';
@@ -231,6 +234,20 @@ export interface TokenRect {
 }
 
 /** An agent's `pointer` request routed to this window (attached mode). */
+/** One thumbnail's identity: the drawing at a revision, at a size (E-56). */
+export interface ThumbnailKey {
+  drawingId: string;
+  rev: number;
+  size: number;
+}
+
+/** `thumbnails_read`'s answer: ready now (PNG, base64), queued, and drawings the document does not have. */
+export interface ThumbnailRead {
+  ready: (ThumbnailKey & { png: string })[];
+  pending: ThumbnailKey[];
+  missing: string[];
+}
+
 /** An agent's Shift+F10 routed to this window: the control its `view` named (by window id), or `null` for the focused
  *  one. */
 export interface AgentContextMenu {
@@ -496,6 +513,16 @@ export function createEngineApi(transport: HostTransport): EngineApi {
           // A malformed message can only come from a version mismatch; it is dropped (the agent's call times out).
         }
       });
+    },
+    async thumbnailsRead(items) {
+      const v = decode(await invoke('thumbnails_read', { items }));
+      const o = (typeof v === 'object' && v !== null ? v : {}) as Record<string, unknown>;
+      const list = <T>(x: unknown): T[] => (Array.isArray(x) ? (x as T[]) : []);
+      return {
+        ready: list<ThumbnailKey & { png: string }>(o['ready']),
+        pending: list<ThumbnailKey>(o['pending']),
+        missing: list<string>(o['missing']),
+      };
     },
     async contextMenuAnswer(answer) {
       await invoke('context_menu_answer', answer);

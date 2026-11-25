@@ -656,6 +656,39 @@ pub(crate) fn draw_drawing_render(cx: &mut Cx, p: RenderParams) -> Result<Render
     })
 }
 
+/// A drawing's thumbnail as `draw.drawing.render` makes it with its defaults (the drawing's bounds, no padding, a
+/// transparent background, each palette's first style), `side` pixels square, from shared sources: it runs off the
+/// document thread (the window's thumbnails, M5 ruling E-56). The PNG's bytes.
+///
+/// # Errors
+/// `render.failed`, `limit.exceeded` (the render's time limit), and the bounds' font wait (`command.timeout`).
+pub(crate) fn thumbnail_png(
+    src: &Sources<'_>,
+    doc: &Document,
+    d: &Drawing,
+    side: u32,
+) -> Result<Vec<u8>, CommandError> {
+    let started = std::time::Instant::now();
+    let side = side.clamp(1, tt_render::MAX_SIDE);
+    let field12 = Rect { min_x: -600.0, min_y: -450.0, max_x: 600.0, max_y: 450.0 };
+    let r = crate::fonts_gate::drawing_bounds(d, false)?.unwrap_or(field12);
+    let (rw, rh) = ((r.max_x - r.min_x).max(1e-9), (r.max_y - r.min_y).max(1e-9));
+    let s = (f64::from(side) / rw).min(f64::from(side) / rh);
+    let (cxm, cym) = ((r.min_x + r.max_x) / 2.0, (r.min_y + r.max_y) / 2.0);
+    let d2p = Affine([s, 0.0, 0.0, -s, f64::from(side) / 2.0 - s * cxm, f64::from(side) / 2.0 + s * cym]);
+    let raster = Raster {
+        d2p,
+        scale: s,
+        width: side,
+        height: side,
+        background: [0, 0, 0, 0],
+        show_strokes: false,
+        show_selection: false,
+    };
+    let (pixels, _warnings) = rasterise_with(src, doc, d, None, raster, started)?;
+    tt_render::encode_png(&pixels, side, side).map_err(|e| err("render.failed", e.to_string(), json!({})))
+}
+
 /// What [`rasterise`] draws besides the drawing.
 #[derive(Debug, Clone, Copy)]
 pub(crate) struct Raster {

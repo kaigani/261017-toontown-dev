@@ -859,6 +859,43 @@ impl ExecutorHandle {
         }
     }
 
+    /// The window's thumbnails (04 §12.3; M5 ruling E-56): one short call on the document thread takes each drawing's
+    /// current revision and an immutable snapshot (the document, the planar-map cache, the blobs); the answer is what
+    /// the cache holds for those revisions and sizes, the rest queued for the worker, announced by the host-only notice
+    /// `shell.thumbnailsReady` as each finishes. A read replaces the queue (work out of view is dropped). Not a command:
+    /// agents keep the synchronous queries.
+    ///
+    /// # Errors
+    /// `no.project`-like `command.disabled` when no project is open; `command.timeout` when the document thread does
+    /// not answer within the budget.
+    pub fn thumbnails_read(
+        &self,
+        items: Vec<crate::thumbnails::ThumbnailRequest>,
+    ) -> Result<crate::thumbnails::ThumbnailRead, CommandError> {
+        let snapshot = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
+            let s = core.session().ok_or_else(|| CommandError::internal("the session is unavailable"))?;
+            let p = s.project.as_ref().ok_or_else(|| {
+                CommandError::with_details(
+                    tt_registry::codes::COMMAND_DISABLED,
+                    "no project is open",
+                    json!({ "reason": "noProject" }),
+                )
+            })?;
+            Ok::<_, CommandError>(crate::thumbnails::Snapshot {
+                doc: std::sync::Arc::new(p.doc.clone()),
+                planar: s.planar.clone(),
+                blobs: Some(std::sync::Arc::new(p.store.blobs.clone())),
+            })
+        })??;
+        Ok(self.thumbs.read(&items, &snapshot))
+    }
+
+    /// The thumbnail cache's size in bytes and its number of thumbnails (tests of its bound).
+    #[must_use]
+    pub fn thumbnails_usage(&self) -> (usize, usize) {
+        self.thumbs.usage()
+    }
+
     /// The `pointer` tool (11 §7.6; M4 C4.2, design note 4): the events are grouped into gestures, each gesture's
     /// equivalent command ([`crate::gesture::to_command`]) is invoked with `origin`, all on the document thread as one
     /// request. The answer is the first refused command's envelope, else `{commands, hover}`.

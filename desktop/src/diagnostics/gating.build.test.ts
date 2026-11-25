@@ -74,6 +74,8 @@ describe('M0 diagnostics gating (C0.4)', () => {
       'gesture_abort',
       // M5 ruling E-52: the window's answer to an agent's Shift+F10 (what it did with the routed request).
       'context_menu_answer',
+      // M5 ruling E-56: the window's thumbnails, read off the document thread.
+      'thumbnails_read',
       'canvas_presence',
       // D-62 item 2: Preferences › Agent access shows the agent token to the person (never a registry command).
       'agent_token',
