@@ -1082,6 +1082,10 @@ fn document_thread(
     let flush = |core: &mut run::Core| {
         if let Some(s) = core.session() {
             shell.publish_floats(s);
+            // The thumbnails follow the open project's generation (rulings E-70, E-71).
+            if let Some(t) = &s.thumbs {
+                t.follow(s.project.as_ref().map_or(0, |p| p.generation));
+            }
         }
         broadcast(subscribers, &core.take_events());
     };
@@ -1310,6 +1314,22 @@ pub mod hooks {
     pub(crate) fn thumbnail_cache_bound() -> Option<usize> {
         let b = THUMBNAIL_BOUND.load(Ordering::Acquire);
         (b > 0).then(|| usize::try_from(b).unwrap_or(usize::MAX))
+    }
+
+    static THUMBNAIL_PANIC: std::sync::Mutex<Option<String>> = std::sync::Mutex::new(None);
+
+    /// The window's render of this drawing's thumbnail panics from now on (`None`: none; ruling E-70's test of the
+    /// worker's containment).
+    pub fn set_thumbnail_render_panic(drawing_id: Option<String>) {
+        *THUMBNAIL_PANIC.lock().unwrap_or_else(std::sync::PoisonError::into_inner) = drawing_id;
+    }
+
+    pub(crate) fn thumbnail_render_panic(drawing_id: &str) {
+        let on =
+            THUMBNAIL_PANIC.lock().unwrap_or_else(std::sync::PoisonError::into_inner).as_deref() == Some(drawing_id);
+        if on {
+            std::panic::panic_any(format!("test: the thumbnail render of {drawing_id} panics"));
+        }
     }
 
     pub(crate) fn thumbnail_delay() {

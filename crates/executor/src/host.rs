@@ -885,6 +885,7 @@ impl ExecutorHandle {
                 doc: std::sync::Arc::new(p.doc.clone()),
                 planar: s.planar.clone(),
                 blobs: Some(std::sync::Arc::new(p.store.blobs.clone())),
+                generation: p.generation,
             })
         })??;
         Ok(self.thumbs.read(&items, &snapshot))

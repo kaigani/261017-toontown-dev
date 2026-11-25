@@ -246,6 +246,8 @@ export interface ThumbnailRead {
   ready: (ThumbnailKey & { png: string })[];
   pending: ThumbnailKey[];
   missing: string[];
+  /** Renders that failed at that revision (not queued again until the drawing changes; M5 ruling E-70). */
+  failed: ThumbnailKey[];
 }
 
 /** An agent's Shift+F10 routed to this window: the control its `view` named (by window id), or `null` for the focused

@@ -97,11 +97,16 @@ pub(crate) struct OpenProject {
     pub permanent_dirty: bool,
     /// Persistence state (C1.3).
     pub store: crate::store::Store,
+    /// This opening's number, new for every project opened, created or reverted (never reused in the process): what
+    /// the drawing thumbnails' cache belongs to (M5 rulings E-70, E-71).
+    pub generation: u64,
 }
 
 impl OpenProject {
     pub fn new(doc: Document, path: Option<String>, read_only: bool) -> Self {
+        static GENERATIONS: std::sync::atomic::AtomicU64 = std::sync::atomic::AtomicU64::new(1);
         Self {
+            generation: GENERATIONS.fetch_add(1, std::sync::atomic::Ordering::Relaxed),
             saved_rev: path.as_ref().map(|_| doc.document_rev()),
             form: path.as_ref().map(|_| "package".to_owned()),
             doc,

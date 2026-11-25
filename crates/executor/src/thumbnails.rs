@@ -17,6 +17,17 @@
 //! the cache: it is rendered on the document thread when the cache does not hold it (synchronous, 04 §17.1 item 9), and
 //! names the package's derived-cache entry [`entry_name`] (10 line 743, `cache/...`), which `doc.blob.get {entry}`
 //! answers while the drawing is at that revision.
+//!
+//! **Project generations (M5 rulings E-70 C52A-R1S-02, E-71 C52A-R1-01).** A drawing's ID and revision do not name its
+//! content across projects (two projects forked from one save can hold the same drawing at the same revision with
+//! different content), so the cache, the queue, the job in flight and the notices belong to the open project's
+//! generation ([`crate::session::OpenProject::generation`], new for every project opened, created or reverted). The
+//! document thread tells the service after every call ([`Service::follow`]); a replacement empties the cache and the
+//! queue, and a render of an older generation that finishes afterwards is neither kept nor announced.
+//!
+//! **A render that panics** (ruling E-70, as E-29 for handlers) is contained: its key is recorded as failed (answered in
+//! `failed` and not queued again at that revision), the worker goes on with the queue, and should the worker thread end
+//! anyway a later read starts another.
 
 use std::collections::{BTreeMap, VecDeque};
 use std::sync::{Arc, Condvar, Mutex, PoisonError};
@@ -102,6 +113,8 @@ pub struct ThumbnailRead {
     pub pending: Vec<ThumbnailKey>,
     /// Asked for drawings the document does not have.
     pub missing: Vec<String>,
+    /// Thumbnails whose render failed at that revision (not queued again until the drawing changes).
+    pub failed: Vec<ThumbnailKey>,
 }
 
 /// What a render needs, taken on the document thread: shared, immutable from then on.
@@ -110,6 +123,8 @@ pub(crate) struct Snapshot {
     pub doc: Arc<Document>,
     pub planar: crate::planar::SharedCache,
     pub blobs: Option<Arc<tt_persist::container::Blobs>>,
+    /// The project generation the snapshot was taken in.
+    pub generation: u64,
 }
 
 struct Job {
@@ -127,6 +142,10 @@ struct State {
     /// The key the worker renders now (a read asking for it again does not queue it twice).
     rendering: Option<ThumbnailKey>,
     worker: bool,
+    /// The project generation the cache and the queue belong to.
+    generation: u64,
+    /// Keys whose render failed (a contained panic, or an error), in this generation.
+    failed: std::collections::BTreeSet<ThumbnailKey>,
 }
 
 /// The window's thumbnail service (one per executor).
@@ -152,11 +171,29 @@ impl Service {
         self.state.lock().unwrap_or_else(PoisonError::into_inner)
     }
 
+    /// Follows the open project's generation (`0`: none open): a new generation empties the cache, the queue and the
+    /// failed keys; a render of the older one still in flight is dropped when it finishes.
+    pub(crate) fn follow(&self, generation: u64) {
+        let mut st = self.lock();
+        Self::follow_locked(&mut st, generation);
+    }
+
+    fn follow_locked(st: &mut State, generation: u64) {
+        if st.generation != generation {
+            st.generation = generation;
+            st.cache.clear();
+            st.bytes = 0;
+            st.queue.clear();
+            st.failed.clear();
+        }
+    }
+
     /// Answers a read from the cache and replaces the queue with its misses (see the module's documentation).
     pub(crate) fn read(self: &Arc<Self>, items: &[ThumbnailRequest], snapshot: &Snapshot) -> ThumbnailRead {
         let mut out = ThumbnailRead::default();
         let mut jobs = VecDeque::new();
         let mut st = self.lock();
+        Self::follow_locked(&mut st, snapshot.generation);
         for it in items {
             let drawing = Id::parse(&it.drawing_id).ok().and_then(|id| snapshot.doc.drawing(&id));
             let Some(d) = drawing else {
@@ -173,6 +210,10 @@ impl Service {
             if let Some((png, used)) = st.cache.get_mut(&key) {
                 *used = uses;
                 out.ready.push(ThumbnailReady { key, png: tt_persist::b64::encode(png) });
+                continue;
+            }
+            if st.failed.contains(&key) {
+                out.failed.push(key);
                 continue;
             }
             if !out.pending.contains(&key) {
@@ -199,6 +240,16 @@ impl Service {
 
     /// The worker: renders the queue, one thumbnail at a time, into the cache.
     fn work(self: Arc<Self>) {
+        // However the thread ends, a later read can start another worker.
+        struct Ended<'a>(&'a Service);
+        impl Drop for Ended<'_> {
+            fn drop(&mut self) {
+                let mut st = self.0.lock();
+                st.worker = false;
+                st.rendering = None;
+            }
+        }
+        let _ended = Ended(&self);
         loop {
             let job = {
                 let mut st = self.lock();
@@ -221,18 +272,28 @@ impl Service {
             };
             #[cfg(feature = "test-hooks")]
             crate::hooks::thumbnail_delay();
-            let png = render(&job);
+            // A panic in the render is contained (ruling E-70): the key is recorded as failed and the worker goes on.
+            let png = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| render(&job))).unwrap_or(None);
             let left = {
                 let mut st = self.lock();
                 st.rendering = None;
-                if let Some(png) = png {
-                    st.uses += 1;
-                    let uses = st.uses;
-                    st.bytes += png.len();
-                    if let Some((old, _)) = st.cache.insert(job.key.clone(), (Arc::new(png), uses)) {
-                        st.bytes = st.bytes.saturating_sub(old.len());
+                // A render of an earlier project generation is neither kept nor announced (E-71).
+                if job.snapshot.generation != st.generation {
+                    continue;
+                }
+                match png {
+                    Some(png) => {
+                        st.uses += 1;
+                        let uses = st.uses;
+                        st.bytes += png.len();
+                        if let Some((old, _)) = st.cache.insert(job.key.clone(), (Arc::new(png), uses)) {
+                            st.bytes = st.bytes.saturating_sub(old.len());
+                        }
+                        self.evict(&mut st);
                     }
-                    self.evict(&mut st);
+                    None => {
+                        st.failed.insert(job.key.clone());
+                    }
                 }
                 st.queue.len()
             };
@@ -294,6 +355,8 @@ impl Service {
 
 /// Renders one queued thumbnail from its snapshot; `None` when the drawing cannot be rendered (it is not answered).
 fn render(job: &Job) -> Option<Vec<u8>> {
+    #[cfg(feature = "test-hooks")]
+    crate::hooks::thumbnail_render_panic(&job.key.drawing_id);
     let id = Id::parse(&job.key.drawing_id).ok()?;
     let d = job.snapshot.doc.drawing(&id)?;
     let never = || false;

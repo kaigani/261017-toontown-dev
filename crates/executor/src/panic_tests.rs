@@ -193,6 +193,8 @@ fn every_project_and_agent_hub_field_is_classified_against_the_rollback() -> Out
         form: _,
         read_only: _,
         store: _,
+        // Set when the project is opened; never changed by a call.
+        generation: _,
     } = OpenProject::new(doc, None, false);
     let crate::agents::AgentHub {
         // Restored by the `Rollback`.

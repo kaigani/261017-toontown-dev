@@ -247,10 +247,14 @@ pub(crate) fn drawing_thumbnail(
         size: side.clamp(crate::thumbnails::MIN_SIDE, crate::thumbnails::MAX_SIDE),
     };
     let thumbs = cx.session().thumbs.clone();
+    let project = cx.project()?;
+    // The cache is the open project's generation's (E-70): follow it before reading or keeping.
+    if let Some(t) = &thumbs {
+        t.follow(project.generation);
+    }
     if let Some(png) = thumbs.as_ref().and_then(|t| t.cached(&key)) {
         return Ok((key, png));
     }
-    let project = cx.project()?;
     let cache = cx.planar_cache();
     let never = || false;
     let src =

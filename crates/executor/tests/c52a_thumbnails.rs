@@ -25,7 +25,7 @@ const BOB: &str = "scene:\"Intro\"/element:\"Bob\"";
 
 fn handle() -> ExecutorHandle {
     let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(30) }).unwrap();
-    assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    fork(&h);
     h
 }
 
@@ -186,4 +186,117 @@ fn missing_drawings_and_no_project() {
     assert_eq!(read.missing.len(), 1);
     let none = ExecutorHandle::spawn(ExecutorConfig::default()).unwrap();
     assert_eq!(none.thumbnails_read(Vec::new()).unwrap_err().code, "command.disabled");
+}
+
+/// A new drawing of Bob with one stroke ending at `x`; its ID.
+fn drawing_with(h: &ExecutorHandle, name: &str, x: f64) -> String {
+    let d = ok(h, "element.drawing.create", json!({ "elementId": BOB, "name": name }))["drawingId"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    ok(
+        h,
+        "draw.stroke.add",
+        json!({ "drawingId": d, "kind": "pencil", "points": [{ "x": 0, "y": 0 }, { "x": x, "y": 50 }] }),
+    );
+    d
+}
+
+/// Replaces the open project by a fresh copy of the sample document (a second fork of the same document).
+fn fork(h: &ExecutorHandle) {
+    let options = tt_executor::OpenOptions {
+        on_unsaved: tt_executor::UnsavedPolicy::Discard,
+        ..tt_executor::OpenOptions::default()
+    };
+    let opened =
+        h.open_document_with(tt_model::fixture::sample_document(1).unwrap(), options, tt_executor::Origin::User);
+    assert!(opened.is_ok(), "{:?}", opened.error);
+}
+
+/// The thumbnail once ready (bounded).
+fn ready(h: &ExecutorHandle, d: &str) -> tt_executor::thumbnails::ThumbnailReady {
+    let start = Instant::now();
+    loop {
+        let r = h.thumbnails_read(ask(&[d.to_owned()], 64)).unwrap();
+        if let Some(t) = r.ready.into_iter().next() {
+            return t;
+        }
+        assert!(start.elapsed() < Duration::from_secs(30), "no thumbnail of {d}");
+        std::thread::sleep(Duration::from_millis(20));
+    }
+}
+
+/// Rulings E-70 (C52A-R1S-02) and E-71: two projects forked from one document hold the same drawing at the same
+/// revision with different content; after replacing the first by the second, its image is never answered.
+#[test]
+fn a_forked_project_never_shows_the_other_forks_image() {
+    let _guard = SERIAL.lock().unwrap();
+    let h = handle();
+    let a = drawing_with(&h, "fork", 100.0);
+    let rev_a = ok(&h, "doc.object.get", json!({ "ref": a }))["object"]["rev"].clone();
+    let image_a = ready(&h, &a);
+    // The second fork: the same document, the same calls, other content.
+    fork(&h);
+    let b = drawing_with(&h, "fork", 400.0);
+    assert_eq!(b, a, "the same drawing ID in both forks");
+    assert_eq!(ok(&h, "doc.object.get", json!({ "ref": b }))["object"]["rev"], rev_a, "at the same revision");
+    let first = h.thumbnails_read(ask(&[b.clone()], 64)).unwrap();
+    assert!(first.ready.is_empty(), "the other fork's image answered from the cache");
+    let image_b = ready(&h, &b);
+    assert_ne!(image_b.png, image_a.png, "the second fork's own image");
+}
+
+/// E-71 (C52A-R1-01): a render of the replaced project still in flight is neither kept nor announced. One worker
+/// renders in order, so the new project's thumbnail is announced only after the old render has finished.
+#[test]
+fn a_render_in_flight_across_a_replacement_is_dropped() {
+    let _guard = SERIAL.lock().unwrap();
+    let h = handle();
+    let a = drawing_with(&h, "inflight", 100.0);
+    tt_executor::hooks::set_thumbnail_delay_ms(300);
+    assert_eq!(h.thumbnails_read(ask(&[a.clone()], 64)).unwrap().pending.len(), 1);
+    let rx = h.subscribe();
+    fork(&h);
+    // Another drawing of the new project (an element first, so its ID is not the old drawing's).
+    ok(&h, "element.create", json!({ "type": "drawing", "name": "Shift" }));
+    let c = drawing_with(&h, "fresh", 250.0);
+    assert_ne!(c, a);
+    assert_eq!(h.thumbnails_read(ask(&[c.clone()], 64)).unwrap().pending.len(), 1);
+    let announced = until_done(&rx, Duration::from_secs(30));
+    tt_executor::hooks::set_thumbnail_delay_ms(0);
+    assert!(
+        announced.iter().all(|k| k["drawingId"] != a.as_str()),
+        "the old project's render announced: {announced:?}"
+    );
+    assert!(announced.iter().any(|k| k["drawingId"] == c.as_str()));
+    assert_eq!(h.thumbnails_usage().1, 1, "only the new project's thumbnail is kept");
+}
+
+/// Ruling E-70: a render that panics is contained. Its key is answered as failed and not queued again at that
+/// revision, the worker goes on with the queue, and the drawing renders again once it changes.
+#[test]
+fn a_panicking_render_is_contained_and_the_worker_goes_on() {
+    let _guard = SERIAL.lock().unwrap();
+    let h = handle();
+    let bad = drawing_with(&h, "bad", 100.0);
+    let good = drawing_with(&h, "good", 200.0);
+    let rx = h.subscribe();
+    tt_executor::hooks::set_thumbnail_render_panic(Some(bad.clone()));
+    h.thumbnails_read(ask(&[bad.clone(), good.clone()], 64)).unwrap();
+    let announced = until_done(&rx, Duration::from_secs(30));
+    tt_executor::hooks::set_thumbnail_render_panic(None);
+    assert!(announced.iter().any(|k| k["drawingId"] == good.as_str()), "the worker went on: {announced:?}");
+    let r = h.thumbnails_read(ask(&[bad.clone(), good.clone()], 64)).unwrap();
+    assert_eq!(r.failed.len(), 1, "{r:?}");
+    assert_eq!(r.failed[0].drawing_id, bad);
+    assert!(r.pending.is_empty(), "a failed key is not queued again at its revision");
+    assert_eq!(r.ready.len(), 1);
+    // Changed, the drawing has a new revision and renders.
+    ok(
+        &h,
+        "draw.stroke.add",
+        json!({ "drawingId": bad, "kind": "pencil", "points": [{ "x": 5, "y": 5 }, { "x": 60, "y": 9 }] }),
+    );
+    let t = ready(&h, &bad);
+    assert_eq!(t.key.drawing_id, bad);
 }
