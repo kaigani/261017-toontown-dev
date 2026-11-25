@@ -1,0 +1,115 @@
+crates/executor/src/commands/cell.rs:90: changes.push(EntryKey::Element(id.clone()), vec![op("replace", "/duration", Some(json!(nd)))]);
+crates/executor/src/commands/cell.rs:637: vec![None; n]
+crates/executor/src/commands/cell.rs:950: let mut picked: Vec<Vec<Option<Id>>> = Vec::with_capacity(sources.len());
+crates/executor/src/commands/cell.rs:951: let mut notes_of: Vec<Vec<(usize, String)>> = Vec::with_capacity(sources.len());
+crates/executor/src/commands/cell.rs:1022: let mut mapped = Vec::with_capacity(len);
+crates/executor/src/commands/cell.rs:1196: let values = vec![Some(i); t.to - t.from + 1];
+crates/executor/src/commands/cell.rs:1255: let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
+crates/executor/src/commands/cell.rs:1366: let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
+crates/executor/src/commands/cell.rs:1492: let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
+crates/executor/src/commands/cell.rs:1526: (Some(_), Ok(n)) if (1..=x::MAX_FRAMES).contains(&n) => Ok(n - 1),
+crates/executor/src/commands/cell.rs:1533: let drawings: Vec<usize> = if a <= b { (a..=b).collect() } else { (b..=a).rev().collect() };
+crates/executor/src/commands/cell.rs:1566: let mut values = Vec::with_capacity(c.total_frames);
+crates/executor/src/commands/cell.rs:1580: values.extend(std::iter::repeat_n(Some(idx), *n));
+crates/executor/src/commands/cell.rs:1858: let one = p.element_id.as_ref().map(|e| vec![e.clone()]);
+crates/executor/src/commands/cell.rs:1923: let mut values = vec![None; w];
+crates/executor/src/commands/cell.rs:1945: base.resize(t.from.saturating_sub(1), fill);
+crates/executor/src/commands/cell.rs:2103: while f <= to {
+crates/executor/src/commands/cell.rs:2422: let in_range = (1..=x::MAX_COMMAND_FRAMES as usize).contains(&to);
+crates/executor/src/commands/element_bank.rs:396: let after = x::overwrite(&col.frames, a, &vec![Some(i); b - a + 1]);
+crates/executor/src/commands/element_bank.rs:433: changes.push(EntryKey::Drawing(d.clone()), vec![op("replace", "/name", Some(json!(name)))]);
+crates/executor/src/commands/element_bank.rs:585: changes.push(EntryKey::Bank(bank.clone()), vec![op("replace", "/drawings", Some(Value::Array(stubs)))]);
+crates/executor/src/commands/element_bank.rs:587: changes.push(EntryKey::Drawing(d.clone()), vec![op("remove", "", None)]);
+crates/executor/src/commands/element_bank.rs:694: changes.push(EntryKey::Drawing(d.clone()), vec![op("replace", "/nodes", Some(json!([])))]);
+crates/executor/src/commands/element_bank.rs:739: changes.push(EntryKey::Drawing(d.clone()), vec![op("replace", "/locked", Some(json!(p.locked)))]);
+crates/executor/src/commands/timing.rs:218: frames.resize(stop, None);
+crates/executor/src/commands/timing.rs:220: for f in start..=stop {
+crates/executor/src/commands/timing.rs:273: Ok(f) if (1..=x::MAX_FRAMES).contains(&f) => Ok(f),
+crates/executor/src/commands/timing.rs:286: Ok(f) if (1..=max).contains(&f) => Ok(f),
+crates/executor/src/commands/timing.rs:316: changes.push(EntryKey::Element(col.id.clone()), vec![op("replace", "/exposure", Some(col.runs_json(after)))]);
+crates/executor/src/commands/timing.rs:352: let mut used = vec![false; media.old.len()];
+crates/executor/src/commands/timing.rs:353: let mut chosen: Vec<Option<usize>> = vec![None; runs.len()];
+crates/executor/src/commands/timing.rs:371: let mut seqs = Vec::with_capacity(runs.len());
+crates/executor/src/commands/timing.rs:385: changes.push(EntryKey::Element(col.id.clone()), vec![op("replace", "/sequences", Some(Value::Array(seqs)))]);
+crates/executor/src/commands/timing.rs:689: elements.iter().flat_map(|e| (from..=to).map(move |f| cell_ref(e.as_str(), as_u32(f)))).collect()
+crates/executor/src/commands/timing.rs:750: changes.push(EntryKey::Drawing(id.clone()), vec![op("add", "", Some(v))]);
+crates/executor/src/commands/timing.rs:812: /// Solo mode: the soloed elements while on (04 §10.3).
+crates/executor/src/commands/timing.rs:904: if (1..=x::MAX_FRAMES).contains(f) && !t.is_empty() {
+crates/executor/src/commands/timing.rs:923: changes.push(EntryKey::Element(id.clone()), vec![op("add", "/cellNotes", Some(Value::Object(value)))]);
+crates/executor/src/commands/timing.rs:933: .filter(|(f, _)| (from..=to).contains(&(**f as usize)))
+crates/executor/src/commands/xsheet_view.rs:52: let frame = u32::try_from(p.frame).ok().filter(|f| (1..=100_000).contains(f)).ok_or_else(|| {
+crates/executor/src/commands/xsheet_view.rs:400: for frame in from..=to {
+crates/executor/src/history.rs:5: //! discarded first"; M5 ruling E-51, E-60): each step's size is measured from its patch when it is recorded; while the
+crates/executor/src/history.rs:123: /// The open typing run (M4 C4.4b, design note 5 §3; SI-191): the step the Text tool's input path extends while its
+crates/executor/src/history.rs:171: while self.steps.len() > MAX_STEPS {
+crates/executor/src/history.rs:177: /// Discards the oldest steps while the total passes the bound, never below [`MIN_STEPS`] (E-51); when the last
+crates/executor/src/history.rs:181: while self.bytes > bound && self.steps.len() > MIN_STEPS {
+crates/executor/src/history.rs:415: let text = |c: char| std::iter::repeat_n(c, n).collect::<String>();
+crates/executor/src/history.rs:437: assert!((40_000..40_200).contains(&large), "{large}");
+crates/executor/src/history.rs:446: for i in 0..400 {
+crates/executor/src/history.rs:464: for i in 0..250 {
+crates/executor/src/history.rs:482: for i in 0..300 {
+crates/executor/src/history.rs:496: for i in 0..(MAX_STEPS + 5) {
+crates/executor/src/history.rs:506: for i in 0..220 {
+crates/executor/src/history.rs:510: for _ in 0..5 {
+crates/executor/src/history.rs:523: while h.can_undo() {
+crates/executor/src/history.rs:535: for i in 1..=(MIN_STEPS + 3) {
+crates/executor/src/history.rs:540: while h.can_undo() {
+crates/executor/src/host.rs:193: /// indicator can show the acting state while the command runs (01 §12.1 rule 9).
+crates/executor/src/host.rs:331: /// Focus-changing `ui` commands refused for agents while a user dialog is open (11 §6.4 `ui.modalOpen`).
+crates/executor/src/host.rs:460: // The Contour Editor's Delete (02 §7.1.2 line 457; SI-184; design note 3 §2): while the Contour Editor is active (in
+crates/executor/src/host.rs:778: if let Some(w) = report.timeline_viewport.filter(|w| (1..=100_000).contains(w)) {
+crates/executor/src/host.rs:911: /// while another origin's is open.
+crates/executor/src/host.rs:1151: let mut out = Vec::with_capacity(refs.len());
+crates/executor/src/host.rs:1154: while !rest.is_empty() {
+crates/executor/src/host.rs:1163: while let Some((id, params)) = chunk.pop_front() {
+crates/executor/src/host.rs:1276: /// batch waits while a dialog or gesture is open, up to `waitForUserMs` and the call's budget, then `ui.busy`. A
+crates/executor/src/host.rs:1304: // Under a dialog actions and jobs wait (C4.1); while the user is mid-gesture every agent command that
+crates/executor/src/host.rs:1314: /// Waits while the user's dialog or gesture lasts, up to `waitForUserMs` and the call's budget, then `ui.busy`.
+crates/executor/src/host.rs:1349: let floats = vec!["history".to_owned(), "colour".to_owned()];
+crates/executor/src/lib.rs:657: /// 11 §4): `cancelled` is polled while the command runs and while a `wait: true` waits. A cancelled wait answers
+crates/executor/src/lib.rs:903: if env.committed { (0..steps.len()).collect() } else { Vec::new() }
+crates/executor/src/lib.rs:1094: while let Ok(req) = rx.recv() {
+crates/executor/src/lib.rs:1121: // Ruling E-29: a panic while serving a request, outside the invocation boundary that contains handler panics
+crates/executor/src/lib.rs:1234: let mut out = Vec::with_capacity(registry.len());
+crates/executor/src/lib.rs:1302: /// pending while ordinary commands answer at their normal speed).
+crates/executor/src/panic_tests.rs:65: while !progress.cancelled() {
+crates/executor/src/panic_tests.rs:352: while degraded == 0 && std::time::Instant::now() < deadline {
+crates/executor/src/panic_tests.rs:400: while !written() {
+crates/executor/src/run.rs:57: /// The call that owns an id while it is in flight, and the identical retries attached to it.
+crates/executor/src/run.rs:190: while (s.entries.len() > REQUEST_CACHE_ENTRIES || s.bytes > REQUEST_CACHE_BYTES) && s.order.len() > 1 {
+crates/executor/src/run.rs:1461: // reaches this route while its twin is pending is told so rather than run twice.
+crates/executor/src/run.rs:2102: /// document is saved); none while simulating.
+crates/executor/src/run.rs:2382: commit(&mut session, vec![txn], &Origin::User, "draw.stroke.add", None).unwrap();
+crates/executor/src/run.rs:2416: structural(&mut core, vec![(entry.clone(), vec![op("add", &format!("{strokes}/-"), Some(stroke))])]);
+crates/executor/src/run.rs:2443: structural(&mut core, vec![(entry.clone(), vec![op("replace", &new_at, Some(replaced))])]);
+crates/executor/src/run.rs:2457: for _ in 0..2 {
+crates/executor/src/run.rs:2458: for _ in 0..2 {
+crates/executor/src/run.rs:2465: for _ in 0..2 {
+crates/executor/src/session.rs:150: // Bounded snapshot memory: newest first, keep snapshots while their objects fit the budget.
+crates/executor/src/session.rs:164: while self.log.len() > REV_LOG_LEN
+crates/executor/src/session.rs:213: /// The project, document revision and selection lists the last context repair checked: while all three are the
+crates/executor/src/thumbnails.rs:13: //! longer shows (a scroll) is dropped. A drawing edited while its thumbnail renders has a new revision: the image of the
+crates/executor/src/thumbnails.rs:19: //! answers while the drawing is at that revision.
+crates/executor/src/thumbnails.rs:69: (!drawing_id.is_empty() && (MIN_SIDE..=MAX_SIDE).contains(&size)).then_some(ThumbnailKey { drawing_id, rev, size })
+crates/executor/src/thumbnails.rs:310: /// Drops the least recently used thumbnails while the cache passes its bound.
+crates/executor/src/thumbnails.rs:316: while st.bytes > bound {
+crates/executor/src/timing_gesture.rs:490: state.cells.as_ref().is_some_and(|(els, a, b)| els.contains(&row.id) && (*a..=*b).contains(&frame));
+crates/executor/src/timing_gesture.rs:627: // The drag-and-drop set resolved at the press, inline: a change of the stored set while the drag is in
+crates/executor/src/timing_gesture.rs:685: (true, Some(anchor)) => rows[anchor.min(row)..=anchor.max(row)].iter().map(|r| r.id.clone()).collect(),
+crates/executor/src/timing_gesture.rs:696: /// A click on a cell (04 lines 662, 687-689): the cell, or the track while single-cell selection is off (the
+crates/executor/src/timing_gesture.rs:711: let ids: Vec<Id> = rows[anchor.min(row)..=anchor.max(row)].iter().map(|r| r.id.clone()).collect();
+crates/executor/src/timing_gesture.rs:744: while let Some(c) = cur {
+crates/executor/src/timing_gesture.rs:825: while let Some(c) = cur {
+crates/executor/src/timing_gesture.rs:833: for k in 0..deepest {
+crates/executor/src/timing_gesture.rs:932: if !(1..=max_frame).contains(&g.first_frame) {
+crates/executor/src/timing_gesture.rs:976: while t.grabs.len() > MAX_GRABS {
+crates/executor/src/timing_gesture.rs:1017: "message": "what the gesture acted on changed while it was in progress; nothing was done",
+crates/executor/src/timing_gesture.rs:1164: .filter(|(f, _)| (from..=to).contains(&i64::from(**f)))
+crates/executor/src/xsheet_gesture.rs:126: while start > 1 && same(start - 1) {
+crates/executor/src/xsheet_gesture.rs:130: while end < u32::MAX && same(end + 1) {
+crates/executor/src/xsheet_gesture.rs:155: state.cells.as_ref().is_some_and(|(els, a, b)| els.contains(&cols[c].id) && (*a..=*b).contains(&frame));
+crates/executor/src/xsheet_gesture.rs:312: let ids: Vec<Id> = cols[anchor.min(column)..=anchor.max(column)].iter().map(|c| c.id.clone()).collect();
+crates/executor/src/xsheet_gesture.rs:341: (true, Some(anchor)) => cols[anchor.min(column)..=anchor.max(column)].iter().map(|c| c.id.clone()).collect(),
+desktop/src/ipc/engine.ts:184: *  notice they reflect, for a window that mounts while an agent acts. */
+desktop/src/ipc/engine.ts:266: /** The engine generation it was routed on: played only while the window follows it (D-7b). */
