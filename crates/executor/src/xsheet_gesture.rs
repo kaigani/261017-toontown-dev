@@ -119,7 +119,7 @@ fn drop_index(cols: &[Column], g: &GestureLayout, x: f64) -> usize {
 }
 
 /// The first and last frame of the exposure that holds `frame` in `element`, when the cell exposes a drawing.
-fn exposure_of(doc: &Document, element: &Id, frame: u32) -> Option<(u32, u32)> {
+pub(crate) fn exposure_of(doc: &Document, element: &Id, frame: u32) -> Option<(u32, u32)> {
     let d = AppContext::exposed_drawing(doc, element, frame)?;
     let same = |f: u32| AppContext::exposed_drawing(doc, element, f).as_ref() == Some(&d);
     let mut start = frame;
@@ -275,15 +275,21 @@ pub(crate) fn plan(
                 return Plan::Nothing;
             }
             let Some(sc) = doc.scene(scene) else { return Plan::Nothing };
-            // The complete order (hidden columns kept in place): the dragged column goes before the shown column at the
-            // drop, or after the last shown one.
-            let dragged_id = cols[column].id.clone();
-            let mut order: Vec<Id> = sc.column_order().iter().filter(|e| **e != dragged_id).cloned().collect();
-            let at = match cols.get(at) {
-                Some(c) => order.iter().position(|e| *e == c.id).unwrap_or(order.len()),
-                None => cols.last().and_then(|c| order.iter().position(|e| *e == c.id)).map_or(order.len(), |p| p + 1),
-            };
-            order.insert(at, dragged_id);
+            // The complete order (E-71, C52A-R1-02; the design note §3): the shown columns in their new order, each
+            // hidden column at the same position among all columns as before.
+            let mut shown: Vec<Id> = cols.iter().map(|c| c.id.clone()).collect();
+            if column >= shown.len() {
+                return Plan::Nothing;
+            }
+            let dragged_id = shown.remove(column);
+            shown.insert(if at > column { at - 1 } else { at }, dragged_id);
+            let shown_set: std::collections::BTreeSet<&Id> = cols.iter().map(|c| &c.id).collect();
+            let mut next = shown.into_iter();
+            let order: Vec<Id> = sc
+                .column_order()
+                .iter()
+                .filter_map(|e| if shown_set.contains(e) { next.next() } else { Some(e.clone()) })
+                .collect();
             one("element.order.set", json!({ "order": "xsheet", "elementIds": ids_json(&order) }))
         }
         _ => Plan::Nothing,
@@ -341,4 +347,81 @@ fn header_click(
             ("element.current.set".to_owned(), json!({ "elementId": id.as_str() })),
         ],
     }
+}
+
+/// The absolute outcome of the sheet's own commands for the release's comparison (rulings E-23, E-28, E-70): the plan
+/// commits only when it is the same against the press snapshot and the present document. `None` for the commands the
+/// Timeline's comparison covers.
+pub(crate) fn outcome(doc: &Document, command: &str, p: &serde_json::Value) -> Option<serde_json::Value> {
+    use serde_json::Value;
+    let int = |k: &str| p.get(k).and_then(Value::as_i64);
+    let id_list = |v: &Value| -> Vec<Id> {
+        v.as_array()
+            .map(|a| a.iter().filter_map(|x| x.as_str().and_then(|k| Id::parse(k).ok())).collect())
+            .unwrap_or_default()
+    };
+    Some(match command {
+        "cell.exposure.add" | "cell.exposure.remove" => {
+            // The exposure-edge drag (E-70, C52A-R1S-03; E-23, E-28): the exposure grabbed (its drawing and frames)
+            // and the absolute outcome, the column's cells from the exposure's start after the shift.
+            let (from, to) = (int("from").unwrap_or(1).max(1), int("to").unwrap_or(1).max(1));
+            let n = usize::try_from(int("frames").unwrap_or(1).max(1)).unwrap_or(1);
+            let cells: Vec<Value> = id_list(&p["elementIds"])
+                .iter()
+                .map(|e| {
+                    let at = u32::try_from(from).unwrap_or(1);
+                    let grabbed = exposure_of(doc, e, at).map(|(a, b)| {
+                        let d = crate::app::AppContext::exposed_drawing(doc, e, at).map(|d| d.as_str().to_owned());
+                        json!([d, a, b])
+                    });
+                    let mut budget = crate::commands::timing::Budget::new("comparing a gesture's outcome");
+                    let after: Vec<Option<String>> = match crate::commands::timing::Column::read(doc, e, &mut budget) {
+                        Ok(col) => {
+                            let (f, t) = (usize::try_from(from).unwrap_or(1), usize::try_from(to).unwrap_or(1));
+                            let frames = if command == "cell.exposure.add" {
+                                tt_anim::exposure::add_exposure(&col.frames, f, t, n)
+                            } else {
+                                tt_anim::exposure::remove_exposure(&col.frames, f, t, n)
+                            };
+                            let start = grabbed
+                                .as_ref()
+                                .and_then(|g| g[1].as_u64())
+                                .and_then(|v| usize::try_from(v).ok())
+                                .unwrap_or(f);
+                            frames
+                                .iter()
+                                .skip(start.saturating_sub(1))
+                                .map(|c| c.and_then(|i| col.drawing(i)).map(|d| d.as_str().to_owned()))
+                                .collect()
+                        }
+                        Err(_) => Vec::new(),
+                    };
+                    json!({ "elementId": e.as_str(), "grabbed": grabbed, "after": after })
+                })
+                .collect();
+            json!({ "command": command, "params": p, "cells": cells })
+        }
+        "xsheet.lightTable.add" => {
+            // Cells dropped on the light-table panel: each item's drawing is still its element's (E-70).
+            let items: Vec<Value> = p["items"]
+                .as_array()
+                .into_iter()
+                .flatten()
+                .map(|it| {
+                    let e = it["elementId"].as_str().and_then(|k| Id::parse(k).ok());
+                    let d = it["drawingId"].as_str().and_then(|k| Id::parse(k).ok());
+                    let held = match (&e, &d) {
+                        (Some(e), Some(d)) => doc
+                            .element(e)
+                            .and_then(|x| x.drawing_bank_id().clone())
+                            .is_some_and(|b| doc.bank_of(d) == Some(&b)),
+                        _ => false,
+                    };
+                    json!([it["elementId"], it["drawingId"], held])
+                })
+                .collect();
+            json!({ "command": command, "items": items })
+        }
+        _ => return None,
+    })
 }

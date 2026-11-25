@@ -790,6 +790,19 @@ fn row_drop(doc: &Document, rows: &[VisibleRow], row: usize, state: &State, g: &
         order.insert(at + k, m.clone());
     }
     let same_level = moving.iter().all(|m| parents.get(m).cloned().flatten() == level);
+    // A reorder within one level keeps each row the Timeline does not show (a hidden effect-parameter row) at the same
+    // position among the level's rows; the shown rows take their new order around it (the Exposure Sheet's rule of
+    // ruling E-71). A collapsed parent's children are a deeper level and move with their parent.
+    let visible: BTreeSet<&Id> = rows.iter().map(|r| &r.id).collect();
+    if same_level && present.iter().any(|x| !visible.contains(x)) {
+        let mut next = order.iter().filter(|x| visible.contains(x)).cloned().collect::<Vec<_>>().into_iter();
+        let kept: Option<Vec<Id>> =
+            present.iter().map(|x| if visible.contains(x) { next.next() } else { Some(x.clone()) }).collect();
+        match kept {
+            Some(k) => order = k,
+            None => return Plan::Nothing,
+        }
+    }
     if same_level {
         if order == present {
             return Plan::Nothing;
@@ -1057,6 +1070,10 @@ fn resolved(doc: &Document, command: &str, p: &Value) -> Value {
 }
 
 fn resolved_values(doc: &Document, command: &str, p: &Value) -> Value {
+    // The Exposure Sheet's own commands (E-70): their outcomes are the sheet surface's.
+    if let Some(v) = crate::xsheet_gesture::outcome(doc, command, p) {
+        return v;
+    }
     let int = |k: &str| p.get(k).and_then(Value::as_i64);
     match command {
         "element.timing.set" => {
@@ -1107,15 +1124,25 @@ fn resolved_values(doc: &Document, command: &str, p: &Value) -> Value {
             json!({ "command": command, "parentId": p["parentId"], "children": children })
         }
         "element.order.set" => {
-            // The order names the whole level: the level's present children (as a set) are part of the outcome.
+            // The order names the whole level: the level's present children (as a set) are part of the outcome; for
+            // the Exposure Sheet's order, the scene's columns (E-70).
             let ids = id_list(&p["elementIds"]);
             let parent = p["parentId"].as_str().and_then(|k| Id::parse(k).ok());
             let scene = ids.first().and_then(|m| doc.scene_of(m)).and_then(|s| doc.scene(s));
-            let mut level: Vec<String> = scene
-                .map(|sc| h::level_ids(sc.tree(), parent.as_ref()).iter().map(|x| x.as_str().to_owned()).collect())
-                .unwrap_or_default();
+            let mut level: Vec<String> = match (scene, p["order"].as_str()) {
+                (Some(sc), Some("xsheet")) => sc.column_order().iter().map(|x| x.as_str().to_owned()).collect(),
+                (Some(sc), _) => {
+                    h::level_ids(sc.tree(), parent.as_ref()).iter().map(|x| x.as_str().to_owned()).collect()
+                }
+                (None, _) => Vec::new(),
+            };
             level.sort();
             json!({ "command": command, "params": p, "level": level })
+        }
+        // The click and selection commands of both surfaces name every target absolutely; `missing` checks that each
+        // still exists (E-70: the sheet's gestures take no parameter fallback but these, which are absolute).
+        "cell.select" | "xsheet.currentCell.set" | "element.select" | "element.current.set" => {
+            json!({ "command": command, "params": p, "absolute": true })
         }
         "cell.range.move" => {
             let sources = id_list(&p["sourceElementIds"]);

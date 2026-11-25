@@ -62,10 +62,20 @@ offsets) sent with the press as the Timeline's layout is.
 | Click a column header | `xsheet.headers` | `element.select` (the whole column) |
 | Drag selected cells to a compatible column | `xsheet.grid` | `cell.range.move` (move, copy, link, copy as new drawings) with the drag-and-drop transfer options (11.13-11.14, `timeline.transferOptions.get {operation: "dragDrop"}`), as the Timeline's |
 | Drag the bottom edge of an exposure | `xsheet.grid` | `cell.exposure.add` / `cell.exposure.remove {frames}` (following cells shift) |
-| Drag a column header | `xsheet.headers` | `element.order.set {order: "xsheet"}` |
+| Drag a column header | `xsheet.headers` | `element.order.set {order: "xsheet"}`: the complete order is the shown columns in their new order with each hidden column at the same position among all columns as before (ruling E-71; 04 line 908 says only that a header drag reorders columns) |
 | Drag a header border | `xsheet.headers` | `xsheet.columnWidth.set` (window-only drag, one command at release) |
 | Drag the selected cells onto the light-table panel | `xsheet.grid` (the panel's rectangle in the layout, `lightTable`) | `xsheet.lightTable.add {items}`: the distinct drawings of the drawing, image and annotation columns, the rule of the command without items |
 | Library item, external files onto the grid | — | refused with their owners (M9 08, M10 09) until then |
+
+**Comparison at release (rulings E-23, E-28, E-70).** Every sheet gesture's plan commits only when its outcome against
+the press snapshot equals its outcome against the present document: the exposure-edge drag compares the exposure grabbed
+and the column's cells after the shift; a header drag the whole column order; a drop on the light table each item's
+drawing still in its element's bank; the cell moves the grabbed and destination cells (as the Timeline's); the clicks are
+absolute, every target named and checked to exist. No sheet gesture compares only its command and parameters.
+
+**The Timeline's row drop, the same question (E-71).** A reorder within one level keeps each row the Timeline does not
+show (a hidden effect-parameter row) at the same position among the level's rows; a collapsed parent's children are a
+deeper level and move with their parent.
 
 Each row is a D-23 row and a three-way row (window, interpreter replay, direct commands; event path in CI, real input
 on the workstation), with E-10's change under a drag. Auto-scroll near an edge while dragging (12.2) moves the window

@@ -263,10 +263,15 @@ fn a_header_click_selects_the_column_and_a_header_drag_reorders() {
         .iter()
         .map(|c| c["elementId"].as_str().unwrap().to_owned())
         .collect();
-    // Dropped before the shown column at the drop (the third), hidden columns kept where they are.
-    let mut expected: Vec<String> = order.iter().filter(|e| **e != cols[0].0).cloned().collect();
-    let before = expected.iter().position(|e| *e == cols[2].0).unwrap();
-    expected.insert(before, cols[0].0.clone());
+    // Ruling E-71 (the design note §3): the shown columns in their new order (the first after the second), each
+    // hidden column at the same position among all columns as before.
+    let mut shown: Vec<String> = cols.iter().map(|c| c.0.clone()).collect();
+    let first = shown.remove(0);
+    shown.insert(1, first);
+    let mut next = shown.into_iter();
+    let expected: Vec<String> =
+        order.iter().map(|e| if cols.iter().any(|c| c.0 == *e) { next.next().unwrap() } else { e.clone() }).collect();
+    assert!(expected.len() > cols.len(), "the sample shows a hidden column (the annotation element)");
     three_way(
         &none,
         "xsheetHeaders",
@@ -329,6 +334,44 @@ fn a_change_under_a_drag_cancels_the_gesture() {
     assert_eq!(out["cancelled"], true, "{out}");
     assert_eq!(out["error"]["code"], "timeline.targetChanged");
     assert_eq!(rev(&h), changed, "nothing of the gesture was committed");
+}
+
+/// Ruling E-70 (C52A-R1S-03; E-23, E-28): the exposure-edge drag compares the exposure grabbed and the cells after the
+/// shift between the press and the present. Replacing the grabbed exposure's drawing before the release cancels the
+/// drag instead of lengthening the new drawing; an unrelated change elsewhere does not.
+#[test]
+fn an_edge_drag_whose_exposure_changed_is_cancelled() {
+    let h = fixture();
+    let cols = columns(&h);
+    let bob = cols[0].0.clone();
+    let (_, _, to) = cols[0].1[0].clone();
+    let other = cols[0].1.iter().map(|r| r.0.clone()).find(|d| *d != cols[0].1[0].0).expect("a second drawing of Bob");
+    let x = COL / 2.0;
+    let edge = f64::from(to) * ROW - 1.0;
+    let samples = json!([s(x, edge), s(x, edge + 2.0 * ROW)]);
+    let press = h
+        .timing_gesture(Origin::User, json!({"phase": "press", "layout": layout("xsheetGrid"), "sample": samples[0]}))
+        .unwrap();
+    assert_eq!(press["target"]["kind"], "exposureEdge", "{press}");
+    // The last frame of the grabbed exposure now shows another drawing.
+    ok(&h, "cell.label.set", json!({"elementIds": [bob], "from": to, "to": to, "drawingId": other}));
+    let changed = rev(&h);
+    let out = h
+        .timing_gesture(Origin::User, json!({"phase": "release", "grabId": press["grabId"], "samples": samples}))
+        .unwrap();
+    assert_eq!(out["cancelled"], true, "{out}");
+    assert_eq!(out["error"]["code"], "timeline.targetChanged");
+    assert_eq!(rev(&h), changed, "nothing of the gesture was committed");
+    // A change of another column under the same drag leaves the grabbed exposure and its outcome as they were.
+    let h = fixture();
+    let press = h
+        .timing_gesture(Origin::User, json!({"phase": "press", "layout": layout("xsheetGrid"), "sample": samples[0]}))
+        .unwrap();
+    ok(&h, "cell.blank.add", json!({"elementIds": [cols[1].0], "frame": 1}));
+    let out = h
+        .timing_gesture(Origin::User, json!({"phase": "release", "grabId": press["grabId"], "samples": samples}))
+        .unwrap();
+    assert!(out["cancelled"] != true, "{out}");
 }
 
 #[test]

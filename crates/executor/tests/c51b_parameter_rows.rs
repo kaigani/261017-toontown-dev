@@ -140,3 +140,32 @@ fn changing_the_setting_raises_the_view_notice_the_window_reads_rows_on() {
     set(&h, json!({"visible": false}));
     assert!(!rx.try_iter().any(|e| e.name == "shell.timelineView"));
 }
+
+/// Ruling E-71 (the Timeline's half): a row dragged within its level never displaces a row the Timeline does not show.
+/// A clipping effect's children ordered drawing A, the hidden mask row, drawing B: dragging B before A gives B, the
+/// mask (where it was among the level's rows), A.
+#[test]
+fn a_row_drop_keeps_a_hidden_parameter_row_in_place() {
+    let h = fixture();
+    let (clip, _other, mask, _m2) = effects(&h);
+    let made = ok(&h, "element.create", json!({"type": "drawing", "count": 2, "name": "E71"}))["elementIds"].clone();
+    let (a, b) = (made[0].as_str().unwrap().to_owned(), made[1].as_str().unwrap().to_owned());
+    ok(&h, "element.parent.set", json!({"elementIds": [a, b], "parentId": clip}));
+    ok(&h, "element.order.set", json!({"order": "timeline", "parentId": clip, "elementIds": [a, mask, b]}));
+    set(&h, json!({"elementId": clip, "visible": false}));
+    // B alone is dragged (element.create selected both new elements).
+    ok(&h, "element.select", json!({"elementIds": [b], "mode": "replace"}));
+    let (ra, rb) = (shown_index(&h, &a).unwrap(), shown_index(&h, &b).unwrap());
+    assert_eq!(rb, ra + 1, "the hidden mask row between them is not shown");
+    let layout = json!({"surface": "layers", "zoomLevel": 6, "firstFrame": 1, "scrollTop": 0, "platform": "windows"});
+    let press = json!({"x": 40.0, "y": rb as f64 * 22.0 + 11.0, "modifiers": []});
+    let drop = json!({"x": 40.0, "y": ra as f64 * 22.0 + 2.0, "modifiers": []});
+    let out = h.timing_replay(Origin::User, layout, json!([press, drop]), true).unwrap();
+    assert_eq!(
+        out["plan"]["commands"][0],
+        json!(["element.order.set", {"order": "timeline", "elementIds": [b, mask, a], "parentId": clip}]),
+        "{out}"
+    );
+    // Committed: the level's order, the mask where it was.
+    assert_eq!(ok(&h, "element.get", json!({"elementId": clip}))["childIds"], json!([b, mask, a]));
+}
