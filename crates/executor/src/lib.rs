@@ -1372,6 +1372,78 @@ pub mod hooks {
         })?
     }
 
+    /// Pause points (ruling E-74's forced interleavings): a point armed by [`arm`] stops the next thread that reaches
+    /// it until [`release`]; [`wait_reached`] waits (bounded) until a thread has reached a point. A point never armed
+    /// passes at once.
+    #[derive(Default)]
+    struct Points {
+        armed: std::collections::BTreeSet<String>,
+        reached: std::collections::BTreeSet<String>,
+    }
+
+    static POINTS: std::sync::Mutex<Option<Points>> = std::sync::Mutex::new(None);
+    static POINTS_CHANGED: std::sync::Condvar = std::sync::Condvar::new();
+
+    fn points() -> std::sync::MutexGuard<'static, Option<Points>> {
+        POINTS.lock().unwrap_or_else(std::sync::PoisonError::into_inner)
+    }
+
+    /// Arms a pause point: the next thread reaching it waits until [`release`].
+    pub fn arm(point: &str) {
+        points().get_or_insert_with(Points::default).armed.insert(point.to_owned());
+    }
+
+    /// Releases a pause point (and forgets that it was reached).
+    pub fn release(point: &str) {
+        let mut g = points();
+        let p = g.get_or_insert_with(Points::default);
+        p.armed.remove(point);
+        p.reached.remove(point);
+        POINTS_CHANGED.notify_all();
+    }
+
+    /// Waits, at most `bound`, until a thread has reached `point`; whether it has.
+    pub fn wait_reached(point: &str, bound: std::time::Duration) -> bool {
+        let start = std::time::Instant::now();
+        let mut g = points();
+        loop {
+            if g.as_ref().is_some_and(|p| p.reached.contains(point)) {
+                return true;
+            }
+            let left = bound.saturating_sub(start.elapsed());
+            if left.is_zero() {
+                return false;
+            }
+            g = POINTS_CHANGED.wait_timeout(g, left).unwrap_or_else(std::sync::PoisonError::into_inner).0;
+        }
+    }
+
+    /// Marks `point` reached without stopping (an observation point).
+    pub(crate) fn reached(point: &str) {
+        points().get_or_insert_with(Points::default).reached.insert(point.to_owned());
+        POINTS_CHANGED.notify_all();
+    }
+
+    /// A pause point in product code: stops while armed (bounded at 30 s, so a test that forgets to release does not
+    /// hang the engine).
+    pub(crate) fn pause(point: &str) {
+        let start = std::time::Instant::now();
+        let mut g = points();
+        if !g.as_ref().is_some_and(|p| p.armed.contains(point)) {
+            return;
+        }
+        g.get_or_insert_with(Points::default).reached.insert(point.to_owned());
+        POINTS_CHANGED.notify_all();
+        while g.as_ref().is_some_and(|p| p.armed.contains(point))
+            && start.elapsed() < std::time::Duration::from_secs(30)
+        {
+            g = POINTS_CHANGED
+                .wait_timeout(g, std::time::Duration::from_millis(50))
+                .unwrap_or_else(std::sync::PoisonError::into_inner)
+                .0;
+        }
+    }
+
     pub(crate) fn thumbnail_delay() {
         let ms = THUMBNAIL_DELAY_MS.load(Ordering::Acquire);
         if ms > 0 {

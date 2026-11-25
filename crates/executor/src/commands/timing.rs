@@ -215,6 +215,8 @@ impl Column {
             budget.spend(stop - start + 1)?;
             check_length(stop, id)?;
             if frames.len() < stop {
+                // The blank gap before the sequence is charged as the cells it pads (E-74).
+                budget.spend(stop.saturating_sub(frames.len()).saturating_sub(stop - start + 1))?;
                 frames.resize(stop, None);
             }
             for f in start..=stop {
@@ -348,23 +350,37 @@ pub(crate) fn write_cells(
         runs.push((asset.clone(), f, f, *src));
     }
     let field = |v: &Value, k: &str| v.get(k).and_then(Value::as_u64);
-    let asset_of = |v: &Value| v.get("assetId").and_then(Value::as_str).map(str::to_owned);
+    let asset_of = |v: &Value| v.get("assetId").and_then(Value::as_str).map(str::to_owned).unwrap_or_default();
+    // The stored sequences by (asset, start, source frame) and by (asset, source frame), each a list in stored order:
+    // matching is linear in the runs and the stored sequences (E-74: no scan of every pair).
+    let mut exact: BTreeMap<(String, u64, u64), Vec<usize>> = BTreeMap::new();
+    let mut loose: BTreeMap<(String, u64), Vec<usize>> = BTreeMap::new();
+    for (k, v) in media.old.iter().enumerate().rev() {
+        let (a, start, link) = (asset_of(v), field(v, "startFrame").unwrap_or(0), field(v, "linkOffset").unwrap_or(0));
+        exact.entry((a.clone(), start, link)).or_default().push(k);
+        loose.entry((a, link)).or_default().push(k);
+    }
     let mut used = vec![false; media.old.len()];
     let mut chosen: Vec<Option<usize>> = vec![None; runs.len()];
-    for exact in [true, false] {
-        for (r, (asset, start, _, src)) in runs.iter().enumerate() {
-            if chosen[r].is_some() {
-                continue;
-            }
-            let hit = media.old.iter().enumerate().position(|(k, v)| {
-                !used[k]
-                    && asset_of(v).as_deref() == Some(asset.as_str())
-                    && (!exact || field(v, "startFrame") == Some(*start as u64))
-                    && field(v, "linkOffset") == Some(u64::from(*src))
-            });
-            if let Some(k) = hit {
-                used[k] = true;
-                chosen[r] = Some(k);
+    for (r, (asset, start, _, src)) in runs.iter().enumerate() {
+        let key = (asset.as_str().to_owned(), *start as u64, u64::from(*src));
+        if let Some(k) = exact.get_mut(&key).and_then(Vec::pop) {
+            used[k] = true;
+            chosen[r] = Some(k);
+        }
+    }
+    for (r, (asset, _, _, src)) in runs.iter().enumerate() {
+        if chosen[r].is_some() {
+            continue;
+        }
+        // Each stored index leaves its list once: linear in all.
+        if let Some(list) = loose.get_mut(&(asset.as_str().to_owned(), u64::from(*src))) {
+            while let Some(k) = list.pop() {
+                if !used[k] {
+                    used[k] = true;
+                    chosen[r] = Some(k);
+                    break;
+                }
             }
         }
     }

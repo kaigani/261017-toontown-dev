@@ -248,11 +248,8 @@ pub(crate) fn drawing_thumbnail(
     };
     let thumbs = cx.session().thumbs.clone();
     let project = cx.project()?;
-    // The cache is the open project's generation's (E-70): follow it before reading or keeping.
-    if let Some(t) = &thumbs {
-        t.follow(project.generation);
-    }
-    if let Some(png) = thumbs.as_ref().and_then(|t| t.cached(&key)) {
+    // The cache is the installed generation's (E-70, E-74): read and kept only for it, never moved from here.
+    if let Some(png) = thumbs.as_ref().and_then(|t| t.cached(&key, project.generation)) {
         return Ok((key, png));
     }
     let cache = cx.planar_cache();
@@ -261,7 +258,7 @@ pub(crate) fn drawing_thumbnail(
         super::draw_render::Sources { cache: &cache, blobs: Some(&project.store.blobs), selection: None, stop: &never };
     let png = Arc::new(super::draw_render::thumbnail_png(&src, &project.doc, d, key.size)?);
     if let Some(t) = thumbs {
-        t.keep(key.clone(), Arc::clone(&png));
+        t.keep(key.clone(), Arc::clone(&png), project.generation);
     }
     Ok((key, png))
 }

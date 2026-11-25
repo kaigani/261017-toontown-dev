@@ -872,6 +872,17 @@ impl ExecutorHandle {
         &self,
         items: Vec<crate::thumbnails::ThumbnailRequest>,
     ) -> Result<crate::thumbnails::ThumbnailRead, CommandError> {
+        if items.len() > crate::thumbnails::MAX_READ_ITEMS {
+            return Err(CommandError::with_details(
+                tt_registry::codes::ARG_INVALID,
+                format!(
+                    "a thumbnail read asks for at most {} drawings (a screenful with margin); it asked for {}",
+                    crate::thumbnails::MAX_READ_ITEMS,
+                    items.len()
+                ),
+                json!({ "pointer": "/items", "allowed": { "maximum": crate::thumbnails::MAX_READ_ITEMS } }),
+            ));
+        }
         let snapshot = crate::Poster(self.tx.clone()).run(self.config.budget, move |core| {
             let s = core.session().ok_or_else(|| CommandError::internal("the session is unavailable"))?;
             let p = s.project.as_ref().ok_or_else(|| {
@@ -888,6 +899,8 @@ impl ExecutorHandle {
                 generation: p.generation,
             })
         })??;
+        #[cfg(feature = "test-hooks")]
+        crate::hooks::pause("thumbnails.afterSnapshot");
         Ok(self.thumbs.read(&items, &snapshot))
     }
 

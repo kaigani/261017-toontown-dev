@@ -271,3 +271,81 @@ fn a_render_in_flight_across_a_replacement_is_dropped() {
     assert!(announced.iter().any(|k| k["drawingId"] == c.as_str()));
     assert_eq!(h.thumbnails_usage().1, 1, "only the new project's thumbnail is kept");
 }
+
+/// Ruling E-74 (C52A-R2S-01), forced with a pause point: a read of project A paused after its snapshot, while A is
+/// replaced by B, is answered as stale: nothing queued, cached or announced, and the generation stays B's.
+#[test]
+fn a_read_paused_after_its_snapshot_across_a_replacement_is_stale() {
+    let _guard = SERIAL.lock().unwrap();
+    let h = handle();
+    let a = drawing_with(&h, "paused", 100.0);
+    tt_executor::hooks::arm("thumbnails.afterSnapshot");
+    let reader = {
+        let (h, a) = (h.clone(), a.clone());
+        std::thread::spawn(move || h.thumbnails_read(ask(&[a], 64)).unwrap())
+    };
+    assert!(tt_executor::hooks::wait_reached("thumbnails.afterSnapshot", Duration::from_secs(30)));
+    let rx = h.subscribe();
+    fork(&h);
+    tt_executor::hooks::release("thumbnails.afterSnapshot");
+    let read = reader.join().unwrap();
+    assert!(read.stale, "{read:?}");
+    assert!(read.ready.is_empty() && read.pending.is_empty(), "{read:?}");
+    // B's own thumbnail renders and is announced; nothing of A ever is (one worker, in order).
+    ok(&h, "element.create", json!({ "type": "drawing", "name": "Shift" }));
+    let c = drawing_with(&h, "fresh", 250.0);
+    assert_eq!(h.thumbnails_read(ask(std::slice::from_ref(&c), 64)).unwrap().pending.len(), 1);
+    let announced = until_done(&rx, Duration::from_secs(30));
+    assert!(announced.iter().all(|k| k["drawingId"] != a.as_str()), "{announced:?}");
+    assert_eq!(h.thumbnails_usage().1, 1, "only B's thumbnail is kept");
+}
+
+/// Ruling E-74 (C52A-R2S-02), forced with pause points: the worker, holding A's finished render between the cache's
+/// update and the notice, keeps the replacement by B waiting (the replacement takes the same lock), so A's notice is on
+/// the bus before the replacement's events and none after them; the replacement then empties the cache.
+#[test]
+fn a_notice_cannot_follow_the_replacement() {
+    let _guard = SERIAL.lock().unwrap();
+    let h = handle();
+    let a = drawing_with(&h, "sending", 100.0);
+    tt_executor::hooks::arm("thumbnails.beforeSend");
+    assert_eq!(h.thumbnails_read(ask(std::slice::from_ref(&a), 64)).unwrap().pending.len(), 1);
+    assert!(tt_executor::hooks::wait_reached("thumbnails.beforeSend", Duration::from_secs(30)));
+    let rx = h.subscribe();
+    let replacer = {
+        let h = h.clone();
+        std::thread::spawn(move || fork(&h))
+    };
+    // The replacement is waiting for the worker's lock: the interleaving the finding describes, now impossible.
+    assert!(tt_executor::hooks::wait_reached("thumbnails.followWaits", Duration::from_secs(30)));
+    tt_executor::hooks::release("thumbnails.beforeSend");
+    replacer.join().unwrap();
+    tt_executor::hooks::release("thumbnails.followWaits");
+    let events: Vec<tt_executor::Event> = rx.try_iter().collect();
+    let replaced = events
+        .iter()
+        .position(|e| e.name == "project.opened" || e.name == "project.closed")
+        .unwrap_or_else(|| panic!("no replacement event: {:?}", events.iter().map(|e| &e.name).collect::<Vec<_>>()));
+    let notices: Vec<usize> = events
+        .iter()
+        .enumerate()
+        .filter(|(_, e)| e.name == "shell.thumbnailsReady" && e.payload.to_string().contains(&a))
+        .map(|(i, _)| i)
+        .collect();
+    assert_eq!(notices.len(), 1, "A's notice, once");
+    assert!(notices[0] < replaced, "A's notice after the replacement's events: {notices:?} against {replaced}");
+    assert_eq!(h.thumbnails_usage().1, 0, "the replacement emptied the cache");
+}
+
+/// Ruling E-74: a read asks for at most a screenful of drawings with margin.
+#[test]
+fn a_read_of_more_than_its_cap_is_refused() {
+    let _guard = SERIAL.lock().unwrap();
+    let h = handle();
+    let many: Vec<String> = (0..=tt_executor::thumbnails::MAX_READ_ITEMS).map(|i| format!("dr_{i:026}")).collect();
+    let e = h.thumbnails_read(ask(&many, 64)).unwrap_err();
+    assert_eq!(e.code, "arg.invalid");
+    assert_eq!(e.details["pointer"], "/items");
+    let at_cap = h.thumbnails_read(ask(&many[..tt_executor::thumbnails::MAX_READ_ITEMS], 64)).unwrap();
+    assert_eq!(at_cap.missing.len(), tt_executor::thumbnails::MAX_READ_ITEMS);
+}

@@ -1942,6 +1942,8 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
         let mut base = col.frames.clone();
         if opts.auto_extend && base.len() < t.from.saturating_sub(1) {
             let fill = base.last().cloned().flatten();
+            // The padding is charged as the cells it writes (E-74; at most 100 000, the target frame's bound).
+            budget.spend(t.from.saturating_sub(1) - base.len())?;
             base.resize(t.from.saturating_sub(1), fill);
         }
         let after =

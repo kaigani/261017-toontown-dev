@@ -18,12 +18,19 @@
 //! names the package's derived-cache entry [`entry_name`] (10 line 743, `cache/...`), which `doc.blob.get {entry}`
 //! answers while the drawing is at that revision.
 //!
-//! **Project generations (M5 rulings E-70 C52A-R1S-02, E-71 C52A-R1-01).** A drawing's ID and revision do not name its
-//! content across projects (two projects forked from one save can hold the same drawing at the same revision with
-//! different content), so the cache, the queue, the job in flight and the notices belong to the open project's
-//! generation ([`crate::session::OpenProject::generation`], new for every project opened, created or reverted). The
-//! document thread tells the service after every call ([`Service::follow`]); a replacement empties the cache and the
-//! queue, and a render of an older generation that finishes afterwards is neither kept nor announced.
+//! **Project generations (M5 rulings E-70 C52A-R1S-02, E-71 C52A-R1-01, E-74).** A drawing's ID and revision do not
+//! name its content across projects (two projects forked from one save can hold the same drawing at the same revision
+//! with different content), so the cache, the queue, the job in flight and the notices belong to the installed
+//! project's generation ([`crate::session::OpenProject::generation`], new for every project opened, created or
+//! reverted). **Only project installation moves it:** the document thread tells the service after every call
+//! ([`Service::follow`]), and nothing else sets it; a replacement empties the cache and the queue. Everything else
+//! compares under the service's one lock and never moves it: a read whose snapshot is of another generation (taken on
+//! the document thread before a replacement, answered after it) is **stale** (nothing queued, cached or announced); a
+//! render of another generation is dropped; the agents' derived thumbnail neither reads nor keeps a thumbnail of another
+//! generation. **A notice is sent while the generation cannot change:** the worker checks the generation, updates the
+//! cache and broadcasts `shell.thumbnailsReady`, all under the lock that [`Service::follow`] takes, so a notice of
+//! generation A is on the bus before the replacement by B completes, and the document thread broadcasts the
+//! replacement's own events after that: no notice of A can follow them (E-74 C52A-R2S-02).
 //!
 //! **A render that panics** (ruling E-70, as E-29 for handlers) is contained: its key is recorded as failed (answered in
 //! `failed` and not queued again at that revision), the worker goes on with the queue, and should the worker thread end
@@ -45,6 +52,10 @@ pub const CACHE_BOUND: usize = 64 << 20;
 pub const MIN_SIDE: u32 = 16;
 /// The largest thumbnail side.
 pub const MAX_SIDE: u32 = 512;
+
+/// The most drawings one window read may ask for (E-74): a screenful of the Exposure Sheet with thumbnails shown (rows
+/// 52 pixels tall, columns 80 wide: about 20 by 40 cells on a large screen, each at most one drawing) with margin.
+pub const MAX_READ_ITEMS: usize = 1024;
 
 /// The side of a drawing's derived `thumbnail` (the size `xsheet.exposures.get {include: ["thumbnails"]}` renders).
 pub const DERIVED_SIDE: u32 = 64;
@@ -115,6 +126,9 @@ pub struct ThumbnailRead {
     pub missing: Vec<String>,
     /// Thumbnails whose render failed at that revision (not queued again until the drawing changes).
     pub failed: Vec<ThumbnailKey>,
+    /// The read's snapshot was of a project that has since been replaced: nothing was answered or queued (read again).
+    #[serde(skip_serializing_if = "std::ops::Not::not")]
+    pub stale: bool,
 }
 
 /// What a render needs, taken on the document thread: shared, immutable from then on.
@@ -171,14 +185,15 @@ impl Service {
         self.state.lock().unwrap_or_else(PoisonError::into_inner)
     }
 
-    /// Follows the open project's generation (`0`: none open): a new generation empties the cache, the queue and the
-    /// failed keys; a render of the older one still in flight is dropped when it finishes.
+    /// Installs the project's generation (`0`: none open), from the document thread after every call and from nowhere
+    /// else (E-74): a new generation empties the cache, the queue and the failed keys; a render of the older one still in
+    /// flight is dropped when it finishes.
     pub(crate) fn follow(&self, generation: u64) {
+        #[cfg(feature = "test-hooks")]
+        if self.state.try_lock().is_err() {
+            crate::hooks::reached("thumbnails.followWaits");
+        }
         let mut st = self.lock();
-        Self::follow_locked(&mut st, generation);
-    }
-
-    fn follow_locked(st: &mut State, generation: u64) {
         if st.generation != generation {
             st.generation = generation;
             st.cache.clear();
@@ -193,7 +208,11 @@ impl Service {
         let mut out = ThumbnailRead::default();
         let mut jobs = VecDeque::new();
         let mut st = self.lock();
-        Self::follow_locked(&mut st, snapshot.generation);
+        // A snapshot of another generation (a replacement came between it and this read): stale, nothing done (E-74).
+        if snapshot.generation != st.generation {
+            out.stale = true;
+            return out;
+        }
         for it in items {
             let drawing = Id::parse(&it.drawing_id).ok().and_then(|id| snapshot.doc.drawing(&id));
             let Some(d) = drawing else {
@@ -274,10 +293,12 @@ impl Service {
             crate::hooks::thumbnail_delay();
             // A panic in the render is contained (ruling E-70): the key is recorded as failed and the worker goes on.
             let png = std::panic::catch_unwind(std::panic::AssertUnwindSafe(|| render(&job))).unwrap_or(None);
-            let left = {
+            // Checked, kept and announced under the lock the replacement takes (E-74): the generation cannot change
+            // between the check and the send.
+            {
                 let mut st = self.lock();
                 st.rendering = None;
-                // A render of an earlier project generation is neither kept nor announced (E-71).
+                // A render of another project generation is neither kept nor announced (E-71).
                 if job.snapshot.generation != st.generation {
                     continue;
                 }
@@ -295,15 +316,17 @@ impl Service {
                         st.failed.insert(job.key.clone());
                     }
                 }
-                st.queue.len()
-            };
-            crate::broadcast_one(
-                &self.bus,
-                crate::session::Event {
-                    name: "shell.thumbnailsReady".to_owned(),
-                    payload: json!({ "items": [job.key], "pending": left }),
-                },
-            );
+                #[cfg(feature = "test-hooks")]
+                crate::hooks::pause("thumbnails.beforeSend");
+                let left = st.queue.len();
+                crate::broadcast_one(
+                    &self.bus,
+                    crate::session::Event {
+                        name: "shell.thumbnailsReady".to_owned(),
+                        payload: json!({ "items": [job.key], "pending": left }),
+                    },
+                );
+            }
         }
     }
 
@@ -323,9 +346,13 @@ impl Service {
         }
     }
 
-    /// The thumbnail the cache holds for a key, marked as used.
-    pub(crate) fn cached(&self, key: &ThumbnailKey) -> Option<Arc<Vec<u8>>> {
+    /// The thumbnail the cache holds for a key of the installed generation, marked as used (`None` for another
+    /// generation: E-74).
+    pub(crate) fn cached(&self, key: &ThumbnailKey, generation: u64) -> Option<Arc<Vec<u8>>> {
         let mut st = self.lock();
+        if st.generation != generation {
+            return None;
+        }
         st.uses += 1;
         let uses = st.uses;
         st.cache.get_mut(key).map(|(png, used)| {
@@ -334,9 +361,13 @@ impl Service {
         })
     }
 
-    /// Keeps a thumbnail rendered elsewhere (the agents' synchronous path) in the cache, within its bound.
-    pub(crate) fn keep(&self, key: ThumbnailKey, png: Arc<Vec<u8>>) {
+    /// Keeps a thumbnail rendered elsewhere (the agents' synchronous path) in the cache, within its bound, when it is of
+    /// the installed generation (E-74).
+    pub(crate) fn keep(&self, key: ThumbnailKey, png: Arc<Vec<u8>>, generation: u64) {
         let mut st = self.lock();
+        if st.generation != generation {
+            return;
+        }
         st.uses += 1;
         let uses = st.uses;
         st.bytes += png.len();
@@ -398,6 +429,8 @@ mod tests {
         let snapshot =
             Snapshot { doc: Arc::new(doc), planar: crate::planar::SharedCache::default(), blobs: None, generation: 1 };
         let ask = || [&bad, &good].map(|d| ThumbnailRequest { drawing_id: d.clone(), size: 32 }).to_vec();
+        // The project's installation (the document thread's part).
+        service.follow(1);
         *PANIC_ON.lock().unwrap_or_else(PoisonError::into_inner) = Some(bad.clone());
         assert_eq!(service.read(&ask(), &snapshot).pending.len(), 2);
         let start = Instant::now();
@@ -414,7 +447,10 @@ mod tests {
         assert_eq!(r.failed[0].drawing_id, bad);
         assert_eq!(r.ready.len(), 1, "the worker went on: {r:?}");
         assert_eq!(r.ready[0].key.drawing_id, good);
-        // A new generation (another project) forgets the failure: the drawing renders again.
+        // A new generation (another project installed) forgets the failure: the drawing renders again; a read of the
+        // replaced generation is stale (E-74).
+        service.follow(2);
+        assert!(service.read(&ask(), &snapshot).stale, "a read of the replaced generation");
         let next = Snapshot { generation: 2, ..snapshot };
         service.read(&ask(), &next);
         let start = Instant::now();

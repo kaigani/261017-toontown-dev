@@ -248,6 +248,8 @@ export interface ThumbnailRead {
   missing: string[];
   /** Renders that failed at that revision (not queued again until the drawing changes; M5 ruling E-70). */
   failed: ThumbnailKey[];
+  /** The read's snapshot was of a project since replaced: nothing answered or queued; read again (ruling E-74). */
+  stale?: boolean;
 }
 
 /** An agent's Shift+F10 routed to this window: the control its `view` named (by window id), or `null` for the focused
@@ -525,6 +527,7 @@ export function createEngineApi(transport: HostTransport): EngineApi {
         pending: list<ThumbnailKey>(o['pending']),
         missing: list<string>(o['missing']),
         failed: list<ThumbnailKey>(o['failed']),
+        ...(o['stale'] === true ? { stale: true } : {}),
       };
     },
     async contextMenuAnswer(answer) {

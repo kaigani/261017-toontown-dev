@@ -46,6 +46,18 @@ is the kernel's `xsheet.panel.set` state, persisted across sessions (12.2).
   view. A drawing edited meanwhile has a new revision: the stale image is never shown (the revision is part of the key
   and of the answer). Agents keep the declared synchronous forms (`element.drawing.list {thumbnails}`,
   `xsheet.exposures.get {include: ["thumbnails"]}`, the derived `thumbnail`), 04 §17.1 item 9.
+- **Thumbnails and the project (E-70, E-71, E-74).** The cache, the queue, the job in flight and the notices belong to
+  the installed project's generation, which only project installation moves (the document thread, after every call). A
+  read is answered at most a screenful with margin (1,024 drawings; `arg.invalid` above). A read whose snapshot is of a
+  replaced generation answers `stale: true` with nothing queued (the window reads again). **The notice is sent while the
+  generation cannot change**, not tagged and filtered: the worker checks the generation, updates the cache and
+  broadcasts under the one lock the installation takes. Why no interleaving is left: the installation of B and A's
+  publication are mutually exclusive on that lock; if A's publication holds it first, A's notice enters the bus before
+  B's installation finishes, and the document thread broadcasts B's events only after the installation, so A's notice
+  precedes them; if B's installation holds it first, A's render meets B's generation and is dropped unsent. A read
+  compares its snapshot's generation under the same lock and never sets it, so no read can bring A back. Tagging would
+  need a filter at every delivery point (the host's window channel and the bus) serialised with the installation: two
+  places to keep right instead of one.
 
 ## 3. Gestures: the window's path
 
