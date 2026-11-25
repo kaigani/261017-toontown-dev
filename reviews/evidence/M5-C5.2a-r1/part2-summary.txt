@@ -1,0 +1,10 @@
+Part 2 headless execution summary, product b6589228.
+Commands: cargo test -p tt-executor --locked [--features test-hooks] --test FILE -- --nocapture
+Each invocation wrapped with timeout 530. No simultaneous cargo invocations.
+History (test-hooks): 2 passed.
+Lighttable: 4 passed.
+Thumbnails (test-hooks): 8 passed, 1 failed: old-project ready notice after switch.
+Gestures: 11 passed, 1 failed: hidden column displaced by header reorder.
+Both failures reproduced. Existing 19 tests retained unchanged.
+P2 scene deletion coverage blocked by command.notImplemented, M9 C9.2.
+No application window launched. No product fixes.

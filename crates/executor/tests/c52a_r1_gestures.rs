@@ -391,3 +391,31 @@ fn p5_shortening_clamps_and_shifts_following_cells(){
  assert!(before.len()>1);
  assert_eq!(after[1..],before[1..].iter().map(|(d,f,t)|(d.clone(),f-2,t-2)).collect::<Vec<_>>());
 }
+#[test]
+fn p6_insertion_and_press_options_equal_direct_commands(){
+ for change in ["insert","options"] {
+ let (h,direct)=(fixture(),fixture());let cols=columns(&h);let id=cols[0].0.clone();
+ let (_,from,to)=cols[0].1[0].clone();
+ for x in [&h,&direct]{ok(x,"cell.select",json!({"elementIds":[id],"from":from,"to":to}));}
+ let options=ok(&h,"timeline.transferOptions.get",json!({"operation":"dragDrop"}))["options"].clone();
+ let (x,y)=cell(0,from);let samples=json!([s(x,y),s(x,y+ROW*2.0)]);
+ let press=h.timing_gesture(Origin::User,json!({"phase":"press","layout":layout("xsheetGrid"),"sample":samples[0]})).unwrap();
+ for target in [&h,&direct] {
+ if change=="insert" {
+ // Create after the first column, then explicitly place before the drag target.
+ let fresh=ok(target,"element.create",json!({"type":"drawing","name":"Inserted"}))["elementIds"][0].clone();
+ let mut order=ok(target,"xsheet.exposures.get",json!({}))["columns"].as_array().unwrap().iter().map(|c|c["elementId"].clone()).filter(|v|*v!=fresh).collect::<Vec<_>>();
+ order.insert(0,fresh);ok(target,"element.order.set",json!({"order":"xsheet","elementIds":order}));
+ }else{
+ ok(target,"timeline.transferOptions.set",json!({"operation":"dragDrop","options":{"overwriteDrawings":!options["overwriteDrawings"].as_bool().unwrap()}}));
+ }
+ }
+ let out=h.timing_gesture(Origin::User,json!({"phase":"release","grabId":press["grabId"],"samples":samples})).unwrap();
+ assert_ne!(out["cancelled"],true,"{change}: {out}");
+ for env in out["envelopes"].as_array().unwrap(){assert_eq!(env["status"],"ok","{out}");}
+ assert_eq!(out["plan"]["commands"][0][1]["sourceElementIds"],json!([id]));
+ assert_eq!(out["plan"]["commands"][0][1]["options"],options);
+ ok(&direct,"cell.range.move",json!({"sourceElementIds":[id],"from":from,"to":to,"targetFrame":from+2,"mode":"move","options":options}));
+ assert_eq!(state(&h),state(&direct),"{change}");
+ }
+}
