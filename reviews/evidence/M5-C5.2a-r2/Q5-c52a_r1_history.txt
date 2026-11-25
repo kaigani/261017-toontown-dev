@@ -1,0 +1,13 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m5-c52a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.47s
+     Running tests\c52a_r1_history.rs (target\debug\deps\c52a_r1_history-4d11ca34026ad295.exe)
+
+running 2 tests
+toontown: system fonts read in 6 ms (169 faces)
+toontown: the undo history holds 0 MB in its last 1 steps, over its 0 MB bound; they are kept (01 §6.1: at least 200 steps)
+toontown: the undo history holds 0 MB in its last 1 steps, over its 0 MB bound; they are kept (01 §6.1: at least 200 steps)
+test p1_mixed_history_whole_document_and_negative_floor ... ok
+test history_commands_never_reach_a_discarded_step ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 1.86s
+

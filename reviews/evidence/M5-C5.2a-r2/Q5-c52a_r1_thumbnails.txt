@@ -1,0 +1,18 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m5-c52a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.48s
+     Running tests\c52a_r1_thumbnails.rs (target\debug\deps\c52a_r1_thumbnails-de2339a69b6b7cee.exe)
+
+running 9 tests
+toontown: system fonts read in 8 ms (169 faces)
+test b1_blob_paths_are_refused_and_executor_survives ... ok
+test fields_without_the_thumbnail_render_none ... ok
+test the_windows_read_finds_the_agents_thumbnail_in_the_shared_cache ... ok
+test a_drawings_derived_thumbnail_is_a_blob_that_doc_blob_get_reads ... ok
+test a_drawing_the_call_changed_has_no_thumbnail_until_it_commits ... ok
+test the_entry_follows_the_drawings_revision ... ok
+test p4_unrelated_project_drops_old_notices_and_images ... ok
+test p4_edit_during_render_answers_new_pixels ... ok
+test b1_two_hundred_pending_fifty_commands_answer ... ok
+
+test result: ok. 9 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.88s
+

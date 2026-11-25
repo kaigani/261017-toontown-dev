@@ -1,0 +1,21 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m5-c52a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 1.55s
+     Running tests\c52a_r1_gestures.rs (target\debug\deps\c52a_r1_gestures-c2737eaa18225524.exe)
+
+running 12 tests
+toontown: system fonts read in 8 ms (169 faces)
+test p5_shortening_clamps_and_shifts_following_cells ... ok
+test p5_hidden_column_click_and_reorder ... ok
+test the_geometry_follows_the_column_widths_and_the_thumbnails_option ... ok
+test a_drag_from_an_unselected_cell_selects_the_rectangle ... ok
+test a_click_selects_the_cell_and_makes_it_current ... ok
+test dragging_the_selected_cells_onto_the_light_table_panel_sends_their_drawings ... ok
+test a_header_click_selects_the_column_and_a_header_drag_reorders ... ok
+test dragging_an_exposures_bottom_edge_lengthens_and_shortens_it ... ok
+test dragging_the_selected_cells_moves_them_down ... ok
+test p6_insertion_and_press_options_equal_direct_commands ... ok
+test b3_changed_content_rename_deletion_and_huge_coordinates ... ok
+test b2_first_and_last_pixels_with_both_scroll_axes ... ok
+
+test result: ok. 12 passed; 0 failed; 0 ignored; 0 measured; 0 filtered out; finished in 0.61s
+
