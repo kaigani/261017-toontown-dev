@@ -614,7 +614,7 @@ pub(crate) fn element_drawing_delete(cx: &mut Cx, p: DeleteParams) -> Result<Del
 // ----- clear and lock --------------------------------------------------------------------------------------------------------------
 
 /// The drawings of a `drawingIds?` parameter: given, else the drawing at the current cell.
-fn drawings_or_current(cx: &Cx, given: Option<&[String]>) -> Result<Vec<Id>, CommandError> {
+fn drawings_or_current(cx: &Cx, given: Option<&[String]>, command: &str) -> Result<Vec<Id>, CommandError> {
     match given {
         Some(list) => {
             let mut out = Vec::new();
@@ -628,6 +628,11 @@ fn drawings_or_current(cx: &Cx, given: Option<&[String]>) -> Result<Vec<Id>, Com
         }
         None => {
             let doc = cx.document()?;
+            // 04 §13.20: the current cell of an element type the command does not take reports `cell.notApplicable`
+            // (clear and lock take drawing and annotation elements; E-67 F).
+            if let Some(e) = cx.app().element.as_ref() {
+                applicable(doc, e, command, VECTOR)?;
+            }
             match cx.app().current_drawing(doc) {
                 Some(d) => Ok(vec![d]),
                 None => Err(err(
@@ -669,7 +674,7 @@ pub(crate) struct DrawingIds {
     gui = "Exposure Sheet and Timeline cell context: Clear Drawing (M5 C5.2)",
 )]
 pub(crate) fn element_drawing_content_delete(cx: &mut Cx, p: ClearParams) -> Result<DrawingIds, CommandError> {
-    let ids = drawings_or_current(cx, p.drawing_ids.as_deref())?;
+    let ids = drawings_or_current(cx, p.drawing_ids.as_deref(), "element.drawingContent.delete")?;
     let doc = cx.document()?.clone();
     let mut budget = Budget::new("clearing drawings");
     let mut changes = Changes::default();
@@ -720,7 +725,7 @@ pub(crate) struct LockParams {
     gui = "Exposure Sheet cell context: Lock / Unlock Drawing (M5 C5.2)",
 )]
 pub(crate) fn element_drawing_lock_set(cx: &mut Cx, p: LockParams) -> Result<DrawingIds, CommandError> {
-    let ids = drawings_or_current(cx, p.drawing_ids.as_deref())?;
+    let ids = drawings_or_current(cx, p.drawing_ids.as_deref(), "element.drawingLock.set")?;
     let doc = cx.document()?.clone();
     let mut changes = Changes::default();
     let mut by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
@@ -774,7 +779,7 @@ pub(crate) fn element_drawing_changed(_cx: &mut Cx, _p: NoParams) -> Result<Draw
 
 /// `element.drawingContent.delete` (ruling O-23): the drawings given, else the drawing at the current cell.
 pub(crate) fn precheck_drawing_content_delete(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref())?;
+    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref(), "element.drawingContent.delete")?;
     let doc = cx.document()?;
     for d in &ids {
         let dr = doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;
@@ -798,7 +803,7 @@ fn precheck_drawing_ids(v: &Value) -> Option<Vec<String>> {
 /// `element.drawingLock.set`: the drawings (given, else the current one) of drawing or annotation elements (the loop
 /// of the handler, without its changes).
 pub(crate) fn precheck_drawing_lock(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref())?;
+    let ids = drawings_or_current(cx, precheck_drawing_ids(v).as_deref(), "element.drawingLock.set")?;
     let doc = cx.document()?;
     for d in &ids {
         doc.drawing(d).ok_or_else(|| super::draw::not_found(d.as_str()))?;

@@ -15,6 +15,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::{Map, Value, json};
 use tt_anim::exposure::{self as x, FillError, LoopMode};
 use tt_model::Id;
+use tt_model::change::PatchOp;
 use tt_model::document::{Document, EntryKey};
 use tt_model::entities::element::ElementType;
 use tt_registry::{CommandError, codes, command};
@@ -23,8 +24,8 @@ use super::common::NoParams;
 use super::timing::{
     Budget, CellChange, CellTarget, Changes, Column, EXPOSED, LABELLED, NoteEdit, VECTOR, add_drawing, applicable,
     as_u32, bank_of_element, bank_order, cell_refs, cell_target, drawing_id, drawing_name, drawing_not_found, element,
-    element_id, emit_bank, emit_cells, err, frame, locked, no_target, notes_in, op, selected_cells, write_column,
-    write_notes,
+    element_id, emit_bank, emit_cells, err, frame, locked, no_target, notes_in, op, selected_cells, write_cells,
+    write_column, write_notes,
 };
 use crate::app::parse_cell_ref;
 use crate::cx::Cx;
@@ -44,12 +45,14 @@ pub(crate) struct ChangedResult {
 /// A per-element exposure edit: the column's new frames and how its cells (and their notes) move.
 type ColumnEdit<'a> = dyn FnMut(&Column, &mut Budget) -> Result<(Vec<Option<u32>>, NoteEdit), CommandError> + 'a;
 
-/// Runs a per-element exposure edit on every target element and stages it as one step.
+/// Runs a per-element exposure edit on every target element and stages it as one step; a sound column takes `sound`
+/// when the command moves sound cells (E-67 B), else it is refused as any other type the command does not take.
 fn per_element(
     cx: &mut Cx,
     t: &CellTarget,
     command: &str,
     allowed: &[ElementType],
+    sound: Option<SoundEdit>,
     budget: &mut Budget,
     f: &mut ColumnEdit<'_>,
 ) -> Result<Vec<CellChange>, CommandError> {
@@ -57,11 +60,18 @@ fn per_element(
     let mut changes = Changes::default();
     let mut out = Vec::new();
     for e in &t.elements {
+        if let Some(edit) = sound
+            && is_sound(&doc, e)
+        {
+            budget.spend(1)?;
+            sound_write(&doc, e, edit, command, &mut changes, &mut out)?;
+            continue;
+        }
         applicable(&doc, e, command, allowed)?;
         let col = Column::read(&doc, e, budget)?;
         let (after, notes) = f(&col, budget)?;
         budget.spend(after.len())?;
-        write_column(&col, &after, &mut changes, &mut out)?;
+        write_cells(cx, &col, &after, &mut changes, &mut out)?;
         write_notes(&doc, e, &notes, &mut changes, &mut out)?;
     }
     changes.stage(cx)?;
@@ -133,7 +143,7 @@ fn exposure_step(cx: &mut Cx, p: &ExposureStepParams, add: bool) -> Result<Chang
             (x::remove_exposure(&col.frames, t.from, t.to, n), x::remove_exposure_map(&col.frames, t.from, t.to, n))
         };
         budget.spend(after.len())?;
-        write_column(&col, &after, &mut changes, &mut out)?;
+        write_cells(cx, &col, &after, &mut changes, &mut out)?;
         write_notes(&doc, e, &NoteEdit::moved(map), &mut changes, &mut out)?;
     }
     changes.stage(cx)?;
@@ -206,7 +216,7 @@ pub(crate) fn cell_exposure_set(cx: &mut Cx, p: ExposureSetParams) -> Result<Cha
     let mut budget = Budget::new("setting exposures");
     let len = p.length as usize;
     let span = t.to - t.from + 1;
-    let changed = per_element(cx, &t, "cell.exposure.set", EXPOSED, &mut budget, &mut |c, b| {
+    let changed = per_element(cx, &t, "cell.exposure.set", EXPOSED, None, &mut budget, &mut |c, b| {
         b.spend(c.frames.len() + span.saturating_mul(len))?;
         Ok((
             x::set_exposure(&c.frames, t.from, t.to, len),
@@ -255,7 +265,7 @@ pub(crate) fn cell_fill_apply(cx: &mut Cx, p: FillParams) -> Result<ChangedResul
     }
     let to = super::timing::target_frame(p.to_frame, x::MAX_COMMAND_FRAMES as usize, "/toFrame")?;
     let mut budget = Budget::new("extending exposures");
-    let changed = per_element(cx, &t, "cell.fill.apply", EXPOSED, &mut budget, &mut |c, b| {
+    let changed = per_element(cx, &t, "cell.fill.apply", EXPOSED, None, &mut budget, &mut |c, b| {
         b.spend(c.frames.len().max(to))?;
         x::fill(&c.frames, t.from, to).map(|f| (f, NoteEdit::none())).map_err(|e| match e {
             FillError::Blank => err(
@@ -309,10 +319,18 @@ pub(crate) fn cell_blank_add(cx: &mut Cx, p: BlankParams) -> Result<ChangedResul
     let t = cell_target(cx, p.element_ids.as_deref(), p.frame, p.frame)?;
     let mut budget = Budget::new("inserting blank cells");
     let n = p.count as usize;
-    let changed = per_element(cx, &t, "cell.blank.add", BLANKS, &mut budget, &mut |c, b| {
-        b.spend(c.frames.len() + n)?;
-        Ok((x::insert_blank(&c.frames, t.from, n), NoteEdit::moved(x::insert_map(t.from, n))))
-    })?;
+    let changed = per_element(
+        cx,
+        &t,
+        "cell.blank.add",
+        BLANKS,
+        Some(SoundEdit::Insert { at: t.from, n }),
+        &mut budget,
+        &mut |c, b| {
+            b.spend(c.frames.len() + n)?;
+            Ok((x::insert_blank(&c.frames, t.from, n), NoteEdit::moved(x::insert_map(t.from, n))))
+        },
+    )?;
     Ok(ChangedResult { changed })
 }
 
@@ -331,19 +349,154 @@ pub(crate) fn cell_blank_remove(cx: &mut Cx, p: BlankParams) -> Result<ChangedRe
     let t = cell_target(cx, p.element_ids.as_deref(), p.frame, p.frame)?;
     let mut budget = Budget::new("deleting blank cells");
     let n = p.count as usize;
-    let changed = per_element(cx, &t, "cell.blank.remove", BLANKS, &mut budget, &mut |c, b| {
-        b.spend(c.frames.len() + n)?;
-        x::remove_blank(&c.frames, t.from, n)
-            .map(|f| (f, NoteEdit::moved(x::remove_map(t.from, t.from + n - 1))))
-            .ok_or_else(|| {
-                err(
-                    "cell.notBlank",
-                    format!("a cell of frames {}-{} of element `{}` is not blank", t.from, t.from + n - 1, c.id),
-                    json!({ "elementId": c.id.as_str(), "frame": t.from, "count": n }),
-                )
-            })
-    })?;
+    let changed = per_element(
+        cx,
+        &t,
+        "cell.blank.remove",
+        BLANKS,
+        Some(SoundEdit::RemoveBlank { at: t.from, n }),
+        &mut budget,
+        &mut |c, b| {
+            b.spend(c.frames.len() + n)?;
+            x::remove_blank(&c.frames, t.from, n)
+                .map(|f| (f, NoteEdit::moved(x::remove_map(t.from, t.from + n - 1))))
+                .ok_or_else(|| {
+                    err(
+                        "cell.notBlank",
+                        format!("a cell of frames {}-{} of element `{}` is not blank", t.from, t.from + n - 1, c.id),
+                        json!({ "elementId": c.id.as_str(), "frame": t.from, "count": n }),
+                    )
+                })
+        },
+    )?;
     Ok(ChangedResult { changed })
+}
+
+// ----- sound columns (M5 ruling E-67 B) ---------------------------------------------------------------------------------
+
+/// How insert cells, insert blank and delete blank move a sound column's cells.
+#[derive(Debug, Clone, Copy)]
+pub(crate) enum SoundEdit {
+    /// `n` cells inserted before frame `at`.
+    Insert { at: usize, n: usize },
+    /// The `n` blank cells from frame `at` removed.
+    RemoveBlank { at: usize, n: usize },
+}
+
+fn is_sound(doc: &Document, e: &Id) -> bool {
+    doc.element(e).is_some_and(|x| *x.element_type() == ElementType::Sound)
+}
+
+/// A sound column's cells are its placements (10 §4.14; 04 §13.20 gives insert cells, insert blank and delete blank to
+/// sound columns). An insertion moves the placements that start at or after it later; a deletion of blank cells moves
+/// the following placements earlier, a lip-sync track's `producedFor.stopFrame` with its placement. An insertion
+/// strictly inside a placement would split the sound, which needs 07's placement timing (in and out points in seconds,
+/// loops, the mouth track): refused with owner M8 C8.1 (SI-219). The patch and the changed window; the precheck and the
+/// handler both use it (prechecks = handlers).
+pub(crate) fn sound_shift(
+    doc: &Document,
+    e: &Id,
+    edit: SoundEdit,
+    command: &str,
+) -> Result<(Vec<PatchOp>, Option<(usize, usize)>), CommandError> {
+    let j = doc.entry_raw_json(&EntryKey::Element(e.clone())).map_err(super::timing::internal)?;
+    let items = j.get("placements").and_then(Value::as_array).cloned().unwrap_or_default();
+    let frame_of = |it: &Value, k: &str| it.get(k).and_then(Value::as_u64).and_then(|v| usize::try_from(v).ok());
+    let span = |it: &Value| (frame_of(it, "startFrame").unwrap_or(0), frame_of(it, "stopFrame").unwrap_or(0));
+    let (first_moved, delta): (usize, i64) = match edit {
+        SoundEdit::Insert { at, n } => {
+            if let Some((s, t)) = items.iter().map(span).find(|(s, t)| *s < at && at <= *t) {
+                return Err(err(
+                    "cell.notApplicable",
+                    format!(
+                        "inserting cells at frame {at} would split the sound at frames {s}-{t} of element `{e}`; \
+                         splitting a sound placement is M8 C8.1's (SI-219)"
+                    ),
+                    json!({ "elementId": e.as_str(), "frame": at, "commandId": command, "reason": "splitsSound",
+                            "owner": "M8 C8.1", "specIssue": "SI-219" }),
+                ));
+            }
+            (at, i64::try_from(n).unwrap_or(i64::MAX))
+        }
+        SoundEdit::RemoveBlank { at, n } => {
+            let last = at + n - 1;
+            if items.iter().map(span).any(|(s, t)| s <= last && t >= at) {
+                return Err(err(
+                    "cell.notBlank",
+                    format!("a cell of frames {at}-{last} of element `{e}` is not blank"),
+                    json!({ "elementId": e.as_str(), "frame": at, "count": n }),
+                ));
+            }
+            (last + 1, -i64::try_from(n).unwrap_or(i64::MAX))
+        }
+    };
+    let moved = |v: usize| usize::try_from(i64::try_from(v).unwrap_or(i64::MAX).saturating_add(delta)).unwrap_or(0);
+    let mut ops = Vec::new();
+    let (mut lo, mut hi) = (usize::MAX, 0usize);
+    for (i, it) in items.iter().enumerate() {
+        let (s, t) = span(it);
+        if s < first_moved {
+            continue;
+        }
+        let (ns, nt) = (moved(s), moved(t));
+        ops.push(op("replace", &format!("/placements/{i}/startFrame"), Some(json!(ns))));
+        ops.push(op("replace", &format!("/placements/{i}/stopFrame"), Some(json!(nt))));
+        if let Some(pf) = it
+            .pointer("/mouthTrack/producedFor/stopFrame")
+            .and_then(Value::as_u64)
+            .and_then(|v| usize::try_from(v).ok())
+        {
+            ops.push(op(
+                "replace",
+                &format!("/placements/{i}/mouthTrack/producedFor/stopFrame"),
+                Some(json!(moved(pf))),
+            ));
+        }
+        lo = lo.min(s.min(ns));
+        hi = hi.max(t.max(nt));
+    }
+    if ops.is_empty() {
+        return Ok((ops, None));
+    }
+    super::timing::check_length(hi, e)?;
+    Ok((ops, Some((lo.max(1), hi))))
+}
+
+/// Stages [`sound_shift`]'s patch and records the change.
+fn sound_write(
+    doc: &Document,
+    e: &Id,
+    edit: SoundEdit,
+    command: &str,
+    changes: &mut Changes,
+    out: &mut Vec<CellChange>,
+) -> Result<(), CommandError> {
+    let (ops, window) = sound_shift(doc, e, edit, command)?;
+    if let Some((lo, hi)) = window {
+        changes.push(EntryKey::Element(e.clone()), ops);
+        out.push(CellChange { element_id: e.as_str().to_owned(), from: as_u32(lo), to: as_u32(hi) });
+    }
+    Ok(())
+}
+
+/// The kinds of a target, a sound column checked as its handler moves it (`sound`), any other as `applicable`.
+fn precheck_kinds_or_sound(
+    cx: &Cx,
+    t: &CellTarget,
+    command: &str,
+    allowed: &[ElementType],
+    sound: Option<SoundEdit>,
+) -> Result<(), CommandError> {
+    let doc = cx.document()?;
+    for e in &t.elements {
+        match sound {
+            Some(edit) if is_sound(doc, e) => {
+                sound_shift(doc, e, edit, command)?;
+            }
+            _ => applicable(doc, e, command, allowed)?,
+        }
+    }
+    Ok(())
 }
 
 // ----- cell.range.add / .delete -------------------------------------------------------------------------------------------
@@ -435,12 +588,12 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
         }
         .ok_or_else(no_target)?;
         let sc = doc.scene(&scene).ok_or_else(no_target)?;
-        // Every cell-based column. Sound placements and media sequences that start at or after the insertion point
-        // move later with the columns; one spanning it is not split (SI-088).
+        // Every cell-based column (media columns through their sequences, E-67). Sound placements that start at or
+        // after the insertion point move later with the columns; one spanning it is not split (SI-088).
         let mut cols = Vec::new();
         for e in sc.column_order() {
             let Some(el) = doc.element(e) else { continue };
-            if el.element_type().has_exposure() {
+            if super::timing::has_column(*el.element_type()) {
                 cols.push(e.clone());
             } else {
                 shifted.push(e.clone());
@@ -460,6 +613,11 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
     let mut names_by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
     let mut created_by_bank: BTreeMap<Id, Vec<String>> = BTreeMap::new();
     for e in &t.elements {
+        if !p.named && !p.all_elements && is_sound(&doc, e) {
+            budget.spend(1)?;
+            sound_write(&doc, e, SoundEdit::Insert { at, n }, "cell.range.add", &mut changes, &mut out)?;
+            continue;
+        }
         applicable(&doc, e, "cell.range.add", if p.named { VECTOR } else { BLANKS })?;
         let mut col = Column::read(&doc, e, &mut budget)?;
         budget.spend(col.frames.len() + n)?;
@@ -482,14 +640,14 @@ pub(crate) fn cell_range_add(cx: &mut Cx, p: RangeAddParams) -> Result<RangeAddR
         };
         // Inserting past the last exposure pads with blanks only when drawings are inserted.
         let after = x::insert(&col.frames, at, &values);
-        write_column(&col, &after, &mut changes, &mut out)?;
+        write_cells(cx, &col, &after, &mut changes, &mut out)?;
         write_notes(&doc, e, &NoteEdit::moved(x::insert_map(at, n)), &mut changes, &mut out)?;
     }
     for e in &shifted {
         let j = doc.entry_raw_json(&EntryKey::Element(e.clone())).map_err(super::timing::internal)?;
         let mut ops = Vec::new();
         let mut last = 0u64;
-        for slot in ["placements", "sequences"] {
+        for slot in ["placements"] {
             for (i, item) in j.get(slot).and_then(Value::as_array).into_iter().flatten().enumerate() {
                 budget.spend(1)?;
                 let start = item.get("startFrame").and_then(Value::as_u64).unwrap_or(0);
@@ -563,7 +721,7 @@ pub(crate) struct RangeDeleteParams {
 pub(crate) fn cell_range_delete(cx: &mut Cx, p: RangeDeleteParams) -> Result<ChangedResult, CommandError> {
     let t = cell_target(cx, p.element_ids.as_deref(), p.from, p.to)?;
     let mut budget = Budget::new("deleting cells");
-    let changed = per_element(cx, &t, "cell.range.delete", BLANKS, &mut budget, &mut |c, b| {
+    let changed = per_element(cx, &t, "cell.range.delete", BLANKS, None, &mut budget, &mut |c, b| {
         b.spend(c.frames.len())?;
         let notes = if p.shift {
             NoteEdit::moved(x::remove_map(t.from, t.to))
@@ -1218,7 +1376,7 @@ pub(crate) fn cell_cycle_create(cx: &mut Cx, p: CycleParams) -> Result<WindowRes
         let e = t.elements.first().cloned().ok_or_else(no_target)?;
         super::timing::check_length(t.to.saturating_add(len.saturating_mul(k - 1)), &e)?;
     }
-    per_element(cx, &t, "cell.cycle.create", EXPOSED, &mut budget, &mut |c, b| {
+    per_element(cx, &t, "cell.cycle.create", EXPOSED, None, &mut budget, &mut |c, b| {
         b.spend(c.frames.len() + len * k)?;
         Ok((x::cycle(&c.frames, t.from, t.to, k), NoteEdit::moved(x::insert_map(t.to + 1, len * (k - 1)))))
     })?;
@@ -1351,11 +1509,26 @@ pub(crate) fn cell_columnate_apply(cx: &mut Cx, p: ColumnateParams) -> Result<Co
     // Every selected column independently (04 §13 general rule; C31-R1-15); the drawings are named per bank.
     for e in &t.elements {
         applicable(&doc, e, "cell.columnate.apply", EXPOSED)?;
-        let bank = bank_of_element(&doc, e)?;
-        let order = bank_order(&doc, &bank);
+        let mut col = Column::read(&doc, e, &mut budget)?;
+        // The drawings in bank order; a media column's are the frames of its linked source, named by their number
+        // (E-67: 10 §4.15 gives media sequences of a source, not a bank).
+        let source = col.media.as_ref().map(|m| m.asset_at(&col.frames, t.from));
+        let order: Vec<(Option<Id>, String)> = match &source {
+            None => {
+                let bank = bank_of_element(&doc, e)?;
+                bank_order(&doc, &bank).into_iter().map(|(d, n)| (Some(d), n)).collect()
+            }
+            Some(_) => Vec::new(),
+        };
         budget.spend(order.len())?;
-        let find = |name: &str, pointer: &str| {
-            order.iter().position(|(_, n)| n == name).ok_or_else(|| drawing_not_found(name, e, pointer))
+        let find = |name: &str, pointer: &str| -> Result<usize, CommandError> {
+            match &source {
+                None => order.iter().position(|(_, n)| n == name).ok_or_else(|| drawing_not_found(name, e, pointer)),
+                Some(asset) => match (asset, name.parse::<usize>()) {
+                    (Some(_), Ok(n)) if (1..=x::MAX_FRAMES).contains(&n) => Ok(n - 1),
+                    _ => Err(drawing_not_found(name, e, pointer)),
+                },
+            }
         };
         let a = find(&p.first_drawing, "/firstDrawing")?;
         let b = find(&p.last_drawing, "/lastDrawing")?;
@@ -1390,14 +1563,22 @@ pub(crate) fn cell_columnate_apply(cx: &mut Cx, p: ColumnateParams) -> Result<Co
         }
         budget.spend(predicted)?;
         let c = x::columnate(&drawings, mode, each, last, loops, p.total_frames.map(|v| v as usize));
-        let mut col = Column::read(&doc, e, &mut budget)?;
         let mut sequence = Vec::new();
         let mut f = t.from;
         let mut values = Vec::with_capacity(c.total_frames);
         for (i, n) in &c.sequence {
-            let (d, name) = &order[*i];
-            sequence.push(SequenceItem { drawing: name.clone(), from: as_u32(f), to: as_u32(f + n - 1) });
-            let idx = col.intern(d);
+            let (name, idx) = match (&source, &mut col.media) {
+                (Some(Some(asset)), Some(m)) => {
+                    let frame = as_u32(*i + 1);
+                    (frame.to_string(), m.intern(asset, frame))
+                }
+                _ => {
+                    let (d, name) = order.get(*i).ok_or_else(|| super::timing::internal("columnate index"))?;
+                    let d = d.clone().ok_or_else(|| super::timing::internal("columnate drawing"))?;
+                    (name.clone(), col.intern(&d))
+                }
+            };
+            sequence.push(SequenceItem { drawing: name, from: as_u32(f), to: as_u32(f + n - 1) });
             values.extend(std::iter::repeat_n(Some(idx), *n));
             f += n;
         }
@@ -1408,7 +1589,7 @@ pub(crate) fn cell_columnate_apply(cx: &mut Cx, p: ColumnateParams) -> Result<Co
             }
         };
         budget.spend(after.len())?;
-        write_column(&col, &after, &mut changes, &mut out)?;
+        write_cells(cx, &col, &after, &mut changes, &mut out)?;
         write_notes(&doc, e, &notes, &mut changes, &mut out)?;
         result.get_or_insert(ColumnateResult {
             from: as_u32(t.from),
@@ -1453,6 +1634,7 @@ pub(crate) struct NoteResult {
 
 #[command(
     id = "cell.note.set",
+    precheck = precheck_note,
     kind = action,
     label = "Set cell note",
     scopes = [edit],
@@ -1700,6 +1882,8 @@ pub(crate) fn cell_clipboard_apply(cx: &mut Cx, p: ClipboardApplyParams) -> Resu
             sources.push(e.clone());
         }
     }
+    // 04 §13.20: a target of a type the table marks "—" (a peg among them) reports `cell.notApplicable`.
+    applicable(&doc, &target, "cell.clipboard.apply", LABELLED)?;
     let scene = doc.scene_of(&target).and_then(|s| doc.scene(s)).ok_or_else(no_target)?;
     let order = scene.column_order();
     let start = order.iter().position(|c| *c == target).ok_or_else(|| {
@@ -2118,20 +2302,25 @@ fn target_and_kinds(
     })
 }
 
-/// `cell.blank.add`.
+/// `cell.blank.add` (a sound column: its placements, E-67 B).
 pub(crate) fn precheck_blank_add(cx: &Cx, v: &Value) -> Result<(), CommandError> {
-    target_and_kinds(cx, v, "cell.blank.add", (false, "frame", "frame"), BLANKS)
+    on_cells(cx, v, "cell.blank.add", || {
+        let t = precheck_target(cx, v, false, "frame", "frame")?;
+        let n = v.get("count").and_then(Value::as_u64).and_then(|c| usize::try_from(c).ok()).unwrap_or(1);
+        precheck_kinds_or_sound(cx, &t, "cell.blank.add", BLANKS, Some(SoundEdit::Insert { at: t.from, n }))
+    })
 }
 
 /// `cell.blank.remove`: also, the cells to remove are blank (one column read per target element).
 pub(crate) fn precheck_blank_remove(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     on_cells(cx, v, "cell.blank.remove", || {
         let t = precheck_target(cx, v, false, "frame", "frame")?;
-        precheck_kinds(cx, &t, "cell.blank.remove", BLANKS, false)?;
         let n = v.get("count").and_then(Value::as_u64).and_then(|c| usize::try_from(c).ok()).unwrap_or(1);
+        let edit = SoundEdit::RemoveBlank { at: t.from, n };
+        precheck_kinds_or_sound(cx, &t, "cell.blank.remove", BLANKS, Some(edit))?;
         let doc = cx.document()?;
         let mut budget = Budget::new("checking blank cells");
-        for e in &t.elements {
+        for e in t.elements.iter().filter(|e| !is_sound(doc, e)) {
             let col = Column::read(doc, e, &mut budget)?;
             if x::remove_blank(&col.frames, t.from, n).is_none() {
                 return Err(err(
@@ -2224,14 +2413,55 @@ pub(crate) fn precheck_fill(cx: &Cx, v: &Value) -> Result<(), CommandError> {
                 json!({ "pointer": "/toFrame", "toFrame": to, "minimum": t.from }),
             ));
         }
-        precheck_kinds(cx, &t, "cell.fill.apply", EXPOSED, false)
+        precheck_kinds(cx, &t, "cell.fill.apply", EXPOSED, false)?;
+        // The cell extended must expose something (the handler's `FillError::Blank`; E-67 F).
+        let doc = cx.document()?;
+        let mut budget = Budget::new("checking the cells to extend");
+        for e in &t.elements {
+            let col = Column::read(doc, e, &mut budget)?;
+            if to >= 1 && matches!(x::fill(&col.frames, t.from, to), Err(FillError::Blank)) {
+                return Err(err(
+                    "cell.notApplicable",
+                    format!("the cell at frame {} of element `{e}` is blank: there is no drawing to extend", t.from),
+                    json!({ "elementId": e.as_str(), "frame": t.from, "reason": "blank" }),
+                ));
+            }
+        }
+        Ok(())
     })
+}
+
+/// `cell.note.set`: the element is of a type that takes cell notes, as the handler checks (04 §13.20; E-67 F).
+pub(crate) fn precheck_note(cx: &Cx, v: &Value) -> Result<(), CommandError> {
+    let Some(r) = v.get("elementId").and_then(Value::as_str) else { return Ok(()) };
+    let e = element_id(cx, r, "/elementId")?;
+    applicable(cx.document()?, &e, "cell.note.set", LABELLED)
 }
 
 /// `cell.label.set`: its parameter rule, then the target and the kind of every target.
 pub(crate) fn precheck_label(cx: &Cx, v: &Value) -> Result<(), CommandError> {
     crate::prechecks::cell_label_set(cx, v)?;
-    target_and_kinds(cx, v, "cell.label.set", (false, "from", "to"), LABELLED)
+    target_and_kinds(cx, v, "cell.label.set", (false, "from", "to"), LABELLED)?;
+    // A step from the cell's drawing needs a drawing there (the handler's blank refusal; E-67 F).
+    if v.get("step").is_some_and(|s| !s.is_null()) {
+        on_cells(cx, v, "cell.label.set:step", || {
+            let t = precheck_target(cx, v, false, "from", "to")?;
+            let doc = cx.document()?;
+            let mut budget = Budget::new("checking the cells to step");
+            for e in &t.elements {
+                let col = Column::read(doc, e, &mut budget)?;
+                if x::at(&col.frames, t.from).and_then(|i| col.drawing(i)).is_none() {
+                    return Err(err(
+                        "cell.notApplicable",
+                        format!("the cell at frame {} is blank: there is no drawing to step from", t.from),
+                        json!({ "elementId": e.as_str(), "frame": t.from, "reason": "blank" }),
+                    ));
+                }
+            }
+            Ok(())
+        })?;
+    }
+    Ok(())
 }
 
 /// `cell.clipboard.apply`: the clipboard holds cells or elements, then (for cells) the target and its kind.
@@ -2250,6 +2480,7 @@ pub(crate) fn precheck_clipboard_apply(cx: &Cx, v: &Value) -> Result<(), Command
         let t = precheck_target(cx, v, true, "frame", "frame")?;
         let doc = cx.document()?;
         if let Some(target) = t.elements.first() {
+            applicable(doc, target, "cell.clipboard.apply", LABELLED)?;
             let in_columns =
                 doc.scene_of(target).and_then(|s| doc.scene(s)).is_some_and(|sc| sc.column_order().contains(target));
             if !in_columns {
@@ -2280,7 +2511,13 @@ pub(crate) fn precheck_range_add(cx: &Cx, v: &Value) -> Result<(), CommandError>
     if all {
         return Ok(());
     }
-    target_and_kinds(cx, v, "cell.range.add", (false, "frame", "frame"), if named { VECTOR } else { BLANKS })
+    on_cells(cx, v, "cell.range.add", || {
+        let t = precheck_target(cx, v, false, "frame", "frame")?;
+        let n = v.get("count").and_then(Value::as_u64).and_then(|c| usize::try_from(c).ok()).unwrap_or(1);
+        let at = if v.get("position").and_then(Value::as_str) == Some("before") { t.from } else { t.from + 1 };
+        let sound = (!named).then_some(SoundEdit::Insert { at, n });
+        precheck_kinds_or_sound(cx, &t, "cell.range.add", if named { VECTOR } else { BLANKS }, sound)
+    })
 }
 
 /// `cell.range.delete`.

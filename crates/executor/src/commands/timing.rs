@@ -124,25 +124,105 @@ pub(crate) fn scene_of<'a>(doc: &'a Document, id: &Id) -> Result<&'a Scene, Comm
 // ----- frames -------------------------------------------------------------------------------------------------------
 
 /// The exposure of a cell-based element as a frame array of indices into `table` (the drawing IDs it exposes).
+///
+/// A media column (M5 ruling E-67: 04 §13.20 gives media the exposure commands of an image column) has no exposure
+/// runs: its cells derive from its sequences (10 §4.15), each showing consecutive frames of a linked source. Its frame
+/// array indexes `media` instead, one entry per (asset, source frame) a cell shows, and it is written back as
+/// sequences, one per run of consecutive source frames of one asset ([`write_cells`]).
 #[derive(Debug, Clone)]
 pub(crate) struct Column {
     pub id: Id,
     pub table: Vec<Id>,
     index: BTreeMap<Id, u32>,
     pub frames: Vec<Option<u32>>,
+    /// A media column's cells: what each index shows, and the sequences as read.
+    pub media: Option<MediaCells>,
+}
+
+/// What a media column's cells show (E-67).
+#[derive(Debug, Clone, Default)]
+pub(crate) struct MediaCells {
+    /// The (asset, source frame) of each index.
+    pub table: Vec<(Id, u32)>,
+    index: BTreeMap<(Id, u32), u32>,
+    /// The sequences as stored (JSON), whose IDs the written runs keep where they can.
+    old: Vec<Value>,
+}
+
+impl MediaCells {
+    /// The index of a source frame of an asset, adding it to the table.
+    pub(crate) fn intern(&mut self, asset: &Id, source_frame: u32) -> u32 {
+        let key = (asset.clone(), source_frame);
+        if let Some(i) = self.index.get(&key) {
+            return *i;
+        }
+        let i = u32::try_from(self.table.len()).unwrap_or(u32::MAX);
+        self.table.push(key.clone());
+        self.index.insert(key, i);
+        i
+    }
+
+    /// The source a columnate lays out (E-67): the asset of the cell at `frame`, else of the column's first exposed
+    /// cell, else of its first stored sequence.
+    pub(crate) fn asset_at(&self, frames: &[Option<u32>], at_frame: usize) -> Option<Id> {
+        let of = |i: u32| self.table.get(i as usize).map(|(a, _)| a.clone());
+        let at = at_frame.checked_sub(1).and_then(|i| frames.get(i)).copied().flatten();
+        at.and_then(of).or_else(|| frames.iter().flatten().next().and_then(|i| of(*i))).or_else(|| {
+            self.old.first().and_then(|v| v.get("assetId")).and_then(Value::as_str).and_then(|a| Id::parse(a).ok())
+        })
+    }
+}
+
+/// Whether an element type's cells are edited as a column of frames (exposure runs, or a media element's sequences).
+pub(crate) fn has_column(t: ElementType) -> bool {
+    t.has_exposure() || t == ElementType::Media
 }
 
 impl Column {
     /// Reads an element's exposure, charging its frame count.
     pub(crate) fn read(doc: &Document, id: &Id, budget: &mut Budget) -> Result<Column, CommandError> {
         let e = element(doc, id)?;
+        if *e.element_type() == ElementType::Media {
+            return Self::read_media(doc, id, budget);
+        }
         let runs = e.exposure().clone().unwrap_or_default();
         budget.spend(x::runs_len(&runs))?;
-        let mut c = Column { id: id.clone(), table: Vec::new(), index: BTreeMap::new(), frames: Vec::new() };
+        let mut c =
+            Column { id: id.clone(), table: Vec::new(), index: BTreeMap::new(), frames: Vec::new(), media: None };
         let interned: Vec<(Option<u32>, u32)> =
             runs.iter().map(|(d, n)| (d.as_ref().map(|d| c.intern(d)), *n)).collect();
         c.frames = x::expand(&interned);
         Ok(c)
+    }
+
+    /// A media column's cells from its sequences (each frame of a sequence shows the next frame of its source).
+    fn read_media(doc: &Document, id: &Id, budget: &mut Budget) -> Result<Column, CommandError> {
+        let j = doc.entry_raw_json(&EntryKey::Element(id.clone())).map_err(internal)?;
+        let old: Vec<Value> = j.get("sequences").and_then(Value::as_array).cloned().unwrap_or_default();
+        let mut media = MediaCells { old: old.clone(), ..MediaCells::default() };
+        let mut frames: Vec<Option<u32>> = Vec::new();
+        for s in &old {
+            let num = |k: &str| s.get(k).and_then(Value::as_u64).and_then(|v| usize::try_from(v).ok());
+            let (Some(start), Some(stop), Some(link)) = (num("startFrame"), num("stopFrame"), num("linkOffset")) else {
+                continue;
+            };
+            let Some(asset) = s.get("assetId").and_then(Value::as_str).and_then(|a| Id::parse(a).ok()) else {
+                continue;
+            };
+            if start == 0 || stop < start {
+                continue;
+            }
+            budget.spend(stop - start + 1)?;
+            check_length(stop, id)?;
+            if frames.len() < stop {
+                frames.resize(stop, None);
+            }
+            for f in start..=stop {
+                let src = u32::try_from(link + (f - start)).unwrap_or(u32::MAX);
+                frames[f - 1] = Some(media.intern(&asset, src));
+            }
+        }
+        Ok(Column { id: id.clone(), table: Vec::new(), index: BTreeMap::new(), frames, media: Some(media) })
     }
 
     /// The index of a drawing, adding it to the table.
@@ -234,6 +314,75 @@ pub(crate) fn write_column(
     check_length(after.len(), &col.id)?;
     let Some((from, to)) = x::diff(&col.frames, after) else { return Ok(None) };
     changes.push(EntryKey::Element(col.id.clone()), vec![op("replace", "/exposure", Some(col.runs_json(after)))]);
+    out.push(CellChange { element_id: col.id.as_str().to_owned(), from: as_u32(from), to: as_u32(to) });
+    Ok(Some((from, to)))
+}
+
+/// [`write_column`] for every column form: a media column's frames are written back as its sequences (E-67), one
+/// per run of consecutive source frames of one asset. A run keeps the ID (and metadata) of the stored sequence that
+/// started at the same frame with the same source frame, else of one showing the same first source frame (a shifted
+/// sequence), else it is a new sequence.
+pub(crate) fn write_cells(
+    cx: &mut Cx,
+    col: &Column,
+    after: &[Option<u32>],
+    changes: &mut Changes,
+    out: &mut Vec<CellChange>,
+) -> Result<Option<x::Window>, CommandError> {
+    let Some(media) = &col.media else { return write_column(col, after, changes, out) };
+    check_length(after.len(), &col.id)?;
+    let Some((from, to)) = x::diff(&col.frames, after) else { return Ok(None) };
+    // The runs: (asset, first frame, last frame, first source frame).
+    let mut runs: Vec<(Id, usize, usize, u32)> = Vec::new();
+    for (i, cell) in after.iter().enumerate() {
+        let f = i + 1;
+        let Some((asset, src)) = cell.and_then(|k| media.table.get(k as usize)) else { continue };
+        if let Some(last) = runs.last_mut()
+            && last.0 == *asset
+            && last.2 + 1 == f
+            && u64::from(last.3) + (last.2 - last.1) as u64 + 1 == u64::from(*src)
+        {
+            last.2 = f;
+            continue;
+        }
+        runs.push((asset.clone(), f, f, *src));
+    }
+    let field = |v: &Value, k: &str| v.get(k).and_then(Value::as_u64);
+    let asset_of = |v: &Value| v.get("assetId").and_then(Value::as_str).map(str::to_owned);
+    let mut used = vec![false; media.old.len()];
+    let mut chosen: Vec<Option<usize>> = vec![None; runs.len()];
+    for exact in [true, false] {
+        for (r, (asset, start, _, src)) in runs.iter().enumerate() {
+            if chosen[r].is_some() {
+                continue;
+            }
+            let hit = media.old.iter().enumerate().position(|(k, v)| {
+                !used[k]
+                    && asset_of(v).as_deref() == Some(asset.as_str())
+                    && (!exact || field(v, "startFrame") == Some(*start as u64))
+                    && field(v, "linkOffset") == Some(u64::from(*src))
+            });
+            if let Some(k) = hit {
+                used[k] = true;
+                chosen[r] = Some(k);
+            }
+        }
+    }
+    let mut seqs = Vec::with_capacity(runs.len());
+    for (r, (asset, start, stop, src)) in runs.iter().enumerate() {
+        let mut v = match chosen[r].and_then(|k| media.old.get(k)) {
+            Some(old) => old.clone(),
+            None => json!({ "id": cx.new_id(ObjectType::MediaSequence)?.as_str(), "type": "mediaSequence", "rev": 0 }),
+        };
+        if let Value::Object(m) = &mut v {
+            m.insert("assetId".into(), json!(asset.as_str()));
+            m.insert("startFrame".into(), json!(start));
+            m.insert("stopFrame".into(), json!(stop));
+            m.insert("linkOffset".into(), json!(src));
+        }
+        seqs.push(v);
+    }
+    changes.push(EntryKey::Element(col.id.clone()), vec![op("replace", "/sequences", Some(Value::Array(seqs)))]);
     out.push(CellChange { element_id: col.id.as_str().to_owned(), from: as_u32(from), to: as_u32(to) });
     Ok(Some((from, to)))
 }
@@ -381,16 +530,15 @@ pub(crate) fn no_target() -> CommandError {
 }
 
 /// The availability rule of 04 §13.20: the element must be one of the listed types, else `cell.notApplicable`.
-/// Media and sound columns (whose cells are sequences and placements, 10 §4.14–§4.15) are refused with their owner
-/// (SI-088).
+/// Media columns are edited through their sequences (E-67, [`Column`]); a sound column's placements are shifted only
+/// by the commands that take sound, and any other path refuses them with their owner (SI-088).
 pub(crate) fn applicable(doc: &Document, id: &Id, command: &str, allowed: &[ElementType]) -> Result<(), CommandError> {
     let e = element(doc, id)?;
     let t = *e.element_type();
-    if allowed.contains(&t) && t.has_exposure() {
+    if allowed.contains(&t) && has_column(t) {
         return Ok(());
     }
     let owner = match t {
-        ElementType::Media if allowed.contains(&t) => Some("M8 C8.3"),
         ElementType::Sound if allowed.contains(&t) => Some("M8 C8.1"),
         _ => None,
     };
@@ -404,7 +552,7 @@ pub(crate) fn applicable(doc: &Document, id: &Id, command: &str, allowed: &[Elem
     Err(err("cell.notApplicable", message, details))
 }
 
-/// Drawing, image and annotation elements (and media/sound, refused with their owner).
+/// Drawing, image, annotation and media elements (the exposure commands of 04 §13.20).
 pub(crate) const EXPOSED: &[ElementType] =
     &[ElementType::Drawing, ElementType::Image, ElementType::Annotation, ElementType::Media];
 /// Drawing and annotation elements (vector).

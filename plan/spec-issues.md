@@ -989,6 +989,11 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 
 ## SI-088 — media and sound cells before M8 (found in M3 C3.1; interim decided, declared deferral)
 
+- **Superseded in part (M5 ruling E-67):** media columns take the exposure commands of 04 §13.20 through their sequences
+  (SI-220); sound columns take insert cells, insert blank and delete blank through their placements, an insertion inside
+  a sound staying refused with owner M8 C8.1 (SI-219). `element.mediaLength.set` without `length` still waits for the
+  natural length (M8 C8.3).
+
 - **Sections:** 04 §13.20 (media and sound columns accept several cell commands), §12.8; 10 §4.14–§4.15 (their cells
   derive from sound placements and media sequences, M8's model).
 - **Interim decision (builder, C3.1):** cell commands that 13.20 allows on media or sound columns refuse them with
@@ -2748,6 +2753,50 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
   `drawAid.staticLightTablePanel.set` stay as agent-only structured equivalents of the same state, with a one-state test
   per pair.
 - **Question:** keep both families as equivalents, or retire one of them from spec A.
+
+## SI-219 — Splitting a sound placement by inserting cells inside it (M5 C5.2a; deferred to M8 C8.1)
+
+- **Sections:** 04 §13.20 (insert cells, insert blank and delete blank are available on sound columns), 10 §4.14 (a sound
+  column's cells derive from its placements: `startFrame`, `stopFrame`, `inPoint` / `outPoint` in seconds, `loops`, the
+  mouth track), 07 §1.2.
+- **Problem:** inserting cells strictly inside a placement means splitting the sound in two: the second part needs its
+  own placement with an in point in seconds (the frame rate and the loops), and a lip-sync track split in two. 04 says
+  nothing of how; the placement model is 07's, built in M8.
+- **Interim decision (ruling E-67 B):** insert cells and insert blank move the placements that start at or after the
+  insertion later, delete blank moves the following ones earlier (the mouth track's `producedFor.stopFrame` with them);
+  an insertion strictly inside a placement is refused with `cell.notApplicable` (`reason: splitsSound`, `owner: M8
+  C8.1`), and its precheck agrees (it is not offered).
+- **Question:** what inserting cells inside a sound does (split it, move all of it, or refuse), for M8.
+
+## SI-220 — A media column's cells: 04's drawing bank and 10's sequences (M5 C5.2a; interim)
+
+- **Sections:** 04 §14.1 (each drawing, image, annotation and media element owns a drawing bank), 04 §2.5, §13.20 (media
+  takes the exposure commands of an image column), 04 line 43 (a cell's label references a drawing, image or media
+  item), 10 §4.15 (a media element has `sequences`, each `{assetId, startFrame, stopFrame, linkOffset}`: no bank, no
+  exposure runs, no cell notes), SI-088.
+- **Problem:** 04 describes media like image columns with a bank of items; 10 stores linked sources played over frame
+  ranges. The exposure commands need a cell identity: what a media cell "holds".
+- **Interim decision (ruling E-67 A):** a media cell holds a frame of a linked source (the asset and its source frame,
+  from the sequence covering it). The exposure commands work on those cells as on an image column's, a source frame
+  standing for a drawing, and the result is stored as sequences, one per run of consecutive source frames (a frame held
+  two frames is two one-frame sequences); a run keeps the ID of the stored sequence it continues. Columnate lays out the
+  frames of the column's source, named by their number (`firstDrawing: "5"`); its last frame is not checked against the
+  source's length, which is unknown until M10 (`sourceLength`). The commands 04 §13.20 does not give media (change label,
+  rename, duplicate, clear, lock, paste as new drawings, notes, the light table) refuse it with `cell.notApplicable`.
+- **Question:** whether a media element owns a bank (04 §14.1) or plays sources (10 §4.15), and what its cells name.
+
+## SI-221 — The dialog rule for an agent's `ui` commands (11 §6.4, lines 237 to 241)
+
+- **Sections:** 11 §6.4 lines 237-238 (while the user is mid-gesture, a text field being edited or a modal dialog open,
+  agent mutations wait then fail with `ui.busy`) and lines 240-241 (with a dialog the user opened, agent `ui`-kind
+  commands that would change focus fail with `ui.modalOpen`; document commands that do not conflict still run).
+- **Problem:** the two statements overlap for a `ui` command that changes no focus (the seven `xsheet.*` commands,
+  which set display options, panels, widths and light-table items) under a dialog: "agent mutations wait" would hold it,
+  the focus rule would let it run. The C5.2 plan said the seven follow the dialog rule; the C5.2a handoff said they run.
+- **Interim decision (ruling E-70, kept as M4 built it, ruling D-12):** under a dialog the user opened, an agent's
+  focus-changing `ui` command is refused (`ui.modalOpen`), its actions and jobs wait, and a `ui` command that changes no
+  focus runs; mid-gesture, every agent command that writes state waits then answers `ui.busy`.
+- **Question:** whether "agent mutations" in line 237 includes `ui`-kind commands that change no focus.
 
 ## Spec A additions proposed by M4, for the user
 

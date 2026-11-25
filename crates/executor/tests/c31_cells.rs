@@ -338,12 +338,13 @@ fn no_target_and_availability() {
     assert!(e.code == "cell.notApplicable" || e.code == "cell.noTarget", "{e:?}");
     let e = err(&h, "cell.exposure.set", json!({ "elementIds": [], "length": 2 }));
     assert_eq!(e.code, "cell.noTarget");
-    // 13.20: set exposure is not available on sound columns at all; blank cells are, from M8 (SI-088).
+    // 13.20: set exposure is not available on sound columns at all; blank cells are (M5 ruling E-67: the placements
+    // move), except inside a sound, whose split is M8's (SI-219).
     let e =
         err(&h, "cell.exposure.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Dialogue\""], "length": 2 }));
     assert_eq!(e.code, "cell.notApplicable");
     assert!(e.details.get("owner").is_none());
-    let e = err(&h, "cell.blank.add", json!({ "elementIds": ["scene:\"Intro\"/element:\"Dialogue\""], "frame": 1 }));
+    let e = err(&h, "cell.blank.add", json!({ "elementIds": ["scene:\"Intro\"/element:\"Dialogue\""], "frame": 4 }));
     assert_eq!(e.code, "cell.notApplicable");
     assert_eq!(e.details["owner"], "M8 C8.1");
     let e = err(&h, "cell.exposure.set", json!({ "elementIds": ["scene:\"Intro\"/element:\"Nobody\""], "length": 2 }));

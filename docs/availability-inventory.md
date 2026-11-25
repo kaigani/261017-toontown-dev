@@ -229,7 +229,7 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `cell.clipboard.apply` | `edit.clipboardEmpty` | unreachable | `paste_elements` runs only when the clipboard holds elements |  |
 | `cell.clipboard.apply` | `edit.pasteNotAllowed` | parameter | clipboard content an agent set (`edit.clipboard.set`) naming an element that is not in the project; a copy carries the elements themselves |  |
 | `cell.clipboard.apply` | `edit.wrongElementType` | unreachable | `paste_elements` pastes an elements clipboard: this is a refusal of another kind's branch of `paste` |  |
-| `cell.clipboard.apply` | `element.notCellBased` | precheck | the target element has no cells | refuse: clipboard-cells+peg-current · pass: clipboard-cells |
+| `cell.clipboard.apply` | `element.notCellBased` | unreachable | `applicable` admits only cell-based kinds before the column lookup, and every cell-based element is a column of its scene (04 §13.20: a peg reports `cell.notApplicable`, E-67) |  |
 | `cell.clipboard.apply` | `element.notFound` | parameter | an element the caller names does not exist (selected and current elements always exist: the context is repaired) |  |
 | `cell.clipboard.set` | `anim.lastCamera` | precheck | the scene's only camera would go | refuse: camera-current {"wholeElements": true, "cut": true} · pass: element {"wholeElements": true, "cut": true} |
 | `cell.clipboard.set` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
@@ -294,6 +294,7 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `cell.range.add` | `cell.frameOutOfRange` | parameter | a frame value is outside 1-100000 |  |
 | `cell.range.add` | `cell.noTarget` | precheck | no cell selection and no current element (or a blank current cell) | untestable: a project always has a current element: a new project makes its first element current, another becomes current when it goes, and a scene's last camera cannot be deleted |
 | `cell.range.add` | `cell.notApplicable` | precheck | the target element is not of a kind the command edits | refuse: peg-current · pass: element |
+| `cell.range.add` | `cell.notBlank` | unreachable | `sound_shift` reports it only for deleting blank cells (`SoundEdit::RemoveBlank`); insert cells moves a sound column with `SoundEdit::Insert` (E-67) |  |
 | `cell.range.add` | `element.notCellBased` | unreachable | `applicable` admits only element kinds with a drawing bank, before `bank_of_element` |  |
 | `cell.range.add` | `element.notFound` | parameter | an element the caller names does not exist (selected and current elements always exist: the context is repaired) |  |
 | `cell.range.delete` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
@@ -826,12 +827,12 @@ Drawing view window switched to the Top view type; M4 C4.3a). A JSON object afte
 | `element.drawing.rename` | `drawing.nameDuplicate` | parameter | the name the caller gives is taken |  |
 | `element.drawing.rename` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `element.drawingContent.delete` | `cell.noTarget` | precheck | no cell selection and no current element (or a blank current cell) | refuse: blank-cell · pass: element |
-| `element.drawingContent.delete` | `cell.notApplicable` | precheck | the target element is not of a kind the command edits | untestable: the current drawing of an image element comes from an import the sweep's states do not make |
+| `element.drawingContent.delete` | `cell.notApplicable` | precheck | the target element is not of a kind the command edits (the current cell of a peg, image, media or sound element, E-67) | refuse: peg-current · pass: element |
 | `element.drawingContent.delete` | `drawing.locked` | precheck | the target drawing is locked | refuse: locked-drawing · pass: drawing |
 | `element.drawingContent.delete` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `element.drawingContent.delete` | `element.notFound` | unreachable | `bank_users` lists existing elements |  |
 | `element.drawingLock.set` | `cell.noTarget` | precheck | no cell selection and no current element (or a blank current cell) | refuse: blank-cell · pass: element |
-| `element.drawingLock.set` | `cell.notApplicable` | precheck | the target element is not of a kind the command edits | untestable: the current drawing of an image element comes from an import the sweep's states do not make |
+| `element.drawingLock.set` | `cell.notApplicable` | precheck | the target element is not of a kind the command edits (the current cell of a peg, image, media or sound element, E-67) | refuse: peg-current · pass: element |
 | `element.drawingLock.set` | `drawing.notFound` | parameter | a drawing the caller names does not exist (the current drawing always exists: the context is repaired) |  |
 | `element.drawingLock.set` | `element.notFound` | unreachable | `bank_users` lists existing elements |  |
 | `element.duplicate` | `arg.invalid` | parameter | a parameter value or combination is invalid |  |
