@@ -1,0 +1,11 @@
+   Compiling tt-executor v0.0.1 (C:\Users\kaiga\work\review\m5-c52a-r2\crates\executor)
+    Finished `test` profile [unoptimized + debuginfo] target(s) in 2.39s
+     Running tests\c52a_r2_cells.rs (target\debug\deps\c52a_r2_cells-e77ccabdb36ba6ef.exe)
+
+running 2 tests
+toontown: system fonts read in 6 ms (169 faces)
+test an_insertion_inside_a_sound_is_refused_with_its_owner_and_not_offered ... ok
+test insert_blank_insert_cells_and_delete_blank_move_a_sound_columns_placements ... ok
+
+test result: ok. 2 passed; 0 failed; 0 ignored; 0 measured; 2 filtered out; finished in 0.06s
+

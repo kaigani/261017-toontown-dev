@@ -141,3 +141,51 @@ fn q1_reset_natural_length() {
     ok(&h, "element.mediaLength.set", json!({"elementId":MEDIA}));
     assert_eq!(cells(&h), src(1..=24));
 }
+
+fn placement(h: &ExecutorHandle) -> (u64, u64, u64) {
+    let p = ok(h, "doc.object.get", json!({ "ref": SOUND, "depth": -1 }))["object"]["placements"][0].clone();
+    (
+        p["startFrame"].as_u64().unwrap(),
+        p["stopFrame"].as_u64().unwrap(),
+        p["mouthTrack"]["producedFor"]["stopFrame"].as_u64().unwrap(),
+    )
+}
+
+#[test]
+fn insert_blank_insert_cells_and_delete_blank_move_a_sound_columns_placements() {
+    let h = fixture();
+    assert_eq!(placement(&h), (1, 8, 8), "the sample's sound: frames 1-8");
+    ok(&h, "cell.blank.add", json!({ "elementIds": [SOUND], "frame": 1, "count": 2 }));
+    assert_eq!(placement(&h), (3, 10, 10), "moved later with its lip-sync timing");
+    ok(&h, "cell.range.add", json!({ "elementIds": [SOUND], "frame": 3, "count": 1, "position": "before" }));
+    assert_eq!(placement(&h), (4, 11, 11));
+    // Delete blank: frames 1-3 are blank now.
+    ok(&h, "cell.blank.remove", json!({ "elementIds": [SOUND], "frame": 1, "count": 3 }));
+    assert_eq!(placement(&h), (1, 8, 8));
+    assert_eq!(err(&h, "cell.blank.remove", json!({ "elementIds": [SOUND], "frame": 8 })).code, "cell.notBlank");
+    // After the sound nothing moves; the call is accepted and changes nothing.
+    let r = rev(&h);
+    ok(&h, "cell.blank.add", json!({ "elementIds": [SOUND], "frame": 20 }));
+    assert_eq!(rev(&h), r);
+    // Undo walks back through the moves.
+    ok(&h, "edit.undo", json!({ "steps": 3 }));
+    assert_eq!(placement(&h), (1, 8, 8));
+}
+
+#[test]
+fn an_insertion_inside_a_sound_is_refused_with_its_owner_and_not_offered() {
+    let h = fixture();
+    for (command, params) in [
+        ("cell.blank.add", json!({ "elementIds": [SOUND], "frame": 4 })),
+        ("cell.range.add", json!({ "elementIds": [SOUND], "frame": 3, "count": 2 })),
+    ] {
+        let e = err(&h, command, params.clone());
+        assert_eq!(e.code, "cell.notApplicable", "{command}");
+        assert_eq!((e.details["reason"].as_str(), e.details["owner"].as_str()), (Some("splitsSound"), Some("M8 C8.1")));
+        assert_eq!(e.details["specIssue"], "SI-219");
+        let m: Map<String, Value> = params.as_object().unwrap().clone();
+        let a = h.availability(vec![(command.to_owned(), m)]).unwrap().remove(0);
+        assert!(!a.enabled, "{command}: offered though refused");
+    }
+    assert_eq!(placement(&h), (1, 8, 8));
+}
