@@ -82,11 +82,37 @@ fn assert_preview_shown(h: &ExecutorHandle) {
     assert_eq!(got["values"]["drawing.inspectorPreview"], true, "{got}");
 }
 
+/// The session state a cancelled call must leave as it is, set on the 200 ms executor (ruling E-69, as E-61-a: a setup
+/// call must not be able to fail the test before its subject is exercised). A call that answers `command.timeout`
+/// changed nothing (C23-R3-01, what this file proves), so each setup call is sent again until it is accepted, bounded at
+/// 60 s; then the state they set is checked on the 200 ms executor.
 fn prepare(h: &ExecutorHandle) {
-    ok(h, "draw.selection.set", json!({ "drawingId": D, "ids": ["st_round3_7", "st_round3_8"] }));
-    ok(h, "draw.pointSelection.set", json!({ "drawingId": D, "points": [{ "strokeId": "st_round3_7", "anchor": 1 }] }));
-    ok(h, "app.frame.set", json!({ "frame": 2 }));
-    ok(h, "app.mode.set", json!({ "mode": "drawing" }));
+    let calls = [
+        ("draw.selection.set", json!({ "drawingId": D, "ids": ["st_round3_7", "st_round3_8"] })),
+        ("draw.pointSelection.set", json!({ "drawingId": D, "points": [{ "strokeId": "st_round3_7", "anchor": 1 }] })),
+        ("app.frame.set", json!({ "frame": 2 })),
+        ("app.mode.set", json!({ "mode": "drawing" })),
+    ];
+    for (command, params) in calls {
+        let started = std::time::Instant::now();
+        loop {
+            let env = run(h, command, params.clone());
+            if env.error.is_none() {
+                break;
+            }
+            let code = env.error.as_ref().map(|e| e.code.as_str());
+            assert!(
+                code == Some("command.timeout") && started.elapsed() < Duration::from_secs(60),
+                "setup {command}: {env:?}"
+            );
+        }
+    }
+    let s = session(h);
+    assert_eq!(s["ids"], json!(["st_round3_7", "st_round3_8"]), "{s}");
+    assert_eq!(s["points"].as_array().map(Vec::len), Some(1), "{s}");
+    assert_eq!(s["points"][0]["strokeId"], "st_round3_7", "{s}");
+    assert_eq!(s["app"]["frame"], 2, "{s}");
+    assert_eq!(s["app"]["mode"], "drawing", "{s}");
 }
 
 #[test]
