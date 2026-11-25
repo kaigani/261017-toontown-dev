@@ -1,0 +1,22 @@
+{
+  "foreground": true,
+  "attached": true,
+  "uiNames": [
+    "Alice",
+    "Peg-B",
+    "Peg-A",
+    "Bob",
+    "Camera Peg",
+    "Camera",
+    "Drawing"
+  ],
+  "mcpNames": [
+    "Alice",
+    "Peg-B",
+    "Peg-A",
+    "Bob",
+    "Camera Peg",
+    "Camera",
+    "Drawing"
+  ]
+}

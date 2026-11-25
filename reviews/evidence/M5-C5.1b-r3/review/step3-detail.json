@@ -1,0 +1,26 @@
+[
+  {
+    "typed": "",
+    "status": "Rename element: name must not be empty: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters",
+    "problem": "Rename element: name must not be empty: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters",
+    "historySteps": 0
+  },
+  {
+    "typed": "Bad/Name",
+    "status": "Rename element: name must not contain `/`: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters",
+    "problem": "Rename element: name must not contain `/`: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters",
+    "historySteps": 0
+  },
+  {
+    "typed": "Bob",
+    "status": "Rename element: an element of this scene is already named `Bob`",
+    "problem": "Rename element: an element of this scene is already named `Bob`",
+    "historySteps": 0
+  },
+  {
+    "typed": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+    "status": "Rename element: name is longer than 64 characters: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters",
+    "problem": "Rename element: name is longer than 64 characters: names must not be empty, contain any of \\ / : * ? < > \" | . or exceed 64 characters",
+    "historySteps": 0
+  }
+]

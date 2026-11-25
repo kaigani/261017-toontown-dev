@@ -1,0 +1,109 @@
+[
+  {
+    "status": "ok",
+    "result": {
+      "handled": true,
+      "contextMenu": "timeline.row.el_01K7JJN800JF58ZC7JQ4X33X1T.label",
+      "menuId": "timeline.rowMenu"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": null,
+    "error": {
+      "code": "ui.modalOpen",
+      "message": "a dialog the user opened has the keyboard; keys reach it, not the application",
+      "details": {
+        "keys": "Shift+F10",
+        "reason": "modal"
+      }
+    }
+  },
+  {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": null,
+    "error": {
+      "code": "ui.busy",
+      "message": "the user is editing a text field; unmodified keys belong to it",
+      "details": {
+        "keys": "Shift+F10",
+        "reason": "textField"
+      }
+    }
+  },
+  {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": null,
+    "error": {
+      "code": "view.notFound",
+      "message": "the window has no control `timeline.unknown`",
+      "details": {
+        "view": "timeline.unknown",
+        "reason": "noControl",
+        "pointer": "/view"
+      }
+    }
+  },
+  {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": null,
+    "error": {
+      "code": "view.notFound",
+      "message": "the window has no control `timeline.row.el_01K7JJN800TDEBFNV66VR2QERK`",
+      "details": {
+        "view": "timeline.row.el_01K7JJN800TDEBFNV66VR2QERK",
+        "reason": "noControl",
+        "pointer": "/view"
+      }
+    }
+  },
+  {
+    "status": "ok",
+    "result": {
+      "handled": false,
+      "reason": "noContextMenu",
+      "control": "timeline.add"
+    },
+    "changes": [],
+    "warnings": [],
+    "documentRev": null
+  },
+  {
+    "status": "error",
+    "changes": [],
+    "warnings": [],
+    "documentRev": null,
+    "error": {
+      "code": "arg.invalid",
+      "message": "`tool:key`: 42 is not of type \"string\"",
+      "details": {
+        "pointer": "/view",
+        "message": "42 is not of type \"string\"",
+        "allowed": {
+          "type": "string"
+        },
+        "violations": [
+          {
+            "pointer": "/view",
+            "message": "42 is not of type \"string\"",
+            "allowed": {
+              "type": "string"
+            },
+            "code": "arg.invalid"
+          }
+        ]
+      }
+    }
+  }
+]

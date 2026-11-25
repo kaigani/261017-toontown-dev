@@ -1,0 +1,363 @@
+[
+  {
+    "command": "project.create",
+    "params": {
+      "name": "Timeline live review",
+      "onUnsaved": "fail"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "peg",
+      "name": "Peg-A"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "peg",
+      "name": "Peg-B"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "drawing",
+      "name": "Bob"
+    }
+  },
+  {
+    "command": "element.create",
+    "params": {
+      "type": "drawing",
+      "name": "Alice"
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN80059P3M8YPJ9MBWV9F",
+      "name": "1",
+      "exposeFrom": 1,
+      "exposeTo": 4
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN80059P3M8YPJ9MBWV9F",
+      "name": "2",
+      "exposeFrom": 5,
+      "exposeTo": 8
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN80059P3M8YPJ9MBWV9F",
+      "name": "3",
+      "exposeFrom": 9,
+      "exposeTo": 12
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN800MJP0JJQCBECQ4794",
+      "name": "1",
+      "exposeFrom": 1,
+      "exposeTo": 4
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN800MJP0JJQCBECQ4794",
+      "name": "2",
+      "exposeFrom": 5,
+      "exposeTo": 8
+    }
+  },
+  {
+    "command": "element.drawing.create",
+    "params": {
+      "elementId": "el_01K7JJN800MJP0JJQCBECQ4794",
+      "name": "3",
+      "exposeFrom": 9,
+      "exposeTo": 12
+    }
+  },
+  {
+    "command": "element.parent.set",
+    "params": {
+      "elementIds": [
+        "el_01K7JJN80059P3M8YPJ9MBWV9F"
+      ],
+      "parentId": "el_01K7JJN8003C9ETTYHTHR2GKJM"
+    }
+  },
+  {
+    "command": "element.timing.set",
+    "params": {
+      "elementIds": [
+        "el_01K7JJN8003C9ETTYHTHR2GKJM"
+      ],
+      "start": 1,
+      "duration": 48
+    }
+  },
+  {
+    "command": "element.timing.set",
+    "params": {
+      "elementIds": [
+        "el_01K7JJN800JG22NS8422WHW6BA"
+      ],
+      "start": 1,
+      "duration": 48
+    }
+  },
+  {
+    "command": "anim.key.add",
+    "params": {
+      "nodeIds": [
+        "el_01K7JJN8003C9ETTYHTHR2GKJM"
+      ],
+      "frame": 1,
+      "channels": [
+        "position"
+      ]
+    }
+  },
+  {
+    "command": "anim.key.add",
+    "params": {
+      "nodeIds": [
+        "el_01K7JJN8003C9ETTYHTHR2GKJM"
+      ],
+      "frame": 8,
+      "channels": [
+        "position"
+      ]
+    }
+  },
+  {
+    "command": "workspace.select",
+    "params": {
+      "name": "Default"
+    }
+  },
+  {
+    "command": "window.panel.set",
+    "params": {
+      "panelId": "timeline",
+      "visible": true,
+      "focus": true
+    }
+  },
+  {
+    "command": "workspace.layout.set",
+    "params": {
+      "layout": {
+        "centralPanel": "cameraView",
+        "corners": "sides",
+        "docks": {
+          "left": [],
+          "right": [
+            {
+              "tabs": [
+                "colour",
+                "properties",
+                "library"
+              ],
+              "current": "colour",
+              "size": 330
+            },
+            {
+              "tabs": [
+                "pen",
+                "text",
+                "cells"
+              ],
+              "current": "pen"
+            }
+          ],
+          "top": [],
+          "bottom": [
+            {
+              "tabs": [
+                "timeline",
+                "xsheet",
+                "functionEditor",
+                "storyline"
+              ],
+              "current": "timeline",
+              "size": 350
+            }
+          ]
+        },
+        "floating": [],
+        "toolPalettes": [
+          {
+            "id": "drawingTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 120
+            }
+          },
+          {
+            "id": "animationTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 160
+            }
+          },
+          {
+            "id": "boneTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 200
+            }
+          },
+          {
+            "id": "effectTools",
+            "visible": true,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 240
+            }
+          },
+          {
+            "id": "soundTools",
+            "visible": false,
+            "floating": false,
+            "position": {
+              "x": 10,
+              "y": 280
+            }
+          }
+        ],
+        "mainToolbar": {
+          "visible": true,
+          "items": [
+            "drawAid.grid.set",
+            "gridType",
+            "gridOverlay",
+            "separator",
+            "drawAid.onionSkin.set",
+            "onionSkinPrevious",
+            "onionSkinNext",
+            "drawAid.autoLightTable.set",
+            "separator",
+            "firstFrame",
+            "playStop",
+            "lastFrame",
+            "playback.loop.set",
+            "space",
+            "lipsync.panel.open",
+            "flexibleSpace",
+            "cameraList",
+            "sceneList",
+            "workspaceList"
+          ]
+        },
+        "fullScreen": {
+          "centralPanel": "cameraView",
+          "corners": "sides",
+          "docks": {
+            "left": [],
+            "right": [],
+            "top": [],
+            "bottom": []
+          },
+          "floating": [],
+          "toolPalettes": [
+            {
+              "id": "drawingTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 120
+              }
+            },
+            {
+              "id": "animationTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 160
+              }
+            },
+            {
+              "id": "boneTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 200
+              }
+            },
+            {
+              "id": "effectTools",
+              "visible": true,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 240
+              }
+            },
+            {
+              "id": "soundTools",
+              "visible": false,
+              "floating": false,
+              "position": {
+                "x": 10,
+                "y": 280
+              }
+            }
+          ],
+          "mainToolbar": {
+            "visible": true,
+            "items": [
+              "drawAid.grid.set",
+              "gridType",
+              "gridOverlay",
+              "separator",
+              "drawAid.onionSkin.set",
+              "onionSkinPrevious",
+              "onionSkinNext",
+              "drawAid.autoLightTable.set",
+              "separator",
+              "firstFrame",
+              "playStop",
+              "lastFrame",
+              "playback.loop.set",
+              "space",
+              "lipsync.panel.open",
+              "flexibleSpace",
+              "cameraList",
+              "sceneList",
+              "workspaceList"
+            ]
+          }
+        }
+      }
+    }
+  },
+  {
+    "command": "timeline.view.set",
+    "params": {
+      "zoomLevel": 6,
+      "firstFrame": 1
+    }
+  }
+]
