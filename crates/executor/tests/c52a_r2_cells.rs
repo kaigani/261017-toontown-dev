@@ -134,11 +134,15 @@ fn the_exposure_commands_work_on_a_media_columns_cells() {
 }
 
 #[test]
-fn q1_reset_natural_length() {
+fn q1_reset_without_a_length_is_refused_until_the_source_length_is_known() {
+    // Ruling E-75: the natural length is the linked source's frame count, read from the file in M8 C8.3 (SI-088).
     let h = fixture();
     ok(&h, "element.mediaLength.set", json!({"elementId":MEDIA,"length":3}));
-    ok(&h, "element.mediaLength.set", json!({"elementId":MEDIA}));
-    assert_eq!(cells(&h), src(1..=24));
+    let e = err(&h, "element.mediaLength.set", json!({"elementId":MEDIA}));
+    assert_eq!(e.code, "command.disabled");
+    assert_eq!(e.details["reason"], "sourceLengthUnknown");
+    assert_eq!(e.details["owner"], "M8 C8.3");
+    assert_eq!(cells(&h), src(1..=3), "nothing changed");
 }
 
 fn placement(h: &ExecutorHandle) -> (u64, u64, u64) {
