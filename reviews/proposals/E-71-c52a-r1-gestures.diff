@@ -1,0 +1,23 @@
+diff --git a/crates/executor/tests/c52a_r1_gestures.rs b/crates/executor/tests/c52a_r1_gestures.rs
+index 55bf97cb..715eaa9e 100644
+--- a/crates/executor/tests/c52a_r1_gestures.rs
++++ b/crates/executor/tests/c52a_r1_gestures.rs
+@@ -259,10 +259,14 @@ fn a_header_click_selects_the_column_and_a_header_drag_reorders() {
+         .iter()
+         .map(|c| c["elementId"].as_str().unwrap().to_owned())
+         .collect();
+-    // Dropped before the shown column at the drop (the third), hidden columns kept where they are.
+-    let mut expected: Vec<String> = order.iter().filter(|e| **e != cols[0].0).cloned().collect();
+-    let before = expected.iter().position(|e| *e == cols[2].0).unwrap();
+-    expected.insert(before, cols[0].0.clone());
++    // Ruling E-71: the shown columns in their new order (the first after the second), each hidden column at the same
++    // position among all columns as before.
++    let mut shown: Vec<String> = cols.iter().map(|c| c.0.clone()).collect();
++    let first = shown.remove(0);
++    shown.insert(1, first);
++    let mut next = shown.into_iter();
++    let expected: Vec<String> =
++        order.iter().map(|e| if cols.iter().any(|c| c.0 == *e) { next.next().unwrap() } else { e.clone() }).collect();
+     three_way(
+         &none,
+         "xsheetHeaders",
