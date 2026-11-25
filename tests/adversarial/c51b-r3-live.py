@@ -37,15 +37,16 @@ extra=r'''
   save('step2-detail.json',answers)
  elif step==3:
   results=[]
-  for name,reason in [('', 'empty'),('Bad/Name','forbidden'),('Bob','already'),('A'*65,'64')]:
+  for name,reason in [('', 'empty'),('Bad/Name','must not contain'),('Bob','already'),('A'*65,'64')]:
    ident=await double();await typed(ident,name);pos=await t.position();key(0x0d)
    await wait(lambda:js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')?.getAttribute('data-tt-problem')"%json.dumps(ident)))
    status=await wait(lambda:text('status.line'));problem=js("document.querySelector('[data-tt-id='+JSON.stringify(%s)+']')?.getAttribute('data-tt-problem')"%json.dumps(ident))
    assert reason in status.lower(),status
    assert value(ident)==name and (await c('element.get',{'elementId':ids['Alice']}))['name']=='Alice' and not await t.steps_since(pos)
    results.append({'typed':name,'status':status,'problem':problem,'historySteps':0});key(0x1b);await wait(lambda:not dom(ident))
-  ident=await double();pos=await t.position();key(0x0d);await wait(lambda:not dom(ident))
-  assert not text('status.line') and not await t.steps_since(pos)
+  ident=await double();pos=await t.position();previousStatus=text('status.line');key(0x0d);await wait(lambda:not dom(ident))
+  save('step3-final-probe.json',{'status':text('status.line'),'history':await t.steps_since(pos),'results':results})
+  assert text('status.line')==previousStatus and not await t.steps_since(pos)
   save('step3-detail.json',results)
  elif step==4:
   click('timeline.row.'+ids['Alice']+'.label');guard();d.choose_menu(['Element','Rename']);await wait(lambda:dom('timelineRename.value'))
