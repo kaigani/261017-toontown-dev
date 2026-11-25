@@ -1,17 +1,16 @@
-//! M5 C5.2a response, ruling E-70 (the history, from the static report's observations): how far the undo history's
-//! counted size (what its memory bound adds up: a patch's serialised size, a snapshot step's changed entries) is from the
-//! memory a step really holds. A receipt, not a gate: it prints the numbers the response quotes and asserts only that
-//! they were measured. The counting allocator wraps the system allocator for this test binary only (`stats_alloc`, as
-//! `c21_measurements`); the counted size comes from the dev-only `hooks::history_counted`.
+//! M5 C5.2a, rulings E-70 and E-73: the undo history's count (what its memory bound adds up: since E-73 an estimate of
+//! the heap a step's values hold, `crates/executor/src/heap.rs`) against the memory the steps really hold. The counting
+//! allocator wraps the system allocator for this test binary only (`stats_alloc`, as `c21_measurements`); the count
+//! comes from the dev-only `hooks::history_counted`, and the history is taken out with `hooks::history_take` so that
+//! dropping it shows what it held.
 //!
-//! - **Patch steps.** 200 note changes of 5,000 characters, then 200 more with a bound so small that the history stays at
-//!   its 200-step floor: the second half's growth is the revision log's (each change's back patches, kept for 10,000
-//!   revisions), so the history's own memory per step is the first half's growth less the log's share.
+//! - **Patch steps** of small (5-character notes), medium (5,000-character notes) and large values (strokes of 300
+//!   points): the count is within 1.5 times of what dropping the history frees (E-73's check).
 //! - **A snapshot step** (a checkpoint restore) counts only the entries it changed; the entries it shares with the live
-//!   document are not counted. After the crowded drawing it shares is edited, and enough later changes have pushed that
-//!   drawing out of the revision log's snapshot window (256 revisions), the snapshot step alone holds it. Two runs, one
-//!   with the restore and one without, the same calls otherwise: their difference is what the snapshot step holds that
-//!   the bound never counted.
+//!   document are not counted. After the crowded drawing it shares is edited and later changes have pushed that drawing
+//!   out of the revision log's window, the snapshot step alone holds it. Two runs, one with the restore and one without,
+//!   the same calls otherwise: their difference is what the snapshot step holds uncounted (M11 C11.1's ticket, E-73
+//!   item 2; printed, not asserted).
 #![cfg(feature = "test-hooks")]
 #![allow(clippy::unwrap_used, clippy::expect_used, clippy::panic, clippy::print_stdout, missing_docs, reason = "test")]
 #![allow(clippy::cast_precision_loss, clippy::cast_possible_wrap, reason = "statistics")]
@@ -98,44 +97,66 @@ fn snapshot_run(with_restore: bool) -> (i64, usize) {
     (held, counted)
 }
 
-#[test]
-fn the_counted_size_against_the_memory_held() {
-    // Patch steps.
+/// The memory the history's steps hold against their count, for a kind of change (`change(i)` makes the i-th): after
+/// 200 changes, the history is taken out of the project (`hooks::history_take`) and the counting allocator measures
+/// what dropping it frees: the memory the steps really held, capacities included. Returns the ratio of the freed bytes
+/// to the count.
+fn ratio(label: &str, h: &ExecutorHandle, change: &dyn Fn(usize)) -> f64 {
+    for i in 0..200 {
+        change(i);
+    }
+    let (steps, counted) = tt_executor::hooks::history_counted(h).unwrap();
+    let taken = tt_executor::hooks::history_take(h).unwrap();
+    let r = Region::new(GLOBAL);
+    drop(taken);
+    let held = -net(&r);
+    let ratio = held as f64 / counted as f64;
+    println!(
+        "{label}: {steps} steps counted {counted} B ({:.0} B per step), held {held} B ({ratio:.2} x counted)",
+        counted as f64 / steps as f64
+    );
+    ratio
+}
+
+fn opened() -> ExecutorHandle {
     let h = ExecutorHandle::spawn(ExecutorConfig { budget: Duration::from_secs(120) }).unwrap();
     assert!(h.open_document(tt_model::fixture::sample_document(1).unwrap(), None, false).is_ok());
+    h
+}
+
+#[test]
+fn the_counted_size_against_the_memory_held() {
+    // Ruling E-73: the count is within 1.5 times of what the allocator measures, for small, medium and large values.
+    let h = opened();
     let element = ok(&h, "element.create", json!({ "type": "drawing", "name": "Noted" }))["elementIds"][0]
         .as_str()
         .unwrap()
         .to_owned();
-    for i in 0..5 {
+    let small = ratio("small values (5-character notes)", &h, &|i| {
+        ok(&h, "element.note.set", json!({ "elementId": element, "text": format!("n{i:04}") }));
+    });
+    let medium = ratio("medium values (5,000-character notes)", &h, &|i| {
         ok(&h, "element.note.set", json!({ "elementId": element, "text": note(i) }));
-    }
-    let (n0, c0) = tt_executor::hooks::history_counted(&h).unwrap();
-    let r = Region::new(GLOBAL);
-    for i in 5..205 {
-        ok(&h, "element.note.set", json!({ "elementId": element, "text": note(i) }));
-    }
-    let held1 = net(&r);
-    let (n1, c1) = tt_executor::hooks::history_counted(&h).unwrap();
-    tt_executor::hooks::set_history_bound(1);
-    for i in 205..405 {
-        ok(&h, "element.note.set", json!({ "elementId": element, "text": note(i) }));
-    }
-    tt_executor::hooks::set_history_bound(0);
-    let held2 = net(&r);
-    let (n2, _) = tt_executor::hooks::history_counted(&h).unwrap();
-    assert_eq!(n2, 200, "the history stayed at its 200-step floor in the second half");
-    let counted_per_step = (c1 - c0) as f64 / (n1 - n0) as f64;
-    let log_per_change = (held2 - held1) as f64 / 200.0;
-    let history_per_step = held1 as f64 / 200.0 - log_per_change;
-    println!(
-        "patch steps: counted {counted_per_step:.0} B per step; held per change {:.0} B, of which the revision log \
-         {log_per_change:.0} B and the history {history_per_step:.0} B ({:.2} x counted)",
-        held1 as f64 / 200.0,
-        history_per_step / counted_per_step
-    );
-    assert!(counted_per_step > 10_000.0 && held1 > 0);
+    });
     drop(h);
+    let h = opened();
+    let drawing = ok(
+        &h,
+        "element.drawing.create",
+        json!({ "elementId": "scene:\"Intro\"/element:\"Bob\"", "name": "big" }),
+    )["drawingId"]
+        .as_str()
+        .unwrap()
+        .to_owned();
+    let large = ratio("large values (strokes of 300 points)", &h, &|i| {
+        let points: Vec<serde_json::Value> =
+            (0..300).map(|k| json!({ "x": (i * 7 + k) as f64 * 0.5, "y": ((k * 13) % 97) as f64 })).collect();
+        ok(&h, "draw.stroke.add", json!({ "drawingId": drawing, "kind": "pencil", "points": points }));
+    });
+    drop(h);
+    for (label, r) in [("small", small), ("medium", medium), ("large", large)] {
+        assert!((1.0 / 1.5..=1.5).contains(&r), "{label} values: the history holds {r:.2} times its count");
+    }
 
     // A snapshot step's uncounted shared entries.
     let (with, counted_with) = snapshot_run(true);

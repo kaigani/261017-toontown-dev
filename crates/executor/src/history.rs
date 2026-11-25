@@ -52,13 +52,16 @@ pub const MIN_STEPS: usize = 200;
 /// The history's memory bound in bytes (M5 ruling E-51, E-60; SI-217: no 01 §7.3 preference names it).
 pub const MEMORY_BOUND: usize = 1 << 30;
 
-/// The size of a step's change in bytes, measured once when it is recorded: for patches, every operation's pointers and
-/// the serialised length of its values (the new and the previous one); for a snapshot step, the serialised length of
-/// the entries `before` and `after` do not share (the shared ones are the live document's, copy-on-write).
+/// The memory a step's change holds in bytes, estimated once when it is recorded (M5 ruling E-73: the heap of its
+/// values, not their serialised length; [`crate::heap`]): for patches, every entry commit with its operations; for a
+/// snapshot step, the entries `before` and `after` do not share (the shared ones are the live document's at the time,
+/// copy-on-write; once later edits replace them there, the step holds them alone, which is M11 C11.1's ticket with the
+/// revision log, the merge note's known limits).
 pub(crate) fn edit_size(edit: &StepEdit) -> usize {
     match edit {
         StepEdit::Patches(commits) => {
-            commits.iter().map(|c| c.undo.iter().chain(&c.redo).map(op_size).sum::<usize>() + KEY_SIZE).sum()
+            commits.capacity() * std::mem::size_of::<EntryCommit>()
+                + commits.iter().map(|c| crate::heap::commit(c) - std::mem::size_of::<EntryCommit>()).sum::<usize>()
         }
         StepEdit::Snapshot { before, after } => {
             let mut keys = before.entry_keys();
@@ -67,46 +70,34 @@ pub(crate) fn edit_size(edit: &StepEdit) -> usize {
                     keys.push(k);
                 }
             }
-            keys.iter()
-                .filter(|k| !before.same_entry(after, k))
-                .map(|k| entry_size(before, k) + entry_size(after, k) + KEY_SIZE)
-                .sum()
+            2 * std::mem::size_of::<Document>()
+                + keys
+                    .iter()
+                    .filter(|k| !before.same_entry(after, k))
+                    .map(|k| crate::heap::entry(before, k) + crate::heap::entry(after, k))
+                    .sum::<usize>()
         }
     }
 }
 
-/// What one entry key costs in a step besides its operations (its key and the record around it).
-const KEY_SIZE: usize = 64;
-
-fn op_size(op: &tt_model::change::PatchOp) -> usize {
-    op.path.len()
-        + op.from.as_ref().map_or(0, String::len)
-        + json_len(op.value.as_ref())
-        + json_len(op.old_value.as_ref())
-}
-
-fn entry_size(doc: &Document, key: &tt_model::document::EntryKey) -> usize {
-    doc.entry_raw_json(key).map_or(0, |v| json_len(Some(&v)))
-}
-
-/// The serialised length of a value, counted without building the text.
-fn json_len(v: Option<&serde_json::Value>) -> usize {
-    struct Count(usize);
-    impl std::io::Write for Count {
-        fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
-            self.0 += buf.len();
-            Ok(buf.len())
+/// The memory a whole step holds: its change ([`edit_size`]) and its own fields (identity, label, time, origin, the
+/// keys it touched, its animation payload), with its place in the history's vector.
+pub(crate) fn step_size(step: &Step) -> usize {
+    let origin = match &step.origin {
+        Origin::Agent { session, name, scopes } => {
+            session.capacity() + name.capacity() + scopes.len() * (std::mem::size_of::<tt_registry::Scope>() + 16)
         }
-        fn flush(&mut self) -> std::io::Result<()> {
-            Ok(())
-        }
-    }
-    let Some(v) = v else { return 0 };
-    let mut c = Count(0);
-    match serde_json::to_writer(&mut c, v) {
-        Ok(()) => c.0,
-        Err(_) => 0,
-    }
+        _ => 0,
+    };
+    std::mem::size_of::<Step>()
+        + step.id.capacity()
+        + step.label.capacity()
+        + step.time.capacity()
+        + origin
+        + step.touched.capacity() * std::mem::size_of::<String>()
+        + step.touched.iter().map(String::capacity).sum::<usize>()
+        + step.anim.as_ref().map_or(0, crate::heap::value)
+        + edit_size(&step.edit)
 }
 
 /// The history of the open project.
@@ -123,7 +114,7 @@ pub(crate) struct History {
     /// The open typing run (M4 C4.4b, design note 5 §3; SI-191): the step the Text tool's input path extends while its
     /// keystrokes go to one text object from one origin.
     run: Option<TypingRun>,
-    /// Each step's size in bytes ([`edit_size`]), index for index with `steps`.
+    /// Each step's size in bytes ([`step_size`]), index for index with `steps`.
     sizes: Vec<usize>,
     /// The sum of `sizes`.
     bytes: usize,
@@ -163,7 +154,7 @@ impl History {
         if self.clean.is_some_and(|c| c > self.position) {
             self.clean = None;
         }
-        let size = edit_size(&step.edit);
+        let size = step_size(&step);
         self.steps.push(step);
         self.sizes.push(size);
         self.bytes += size;
@@ -201,7 +192,7 @@ impl History {
 
     /// A history starting with one step that cannot be undone and is not clean (10 REP-01: repairs on open).
     pub fn with_base_step(step: Step) -> Self {
-        let size = edit_size(&step.edit);
+        let size = step_size(&step);
         Self {
             steps: vec![step],
             position: 1,
@@ -351,7 +342,7 @@ impl History {
         top.time = time;
         // The extended step's size, measured again; the bound applies to it as to a new step.
         let index = self.position - 1;
-        let size = self.steps.get(index).map_or(0, |t| edit_size(&t.edit));
+        let size = self.steps.get(index).map_or(0, step_size);
         if let Some(old) = self.sizes.get_mut(index) {
             self.bytes = self.bytes.saturating_sub(*old) + size;
             *old = size;
@@ -382,10 +373,10 @@ impl History {
 
     /// Replaces a step's edit with the patches its last replay returned (C11-R6-01: the redo returned by undo).
     pub fn replace_edit(&mut self, index: usize, edit: StepEdit) {
-        let size = edit_size(&edit);
         if let Some(s) = self.steps.get_mut(index) {
             s.edit = edit;
         }
+        let size = self.steps.get(index).map_or(0, step_size);
         if let Some(old) = self.sizes.get_mut(index) {
             self.bytes = self.bytes.saturating_sub(*old) + size;
             *old = size;
@@ -413,9 +404,15 @@ mod tests {
             elided: false,
         };
         let text = |c: char| std::iter::repeat_n(c, n).collect::<String>();
+        // Fixed capacities: every test step has the same size whatever its number (E-73 counts its strings).
+        let fixed = |text: String| {
+            let mut s = String::with_capacity(16);
+            s.push_str(&text);
+            s
+        };
         Step {
-            id: format!("u-{i}"),
-            label: format!("Step {i}"),
+            id: fixed(format!("u-{i}")),
+            label: fixed(format!("Step {i}")),
             origin: Origin::User,
             time: String::new(),
             edit: StepEdit::Patches(vec![EntryCommit {
@@ -431,16 +428,17 @@ mod tests {
 
     #[test]
     fn a_step_is_measured_from_its_patch() {
-        let small = edit_size(&step(1, 10).edit);
-        let large = edit_size(&step(2, 10_000).edit);
-        // Four values of n characters each, with their quotes, the pointers and the key.
-        assert!((40_000..40_200).contains(&large), "{large}");
-        assert!(large - small >= 4 * (10_000 - 10), "{small} {large}");
+        // E-73: the heap the step holds. Four strings of n characters (their capacities), the patch operations, the
+        // entry commit and the step's own fields.
+        let small = step_size(&step(1, 10));
+        let large = step_size(&step(2, 10_000));
+        assert_eq!(large - small, 4 * (10_000 - 10), "{small} {large}");
+        assert!((40_000..41_000).contains(&large), "{large}");
     }
 
     #[test]
     fn the_bound_holds_on_large_steps_and_the_oldest_go_first() {
-        let size = edit_size(&step(0, 1_000).edit);
+        let size = step_size(&step(0, 1_000));
         let bound = 250 * size + size / 2;
         let mut h = History::clean().with_bound(bound);
         for i in 0..400 {
@@ -458,7 +456,7 @@ mod tests {
     /// the call's replays are in, the oldest steps going first.
     #[test]
     fn a_replayed_step_measured_again_is_held_to_the_bound() {
-        let size = edit_size(&step(0, 1_000).edit);
+        let size = step_size(&step(0, 1_000));
         let bound = 250 * size + size / 2;
         let mut h = History::clean().with_bound(bound);
         for i in 0..250 {
@@ -471,13 +469,16 @@ mod tests {
         assert_eq!(h.len(), 250, "nothing is discarded under the call's replays");
         h.apply_bound();
         assert!(h.bytes() <= bound, "{} > {bound}", h.bytes());
-        assert_eq!(h.steps()[0].id, "u-9", "the oldest go first");
+        // The replayed step's growth, in ordinary steps (rounded up past the half step of margin), went first.
+        let grown = step_size(&step(249, 10_000)) - size;
+        let discarded = (grown - size / 2).div_ceil(size);
+        assert_eq!(h.steps()[0].id, format!("u-{discarded}"), "the oldest go first");
         assert_eq!(h.steps().last().map(|s| s.id.as_str()), Some("u-249"));
     }
 
     #[test]
     fn the_floor_of_two_hundred_steps_is_never_crossed() {
-        let size = edit_size(&step(0, 1_000).edit);
+        let size = step_size(&step(0, 1_000));
         let mut h = History::clean().with_bound(10 * size);
         for i in 0..300 {
             h.push(step(i, 1_000));
@@ -501,7 +502,7 @@ mod tests {
 
     #[test]
     fn undo_position_and_redo_survive_a_discard() {
-        let size = edit_size(&step(0, 1_000).edit);
+        let size = step_size(&step(0, 1_000));
         let mut h = History::clean().with_bound(220 * size);
         for i in 0..220 {
             h.push(step(i, 1_000));
@@ -511,11 +512,14 @@ mod tests {
             h.moved_back();
         }
         assert!(h.can_redo());
-        // About ten ordinary steps' worth: the oldest five go so the total fits the bound again.
+        // Several ordinary steps' worth: the oldest go until the total fits the bound again.
+        let big = step_size(&step(500, 10_000));
+        let discarded = (big - 5 * size).div_ceil(size);
+        assert!(discarded >= 3, "{discarded}");
         h.push(step(500, 10_000));
         assert!(!h.can_redo());
         assert!(h.bytes() <= 220 * size);
-        assert_eq!(h.steps()[0].id, "u-5", "the oldest five were discarded");
+        assert_eq!(h.steps()[0].id, format!("u-{discarded}"), "the oldest were discarded first");
         assert_eq!(h.position(), h.len());
         assert_eq!(h.top().map(|t| t.id.as_str()), Some("u-500"));
         // Every kept step can be undone down to the oldest kept one, and no further.
@@ -530,7 +534,7 @@ mod tests {
     #[test]
     fn the_floor_follows_a_discard() {
         // A repaired open's base step (10 REP-01) cannot be undone; once discarded, nothing below the kept steps is.
-        let size = edit_size(&step(0, 1_000).edit);
+        let size = step_size(&step(0, 1_000));
         let mut h = History::with_base_step(step(0, 1_000)).with_bound(MIN_STEPS * size);
         for i in 1..=(MIN_STEPS + 3) {
             h.push(step(i, 1_000));

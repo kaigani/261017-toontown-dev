@@ -37,6 +37,7 @@ mod drawing;
 mod envelope_gesture;
 mod fonts_gate;
 pub mod gesture;
+mod heap;
 mod help;
 mod history;
 pub mod host;
@@ -1326,6 +1327,22 @@ pub mod hooks {
             let s = core.session().ok_or_else(crate::cx::no_project)?;
             let p = s.project.as_ref().ok_or_else(crate::cx::no_project)?;
             Ok::<_, crate::CommandError>((p.history.len(), p.history.bytes()))
+        })?
+    }
+
+    /// Takes the open project's undo history out, leaving an empty one, and gives it to the caller (ruling E-73's
+    /// check: a counting allocator measures what dropping it frees, the memory the steps really hold, against the
+    /// history's count). The project's undo is gone afterwards; for that test only.
+    ///
+    /// # Errors
+    /// `project.none`, `command.timeout`.
+    pub fn history_take(h: &crate::ExecutorHandle) -> Result<Box<dyn std::any::Any + Send>, crate::CommandError> {
+        crate::Poster(h.tx.clone()).run(h.config.budget, |core| {
+            let s = core.session_mut().ok_or_else(crate::cx::no_project)?;
+            let p = s.project.as_mut().ok_or_else(crate::cx::no_project)?;
+            let taken: Box<dyn std::any::Any + Send> =
+                Box::new(std::mem::replace(&mut p.history, crate::history::History::clean()));
+            Ok::<_, crate::CommandError>(taken)
         })?
     }
 
