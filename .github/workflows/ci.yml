@@ -345,6 +345,11 @@ jobs:
           TT_TIMING_DIR: ${{ github.workspace }}/target/evidence/timing
         run: cargo test --locked -p tt-executor --test c32_round3 --test c12_kernel_state
 
+      # M5 C5.2a, ruling E-51: the undo history's memory bound through the commands, with the dev-only hook that sets a
+      # small bound (the unit tests of the bound run in `check`).
+      - name: The undo history's memory bound (test-hooks, debug)
+        run: cargo test --locked -p tt-executor --features test-hooks --test c52a_history_bound
+
       - uses: actions/upload-artifact@v7
         if: always()
         with:

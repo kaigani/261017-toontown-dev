@@ -1255,7 +1255,8 @@ fn list(core: &mut run::Core, origin: Origin) -> Vec<Value> {
 }
 
 /// Measurement hooks (dev-only feature `test-hooks`; never in a product build): lift Flatten's work budget so the
-/// C22-T2 measurement can time a 100 000-stroke merge to completion (M2 C2.4).
+/// C22-T2 measurement can time a 100 000-stroke merge to completion (M2 C2.4); set the undo history's memory bound
+/// (M5 ruling E-51).
 #[cfg(feature = "test-hooks")]
 pub mod hooks {
     use std::sync::atomic::{AtomicU64, Ordering};
@@ -1270,6 +1271,19 @@ pub mod hooks {
     pub(crate) fn merge_work_budget() -> Option<u64> {
         let b = MERGE_BUDGET.load(Ordering::Acquire);
         (b > 0).then_some(b)
+    }
+
+    static HISTORY_BOUND: AtomicU64 = AtomicU64::new(0);
+
+    /// The undo history's memory bound in bytes from now on (0: the product's 1 GiB; M5 ruling E-51): the tests of the
+    /// bound run with steps of a known size against a small bound.
+    pub fn set_history_bound(bytes: u64) {
+        HISTORY_BOUND.store(bytes, Ordering::Release);
+    }
+
+    pub(crate) fn history_bound() -> Option<usize> {
+        let b = HISTORY_BOUND.load(Ordering::Acquire);
+        (b > 0).then(|| usize::try_from(b).unwrap_or(usize::MAX))
     }
 }
 

@@ -2727,6 +2727,32 @@ Reserved by the M0 closure for "measured deterministic-format incompatibility" (
 - **Question:** confirm `null`, or add an explicit form to the `timeline.view.set` row (for example
   `reveal: enum "selection"`); and confirm the key.
 
+## SI-217 — The undo history's memory bound has no value in the specification (M5 C5.2a; interim)
+
+- **Sections:** 01 §6.1 ("at least 200 steps; beyond that, unlimited subject to a memory bound, the oldest steps
+  discarded first"), 01 §7.3 (the preferences: none names the bound; `display.cacheMemoryPercent` is the display
+  caches').
+- **Problem:** the bound is required but has no value or preference, so the history was bounded by its step count
+  alone (1,000 steps), whatever their size.
+- **Interim decision (rulings E-51, E-60):** a fixed 1 GiB. Each step's size is measured from its patch when it is
+  recorded (the serialised length of its values and pointers; for a snapshot step, the entries before and after do not
+  share); while the total passes the bound the oldest steps are discarded, never below 200; the 1,000-step limit stays;
+  when 200 steps alone pass the bound they are kept and stderr says so once per history.
+- **Question:** confirm 1 GiB, or name a preference for it in 01 §7.3 (an absolute size, or a share of memory as
+  `display.cacheMemoryPercent` is).
+
+## SI-218 — The static light table has two command families for one panel (M5 C5.2; interim)
+
+- **Sections:** 04 §15 (the static light table, a panel of the Exposure Sheet; `xsheet.lightTable.*`, `xsheet.panel.set
+  {lightTable}`), 02 line 1188 (the same panel by `drawAid.staticLightTable.*` and `drawAid.staticLightTablePanel.set`),
+  02 §10.4 (how the Drawing view draws the entries; the shade toggle), SI-126 (the interim panel of M4).
+- **Problem:** two families name the same panel and the same entries.
+- **Interim decision (ruling E-57):** one panel, in the Exposure Sheet, whose window sends the `xsheet.lightTable.*`
+  family; the M4 interim controls leave the Drawing view's aid section; `drawAid.staticLightTable.*` and
+  `drawAid.staticLightTablePanel.set` stay as agent-only structured equivalents of the same state, with a one-state test
+  per pair.
+- **Question:** keep both families as equivalents, or retire one of them from spec A.
+
 ## Spec A additions proposed by M4, for the user
 
 Ruling D-57: spec A is edited by the user only, and the registry refuses a command or event it does not declare. Each row
