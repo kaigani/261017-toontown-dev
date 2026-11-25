@@ -31,6 +31,9 @@ static GLOBAL: &StatsAlloc<System> = &INSTRUMENTED_SYSTEM;
 
 const D: &str = "dr_01K742SG0KKMCAP9X1E6Z5P4SW";
 
+/// The crowded drawing's strokes: 1,000 in CI (the response quotes a local run with 20,000, which holds about 3 GB).
+const STROKES: usize = 1_000;
+
 fn net(r: &Region<'_, System>) -> i64 {
     let c = r.change();
     c.bytes_allocated as i64 - c.bytes_deallocated as i64
@@ -69,10 +72,10 @@ fn crowded(n: usize) -> ExecutorHandle {
     h
 }
 
-/// The memory the process holds after editing the crowded drawing and 300 changes after it, with or without a
+/// The memory the process holds after editing the crowded drawing and 260 changes after it (past the 256-revision window), with or without a
 /// snapshot step made before; with the counted bytes of the history.
 fn snapshot_run(with_restore: bool) -> (i64, usize) {
-    let h = crowded(20_000);
+    let h = crowded(STROKES);
     let bob = "scene:\"Intro\"/element:\"Bob\"";
     ok(&h, "checkpoint.create", json!({ "name": "e70" }));
     ok(&h, "element.note.set", json!({ "elementId": bob, "text": "changed" }));
@@ -87,7 +90,7 @@ fn snapshot_run(with_restore: bool) -> (i64, usize) {
         "draw.stroke.add",
         json!({ "drawingId": D, "kind": "pencil", "points": [{ "x": 0, "y": 0 }, { "x": 9, "y": 9 }] }),
     );
-    for i in 0..300 {
+    for i in 0..260 {
         ok(&h, "element.note.set", json!({ "elementId": bob, "text": format!("n{i}") }));
     }
     let held = net(&r);
@@ -138,7 +141,7 @@ fn the_counted_size_against_the_memory_held() {
     let (with, counted_with) = snapshot_run(true);
     let (without, counted_without) = snapshot_run(false);
     println!(
-        "snapshot step: held after the crowded drawing's edit and 300 changes: {with} B with the restore, {without} B \
+        "snapshot step ({STROKES} strokes): held after the crowded drawing's edit and 260 changes: {with} B with the restore, {without} B \
          without; the snapshot step holds {} B more, of which the bound counted {} B",
         with - without,
         counted_with as i64 - counted_without as i64

@@ -67,8 +67,9 @@ passes).
   its object index included (`Document::rebuild_derived`, M1 C1.2), and the revision log keeps the `before` document of
   each of the last 256 revisions while their changed objects fit its budget (`SNAPSHOT_WINDOW`, `SNAPSHOT_OBJECT_BUDGET`,
   which weighs the objects a change touched, not the index each snapshot holds). On the sample with a 20,000-stroke
-  drawing, 300 note changes hold about 3.1 GB (about 10 MB per change; `crates/executor/tests/c52a_history_size.rs`, found
-  while measuring the history for ruling E-70). The same rebuild is the commit cost above; the fix shares the index of
+  drawing, 300 note changes hold about 3.1 GB (about 10 MB per change; measured locally with
+  `crates/executor/tests/c52a_history_size.rs` at 20,000 strokes, which runs with 1,000 in CI; found while measuring the
+  history for ruling E-70). The same rebuild is the commit cost above; the fix shares the index of
   the entries a commit did not touch. Outside the undo history's bound, which counts its steps only (measured with it:
   a patch step holds about 4.7 times the size the bound counts, and a snapshot step holds the entries it shared with the
   live document once later edits replace them there: 24 MB counted as 6 KB in that test).
